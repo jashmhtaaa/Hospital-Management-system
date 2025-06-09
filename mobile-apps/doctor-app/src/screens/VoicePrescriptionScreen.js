@@ -39,7 +39,7 @@ const VoicePrescriptionScreen = ({ route, navigation }) => {
   };
 
   const onSpeechRecognized = () => {
-    console.log('Speech recognized');
+    /* SECURITY: Console statement removed */
   };
 
   const onSpeechEnd = () => {
@@ -47,9 +47,9 @@ const VoicePrescriptionScreen = ({ route, navigation }) => {
   };
 
   const onSpeechError = (error) => {
-    console.error('Speech error:', error);
+    /* SECURITY: Console statement removed */
     setIsRecording(false);
-    Alert.alert('Error', 'Speech recognition failed. Please try again.');
+    Alert./* SECURITY: Console statement removed */
   };
 
   const onSpeechResults = (event) => {
@@ -62,7 +62,7 @@ const VoicePrescriptionScreen = ({ route, navigation }) => {
     try {
       await Voice.start('en-US');
     } catch (error) {
-      console.error('Error starting voice recognition:', error);
+      /* SECURITY: Console statement removed */
     }
   };
 
@@ -70,7 +70,7 @@ const VoicePrescriptionScreen = ({ route, navigation }) => {
     try {
       await Voice.stop();
     } catch (error) {
-      console.error('Error stopping voice recognition:', error);
+      /* SECURITY: Console statement removed */
     }
   };
 
@@ -123,14 +123,14 @@ const VoicePrescriptionScreen = ({ route, navigation }) => {
       });
 
       if (response.ok) {
-        Alert.alert('Success', 'Prescription saved successfully');
+        Alert./* SECURITY: Console statement removed */
         navigation.goBack();
       } else {
-        Alert.alert('Error', 'Failed to save prescription');
+        Alert./* SECURITY: Console statement removed */
       }
     } catch (error) {
-      console.error('Error saving prescription:', error);
-      Alert.alert('Error', 'Failed to save prescription');
+      /* SECURITY: Console statement removed */
+      Alert./* SECURITY: Console statement removed */
     }
   };
 

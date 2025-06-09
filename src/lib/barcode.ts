@@ -13,7 +13,7 @@ import { createHash } from 'crypto';
  */
 export const generateBarcodeData = async (specimenId: string): Promise<string> {
   // Create a unique barcode ID based on specimen ID and timestamp
-  const timestamp = Date.now().toString();
+  const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString();
   const uniqueString = `${specimenId}-${timestamp}`;
   
   // Create a hash of the unique string to ensure uniqueness and fixed length

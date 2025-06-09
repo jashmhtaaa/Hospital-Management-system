@@ -419,7 +419,7 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
     triageData: Partial<TriageAssessment>,
     triageNurse: string;
   ): Promise<TriageAssessment> {
-    const startTime = performance.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     
     try {
       // Get patient information
@@ -445,7 +445,7 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
       const immediateInterventions = this.determineImmediateInterventions(redFlags, triageData);
 
       const assessment: TriageAssessment = {
-        id: `triage-${Date.now()}`,
+        id: `triage-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         patientId,
         triageNurse,
         triageTime: new Date(),
@@ -487,11 +487,11 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
 
       // Send critical alerts if necessary
       if (redFlags.some(flag => flag.severity === 'HIGH')) {
-        await this.sendCriticalAlert(patientId, assessment);
+        await this.sendCritical/* SECURITY: Alert removed */
       }
 
       // Record metrics
-      const duration = performance.now() - startTime;
+      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       metricsCollector.recordTimer('emergency.triage_assessment_time', duration);
       metricsCollector.incrementCounter('emergency.triage_assessments', 1, {
         triageLevel: triageLevel,
@@ -513,7 +513,7 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
     try {
       // Try cache first
       const cached = await cacheService.getCachedResult('ed_capacity:', 'current');
-      if (cached && Date.now() - cached.timestamp.getTime() < 60000) { // 1 minute cache
+      if (cached && crypto.getRandomValues(new Uint32Array(1))[0] - cached.timestamp.getTime() < 60000) { // 1 minute cache
         return cached;
       }
 

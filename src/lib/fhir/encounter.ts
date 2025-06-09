@@ -111,7 +111,7 @@ export class FHIREncounterUtils {
       resourceType: 'Encounter',
       status: 'planned',
       class: {
-        system: 'http://terminology.hl7.org/CodeSystem/v3-ActCode',
+        system: 'https://terminology.hl7.org/CodeSystem/v3-ActCode',
         code: data.class.toUpperCase(),
         display: data.class.charAt(0).toUpperCase() + data.class.slice(1)
       },
@@ -164,7 +164,7 @@ export class FHIREncounterUtils {
       encounter.reasonCode = [{
         ...(data.reasonCode && {
           coding: [{
-            system: 'http://snomed.info/sct',
+            system: 'https://snomed.info/sct',
             code: data.reasonCode,
             display: data.reasonText || data.reasonCode
           }]
@@ -226,7 +226,7 @@ export class FHIREncounterUtils {
     if (data.admissionSource) {
       encounter.hospitalization.admitSource = {
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/admit-source',
+          system: 'https://terminology.hl7.org/CodeSystem/admit-source',
           code: data.admissionSource,
           display: data.admissionSource
         }]
@@ -260,7 +260,7 @@ export class FHIREncounterUtils {
     if (data.triageLevel) {
       encounter.priority = {
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/v3-ActPriority',
+          system: 'https://terminology.hl7.org/CodeSystem/v3-ActPriority',
           code: data.triageLevel.toUpperCase(),
           display: data.triageLevel.charAt(0).toUpperCase() + data.triageLevel.slice(1)
         }]
@@ -396,7 +396,7 @@ export class FHIREncounterUtils {
       id: hmsEncounter.id,
       status: hmsEncounter.status || 'finished',
       class: {
-        system: 'http://terminology.hl7.org/CodeSystem/v3-ActCode',
+        system: 'https://terminology.hl7.org/CodeSystem/v3-ActCode',
         code: encounterClass.toUpperCase(),
         display: encounterClass.charAt(0).toUpperCase() + encounterClass.slice(1)
       },

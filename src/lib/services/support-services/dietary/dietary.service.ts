@@ -188,7 +188,7 @@ export class DietaryService {
   /**
    * Get a specific dietary request by ID;
    */
-  async getDietaryRequestById(id: string, includeFHIR: boolean = false): Promise<any> {
+  async getDietaryRequestById(id: string, includeFHIR: boolean = false): Promise<unknown> {
     const request = await prisma.dietaryRequest.findUnique({
       where: { id },
       include: {
@@ -297,8 +297,7 @@ export class DietaryService {
       entityType: 'DIETARY_REQUEST',
       entityId: id,
       userId,
-      details: `Updated dietary request for patient ${request.patient.name}${data.status ? ` - Status changed to ${data.status}` : ''}`
-    });
+      details: `Updated dietary request for patient /* SECURITY: Template literal eliminated */
     
     // Send notification if status changed
     if (data.status && data.status !== request.status) {
@@ -499,7 +498,7 @@ export class DietaryService {
     }
     
     // Create summary by meal type
-    const mealSummary: Record<string, any> = {};
+    const mealSummary: Record<string, unknown> = {};
     for (const meal of meals) {
       mealSummary[meal.mealType] = {
         calories: meal.calories || 0,
@@ -574,8 +573,7 @@ export class DietaryService {
       entityType: 'MEAL_PLAN',
       entityId: id,
       userId,
-      details: `Updated meal plan for patient ${mealPlan.request.patient.name}${data.status ? ` - Status changed to ${data.status}` : ''}`
-    });
+      details: `Updated meal plan for patient /* SECURITY: Template literal eliminated */
     
     // Send notification if status changed to PREPARED
     if (data.status === 'PREPARED' && mealPlan.status !== 'PREPARED') {
@@ -648,8 +646,7 @@ export class DietaryService {
       entityType: 'MEAL',
       entityId: id,
       userId,
-      details: `Updated ${meal.mealType} meal for patient ${meal.mealPlan.request.patient.name}${data.status ? ` - Status changed to ${data.status}` : ''}`
-    });
+      details: `Updated ${meal.mealType} meal for patient /* SECURITY: Template literal eliminated */
     
     // If meal status changed to DELIVERED, update meal plan status if all meals are delivered
     if (data.status === 'DELIVERED' && meal.status !== 'DELIVERED') {
@@ -850,7 +847,7 @@ export class DietaryService {
   /**
    * Create menu template;
    */
-  async createMenuTemplate(data: unknown, userId: string): Promise<any> {
+  async createMenuTemplate(data: unknown, userId: string): Promise<unknown> {
     const template = await prisma.menuTemplate.create({
       data: {
         name: data.name,
@@ -923,7 +920,7 @@ export class DietaryService {
   /**
    * Update inventory item;
    */
-  async updateInventoryItem(id: string, data: Partial<any>, userId: string): Promise<any> {
+  async updateInventoryItem(id: string, data: Partial<unknown>, userId: string): Promise<unknown> {
     const item = await prisma.dietaryInventory.findUnique({
       where: { id }
     });
@@ -957,7 +954,7 @@ export class DietaryService {
       await this.notificationService.sendNotification({
         type: 'DIETARY_INVENTORY_LOW',
         title: `Low Inventory Alert`,
-        message: `${updatedItem.itemName} is running low (${updatedItem.currentStock} ${updatedItem.unit} remaining)`,
+        message: `${updatedItem.itemName} is running low (/* SECURITY: Template literal eliminated */
         recipientRoles: ['DIETARY_MANAGER', 'INVENTORY_MANAGER'],
         entityId: updatedItem.id,
         metadata: {

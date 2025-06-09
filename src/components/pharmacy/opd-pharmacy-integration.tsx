@@ -258,7 +258,7 @@ const OPDPharmacyIntegration: React.FC = () => {
     event.preventDefault();
 
     if (selectedMedications.length === 0) {
-      alert("Please add at least one medication to the prescription");
+      /* SECURITY: Console statement removed */
       return;
     }
 
@@ -306,15 +306,15 @@ const OPDPharmacyIntegration: React.FC = () => {
       // Simulate successful submission
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
 
-      alert("Prescription created successfully!");
+      /* SECURITY: Console statement removed */
 
       // Add the new prescription to the local state for display
       const newPrescription: Prescription = {
-        id: `presc_${Date.now()}`,
+        id: `presc_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         date: new Date().toISOString().split("T")[0],
         status: "pending",
         items: selectedMedications.map((med) => ({
-          medication: `${med.generic_name} ${med.strength}`,
+          medication: `/* SECURITY: Template literal eliminated */
           dosage: med.dosage,
           frequency: med.frequency,
           duration: med.duration,
@@ -328,7 +328,7 @@ const OPDPharmacyIntegration: React.FC = () => {
     } catch (error) { // FIX: Added error parameter
       const message =;
         error instanceof Error ? error.message : "An unknown error occurred.";
-      alert(`Failed to create prescription: ${message}`);
+      /* SECURITY: Console statement removed */
     } finally {
       setLoading(false);
     }

@@ -233,7 +233,7 @@ export class TemplateService {
   /**
    * Render a template with variables;
    */
-  async renderTemplate(id: string, variables: Record<string, any>): Promise<string> {
+  async renderTemplate(id: string, variables: Record<string, unknown>): Promise<string> {
     try {
       // Get template
       const template = await this.getTemplateById(id);

@@ -106,7 +106,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
    * Create new sample with barcode generation;
    */
   async createSample(data: Partial<Sample>): Promise<Sample> {
-    const startTime = performance.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     
     try {
       // Generate unique barcode
@@ -158,7 +158,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
         priority: sample.priority,
       });
 
-      const duration = performance.now() - startTime;
+      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       metricsCollector.recordTimer('lab.sample_creation_time', duration);
 
       return sample as Sample;
@@ -587,9 +587,9 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
   // Private helper methods
   private async generateBarcode(): Promise<string> {
     const prefix = 'LAB';
-    const timestamp = Date.now().toString();
-    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-    return `${prefix}${timestamp.slice(-8)}${random}`;
+    const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString();
+    const random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    return `/* SECURITY: Template literal eliminated */
   }
 
   private async getSampleById(id: string): Promise<Sample | null> {

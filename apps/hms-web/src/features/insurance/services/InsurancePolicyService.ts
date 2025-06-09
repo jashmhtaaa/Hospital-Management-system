@@ -36,7 +36,7 @@ export class InsurancePolicyService {
 
         // Mock implementation
         const mockPolicy: InsurancePolicy = {
-            id: `pol_${Date.now()}`,
+            id: `pol_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
             patientId,
             ...policyDetails,
             // Ensure all required fields from Omit<InsurancePolicy, "id" | "patientId"> are present or defaulted

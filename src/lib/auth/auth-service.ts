@@ -81,7 +81,7 @@ export class AuthService {
         userId: user.id,
         sessionToken: accessToken,
         refreshToken,
-        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours
+        expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 24 * 60 * 60 * 1000) // 24 hours
       }
     });
 

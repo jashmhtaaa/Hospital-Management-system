@@ -117,7 +117,7 @@ export const GET = async () => {
           cors: true,
           service: [{
             coding: [{
-              system: 'http://terminology.hl7.org/CodeSystem/restful-security-service',
+              system: 'https://terminology.hl7.org/CodeSystem/restful-security-service',
               code: 'OAuth',
               display: 'OAuth'
             }]
@@ -126,7 +126,7 @@ export const GET = async () => {
         resource: [
           {
             type: 'Patient',
-            profile: 'http://hl7.org/fhir/StructureDefinition/Patient',
+            profile: 'https://hl7.org/fhir/StructureDefinition/Patient',
             interaction: [
               { code: 'read' },
               { code: 'create' },
@@ -148,7 +148,7 @@ export const GET = async () => {
           },
           {
             type: 'Appointment',
-            profile: 'http://hl7.org/fhir/StructureDefinition/Appointment',
+            profile: 'https://hl7.org/fhir/StructureDefinition/Appointment',
             interaction: [
               { code: 'read' },
               { code: 'create' },
@@ -166,7 +166,7 @@ export const GET = async () => {
           },
           {
             type: 'Encounter',
-            profile: 'http://hl7.org/fhir/StructureDefinition/Encounter',
+            profile: 'https://hl7.org/fhir/StructureDefinition/Encounter',
             interaction: [
               { code: 'read' },
               { code: 'create' },
@@ -184,7 +184,7 @@ export const GET = async () => {
           },
           {
             type: 'MedicationRequest',
-            profile: 'http://hl7.org/fhir/StructureDefinition/MedicationRequest',
+            profile: 'https://hl7.org/fhir/StructureDefinition/MedicationRequest',
             interaction: [
               { code: 'read' },
               { code: 'create' },
@@ -202,7 +202,7 @@ export const GET = async () => {
           },
           {
             type: 'Observation',
-            profile: 'http://hl7.org/fhir/StructureDefinition/Observation',
+            profile: 'https://hl7.org/fhir/StructureDefinition/Observation',
             interaction: [
               { code: 'read' },
               { code: 'create' },
@@ -220,7 +220,7 @@ export const GET = async () => {
           },
           {
             type: 'DiagnosticReport',
-            profile: 'http://hl7.org/fhir/StructureDefinition/DiagnosticReport',
+            profile: 'https://hl7.org/fhir/StructureDefinition/DiagnosticReport',
             interaction: [
               { code: 'read' },
               { code: 'create' },

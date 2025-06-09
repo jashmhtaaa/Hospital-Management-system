@@ -43,13 +43,13 @@ const MobilePaymentScreen: React.FC<{ payment: Payment }> = ({ payment }) => {
       const data = await response.json();
       setClientSecret(data.clientSecret);
     } catch (error) {
-      Alert.alert('Error', 'Failed to initialize payment');
+      Alert./* SECURITY: Console statement removed */
     }
   };
 
   const handlePayment = async () => {
     if (!cardDetails?.complete || !clientSecret) {
-      Alert.alert('Error', 'Please enter complete card details');
+      Alert./* SECURITY: Console statement removed */
       return;
     }
 
@@ -66,13 +66,13 @@ const MobilePaymentScreen: React.FC<{ payment: Payment }> = ({ payment }) => {
       });
 
       if (error) {
-        Alert.alert('Payment failed', error.message);
+        Alert./* SECURITY: Console statement removed */
       } else if (paymentIntent) {
-        Alert.alert('Success', 'Payment completed successfully!');
+        Alert./* SECURITY: Console statement removed */
         // Navigate back or show success screen
       }
     } catch (error) {
-      Alert.alert('Error', 'Payment processing failed');
+      Alert./* SECURITY: Console statement removed */
     } finally {
       setLoading(false);
     }

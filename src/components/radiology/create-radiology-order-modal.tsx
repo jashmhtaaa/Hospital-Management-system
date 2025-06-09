@@ -142,8 +142,7 @@ export default const CreateRadiologyOrderModal = ({
     event.preventDefault();
     if (!patientId || !procedureTypeId || !clinicalIndication) {
       // Consider using a toast notification instead of alert
-      alert(
-        "Please fill in all required fields (Patient, Procedure Type, Clinical Indication).";
+      /* SECURITY: Console statement removed */.";
       );
       return;
     }

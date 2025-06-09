@@ -157,7 +157,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
             schedule_id: "sched_001",
             prescription_item_id: "item_003",
             medication_name: "Amoxicillin 250mg",
-            administered_at: new Date(Date.now() - 7_200_000).toISOString(),
+            administered_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7_200_000).toISOString(),
             administered_by: "Nurse Jane",
             notes: "Patient took medication without issues.",
           },
@@ -185,7 +185,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
     scheduleItem: MedicationScheduleItem;
   ): Promise<void> => {
     if (!admissionId) {
-      alert("Admission ID is missing.");
+      /* SECURITY: Console statement removed */
       return;
     }
     setLoading(true); // Use a specific loading state for this action if needed
@@ -212,7 +212,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       // Mock response
       await new Promise((resolve) => setTimeout(resolve, 500));
       const newRecord: AdministrationRecord = {
-        id: `admin_${Date.now()}`,
+        id: `admin_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         schedule_id: scheduleItem.id,
         prescription_item_id: scheduleItem.prescription_item_id,
         medication_name: scheduleItem.medication_name,
@@ -235,12 +235,12 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         );
       );
 
-      alert("Medication administered successfully!");
+      /* SECURITY: Console statement removed */
     } catch (error_) {
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
-      alert(`Failed to record medication administration: ${message}`);
+      /* SECURITY: Console statement removed */
     } finally {
       setLoading(false);
     }

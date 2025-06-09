@@ -44,7 +44,7 @@ export default const AmbulanceDashboard = () {
       
       const vehicleTypeFilter = filters.vehicleType ? `&vehicleType=${filters.vehicleType}` : '';
       
-      const response = await fetch(`/api/support-services/ambulance?${statusFilter}${vehicleTypeFilter}&page=1&limit=50`);
+      const response = await fetch(`/api/support-services/ambulance?/* SECURITY: Template literal eliminated */
       const data = await response.json();
       
       if (data.success) {
@@ -83,7 +83,7 @@ export default const AmbulanceDashboard = () {
       const tripTypeFilter = filters.tripType ? `&tripType=${filters.tripType}` : '';
       const priorityFilter = filters.priority ? `&priority=${filters.priority}` : '';
       
-      const response = await fetch(`/api/support-services/ambulance/trips?${statusFilter}${tripTypeFilter}${priorityFilter}&page=1&limit=50`);
+      const response = await fetch(`/api/support-services/ambulance/trips?/* SECURITY: Template literal eliminated */
       const data = await response.json();
       
       if (data.success) {

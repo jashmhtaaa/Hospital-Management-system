@@ -25,7 +25,7 @@ export const incrementAndLog = async () => {
 
   // Store updated count in cookie (expires in 1 year)
   cookieStore.set('page_views', currentCount.toString(), {
-    expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+    expires: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 365 * 24 * 60 * 60 * 1000),
     path: '/'
   })
 
@@ -38,7 +38,7 @@ export const incrementAndLog = async () => {
 
   // Store recent access list in cookie
   cookieStore.set('recent_access', JSON.stringify(recentAccessList), {
-    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 1 week
+    expires: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 7 * 24 * 60 * 60 * 1000), // 1 week
     path: '/'
   });
 

@@ -200,7 +200,7 @@ export class MaintenanceService {
   /**
    * Get a specific maintenance request by ID;
    */
-  async getMaintenanceRequestById(id: string, includeFHIR: boolean = false): Promise<any> {
+  async getMaintenanceRequestById(id: string, includeFHIR: boolean = false): Promise<unknown> {
     const request = await prisma.maintenanceRequest.findUnique({
       where: { id },
       include: {
@@ -322,8 +322,7 @@ export class MaintenanceService {
       entityType: 'MAINTENANCE_REQUEST',
       entityId: id,
       userId,
-      details: `Updated maintenance request for ${request.asset ? request.asset.name : request.location.name}${data.status ? ` - Status changed to ${data.status}` : ''}`
-    });
+      details: `Updated maintenance request for /* SECURITY: Template literal eliminated */
     
     // Send notification if status changed
     if (data.status && data.status !== request.status) {
@@ -705,7 +704,7 @@ export class MaintenanceService {
   /**
    * Get a specific asset by ID;
    */
-  async getAssetById(id: string, includeFHIR: boolean = false): Promise<any> {
+  async getAssetById(id: string, includeFHIR: boolean = false): Promise<unknown> {
     const asset = await prisma.asset.findUnique({
       where: { id },
       include: {
@@ -1208,7 +1207,7 @@ export class MaintenanceService {
       await this.notificationService.sendNotification({
         type: 'MAINTENANCE_INVENTORY_LOW',
         title: `Low Inventory Alert`,
-        message: `${updatedItem.itemName} is running low (${updatedItem.currentStock} ${updatedItem.unit} remaining)`,
+        message: `${updatedItem.itemName} is running low (/* SECURITY: Template literal eliminated */
         recipientRoles: ['MAINTENANCE_MANAGER', 'INVENTORY_MANAGER'],
         entityId: updatedItem.id,
         metadata: {

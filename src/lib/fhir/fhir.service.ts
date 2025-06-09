@@ -347,7 +347,7 @@ export class FHIRService {
         }
 
         const { method, url } = entry.request;
-        let result: FHIROperationResult<any>;
+        let result: FHIROperationResult<unknown>;
 
         switch (method) {
           case 'POST':
@@ -433,7 +433,7 @@ export class FHIRService {
     }
   }
 
-  async syncFHIRPatientToHMS(fhirPatient: FHIRPatient): Promise<FHIROperationResult<any>> {
+  async syncFHIRPatientToHMS(fhirPatient: FHIRPatient): Promise<FHIROperationResult<unknown>> {
     try {
       // This would convert FHIR patient to HMS format and update HMS database
       const hmsPatient = this.convertFHIRPatientToHMS(fhirPatient);
@@ -502,7 +502,7 @@ export class FHIRService {
   /**
    * HMS Integration methods;
    */
-  private async getHMSPatient(id: string): Promise<any> {
+  private async getHMSPatient(id: string): Promise<unknown> {
     // Get HMS patient from database
     const prisma = new PrismaClient();
     try {

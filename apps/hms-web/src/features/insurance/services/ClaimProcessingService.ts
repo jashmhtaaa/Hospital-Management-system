@@ -32,7 +32,7 @@ export class ClaimProcessingService {
         // }
 
         const newClaim: Claim = {
-            id: `claim_${Date.now()}`,
+            id: `claim_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
             patientId,
             policyId,
             submissionDate: new Date(),
@@ -66,8 +66,8 @@ export class ClaimProcessingService {
 
         // Mock statuses
         const statuses = ["PENDING", "APPROVED", "PARTIALLY_APPROVED", "REJECTED", "PAID"];
-        const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
-        const mockAmountApproved = Math.random() * 1000; // Example amount
+        const randomStatus = statuses[Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * statuses.length)];
+        const mockAmountApproved = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000; // Example amount
 
         const statusResponse: ClaimStatusResponse = {
             claimId,

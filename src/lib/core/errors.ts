@@ -10,14 +10,14 @@ export class AppError extends Error {
   statusCode: number,
   errorCode: string,
   isOperational: boolean;
-  context?: Record<string, any>;
+  context?: Record<string, unknown>;
 
   constructor(
     message: string,
     statusCode = 500,
     errorCode = 'INTERNAL_ERROR',
     isOperational = true,
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message);
     this.statusCode = statusCode;
@@ -34,7 +34,7 @@ export class ValidationError extends AppError {
   constructor(
     message = 'Validation failed',
     errorCode = 'VALIDATION_ERROR',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message, 400, errorCode, true, context);
   }
@@ -45,7 +45,7 @@ export class AuthenticationError extends AppError {
   constructor(
     message = 'Authentication failed',
     errorCode = 'AUTHENTICATION_ERROR',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message, 401, errorCode, true, context);
   }
@@ -56,7 +56,7 @@ export class AuthorizationError extends AppError {
   constructor(
     message = 'Not authorized to perform this action',
     errorCode = 'AUTHORIZATION_ERROR',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message, 403, errorCode, true, context);
   }
@@ -67,7 +67,7 @@ export class NotFoundError extends AppError {
   constructor(
     message = 'Resource not found',
     errorCode = 'NOT_FOUND',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message, 404, errorCode, true, context);
   }
@@ -78,7 +78,7 @@ export class ConflictError extends AppError {
   constructor(
     message = 'Resource conflict',
     errorCode = 'CONFLICT',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message, 409, errorCode, true, context);
   }
@@ -89,7 +89,7 @@ export class BusinessLogicError extends AppError {
   constructor(
     message = 'Business logic error',
     errorCode = 'BUSINESS_LOGIC_ERROR',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message, 422, errorCode, true, context);
   }
@@ -100,7 +100,7 @@ export class RateLimitError extends AppError {
   constructor(
     message = 'Rate limit exceeded',
     errorCode = 'RATE_LIMIT_EXCEEDED',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message, 429, errorCode, true, context);
   }
@@ -111,7 +111,7 @@ export class DatabaseError extends AppError {
   constructor(
     message = 'Database error',
     errorCode = 'DATABASE_ERROR',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message, 500, errorCode, true, context);
   }
@@ -122,7 +122,7 @@ export class ExternalServiceError extends AppError {
   constructor(
     message = 'External service error',
     errorCode = 'EXTERNAL_SERVICE_ERROR',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message, 502, errorCode, true, context);
   }
@@ -135,7 +135,7 @@ export class BillingError extends BusinessLogicError {
   constructor(
     message = 'Billing operation failed',
     errorCode = 'BILLING_ERROR',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message, errorCode, context);
   }
@@ -146,7 +146,7 @@ export class InvoiceError extends BusinessLogicError {
   constructor(
     message = 'Invoice operation failed',
     errorCode = 'INVOICE_ERROR',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message, errorCode, context);
   }
@@ -157,7 +157,7 @@ export class PaymentError extends BusinessLogicError {
   constructor(
     message = 'Payment operation failed',
     errorCode = 'PAYMENT_ERROR',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message, errorCode, context);
   }
@@ -168,7 +168,7 @@ export class InsuranceError extends BusinessLogicError {
   constructor(
     message = 'Insurance operation failed',
     errorCode = 'INSURANCE_ERROR',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message, errorCode, context);
   }
@@ -179,7 +179,7 @@ export class ClaimError extends BusinessLogicError {
   constructor(
     message = 'Claim operation failed',
     errorCode = 'CLAIM_ERROR',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message, errorCode, context);
   }
@@ -189,35 +189,35 @@ export class ClaimError extends BusinessLogicError {
 export class InsufficientFundsError extends PaymentError {
   constructor(
     message = 'Insufficient funds',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message, 'INSUFFICIENT_FUNDS', context);
   }
 export class PaymentGatewayError extends ExternalServiceError {
   constructor(
     message = 'Payment gateway error',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message, 'PAYMENT_GATEWAY_ERROR', context);
   }
 export class InsuranceVerificationError extends InsuranceError {
   constructor(
     message = 'Insurance verification failed',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message, 'INSURANCE_VERIFICATION_ERROR', context);
   }
 export class ClaimSubmissionError extends ClaimError {
   constructor(
     message = 'Claim submission failed',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message, 'CLAIM_SUBMISSION_ERROR', context);
   }
 export class BillingCalculationError extends BillingError {
   constructor(
     message = 'Billing calculation error',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ) {
     super(message, 'BILLING_CALCULATION_ERROR', context);
   }

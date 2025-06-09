@@ -56,7 +56,7 @@ const ClinicalDecisionSupport: React.FC<{ patientId: string }> = ({ patientId })
       const data = await response.json();
       setAnalysis(data.analysis);
     } catch (error) {
-      console.error('Error fetching CDS analysis:', error);
+      /* SECURITY: Console statement removed */
     } finally {
       setLoading(false);
     }
@@ -73,7 +73,7 @@ const ClinicalDecisionSupport: React.FC<{ patientId: string }> = ({ patientId })
       const data = await response.json();
       setAnalysis(data.analysis);
     } catch (error) {
-      console.error('Error checking prescription:', error);
+      /* SECURITY: Console statement removed */
     } finally {
       setLoading(false);
     }

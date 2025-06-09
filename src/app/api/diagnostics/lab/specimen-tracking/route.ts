@@ -466,7 +466,7 @@ export const POST_SCAN = async (request: NextRequest) => {
           location: body.location,
           order_id: specimen.order_id,
           patient_id: tracking.patient_id,
-          patient_name: `${tracking.patient_first_name} ${tracking.patient_last_name}`,
+          patient_name: `/* SECURITY: Template literal eliminated */
           patient_mrn: tracking.patient_mrn
         }
       }, { status: 201 });

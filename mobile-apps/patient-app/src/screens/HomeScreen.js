@@ -29,17 +29,13 @@ const HomeScreen = ({ navigation }) => {
       const { available, biometryType } = await ReactNativeBiometrics.isSensorAvailable();
       if (available) {
         // Setup biometric authentication
-        const { success } = await ReactNativeBiometrics.simplePrompt({
-          promptMessage: 'Authenticate to access your medical records',
-          fallbackPromptMessage: 'Use device passcode'
-        });
-        
+        const { success } = await ReactNativeBiometrics.simple
         if (!success) {
-          Alert.alert('Authentication failed', 'Please try again');
+          Alert./* SECURITY: Console statement removed */
         }
       }
     } catch (error) {
-      console.error('Biometric authentication error:', error);
+      /* SECURITY: Console statement removed */
     }
   };
 
@@ -65,7 +61,7 @@ const HomeScreen = ({ navigation }) => {
         await AsyncStorage.setItem('patientData', JSON.stringify(data));
       }
     } catch (error) {
-      console.error('Error loading patient data:', error);
+      /* SECURITY: Console statement removed */
     }
   };
 

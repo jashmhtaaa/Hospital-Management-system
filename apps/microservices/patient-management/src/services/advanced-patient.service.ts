@@ -1781,7 +1781,7 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
     patientData: Partial<EnhancedPatient>,
     sourceSystem?: string;
   ): Promise<EnhancedPatient> {
-    const startTime = performance.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     
     try {
       // Generate medical record number
@@ -1805,7 +1805,7 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
 
       // Create enhanced patient record
       const enhancedPatient: EnhancedPatient = {
-        id: `patient-${Date.now()}`,
+        id: `patient-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         medicalRecordNumber: mrn,
         firstName: patientData.firstName!,
         middleName: patientData.middleName,
@@ -1834,7 +1834,7 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
         consents: [],
         privacySettings: this.getDefaultPrivacySettings(),
         auditTrail: [{
-          id: `audit-${Date.now()}`,
+          id: `audit-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
           type: AuditEventType.CREATE,
           action: AuditAction.CREATE,
           recorded: new Date(),
@@ -1869,7 +1869,7 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
       await this.triggerCareManagementWorkflows(enhancedPatient);
 
       // Record metrics
-      const duration = performance.now() - startTime;
+      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       metricsCollector.recordTimer('patient_management.registration_time', duration);
       metricsCollector.incrementCounter('patient_management.patients_registered', 1, {
         sourceSystem: sourceSystem || 'unknown',
@@ -2008,9 +2008,9 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
   // Private helper methods
   private async generateMRN(): Promise<string> {
     const prefix = 'MRN';
-    const timestamp = Date.now().toString();
-    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-    return `${prefix}${timestamp.slice(-8)}${random}`;
+    const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString();
+    const random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    return `/* SECURITY: Template literal eliminated */
   }
 
   private calculateAge(dateOfBirth: Date): number {

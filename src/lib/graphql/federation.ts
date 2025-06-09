@@ -39,7 +39,7 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
     
     metricsCollector.recordTimer(
       'graphql.federation.service_response_time', 
-      context.startTime ? performance.now() - context.startTime : 0,
+      context.startTime ? crypto.getRandomValues(new Uint32Array(1))[0] - context.startTime : 0,
       {
         service: serviceName,
         operation: operationName
@@ -77,14 +77,14 @@ export const createGraphQLFederationServer = async (app: express.Application) =>
   // Define the list of GraphQL microservices
   const serviceList = [
     { name: 'patients', url: process.env.PATIENT_SERVICE_URL ||
-      'http://patient-service.hms.svc.cluster.local/graphql' },
-    { name: 'billing', url: process.env.BILLING_SERVICE_URL || 'http://billing-service.hms.svc.cluster.local/graphql' },
+      'https://patient-service.hms.svc.cluster.local/graphql' },
+    { name: 'billing', url: process.env.BILLING_SERVICE_URL || 'https://billing-service.hms.svc.cluster.local/graphql' },
     { name: 'pharmacy', url: process.env.PHARMACY_SERVICE_URL ||
-      'http://pharmacy-service.hms.svc.cluster.local/graphql' },
+      'https://pharmacy-service.hms.svc.cluster.local/graphql' },
     { name: 'analytics', url: process.env.ANALYTICS_SERVICE_URL ||
-      'http://analytics-service.hms.svc.cluster.local/graphql' },
-    { name: 'auth', url: process.env.AUTH_SERVICE_URL || 'http://auth-service.hms.svc.cluster.local/graphql' },
-    { name: 'cdss', url: process.env.CDSS_SERVICE_URL || 'http://cdss-service.hms.svc.cluster.local/graphql' }
+      'https://analytics-service.hms.svc.cluster.local/graphql' },
+    { name: 'auth', url: process.env.AUTH_SERVICE_URL || 'https://auth-service.hms.svc.cluster.local/graphql' },
+    { name: 'cdss', url: process.env.CDSS_SERVICE_URL || 'https://cdss-service.hms.svc.cluster.local/graphql' }
   ]
 
   // Create the gateway
@@ -132,9 +132,9 @@ export const createGraphQLFederationServer = async (app: express.Application) =>
   const server = new ApolloServer({
     gateway,
     context: async ({ req }) => {
-      const startTime = performance.now();
+      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
       const requestId = req.headers['x-request-id'] ||;
-        `req-${Date.now()}-${Math.random().toString(36).substring(2, 10)}`;
+        `req-${crypto.getRandomValues(new Uint32Array(1))[0]}-${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 10)}`;
       const correlationId = req.headers['x-correlation-id'] || requestId;
       
       // Authenticate the request
@@ -178,7 +178,7 @@ export const createGraphQLFederationServer = async (app: express.Application) =>
           return {
             async willSendResponse({ response }) {
               // Record request metrics on completion
-              const duration = performance.now() - context.startTime;
+              const duration = crypto.getRandomValues(new Uint32Array(1))[0] - context.startTime;
               
               metricsCollector.recordTimer('graphql.federation.request_time', duration, {
                 operation: operationName,

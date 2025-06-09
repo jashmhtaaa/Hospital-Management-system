@@ -9,7 +9,7 @@ import { DatabaseError } from './errors.ts';
 
 // Query options interface for filtering, sorting, and pagination
 export interface QueryOptions {
-  filters?: Record<string, any>;
+  filters?: Record<string, unknown>;
   sort?: {
     field: string,
     direction: 'asc' | 'desc'
@@ -52,7 +52,7 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
 
   async findAll(options?: QueryOptions): Promise<T[]> {
     try {
-      const query: Record<string, any> = {};
+      const query: Record<string, unknown> = {};
 
       // Apply filters
       if (options?.filters) {
@@ -141,7 +141,7 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
 
   async count(options?: QueryOptions): Promise<number> {
     try {
-      const query: Record<string, any> = {};
+      const query: Record<string, unknown> = {};
 
       // Apply filters
       if (options?.filters) {
@@ -159,8 +159,8 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
   }
 
   // Helper method to process nested includes
-  private processIncludes(includes: string[]): Record<string, any> {
-    const result: Record<string, any> = {};
+  private processIncludes(includes: string[]): Record<string, unknown> {
+    const result: Record<string, unknown> = {};
 
     for (const include of includes) {
       if (include.includes('.')) {

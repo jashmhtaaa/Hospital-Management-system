@@ -31,7 +31,7 @@ interface CacheHealth {
     expires: number
   };
 export const GET = async (request: NextRequest): Promise<NextResponse> {
-  const startTime = Date.now();
+  const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
   
   try {
     // Test basic cache operations
@@ -40,7 +40,7 @@ export const GET = async (request: NextRequest): Promise<NextResponse> {
     // Get cache statistics (if supported by your cache implementation)
     const stats = await getCacheStats()
     
-    const responseTime = Date.now() - startTime;
+    const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
     
     const cacheHealth: CacheHealth = {
       status: determineCacheStatus(operations, responseTime),
@@ -68,7 +68,7 @@ export const GET = async (request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({
       status: 'unhealthy',
       timestamp: new Date().toISOString(),
-      responseTime: Date.now() - startTime,
+      responseTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
       error: 'Cache system unavailable',
       details: process.env.NODE_ENV === 'development' ? error.message : undefined
     }, { status: 503 });
@@ -76,11 +76,11 @@ export const GET = async (request: NextRequest): Promise<NextResponse> {
 }
 
 async const testCacheOperations = (): Promise<CacheHealth['operations']> {
-  const testKey = `health-check-${Date.now()}`;
+  const testKey = `health-check-${crypto.getRandomValues(new Uint32Array(1))[0]}`;
   const testValue = 'cache-test-value';
   
   // Test write operation
-  const writeStart = Date.now();
+  const writeStart = crypto.getRandomValues(new Uint32Array(1))[0];
   let writeSuccess = false;
   try {
     await cache.set(testKey, testValue, 30); // 30 second TTL
@@ -88,10 +88,10 @@ async const testCacheOperations = (): Promise<CacheHealth['operations']> {
   } catch (error) {
 
   }
-  const writeTime = Date.now() - writeStart;
+  const writeTime = crypto.getRandomValues(new Uint32Array(1))[0] - writeStart;
   
   // Test read operation
-  const readStart = Date.now();
+  const readStart = crypto.getRandomValues(new Uint32Array(1))[0];
   let readSuccess = false;
   try {
     const retrievedValue = await cache.get(testKey);
@@ -99,10 +99,10 @@ async const testCacheOperations = (): Promise<CacheHealth['operations']> {
   } catch (error) {
 
   }
-  const readTime = Date.now() - readStart;
+  const readTime = crypto.getRandomValues(new Uint32Array(1))[0] - readStart;
   
   // Test delete operation
-  const deleteStart = Date.now();
+  const deleteStart = crypto.getRandomValues(new Uint32Array(1))[0];
   let deleteSuccess = false;
   try {
     await cache.del(testKey);
@@ -112,7 +112,7 @@ async const testCacheOperations = (): Promise<CacheHealth['operations']> {
   } catch (error) {
 
   }
-  const deleteTime = Date.now() - deleteStart;
+  const deleteTime = crypto.getRandomValues(new Uint32Array(1))[0] - deleteStart;
   
   return {
     read: { success: readSuccess, time: readTime },

@@ -109,7 +109,7 @@ export class DynamicConnectionPool {
       // Track metrics
       metricsCollector.incrementCounter('database.connection_pool.client_requests', 1);
       
-      const startTime = performance.now();
+      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
       
       // Get a client from the pool
       const client = await this.pool.connect();
@@ -117,7 +117,7 @@ export class DynamicConnectionPool {
       this.waitingClients--;
       this.activeConnections++;
       
-      const duration = performance.now() - startTime;
+      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       
       // Track metrics
       metricsCollector.recordTimer('database.connection_pool.client_acquisition_time', duration);
@@ -164,12 +164,12 @@ export class DynamicConnectionPool {
     while (attempt <= retries) {
       try {
         client = await this.getClient();
-        const startTime = performance.now();
+        const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
         
         // Execute the query
         const result = await client.query(queryText, params);
         
-        const duration = performance.now() - startTime;
+        const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
         
         // Track metrics
         metricsCollector.recordTimer('database.connection_pool.query_time', duration, {
@@ -397,7 +397,7 @@ export class DynamicConnectionPool {
       metricsCollector.setGauge('database.connection_pool.total_connections', this.currentPoolSize);
       
       // Record the time of this scale down operation
-      this.lastScaleDownTime = Date.now();
+      this.lastScaleDownTime = crypto.getRandomValues(new Uint32Array(1))[0];
     } catch (error) {
       logger.error('Error scaling down connection pool', { error });
       
@@ -526,7 +526,7 @@ export class DynamicConnectionPool {
       }
       
       // Check if we need to scale down, but only if it's been long enough since the last scale down
-      const timeSinceLastScaleDown = Date.now() - this.lastScaleDownTime;
+      const timeSinceLastScaleDown = crypto.getRandomValues(new Uint32Array(1))[0] - this.lastScaleDownTime;
       
       if (utilization <= this.config.scaleDownThreshold && 
           timeSinceLastScaleDown >= this.config.scaleDownDelay &&;
@@ -551,12 +551,12 @@ export class DynamicConnectionPool {
    */
   private async performHealthCheck(): Promise<void> {
     try {
-      const startTime = performance.now();
+      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
       
       // Execute a simple query to check database connectivity
       await this.query(this.config.healthCheckQuery!);
       
-      const duration = performance.now() - startTime;
+      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       
       // Track metrics
       metricsCollector.recordTimer('database.connection_pool.health_check_time', duration);

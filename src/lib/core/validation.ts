@@ -105,7 +105,7 @@ export const claimStatusSchema = z.enum([
 // Validation utility functions
 export const validateId = (id: string): string {
   return idSchema.parse(id)
-export const validatePagination = (query: Record<string, any>) {
+export const validatePagination = (query: Record<string, unknown>) {
   return paginationSchema.parse({
     page: query.page,
     pageSize: query.pageSize,

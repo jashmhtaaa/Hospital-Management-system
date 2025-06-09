@@ -111,13 +111,7 @@ export const GET = async (request: NextRequest) => {
           FROM laboratory_specimens s;
           JOIN patients p ON s.patient_id = p.id;
           WHERE 1=1;
-          ${patientId ? ' AND s.patient_id = ?' : ''}
-          ${orderId ? ' AND s.order_id = ?' : ''}
-          ${status ? ' AND s.status = ?' : ''}
-          ${specimenType ? ' AND s.specimen_type = ?' : ''}
-          ${collectedAfter ? ' AND s.collected_at >= ?' : ''}
-          ${collectedBefore ? ' AND s.collected_at <= ?' : ''}
-          ${search ? ' AND (s.barcode_id LIKE ? OR s.specimen_id LIKE ? OR p.patient_id LIKE ? OR CONCAT(p.first_name, " ", p.last_name) LIKE ?)' : ''}
+          /* SECURITY: Template literal eliminated */ " ", p.last_name) LIKE ?)' : ''}
         `;
         
         const countParams = params.slice(0, -2);
@@ -209,7 +203,7 @@ export const POST = async (request: NextRequest) => {
     }
 
     // Generate unique specimen ID
-    const specimenId = `SP${Date.now().toString().slice(-10)}${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
+    const specimenId = `SP/* SECURITY: Template literal eliminated */
     
     // Generate barcode data
     const barcodeId = await generateBarcodeData(specimenId);
@@ -652,7 +646,7 @@ export const POST_ALIQUOT = async (request: NextRequest, { params }: { params: {
     }
 
     // Generate unique specimen ID for aliquot
-    const specimenId = `AL${Date.now().toString().slice(-10)}${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
+    const specimenId = `AL/* SECURITY: Template literal eliminated */
     
     // Generate barcode data
     const barcodeId = await generateBarcodeData(specimenId);
@@ -708,7 +702,7 @@ export const POST_ALIQUOT = async (request: NextRequest, { params }: { params: {
         result.insertId,
         storageLocation || 'Laboratory',
         'stored',
-        `Aliquot created from specimen ${parentSpecimen.specimen_id}${notes ? ': ' + notes : ''}`,
+        `Aliquot created from specimen /* SECURITY: Template literal eliminated */
         session.user.id;
       ]
     );

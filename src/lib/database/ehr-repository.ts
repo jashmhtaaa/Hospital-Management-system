@@ -368,7 +368,7 @@ export class EHRRepository {
     icd10_codes?: string[];
   }): Promise<ClinicalGuideline[]> {
     try {
-      const where: any = {};
+      const where: unknown = {};
       
       if (filters?.status) {
         where.status = filters.status;
@@ -386,7 +386,7 @@ export class EHRRepository {
   }
 
   // Helper methods for decryption and deserialization
-  private async decryptClinicalNote(note: any): Promise<ClinicalNote> {
+  private async decryptClinicalNote(note: unknown): Promise<ClinicalNote> {
     const decrypted = await this.encryptionService.decryptObject(note, this.encryptedFields)
     
     return {
@@ -398,11 +398,11 @@ export class EHRRepository {
     };
   }
 
-  private async decryptProblemListItem(item: any): Promise<ProblemListItem> {
+  private async decryptProblemListItem(item: unknown): Promise<ProblemListItem> {
     return this.encryptionService.decryptObject(item, this.encryptedFields);
   }
 
-  private deserializeCarePlan(carePlan: any): CarePlan {
+  private deserializeCarePlan(carePlan: unknown): CarePlan {
     return {
       ...carePlan,
       goals: JSON.parse(carePlan.goals),
@@ -413,7 +413,7 @@ export class EHRRepository {
     };
   }
 
-  private deserializeClinicalGuideline(guideline: any): ClinicalGuideline {
+  private deserializeClinicalGuideline(guideline: unknown): ClinicalGuideline {
     return {
       ...guideline,
       icd10_codes: guideline.icd10_codes ? JSON.parse(guideline.icd10_codes) : undefined,

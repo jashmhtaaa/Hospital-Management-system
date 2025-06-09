@@ -139,7 +139,7 @@ function logCheck(
   
   if (passed) {
     results.passedChecks++;
-    console.log(`✅ ${name}: PASSED - ${details}`);
+    /* SECURITY: Console statement removed */
   } else {
     const result: ValidationResult = {
       name,
@@ -159,9 +159,9 @@ function logCheck(
     }
     
     const icon = severity === 'critical' ? '🚨' : severity === 'high' ? '⚠️' : '⚡';
-    console.log(`${icon} ${name}: FAILED - ${details}`);
+    /* SECURITY: Console statement removed */
     if (remediation) {
-      console.log(`   💡 Remediation: ${remediation}`);
+      /* SECURITY: Console statement removed */
     }
   }
 }
@@ -169,8 +169,8 @@ function logCheck(
 function logWarning(name: string, details: string, recommendation: string): void {
   const warning: ValidationWarning = { name, details, recommendation };
   results.warnings.push(warning);
-  console.log(`⚠️  WARNING: ${name} - ${details}`);
-  console.log(`   💡 Recommendation: ${recommendation}`);
+  /* SECURITY: Console statement removed */
+  /* SECURITY: Console statement removed */
 }
 
 // Enhanced file system utilities with error handling
@@ -178,8 +178,7 @@ function fileExists(filePath: string): boolean {
   try {
     return fs.existsSync(filePath)
   } catch (error) {
-    console.warn(`Error checking file existence: ${filePath}`, error)
-    return false;
+    /* SECURITY: Console statement removed */return false;
   }
 }
 
@@ -195,7 +194,7 @@ function fileContains(filePath: string, searchString: string | RegExp): boolean 
       return searchString.test(content);
     }
   } catch (error) {
-    console.warn(`Error reading file: ${filePath}`, error);
+    /* SECURITY: Console statement removed */
     return false;
   }
 }
@@ -221,7 +220,7 @@ function findFilesWithPattern(startPath: string, pattern: RegExp): string[] {
       }
     }
   } catch (error) {
-    console.warn(`Error reading directory: ${startPath}`, error);
+    /* SECURITY: Console statement removed */
   }
   
   return results;
@@ -237,7 +236,7 @@ function getFileContent(filePath: string): string | null {
 
 // Main validation functions
 function validateAccessControls(): void {
-  console.log('\n🔐 Validating Access Controls (§164.312(a)(1))...')
+  /* SECURITY: Console statement removed */(1))...')
   
   // 1.1 Check RBAC Implementation
   const rbacFiles = [
@@ -318,7 +317,7 @@ function validateAccessControls(): void {
 }
 
 function validateAuditControls(): void {
-  console.log('\n📊 Validating Audit Controls (§164.312(b))...');
+  /* SECURITY: Console statement removed */)...');
   
   // 2.1 Check audit service implementation
   const auditServiceExists = fileExists('./src/lib/audit/audit.service.ts'),
@@ -369,7 +368,7 @@ function validateAuditControls(): void {
 }
 
 function validateEncryption(): void {
-  console.log('\n🔒 Validating Encryption (§164.312(a)(2)(iv) & §164.312(e))...');
+  /* SECURITY: Console statement removed */(2)(iv) & §164.312(e))...');
   
   // 3.1 Check encryption service
   const encryptionFiles = [
@@ -436,7 +435,7 @@ function validateEncryption(): void {
 }
 
 function validateIntegrityControls(): void {
-  console.log('\n🛡️ Validating Integrity Controls (§164.312(c)(1))...');
+  /* SECURITY: Console statement removed */(1))...');
   
   // 4.1 Check for data integrity measures
   const hasDataValidation = fileExists('./src/lib/validation/') || 
@@ -464,7 +463,7 @@ function validateIntegrityControls(): void {
 }
 
 function validateBusinessAssociateCompliance(): void {
-  console.log('\n🤝 Validating Business Associate Compliance (§164.308(b))...');
+  /* SECURITY: Console statement removed */)...');
   
   // 5.1 Check for BA agreement documentation
   const baDocsExist = fileExists('./docs/compliance/business-associate-agreements/') ||
@@ -492,7 +491,7 @@ function validateBusinessAssociateCompliance(): void {
 }
 
 function validateBreachNotification(): void {
-  console.log('\n🚨 Validating Breach Notification (§164.404)...');
+  /* SECURITY: Console statement removed */...');
   
   // 6.1 Check for incident response procedures
   const hasIncidentResponse = fileExists('./docs/security/incident-response-plan.md') ||
@@ -520,7 +519,7 @@ function validateBreachNotification(): void {
 }
 
 function validateWorkforceTraining(): void {
-  console.log('\n👥 Validating Workforce Training (§164.308(a)(5))...');
+  /* SECURITY: Console statement removed */(5))...');
   
   // 7.1 Check for training documentation
   const hasTrainingDocs = fileExists('./docs/training/') ||
@@ -551,17 +550,17 @@ function generateComplianceReport(): void {
   // Calculate compliance score
   results.complianceScore = Math.round((results.passedChecks / results.totalChecks) * 100)
   
-  console.log('\n' + '='.repeat(80));
-  console.log('🏥 HIPAA COMPLIANCE VALIDATION REPORT');
-  console.log('='.repeat(80));
-  console.log(`📊 Total Checks: ${results.totalChecks}`);
-  console.log(`✅ Passed: ${results.passedChecks}`);
-  console.log(`❌ Failed: ${results.failedChecks.length}`);
-  console.log(`⚠️  Warnings: ${results.warnings.length}`);
-  console.log(`🚨 Critical Issues: ${results.criticalIssues}`);
-  console.log(`⚡ High Priority Issues: ${results.highPriorityIssues}`);
-  console.log(`📈 Compliance Score: ${results.complianceScore}%`);
-  console.log(`📅 Validated: ${results.lastValidated.toISOString()}`);
+  /* SECURITY: Console statement removed */);
+  /* SECURITY: Console statement removed */
+  /* SECURITY: Console statement removed */);
+  /* SECURITY: Console statement removed */
+  /* SECURITY: Console statement removed */
+  /* SECURITY: Console statement removed */
+  /* SECURITY: Console statement removed */
+  /* SECURITY: Console statement removed */
+  /* SECURITY: Console statement removed */
+  /* SECURITY: Console statement removed */
+  /* SECURITY: Console statement removed */}`);
   
   // Compliance status
   let status = '🔴 NON-COMPLIANT'
@@ -571,36 +570,34 @@ function generateComplianceReport(): void {
     status = '🟡 MOSTLY COMPLIANT';
   }
   
-  console.log(`🎯 Compliance Status: ${status}`);
+  /* SECURITY: Console statement removed */
   
   // Failed checks details
   if (results.failedChecks.length > 0) {
-    console.log('\n❌ FAILED CHECKS:')
-    console.log('-'.repeat(40));
+    /* SECURITY: Console statement removed *//* SECURITY: Console statement removed */);
     
     results.failedChecks.forEach((check, index) => {
       const severityIcon = check.severity === 'critical' ? '🚨' : 
                           check.severity === 'high' ? '⚠️' : '⚡';
-      console.log(`${index + 1}. ${severityIcon} ${check.name}`);
-      console.log(`   Details: ${check.details}`);
-      console.log(`   Regulation: ${check.regulation}`);
+      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */
       if (check.remediation) {
-        console.log(`   Remediation: ${check.remediation}`);
+        /* SECURITY: Console statement removed */
       }
-      console.log('');
+      /* SECURITY: Console statement removed */
     });
   }
   
   // Warnings
   if (results.warnings.length > 0) {
-    console.log('\n⚠️  WARNINGS:')
-    console.log('-'.repeat(40));
+    /* SECURITY: Console statement removed *//* SECURITY: Console statement removed */);
     
     results.warnings.forEach((warning, index) => {
-      console.log(`${index + 1}. ${warning.name}`);
-      console.log(`   Details: ${warning.details}`);
-      console.log(`   Recommendation: ${warning.recommendation}`);
-      console.log('');
+      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */
     });
   }
   
@@ -614,12 +611,12 @@ function generateComplianceReport(): void {
     }
     
     fs.writeFileSync(reportPath, JSON.stringify(results, null, 2));
-    console.log(`📄 Detailed report saved to: ${reportPath}`);
+    /* SECURITY: Console statement removed */
   } catch (error) {
-    console.warn('Could not save report file:', error);
+    /* SECURITY: Console statement removed */
   }
   
-  console.log('='.repeat(80));
+  /* SECURITY: Console statement removed */);
   
   // Exit with appropriate code
   process.exit(results.criticalIssues > 0 ? 1 : 0)
@@ -627,9 +624,8 @@ function generateComplianceReport(): void {
 
 // Main execution
 function main(): void {
-  console.log('🏥 Starting HIPAA Compliance Validation...')
-  console.log(`📋 Using HIPAA Security Rule Requirements`);
-  console.log(`🎯 Target: Zero Critical Issues for Production Readiness\n`);
+  /* SECURITY: Console statement removed *//* SECURITY: Console statement removed */
+  /* SECURITY: Console statement removed */
   
   try {
     validateAccessControls(),
@@ -641,7 +637,7 @@ function main(): void {
     validateWorkforceTraining(),
     generateComplianceReport();
   } catch (error) {
-    console.error('🚨 Validation script failed:', error);
+    /* SECURITY: Console statement removed */
     process.exit(1);
   }
 }

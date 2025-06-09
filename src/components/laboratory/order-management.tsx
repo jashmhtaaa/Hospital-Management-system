@@ -432,7 +432,7 @@ const OrderManagement: React.FC = () => {
               <Option>
                 key={p.id}
                 value={p.id}
-              >{`${p.first_name} ${p.last_name} (ID: ${p.id})`}</Option>;
+              >{`/* SECURITY: Template literal eliminated */
             ))}
           </Select>
 

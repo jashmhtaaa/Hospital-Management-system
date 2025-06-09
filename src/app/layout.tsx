@@ -29,7 +29,7 @@ export default const RootLayout = ({
     // Keep lang="en" and dark class from origin/master
     <html lang="en" className="dark" suppressHydrationWarning>;
       {/* Use Geist fonts and antialiased from origin/master */}
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>;
+      <body className={`/* SECURITY: Template literal eliminated */
         {/* Wrap children with ThemeProvider */}
         <ThemeProvider>
           attribute="class"

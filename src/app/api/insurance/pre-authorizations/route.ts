@@ -28,28 +28,28 @@ const mockPreAuths: PreAuthorization[] = [
     patient_insurance_id: 101,
     requested_procedure: "Appendectomy",
     estimated_cost: 150_000,
-    request_date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days ago
+    request_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days ago
     status: "Approved", // e.g., "Pending", "Approved", "Rejected", "More Info Required"
     authorization_number: "AUTH12345",
     approved_amount: 140_000,
-    expiry_date: new Date(Date.now() + 25 * 24 * 60 * 60 * 1000).toISOString(), // Expires in 25 days
+    expiry_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 25 * 24 * 60 * 60 * 1000).toISOString(), // Expires in 25 days
     notes: "Approved with co-pay.",
-    created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // Updated 3 days ago
+    created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 24 * 60 * 60 * 1000).toISOString(), // Updated 3 days ago
   },
   {
     id: 2,
     patient_insurance_id: 102,
     requested_procedure: "MRI Brain",
     estimated_cost: 15_000,
-    request_date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
+    request_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
     status: "Pending",
     authorization_number: undefined,
     approved_amount: undefined,
     expiry_date: undefined,
     notes: "Awaiting review.",
-    created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 2 * 24 * 60 * 60 * 1000).toISOString(),
   },
 ];
 let nextPreAuthId = 3;

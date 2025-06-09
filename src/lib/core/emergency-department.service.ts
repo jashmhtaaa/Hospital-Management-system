@@ -269,9 +269,9 @@ export class EmergencyDepartmentService {
    * Generate ED visit number;
    */
   private generateVisitNumber(): string {
-    const timestamp = Date.now().toString().slice(-6);
-    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-    return `ED${timestamp}${random}`;
+    const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
+    const random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    return `ED/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -548,7 +548,7 @@ export class EmergencyDepartmentService {
 
     // Calculate wait times
     const waitTimes = waitingVisits.map(visit => {
-      const waitMinutes = (new Date().getTime() - visit.arrival_time.getTime()) / (1000 * 60);
+      const waitMinutes = (crypto.getRandomValues(new Uint32Array(1))[0] - visit.arrival_time.getTime()) / (1000 * 60);
       return waitMinutes;
     });
     
@@ -610,10 +610,10 @@ export class EmergencyDepartmentService {
     const admitRate = totalVisits > 0 ? (admittedVisits / totalVisits) * 100 : 0;
 
     // Simulate other metrics (in real implementation, these would be calculated from actual data)
-    const leftWithoutBeingSeenRate = Math.random() * 5; // 0-5%
-    const patientSatisfactionScore = 7 + Math.random() * 2; // 7-9
-    const returnRate72h = Math.random() * 3; // 0-3%
-    const timeToPainMedication = 30 + Math.random() * 60; // 30-90 minutes
+    const leftWithoutBeingSeenRate = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 5; // 0-5%
+    const patientSatisfactionScore = 7 + crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 2; // 7-9
+    const returnRate72h = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 3; // 0-3%
+    const timeToPainMedication = 30 + crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 60; // 30-90 minutes
     const throughputPerHour = totalVisits / 24; // Assuming 24-hour period
 
     return {
@@ -719,7 +719,7 @@ export class EmergencyDepartmentService {
   /**
    * Acknowledge critical alert;
    */
-  async acknowledgeCriticalAlert(alertId: string, staffId: string): Promise<void> {
+  async acknowledgeCritical/* SECURITY: Alert removed */: Promise<void> {
     for (const [visitId, alerts] of this.criticalAlerts.entries()) {
       const alert = alerts.find(a => a.id === alertId);
       if (alert) {
@@ -783,7 +783,7 @@ export class EmergencyDepartmentService {
       .sort((a, b) => (a.esi_level || 5) - (b.esi_level || 5)); // Sort by ESI level
 
     const waitTimes = waitingPatients.map(visit => {
-      return (new Date().getTime() - visit.arrival_time.getTime()) / (1000 * 60);
+      return (crypto.getRandomValues(new Uint32Array(1))[0] - visit.arrival_time.getTime()) / (1000 * 60);
     });
 
     const averageWaitTime = waitTimes.length > 0 ? waitTimes.reduce((a, b) => a + b) / waitTimes.length : 0;

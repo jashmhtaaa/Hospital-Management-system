@@ -164,7 +164,7 @@ export default const NewEmployee = () {
       const newEmployee = await response.json(),
       toast({
         title: "Employee Created",
-        description: `Successfully created employee record for ${newEmployee.firstName} ${newEmployee.lastName}`,
+        description: `Successfully created employee record for /* SECURITY: Template literal eliminated */
       });
       
       // Navigate back to staff list

@@ -503,7 +503,7 @@ export class DrugInteractionService {
             in: ['H', 'L', 'HH', 'LL', 'A'] // Abnormal flags
           },
           collectedDate: {
-            gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) // Last 30 days
+            gte: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 24 * 60 * 60 * 1000) // Last 30 days
           }
         },
         orderBy: {

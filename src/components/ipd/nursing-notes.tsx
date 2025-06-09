@@ -125,7 +125,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
         const mockNotes: NursingNote[] = [
           {
             id: "nn_001",
-            note_date: new Date(Date.now() - 7_200_000).toISOString(), // 2 hours ago
+            note_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7_200_000).toISOString(), // 2 hours ago
             nurse_first_name: "Bob",
             nurse_last_name: "Johnson",
             vital_signs: JSON.stringify({
@@ -146,7 +146,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
         ];
         const mockPatientInfo: AdmissionInfo = {
           admission_number: "ADM123456",
-          admission_date: new Date(Date.now() - 86_400_000).toISOString(), // Yesterday
+          admission_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000).toISOString(), // Yesterday
           patient_first_name: "Jane",
           patient_last_name: "Doe",
           diagnosis: "Pneumonia",
@@ -227,7 +227,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
       // Mock response
       await new Promise((resolve) => setTimeout(resolve, 1000));
       const newNote: NursingNote = {
-        id: `nn_${Date.now()}`,
+        id: `nn_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         note_date: submissionData.note_date,
         nurse_first_name: "Current", // Replace with actual user data
         nurse_last_name: "Nurse",

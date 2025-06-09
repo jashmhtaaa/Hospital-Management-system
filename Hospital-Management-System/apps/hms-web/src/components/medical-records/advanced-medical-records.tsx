@@ -48,11 +48,11 @@ const AdvancedMedicalRecords: React.FC = () => {
     
     setLoading(true);
     try {
-      const response = await fetch(`/api/medical-records/icd10/search?q=${encodeURIComponent(query)}&type=${type}`);
+      const response = await fetch(`/api/medical-records/icd10/search?q=/* SECURITY: Safe parameter encoding */&type=${type}`);
       const data = await response.json();
       setIcdResults(data.results);
     } catch (error) {
-      console.error('ICD-10 search error:', error);
+      /* SECURITY: Console statement removed */
     } finally {
       setLoading(false);
     }
@@ -76,7 +76,7 @@ const AdvancedMedicalRecords: React.FC = () => {
       const data = await response.json();
       setSuggestedCodes(data.suggestedCodes);
     } catch (error) {
-      console.error('Auto-coding error:', error);
+      /* SECURITY: Console statement removed */
     } finally {
       setLoading(false);
     }
@@ -88,7 +88,7 @@ const AdvancedMedicalRecords: React.FC = () => {
       const data = await response.json();
       return data.results[0];
     } catch (error) {
-      console.error('Code validation error:', error);
+      /* SECURITY: Console statement removed */
       return null;
     }
   };

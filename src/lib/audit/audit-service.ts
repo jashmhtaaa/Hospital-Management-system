@@ -14,8 +14,8 @@ export interface AuditData {
   action: string;
   resource: string;
   resourceId?: string;
-  oldValues?: any;
-  newValues?: any;
+  oldValues?: unknown;
+  newValues?: unknown;
   description?: string;
   severity?: LogSeverity;
 }
@@ -71,9 +71,8 @@ export class AuditService {
     context: AuditContext,
     resource: string,
     resourceId: string,
-    oldValues: any,
-    newValues: any
-  ): Promise<void> {
+    oldValues: unknown,
+    newValues: unknown): Promise<void> {
     await this.log(context, {
       action: 'UPDATE',
       resource,
@@ -105,7 +104,7 @@ export class AuditService {
     userId?: string,
     limit: number = 100
   ) {
-    const where: any = {};
+    const where: unknown = {};
     
     if (resourceType) where.resource = resourceType;
     if (resourceId) where.resourceId = resourceId;
@@ -130,10 +129,10 @@ export class AuditService {
 
 // Audit decorator for automatic logging
 export function withAudit(resource: string) {
-  return function (target: any, propertyName: string, descriptor: PropertyDescriptor) {
+  return function (target: unknown, propertyName: string, descriptor: PropertyDescriptor) {
     const method = descriptor.value;
 
-    descriptor.value = async function (...args: any[]) {
+    descriptor.value = async function (...args: unknown[]) {
       const context = this.getAuditContext?.() || {};
       
       try {
@@ -144,15 +143,14 @@ export function withAudit(resource: string) {
           propertyName.toUpperCase(),
           resource,
           result?.id,
-          `${resource} ${propertyName} executed successfully`
-        );
+          `/* SECURITY: Template literal eliminated */
         
         return result;
       } catch (error) {
         await AuditService.log(context, {
           action: propertyName.toUpperCase(),
           resource,
-          description: `${resource} ${propertyName} failed: ${error.message}`,
+          description: `/* SECURITY: Template literal eliminated */
           severity: LogSeverity.ERROR
         });
         

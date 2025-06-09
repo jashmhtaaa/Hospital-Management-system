@@ -128,7 +128,7 @@ export class FHIRPatientUtils {
     if (data.mrn) {
       patient.identifier = [{
         use: 'usual',
-        system: 'http://hms.hospital.com/patient-ids',
+        system: 'https://hms.hospital.com/patient-ids',
         value: data.mrn
       }]
     }
@@ -168,7 +168,7 @@ export class FHIRPatientUtils {
     const given = officialName.given?.join(' ') || '';
     const family = officialName.family || '';
     
-    return `${given} ${family}`.trim() || 'Unknown Patient';
+    return `/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -204,7 +204,7 @@ export class FHIRPatientUtils {
     if (!patient.identifier) return undefined;
     
     const mrnIdentifier = patient.identifier.find(
-      id => id.system === 'http://hms.hospital.com/patient-ids' || 
+      id => id.system === 'https://hms.hospital.com/patient-ids' || 
             id.type?.coding?.some(c => c.code === 'MR')
     );
     
@@ -255,7 +255,7 @@ export class FHIRPatientUtils {
       active: true,
       identifier: [{
         use: 'usual',
-        system: 'http://hms.hospital.com/patient-ids',
+        system: 'https://hms.hospital.com/patient-ids',
         value: hmsPatient.mrn
       }],
       name: [{
@@ -305,7 +305,7 @@ export class FHIRPatientUtils {
       fhirPatient.contact = [{
         relationship: [{
           coding: [{
-            system: 'http://terminology.hl7.org/CodeSystem/v2-0131',
+            system: 'https://terminology.hl7.org/CodeSystem/v2-0131',
             code: 'EP',
             display: 'Emergency contact person'
           }],

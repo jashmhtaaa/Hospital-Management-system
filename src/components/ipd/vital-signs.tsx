@@ -124,7 +124,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
         await new Promise((resolve) => setTimeout(resolve, 600));
         const mockPatientInfo: AdmissionInfo = {
           admission_number: "ADM123456",
-          admission_date: new Date(Date.now() - 86_400_000 * 3).toISOString(), // 3 days ago
+          admission_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000 * 3).toISOString(), // 3 days ago
           patient_first_name: "Jane",
           patient_last_name: "Doe",
           diagnosis: "Pneumonia",
@@ -133,7 +133,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
           {
             id: "vs_001",
             admission_id: admissionId,
-            record_time: new Date(Date.now() - 3_600_000 * 4).toISOString(), // 4 hours ago
+            record_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3_600_000 * 4).toISOString(), // 4 hours ago
             temperature: 37.8,
             pulse: 88,
             respiratory_rate: 18,
@@ -148,7 +148,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
           {
             id: "vs_002",
             admission_id: admissionId,
-            record_time: new Date(Date.now() - 3_600_000 * 8).toISOString(), // 8 hours ago
+            record_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3_600_000 * 8).toISOString(), // 8 hours ago
             temperature: 38.1,
             pulse: 92,
             respiratory_rate: 20,
@@ -253,7 +253,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
       // Mock response
       await new Promise((resolve) => setTimeout(resolve, 800));
       const newRecord: NewVitalSignResponse = {
-        id: `vs_${Date.now()}`,
+        id: `vs_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         admission_id: admissionId,
         recorded_by_user_id: "nurse_current", // Replace with actual user ID
         recorded_by_first_name: "Current", // Replace with actual user data

@@ -481,9 +481,9 @@ export class ElectronicHealthRecordsService {
    * Generate note number;
    */
   private generateNoteNumber(): string {
-    const timestamp = Date.now().toString().slice(-6);
-    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-    return `NOTE${timestamp}${random}`;
+    const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
+    const random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    return `NOTE/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -602,9 +602,9 @@ export class ElectronicHealthRecordsService {
    * Generate care plan number;
    */
   private generateCarePlanNumber(): string {
-    const timestamp = Date.now().toString().slice(-6);
-    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-    return `CP${timestamp}${random}`;
+    const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
+    const random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    return `CP/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -777,7 +777,7 @@ export class ElectronicHealthRecordsService {
       const match = condition.match(/hba1c > (\d+)%/);
       if (match) {
         // In real implementation, this would check actual lab values
-        return Math.random() > 0.8; // Simulate 20% chance of high HbA1c
+        return crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) > 0.8; // Simulate 20% chance of high HbA1c
       }
     }
     
@@ -794,12 +794,7 @@ export class ElectronicHealthRecordsService {
   /**
    * Dismiss clinical alert;
    */
-  async dismissClinicalAlert(
-    encounterId: string,
-    alertId: string,
-    providerId: string,
-    reason: string;
-  ): Promise<void> {
+  async dismissClinical/* SECURITY: Alert removed */: Promise<void> {
     const cds = this.decisionSupport.get(encounterId);
     if (!cds) {
       throw new Error('Clinical decision support data not found');
@@ -839,7 +834,7 @@ export class ElectronicHealthRecordsService {
         numerator_criteria: 'BP < 140/90 mmHg',
         denominator_criteria: 'Patients with hypertension',
         patient_applicable: activeProblems.some(p => p.problem_name.toLowerCase().includes('hypertension')),
-        current_status: Math.random() > 0.5 ? 'met' : 'not_met',
+        current_status: crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) > 0.5 ? 'met' : 'not_met',
         performance_rate: 75,
         reporting_period: '2024',
         next_opportunity: 'Next visit',

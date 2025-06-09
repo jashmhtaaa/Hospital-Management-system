@@ -210,7 +210,7 @@ export class FHIRMedicationUtils {
       intent: 'order',
       medication: {
         coding: [{
-          system: 'http://www.nlm.nih.gov/research/umls/rxnorm',
+          system: 'https://www.nlm.nih.gov/research/umls/rxnorm',
           code: data.medicationCode,
           display: data.medicationDisplay
         }]
@@ -250,7 +250,7 @@ export class FHIRMedicationUtils {
         medicationRequest.dispenseRequest.quantity = {
           value: data.quantity,
           unit: 'tablet',
-          system: 'http://unitsofmeasure.org',
+          system: 'https://unitsofmeasure.org',
           code: '{tbl}'
         };
       }
@@ -282,7 +282,7 @@ export class FHIRMedicationUtils {
       status: 'completed',
       medication: {
         coding: [{
-          system: 'http://www.nlm.nih.gov/research/umls/rxnorm',
+          system: 'https://www.nlm.nih.gov/research/umls/rxnorm',
           code: data.medicationCode,
           display: data.medicationDisplay
         }]
@@ -315,7 +315,7 @@ export class FHIRMedicationUtils {
       if (data.route) {
         administration.dosage.route = {
           coding: [{
-            system: 'http://snomed.info/sct',
+            system: 'https://snomed.info/sct',
             code: data.route,
             display: data.route
           }]
@@ -432,7 +432,7 @@ export class FHIRMedicationUtils {
       intent: 'order',
       medication: {
         coding: [{
-          system: 'http://www.nlm.nih.gov/research/umls/rxnorm',
+          system: 'https://www.nlm.nih.gov/research/umls/rxnorm',
           code: hmsPrescription.medicationCode || hmsPrescription.drugCode,
           display: hmsPrescription.medicationName || hmsPrescription.drugName
         }],
@@ -512,21 +512,21 @@ export class FHIRMedicationSafetyUtils {
       },
       code: {
         coding: [{
-          system: 'http://www.nlm.nih.gov/research/umls/rxnorm',
+          system: 'https://www.nlm.nih.gov/research/umls/rxnorm',
           code: data.allergenCode || data.allergen,
           display: data.allergen
         }]
       },
       clinicalStatus: {
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical',
+          system: 'https://terminology.hl7.org/CodeSystem/allergyintolerance-clinical',
           code: 'active',
           display: 'Active'
         }]
       },
       verificationStatus: {
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/allergyintolerance-verification',
+          system: 'https://terminology.hl7.org/CodeSystem/allergyintolerance-verification',
           code: 'confirmed',
           display: 'Confirmed'
         }]
@@ -536,7 +536,7 @@ export class FHIRMedicationSafetyUtils {
         reaction: [{
           manifestation: [{
             coding: [{
-              system: 'http://snomed.info/sct',
+              system: 'https://snomed.info/sct',
               display: data.reaction
             }]
           }],

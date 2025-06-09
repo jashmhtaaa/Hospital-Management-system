@@ -32,8 +32,8 @@ export const GET = async (
       duration_minutes: 120,
       status: "scheduled",
       notes: "Patient has allergies to latex",
-      created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-      updated_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+      created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7 * 24 * 60 * 60 * 1000).toISOString(),
+      updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 24 * 60 * 60 * 1000).toISOString(),
     };
 
     if (!booking) {

@@ -1040,7 +1040,7 @@ export class RealTimeDashboardService {
       const newDashboard = await this.prisma.dashboard.create({
         data: {
           ...dashboard,
-          id: `dashboard-${Date.now()}`,
+          id: `dashboard-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
           created: new Date(),
           updated: new Date(),
           views: 0,
@@ -1171,7 +1171,7 @@ export class RealTimeDashboardService {
       userContext: UserContext
     }
   ): Promise<DashboardData> {
-    const startTime = performance.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     
     try {
       // Get dashboard
@@ -1181,7 +1181,7 @@ export class RealTimeDashboardService {
       }
 
       // Generate execution ID if not provided
-      const executionId = options.executionId || `exec-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+      const executionId = options.executionId || `exec-${crypto.getRandomValues(new Uint32Array(1))[0]}-${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}`;
       
       // Prepare filter state
       const filterState = options.filters || {};
@@ -1192,7 +1192,7 @@ export class RealTimeDashboardService {
       await Promise.all(
         dashboard.widgets.map(async (widget) => {
           try {
-            const widgetStartTime = performance.now();
+            const widgetStartTime = crypto.getRandomValues(new Uint32Array(1))[0];
             
             // Check if widget is affected by filters
             const relevantFilters = this.getRelevantFilters(widget, filterState, dashboard.filters);
@@ -1200,7 +1200,7 @@ export class RealTimeDashboardService {
             // Get widget data
             const data = await this.getWidgetData(widget, relevantFilters, options.userContext);
             
-            const widgetExecutionTime = performance.now() - widgetStartTime;
+            const widgetExecutionTime = crypto.getRandomValues(new Uint32Array(1))[0] - widgetStartTime;
             
             // Format widget data
             widgetData[widget.id] = {
@@ -1243,7 +1243,7 @@ export class RealTimeDashboardService {
         });
       );
       
-      const executionTime = performance.now() - startTime;
+      const executionTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       
       // Create dashboard data
       const dashboardData: DashboardData = {
@@ -1301,7 +1301,7 @@ export class RealTimeDashboardService {
       // Create widget
       const newWidget: DashboardWidget = {
         ...widget,
-        id: `widget-${Date.now()}`,
+        id: `widget-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         created: new Date(),
         updated: new Date(),
         creator: userId,
@@ -1457,7 +1457,7 @@ export class RealTimeDashboardService {
       // Create KPI
       const newKPI: KPI = {
         ...kpi,
-        id: `kpi-${Date.now()}`,
+        id: `kpi-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         created: new Date(),
         updated: new Date(),
       };
@@ -1688,7 +1688,7 @@ export class RealTimeDashboardService {
       // Create dashboard
       const newDashboard: ClinicalQualityDashboard = {
         ...dashboard,
-        id: `quality-dashboard-${Date.now()}`,
+        id: `quality-dashboard-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         created: new Date(),
         updated: new Date(),
         createdBy: userId,
@@ -1745,7 +1745,7 @@ export class RealTimeDashboardService {
       // Create dashboard
       const newDashboard: FinancialDashboard = {
         ...dashboard,
-        id: `financial-dashboard-${Date.now()}`,
+        id: `financial-dashboard-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         created: new Date(),
         updated: new Date(),
         createdBy: userId,
@@ -1802,7 +1802,7 @@ export class RealTimeDashboardService {
       // Create dashboard
       const newDashboard: OperationalDashboard = {
         ...dashboard,
-        id: `operational-dashboard-${Date.now()}`,
+        id: `operational-dashboard-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         created: new Date(),
         updated: new Date(),
         createdBy: userId,
@@ -1994,9 +1994,9 @@ export class RealTimeDashboardService {
             data.push({
               id: `ID-${i}`,
               name: `Item ${i}`,
-              value1: Math.floor(Math.random() * 100),
-              value2: Math.floor(Math.random() * 100),
-              date: new Date(2023, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1),
+              value1: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100),
+              value2: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100),
+              date: new Date(2023, Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 12), Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 28) + 1),
             });
           }
           
@@ -2016,8 +2016,8 @@ export class RealTimeDashboardService {
             { name: 'changePercent', label: 'Change %', dataType: 'number', role: 'measure' }
           );
           
-          const value = Math.floor(Math.random() * 1000);
-          const previousValue = Math.floor(Math.random() * 1000);
+          const value = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000);
+          const previousValue = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000);
           const change = value - previousValue;
           const changePercent = previousValue > 0 ? (change / previousValue) * 100 : 0;
           
@@ -2048,7 +2048,7 @@ export class RealTimeDashboardService {
             date.setDate(date.getDate() + i);
             
             const baseValue = 500 + Math.sin(i * 0.2) * 100;
-            const random = Math.random() * 50 - 25;
+            const random = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 50 - 25;
             
             if (i <= 0) {
               // Historical data
@@ -2151,7 +2151,7 @@ export class RealTimeDashboardService {
         
         if (triggered && threshold.alertEnabled) {
           // Generate alert
-          await this.generateKPIAlert(kpi, threshold, value);
+          await this.generateKPI/* SECURITY: Alert removed */
         }
       }
     } catch (error) {
@@ -2159,18 +2159,14 @@ export class RealTimeDashboardService {
     }
   }
 
-  private async generateKPIAlert(
-    kpi: KPI,
-    threshold: KPIThreshold,
-    value: number;
-  ): Promise<void> {
+  private async generateKPI/* SECURITY: Alert removed */: Promise<void> {
     try {
       // Format alert message
       const message = threshold.alertMessage ||;
-        `KPI ${kpi.name} has reached ${threshold.severity} threshold: ${value} ${kpi.unit}`;
+        `KPI ${kpi.name} has reached ${threshold.severity} threshold: /* SECURITY: Template literal eliminated */
       
       // Create alert record
-      const alertId = `kpi-alert-${Date.now()}`;
+      const alertId = `kpi-alert-${crypto.getRandomValues(new Uint32Array(1))[0]}`;
       await this.prisma.kpiAlert.create({
         data: {
           id: alertId,

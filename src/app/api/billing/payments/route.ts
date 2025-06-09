@@ -183,7 +183,7 @@ export const POST = withErrorHandling(async (req: NextRequest) => {
   
   // Generate payment reference number if not provided
   const referenceNumber = data.referenceNumber ||;
-    `PAY-${new Date().getFullYear()}-${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}`;
+    `PAY-${new Date().getFullYear()}-${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000).toString().padStart(6, '0')}`;
   
   // Create payment in database
   const payment = await prisma.$transaction(async (prisma) => {

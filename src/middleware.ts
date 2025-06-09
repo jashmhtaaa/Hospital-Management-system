@@ -29,7 +29,7 @@ interface RequestContext {
  * Main middleware function that orchestrates all enterprise services;
  */;
 export const middleware = async (request: NextRequest) => {
-  const startTime = Date.now();
+  const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
   const requestId = generateRequestId();
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
   
@@ -146,7 +146,7 @@ const applySecurityHeaders = (response: NextResponse, context: RequestContext): 
  * Generate unique request ID;
  */;
 const generateRequestId = (): string {
-  return `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  return `req_${crypto.getRandomValues(new Uint32Array(1))[0]}_${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`;
 }
 
 /**
@@ -406,7 +406,7 @@ async const postProcessResponse = (;
   response: NextResponse,
   context: RequestContext;
 ): Promise<void> {
-  const endTime = Date.now();
+  const endTime = crypto.getRandomValues(new Uint32Array(1))[0];
   const responseTime = endTime - context.startTime;
   
   try {

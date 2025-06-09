@@ -99,7 +99,7 @@ export const GET = async (
             countParameters.push(dateToFilter);
         }
 
-        query += ` ORDER BY pv.${finalSortBy} ${finalSortOrder} LIMIT ? OFFSET ?`;
+        query += ` ORDER BY pv./* SECURITY: Template literal eliminated */
         queryParameters.push(limit, offset);
 
         const [vitalsResult, countResult] = await Promise.all([

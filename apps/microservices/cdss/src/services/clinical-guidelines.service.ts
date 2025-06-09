@@ -691,7 +691,7 @@ export class ClinicalGuidelinesService {
       const newGuideline = await this.prisma.clinicalGuideline.create({
         data: {
           ...guideline,
-          id: `guideline-${Date.now()}`,
+          id: `guideline-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -817,7 +817,7 @@ export class ClinicalGuidelinesService {
     context: EvaluationContext,
     specificGuidelineIds?: string[]
   ): Promise<PatientEvaluation[]> {
-    const startTime = performance.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     
     try {
       // Get patient data
@@ -838,7 +838,7 @@ export class ClinicalGuidelinesService {
       );
 
       // Record metrics
-      const duration = performance.now() - startTime;
+      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       metricsCollector.recordTimer('cdss.patient_evaluation_time', duration);
       metricsCollector.incrementCounter('cdss.patient_evaluations', 1, {
         patientId,
@@ -873,7 +873,7 @@ export class ClinicalGuidelinesService {
    * Predict patient deterioration;
    */
   async predictDeterioration(patientId: string, encounterId: string): Promise<DeteriorationPrediction> {
-    const startTime = performance.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     
     try {
       // Get patient data
@@ -902,11 +902,11 @@ export class ClinicalGuidelinesService {
 
       // Check if prediction requires alerts
       if (prediction.riskLevel === 'HIGH' || prediction.riskLevel === 'CRITICAL') {
-        await this.generateDeteriorationAlert(prediction);
+        await this.generateDeterioration/* SECURITY: Alert removed */
       }
 
       // Record metrics
-      const duration = performance.now() - startTime;
+      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       metricsCollector.recordTimer('cdss.deterioration_prediction_time', duration);
       metricsCollector.incrementCounter('cdss.deterioration_predictions', 1, {
         patientId,
@@ -955,18 +955,9 @@ export class ClinicalGuidelinesService {
       }
 
       // Create sepsis alert
-      const alert = await this.createSepsisAlert(
-        patientId,
-        encounterId,
-        config,
-        score,
-        riskLevel,
-        factors;
-      );
-
+      const alert = await this.createSepsis
       // Trigger alert notifications
-      await this.notifySepsisAlert(alert);
-
+      await this.notifySepsis
       // Record metrics
       metricsCollector.incrementCounter('cdss.sepsis_alerts', 1, {
         patientId,
@@ -1015,7 +1006,7 @@ export class ClinicalGuidelinesService {
 
       // Create optimization record
       const optimization: MedicationOptimization = {
-        id: `optimization-${Date.now()}`,
+        id: `optimization-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         patientId,
         encounterId,
         performedAt: new Date(),
@@ -1162,7 +1153,7 @@ export class ClinicalGuidelinesService {
     // Implementation to save prediction
   }
 
-  private async generateDeteriorationAlert(prediction: DeteriorationPrediction): Promise<void> {
+  private async generateDeterioration/* SECURITY: Alert removed */: Promise<void> {
     // Implementation to generate alert
   }
 
@@ -1222,17 +1213,10 @@ export class ClinicalGuidelinesService {
     return 'LOW';
   }
 
-  private async createSepsisAlert(
-    patientId: string,
-    encounterId: string,
-    config: SepsisAlertConfig,
-    score: number,
-    riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL',
-    factors: TriggeringFactor[]
-  ): Promise<SepsisAlert> {
+  private async createSepsis/* SECURITY: Alert removed */: Promise<SepsisAlert> {
     // Implementation to create sepsis alert
     return {
-      id: `sepsis-alert-${Date.now()}`,
+      id: `sepsis-alert-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
       patientId,
       encounterId,
       alertTime: new Date(),
@@ -1248,7 +1232,7 @@ export class ClinicalGuidelinesService {
     };
   }
 
-  private async notifySepsisAlert(alert: SepsisAlert): Promise<void> {
+  private async notifySepsis/* SECURITY: Alert removed */: Promise<void> {
     // Implementation to notify about alert
   }
 

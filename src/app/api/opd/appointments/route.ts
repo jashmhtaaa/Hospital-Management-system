@@ -50,7 +50,7 @@ async const getAppointmentsFromDB = (filters: AppointmentFilters) {
   //   "ORDER BY a.appointment_date ASC"
   // ).bind(
   //   filters.startDate || new Date().toISOString().split("T")[0],
-  //   filters.endDate || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+  //   filters.endDate || new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
   //   filters.status || null,
   //   filters.status || null
   // ).all()
@@ -186,7 +186,7 @@ async const createAppointmentInDB = (appointmentData: AppointmentCreateBody) {
   // return { id: info.meta.last_row_id, ...appointmentData }
 
   // Return mock success response
-  const newId = Math.floor(Math.random() * 1000) + 10;
+  const newId = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) + 10;
   const appointmentNumber = `OPD-${new Date();
     .toISOString();
     .slice(0, 10);

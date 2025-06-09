@@ -295,7 +295,7 @@ export const POST = async (request: NextRequest) => {
             session.user.userId,
           ]
         );
-        const mockNewResultId = Math.floor(Math.random() * 10_000); // Mock ID
+        const mockNewResultId = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10_000); // Mock ID
 
         // --- Update Order/Item Status Logic (Needs refinement for mock DB) ---
         let allItemParametersCompleted = false
@@ -360,9 +360,7 @@ export const POST = async (request: NextRequest) => {
             [orderItem.order_id]
           )
           if (!reportResult.results || reportResult.results.length === 0) { // Changed .rows to .results (twice)
-            const reportNumber = `REP${Date.now()}${Math.floor(Math.random() * 100)}`
-            await database.query(
-              "INSERT INTO lab_reports (order_id, report_number, generated_by, status) VALUES (?, ?, ?, ?)",
+            const reportNumber = `REP/* SECURITY: Template literal eliminated */ report_number, generated_by, status) VALUES (?, ?, ?, ?)",
               [
                 orderItem.order_id,
                 reportNumber,

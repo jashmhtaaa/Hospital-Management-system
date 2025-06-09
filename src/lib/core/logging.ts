@@ -7,10 +7,10 @@
 
 // Logger interface
 export interface Logger {
-  debug(message: string, context?: Record<string, any>): void;
-  info(message: string, context?: Record<string, any>): void;
-  warn(message: string, context?: Record<string, any>): void;
-  error(message: string, context?: Record<string, any>): void;
+  debug(message: string, context?: Record<string, unknown>): void;
+  info(message: string, context?: Record<string, unknown>): void;
+  warn(message: string, context?: Record<string, unknown>): void;
+  error(message: string, context?: Record<string, unknown>): void;
 }
 
 // Sensitive fields that should be masked in logs
@@ -40,7 +40,7 @@ const maskSensitiveData = (data: unknown): unknown {
       return data.map(item => maskSensitiveData(item));
     }
     
-    const maskedData: Record<string, any> = {};
+    const maskedData: Record<string, unknown> = {};
     
     for (const [key, value] of Object.entries(data)) {
       if (SENSITIVE_FIELDS.some(field => key.toLowerCase().includes(field.toLowerCase()))) {
@@ -76,7 +76,7 @@ class DefaultLogger implements Logger {
     return levels[level] >= levels[this.logLevel];
   }
   
-  private formatLog(level: string, message: string, context?: Record<string, any>): string {
+  private formatLog(level: string, message: string, context?: Record<string, unknown>): string {
     const timestamp = new Date().toISOString();
     const maskedContext = context ? maskSensitiveData(context) : undefined;
     
@@ -88,25 +88,25 @@ class DefaultLogger implements Logger {
     });
   }
   
-  debug(message: string, context?: Record<string, any>): void {
+  debug(message: string, context?: Record<string, unknown>): void {
     if (this.shouldLog('debug')) {
       // Debug logging removed)
     }
   }
   
-  info(message: string, context?: Record<string, any>): void {
+  info(message: string, context?: Record<string, unknown>): void {
     if (this.shouldLog('info')) {
       // Debug logging removed)
     }
   }
   
-  warn(message: string, context?: Record<string, any>): void {
+  warn(message: string, context?: Record<string, unknown>): void {
     if (this.shouldLog('warn')) {
       // Debug logging removed)
     }
   }
   
-  error(message: string, context?: Record<string, any>): void {
+  error(message: string, context?: Record<string, unknown>): void {
     if (this.shouldLog('error')) {
       // Debug logging removed)
     }
@@ -139,23 +139,23 @@ export const clearCorrelationId = (): void {
 export class CorrelatedLogger implements Logger {
   constructor(private baseLogger: Logger) {}
   
-  debug(message: string, context?: Record<string, any>): void {
+  debug(message: string, context?: Record<string, unknown>): void {
     this.baseLogger.debug(message, this.addCorrelationId(context));
   }
   
-  info(message: string, context?: Record<string, any>): void {
+  info(message: string, context?: Record<string, unknown>): void {
     this.baseLogger.info(message, this.addCorrelationId(context));
   }
   
-  warn(message: string, context?: Record<string, any>): void {
+  warn(message: string, context?: Record<string, unknown>): void {
     this.baseLogger.warn(message, this.addCorrelationId(context));
   }
   
-  error(message: string, context?: Record<string, any>): void {
+  error(message: string, context?: Record<string, unknown>): void {
     this.baseLogger.error(message, this.addCorrelationId(context));
   }
   
-  private addCorrelationId(context?: Record<string, any>): Record<string, any> {
+  private addCorrelationId(context?: Record<string, unknown>): Record<string, unknown> {
     const correlationId = getCorrelationId();
     if (!correlationId) return context || {};
     

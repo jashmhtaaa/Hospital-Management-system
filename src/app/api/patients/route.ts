@@ -85,7 +85,7 @@ export const GET = async (request: NextRequest) => {
             countParameters.push(likeTerm, likeTerm, likeTerm, likeTerm, likeTerm);
         }
 
-        query += ` ORDER BY ${finalSortBy} ${finalSortOrder} LIMIT ? OFFSET ?`;
+        query += ` ORDER BY /* SECURITY: Template literal eliminated */
         queryParameters.push(limit, offset);
 
         // Execute queries

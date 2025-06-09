@@ -11,7 +11,7 @@
  * Database connection interface;
  */
 export interface DBConnection {
-  query: (sql: string, params?: unknown[]) => Promise<any>;
+  query: (sql: string, params?: unknown[]) => Promise<unknown>;
   close: () => Promise<void>
 }
 

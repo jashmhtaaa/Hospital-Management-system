@@ -114,7 +114,7 @@ export default async const handler = (req: NextApiRequest, res: NextApiResponse)
             await new Promise(resolve => setTimeout(resolve, 1000));
 
             // Assume payment is successful and a transaction ID is generated
-            const transactionId = `txn_${Date.now()}`;
+            const transactionId = `txn_${crypto.getRandomValues(new Uint32Array(1))[0]}`;
             
             // Here, you would typically update your database to reflect the payment
             // For example, mark the invoice as paid, record the transaction, etc.

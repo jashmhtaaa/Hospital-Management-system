@@ -32,7 +32,7 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json({ session });
   } catch (error) {
-    console.error('Telemedicine session creation error:', error);
+    /* SECURITY: Console statement removed */
     return NextResponse.json({ error: 'Session creation failed' }, { status: 500 });
   }
 };
@@ -87,7 +87,7 @@ export const GET = async (request: NextRequest, { params }: { params: { sessionI
 
     return NextResponse.json({ session });
   } catch (error) {
-    console.error('Telemedicine session fetch error:', error);
+    /* SECURITY: Console statement removed */
     return NextResponse.json({ error: 'Failed to fetch session' }, { status: 500 });
   }
 };
@@ -127,7 +127,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { sessionI
 
     return NextResponse.json({ session });
   } catch (error) {
-    console.error('Telemedicine session start error:', error);
+    /* SECURITY: Console statement removed */
     return NextResponse.json({ error: 'Failed to start session' }, { status: 500 });
   }
 };
@@ -137,7 +137,7 @@ async function generateSessionToken(): Promise<string> {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
   for (let i = 0; i < 32; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
+    result += characters.charAt(Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * characters.length));
   }
   return result;
 }
@@ -145,5 +145,5 @@ async function generateSessionToken(): Promise<string> {
 async function sendTelemedicineNotifications(session: any) {
   // Send email/SMS notifications to patient and doctor
   // This would integrate with your notification service
-  console.log('Sending telemedicine notifications for session:', session.id);
+  /* SECURITY: Console statement removed */
 }

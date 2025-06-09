@@ -25,7 +25,7 @@ export class HMSIntegrationService {
     patientId: string,
     userId: string,
     userRoles: string[]
-  ): Promise<any> {
+  ): Promise<unknown> {
     // Enforce RBAC
     RBACService.enforcePermission(
       userRoles,
@@ -103,7 +103,7 @@ export class HMSIntegrationService {
     locationId: string,
     userId: string,
     userRoles: string[]
-  ): Promise<any> {
+  ): Promise<unknown> {
     // Enforce RBAC
     RBACService.enforcePermission(
       userRoles,
@@ -179,10 +179,10 @@ export class HMSIntegrationService {
     notificationType: 'EMAIL' | 'SMS' | 'PUSH' | 'IN_APP',
     title: string,
     message: string,
-    metadata: Record<string, any>,
+    metadata: Record<string, unknown>,
     userId: string,
     userRoles: string[]
-  ): Promise<any> {
+  ): Promise<unknown> {
     // Enforce RBAC
     RBACService.enforcePermission(
       userRoles,
@@ -255,7 +255,7 @@ export class HMSIntegrationService {
     targetUserId: string,
     userId: string,
     userRoles: string[]
-  ): Promise<any> {
+  ): Promise<unknown> {
     // Enforce RBAC
     RBACService.enforcePermission(
       userRoles,
@@ -334,10 +334,10 @@ export class HMSIntegrationService {
    */
   public static async submitReportData(
     reportType: string,
-    reportData: Record<string, any>,
+    reportData: Record<string, unknown>,
     userId: string,
     userRoles: string[]
-  ): Promise<any> {
+  ): Promise<unknown> {
     // Enforce RBAC
     RBACService.enforcePermission(
       userRoles,
@@ -405,7 +405,7 @@ export class HMSIntegrationService {
     patientId: string,
     userId: string,
     userRoles: string[]
-  ): Promise<any> {
+  ): Promise<unknown> {
     // Map service type to resource
     const resourceMap = {
       'HOUSEKEEPING': Resource.HOUSEKEEPING,
@@ -495,7 +495,7 @@ export class HMSIntegrationService {
     locationId: string,
     userId: string,
     userRoles: string[]
-  ): Promise<any> {
+  ): Promise<unknown> {
     // Map service type to resource
     const resourceMap = {
       'HOUSEKEEPING': Resource.HOUSEKEEPING,

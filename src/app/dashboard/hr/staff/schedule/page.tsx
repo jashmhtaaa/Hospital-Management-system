@@ -127,7 +127,7 @@ export default const StaffScheduling = () {
       employees.forEach(employee => {
         const employeeSchedule = {
           employeeId: employee.id,
-          employeeName: `${employee.firstName} ${employee.lastName}`,
+          employeeName: `/* SECURITY: Template literal eliminated */
           department: employee.department?.name || 'Unassigned',
           position: employee.positions?.length > 0 
             ? (employee.positions.find(p => p.isPrimary)?.position.title || employee.positions[0].position.title);
@@ -138,7 +138,7 @@ export default const StaffScheduling = () {
         days.forEach(day => {
           // Randomly assign shifts, with higher probability for "Off" on weekends
           const isWeekend = day === 'Saturday' || day === 'Sunday';
-          const shiftIndex = Math.floor(Math.random() * (isWeekend ? 10 : shifts.length));
+          const shiftIndex = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * (isWeekend ? 10 : shifts.length));
           employeeSchedule.schedule[day] = shiftIndex >= shifts.length ? 'Off' : shifts[shiftIndex];
         });
         

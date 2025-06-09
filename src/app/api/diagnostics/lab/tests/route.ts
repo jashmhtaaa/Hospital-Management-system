@@ -227,14 +227,14 @@ export const GET = async (request: NextRequest) => {
           status: "registered",
           category: {
             coding: [{
-              system: "http://terminology.hl7.org/CodeSystem/v2-0074",
+              system: "https://terminology.hl7.org/CodeSystem/v2-0074",
               code: "LAB",
               display: "Laboratory"
             }]
           },
           code: {
             coding: [{
-              system: "http://loinc.org",
+              system: "https://loinc.org",
               code: test.loinc_code || "unknown",
               display: test.loinc_display || test.name
             }],
@@ -248,7 +248,7 @@ export const GET = async (request: NextRequest) => {
         // Add security tag for sensitive tests if needed
         if (test.is_sensitive) {
           resource.meta.security = [{
-            system: "http://terminology.hl7.org/CodeSystem/v3-Confidentiality",
+            system: "https://terminology.hl7.org/CodeSystem/v3-Confidentiality",
             code: "R",
             display: "Restricted"
           }]

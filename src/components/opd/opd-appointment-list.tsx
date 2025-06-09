@@ -180,7 +180,7 @@ export default const OPDAppointmentList = ({
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      alert(`Error: ${messageText}`); // Placeholder alert
+      /* SECURITY: Console statement removed */ // Placeholder alert
     }
   };
 
@@ -218,7 +218,7 @@ export default const OPDAppointmentList = ({
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      alert(`Error: ${messageText}`); // Placeholder alert
+      /* SECURITY: Console statement removed */ // Placeholder alert
     }
   };
 

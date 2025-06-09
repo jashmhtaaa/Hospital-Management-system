@@ -263,7 +263,7 @@ export class PatientManagementService {
         action: 'Create',
         resourceType: 'Patient',
         resourceId: patient.id,
-        description: `Created patient record for ${patient.firstName} ${patient.lastName}`,
+        description: `Created patient record for /* SECURITY: Template literal eliminated */
         performedBy: userId,
         performerRole: await this.authService.getUserRole(userId)
       });
@@ -278,7 +278,7 @@ export class PatientManagementService {
   /**
    * Get patient by ID;
    */
-  async getPatientById(patientId: string, userId: string): Promise<any> {
+  async getPatientById(patientId: string, userId: string): Promise<unknown> {
     try {
       // Check if user has permission to view this patient
       const hasPermission = await this.authService.hasPermission(userId, 'view', 'patient', patientId);
@@ -326,7 +326,7 @@ export class PatientManagementService {
         action: 'View',
         resourceType: 'Patient',
         resourceId: patientId,
-        description: `Viewed patient record for ${patient.firstName} ${patient.lastName}`,
+        description: `Viewed patient record for /* SECURITY: Template literal eliminated */
         performedBy: userId,
         performerRole: await this.authService.getUserRole(userId)
       });
@@ -391,7 +391,7 @@ export class PatientManagementService {
         action: 'Update',
         resourceType: 'Patient',
         resourceId: patientId,
-        description: `Updated patient record for ${patient.firstName} ${patient.lastName}`,
+        description: `Updated patient record for /* SECURITY: Template literal eliminated */
         performedBy: userId,
         performerRole: await this.authService.getUserRole(userId)
       });
@@ -649,7 +649,7 @@ export class PatientManagementService {
   /**
    * Search patients;
    */
-  async searchPatients(searchParams: unknown, userId: string): Promise<any> {
+  async searchPatients(searchParams: unknown, userId: string): Promise<unknown> {
     try {
       // Check if user has permission to search patients
       const hasPermission = await this.authService.hasPermission(userId, 'search', 'patient');
@@ -1057,7 +1057,7 @@ export class PatientManagementService {
    * Get patient MPI (Master Patient Index) summary;
    * This is a comprehensive patient summary for interoperability;
    */
-  async getPatientMPI(patientId: string, userId: string): Promise<any> {
+  async getPatientMPI(patientId: string, userId: string): Promise<unknown> {
     try {
       // Check if user has permission
       const hasPermission = await this.authService.hasPermission(userId, 'view', 'patient', patientId);

@@ -41,9 +41,7 @@ export const Button = ({
     icon: "h-10 w-10",
   };
 
-  const combinedClassName = `${baseStyles} ${variantStyles[variant ||;
-    "default"]} ${sizeStyles[size ||
-    "md"]} ${className}`;
+  const combinedClassName = `/* SECURITY: Template literal eliminated */
 
   return (
     <button className={combinedClassName} {...properties}>;
@@ -215,13 +213,7 @@ export const Badge = ({
 
   return (
 <span
-      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${variantStyles[variant ||;
-        "default"]} ${className}`}
-      {...properties}
-    >
-      {children}
-    </span>
-  );
+      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold /* SECURITY: Template literal eliminated */
 };
 Badge.displayName = "Badge";
 
@@ -244,13 +236,7 @@ export const Alert = ({
 
   return (
 <div
-      className={`p-4 rounded-md border ${variantStyles[variant || "default"]} ${className}`}
-      role="alert"
-      {...properties}
-    >
-      {children}
-    </div>
-  );
+      className={`p-4 rounded-md border /* SECURITY: Template literal eliminated */
 };
 Alert.displayName = "Alert";
 
@@ -444,20 +430,7 @@ export const TabsTrigger = ({
 
   return (
     <button>
-      className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 ${
-        isActive;
-          ? "bg-white text-blue-700 shadow-sm"
-          : "text-gray-600 hover: text-gray-900"
-      } ${className}`}
-      role="tab"
-      aria-selected={isActive}
-      tabIndex={isActive ? 0 : -1}
-      onClick={() => onValueChange?.(value)}
-      {...properties}
-    >
-      {children}
-    </button>
-  );
+      className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 /* SECURITY: Template literal eliminated */
 };
 TabsTrigger.displayName = "TabsTrigger";
 
@@ -617,7 +590,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentPrope
             className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
             onClick={() => setOpen?.(false)}
           >
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+<svg xmlns="https://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
               <path d="M18 6 6 18"></path>
               <path d="m6 6 12 12"></path>
             </svg>

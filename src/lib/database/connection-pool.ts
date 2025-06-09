@@ -244,7 +244,7 @@ class DatabasePool {
 
   // Batch operations for better performance
   public async executeBatch<T>(
-    operations: Array<(client: PrismaClient) => Promise<any>>;
+    operations: Array<(client: PrismaClient) => Promise<unknown>>;
   ): Promise<T[]> {
     return this.prismaClient.$transaction(async (tx) => {
       const results = await Promise.all(
@@ -270,7 +270,7 @@ export async function withTransaction<T>(
 ): Promise<T> {
   return dbPool.executeOptimizedQuery(fn, true);
 export async function withBatch<T>(
-  operations: Array<(client: PrismaClient) => Promise<any>>;
+  operations: Array<(client: PrismaClient) => Promise<unknown>>;
 ): Promise<T[]> {
   return dbPool.executeBatch(operations);
 }

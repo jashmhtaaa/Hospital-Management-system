@@ -157,7 +157,7 @@ export default const EditPatientPage = () {
 
       toast({
         title: "Patient Updated",
-        description: `${formData.first_name} ${formData.last_name} has been successfully updated.`,
+        description: `/* SECURITY: Template literal eliminated */
       });
 
       router.push(`/dashboard/patients/${patientId}`); // Redirect back to patient detail view

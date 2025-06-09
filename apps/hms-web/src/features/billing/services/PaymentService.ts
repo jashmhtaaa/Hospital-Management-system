@@ -50,7 +50,7 @@ export class PaymentService {
         // Mocking gateway response
         const mockGatewayResponse: PaymentGatewayResponse = {
             success: true,
-            transactionId: `txn_${Date.now()}`,
+            transactionId: `txn_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
             message: 'Payment processed successfully by mock gateway.',
             amountProcessed: paymentInput.amount,
         };
@@ -61,7 +61,7 @@ export class PaymentService {
 
         // 4. Record the Payment in the Database
         const newPayment: Payment = {
-            id: `pay_${Date.now()}`,
+            id: `pay_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
             invoiceId: mockInvoice.id,
             patientId: mockInvoice.patientId,
             paymentDate: new Date(),
@@ -117,7 +117,7 @@ export class PaymentService {
                 patientId: 'pat_001',
                 patientName: 'Jane Doe',
                 invoiceDate: new Date(),
-                dueDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
+                dueDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 15 * 24 * 60 * 60 * 1000),
                 lineItems: [{ chargeId: 'chg_001', serviceName: 'MRI Scan', quantity: 1, unitPrice: 500, totalPrice: 500 }],
                 subtotal: 500,
                 discountAmount: 0,
@@ -138,7 +138,7 @@ export class PaymentService {
     //     // Simulate a successful response
     //     return {
     //         success: true,
-    //         transactionId: `gw_txn_${Date.now()}`,
+    //         transactionId: `gw_txn_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
     //         message: 'Gateway processed successfully.',
     //         amountProcessed: amount
     //     }

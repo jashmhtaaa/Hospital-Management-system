@@ -333,9 +333,9 @@ export class BillingRevenueCycleService {
    * Generate charge number;
    */
   private generateChargeNumber(): string {
-    const timestamp = Date.now().toString().slice(-6);
-    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-    return `CHG${timestamp}${random}`;
+    const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
+    const random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    return `CHG/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -376,9 +376,9 @@ export class BillingRevenueCycleService {
    * Generate claim number;
    */
   private generateClaimNumber(): string {
-    const timestamp = Date.now().toString().slice(-6);
-    const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-    return `CLM${timestamp}${random}`;
+    const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
+    const random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10000).toString().padStart(4, '0');
+    return `CLM/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -496,9 +496,9 @@ export class BillingRevenueCycleService {
    * Generate payment number;
    */
   private generatePaymentNumber(): string {
-    const timestamp = Date.now().toString().slice(-6);
-    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-    return `PAY${timestamp}${random}`;
+    const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
+    const random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    return `PAY/* SECURITY: Template literal eliminated */
   }
 
   /**

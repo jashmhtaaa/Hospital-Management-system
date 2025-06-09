@@ -217,9 +217,9 @@ export const POST = async (request: NextRequest) => {
         }
       }
 
-      const timestamp = Date.now();
-      const random = Math.floor(Math.random() * 1000);
-      const barcode = body.barcode || `LAB${timestamp}${random}`;
+      const timestamp = crypto.getRandomValues(new Uint32Array(1))[0];
+      const random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000);
+      const barcode = body.barcode || `LAB/* SECURITY: Template literal eliminated */
 
       // Fixed: Use db.query for insert (mock DB doesn't return last_row_id)
       await database.query(

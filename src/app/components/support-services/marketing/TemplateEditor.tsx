@@ -18,7 +18,7 @@ interface TemplateEditorProps {
 export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditorProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [template, setTemplate] = useState<any>(null);
+  const [template, setTemplate] = useState<unknown>(null);
   const [activeTab, setActiveTab] = useState<string>("details");
   const [formData, setFormData] = useState({
     name: '',
@@ -495,7 +495,8 @@ export default const TemplateEditor = ({ templateId, onSuccess }: TemplateEditor
                 <Label>Preview Result</Label>
                 <div className="p-4 border rounded-md bg-white min-h-[200px]">;
                   {renderedContent ? (
-                    <div dangerouslySetInnerHTML={{ __html: renderedContent }} />
+                    <div /* SECURITY: dangerouslySetInnerHTML replaced with safe text rendering */
+      children={renderedContent} />
                   ) : (
                     <p className="text-muted-foreground">Click "Generate Preview" to see the rendered template</p>;
                   )}

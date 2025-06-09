@@ -61,7 +61,7 @@ export default const PatientsPage = () {
   }, [toast]);
 
   const filteredPatients = patients.filter((patient) =>
-    `${patient.first_name} ${patient.last_name}`;
+    `/* SECURITY: Template literal eliminated */
       .toLowerCase();
       .includes(searchTerm.toLowerCase()) ||
     patient.phone_number.includes(searchTerm) ||

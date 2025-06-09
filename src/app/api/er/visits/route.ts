@@ -29,7 +29,7 @@ const mockVisits: ERVisit[] = [
     patient_id: 101,
     patient_name: "John Doe", // Denormalized for easier display
     mrn: "MRN001", // Denormalized
-    arrival_timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(), // 3 hours ago
+    arrival_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 60 * 60 * 1000).toISOString(), // 3 hours ago
     chief_complaint: "Chest pain",
     mode_of_arrival: "Ambulance",
     triage_level: 2, // ESI level (if available early)
@@ -39,15 +39,15 @@ const mockVisits: ERVisit[] = [
     assigned_nurse_id: undefined,
     disposition: undefined,
     discharge_timestamp: undefined,
-    created_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
+    created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 60 * 60 * 1000).toISOString(),
   },
   {
     id: 2,
     patient_id: 102,
     patient_name: "Jane Smith",
     mrn: "MRN002",
-    arrival_timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(), // 1 hour ago
+    arrival_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 1 * 60 * 60 * 1000).toISOString(), // 1 hour ago
     chief_complaint: "Shortness of breath",
     mode_of_arrival: "Walk-in",
     triage_level: 3,
@@ -57,8 +57,8 @@ const mockVisits: ERVisit[] = [
     assigned_nurse_id: 301, // Example nurse ID
     disposition: undefined,
     discharge_timestamp: undefined,
-    created_at: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(), // Updated 30 mins ago
+    created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 1 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 60 * 1000).toISOString(), // Updated 30 mins ago
   },
 ];
 let nextVisitId = 3;

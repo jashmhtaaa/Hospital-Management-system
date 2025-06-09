@@ -589,7 +589,7 @@ export class AuthService {
           ipAddress: context.ipAddress,
           userAgent: context.userAgent,
           refreshToken: encrypt(refreshToken),
-          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+          expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 7 * 24 * 60 * 60 * 1000), // 7 days
           isActive: true,
           mfaVerified;
         }
@@ -599,7 +599,7 @@ export class AuthService {
     return {
       accessToken,
       refreshToken,
-      expiresAt: Date.now() + 15 * 60 * 1000, // 15 minutes
+      expiresAt: crypto.getRandomValues(new Uint32Array(1))[0] + 15 * 60 * 1000, // 15 minutes
       tokenType: 'Bearer'
     };
   }
@@ -664,7 +664,7 @@ export class AuthService {
         userId,
         ipAddress: context.ipAddress,
         userAgent: context.userAgent,
-        expiresAt: new Date(Date.now() + 5 * 60 * 1000), // 5 minutes
+        expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 5 * 60 * 1000), // 5 minutes
         isActive: true
       }
     });

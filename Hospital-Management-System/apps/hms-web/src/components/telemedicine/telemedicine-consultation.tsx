@@ -73,7 +73,7 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
       const data = await response.json();
       setSession(data.session);
     } catch (error) {
-      console.error('Error fetching session:', error);
+      /* SECURITY: Console statement removed */
     }
   };
 
@@ -115,12 +115,12 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
       peerConnection.onicecandidate = (event) => {
         if (event.candidate) {
           // Send candidate to remote peer via signaling server
-          console.log('ICE candidate:', event.candidate);
+          /* SECURITY: Console statement removed */
         }
       };
 
     } catch (error) {
-      console.error('Error initializing WebRTC:', error);
+      /* SECURITY: Console statement removed */
     }
   };
 
@@ -188,7 +188,7 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
         }
       };
     } catch (error) {
-      console.error('Error starting screen share:', error);
+      /* SECURITY: Console statement removed */
     }
   };
 
@@ -206,14 +206,14 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
       cleanupWebRTC();
       // Navigate away or show end session UI
     } catch (error) {
-      console.error('Error ending session:', error);
+      /* SECURITY: Console statement removed */
     }
   };
 
   const sendMessage = () => {
     if (newMessage.trim()) {
       const message = {
-        id: Date.now().toString(),
+        id: crypto.getRandomValues(new Uint32Array(1))[0].toString(),
         text: newMessage,
         sender: 'doctor', // or 'patient' based on user role
         timestamp: new Date().toISOString()

@@ -77,7 +77,7 @@ export const DietaryDashboard = () => {
   const [requests, setRequests] = useState<any[]>([]);
   const [mealPlans, setMealPlans] = useState<any[]>([]);
   const [nutritionalProfiles, setNutritionalProfiles] = useState<any[]>([]);
-  const [analytics, setAnalytics] = useState<any>(null);
+  const [analytics, setAnalytics] = useState<unknown>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -88,8 +88,8 @@ export const DietaryDashboard = () => {
     startDate: null as Date | null,
     endDate: null as Date | null,
   });
-  const [selectedRequest, setSelectedRequest] = useState<any>(null);
-  const [selectedMealPlan, setSelectedMealPlan] = useState<any>(null);
+  const [selectedRequest, setSelectedRequest] = useState<unknown>(null);
+  const [selectedMealPlan, setSelectedMealPlan] = useState<unknown>(null);
   const [showMealPlanDialog, setShowMealPlanDialog] = useState(false);
   const [showRequestDialog, setShowRequestDialog] = useState(false);
   

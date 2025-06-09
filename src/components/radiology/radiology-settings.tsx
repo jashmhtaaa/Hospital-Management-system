@@ -135,7 +135,7 @@ export default const RadiologySettings = () {
     } catch (err) { // Changed error to err
       const message = err instanceof Error ? err.message : "Unknown error"; // Use err
       // Debug logging removed // Use err
-      alert(`Error: ${message}`); // Replace alert with a better notification system (e.g., toast)
+      /* SECURITY: Console statement removed */ // Replace alert with a better notification system (e.g., toast)
     }
   };
 
@@ -168,7 +168,7 @@ export default const RadiologySettings = () {
     } catch (err) { // Changed error to err
       const message = err instanceof Error ? err.message : "Unknown error"; // Use err
       // Debug logging removed // Use err
-      alert(`Error: ${message}`); // Replace alert with a better notification system
+      /* SECURITY: Console statement removed */ // Replace alert with a better notification system
     }
   };
 

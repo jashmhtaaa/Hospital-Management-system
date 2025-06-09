@@ -304,7 +304,7 @@ export class BarcodeMedicationAdministrationService {
   async generateAdministrationSchedule(
     patientId: string,
     days: number = 1;
-  ): Promise<any> {
+  ): Promise<unknown> {
     const prescriptions = await this.prescriptionRepository.findByPatientId(patientId);
     const activePrescriptions = prescriptions.filter(p => p.isActive());
     

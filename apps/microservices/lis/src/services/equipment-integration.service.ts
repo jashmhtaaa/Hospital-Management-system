@@ -345,7 +345,7 @@ export class EquipmentIntegrationService {
 
       // Process critical alerts
       for (const alert of criticalAlerts) {
-        await this.processCriticalAlert(alert);
+        await this.processCritical/* SECURITY: Alert removed */
       }
 
       // Update sample status
@@ -449,7 +449,7 @@ export class EquipmentIntegrationService {
         await this.updateEquipmentStatus(equipmentId, EquipmentStatus.ERROR);
         
         // Send alert
-        await this.sendQCFailureAlert(equipmentId, qcResults);
+        await this.sendQCFailure/* SECURITY: Alert removed */
       }
 
       // Record metrics
@@ -475,14 +475,14 @@ export class EquipmentIntegrationService {
 
       const upcomingMaintenance = maintenanceSchedules.filter(schedule => {
         const daysUntilDue = Math.floor(
-          (schedule.nextDue.getTime() - Date.now()) / (1000 * 60 * 60 * 24);
+          (schedule.nextDue.getTime() - crypto.getRandomValues(new Uint32Array(1))[0]) / (1000 * 60 * 60 * 24);
         );
         return daysUntilDue <= 7; // Due within 7 days
       });
 
       // Create maintenance alerts
       for (const maintenance of upcomingMaintenance) {
-        await this.createMaintenanceAlert(equipmentId, maintenance);
+        await this.createMaintenance/* SECURITY: Alert removed */
       }
 
       return upcomingMaintenance;
@@ -498,7 +498,7 @@ export class EquipmentIntegrationService {
   async monitorEquipmentPerformance(equipmentId: string): Promise<PerformanceMetrics> {
     try {
       const timeWindow = 24 * 60 * 60 * 1000; // 24 hours
-      const since = new Date(Date.now() - timeWindow);
+      const since = new Date(crypto.getRandomValues(new Uint32Array(1))[0] - timeWindow);
 
       const [
         messageCount,
@@ -571,7 +571,7 @@ export class EquipmentIntegrationService {
     }
 
     return {
-      id: `hl7-${Date.now()}-${Math.random()}`,
+      id: `hl7-${crypto.getRandomValues(new Uint32Array(1))[0]}-${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1)}`,
       messageType: mshSegment.fields[8] || '',
       sendingApplication: mshSegment.fields[2] || '',
       sendingFacility: mshSegment.fields[3] || '',

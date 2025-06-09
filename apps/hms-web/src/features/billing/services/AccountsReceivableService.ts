@@ -79,7 +79,7 @@ export class AccountsReceivableService {
         mockPayments.forEach(pay => closingBalance -= (pay.amount || 0));
 
         const statement: AccountStatement = {
-            statementId: `stmt_${Date.now()}`,
+            statementId: `stmt_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
             patientId: mockPatient.id,
             patientName: mockPatient.name,
             statementDate: new Date(),
@@ -109,7 +109,7 @@ export class AccountsReceivableService {
         // if (!patient) throw new Error("Patient not found for the invoice.")
 
         // Mock implementation
-        const mockOverdueInvoice: Partial<Invoice> = { id: invoiceId, totalAmount: 200, amountPaid: 50, dueDate: new Date(Date.now() - (5 * 86400000)), patientId: "pat_overdue" };
+        const mockOverdueInvoice: Partial<Invoice> = { id: invoiceId, totalAmount: 200, amountPaid: 50, dueDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - (5 * 86400000)), patientId: "pat_overdue" };
         const mockPatientForReminder = { id: "pat_overdue", name: "Bob The Builder", email: "bob@example.com" };
 
         if (new Date() <= (mockOverdueInvoice.dueDate || new Date())) {
@@ -117,7 +117,7 @@ export class AccountsReceivableService {
         }
 
         const notice: OverdueNotice = {
-            noticeId: `notice_${Date.now()}`,
+            noticeId: `notice_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
             invoiceId: mockOverdueInvoice.id!,
             patientId: mockPatientForReminder.id,
             sentDate: new Date(),

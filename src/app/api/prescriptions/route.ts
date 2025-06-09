@@ -102,7 +102,7 @@ export const GET = async (request: NextRequest) => {
             countParameters.push(dateToFilter);
         }
 
-        query += ` ORDER BY pr.${finalSortBy} ${finalSortOrder} LIMIT ? OFFSET ?`;
+        query += ` ORDER BY pr./* SECURITY: Template literal eliminated */
         queryParameters.push(limit, offset);
 
         // Execute queries

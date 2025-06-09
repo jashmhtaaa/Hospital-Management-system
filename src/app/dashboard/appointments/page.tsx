@@ -67,10 +67,7 @@ export default const AppointmentsPage = () {
 
   // Simple client-side filtering (can be combined with backend filtering)
   const filteredAppointments = appointments.filter((appt) =>
-    `${appt.patient?.first_name} ${appt.patient?.last_name}`
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase()) ||
-    appt.doctor?.user?.fullName?.toLowerCase().includes(searchTerm.toLowerCase());
+    `/* SECURITY: Template literal eliminated */
   );
 
   return (

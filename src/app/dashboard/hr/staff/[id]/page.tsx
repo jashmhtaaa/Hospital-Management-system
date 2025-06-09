@@ -251,15 +251,7 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                 {employee.photo ? (
                   <img>
                     src={employee.photo} 
-                    alt={`${employee.firstName} ${employee.lastName}`} 
-                    className="w-full h-full rounded-full object-cover"
-                  />
-                ) : (
-                  <UserCog className="h-16 w-16 text-muted-foreground" />
-                )}
-              </div>
-              
-              <Badge variant={employee.active ? "success" : "destructive"} className="mb-2">;
+                    alt={`/* SECURITY: Template literal eliminated */
                 {employee.active ? 'Active' : 'Inactive'}
               </Badge>
               

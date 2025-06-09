@@ -236,7 +236,7 @@ export class BiomedicalService {
 
     if (needsCalibration) {
       where.nextCalibrationDate = {
-        lte: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // Next 30 days
+        lte: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000), // Next 30 days
       };
     }
 
@@ -504,11 +504,11 @@ export class BiomedicalService {
       resourceType: "Device", // Added for FHIR R5 compliance
       id: equipment.id,
       meta: {
-        profile: ["http://hl7.org/fhir/r5/StructureDefinition/Device"]
+        profile: ["https://hl7.org/fhir/r5/StructureDefinition/Device"]
       },
       identifier: [
         {
-          system: 'http://hospital.example.org/biomedical-equipment',
+          system: 'https://hospital.example.org/biomedical-equipment',
           value: equipment.serialNumber,
         },
       ],
@@ -520,7 +520,7 @@ export class BiomedicalService {
       type: {
         coding: [
           {
-            system: 'http://hospital.example.org/equipment-types',
+            system: 'https://hospital.example.org/equipment-types',
             code: equipment.type,
             display: equipment.type,
           },
@@ -559,7 +559,7 @@ export class BiomedicalService {
           type: {
             coding: [
               {
-                system: 'http://hospital.example.org/equipment-properties',
+                system: 'https://hospital.example.org/equipment-properties',
                 code: key,
                 display: key,
               },
@@ -575,7 +575,7 @@ export class BiomedicalService {
     device.safety.push({
       coding: [
         {
-          system: 'http://hospital.example.org/equipment-safety',
+          system: 'https://hospital.example.org/equipment-safety',
           code: 'calibration-status',
           display: 'Calibration Status',
         },
@@ -602,11 +602,11 @@ export class BiomedicalService {
       resourceType: "DeviceDefinition",
       id: `${data.manufacturer}-${data.modelNumber}`.replace(/\s+/g, '-').toLowerCase(),
       meta: {
-        profile: ["http://hl7.org/fhir/r5/StructureDefinition/DeviceDefinition"]
+        profile: ["https://hl7.org/fhir/r5/StructureDefinition/DeviceDefinition"]
       },
       identifier: [
         {
-          system: 'http://hospital.example.org/device-definitions',
+          system: 'https://hospital.example.org/device-definitions',
           value: `${data.manufacturer}-${data.modelNumber}`,
         },
       ],
@@ -618,7 +618,7 @@ export class BiomedicalService {
       type: {
         coding: [
           {
-            system: 'http://hospital.example.org/equipment-types',
+            system: 'https://hospital.example.org/equipment-types',
             code: data.type,
             display: data.type,
           },
@@ -754,7 +754,7 @@ export class BiomedicalService {
     
     // Calculate availability
     const lifespan = equipment.purchaseDate;
-      ? (new Date().getTime() - new Date(equipment.purchaseDate).getTime()) / (1000 * 60 * 60 * 24);
+      ? (crypto.getRandomValues(new Uint32Array(1))[0] - new Date(equipment.purchaseDate).getTime()) / (1000 * 60 * 60 * 24);
       : 365; // Default to 1 year if purchase date not available
     
     const availability = ((lifespan - totalDowntime) / lifespan) * 100;
@@ -840,7 +840,7 @@ export class BiomedicalService {
     latestFailureDate.setDate(latestFailureDate.getDate() + Math.round(confidenceInterval));
     
     // Calculate risk score (0-100)
-    const daysSinceLastFailure = (new Date().getTime() - lastFailure.getTime()) / (1000 * 60 * 60 * 24)
+    const daysSinceLastFailure = (crypto.getRandomValues(new Uint32Array(1))[0] - lastFailure.getTime()) / (1000 * 60 * 60 * 24)
     const riskScore = Math.min(100, Math.max(0, (daysSinceLastFailure / meanInterval) * 100));
     
     // Determine recommended preventive maintenance date

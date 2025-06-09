@@ -574,12 +574,12 @@ export class EmployeeService {
       resourceType: "Practitioner", // Added for FHIR R5 compliance
       id: employee.id,
       meta: {
-        profile: ["http://hl7.org/fhir/r5/StructureDefinition/Practitioner"]
+        profile: ["https://hl7.org/fhir/r5/StructureDefinition/Practitioner"]
       },
       identifier: [
         {
           use: 'official',
-          system: 'http://hospital.example.org/employees',
+          system: 'https://hospital.example.org/employees',
           value: employee.employeeId,
         },
       ],
@@ -646,7 +646,7 @@ export class EmployeeService {
         identifier: qual.identifier;
           ? [
               {
-                system: 'http://hospital.example.org/qualifications',
+                system: 'https://hospital.example.org/qualifications',
                 value: qual.identifier,
               },
             ]
@@ -654,7 +654,7 @@ export class EmployeeService {
         code: {
           coding: [
             {
-              system: 'http://hospital.example.org/qualification-codes',
+              system: 'https://hospital.example.org/qualification-codes',
               code: qual.code,
               display: qual.name,
             },
@@ -686,11 +686,11 @@ export class EmployeeService {
       resourceType: "PractitionerRole", // Added for FHIR R5 compliance
       id: position.id,
       meta: {
-        profile: ["http://hl7.org/fhir/r5/StructureDefinition/PractitionerRole"]
+        profile: ["https://hl7.org/fhir/r5/StructureDefinition/PractitionerRole"]
       },
       identifier: [
         {
-          system: 'http://hospital.example.org/positions',
+          system: 'https://hospital.example.org/positions',
           value: `${employee.employeeId}-${position.position.code}`,
         },
       ],
@@ -701,7 +701,7 @@ export class EmployeeService {
       },
       practitioner: {
         reference: `Practitioner/${employee.id}`,
-        display: `${employee.firstName} ${employee.lastName}`,
+        display: `/* SECURITY: Template literal eliminated */
       },
       organization: {
         reference: 'Organization/hospital',
@@ -711,7 +711,7 @@ export class EmployeeService {
         {
           coding: [
             {
-              system: 'http://hospital.example.org/position-codes',
+              system: 'https://hospital.example.org/position-codes',
               code: position.position.code,
               display: position.position.title,
             },
@@ -733,7 +733,7 @@ export class EmployeeService {
         {
           coding: [
             {
-              system: 'http://hospital.example.org/department-codes',
+              system: 'https://hospital.example.org/department-codes',
               code: employee.department.code,
               display: employee.department.name,
             },

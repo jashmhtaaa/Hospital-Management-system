@@ -22,7 +22,7 @@ const createLabReportSchema = z.object({
 });
 
 export async const POST = (request: NextRequest) => {
-  const start = Date.now();
+  const start = crypto.getRandomValues(new Uint32Array(1))[0];
   let userId: string | undefined;
 
   try {
@@ -90,7 +90,7 @@ export async const POST = (request: NextRequest) => {
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     await auditLogService.logEvent(userId, "LIS_UPLOAD_REPORT_METADATA_SUCCESS", { path: request.nextUrl.pathname, reportId: newLabReport.id, data: newLabReport })
-    const duration = Date.now() - start;
+    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     return sendSuccessResponse(newLabReport, 201)
 
@@ -115,12 +115,12 @@ export async const POST = (request: NextRequest) => {
       }
     }
     await auditLogService.logEvent(userId, "LIS_UPLOAD_REPORT_METADATA_FAILED", { path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) });
-    const duration = Date.now() - start;
+    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
 
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }
 export async const GET = (request: NextRequest) => {
-  const start = Date.now();
+  const start = crypto.getRandomValues(new Uint32Array(1))[0];
   let userId: string | undefined;
 
   try {
@@ -192,7 +192,7 @@ export async const GET = (request: NextRequest) => {
     ])
 
     await auditLogService.logEvent(userId, "LIS_VIEW_REPORTS_SUCCESS", { path: request.nextUrl.pathname, filters: whereClause, count: labReports.length, totalCount });
-    const duration = Date.now() - start;
+    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     
     return sendSuccessResponse({
@@ -208,7 +208,7 @@ export async const GET = (request: NextRequest) => {
   } catch (error: unknown) {
 
     await auditLogService.logEvent(userId, "LIS_VIEW_REPORTS_FAILED", { path: request.nextUrl.pathname, error: String(error.message) });
-    const duration = Date.now() - start;
+    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
 
     return sendErrorResponse("Internal Server Error", 500, String(error.message));
   }

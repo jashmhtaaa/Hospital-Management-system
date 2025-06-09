@@ -89,7 +89,7 @@ export class FHIRConditionUtils {
       resourceType: 'Condition',
       clinicalStatus: {
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/condition-clinical',
+          system: 'https://terminology.hl7.org/CodeSystem/condition-clinical',
           code: data.clinicalStatus || 'active',
           display: (data.clinicalStatus ||
             'active').charAt(0).toUpperCase() + (data.clinicalStatus ||
@@ -98,7 +98,7 @@ export class FHIRConditionUtils {
       },
       verificationStatus: {
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/condition-ver-status',
+          system: 'https://terminology.hl7.org/CodeSystem/condition-ver-status',
           code: data.verificationStatus || 'confirmed',
           display: (data.verificationStatus ||
             'confirmed').charAt(0).toUpperCase() + (data.verificationStatus ||
@@ -107,14 +107,14 @@ export class FHIRConditionUtils {
       },
       category: [{
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/condition-category',
+          system: 'https://terminology.hl7.org/CodeSystem/condition-category',
           code: data.category || 'encounter-diagnosis',
           display: data.category === 'problem-list-item' ? 'Problem List Item' : 'Encounter Diagnosis'
         }]
       }],
       code: {
         coding: [{
-          system: 'http://snomed.info/sct',
+          system: 'https://snomed.info/sct',
           code: data.conditionCode,
           display: data.conditionDisplay
         }]
@@ -142,7 +142,7 @@ export class FHIRConditionUtils {
     if (data.severity) {
       condition.severity = {
         coding: [{
-          system: 'http://snomed.info/sct',
+          system: 'https://snomed.info/sct',
           code: this.getSeverityCode(data.severity),
           display: data.severity.charAt(0).toUpperCase() + data.severity.slice(1)
         }]

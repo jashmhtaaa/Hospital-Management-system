@@ -155,7 +155,7 @@ export default const OTStaffAssignment = ({
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 500));
       const newAssignment: AssignedStaff = {
-        assignment_id: `assign-${Date.now()}`,
+        assignment_id: `assign-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         user_id: selectedUser,
         user_name: userData.name,
         role: selectedRole,

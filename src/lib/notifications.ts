@@ -20,7 +20,7 @@ export interface Notification {
   resourceType: string;
   resourceId?: number;
   priority: 'low' | 'medium' | 'high' | 'urgent';
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**

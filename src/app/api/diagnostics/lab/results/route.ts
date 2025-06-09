@@ -336,7 +336,7 @@ export const GET = async (request: NextRequest) => {
             {
               coding: [
                 {
-                  system: "http://terminology.hl7.org/CodeSystem/observation-category",
+                  system: "https://terminology.hl7.org/CodeSystem/observation-category",
                   code: "laboratory",
                   display: "Laboratory"
                 }
@@ -346,7 +346,7 @@ export const GET = async (request: NextRequest) => {
           code: {
             coding: [
               {
-                system: "http://loinc.org",
+                system: "https://loinc.org",
                 code: result.parameter_loinc_code || result.loinc_code || "unknown",
                 display: result.parameter_name || result.test_name
               }
@@ -355,8 +355,7 @@ export const GET = async (request: NextRequest) => {
           },
           subject: {
             reference: `Patient/${result.patient_id}`,
-            display: `${result.patient_first_name} ${result.patient_last_name}`
-          },
+            display: `/* SECURITY: Template literal eliminated */
           effectiveDateTime: result.performed_at,
           performer: [
             {
@@ -388,7 +387,7 @@ export const GET = async (request: NextRequest) => {
           resource.method = {
             coding: [
               {
-                system: result.method_system || "http://terminology.hl7.org/CodeSystem/v2-0936",
+                system: result.method_system || "https://terminology.hl7.org/CodeSystem/v2-0936",
                 code: result.method_code || "unknown",
                 display: result.method
               }
@@ -410,7 +409,7 @@ export const GET = async (request: NextRequest) => {
           resource.valueQuantity = {
             value: result.result_value_numeric,
             unit: result.unit || "",
-            system: result.unit_system || "http://unitsofmeasure.org",
+            system: result.unit_system || "https://unitsofmeasure.org",
             code: result.unit_code || result.unit || ""
           }
         } else if (result.result_value_text) {
@@ -419,7 +418,7 @@ export const GET = async (request: NextRequest) => {
           resource.valueCodeableConcept = {
             coding: [
               {
-                system: "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                system: "https://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
                 code: result.result_value_coded,
                 display: result.result_value_coded
               }
@@ -434,7 +433,7 @@ export const GET = async (request: NextRequest) => {
             resource.valueQuantity = {
               value: Number(result.result_value),
               unit: result.unit || "",
-              system: result.unit_system || "http://unitsofmeasure.org",
+              system: result.unit_system || "https://unitsofmeasure.org",
               code: result.unit_code || result.unit || ""
             }
           } else {
@@ -445,7 +444,7 @@ export const GET = async (request: NextRequest) => {
           resource.dataAbsentReason = {
             coding: [
               {
-                system: "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+                system: "https://terminology.hl7.org/CodeSystem/data-absent-reason",
                 code: "unknown",
                 display: "Unknown"
               }
@@ -460,7 +459,7 @@ export const GET = async (request: NextRequest) => {
             {
               coding: [
                 {
-                  system: "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                  system: "https://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
                   code: mapInterpretationToFHIR(result.interpretation),
                   display: result.interpretation
                 }
@@ -502,7 +501,7 @@ export const GET = async (request: NextRequest) => {
               refRange.low = {
                 value: range.value_low,
                 unit: range.unit || "",
-                system: "http://unitsofmeasure.org",
+                system: "https://unitsofmeasure.org",
                 code: range.unit || ""
               }
             }
@@ -511,7 +510,7 @@ export const GET = async (request: NextRequest) => {
               refRange.high = {
                 value: range.value_high,
                 unit: range.unit || "",
-                system: "http://unitsofmeasure.org",
+                system: "https://unitsofmeasure.org",
                 code: range.unit || ""
               }
             }
@@ -546,7 +545,7 @@ export const GET = async (request: NextRequest) => {
         if (result.is_sensitive) {
           resource.meta.security = [
             {
-              system: "http://terminology.hl7.org/CodeSystem/v3-Confidentiality",
+              system: "https://terminology.hl7.org/CodeSystem/v3-Confidentiality",
               code: "R",
               display: "Restricted"
             }
@@ -1008,7 +1007,7 @@ export const POST = async (request: NextRequest) => {
           const reportCheckResult = await DB.query(reportCheckQuery, [orderItem.order_id]);
           
           if (!reportCheckResult.results || reportCheckResult.results.length === 0) {
-            const reportNumber = `REP${Date.now()}${Math.floor(Math.random() * 1000)}`;
+            const reportNumber = `REP/* SECURITY: Template literal eliminated */
             
             await DB.query(
               `INSERT INTO lab_reports (

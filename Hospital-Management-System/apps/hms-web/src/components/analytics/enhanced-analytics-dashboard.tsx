@@ -68,7 +68,7 @@ const EnhancedAnalyticsDashboard: React.FC = () => {
       const data = await response.json();
       setAnalyticsData(data.analytics);
     } catch (error) {
-      console.error('Error fetching analytics:', error);
+      /* SECURITY: Console statement removed */
     } finally {
       setLoading(false);
     }
@@ -80,7 +80,7 @@ const EnhancedAnalyticsDashboard: React.FC = () => {
       const data = await response.json();
       setRealTimeData(data.realTimeData);
     } catch (error) {
-      console.error('Error fetching real-time data:', error);
+      /* SECURITY: Console statement removed */
     }
   };
 

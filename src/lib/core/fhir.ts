@@ -317,7 +317,7 @@ export const convertToFHIRInvoice = (invoice: unknown): FHIRInvoice {
     id: invoice.id,
     identifier: [
       {
-        system: 'http://hospital.example.org/identifiers/invoice',
+        system: 'https://hospital.example.org/identifiers/invoice',
         value: invoice.invoiceNumber,
       },
     ],
@@ -394,7 +394,7 @@ export const convertToFHIRClaim = (claim: unknown): FHIRClaim {
     id: claim.id,
     identifier: [
       {
-        system: 'http://hospital.example.org/identifiers/claim',
+        system: 'https://hospital.example.org/identifiers/claim',
         value: claim.claimNumber,
       },
     ],
@@ -402,7 +402,7 @@ export const convertToFHIRClaim = (claim: unknown): FHIRClaim {
     type: {
       coding: [
         {
-          system: 'http://terminology.hl7.org/CodeSystem/claim-type',
+          system: 'https://terminology.hl7.org/CodeSystem/claim-type',
           code: 'institutional',
           display: 'Institutional',
         },
@@ -419,7 +419,7 @@ export const convertToFHIRClaim = (claim: unknown): FHIRClaim {
     priority: {
       coding: [
         {
-          system: 'http://terminology.hl7.org/CodeSystem/processpriority',
+          system: 'https://terminology.hl7.org/CodeSystem/processpriority',
           code: 'normal',
           display: 'Normal',
         },
@@ -439,7 +439,7 @@ export const convertToFHIRClaim = (claim: unknown): FHIRClaim {
       diagnosis: {
         coding: [
           {
-            system: 'http://hl7.org/fhir/sid/icd-10',
+            system: 'https://hl7.org/fhir/sid/icd-10',
             code: diagnosis.code,
             display: diagnosis.description,
           },
@@ -451,7 +451,7 @@ export const convertToFHIRClaim = (claim: unknown): FHIRClaim {
       productOrService: {
         coding: [
           {
-            system: 'http://www.ama-assn.org/go/cpt',
+            system: 'https://www.ama-assn.org/go/cpt',
             code: item.serviceItem.cptCode,
             display: item.serviceItem.name,
           },
@@ -481,7 +481,7 @@ export const convertToFHIRCoverage = (coverage: unknown): FHIRCoverage {
     id: coverage.id,
     identifier: [
       {
-        system: 'http://hospital.example.org/identifiers/coverage',
+        system: 'https://hospital.example.org/identifiers/coverage',
         value: coverage.policyNumber,
       },
     ],
@@ -489,7 +489,7 @@ export const convertToFHIRCoverage = (coverage: unknown): FHIRCoverage {
     type: {
       coding: [
         {
-          system: 'http://terminology.hl7.org/CodeSystem/v3-ActCode',
+          system: 'https://terminology.hl7.org/CodeSystem/v3-ActCode',
           code: coverage.type,
           display: coverage.typeName,
         },
@@ -504,7 +504,7 @@ export const convertToFHIRCoverage = (coverage: unknown): FHIRCoverage {
     relationship: {
       coding: [
         {
-          system: 'http://terminology.hl7.org/CodeSystem/subscriber-relationship',
+          system: 'https://terminology.hl7.org/CodeSystem/subscriber-relationship',
           code: coverage.relationship,
           display: coverage.relationshipName,
         },
@@ -524,7 +524,7 @@ export const convertToFHIRCoverage = (coverage: unknown): FHIRCoverage {
         type: {
           coding: [
             {
-              system: 'http://terminology.hl7.org/CodeSystem/coverage-class',
+              system: 'https://terminology.hl7.org/CodeSystem/coverage-class',
               code: 'group',
               display: 'Group',
             },

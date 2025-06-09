@@ -39,7 +39,7 @@ export const checkDoctorAvailability = async (
               { 
                 estimatedDuration: {
                   // Calculate end time overlap,
-                  gte: Math.floor((requestedSlot.start.getTime() - new Date().getTime()) / (1000 * 60))
+                  gte: Math.floor((requestedSlot.start.getTime() - crypto.getRandomValues(new Uint32Array(1))[0]) / (1000 * 60))
                 }
               }
             ]
@@ -69,7 +69,7 @@ export const checkDoctorAvailability = async (
     // Check for appointment conflicts
     if (conflictingAppointments.length > 0) {
       conflictingAppointments.forEach(apt => {
-        conflicts.push(`Conflicting appointment with ${apt.patient.firstName} ${apt.patient.lastName} at ${apt.scheduledDateTime.toLocaleTimeString()}`);
+        conflicts.push(`Conflicting appointment with /* SECURITY: Template literal eliminated */
       });
     }
 
@@ -233,7 +233,7 @@ export const getDoctorSchedule = async (
         id: apt.id,
         start: apt.scheduledDateTime,
         duration: apt.estimatedDuration,
-        patient: `${apt.patient.firstName} ${apt.patient.lastName}`,
+        patient: `/* SECURITY: Template literal eliminated */
         status: apt.status
       })),
       ...blockedTimes.map(block => ({

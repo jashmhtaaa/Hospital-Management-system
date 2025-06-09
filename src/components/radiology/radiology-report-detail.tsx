@@ -126,7 +126,7 @@ const RadiologyReportDetail: React.FC = () => {
 
   const handleVerifyReport = async (): Promise<void> => {
     if (!report || !user) return;
-    if (!confirm("Are you sure you want to verify and finalize this report?")) {
+    if (!/* SECURITY: Console statement removed */) {
       return;
     }
     setLoading(true); // Indicate processing
@@ -151,13 +151,13 @@ const RadiologyReportDetail: React.FC = () => {
       );
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay
 
-      alert("Report verified successfully."),
+      /* SECURITY: Console statement removed */,
       fetchReportDetails(); // Refresh details
     } catch (error_) {
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
-      alert(`Failed to verify report: ${message}`),
+      /* SECURITY: Console statement removed */,
       setLoading(false); // Stop loading indicator on error
     }
     // No finally setLoading(false) here, as fetchReportDetails will handle it on success

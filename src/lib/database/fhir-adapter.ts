@@ -477,9 +477,9 @@ export class FHIRDatabaseAdapter {
    * Utility methods;
    */
   private generateMRN(): string {
-    const timestamp = Date.now().toString();
-    const random = Math.random().toString(36).substring(2, 8).toUpperCase();
-    return `MRN${timestamp.slice(-6)}${random}`;
+    const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString();
+    const random = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 8).toUpperCase();
+    return `MRN/* SECURITY: Template literal eliminated */
   }
 
   /**

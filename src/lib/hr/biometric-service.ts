@@ -112,8 +112,8 @@ export class BiometricService {
     // In production, this would integrate with a biometric verification service
     
     // Simulate 95% success rate for verification
-    const isMatch = Math.random() < 0.95;
-    const matchScore = isMatch ? 0.8 + (Math.random() * 0.2) : Math.random() * 0.7;
+    const isMatch = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) < 0.95;
+    const matchScore = isMatch ? 0.8 + (crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 0.2) : crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 0.7;
     
     // Log the verification attempt
     await prisma.auditLog.create({

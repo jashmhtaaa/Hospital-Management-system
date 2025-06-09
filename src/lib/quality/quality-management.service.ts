@@ -961,8 +961,8 @@ class QualityManagementService extends EventEmitter {
 
   private async performMetricCalculation(indicator: QualityIndicator, period: { start: Date; end: Date }): Promise<QualityMetrics> {
     // Mock calculation - in production, this would execute the actual formula
-    const mockNumerator = Math.floor(Math.random() * 20);
-    const mockDenominator = Math.floor(Math.random() * 1000) + 500;
+    const mockNumerator = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 20);
+    const mockDenominator = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) + 500;
     const value = (mockNumerator / mockDenominator) * (indicator.measure.unit === 'rate' ? 1000 : 100);
     
     const variance = value - indicator.target.value;
@@ -990,7 +990,7 @@ class QualityManagementService extends EventEmitter {
       denominator: mockDenominator,
       variance,
       variancePercent,
-      trend: Math.random() > 0.5 ? 'improving' : Math.random() > 0.3 ? 'stable' : 'declining',
+      trend: crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) > 0.5 ? 'improving' : crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) > 0.3 ? 'stable' : 'declining',
       performance,
       benchmarkComparison: indicator.benchmarks.map(b => ({
         source: b.source,
@@ -1067,7 +1067,7 @@ class QualityManagementService extends EventEmitter {
     const recentEvents = Array.from(this.events.values());
       .filter(e => e.department === event.department && 
                    e.type === event.type &&;
-                   e.occurredAt >= new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)); // Last 30 days
+                   e.occurredAt >= new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 24 * 60 * 60 * 1000)); // Last 30 days
 
     if (recentEvents.length >= 3) {
       this.emit('event_pattern_detected', {
@@ -1159,7 +1159,7 @@ class QualityManagementService extends EventEmitter {
   }
 
   // Dashboard generation methods (simplified for brevity)
-  private async generateQualityOverview(start: Date, end: Date): Promise<any> {
+  private async generateQualityOverview(start: Date, end: Date): Promise<unknown> {
     return {
       overallScore: 92,
       trend: 'improving',
@@ -1173,7 +1173,7 @@ class QualityManagementService extends EventEmitter {
     return []
   }
 
-  private async generateEventSummary(start: Date, end: Date): Promise<any> {
+  private async generateEventSummary(start: Date, end: Date): Promise<unknown> {
     return {
       total: 45,
       byType: { falls: 12, infections: 8, medication: 15, other: 10 },
@@ -1189,7 +1189,7 @@ class QualityManagementService extends EventEmitter {
     return []
   }
 
-  private async generateComplianceSummary(start: Date, end: Date): Promise<any> {
+  private async generateComplianceSummary(start: Date, end: Date): Promise<unknown> {
     return {
       overallCompliance: 96,
       gaps: 4,

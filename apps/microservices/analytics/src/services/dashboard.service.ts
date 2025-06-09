@@ -837,7 +837,7 @@ export class DashboardService {
       const newDashboard = await this.prisma.dashboard.create({
         data: {
           ...dashboard,
-          id: `dashboard-${Date.now()}`,
+          id: `dashboard-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
           created: new Date(),
           updated: new Date(),
           createdBy: userId,
@@ -1005,7 +1005,7 @@ export class DashboardService {
       // Create widget
       const newWidget: DashboardWidget = {
         ...widget,
-        id: `widget-${Date.now()}`,
+        id: `widget-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         created: new Date(),
         updated: new Date(),
         createdBy: userId,
@@ -1265,7 +1265,7 @@ export class DashboardService {
     },
     userId: string
   ): Promise<DashboardData> {
-    const startTime = performance.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     
     try {
       // Get dashboard
@@ -1361,7 +1361,7 @@ export class DashboardService {
         timeRange: options.timeRange,
         widgets,
         metadata: {
-          executionTime: performance.now() - startTime,
+          executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
           status: dashboardStatus,
           warningMessages: warningMessages.length > 0 ? warningMessages : undefined,
           cacheStatus: 'FRESH',
@@ -1383,7 +1383,7 @@ export class DashboardService {
       });
 
       // Record metrics
-      metricsCollector.recordTimer('analytics.dashboard_data_fetch_time', performance.now() - startTime);
+      metricsCollector.recordTimer('analytics.dashboard_data_fetch_time', crypto.getRandomValues(new Uint32Array(1))[0] - startTime);
       metricsCollector.incrementCounter('analytics.dashboard_data_requests', 1, {
         dashboardId,
         dashboardCategory: dashboard.category,
@@ -1407,7 +1407,7 @@ export class DashboardService {
         timeRange: options.timeRange,
         widgets: {},
         metadata: {
-          executionTime: performance.now() - startTime,
+          executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
           status: 'ERROR',
           errorMessage: error.message,
           cacheStatus: 'FRESH',
@@ -1564,7 +1564,7 @@ export class DashboardService {
         layout: template.layout,
         widgets: template.widgets.map(widget => ({
           ...widget,
-          id: `widget-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+          id: `widget-${crypto.getRandomValues(new Uint32Array(1))[0]}-${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 9)}`,
           created: new Date(),
           updated: new Date(),
           createdBy: userId,
@@ -1814,7 +1814,7 @@ export class DashboardService {
       const newKPI = await this.prisma.kpi.create({
         data: {
           ...kpi,
-          id: `kpi-${Date.now()}`,
+          id: `kpi-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
           created: new Date(),
           updated: new Date(),
           createdBy: userId,
@@ -1966,7 +1966,7 @@ export class DashboardService {
       };
     };
   }> {
-    const startTime = performance.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     
     try {
       // Get KPI
@@ -2039,7 +2039,7 @@ export class DashboardService {
         status,
         comparison,
         metadata: {
-          calculationTime: performance.now() - startTime,
+          calculationTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
           calculatedAt: new Date(),
           period: options.timeRange,
         },
@@ -2049,7 +2049,7 @@ export class DashboardService {
       await cacheService.cacheResult('analytics:', cacheKey, result, 900); // 15 minutes
 
       // Record metrics
-      metricsCollector.recordTimer('analytics.kpi_calculation_time', performance.now() - startTime);
+      metricsCollector.recordTimer('analytics.kpi_calculation_time', crypto.getRandomValues(new Uint32Array(1))[0] - startTime);
       metricsCollector.incrementCounter('analytics.kpi_calculations', 1, {
         kpiId,
         kpiCategory: kpi.category,
@@ -2258,7 +2258,7 @@ export class DashboardService {
       preset?: string;
     }
   ): Promise<WidgetData> {
-    const startTime = performance.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     
     try {
       // Try cache first if widget doesn't have a specific refresh rate
@@ -2337,8 +2337,8 @@ export class DashboardService {
           
         case WidgetType.METRIC:
           data = {
-            value: Math.floor(Math.random() * 1000),
-            previousValue: Math.floor(Math.random() * 1000),
+            value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000),
+            previousValue: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000),
             change: 0,
             changePercent: 0,
             trend: '',
@@ -2369,7 +2369,7 @@ export class DashboardService {
         data,
         columns,
         metadata: {
-          executionTime: performance.now() - startTime,
+          executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
           status,
           errorMessage,
           warningMessages: [],
@@ -2396,7 +2396,7 @@ export class DashboardService {
       });
       
       // Record metrics
-      metricsCollector.recordTimer('analytics.widget_data_fetch_time', performance.now() - startTime);
+      metricsCollector.recordTimer('analytics.widget_data_fetch_time', crypto.getRandomValues(new Uint32Array(1))[0] - startTime);
       metricsCollector.incrementCounter('analytics.widget_data_requests', 1, {
         widgetType: widget.type,
         visualizationType: widget.visualization.type,
@@ -2432,7 +2432,7 @@ export class DashboardService {
         widgetId: widget.id,
         data: [],
         metadata: {
-          executionTime: performance.now() - startTime,
+          executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
           status: 'ERROR',
           errorMessage: error.message,
           warningMessages: [],
@@ -2474,7 +2474,7 @@ export class DashboardService {
   ): Promise<string> {
     // Implementation to generate share token
     // This would create a secure token that can be used to access the shared dashboard
-    return `share-${dashboardId}-${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
+    return `share-${dashboardId}-${crypto.getRandomValues(new Uint32Array(1))[0]}-${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 15)}`;
   }
 
   private validateKPI(kpi: unknown): void {
@@ -2518,7 +2518,7 @@ export class DashboardService {
     // Implementation to execute KPI calculation
     // This would use the KPI formula and data source to calculate the value
     // For now, return a random value
-    return Math.random() * 100;
+    return crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100;
   }
 
   private calculatePreviousPeriod(
@@ -2582,7 +2582,7 @@ export class DashboardService {
     for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
       data.push({
         date: new Date(date),
-        value: Math.floor(Math.random() * 100),
+        value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100),
       });
     }
     
@@ -2591,11 +2591,11 @@ export class DashboardService {
 
   private generateMockCategoricalData(): unknown[] {
     return [
-      { name: 'Category A', value: Math.floor(Math.random() * 100) },
-      { name: 'Category B', value: Math.floor(Math.random() * 100) },
-      { name: 'Category C', value: Math.floor(Math.random() * 100) },
-      { name: 'Category D', value: Math.floor(Math.random() * 100) },
-      { name: 'Category E', value: Math.floor(Math.random() * 100) },
+      { name: 'Category A', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) },
+      { name: 'Category B', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) },
+      { name: 'Category C', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) },
+      { name: 'Category D', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) },
+      { name: 'Category E', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) },
     ];
   }
 
@@ -2609,7 +2609,7 @@ export class DashboardService {
       
       data.push({
         name: `Item ${i + 1}`,
-        value: Math.floor(Math.random() * 1000),
+        value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000),
         date,
       });
     }
@@ -2619,16 +2619,16 @@ export class DashboardService {
 
   private generateMockGeoData(): unknown[] {
     return [
-      { id: 'US', value: Math.floor(Math.random() * 1000) },
-      { id: 'CA', value: Math.floor(Math.random() * 1000) },
-      { id: 'MX', value: Math.floor(Math.random() * 1000) },
-      { id: 'BR', value: Math.floor(Math.random() * 1000) },
-      { id: 'GB', value: Math.floor(Math.random() * 1000) },
-      { id: 'FR', value: Math.floor(Math.random() * 1000) },
-      { id: 'DE', value: Math.floor(Math.random() * 1000) },
-      { id: 'CN', value: Math.floor(Math.random() * 1000) },
-      { id: 'JP', value: Math.floor(Math.random() * 1000) },
-      { id: 'AU', value: Math.floor(Math.random() * 1000) },
+      { id: 'US', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
+      { id: 'CA', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
+      { id: 'MX', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
+      { id: 'BR', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
+      { id: 'GB', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
+      { id: 'FR', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
+      { id: 'DE', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
+      { id: 'CN', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
+      { id: 'JP', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
+      { id: 'AU', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
     ];
   }
 

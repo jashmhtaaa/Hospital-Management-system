@@ -94,7 +94,7 @@ export default const AddPatientPage = () {
 
       toast({
         title: "Patient Registered",
-        description: `${validation.data.first_name} ${validation.data.last_name} has been successfully registered.`,
+        description: `/* SECURITY: Template literal eliminated */
       });
 
       router.push("/dashboard/patients"); // Redirect to patient list

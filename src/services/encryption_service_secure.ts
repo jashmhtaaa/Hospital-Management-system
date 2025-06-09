@@ -9,8 +9,8 @@ import * as crypto from 'crypto';
 export interface IEncryptionService {
   encrypt(text: string, context?: string): Promise<string>;
   decrypt(encryptedText: string, context?: string): Promise<string>;
-  encryptObject(obj: Record<string, any>, fields: string[]): Promise<Record<string, any>>;
-  decryptObject(obj: Record<string, any>, fields: string[]): Promise<Record<string, any>>;
+  encryptObject(obj: Record<string, unknown>, fields: string[]): Promise<Record<string, unknown>>;
+  decryptObject(obj: Record<string, unknown>, fields: string[]): Promise<Record<string, unknown>>;
   rotateKeys(): Promise<void>;
   validateIntegrity(encryptedText: string): boolean
 }
@@ -45,8 +45,8 @@ export class SecureEncryptionService implements IEncryptionService {
     } else {
       // Generate new master key for development/testing only
       this.masterKey = crypto.randomBytes(this.keyLength)
-      console.warn('WARNING: Generated new master key. In production, use HMS_MASTER_KEY environment variable.');
-      console.warn(`Generated key (base64): ${this.masterKey.toString('base64')}`);
+      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */: ${this.masterKey.toString('base64')}`);
     }
 
     // Initialize key rotation (every 24 hours in production)
@@ -94,7 +94,7 @@ export class SecureEncryptionService implements IEncryptionService {
         tag: tag.toString('hex'),
         version: this.currentVersion,
         algorithm: this.algorithm,
-        timestamp: Date.now()
+        timestamp: crypto.getRandomValues(new Uint32Array(1))[0]
       };
 
       return Buffer.from(JSON.stringify(encryptedData)).toString('base64');
@@ -114,8 +114,7 @@ export class SecureEncryptionService implements IEncryptionService {
     try {
       // Handle legacy placeholder format
       if (encryptedText.startsWith('encrypted_placeholder_')) {
-        console.warn('Detected legacy placeholder format. Consider re-encrypting with secure service.')
-        return encryptedText.substring('encrypted_placeholder_'.length);
+        /* SECURITY: Console statement removed */return encryptedText.substring('encrypted_placeholder_'.length);
       }
 
       const encryptedData: EncryptedData = JSON.parse(
@@ -145,7 +144,7 @@ export class SecureEncryptionService implements IEncryptionService {
   /**
    * Encrypts specific fields in an object
    */
-  async encryptObject(obj: Record<string, any>, fields: string[]): Promise<Record<string, any>> {
+  async encryptObject(obj: Record<string, unknown>, fields: string[]): Promise<Record<string, unknown>> {
     const result = { ...obj };
     
     for (const field of fields) {
@@ -163,7 +162,7 @@ export class SecureEncryptionService implements IEncryptionService {
   /**
    * Decrypts specific fields in an object
    */
-  async decryptObject(obj: Record<string, any>, fields: string[]): Promise<Record<string, any>> {
+  async decryptObject(obj: Record<string, unknown>, fields: string[]): Promise<Record<string, unknown>> {
     const result = { ...obj };
     
     for (const field of fields) {
@@ -177,8 +176,7 @@ export class SecureEncryptionService implements IEncryptionService {
             // Keep as string if not valid JSON
           }
         } catch (error) {
-          console.error(`Failed to decrypt field ${field}:`, error)
-          // Keep encrypted value if decryption fails
+          /* SECURITY: Console statement removed */// Keep encrypted value if decryption fails
         }
       }
     }
@@ -189,7 +187,7 @@ export class SecureEncryptionService implements IEncryptionService {
   /**
    * Validates encrypted data structure
    */
-  private validateEncryptedData(data: any): data is EncryptedData {
+  private validateEncryptedData(data: unknown): data is EncryptedData {
     return (
       typeof data === 'object' &&
       typeof data.encrypted === 'string' &&
@@ -219,7 +217,7 @@ export class SecureEncryptionService implements IEncryptionService {
    * Rotates encryption keys
    */
   async rotateKeys(): Promise<void> {
-    console.log('Rotating encryption keys...');
+    /* SECURITY: Console statement removed */
     this.keyCache.clear();
     
     // In production, this would involve: // 1. Generating new master key
@@ -227,8 +225,7 @@ export class SecureEncryptionService implements IEncryptionService {
     // 3. Updating key storage systems
     // 4. Notifying key management systems
     
-    console.log('Key rotation completed')
-  }
+    /* SECURITY: Console statement removed */}
 
   /**
    * Initializes automatic key rotation
@@ -242,7 +239,7 @@ export class SecureEncryptionService implements IEncryptionService {
       try {
         await this.rotateKeys()
       } catch (error) {
-        console.error('Key rotation failed:', error);
+        /* SECURITY: Console statement removed */
       }
     }, rotationInterval);
   }

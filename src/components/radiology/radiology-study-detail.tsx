@@ -95,7 +95,7 @@ interface StudyDetails {
           order_id: "ord_001",
           procedure_name: "Chest X-Ray, 2 Views",
           accession_number: "ACC123456",
-          study_datetime: new Date(Date.now() - 86_400_000).toISOString(), // Yesterday
+          study_datetime: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000).toISOString(), // Yesterday
           status: "acquired",
           modality_name: "X-Ray",
           technician_name: "Tech Sarah",
@@ -131,7 +131,7 @@ interface StudyDetails {
     formData: ModalReportFormData;
   ): Promise<void> => {
     if (!studyId) {
-      alert("Study ID is missing.");
+      /* SECURITY: Console statement removed */
       return;
     }
     try {
@@ -162,7 +162,7 @@ interface StudyDetails {
 
       // await new Promise(resolve => setTimeout(resolve, 600)); // Simulate delay
 
-      alert("Report created successfully (simulated).");
+      /* SECURITY: Console statement removed */.");
       setShowCreateReportModal(false);
       // Refresh study details or associated reports list
       fetchStudyDetails();
@@ -170,13 +170,13 @@ interface StudyDetails {
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
-      alert(`Error creating report: ${message}`);
+      /* SECURITY: Console statement removed */
     }
   };
 
   // Add handleDeleteStudy if needed
   // const handleDeleteStudy = async (): Promise<void> => {
-  //   if (!studyId || !confirm("Are you sure you want to delete this study?")) return
+  //   if (!studyId || !/* SECURITY: Console statement removed */) return
   //   try {
   //     // API call to delete
   //     router.push('/dashboard/radiology/studies'); // Redirect after delete

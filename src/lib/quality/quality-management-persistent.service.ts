@@ -144,7 +144,7 @@ export interface QualityMetrics {
   rate?: number;
   targetValue?: number;
   varianceFromTarget?: number;
-  stratificationData?: Record<string, any>;
+  stratificationData?: Record<string, unknown>;
   dataQualityScore?: number;
   dataCompletenessRate?: number;
   dataSource: 'manual' | 'automated' | 'integrated',
@@ -213,7 +213,7 @@ export class PersistentQualityManagementService {
     status?: string;
   }): Promise<QualityIndicator[]> {
     try {
-      const where: any = {};
+      const where: unknown = {};
       if (filters?.category) where.category = filters.category;
       if (filters?.source) where.source = filters.source;
       if (filters?.status) where.status = filters.status;
@@ -298,7 +298,7 @@ export class PersistentQualityManagementService {
     dateTo?: Date;
   }): Promise<QualityEvent[]> {
     try {
-      const where: any = {};
+      const where: unknown = {};
       if (filters?.eventType) where.eventType = filters.eventType;
       if (filters?.severity) where.severity = filters.severity;
       if (filters?.status) where.status = filters.status;
@@ -369,7 +369,7 @@ export class PersistentQualityManagementService {
     certificationStatus?: string;
   }): Promise<QualityAssessment[]> {
     try {
-      const where: any = {};
+      const where: unknown = {};
       if (filters?.type) where.type = filters.type;
       if (filters?.status) where.status = filters.status;
       if (filters?.certificationStatus) where.certificationStatus = filters.certificationStatus;
@@ -441,7 +441,7 @@ export class PersistentQualityManagementService {
     dateTo?: Date;
   }): Promise<QualityMetrics[]> {
     try {
-      const where: any = { indicatorId };
+      const where: unknown = { indicatorId };
       if (filters?.periodType) where.periodType = filters.periodType;
       if (filters?.dateFrom || filters?.dateTo) {
         where.measurementPeriod = {};
@@ -638,7 +638,7 @@ export class PersistentQualityManagementService {
   }
 
   // Helper methods for deserialization
-  private async deserializeQualityIndicator(indicator: any): Promise<QualityIndicator> {
+  private async deserializeQualityIndicator(indicator: unknown): Promise<QualityIndicator> {
     const decrypted = await this.encryptionService.decryptObject(indicator, this.encryptedFields)
     
     return {
@@ -648,7 +648,7 @@ export class PersistentQualityManagementService {
     };
   }
 
-  private async deserializeQualityEvent(event: any): Promise<QualityEvent> {
+  private async deserializeQualityEvent(event: unknown): Promise<QualityEvent> {
     const decrypted = await this.encryptionService.decryptObject(event, this.encryptedFields);
     
     return {
@@ -662,7 +662,7 @@ export class PersistentQualityManagementService {
     };
   }
 
-  private async deserializeQualityAssessment(assessment: any): Promise<QualityAssessment> {
+  private async deserializeQualityAssessment(assessment: unknown): Promise<QualityAssessment> {
     const decrypted = await this.encryptionService.decryptObject(assessment, this.encryptedFields);
     
     return {
@@ -673,7 +673,7 @@ export class PersistentQualityManagementService {
     };
   }
 
-  private async deserializeComplianceReport(report: any): Promise<ComplianceReport> {
+  private async deserializeComplianceReport(report: unknown): Promise<ComplianceReport> {
     const decrypted = await this.encryptionService.decryptObject(report, this.encryptedFields);
     
     return {
@@ -684,7 +684,7 @@ export class PersistentQualityManagementService {
     };
   }
 
-  private async deserializeActionPlan(actionPlan: any): Promise<ActionPlan> {
+  private async deserializeActionPlan(actionPlan: unknown): Promise<ActionPlan> {
     const decrypted = await this.encryptionService.decryptObject(actionPlan, this.encryptedFields);
     
     return {
@@ -696,7 +696,7 @@ export class PersistentQualityManagementService {
     };
   }
 
-  private async deserializeActionItem(actionItem: any): Promise<ActionItem> {
+  private async deserializeActionItem(actionItem: unknown): Promise<ActionItem> {
     const decrypted = await this.encryptionService.decryptObject(actionItem, this.encryptedFields);
     
     return {

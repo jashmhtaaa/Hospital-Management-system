@@ -56,7 +56,7 @@ export class MedicationReconciliationService {
     
     // Create reconciliation record
     const reconciliation: PharmacyDomain.MedicationReconciliation = {
-      id: `recon-${Date.now()}`,
+      id: `recon-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
       patientId,
       providerId,
       sourceType,
@@ -265,10 +265,10 @@ export class MedicationReconciliationService {
       
       if (!targetMed) {
         discrepancies.push({
-          id: `disc-${Date.now()}-${sourceMed.id}`,
+          id: `disc-${crypto.getRandomValues(new Uint32Array(1))[0]}-${sourceMed.id}`,
           medicationId: sourceMed.id,
           discrepancyType: 'omission',
-          description: `${sourceMed.name} ${sourceMed.strength} ${sourceMed.unit} ${sourceMed.form} is in source but not in target`,
+          description: `/* SECURITY: Template literal eliminated */
           severity: this.calculateDiscrepancySeverity(sourceMed),
           status: 'unresolved'
         });
@@ -283,10 +283,10 @@ export class MedicationReconciliationService {
       
       if (!sourceMed) {
         discrepancies.push({
-          id: `disc-${Date.now()}-${targetMed.id}`,
+          id: `disc-${crypto.getRandomValues(new Uint32Array(1))[0]}-${targetMed.id}`,
           medicationId: targetMed.id,
           discrepancyType: 'addition',
-          description: `${targetMed.name} ${targetMed.strength} ${targetMed.unit} ${targetMed.form} is in target but not in source`,
+          description: `/* SECURITY: Template literal eliminated */
           severity: this.calculateDiscrepancySeverity(targetMed),
           status: 'unresolved'
         });
@@ -299,11 +299,11 @@ export class MedicationReconciliationService {
       
       if (targetMed && (targetMed.strength !== sourceMed.strength || targetMed.unit !== sourceMed.unit)) {
         discrepancies.push({
-          id: `disc-${Date.now()}-${sourceMed.id}-${targetMed.id}`,
+          id: `disc-${crypto.getRandomValues(new Uint32Array(1))[0]}-${sourceMed.id}-${targetMed.id}`,
           medicationId: sourceMed.id,
           relatedMedicationId: targetMed.id,
           discrepancyType: 'dosing',
-          description: `Dosing difference: ${sourceMed.name} ${sourceMed.strength} ${sourceMed.unit} in source vs ${targetMed.strength} ${targetMed.unit} in target`,
+          description: `Dosing difference: /* SECURITY: Template literal eliminated */
           severity: this.calculateDiscrepancySeverity(sourceMed, targetMed),
           status: 'unresolved'
         });
@@ -370,7 +370,7 @@ export class MedicationReconciliationService {
     
     // Create resolution action
     const resolutionAction: PharmacyDomain.ReconciliationAction = {
-      id: `action-${Date.now()}`,
+      id: `action-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
       discrepancyId,
       action,
       providerId,
@@ -528,7 +528,7 @@ export class MedicationReconciliationService {
         providerId: 'provider456',
         sourceType: 'admission',
         targetType: 'inpatient',
-        reconciliationDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
+        reconciliationDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7 * 24 * 60 * 60 * 1000), // 7 days ago
         status: 'completed',
         discrepancyCount: 3,
         resolvedCount: 3
@@ -539,7 +539,7 @@ export class MedicationReconciliationService {
         providerId: 'provider789',
         sourceType: 'transfer',
         targetType: 'inpatient',
-        reconciliationDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+        reconciliationDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 24 * 60 * 60 * 1000), // 3 days ago
         status: 'completed',
         discrepancyCount: 2,
         resolvedCount: 2
@@ -595,7 +595,7 @@ export class MedicationReconciliationService {
     // In a real implementation, this would create an order in the database
     // For now, we'll return a simulated order
     return {
-      id: `order-${Date.now()}`,
+      id: `order-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
       patientId: 'patient123',
       providerId,
       medicationId,
@@ -653,7 +653,7 @@ export class MedicationReconciliationService {
         providerId,
         sourceType: 'admission',
         targetType: 'inpatient',
-        reconciliationDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
+        reconciliationDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 1 * 24 * 60 * 60 * 1000), // 1 day ago
         status: 'in-progress',
         discrepancyCount: 5,
         resolvedCount: 2
@@ -664,7 +664,7 @@ export class MedicationReconciliationService {
         providerId,
         sourceType: 'discharge',
         targetType: 'outpatient',
-        reconciliationDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+        reconciliationDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 2 * 24 * 60 * 60 * 1000), // 2 days ago
         status: 'in-progress',
         discrepancyCount: 3,
         resolvedCount: 0

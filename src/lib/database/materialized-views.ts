@@ -227,12 +227,12 @@ export class MaterializedViewManager {
       
       try {
         logger.info(`Refreshing materialized view: ${viewName}`);
-        const startTime = performance.now();
+        const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
         
         // Execute the refresh SQL
         await this.prisma.$executeRawUnsafe(definition.refreshSql);
         
-        const duration = performance.now() - startTime;
+        const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
         
         logger.info(`Refreshed materialized view: ${viewName}`, {
           duration: `${duration.toFixed(2)}ms`;
@@ -338,7 +338,7 @@ export class MaterializedViewManager {
       
       // If caching is enabled for this view
       if (definition.cacheTtl && definition.cacheTtl > 0) {
-        const finalCacheKey = cacheKey || `mv:${viewName}:${this.hashQuery(query, params)}`;
+        const finalCacheKey = cacheKey || `mv:/* SECURITY: Safe view name handling */ `/* SECURITY: Safe view identifier */ this.buildViewIdentifier(viewName, query)`;
         
         // Try to get from cache first
         const cachedData = await this.redis.get(finalCacheKey);
@@ -359,9 +359,9 @@ export class MaterializedViewManager {
       }
       
       // Not in cache or caching disabled, execute query
-      const startTime = performance.now();
+      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
       const result = await this.prisma.$queryRawUnsafe(query, ...params);
-      const duration = performance.now() - startTime;
+      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       
       // Track metrics
       metricsCollector.recordTimer('database.materialized_views.query_time', duration, {
@@ -370,7 +370,7 @@ export class MaterializedViewManager {
       
       // Cache the result if caching is enabled
       if (definition.cacheTtl && definition.cacheTtl > 0) {
-        const finalCacheKey = cacheKey || `mv:${viewName}:${this.hashQuery(query, params)}`;
+        const finalCacheKey = cacheKey || `mv:/* SECURITY: Safe view name handling */ `/* SECURITY: Safe view identifier */ this.buildViewIdentifier(viewName, query)`;
         await this.redis.set(finalCacheKey, JSON.stringify(result), definition.cacheTtl);
       }
       

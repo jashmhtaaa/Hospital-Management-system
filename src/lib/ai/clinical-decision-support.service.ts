@@ -301,7 +301,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
         
         if (interaction) {
           const rec: CDSSRecommendation = {
-            id: `drug_interaction_${Date.now()}_${i}_${j}`,
+            id: `drug_interaction_${crypto.getRandomValues(new Uint32Array(1))[0]}_${i}_${j}`,
             type: 'drug_interaction',
             priority: this.mapSeverityToPriority(interaction.severity),
             title: `Drug Interaction: ${interaction.drug1} + ${interaction.drug2}`,
@@ -346,7 +346,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
       for (const allergy of context.allergies) {
         if (this.checkAllergyMatch(medication.name, allergy.allergen)) {
           const rec: CDSSRecommendation = {
-            id: `allergy_alert_${Date.now()}_${medication.name}`,
+            id: `allergy_alert_${crypto.getRandomValues(new Uint32Array(1))[0]}_${medication.name}`,
             type: 'allergy_alert',
             priority: allergy.severity === 'life_threatening' ? 'critical' : 'high',
             title: `Allergy Alert: ${medication.name}`,
@@ -391,7 +391,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
       
       if (adjustment) {
         const rec: CDSSRecommendation = {
-          id: `dosage_adjustment_${Date.now()}_${medication.name}`,
+          id: `dosage_adjustment_${crypto.getRandomValues(new Uint32Array(1))[0]}_${medication.name}`,
           type: 'dosage_adjustment',
           priority: 'medium',
           title: `Dosage Adjustment: ${medication.name}`,
@@ -445,7 +445,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
 
         if (overdueLabs.length > 0) {
           const rec: CDSSRecommendation = {
-            id: `lab_monitoring_${Date.now()}_${medication.name}`,
+            id: `lab_monitoring_${crypto.getRandomValues(new Uint32Array(1))[0]}_${medication.name}`,
             type: 'lab_monitoring',
             priority: 'medium',
             title: `Lab Monitoring: ${medication.name}`,
@@ -503,7 +503,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
       
       if (protocol) {
         const rec: CDSSRecommendation = {
-          id: `treatment_protocol_${Date.now()}_${condition}`,
+          id: `treatment_protocol_${crypto.getRandomValues(new Uint32Array(1))[0]}_${condition}`,
           type: 'treatment_protocol',
           priority: 'medium',
           title: `Treatment Protocol: ${condition}`,
@@ -548,7 +548,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
     for (const service of preventiveServices) {
       if (service.overdue) {
         const rec: CDSSRecommendation = {
-          id: `preventive_care_${Date.now()}_${service.service}`,
+          id: `preventive_care_${crypto.getRandomValues(new Uint32Array(1))[0]}_${service.service}`,
           type: 'preventive_care',
           priority: service.priority === 'high' ? 'medium' : 'low',
           title: `Preventive Care: ${service.service}`,
@@ -835,7 +835,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
       services.push({
         service: 'Colonoscopy',
         indication: 'Colorectal cancer screening',
-        nextDue: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+        nextDue: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000), // 30 days from now
         overdue: true,
         priority: 'high'
       });
@@ -845,7 +845,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
       services.push({
         service: 'Mammography',
         indication: 'Breast cancer screening',
-        nextDue: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 days ago
+        nextDue: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 24 * 60 * 60 * 1000), // 30 days ago
         overdue: true,
         priority: 'high'
       });

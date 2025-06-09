@@ -22,7 +22,7 @@ export interface AuditLogEntry {
   action: string,
   resourceId: string,
   userId: string,
-  details: Record<string, any>;
+  details: Record<string, unknown>;
   severity?: 'info' | 'warning' | 'error' | 'critical';
 export class AuditLogger {
   private context: AuditLogContext;
@@ -44,7 +44,7 @@ export class AuditLogger {
    * @param entry The audit log entry to record;
    * @returns The created audit log entry;
    */
-  public async log(entry: AuditLogEntry): Promise<any> {
+  public async log(entry: AuditLogEntry): Promise<unknown> {
     try {
       // Sanitize details to remove any PHI/PII
       const sanitizedDetails = this.sanitizeDetails(entry.details);
@@ -84,8 +84,8 @@ export class AuditLogger {
    * @param details The details object to sanitize;
    * @returns Sanitized details object;
    */
-  private sanitizeDetails(details: Record<string, any>): Record<string, any> {
-    const sanitized: Record<string, any> = {};
+  private sanitizeDetails(details: Record<string, unknown>): Record<string, unknown> {
+    const sanitized: Record<string, unknown> = {};
     
     // Define sensitive field patterns
 \1;

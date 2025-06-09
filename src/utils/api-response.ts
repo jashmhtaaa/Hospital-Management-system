@@ -16,7 +16,7 @@ export interface ApiResponse<T = any> {
 }
 
 export class ApiResponseBuilder {
-  static success<T>(data: T, message?: string, meta?: any): NextResponse {
+  static success<T>(data: T, message?: string, meta?: unknown): NextResponse {
     const response: ApiResponse<T> = {
       success: true,
       data,
@@ -33,8 +33,7 @@ export class ApiResponseBuilder {
   static error(
     error: string,
     statusCode: number = 400,
-    details?: any
-  ): NextResponse {
+    details?: unknown): NextResponse {
     const response: ApiResponse = {
       success: false,
       error,
@@ -60,7 +59,7 @@ export class ApiResponseBuilder {
     return this.error(message, 403);
   }
 
-  static validationError(message: string, details?: any): NextResponse {
+  static validationError(message: string, details?: unknown): NextResponse {
     return this.error(`Validation error: ${message}`, 422, details);
   }
 

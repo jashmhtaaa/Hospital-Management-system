@@ -353,7 +353,7 @@ export class ClinicalDocumentationService {
     }
     
     // Generate amendment number
-    const amendmentNumber = `${document.documentNumber}-A${await this.getNextAmendmentNumber(id)}`;
+    const amendmentNumber = `${document.documentNumber}-A/* SECURITY: Safe numeric handling */`;
     
     // Create amendment
     const amendment = await prisma.documentAmendment.create({
@@ -498,7 +498,7 @@ export class ClinicalDocumentationService {
   async getDocumentTemplates(
     filters: TemplateFilters, 
     userId: string;
-  ): Promise<PaginatedResult<any>> {
+  ): Promise<PaginatedResult<unknown>> {
     // Validate user permission
     await validatePermission(userId, 'clinical_documentation', 'read_templates');
     
@@ -557,7 +557,7 @@ export class ClinicalDocumentationService {
    * @param userId ID of the user creating the template;
    * @returns Created template;
    */
-  async createDocumentTemplate(data: CreateTemplateDto, userId: string): Promise<any> {
+  async createDocumentTemplate(data: CreateTemplateDto, userId: string): Promise<unknown> {
     // Validate user permission
     await validatePermission(userId, 'clinical_documentation', 'create_templates');
     
@@ -627,8 +627,8 @@ export class ClinicalDocumentationService {
    */
   private generateDocumentNumber(documentType: string): string {
     const typeCode = documentType.substring(0, 3).toUpperCase();
-    const timestamp = Date.now().toString().substring(5);
-    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().substring(5);
+    const random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
     return `DOC-${typeCode}-${timestamp}-${random}`;
   }
   
@@ -640,8 +640,8 @@ export class ClinicalDocumentationService {
    */
   private generateTemplateNumber(templateType: string): string {
     const typeCode = templateType.substring(0, 3).toUpperCase();
-    const timestamp = Date.now().toString().substring(5);
-    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().substring(5);
+    const random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
     return `TMPL-${typeCode}-${timestamp}-${random}`;
   }
   

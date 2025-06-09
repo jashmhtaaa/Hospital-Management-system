@@ -139,7 +139,7 @@ async const seedDatabase = () {
 
     // Create admin user
 \1,
-        password: '$2b$10$hashedpassword', // Should be properly hashed
+        password: process.env.MIGRATION_PASSWORD || 'secure-migration-password', // Should be properly hashed
         firstName: 'System',
         lastName: 'Administrator',
         role: 'ADMIN',

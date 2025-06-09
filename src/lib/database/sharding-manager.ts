@@ -513,7 +513,7 @@ export class ShardingManager {
   ): Promise<T[]> {
     try {
       const clients = this.getAllClientsForEntity(entityName, readOnly);
-      const startTime = performance.now();
+      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
       
       // Execute function on all shards in parallel
       const results = await Promise.all(
@@ -533,7 +533,7 @@ export class ShardingManager {
       // Flatten results
       const flatResults = results.flat();
       
-      const duration = performance.now() - startTime;
+      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       
       // Track metrics
       metricsCollector.recordTimer('database.sharding.cross_shard_execution_time', duration, {

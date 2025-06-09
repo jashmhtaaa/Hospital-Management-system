@@ -285,7 +285,7 @@ export default defineConfig({
     env: {
       NODE_ENV: 'test',
       DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/hms_test',
-      NEXTAUTH_SECRET: 'test-secret',
+      NEXTAUTH_SECRET: process.env.TEST_SECRET || 'secure-test-secret',
       NEXTAUTH_URL: 'http://localhost:3000',
     },
   },

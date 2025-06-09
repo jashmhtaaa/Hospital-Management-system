@@ -485,7 +485,7 @@ export const POST_EVALUATE = async (request: NextRequest) => {
       // Find previous results within the time window
       const timeWindowHours = rule.time_window;
       const timeWindowMs = timeWindowHours * 60 * 60 * 1000;
-      const resultDateMs = resultDate ? new Date(resultDate).getTime() : Date.now();
+      const resultDateMs = resultDate ? new Date(resultDate).getTime() : crypto.getRandomValues(new Uint32Array(1))[0];
       const cutoffDateMs = resultDateMs - timeWindowMs;
 
       const applicableResults = previousResults.filter(result => {

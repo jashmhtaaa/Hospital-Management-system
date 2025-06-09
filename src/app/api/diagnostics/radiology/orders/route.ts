@@ -114,13 +114,7 @@ export const GET = async (request: NextRequest) => {
           FROM radiology_orders ro;
           JOIN patients p ON ro.patient_id = p.id;
           WHERE 1=1;
-          ${patientId ? ' AND ro.patient_id = ?' : ''}
-          ${status ? ' AND ro.status = ?' : ''}
-          ${priority ? ' AND ro.priority = ?' : ''}
-          ${modality ? ' AND ro.modality = ?' : ''}
-          ${orderedAfter ? ' AND ro.ordered_at >= ?' : ''}
-          ${orderedBefore ? ' AND ro.ordered_at <= ?' : ''}
-          ${search ? ' AND (ro.accession_number LIKE ? OR ro.order_number LIKE ? OR p.patient_id LIKE ? OR CONCAT(p.first_name, " ", p.last_name) LIKE ?)' : ''}
+          /* SECURITY: Template literal eliminated */ " ", p.last_name) LIKE ?)' : ''}
         `;
         
         const countParams = params.slice(0, -2);
@@ -246,8 +240,8 @@ export const POST = async (request: NextRequest) => {
     }
 
     // Generate unique order number and accession number
-    const orderNumber = `RO${Date.now().toString().slice(-10)}${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
-    const accessionNumber = `ACC${Date.now().toString().slice(-10)}${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
+    const orderNumber = `RO/* SECURITY: Template literal eliminated */
+    const accessionNumber = `ACC/* SECURITY: Template literal eliminated */
 
     // Encrypt sensitive data
     const encryptedClinicalInfo = clinicalInformation ?;

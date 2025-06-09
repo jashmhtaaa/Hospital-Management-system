@@ -39,12 +39,12 @@ export class EventReplayService {
       }
       
       try {
-        const startTime = performance.now();
+        const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
         
         // Get all events for the aggregate
         await this.eventStore.replayEvents(aggregateId, aggregateType, handler);
         
-        const duration = performance.now() - startTime;
+        const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
         
         // Track metrics
         metricsCollector.recordTimer('event_replay.aggregate_replay_time', duration, {
@@ -109,12 +109,12 @@ export class EventReplayService {
       }
       
       try {
-        const startTime = performance.now();
+        const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
         
         // Get all events for the aggregate type and process in batches
         await this.eventStore.replayAllEvents(aggregateType, handler, batchSize);
         
-        const duration = performance.now() - startTime;
+        const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
         
         // Track metrics
         metricsCollector.recordTimer('event_replay.full_replay_time', duration, {
@@ -169,7 +169,7 @@ export class EventReplayService {
       }
       
       try {
-        const startTime = performance.now();
+        const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
         
         // Process each event type sequentially
         for (const eventType of eventTypes) {
@@ -197,7 +197,7 @@ export class EventReplayService {
           }
         }
         
-        const duration = performance.now() - startTime;
+        const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
         
         // Track metrics
         metricsCollector.recordTimer('event_replay.view_rebuild_time', duration, {
@@ -255,7 +255,7 @@ export class EventReplayService {
       }
       
       try {
-        const startTime = performance.now();
+        const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
         
         // Process each aggregate type in order
         for (const aggregateType of aggregateTypes) {
@@ -306,7 +306,7 @@ export class EventReplayService {
           logger.info(`Disaster recovery: Completed aggregate type ${aggregateType}`);
         }
         
-        const duration = performance.now() - startTime;
+        const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
         
         // Track metrics
         metricsCollector.recordTimer('event_replay.disaster_recovery_time', duration);

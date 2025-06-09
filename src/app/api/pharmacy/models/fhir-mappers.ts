@@ -373,7 +373,7 @@ export const medicationToFHIR = (medication: Medication): FHIRMedication {
     code: {
       coding: [
         {
-          system: 'http://hl7.org/fhir/sid/ndc',
+          system: 'https://hl7.org/fhir/sid/ndc',
           code: medication.ndc,
           display: medication.name
         }
@@ -387,7 +387,7 @@ export const medicationToFHIR = (medication: Medication): FHIRMedication {
     form: {
       coding: [
         {
-          system: 'http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
+          system: 'https://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
           code: medication.form.toLowerCase().replace(/\s+/g, '-'),
           display: medication.form
         }
@@ -398,13 +398,13 @@ export const medicationToFHIR = (medication: Medication): FHIRMedication {
       numerator: {
         value: medication.strength,
         unit: medication.unit,
-        system: 'http://unitsofmeasure.org',
+        system: 'https://unitsofmeasure.org',
         code: medication.unit
       },
       denominator: {
         value: 1,
         unit: 'unit',
-        system: 'http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
+        system: 'https://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
         code: 'unit'
       }
     }
@@ -417,8 +417,8 @@ export const medicationToFHIR = (medication: Medication): FHIRMedication {
  * @returns Domain medication model;
  */
 export const fhirToMedication = (fhirMedication: FHIRMedication): Medication {
-  const ndcCoding = fhirMedication.code.coding.find(c => c.system === 'http://hl7.org/fhir/sid/ndc')
-  const formCoding = fhirMedication.form?.coding.find(c => c.system === 'http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm')
+  const ndcCoding = fhirMedication.code.coding.find(c => c.system === 'https://hl7.org/fhir/sid/ndc')
+  const formCoding = fhirMedication.form?.coding.find(c => c.system === 'https://terminology.hl7.org/CodeSystem/v3-orderableDrugForm')
   
   return {
     id: fhirMedication.id,
@@ -484,7 +484,7 @@ export const medicationOrderToFHIR = (
           code: {
             coding: [
               {
-                system: 'http://terminology.hl7.org/CodeSystem/v3-TimingEvent',
+                system: 'https://terminology.hl7.org/CodeSystem/v3-TimingEvent',
                 code: order.frequency,
                 display: order.frequency
               }
@@ -495,7 +495,7 @@ export const medicationOrderToFHIR = (
         route: {
           coding: [
             {
-              system: 'http://terminology.hl7.org/CodeSystem/v3-RouteOfAdministration',
+              system: 'https://terminology.hl7.org/CodeSystem/v3-RouteOfAdministration',
               code: order.route.toLowerCase().replace(/\s+/g, '-'),
               display: order.route
             }
@@ -507,7 +507,7 @@ export const medicationOrderToFHIR = (
             doseQuantity: {
               value: dosageInfo.value as number || 1,
               unit: dosageInfo.unit as string || '',
-              system: 'http://unitsofmeasure.org',
+              system: 'https://unitsofmeasure.org',
               code: dosageInfo.unit as string || ''
             }
           }
@@ -524,13 +524,13 @@ export const medicationOrderToFHIR = (
       quantity: {
         value: dosageInfo.quantity as number || 1,
         unit: dosageInfo.unit as string || '',
-        system: 'http://unitsofmeasure.org',
+        system: 'https://unitsofmeasure.org',
         code: dosageInfo.unit as string || ''
       },
       expectedSupplyDuration: {
         value: parseInt(order.duration, 10) || 30,
         unit: 'days',
-        system: 'http://unitsofmeasure.org',
+        system: 'https://unitsofmeasure.org',
         code: 'd'
       }
     },
@@ -608,7 +608,7 @@ export const fhirToMedicationOrder = (fhirRequest: FHIRMedicationRequest): Medic
   // Determine duration
   let duration = '30 days'; // Default
   if (dispenseRequest?.expectedSupplyDuration) {
-    duration = `${dispenseRequest.expectedSupplyDuration.value} ${dispenseRequest.expectedSupplyDuration.unit}`;
+    duration = `/* SECURITY: Template literal eliminated */
   }
   
   // Extract frequency
@@ -683,13 +683,13 @@ export const medicationDispenseToFHIR = (
     quantity: {
       value: dispense.quantity,
       unit: 'unit',
-      system: 'http://unitsofmeasure.org',
+      system: 'https://unitsofmeasure.org',
       code: 'unit'
     },
     daysSupply: {
       value: dispense.daysSupply,
       unit: 'days',
-      system: 'http://unitsofmeasure.org',
+      system: 'https://unitsofmeasure.org',
       code: 'd'
     },
     whenPrepared: dispense.dispenseDate.toISOString(),
@@ -786,11 +786,11 @@ export const medicationAdministrationToFHIR = (
       reference: `MedicationRequest/${administration.prescriptionId}`;
     },
     dosage: {
-      text: `${administration.dosage} ${administration.unit} ${administration.route}`,
+      text: `/* SECURITY: Template literal eliminated */
       site: administration.site ? {
         coding: [
           {
-            system: 'http://terminology.hl7.org/CodeSystem/v3-BodySite',
+            system: 'https://terminology.hl7.org/CodeSystem/v3-BodySite',
             code: administration.site.toLowerCase().replace(/\s+/g, '-'),
             display: administration.site
           }
@@ -800,7 +800,7 @@ export const medicationAdministrationToFHIR = (
       route: {
         coding: [
           {
-            system: 'http://terminology.hl7.org/CodeSystem/v3-RouteOfAdministration',
+            system: 'https://terminology.hl7.org/CodeSystem/v3-RouteOfAdministration',
             code: administration.route.toLowerCase().replace(/\s+/g, '-'),
             display: administration.route
           }
@@ -810,7 +810,7 @@ export const medicationAdministrationToFHIR = (
       dose: {
         value: administration.dosage,
         unit: administration.unit,
-        system: 'http://unitsofmeasure.org',
+        system: 'https://unitsofmeasure.org',
         code: administration.unit
       }
     },

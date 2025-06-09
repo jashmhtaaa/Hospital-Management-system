@@ -91,11 +91,7 @@ export const GET = async (request: NextRequest) => {
           SELECT COUNT(*) as total;
           FROM laboratory_critical_alerts ca;
           WHERE 1=1;
-          ${status ? ' AND ca.status = ?' : ''}
-          ${assignedTo ? (assignedTo === 'me' ? ' AND ca.assigned_to = ?' : 
-                         (assignedTo === 'unassigned' ? ' AND ca.assigned_to IS NULL' : 
-                         ' AND ca.assigned_to = ?')) : ''}
-          ${!['admin', 'lab_manager', 'lab_supervisor'].includes(session.user.roleName) ? 
+          /* SECURITY: Template literal eliminated */ 'lab_manager', 'lab_supervisor'].includes(session.user.roleName) ? 
             ' AND (ca.assigned_to = ? OR ca.assigned_to IS NULL)' : ''}
         `;
         

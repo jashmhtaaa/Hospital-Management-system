@@ -100,7 +100,7 @@ export class FHIRObservationUtils {
       status: data.status || 'final',
       category: [{
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/observation-category',
+          system: 'https://terminology.hl7.org/CodeSystem/observation-category',
           code: 'vital-signs',
           display: 'Vital Signs'
         }]
@@ -136,7 +136,7 @@ export class FHIRObservationUtils {
         {
           code: {
             coding: [{
-              system: 'http://loinc.org',
+              system: 'https://loinc.org',
               code: '8480-6',
               display: 'Systolic blood pressure'
             }]
@@ -144,14 +144,14 @@ export class FHIRObservationUtils {
           value: {
             value: data.value.systolic,
             unit: data.unit,
-            system: 'http://unitsofmeasure.org',
+            system: 'https://unitsofmeasure.org',
             code: data.unit
           }
         },
         {
           code: {
             coding: [{
-              system: 'http://loinc.org',
+              system: 'https://loinc.org',
               code: '8462-4',
               display: 'Diastolic blood pressure'
             }]
@@ -159,7 +159,7 @@ export class FHIRObservationUtils {
           value: {
             value: data.value.diastolic,
             unit: data.unit,
-            system: 'http://unitsofmeasure.org',
+            system: 'https://unitsofmeasure.org',
             code: data.unit
           }
         }
@@ -169,7 +169,7 @@ export class FHIRObservationUtils {
       observation.value = {
         value: data.value,
         unit: data.unit,
-        system: 'http://unitsofmeasure.org',
+        system: 'https://unitsofmeasure.org',
         code: data.unit
       }
     }
@@ -199,14 +199,14 @@ export class FHIRObservationUtils {
       status: data.status || 'final',
       category: [{
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/observation-category',
+          system: 'https://terminology.hl7.org/CodeSystem/observation-category',
           code: 'laboratory',
           display: 'Laboratory'
         }]
       }],
       code: {
         coding: [{
-          system: 'http://loinc.org',
+          system: 'https://loinc.org',
           code: data.testCode,
           display: data.testName
         }]
@@ -248,7 +248,7 @@ export class FHIRObservationUtils {
       observation.value = {
         value: data.value,
         unit: data.unit,
-        system: 'http://unitsofmeasure.org',
+        system: 'https://unitsofmeasure.org',
         code: data.unit
       }
     } else {
@@ -259,7 +259,7 @@ export class FHIRObservationUtils {
     if (data.interpretation) {
       observation.interpretation = [{
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation',
+          system: 'https://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation',
           code: data.interpretation.toUpperCase(),
           display: data.interpretation.charAt(0).toUpperCase() + data.interpretation.slice(1)
         }]
@@ -273,7 +273,7 @@ export class FHIRObservationUtils {
           low: {
             value: data.referenceRange.low,
             unit: data.unit || '',
-            system: 'http://unitsofmeasure.org',
+            system: 'https://unitsofmeasure.org',
             code: data.unit || ''
           }
         }),
@@ -281,7 +281,7 @@ export class FHIRObservationUtils {
           high: {
             value: data.referenceRange.high,
             unit: data.unit || '',
-            system: 'http://unitsofmeasure.org',
+            system: 'https://unitsofmeasure.org',
             code: data.unit || ''
           }
         })
@@ -309,14 +309,14 @@ export class FHIRObservationUtils {
       status: data.status || 'final',
       category: [{
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/observation-category',
+          system: 'https://terminology.hl7.org/CodeSystem/observation-category',
           code: 'exam',
           display: 'Exam'
         }]
       }],
       code: {
         coding: [{
-          system: 'http://snomed.info/sct',
+          system: 'https://snomed.info/sct',
           code: data.assessmentCode,
           display: data.assessmentName
         }]
@@ -359,7 +359,7 @@ export class FHIRObservationUtils {
 
     return {
       coding: [{
-        system: 'http://loinc.org',
+        system: 'https://loinc.org',
         code: codeInfo.code,
         display: codeInfo.display
       }]

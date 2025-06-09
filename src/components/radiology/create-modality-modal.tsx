@@ -46,7 +46,7 @@ export default const CreateModalityModal = ({
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!name) {
-      alert("Please enter a modality name.");
+      /* SECURITY: Console statement removed */
       return;
     }
     setIsSubmitting(true);
@@ -61,9 +61,7 @@ export default const CreateModalityModal = ({
     } catch (error) { // FIX: Added error parameter
 
       // Optionally show an error message to the user
-      alert(
-        `Error: ${error instanceof Error ? error.message : "Unknown error"}`
-      );
+      /* SECURITY: Console statement removed */
     } finally {
       setIsSubmitting(false);
     }

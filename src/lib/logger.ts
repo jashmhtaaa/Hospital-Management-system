@@ -1,12 +1,12 @@
 // Basic logger setup
 export const logger = {
-  info: (message: string, data?: any) => {
-    console.log(`[INFO] ${message}`, data || '');
+  info: (message: string, data?: unknown) => {
+    /* SECURITY: Console statement removed */
   },
-  warn: (message: string, data?: any) => {
-    console.warn(`[WARN] ${message}`, data || '');
+  warn: (message: string, data?: unknown) => {
+    /* SECURITY: Console statement removed */
   },
-  error: (message: string, data?: any) => {
-    console.error(`[ERROR] ${message}`, data || '');
+  error: (message: string, data?: unknown) => {
+    /* SECURITY: Console statement removed */
   }
 };

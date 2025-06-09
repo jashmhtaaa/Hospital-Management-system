@@ -392,7 +392,7 @@ export class RBACService {
         userId,
         roleId: 'emergency_access',
         assignedBy: approvedBy,
-        expiresAt: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
+        expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 60 * 1000), // 30 minutes
         context: { emergency: true, reason }
       }, context);
 

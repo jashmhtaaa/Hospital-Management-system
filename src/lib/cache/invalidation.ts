@@ -7,7 +7,7 @@ export class CacheInvalidation {
    */
   static async invalidateTest(testId: number): Promise<void> {
     // Invalidate specific test
-    await RedisCache.delete(`${config.cache.prefix.test}${testId}`);
+    await RedisCache.delete(`/* SECURITY: Template literal eliminated */
     
     // Invalidate test lists
     await RedisCache.deletePattern(`${config.cache.prefix.test}list:*`);
@@ -21,7 +21,7 @@ export class CacheInvalidation {
    */
   static async invalidateSpecimen(specimenId: number): Promise<void> {
     // Invalidate specific specimen
-    await RedisCache.delete(`${config.cache.prefix.specimen}${specimenId}`);
+    await RedisCache.delete(`/* SECURITY: Template literal eliminated */
     
     // Invalidate specimen lists
     await RedisCache.deletePattern(`${config.cache.prefix.specimen}list:*`);
@@ -35,7 +35,7 @@ export class CacheInvalidation {
    */
   static async invalidateResult(resultId: number): Promise<void> {
     // Invalidate specific result
-    await RedisCache.delete(`${config.cache.prefix.result}${resultId}`);
+    await RedisCache.delete(`/* SECURITY: Template literal eliminated */
     
     // Invalidate result lists
     await RedisCache.deletePattern(`${config.cache.prefix.result}list:*`);
@@ -49,7 +49,7 @@ export class CacheInvalidation {
    */
   static async invalidateRadiologyOrder(orderId: number): Promise<void> {
     // Invalidate specific order
-    await RedisCache.delete(`${config.cache.prefix.radiologyOrder}${orderId}`);
+    await RedisCache.delete(`/* SECURITY: Template literal eliminated */
     
     // Invalidate order lists
     await RedisCache.deletePattern(`${config.cache.prefix.radiologyOrder}list:*`);
@@ -63,7 +63,7 @@ export class CacheInvalidation {
    */
   static async invalidateReport(reportId: number): Promise<void> {
     // Invalidate specific report
-    await RedisCache.delete(`${config.cache.prefix.report}${reportId}`);
+    await RedisCache.delete(`/* SECURITY: Template literal eliminated */
     
     // Invalidate report lists
     await RedisCache.deletePattern(`${config.cache.prefix.report}list: *`)

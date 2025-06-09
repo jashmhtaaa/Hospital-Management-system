@@ -266,11 +266,11 @@ class StressTestAuthenticator {
   private static authCache: { token: string; expiresAt: number } | null = null;
 
   static async authenticate(): Promise<string> {
-    if (this.authCache && Date.now() < this.authCache.expiresAt) {
+    if (this.authCache && crypto.getRandomValues(new Uint32Array(1))[0] < this.authCache.expiresAt) {
       return this.authCache.token;
     }
 
-    const authStartTime = Date.now();
+    const authStartTime = crypto.getRandomValues(new Uint32Array(1))[0];
     const loginResponse = http.post(
       `${CONFIG.baseUrl}/api/auth/login`,
       JSON.stringify(CONFIG.credentials),
@@ -285,7 +285,7 @@ class StressTestAuthenticator {
       }
     );
 
-    const authDuration = Date.now() - authStartTime;
+    const authDuration = crypto.getRandomValues(new Uint32Array(1))[0] - authStartTime;
 
     const authSuccess = check(loginResponse, {
       'stress auth successful': (r) => r.status === 200,
@@ -297,7 +297,7 @@ class StressTestAuthenticator {
     }
 
     const authData = loginResponse.json() as AuthenticationResponse;
-    const expiresAt = Date.now() + (authData.tokens.expiresIn * 1000) - 120000; // 2 minute buffer
+    const expiresAt = crypto.getRandomValues(new Uint32Array(1))[0] + (authData.tokens.expiresIn * 1000) - 120000; // 2 minute buffer
 
     this.authCache = {
       token: authData.tokens.accessToken,
@@ -320,7 +320,7 @@ class EnterpriseStressTester {
 
   constructor(authToken: string) {
     this.testId = uuidv4();
-    this.startTime = Date.now();
+    this.startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     this.headers = {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${authToken}`,
@@ -358,7 +358,7 @@ class EnterpriseStressTester {
   // Patient management stress testing
   stressTestPatientOperations(): void {
     group('Patient Management Stress Test', () => {
-      const patientStartTime = Date.now()
+      const patientStartTime = crypto.getRandomValues(new Uint32Array(1))[0]
       
       // Simulate heavy patient data access patterns
       const patientRequests = [
@@ -377,11 +377,11 @@ class EnterpriseStressTester {
         this.recordStressMetrics(response, `patient_stress_${index}`);
       });
 
-      const patientOperationTime = Date.now() - patientStartTime;
+      const patientOperationTime = crypto.getRandomValues(new Uint32Array(1))[0] - patientStartTime;
       patientDataAccessTime.add(patientOperationTime);
 
       // Create patient under stress (10% probability)
-      if (Math.random() < 0.1) {
+      if (crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) < 0.1) {
         this.createPatientUnderStress()
       }
     });
@@ -390,7 +390,7 @@ class EnterpriseStressTester {
   // Billing system stress testing
   stressTestBillingOperations(): void {
     group('Billing System Stress Test', () => {
-      const billingStartTime = Date.now()
+      const billingStartTime = crypto.getRandomValues(new Uint32Array(1))[0]
       
       // High-frequency billing operations that stress the system
       const billingRequests = [
@@ -410,11 +410,11 @@ class EnterpriseStressTester {
         this.recordStressMetrics(response, `billing_stress_${index}`);
       });
 
-      const billingOperationTime = Date.now() - billingStartTime;
+      const billingOperationTime = crypto.getRandomValues(new Uint32Array(1))[0] - billingStartTime;
       billingSystemStress.add(billingOperationTime);
 
       // Create bills under stress (15% probability)
-      if (Math.random() < 0.15) {
+      if (crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) < 0.15) {
         this.createBillUnderStress()
       }
     });
@@ -424,7 +424,7 @@ class EnterpriseStressTester {
   stressTestAppointmentOperations(): void {
     group('Appointment System Stress Test', () => {
       const today = new Date().toISOString().split('T')[0]
-      const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+      const tomorrow = new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
       const doctorId = `stress-doctor-${randomIntBetween(1, 50)}`;
       
       const appointmentRequests = [
@@ -524,7 +524,7 @@ class EnterpriseStressTester {
 
   // Utility methods for stress testing
   private makeRequest(endpoint: EndpointConfiguration): RefinedResponse<ResponseType | undefined> {
-    const requestStartTime = Date.now()
+    const requestStartTime = crypto.getRandomValues(new Uint32Array(1))[0]
     
     try {
       const response = http.request(
@@ -560,7 +560,7 @@ class EnterpriseStressTester {
       // Return a mock response for error handling
       return {
         status: 500,
-        timings: { duration: Date.now() - requestStartTime },
+        timings: { duration: crypto.getRandomValues(new Uint32Array(1))[0] - requestStartTime },
         body: JSON.stringify({ error: 'Request failed' }),
       } as RefinedResponse<ResponseType | undefined>
     }
@@ -644,7 +644,7 @@ class EnterpriseStressTester {
   private generateRandomDate(): string {
     const start = new Date(1950, 0, 1);
     const end = new Date(2010, 11, 31);
-    const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+    const date = new Date(start.getTime() + crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * (end.getTime() - start.getTime()));
     return date.toISOString().split('T')[0];
   }
 }

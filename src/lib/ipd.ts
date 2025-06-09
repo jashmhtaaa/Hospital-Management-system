@@ -96,7 +96,7 @@ export const createAdmissionInDB = async (
 
   // Return mock data as we can\u0027t get the real inserted record from mock DB
   const mockCreatedAdmission: Admission = {
-    id: Math.floor(Math.random() * 1000) + 1, // Mock ID
+    id: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) + 1, // Mock ID
 
     ...admissionData,
     admission_date: new Date().toISOString(),

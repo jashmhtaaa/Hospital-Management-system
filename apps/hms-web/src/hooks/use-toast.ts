@@ -22,7 +22,7 @@ export const useToast = () {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const toast = useCallback((options: ToastOptions) => {
-    const id = Math.random().toString(36).substring(2, 9);
+    const id = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 9);
     const newToast: Toast = {
       id,
       title: options.title,

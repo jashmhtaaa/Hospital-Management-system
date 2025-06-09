@@ -737,7 +737,7 @@ export class PredictiveAnalyticsService {
       // Create model
       const newModel: PredictiveModel = {
         ...model,
-        id: `model-${Date.now()}`,
+        id: `model-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         created: new Date(),
         updated: new Date(),
         createdBy: userId,
@@ -1086,7 +1086,7 @@ export class PredictiveAnalyticsService {
     } = {}
   ): Promise<ReadmissionRisk> {
     try {
-      const startTime = performance.now();
+      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
       
       // Set defaults
       const timeHorizon = options.timeHorizon || 30;
@@ -1120,7 +1120,7 @@ export class PredictiveAnalyticsService {
 
       // Create ReadmissionRisk object
       const readmissionRisk: ReadmissionRisk = {
-        id: `readmission-risk-${Date.now()}`,
+        id: `readmission-risk-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         patientId,
         encounterId: options.encounterId,
         timestamp: new Date(),
@@ -1156,7 +1156,7 @@ export class PredictiveAnalyticsService {
       }
 
       // Record metrics
-      const duration = performance.now() - startTime;
+      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       metricsCollector.recordTimer('analytics.readmission_prediction_time', duration);
       metricsCollector.incrementCounter('analytics.readmission_predictions', 1, {
         riskLevel: readmissionRisk.riskLevel,
@@ -1202,7 +1202,7 @@ export class PredictiveAnalyticsService {
     } = {}
   ): Promise<LengthOfStayPrediction> {
     try {
-      const startTime = performance.now();
+      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
       
       // Set defaults
       const includeInterventions = options.includeInterventions !== false;
@@ -1241,7 +1241,7 @@ export class PredictiveAnalyticsService {
 
       // Create LengthOfStayPrediction object
       const losPrediction: LengthOfStayPrediction = {
-        id: `los-prediction-${Date.now()}`,
+        id: `los-prediction-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         patientId,
         encounterId,
         timestamp: new Date(),
@@ -1279,7 +1279,7 @@ export class PredictiveAnalyticsService {
       }
 
       // Record metrics
-      const duration = performance.now() - startTime;
+      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       metricsCollector.recordTimer('analytics.los_prediction_time', duration);
       metricsCollector.incrementCounter('analytics.los_predictions', 1, {
         category: losPrediction.predictionCategory,
@@ -1329,7 +1329,7 @@ export class PredictiveAnalyticsService {
     }
   ): Promise<CensusForecast> {
     try {
-      const startTime = performance.now();
+      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
       
       // Set defaults
       const aggregation = options.aggregation || 'DAILY';
@@ -1386,7 +1386,7 @@ export class PredictiveAnalyticsService {
 
       // Create CensusForecast object
       const censusForecast: CensusForecast = {
-        id: `census-forecast-${Date.now()}`,
+        id: `census-forecast-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         facilityId: options.facilityId,
         unitId: options.unitId,
         serviceLineId: options.serviceLineId,
@@ -1433,7 +1433,7 @@ export class PredictiveAnalyticsService {
       }
 
       // Record metrics
-      const duration = performance.now() - startTime;
+      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       metricsCollector.recordTimer('analytics.census_forecast_time', duration);
       metricsCollector.incrementCounter('analytics.census_forecasts', 1, {
         facilityId: options.facilityId,
@@ -1488,7 +1488,7 @@ export class PredictiveAnalyticsService {
     } = {}
   ): Promise<CostPrediction> {
     try {
-      const startTime = performance.now();
+      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
       
       // Set defaults
       const includeReimbursement = options.includeReimbursement !== false;
@@ -1524,7 +1524,7 @@ export class PredictiveAnalyticsService {
 
       // Create CostPrediction object
       const costPrediction: CostPrediction = {
-        id: `cost-prediction-${Date.now()}`,
+        id: `cost-prediction-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         patientId,
         encounterId: options.encounterId,
         timestamp: new Date(),
@@ -1565,7 +1565,7 @@ export class PredictiveAnalyticsService {
       }
 
       // Record metrics
-      const duration = performance.now() - startTime;
+      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       metricsCollector.recordTimer('analytics.cost_prediction_time', duration);
       metricsCollector.incrementCounter('analytics.cost_predictions', 1, {
         riskLevel: costPrediction.riskLevel,
@@ -1805,7 +1805,7 @@ export class PredictiveAnalyticsService {
   ): Promise<{ jobId: string; estimatedCompletionTime: Date }> {
     // This would be implemented to start an actual training job
     // Here we just simulate a job
-    const jobId = `training-job-${Date.now()}`;
+    const jobId = `training-job-${crypto.getRandomValues(new Uint32Array(1))[0]}`;
     const estimatedCompletionTime = new Date();
     estimatedCompletionTime.setHours(estimatedCompletionTime.getHours() + 2);
     
@@ -1818,7 +1818,7 @@ export class PredictiveAnalyticsService {
   ): Promise<{ jobId: string; estimatedCompletionTime: Date }> {
     // This would be implemented to start an actual deployment job
     // Here we just simulate a job
-    const jobId = `deployment-job-${Date.now()}`;
+    const jobId = `deployment-job-${crypto.getRandomValues(new Uint32Array(1))[0]}`;
     const estimatedCompletionTime = new Date();
     estimatedCompletionTime.setMinutes(estimatedCompletionTime.getMinutes() + 30);
     
@@ -2005,7 +2005,7 @@ export class PredictiveAnalyticsService {
 
   // Mock data generators for demonstration
   private generateMockReadmissionPrediction(payload: unknown): unknown {
-    const riskScore = Math.floor(Math.random() * 100);
+    const riskScore = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100);
     const probability = riskScore / 100;
     
     return {
@@ -2056,7 +2056,7 @@ export class PredictiveAnalyticsService {
       ],
       recommendedInterventions: [
         {
-          id: `intervention-${Date.now()}-1`,
+          id: `intervention-${crypto.getRandomValues(new Uint32Array(1))[0]}-1`,
           name: 'Medication Reconciliation',
           description: 'Complete thorough medication reconciliation before discharge',
           type: 'MEDICATION',
@@ -2070,7 +2070,7 @@ export class PredictiveAnalyticsService {
           recommendationStrength: 'STRONG',
         },
         {
-          id: `intervention-${Date.now()}-2`,
+          id: `intervention-${crypto.getRandomValues(new Uint32Array(1))[0]}-2`,
           name: 'Follow-up Appointment',
           description: 'Schedule follow-up appointment within 7 days of discharge',
           type: 'FOLLOW_UP',
@@ -2107,8 +2107,8 @@ export class PredictiveAnalyticsService {
   }
 
   private generateMockLOSPrediction(payload: unknown): unknown {
-    const predictedLOS = Math.floor(Math.random() * 10) + 3;
-    const optimizedLOS = Math.max(2, predictedLOS - Math.floor(Math.random() * 3));
+    const predictedLOS = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10) + 3;
+    const optimizedLOS = Math.max(2, predictedLOS - Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 3));
     
     return {
       predictedLOS,
@@ -2149,7 +2149,7 @@ export class PredictiveAnalyticsService {
       ],
       interventions: [
         {
-          id: `los-intervention-${Date.now()}-1`,
+          id: `los-intervention-${crypto.getRandomValues(new Uint32Array(1))[0]}-1`,
           name: 'Early Discharge Planning',
           description: 'Initiate discharge planning on admission',
           type: 'CARE_COORDINATION',
@@ -2160,7 +2160,7 @@ export class PredictiveAnalyticsService {
           priority: 'HIGH',
         },
         {
-          id: `los-intervention-${Date.now()}-2`,
+          id: `los-intervention-${crypto.getRandomValues(new Uint32Array(1))[0]}-2`,
           name: 'SNF Pre-Booking',
           description: 'Pre-book SNF bed for anticipated needs',
           type: 'ADMINISTRATIVE',
@@ -2173,7 +2173,7 @@ export class PredictiveAnalyticsService {
       ],
       dischargeBarriers: [
         {
-          id: `barrier-${Date.now()}-1`,
+          id: `barrier-${crypto.getRandomValues(new Uint32Array(1))[0]}-1`,
           name: 'Insurance Authorization',
           category: 'ADMINISTRATIVE',
           description: 'Pending insurance authorization for SNF',
@@ -2220,7 +2220,7 @@ export class PredictiveAnalyticsService {
     let currentDate = new Date(startDate);
     
     // Base census value that will fluctuate
-    const baseCensus = 80 + Math.floor(Math.random() * 20);
+    const baseCensus = 80 + Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 20);
     const bedCapacity = 100;
     
     // Generate intervals
@@ -2229,13 +2229,13 @@ export class PredictiveAnalyticsService {
       const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
       
       // Create random fluctuations with weekend pattern
-      const randomFactor = Math.random() * 10 - 5;
+      const randomFactor = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10 - 5;
       const weekendFactor = isWeekend ? -10 : 0;
       const predictedCensus = Math.max(50, Math.min(120, baseCensus + randomFactor + weekendFactor));
       
       // Random admissions and discharges
-      const admissions = Math.floor(Math.random() * 15) + 5;
-      const discharges = Math.floor(Math.random() * 15) + 5;
+      const admissions = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 15) + 5;
+      const discharges = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 15) + 5;
       
       // Calculate status based on capacity
       let status = 'NORMAL';
@@ -2256,8 +2256,8 @@ export class PredictiveAnalyticsService {
         admissions,
         discharges,
         transfers: {
-          in: Math.floor(Math.random() * 5),
-          out: Math.floor(Math.random() * 5),
+          in: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 5),
+          out: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 5),
         },
         confidenceInterval: [Math.max(40, predictedCensus - 10), Math.min(130, predictedCensus + 10)],
         occupancyRate: (predictedCensus / bedCapacity) * 100,
@@ -2372,7 +2372,7 @@ export class PredictiveAnalyticsService {
   }
 
   private generateMockCostPrediction(payload: unknown): unknown {
-    const predictedTotalCost = 5000 + Math.floor(Math.random() * 20000);
+    const predictedTotalCost = 5000 + Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 20000);
     
     return {
       predictedTotalCost,
@@ -2441,7 +2441,7 @@ export class PredictiveAnalyticsService {
       ],
       potentialSavings: [
         {
-          id: `saving-${Date.now()}-1`,
+          id: `saving-${crypto.getRandomValues(new Uint32Array(1))[0]}-1`,
           category: 'Length of Stay',
           description: 'Reduce LOS by 1 day through early discharge planning',
           potentialSavings: predictedTotalCost * 0.1,
@@ -2452,7 +2452,7 @@ export class PredictiveAnalyticsService {
           evidenceLevel: 'HIGH',
         },
         {
-          id: `saving-${Date.now()}-2`,
+          id: `saving-${crypto.getRandomValues(new Uint32Array(1))[0]}-2`,
           category: 'Pharmacy',
           description: 'Use formulary alternatives for high-cost medications',
           potentialSavings: predictedTotalCost * 0.05,

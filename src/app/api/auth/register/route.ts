@@ -80,7 +80,7 @@ export const POST = async (request: Request) => {
     const newUserId = meta.last_row_id;
     if (newUserId === undefined || newUserId === null) {
         // Optionally handle this case, maybe return success without ID or throw
-        console.warn("User created but no ID returned");
+        /* SECURITY: Console statement removed */
     }
     return new Response(JSON.stringify({ message: "User registered successfully", userId: newUserId }), {
       status: 201, // Created

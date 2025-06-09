@@ -35,7 +35,7 @@ export const GET = async (request: NextRequest) => {
       user: {
         id: user.id,
         email: userDetails.email,
-        name: `${userDetails.first_name} ${userDetails.last_name}`,
+        name: `/* SECURITY: Template literal eliminated */
         firstName: userDetails.first_name,
         lastName: userDetails.last_name,
         role: userDetails.role, // This now uses the corrected role from userDetails

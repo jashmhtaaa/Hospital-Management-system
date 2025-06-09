@@ -257,7 +257,7 @@ export class GraphQLFederation {
       const keys = await this.redis.keys(pattern);
       if (keys.length > 0) {
         await this.redis.del(...keys);
-        this.logger.debug(`Invalidated ${keys.length} cache entries for ${typename}${id ? ':' + id : ''}`);
+        this.logger.debug(`Invalidated ${keys.length} cache entries for /* SECURITY: Template literal eliminated */
       }
     } catch (error) {
       this.logger.error('Error invalidating GraphQL cache', { error, typename, id });

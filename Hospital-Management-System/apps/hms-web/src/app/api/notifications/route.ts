@@ -76,7 +76,7 @@ class PushNotificationService {
             break;
         }
       } catch (error) {
-        console.error(`Failed to send ${channel} notification:`, error);
+        /* SECURITY: Console statement removed */
       }
     }
 
@@ -268,7 +268,7 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json({ success: true, result });
   } catch (error) {
-    console.error('Notification send error:', error);
+    /* SECURITY: Console statement removed */
     return NextResponse.json({ error: 'Failed to send notification' }, { status: 500 });
   }
 };
@@ -287,7 +287,7 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json({ success: true, results });
   } catch (error) {
-    console.error('Bulk notification error:', error);
+    /* SECURITY: Console statement removed */
     return NextResponse.json({ error: 'Failed to send bulk notifications' }, { status: 500 });
   }
 };

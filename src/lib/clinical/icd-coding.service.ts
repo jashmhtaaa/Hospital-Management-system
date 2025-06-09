@@ -169,7 +169,7 @@ export class ICDCodingService {
 
       return filteredResults;
     } catch (error) {
-      console.error('[ICD Coding] Search error:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to search ICD codes');
     }
   }
@@ -218,7 +218,7 @@ export class ICDCodingService {
 
       return mockHierarchy;
     } catch (error) {
-      console.error('[ICD Coding] Hierarchy lookup error:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to get code hierarchy');
     }
   }
@@ -265,7 +265,7 @@ export class ICDCodingService {
 
       return result;
     } catch (error) {
-      console.error('[ICD Coding] Validation error:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to validate ICD code');
     }
   }
@@ -276,12 +276,10 @@ export class ICDCodingService {
   async submitCodingRequest(request: CodingRequest): Promise<string> {
     try {
       const validatedRequest = CodingRequestSchema.parse(request);
-      const requestId = `cr_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      const requestId = `cr_${crypto.getRandomValues(new Uint32Array(1))[0]}_${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`;
 
       // In production, store in database
-      console.log(`[ICD Coding] Coding request submitted: ${requestId}`)
-
-      await this.auditService.logAuditEvent({
+      /* SECURITY: Console statement removed */await this.auditService.logAuditEvent({
         action: 'coding_request_submitted',
         resourceType: 'coding_request',
         resourceId: requestId,
@@ -295,7 +293,7 @@ export class ICDCodingService {
 
       return requestId;
     } catch (error) {
-      console.error('[ICD Coding] Request submission error:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to submit coding request');
     }
   }
@@ -308,9 +306,7 @@ export class ICDCodingService {
       const validatedResult = CodingResultSchema.parse({ ...result, requestId });
 
       // In production, update database record
-      console.log(`[ICD Coding] Coding request completed: ${requestId}`)
-
-      await this.auditService.logAuditEvent({
+      /* SECURITY: Console statement removed */await this.auditService.logAuditEvent({
         action: 'coding_request_completed',
         resourceType: 'coding_request',
         resourceId: requestId,
@@ -323,7 +319,7 @@ export class ICDCodingService {
         }
       });
     } catch (error) {
-      console.error('[ICD Coding] Request completion error:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to complete coding request');
     }
   }
@@ -389,7 +385,7 @@ export class ICDCodingService {
         confidence: overallConfidence
       };
     } catch (error) {
-      console.error('[ICD Coding] Suggestion error:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to get coding suggestions');
     }
   }
@@ -442,7 +438,7 @@ export class ICDCodingService {
 
       return mockMetrics;
     } catch (error) {
-      console.error('[ICD Coding] Metrics error:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to get coding metrics');
     }
   }

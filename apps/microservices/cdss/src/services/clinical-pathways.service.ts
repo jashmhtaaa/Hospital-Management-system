@@ -734,7 +734,7 @@ export class ClinicalPathwaysService {
       const newPathway = await this.prisma.clinicalPathway.create({
         data: {
           ...pathway,
-          id: `pathway-${Date.now()}`,
+          id: `pathway-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -887,7 +887,7 @@ export class ClinicalPathwaysService {
 
       // Create patient pathway
       const patientPathway: PatientPathway = {
-        id: `patient-pathway-${Date.now()}`,
+        id: `patient-pathway-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         patientId,
         encounterId,
         pathwayId,
@@ -1150,7 +1150,7 @@ export class ClinicalPathwaysService {
 
       // Create variance
       const newVariance: PatientPathwayVariance = {
-        id: `variance-${Date.now()}`,
+        id: `variance-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         ...variance,
         detectionDate: new Date(),
         detectedBy: userId,
@@ -1295,7 +1295,7 @@ export class ClinicalPathwaysService {
       const newOrderSet = await this.prisma.orderSet.create({
         data: {
           ...orderSet,
-          id: `order-set-${Date.now()}`,
+          id: `order-set-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
           createdAt: new Date(),
           updatedAt: new Date(),
           createdBy: userId,

@@ -101,7 +101,7 @@ async const createLabOrderInDB = (orderData: LabOrderInput): Promise<LabOrder> {
   // Added return type
 
   const database = await getDB();
-  const newId = Math.floor(Math.random() * 10_000) + 1;
+  const newId = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10_000) + 1;
   const orderNumber = `LAB-${new Date().toISOString().split("T")[0].replaceAll("-", "")}-${String(newId).padStart(3, "0")}`;
 
   await database.query("INSERT INTO lab_orders (...) VALUES (...)", []);

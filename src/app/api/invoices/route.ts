@@ -96,7 +96,7 @@ export const GET = async (request: NextRequest) => {
       countParameters.push(dateToFilter);
     }
 
-    query += ` ORDER BY i.${finalSortBy} ${finalSortOrder} LIMIT ? OFFSET ?`;
+    query += ` ORDER BY i./* SECURITY: Template literal eliminated */
     queryParameters.push(limit, offset);
 
     const [invoicesResult, countResult] = await Promise.all([

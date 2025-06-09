@@ -9,7 +9,7 @@ import { sendErrorResponse, sendSuccessResponse } from "@/lib/apiResponseUtils";
 const prisma = new PrismaClient();
 
 export async const GET = (request: NextRequest) => {
-  const start = Date.now();
+  const start = crypto.getRandomValues(new Uint32Array(1))[0];
   let userId: string | undefined;
   try {
     const currentUser = await getCurrentUser(request);
@@ -33,13 +33,13 @@ export async const GET = (request: NextRequest) => {
     })
 
     await auditLogService.logEvent(userId, "LIS_VIEW_ALL_TESTS_SUCCESS", { path: request.nextUrl.pathname, count: labTestItems.length });
-    const duration = Date.now() - start;
+    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
     // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement
     return sendSuccessResponse(labTestItems)
   } catch (error: unknown) {
 
     await auditLogService.logEvent(userId, "LIS_VIEW_ALL_TESTS_FAILED", { path: request.nextUrl.pathname, error: String(error.message) })
-    const duration = Date.now() - start;
+    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
 
     return sendErrorResponse("Internal Server Error", 500, String(error.message));
   }
@@ -54,7 +54,7 @@ const createLabTestItemSchema = z.object({
 });
 
 export async const POST = (request: NextRequest) => {
-  const start = Date.now();
+  const start = crypto.getRandomValues(new Uint32Array(1))[0];
   let userId: string | undefined;
 
   try {
@@ -98,7 +98,7 @@ export async const POST = (request: NextRequest) => {
 
     // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement
     await auditLogService.logEvent(userId, "LIS_CREATE_TEST_DEFINITION_SUCCESS", { path: request.nextUrl.pathname, testItemId: newLabTestItem.id, data: newLabTestItem })
-    const duration = Date.now() - start;
+    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
     // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement
     return sendSuccessResponse(newLabTestItem, 201)
 
@@ -119,7 +119,7 @@ export async const POST = (request: NextRequest) => {
       }
     }
     await auditLogService.logEvent(userId, "LIS_CREATE_TEST_DEFINITION_FAILED", { path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) });
-    const duration = Date.now() - start;
+    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
 
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }

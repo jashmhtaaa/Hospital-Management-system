@@ -33,7 +33,7 @@ interface HealthCheck {
   error?: string;
 export const GET = async (request: NextRequest): Promise<NextResponse> {
   try {
-    const startTime = Date.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     
     // Perform all health checks in parallel
     const [
@@ -70,7 +70,7 @@ export const GET = async (request: NextRequest): Promise<NextResponse> {
       checks;
     };
 
-    const responseTime = Date.now() - startTime;
+    const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
     
     // Set appropriate HTTP status code
     const statusCode = overallStatus === 'healthy' ? 200 : 
@@ -96,14 +96,14 @@ export const GET = async (request: NextRequest): Promise<NextResponse> {
 }
 
 async const checkDatabase = (): Promise<HealthCheck> {
-  const startTime = Date.now();
+  const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
   
   try {
     // Simple query to check database connectivity
     await prisma.$queryRaw`SELECT 1 as healthy`;
     
     // Check for slow queries or connection issues
-    const responseTime = Date.now() - startTime;
+    const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
     
     return {
       status: responseTime < 1000 ? 'pass' : 'warn',
@@ -117,16 +117,16 @@ async const checkDatabase = (): Promise<HealthCheck> {
     return {
       status: 'fail',
       error: error.message,
-      responseTime: Date.now() - startTime
+      responseTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime
     };
   }
 }
 
 async const checkCache = (): Promise<HealthCheck> {
-  const startTime = Date.now();
+  const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
   
   try {
-    const testKey = 'health-check-' + Date.now();
+    const testKey = 'health-check-' + crypto.getRandomValues(new Uint32Array(1))[0];
     const testValue = 'ok';
     
     // Test cache write and read
@@ -134,7 +134,7 @@ async const checkCache = (): Promise<HealthCheck> {
     const retrievedValue = await cache.get(testKey);
     await cache.del(testKey);
     
-    const responseTime = Date.now() - startTime;
+    const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
     
     if (retrievedValue === testValue) {
       return {
@@ -156,7 +156,7 @@ async const checkCache = (): Promise<HealthCheck> {
     return {
       status: 'fail',
       error: error.message,
-      responseTime: Date.now() - startTime
+      responseTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime
     };
   }
 }

@@ -42,7 +42,7 @@ export interface QualityPersistenceConfig {
 export class QualityPersistenceService {
   private prisma: PrismaClient
   private auditService: AuditService;
-  private encryptionService: any;
+  private encryptionService: unknown;
   private config: QualityPersistenceConfig;
 
   constructor(config?: Partial<QualityPersistenceConfig>) {
@@ -100,7 +100,7 @@ export class QualityPersistenceService {
         });
       }
     } catch (error) {
-      console.error('[Quality Persistence] Error saving indicator:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to save quality indicator');
     }
   }
@@ -120,7 +120,7 @@ export class QualityPersistenceService {
         try {
           indicator.metadata = JSON.parse(await this.decryptData(indicator.metadata))
         } catch (error) {
-          console.warn('[Quality Persistence] Failed to decrypt metadata:', error);
+          /* SECURITY: Console statement removed */
           indicator.metadata = {};
         }
       }
@@ -137,7 +137,7 @@ export class QualityPersistenceService {
 
       return indicator;
     } catch (error) {
-      console.error('[Quality Persistence] Error retrieving indicator:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to retrieve quality indicator');
     }
   }
@@ -150,7 +150,7 @@ export class QualityPersistenceService {
     dateTo?: Date;
   }, userId?: string): Promise<QualityIndicator[]> {
     try {
-      const where: any = {};
+      const where: unknown = {};
 
       if (filters?.type) where.type = filters.type;
       if (filters?.department) where.department = filters.department;
@@ -166,7 +166,7 @@ export class QualityPersistenceService {
         orderBy: { createdAt: 'desc' }
       });
 
-      const indicators = await Promise.all(records.map(async (record: any) => {
+      const indicators = await Promise.all(records.map(async (record: unknown) => {
         let indicator = { ...record };
 
         // Decrypt metadata if encrypted
@@ -196,7 +196,7 @@ export class QualityPersistenceService {
 
       return indicators;
     } catch (error) {
-      console.error('[Quality Persistence] Error retrieving indicators:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to retrieve quality indicators');
     }
   }
@@ -246,7 +246,7 @@ export class QualityPersistenceService {
         });
       }
     } catch (error) {
-      console.error('[Quality Persistence] Error saving event:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to save quality event');
     }
   }
@@ -260,7 +260,7 @@ export class QualityPersistenceService {
     dateTo?: Date;
   }, userId?: string): Promise<QualityEvent[]> {
     try {
-      const where: any = {};
+      const where: unknown = {};
 
       if (filters?.type) where.type = filters.type;
       if (filters?.severity) where.severity = filters.severity;
@@ -277,7 +277,7 @@ export class QualityPersistenceService {
         orderBy: { eventDate: 'desc' }
       });
 
-      const events = await Promise.all(records.map(async (record: any) => {
+      const events = await Promise.all(records.map(async (record: unknown) => {
         let event = { ...record };
 
         // Decrypt sensitive fields
@@ -316,7 +316,7 @@ export class QualityPersistenceService {
 
       return events;
     } catch (error) {
-      console.error('[Quality Persistence] Error retrieving events:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to retrieve quality events');
     }
   }
@@ -366,7 +366,7 @@ export class QualityPersistenceService {
         });
       }
     } catch (error) {
-      console.error('[Quality Persistence] Error saving assessment:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to save quality assessment');
     }
   }
@@ -420,7 +420,7 @@ export class QualityPersistenceService {
         });
       }
     } catch (error) {
-      console.error('[Quality Persistence] Error saving compliance report:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to save compliance report');
     }
   }
@@ -433,7 +433,7 @@ export class QualityPersistenceService {
     dateTo?: Date;
   }, userId?: string): Promise<ComplianceReport[]> {
     try {
-      const where: any = {};
+      const where: unknown = {};
 
       if (filters?.regulatoryBody) where.regulatoryBody = filters.regulatoryBody;
       if (filters?.standard) where.standard = filters.standard;
@@ -449,7 +449,7 @@ export class QualityPersistenceService {
         orderBy: { reportDate: 'desc' }
       });
 
-      const reports = await Promise.all(records.map(async (record: any) => {
+      const reports = await Promise.all(records.map(async (record: unknown) => {
         let report = { ...record };
 
         // Decrypt sensitive fields
@@ -495,7 +495,7 @@ export class QualityPersistenceService {
 
       return reports;
     } catch (error) {
-      console.error('[Quality Persistence] Error retrieving compliance reports:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to retrieve compliance reports');
     }
   }
@@ -533,7 +533,7 @@ export class QualityPersistenceService {
         });
       }
     } catch (error) {
-      console.error('[Quality Persistence] Error saving action plan:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to save action plan');
     }
   }
@@ -571,7 +571,7 @@ export class QualityPersistenceService {
         });
       }
     } catch (error) {
-      console.error('[Quality Persistence] Error saving metric:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to save quality metric');
     }
   }
@@ -628,7 +628,7 @@ export class QualityPersistenceService {
         archivedReports: reports.count
       };
     } catch (error) {
-      console.error('[Quality Persistence] Error archiving records:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to archive old records');
     }
   }

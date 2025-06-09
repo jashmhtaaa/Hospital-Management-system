@@ -142,20 +142,7 @@ export default const AddQualification = ({ params }: { params: { id: string } })
       <div className="flex flex-col gap-2">;
         <h1 className="text-3xl font-bold">Add Qualification</h1>;
         <p className="text-muted-foreground">;
-          {employee ? `Add a qualification for ${employee.firstName} ${employee.lastName}` : 'Add a qualification to employee record'}
-        </p>
-      </div>
-      
-      <Card>
-        <CardHeader>
-          <CardTitle>Qualification Details</CardTitle>
-          <CardDescription>
-            Enter the qualification or certification details
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">;
+          {employee ? `Add a qualification for /* SECURITY: Template literal eliminated */
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
                 <FormField>
                   control={form.control}

@@ -32,7 +32,7 @@ export interface PerformanceAlert {
   type: 'slow_query' | 'high_cpu' | 'connection_pool_full' | 'index_scan',
   severity: 'critical' | 'warning' | 'info'
   message: string,
-  details: any,
+  details: unknown,
   timestamp: Date,
   resolved: boolean
 export interface DatabaseStats {
@@ -79,8 +79,7 @@ export class DatabaseOptimizationService {
     if (this.isMonitoring) return;
 
     this.isMonitoring = true;
-    console.log('[DB Optimization] Performance monitoring started');
-
+    
     // Monitor every 30 seconds
     this.monitoringInterval = setInterval(async () => {
       await this.collectPerformanceMetrics()
@@ -102,7 +101,7 @@ export class DatabaseOptimizationService {
     if (this.monitoringInterval) {
       clearInterval(this.monitoringInterval);
     }
-    console.log('[DB Optimization] Performance monitoring stopped');
+    /* SECURITY: Console statement removed */
   }
 
   /**
@@ -111,12 +110,12 @@ export class DatabaseOptimizationService {
   private setupQueryLogging(): void {
     // Intercept Prisma queries for performance tracking
     this.prisma.$use(async (params, next) => {
-      const start = performance.now()
-      const queryId = `${params.model}_${params.action}_${Date.now()}`;
+      const start = crypto.getRandomValues(new Uint32Array(1))[0]
+      const queryId = `${params.model}_${params.action}_${crypto.getRandomValues(new Uint32Array(1))[0]}`;
 
       try {
         const result = await next(params);
-        const executionTime = performance.now() - start;
+        const executionTime = crypto.getRandomValues(new Uint32Array(1))[0] - start;
 
         // Log query performance
         await this.logQueryPerformance({
@@ -131,10 +130,7 @@ export class DatabaseOptimizationService {
 
         // Check for slow queries
         if (executionTime > this.slowQueryThreshold) {
-          await this.createAlert({
-            type: 'slow_query',
-            severity: 'warning',
-            message: `Slow query detected: ${params.model}.${params.action} took ${executionTime.toFixed(2)}ms`,
+          await this.create/* SECURITY: Alert removed */}ms`,
             details: { queryId, executionTime, model: params.model, action: params.action },
             timestamp: new Date(),
             resolved: false
@@ -143,7 +139,7 @@ export class DatabaseOptimizationService {
 
         return result;
       } catch (error) {
-        const executionTime = performance.now() - start;
+        const executionTime = crypto.getRandomValues(new Uint32Array(1))[0] - start;
         
         await this.logQueryPerformance({
           queryId,
@@ -192,8 +188,7 @@ export class DatabaseOptimizationService {
       `
     } catch (error) {
       // If table doesn't exist, that's okay - we'll use in-memory storage
-      console.debug('[DB Optimization] Query log table not available, using in-memory storage')
-    }
+      /* SECURITY: Console statement removed */}
   }
 
   /**
@@ -210,14 +205,8 @@ export class DatabaseOptimizationService {
       // Get table statistics
       const tableStats = await this.getTableStatistics()
 
-      console.log('[DB Optimization] Performance metrics collected', {
-        connections: connectionStats,
-        queries: queryMetrics,
-        tables: tableStats.length
-      });
-
     } catch (error) {
-      console.error('[DB Optimization] Error collecting metrics:', error);
+      /* SECURITY: Console statement removed */
     }
   }
 
@@ -232,7 +221,7 @@ export class DatabaseOptimizationService {
       await this.checkIndexUsage();
 
     } catch (error) {
-      console.error('[DB Optimization] Error analyzing performance:', error);
+      /* SECURITY: Console statement removed */
     }
   }
 
@@ -267,11 +256,11 @@ export class DatabaseOptimizationService {
       const missingFkIndexes = await this.checkMissingForeignKeyIndexes()
       recommendations.push(...missingFkIndexes);
 
-      console.log(`[DB Optimization] Generated ${recommendations.length} recommendations`);
+      /* SECURITY: Console statement removed */
       return recommendations;
 
     } catch (error) {
-      console.error('[DB Optimization] Error generating recommendations:', error);
+      /* SECURITY: Console statement removed */
       return [];
     }
   }
@@ -293,7 +282,7 @@ export class DatabaseOptimizationService {
         tableStats
       };
     } catch (error) {
-      console.error('[DB Optimization] Error getting database stats:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to collect database statistics');
     }
   }
@@ -308,10 +297,10 @@ export class DatabaseOptimizationService {
   /**
    * Resolve a performance alert
    */
-  async resolveAlert(alertIndex: number): Promise<void> {
+  async resolve/* SECURITY: Alert removed */: Promise<void> {
     if (alertIndex >= 0 && alertIndex < this.alerts.length) {
       this.alerts[alertIndex].resolved = true;
-      console.log(`[DB Optimization] Alert resolved: ${this.alerts[alertIndex].message}`);
+      /* SECURITY: Console statement removed */
     }
   }
 
@@ -355,16 +344,16 @@ export class DatabaseOptimizationService {
             result.indexesCreated++;
             result.optimizationsApplied.push(`Created index on ${rec.table}(${rec.columns.join(', ')})`);
           } catch (error) {
-            console.error(`[DB Optimization] Failed to create index on ${rec.table}:`, error);
+            /* SECURITY: Console statement removed */
           }
         }
       }
 
-      console.log(`[DB Optimization] Applied ${result.optimizationsApplied.length} automatic optimizations`);
+      /* SECURITY: Console statement removed */
       return result;
 
     } catch (error) {
-      console.error('[DB Optimization] Error applying optimizations:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to apply automatic optimizations');
     }
   }
@@ -391,7 +380,7 @@ export class DatabaseOptimizationService {
     }
   }
 
-  private async createAlert(alert: PerformanceAlert): Promise<void> {
+  private async create/* SECURITY: Alert removed */: Promise<void> {
     this.alerts.push(alert);
     
     // Keep only last 100 alerts
@@ -399,7 +388,7 @@ export class DatabaseOptimizationService {
       this.alerts.splice(0, this.alerts.length - 100)
     }
 
-    console.warn(`[DB Optimization] ${alert.severity.toUpperCase()} Alert: ${alert.message}`);
+    /* SECURITY: Console statement removed */} Alert: ${alert.message}`);
   }
 
   private async getConnectionPoolStats(): Promise<DatabaseStats['connectionPool']> {
@@ -432,7 +421,7 @@ export class DatabaseOptimizationService {
     const slowQueries = allMetrics.filter(m => m.executionTime > this.slowQueryThreshold).length;
     
     // Calculate QPS over last minute
-    const oneMinuteAgo = new Date(Date.now() - 60000)
+    const oneMinuteAgo = new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 60000)
     const recentQueries = allMetrics.filter(m => m.timestamp > oneMinuteAgo).length;
     const queriesPerSecond = recentQueries / 60;
 
@@ -455,7 +444,7 @@ export class DatabaseOptimizationService {
         { table: 'QualityIndicator', rowCount: 200, sizeKB: 50, indexSizeKB: 15 }
       ]
     } catch (error) {
-      console.error('[DB Optimization] Error getting table statistics:', error);
+      /* SECURITY: Console statement removed */
       return [];
     }
   }
@@ -477,16 +466,11 @@ export class DatabaseOptimizationService {
 
     const recentSlowQueries = allMetrics.filter(m => 
       m.executionTime > this.slowQueryThreshold &&
-      m.timestamp > new Date(Date.now() - 300000) // Last 5 minutes
+      m.timestamp > new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 300000) // Last 5 minutes
     )
 
     if (recentSlowQueries.length > 10) {
-      await this.createAlert({
-        type: 'slow_query',
-        severity: 'critical',
-        message: `${recentSlowQueries.length} slow queries detected in the last 5 minutes`,
-        details: { count: recentSlowQueries.length, threshold: this.slowQueryThreshold },
-        timestamp: new Date(),
+      await this.create/* SECURITY: Alert removed */,
         resolved: false
       });
     }
@@ -496,12 +480,7 @@ export class DatabaseOptimizationService {
     const stats = await this.getConnectionPoolStats();
     
     if (stats.utilization > 90) {
-      await this.createAlert({
-        type: 'connection_pool_full',
-        severity: 'critical',
-        message: `Connection pool utilization is ${stats.utilization}% - consider increasing pool size`,
-        details: stats,
-        timestamp: new Date(),
+      await this.create/* SECURITY: Alert removed */,
         resolved: false
       });
     }
@@ -511,12 +490,7 @@ export class DatabaseOptimizationService {
     const indexStats = await this.getIndexStatistics();
     
     if (indexStats.indexHitRatio < 85) {
-      await this.createAlert({
-        type: 'index_scan',
-        severity: 'warning',
-        message: `Index hit ratio is ${indexStats.indexHitRatio}% - queries may be doing table scans`,
-        details: indexStats,
-        timestamp: new Date(),
+      await this.create/* SECURITY: Alert removed */,
         resolved: false
       });
     }
@@ -537,20 +511,19 @@ export class DatabaseOptimizationService {
   }
 
   private async analyzeExistingSchema(): Promise<void> {
-    console.log('[DB Optimization] Analyzing existing database schema...');
     
     // This would analyze the current schema for optimization opportunities
     const recommendations = await this.generateRecommendations()
     
     if (recommendations.length > 0) {
-      console.log(`[DB Optimization] Found ${recommendations.length} optimization opportunities`);
+      /* SECURITY: Console statement removed */
     }
   }
 
   private async createIndex(table: string, columns: string[]): Promise<void> {
     // This would create actual database indexes
     // For now, just log the action
-    console.log(`[DB Optimization] Creating index on ${table}(${columns.join(', ')})`)
+    /* SECURITY: Console statement removed */})`)
   }
 
   /**

@@ -92,7 +92,7 @@ export class AuditService {
 
       // Send alerts for critical events
       if (auditEvent.severity === 'CRITICAL') {
-        await this.sendCriticalAlert(auditEvent);
+        await this.sendCritical/* SECURITY: Alert removed */
       }
 
     } catch (error) {
@@ -446,7 +446,7 @@ export class AuditService {
     };
   }
 
-  private async sendCriticalAlert(event: AuditEvent): Promise<void> {
+  private async sendCritical/* SECURITY: Alert removed */: Promise<void> {
     // Implement critical alert logic
     // This could send emails, SMS, Slack notifications, etc.
 

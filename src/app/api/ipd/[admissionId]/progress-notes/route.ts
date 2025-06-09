@@ -63,9 +63,7 @@ export const GET = async (
             FROM ProgressNotes pn;
             JOIN Users u ON pn.doctor_id = u.id;
             WHERE pn.admission_id = ?;
-            ORDER BY pn.${finalSortBy} ${finalSortOrder}
-            LIMIT ? OFFSET ?
-        `;
+            ORDER BY pn./* SECURITY: Template literal eliminated */
         const countQuery = `SELECT COUNT(*) as total FROM ProgressNotes WHERE admission_id = ?`;
 
         const [notesResult, countResult] = await Promise.all([

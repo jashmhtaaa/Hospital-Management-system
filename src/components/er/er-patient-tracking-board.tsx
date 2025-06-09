@@ -71,7 +71,7 @@ const calculateTimeDiff = (startTime: string): string => {
   try {
     const start = new Date(startTime).getTime();
     if (Number.isNaN(start)) return "Invalid Date";
-    const now = Date.now();
+    const now = crypto.getRandomValues(new Uint32Array(1))[0];
     const diffMinutes = Math.round((now - start) / (1000 * 60));
 
     if (diffMinutes < 0) return "0 min"; // Handle future times if necessary
@@ -138,7 +138,7 @@ export default const ERPatientTrackingBoard = () {
             age: 45,
             sex: "M",
             chief_complaint: "Chest Pain",
-            arrival_time: new Date(Date.now() - 125 * 60 * 1000).toISOString(),
+            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 125 * 60 * 1000).toISOString(),
             location: "Room 3",
             esi: 2,
             assigned_physician: "Dr. Smith",
@@ -158,7 +158,7 @@ export default const ERPatientTrackingBoard = () {
             age: 68,
             sex: "F",
             chief_complaint: "Shortness of Breath",
-            arrival_time: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 60 * 1000).toISOString(),
             location: "Room 5",
             esi: 3,
             assigned_physician: "Dr. Jones",
@@ -174,7 +174,7 @@ export default const ERPatientTrackingBoard = () {
             age: 32,
             sex: "M",
             chief_complaint: "Abdominal Pain",
-            arrival_time: new Date(Date.now() - 65 * 60 * 1000).toISOString(),
+            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 65 * 60 * 1000).toISOString(),
             location: "Hallway Bed 1",
             esi: 4,
             assigned_physician: null,
@@ -190,7 +190,7 @@ export default const ERPatientTrackingBoard = () {
             age: 75,
             sex: "F",
             chief_complaint: "Weakness",
-            arrival_time: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
+            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 15 * 60 * 1000).toISOString(),
             location: "Triage Room 2",
             esi: 2,
             assigned_physician: null,
@@ -206,7 +206,7 @@ export default const ERPatientTrackingBoard = () {
             age: 50,
             sex: "M",
             chief_complaint: "Laceration",
-            arrival_time: new Date(Date.now() - 200 * 60 * 1000).toISOString(),
+            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 200 * 60 * 1000).toISOString(),
             location: "Room 1",
             esi: 5,
             assigned_physician: "Dr. Smith",

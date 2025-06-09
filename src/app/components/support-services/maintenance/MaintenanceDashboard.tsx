@@ -71,7 +71,7 @@ const priorityColors: Record<string, string> = {
 };
 
 // Request type icon mapping
-const requestTypeIcons: Record<string, any> = {
+const requestTypeIcons: Record<string, unknown> = {
   'REPAIR': <Wrench className="h-4 w-4 mr-1" />,
   'PREVENTIVE': <Tool className="h-4 w-4 mr-1" />,
   'INSTALLATION': <HardDrive className="h-4 w-4 mr-1" />,

@@ -99,12 +99,12 @@ export class FHIRPractitionerUtils {
         use: 'official',
         type: {
           coding: [{
-            system: 'http://terminology.hl7.org/CodeSystem/v2-0203',
+            system: 'https://terminology.hl7.org/CodeSystem/v2-0203',
             code: 'NPI',
             display: 'National Provider Identifier'
           }]
         },
-        system: 'http://hl7.org/fhir/sid/us-npi',
+        system: 'https://hl7.org/fhir/sid/us-npi',
         value: data.npiNumber
       })
     }
@@ -114,7 +114,7 @@ export class FHIRPractitionerUtils {
         use: 'official',
         type: {
           coding: [{
-            system: 'http://terminology.hl7.org/CodeSystem/v2-0203',
+            system: 'https://terminology.hl7.org/CodeSystem/v2-0203',
             code: 'MD',
             display: 'Medical License number'
           }]
@@ -176,7 +176,7 @@ export class FHIRPractitionerUtils {
       practitioner.qualification = data.specialties.map(specialty => ({
         code: {
           coding: [{
-            system: 'http://nucc.org/provider-taxonomy',
+            system: 'https://nucc.org/provider-taxonomy',
             code: this.getSpecialtyCode(specialty),
             display: specialty
           }]
@@ -225,7 +225,7 @@ export class FHIRPractitionerUtils {
     practitioner.qualification.unshift({
       code: {
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/v2-0360',
+          system: 'https://terminology.hl7.org/CodeSystem/v2-0360',
           code: 'MD',
           display: 'Doctor of Medicine'
         }]
@@ -266,7 +266,7 @@ export class FHIRPractitionerUtils {
     practitioner.qualification.push({
       code: {
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/v2-0360',
+          system: 'https://terminology.hl7.org/CodeSystem/v2-0360',
           code: 'RN',
           display: 'Registered Nurse'
         }]

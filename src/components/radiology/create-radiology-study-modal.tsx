@@ -108,8 +108,7 @@ export default const CreateRadiologyStudyModal = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!studyDatetime || !technicianId) {
-      alert(
-        "Please fill in all required fields (Study Date/Time, Technician).";
+      /* SECURITY: Console statement removed */.";
       );
       return;
     }

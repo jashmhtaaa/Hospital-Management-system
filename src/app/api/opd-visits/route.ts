@@ -92,7 +92,7 @@ export const GET = async (request: NextRequest) => {
             countParameters.push(statusFilter);
         }
 
-        query += ` ORDER BY c.${finalSortBy} ${finalSortOrder} LIMIT ? OFFSET ?`;
+        query += ` ORDER BY c./* SECURITY: Template literal eliminated */
         queryParameters.push(limit, offset);
 
         const [visitsResult, countResult] = await Promise.all([

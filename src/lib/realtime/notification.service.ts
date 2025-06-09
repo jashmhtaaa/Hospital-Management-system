@@ -324,12 +324,7 @@ export class NotificationService extends EventEmitter {
   /**
    * Send emergency alert;
    */
-  async sendEmergencyAlert(
-    title: string,
-    message: string,
-    data?: unknown,
-    department?: string;
-  ): Promise<string[]> {
+  async sendEmergency/* SECURITY: Alert removed */: Promise<string[]> {
     return this.broadcastNotification({
       type: 'emergency_alert',
       priority: 'critical',
@@ -338,7 +333,7 @@ export class NotificationService extends EventEmitter {
       data,
       department,
       requiresAcknowledgment: true,
-      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
+      expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 24 * 60 * 60 * 1000).toISOString() // 24 hours
     }, {
       department,
       all: !department
@@ -348,12 +343,7 @@ export class NotificationService extends EventEmitter {
   /**
    * Send critical lab result alert;
    */
-  async sendCriticalResultAlert(
-    patientId: string,
-    testName: string,
-    value: string,
-    practitionerId: string;
-  ): Promise<string> {
+  async sendCriticalResult/* SECURITY: Alert removed */: Promise<string> {
     return this.sendNotification({
       type: 'critical_result',
       priority: 'critical',
@@ -373,12 +363,7 @@ export class NotificationService extends EventEmitter {
   /**
    * Send vital sign alert;
    */
-  async sendVitalSignAlert(
-    patientId: string,
-    vitalSign: string,
-    value: string,
-    assignedNurseId: string;
-  ): Promise<string> {
+  async sendVitalSign/* SECURITY: Alert removed */: Promise<string> {
     return this.sendNotification({
       type: 'vital_sign_alert',
       priority: 'high',

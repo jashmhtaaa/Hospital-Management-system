@@ -92,22 +92,7 @@ export default const OTBillingItems = ({
         setError(undefined);
 
         // Replace with actual API call
-        // const response = await fetch(`/api/ot/billing-items?patientId=${patientId}${invoiceId ? `&invoiceId=${invoiceId}` : ""}`)
-        // if (!response.ok) {
-        //   let errorMsg = "Failed to fetch OT billing items"
-        //   try {
-        //     const errorData: ApiErrorResponse = await response.json()
-        //     errorMsg = errorData.error || errorMsg
-        //   } catch (jsonError) { /* Ignore */ }
-        //   throw new Error(errorMsg)
-        // }
-        // const data: BillingItemsApiResponse = await response.json()
-        // setBillingItems(data.results || [])
-
-        // Mock data for demonstration (conforming to BillingItem interface)
-        const mockData: BillingItem[] = [
-          {
-            id: "bill-item-1",
+        // const response = await fetch(`/api/ot/billing-items?patientId=/* SECURITY: Template literal eliminated */
             date: "2025-04-28T09:00:00Z",
             description: "Appendectomy - Surgical Procedure",
             category: "Surgery",

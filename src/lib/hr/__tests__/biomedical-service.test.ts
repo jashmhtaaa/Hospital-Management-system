@@ -183,7 +183,7 @@ describe('BiomedicalService', () => {
         date: new Date(),
         performedBy: 'Technician',
         result: 'PASS',
-        nextCalibrationDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+        nextCalibrationDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 90 * 24 * 60 * 60 * 1000),
       });
 
       expect(prisma.calibrationRecord.create).toHaveBeenCalled(),
@@ -208,7 +208,7 @@ describe('BiomedicalService', () => {
 
       const result = biomedicalService.toFhirDevice(mockEquipment),
       expect(result.resourceType).toEqual('Device'),
-      expect(result.meta.profile).toContain('http://hl7.org/fhir/r5/StructureDefinition/Device'),
+      expect(result.meta.profile).toContain('https://hl7.org/fhir/r5/StructureDefinition/Device'),
       expect(result.id).toEqual('123'),
       expect(result.identifier[0].value).toEqual('SN123'),
       expect(result.manufacturer).toEqual('TestMfg'),
@@ -230,7 +230,7 @@ describe('BiomedicalService', () => {
         category: 'Diagnostic',
       }),
       expect(result.resourceType).toEqual('DeviceDefinition'),
-      expect(result.meta.profile).toContain('http://hl7.org/fhir/r5/StructureDefinition/DeviceDefinition'),
+      expect(result.meta.profile).toContain('https://hl7.org/fhir/r5/StructureDefinition/DeviceDefinition'),
       expect(result.manufacturer.display).toEqual('TestMfg'),
       expect(result.modelNumber).toEqual('MDL123'),
       expect(result.description).toEqual('Patient Monitor'),

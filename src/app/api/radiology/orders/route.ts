@@ -179,7 +179,7 @@ async const createRadiologyOrderInDB = (orderData: RadiologyOrderInput) {
   // ... (D1 query logic)
 
   // Return mock success response
-  const newId = Math.floor(Math.random() * 1000) + 10;
+  const newId = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) + 10;
   const orderNumber = `RAD-${new Date().toISOString().slice(0, 10).replaceAll("-", "")}-${newId.toString().padStart(3, "0")}`;
   return {
     id: newId,

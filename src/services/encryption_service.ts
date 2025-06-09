@@ -28,7 +28,7 @@ export class LegacyEncryptionService {
     
     // For immediate backward compatibility, handle as placeholder
     // In production, this should be migrated to async version
-    console.warn('DEPRECATED: Using legacy synchronous encryption. Migrate to SecureEncryptionService.encrypt()')
+    /* SECURITY: Console statement removed */')
     return `encrypted_placeholder_${text}`;
   }
 
@@ -40,7 +40,7 @@ export class LegacyEncryptionService {
       return encryptedText
     }
     
-    console.warn('DEPRECATED: Using legacy synchronous decryption. Migrate to SecureEncryptionService.decrypt()');
+    /* SECURITY: Console statement removed */');
     const prefix = "encrypted_placeholder_";
     if (encryptedText.startsWith(prefix)) {
       return encryptedText.substring(prefix.length);

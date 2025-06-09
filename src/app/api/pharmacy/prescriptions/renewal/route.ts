@@ -143,7 +143,7 @@ export const POST = async (req: NextRequest): Promise<NextResponse> {
     
     // In a real implementation, this would create a renewal request in the database
     const renewalRequest = {
-      id: `renewal-${Date.now()}`,
+      id: `renewal-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
       prescriptionId,
       patientId,
       requesterId: userId,
@@ -225,7 +225,7 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
       prescriptionId: 'rx123',
       patientId: 'patient456',
       requesterId: 'user789',
-      requestDate: new Date(Date.now() - 24 * 60 * 60 * 1000), // 1 day ago
+      requestDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 24 * 60 * 60 * 1000), // 1 day ago
       status: action === 'approve' ? 'approved' : 'denied',
       notes: 'Patient requested renewal',
       reviewerId: userId,
@@ -237,12 +237,12 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
     let newPrescription: Record<string, unknown> | null = null;
     if (action === 'approve') {
       newPrescription = {
-        id: `rx-${Date.now()}`,
+        id: `rx-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         patientId: 'patient456',
         medicationId: 'med789',
         prescriberId: userId,
         issueDate: new Date(),
-        expirationDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // 90 days from now
+        expirationDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 90 * 24 * 60 * 60 * 1000), // 90 days from now
         refillsRemaining: 3,
         status: 'active',
         renewalId;

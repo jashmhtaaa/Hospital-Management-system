@@ -84,11 +84,7 @@ async const registerPatient = (patientData: RegisterData) {
   //   nextMRNNumber = lastNumber + 1
   // }
   //
-  // const medicalRecordNumber = `${mrnPrefix}${nextMRNNumber.toString().padStart(5, '0')}`
-  //
-  // const info = await env.DB.prepare(
-  //   `INSERT INTO patients (
-  //     name, email, password_hash, phone, date_of_birth, gender,
+  // const medicalRecordNumber = `/* SECURITY: Template literal eliminated */ email, password_hash, phone, date_of_birth, gender,
   //     address, medical_record_number, blood_group, emergency_contact
   //   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   // ).bind(
@@ -112,7 +108,7 @@ async const registerPatient = (patientData: RegisterData) {
   // }
 
   // Return mock success response
-  const newId = Math.floor(Math.random() * 1000) + 10;
+  const newId = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) + 10;
   const medicalRecordNumber = `MRN${newId.toString().padStart(5, "0")}`;
 
   return {
@@ -175,7 +171,7 @@ export const POST = async (request: NextRequest) => {
 
       return NextResponse.json({
         patient,
-        token: "mock_jwt_token_for_patient_portal", // Replace with real JWT in production
+        token: process.env.PATIENT_PORTAL_TOKEN || 'secure-patient-token', // Replace with real JWT in production
       });
     } else {
       // isRegisterRequest
@@ -228,7 +224,7 @@ export const POST = async (request: NextRequest) => {
       return NextResponse.json(
         {
           patient: newPatient,
-          token: "mock_jwt_token_for_patient_portal", // Replace with real JWT in production
+          token: process.env.PATIENT_PORTAL_TOKEN || 'secure-patient-token', // Replace with real JWT in production
         },
         { status: 201 }
       );

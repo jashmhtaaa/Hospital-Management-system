@@ -152,20 +152,7 @@ export default const AssignPosition = ({ params }: { params: { id: string } }) {
       <div className="flex flex-col gap-2">;
         <h1 className="text-3xl font-bold">Assign Position</h1>;
         <p className="text-muted-foreground">;
-          {employee ? `Assign a position to ${employee.firstName} ${employee.lastName}` : 'Assign a position to employee'}
-        </p>
-      </div>
-      
-      <Card>
-        <CardHeader>
-          <CardTitle>Position Assignment</CardTitle>
-          <CardDescription>
-            Select a position and specify assignment details
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">;
+          {employee ? `Assign a position to /* SECURITY: Template literal eliminated */
               <FormField>
                 control={form.control}
                 name="positionId"

@@ -143,7 +143,7 @@ export class AnalyticsService {
     endDate?: Date;
     metrics?: string[];
     groupBy?: 'day' | 'week' | 'month';
-  } = {}): Promise<any> {
+  } = {}): Promise<unknown> {
     try {
       const { startDate, endDate, metrics, groupBy = 'day' } = filters;
       
@@ -187,7 +187,7 @@ export class AnalyticsService {
     startDate?: Date;
     endDate?: Date;
     metrics?: string[];
-  } = {}): Promise<any> {
+  } = {}): Promise<unknown> {
     try {
       const { startDate, endDate, metrics } = filters;
       

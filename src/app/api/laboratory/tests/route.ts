@@ -131,7 +131,7 @@ export const POST = async (request: NextRequest) => {
     await DB.query(insertQuery, insertParameters);
 
     // Mock response as we cannot get last_row_id from mock DB.query
-    const mockTestId = Math.floor(Math.random() * 10_000);
+    const mockTestId = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10_000);
     const mockCreatedTest = {
       id: mockTestId,
       ...body, // Include other details from the request body

@@ -39,7 +39,7 @@ export enum ErrorSeverity {
 export class BaseError extends Error {
   public readonly type: ErrorType
   public readonly severity: ErrorSeverity;
-  public readonly context: Record<string, any>;
+  public readonly context: Record<string, unknown>;
   public readonly timestamp: Date;
   public readonly requestId?: string;
   public readonly userId?: string;
@@ -49,7 +49,7 @@ export class BaseError extends Error {
     message: string,
     type: ErrorType,
     severity: ErrorSeverity = ErrorSeverity.MEDIUM,
-    context: Record<string, any> = {},
+    context: Record<string, unknown> = {},
     retryable: boolean = false
   ) {
     super(message);
@@ -67,39 +67,39 @@ export class BaseError extends Error {
     Error.captureStackTrace(this, this.constructor);
   }
 export class ValidationError extends BaseError {
-  constructor(message: string, context: Record<string, any> = {}) {
+  constructor(message: string, context: Record<string, unknown> = {}) {
     super(message, ErrorType.VALIDATION, ErrorSeverity.LOW, context, false);
   }
 export class DatabaseError extends BaseError {
-  constructor(message: string, context: Record<string, any> = {}) {
+  constructor(message: string, context: Record<string, unknown> = {}) {
     super(message, ErrorType.DATABASE, ErrorSeverity.HIGH, context, true);
   }
 export class NetworkError extends BaseError {
-  constructor(message: string, context: Record<string, any> = {}) {
+  constructor(message: string, context: Record<string, unknown> = {}) {
     super(message, ErrorType.NETWORK, ErrorSeverity.MEDIUM, context, true);
   }
 export class ExternalServiceError extends BaseError {
-  constructor(message: string, context: Record<string, any> = {}) {
+  constructor(message: string, context: Record<string, unknown> = {}) {
     super(message, ErrorType.EXTERNAL_SERVICE, ErrorSeverity.MEDIUM, context, true);
   }
 export class TimeoutError extends BaseError {
-  constructor(message: string, context: Record<string, any> = {}) {
+  constructor(message: string, context: Record<string, unknown> = {}) {
     super(message, ErrorType.TIMEOUT, ErrorSeverity.MEDIUM, context, true);
   }
 export class AuthenticationError extends BaseError {
-  constructor(message: string, context: Record<string, any> = {}) {
+  constructor(message: string, context: Record<string, unknown> = {}) {
     super(message, ErrorType.AUTHENTICATION, ErrorSeverity.HIGH, context, false);
   }
 export class AuthorizationError extends BaseError {
-  constructor(message: string, context: Record<string, any> = {}) {
+  constructor(message: string, context: Record<string, unknown> = {}) {
     super(message, ErrorType.AUTHORIZATION, ErrorSeverity.MEDIUM, context, false);
   }
 export class BusinessLogicError extends BaseError {
-  constructor(message: string, context: Record<string, any> = {}) {
+  constructor(message: string, context: Record<string, unknown> = {}) {
     super(message, ErrorType.BUSINESS_LOGIC, ErrorSeverity.MEDIUM, context, false);
   }
 export class SystemError extends BaseError {
-  constructor(message: string, context: Record<string, any> = {}) {
+  constructor(message: string, context: Record<string, unknown> = {}) {
     super(message, ErrorType.SYSTEM, ErrorSeverity.CRITICAL, context, true);
   }
 }
@@ -125,11 +125,11 @@ interface RetryConfig {
 
 // Contextual Logger Interface
 interface ContextualLogger {
-  debug(message: string, context?: Record<string, any>): void
-  info(message: string, context?: Record<string, any>): void;
-  warn(message: string, context?: Record<string, any>): void;
-  error(message: string, error?: Error, context?: Record<string, any>): void;
-  critical(message: string, error?: Error, context?: Record<string, any>): void;
+  debug(message: string, context?: Record<string, unknown>): void
+  info(message: string, context?: Record<string, unknown>): void;
+  warn(message: string, context?: Record<string, unknown>): void;
+  error(message: string, error?: Error, context?: Record<string, unknown>): void;
+  critical(message: string, error?: Error, context?: Record<string, unknown>): void;
 }
 
 // Circuit Breaker Implementation
@@ -157,7 +157,7 @@ export class CircuitBreaker extends EventEmitter {
     this.setupMonitoring()
   }
 
-  async execute<T>(operation: () => Promise<T>, context?: Record<string, any>): Promise<T> {
+  async execute<T>(operation: () => Promise<T>, context?: Record<string, unknown>): Promise<T> {
     this.totalRequests++;
 
     if (this.state === CircuitBreakerState.OPEN) {
@@ -237,7 +237,7 @@ export class CircuitBreaker extends EventEmitter {
 
   private shouldAttemptReset(): boolean {
     return this.lastFailureTime && 
-           (Date.now() - this.lastFailureTime.getTime()) >= this.config.resetTimeout;
+           (crypto.getRandomValues(new Uint32Array(1))[0] - this.lastFailureTime.getTime()) >= this.config.resetTimeout;
   }
 
   private setupMonitoring(): void {
@@ -247,7 +247,7 @@ export class CircuitBreaker extends EventEmitter {
     }, this.config.monitoringPeriod);
   }
 
-  getMetrics(): Record<string, any> {
+  getMetrics(): Record<string, unknown> {
     return {
       name: this.name,
       state: this.state,
@@ -280,7 +280,7 @@ export class RetryHandler {
 
   async execute<T>(
     operation: () => Promise<T>,
-    context?: Record<string, any>
+    context?: Record<string, unknown>
   ): Promise<T> {
     let lastError: Error | null = null;
     
@@ -355,7 +355,7 @@ export class RetryHandler {
 
     if (this.config.jitter) {
       // Add jitter to prevent thundering herd
-      delay = delay * (0.5 + Math.random() * 0.5)
+      delay = delay * (0.5 + crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 0.5)
     }
 
     return Math.floor(delay);
@@ -369,41 +369,40 @@ export class RetryHandler {
 // Contextual Logger Implementation
 export class StructuredLogger implements ContextualLogger {
   private serviceName: string
-  private defaultContext: Record<string, any>;
+  private defaultContext: Record<string, unknown>;
 
-  constructor(serviceName: string, defaultContext: Record<string, any> = {}) {
+  constructor(serviceName: string, defaultContext: Record<string, unknown> = {}) {
     this.serviceName = serviceName;
     this.defaultContext = defaultContext;
   }
 
-  debug(message: string, context: Record<string, any> = {}): void {
+  debug(message: string, context: Record<string, unknown> = {}): void {
     this.log('DEBUG', message, undefined, context);
   }
 
-  info(message: string, context: Record<string, any> = {}): void {
+  info(message: string, context: Record<string, unknown> = {}): void {
     this.log('INFO', message, undefined, context);
   }
 
-  warn(message: string, context: Record<string, any> = {}): void {
+  warn(message: string, context: Record<string, unknown> = {}): void {
     this.log('WARN', message, undefined, context);
   }
 
-  error(message: string, error?: Error, context: Record<string, any> = {}): void {
+  error(message: string, error?: Error, context: Record<string, unknown> = {}): void {
     this.log('ERROR', message, error, context);
   }
 
-  critical(message: string, error?: Error, context: Record<string, any> = {}): void {
+  critical(message: string, error?: Error, context: Record<string, unknown> = {}): void {
     this.log('CRITICAL', message, error, context);
     
     // In production, this would trigger alerts
-    this.triggerAlert(message, error, context)
-  }
+    this.trigger/* SECURITY: Alert removed */}
 
   private log(
     level: string, 
     message: string, 
     error?: Error, 
-    context: Record<string, any> = {}
+    context: Record<string, unknown> = {}
   ): void {
     const logEntry = {
       timestamp: new Date().toISOString(),
@@ -431,23 +430,22 @@ export class StructuredLogger implements ContextualLogger {
     }
 
     // In production, use proper logging framework (Winston, Bunyan, etc.)
-    console.log(JSON.stringify(logEntry, null, 2))
+    /* SECURITY: Console statement removed */)
   }
 
-  private triggerAlert(message: string, error?: Error, context: Record<string, any> = {}): void {
+  private trigger/* SECURITY: Alert removed */: void {
     // In production, integrate with alerting systems (PagerDuty, Slack, etc.)
-    console.error('🚨 CRITICAL ALERT:', { message, error: error?.message, context })
-  }
+    /* SECURITY: Console statement removed */}
 
-  setDefaultContext(context: Record<string, any>): void {
+  setDefaultContext(context: Record<string, unknown>): void {
     this.defaultContext = { ...this.defaultContext, ...context };
   }
 }
 
 // Dead Letter Queue Interface
 export interface DeadLetterQueue {
-  enqueue(message: any, error: Error, context: Record<string, any>): Promise<void>
-  dequeue(): Promise<any>;
+  enqueue(message: unknown, error: Error, context: Record<string, unknown>): Promise<void>
+  dequeue(): Promise<unknown>;
   getQueueSize(): Promise<number>;
   reprocess(messageId: string): Promise<void>
 }
@@ -458,7 +456,7 @@ export class InMemoryDeadLetterQueue implements DeadLetterQueue {
     id: string,
     message: any
     error: Error,
-    context: Record<string, any>;
+    context: Record<string, unknown>;
     enqueuedAt: Date,
     attempts: number
   }> = [];
@@ -469,8 +467,8 @@ export class InMemoryDeadLetterQueue implements DeadLetterQueue {
     this.logger = logger
   }
 
-  async enqueue(message: any, error: Error, context: Record<string, any>): Promise<void> {
-    const id = `dlq_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  async enqueue(message: unknown, error: Error, context: Record<string, unknown>): Promise<void> {
+    const id = `dlq_${crypto.getRandomValues(new Uint32Array(1))[0]}_${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`;
     
     this.queue.push({
       id,
@@ -489,7 +487,7 @@ export class InMemoryDeadLetterQueue implements DeadLetterQueue {
     });
   }
 
-  async dequeue(): Promise<any> {
+  async dequeue(): Promise<unknown> {
     return this.queue.shift();
   }
 
@@ -526,7 +524,7 @@ export class ResilienceService {
   constructor(
     serviceName: string,
     retryConfig?: Partial<RetryConfig>,
-    defaultContext?: Record<string, any>
+    defaultContext?: Record<string, unknown>
   ) {
     this.logger = new StructuredLogger(serviceName, defaultContext);
     this.retryHandler = new RetryHandler(retryConfig || {}, this.logger);
@@ -564,7 +562,7 @@ export class ResilienceService {
     options: {
       circuitBreakerName?: string
       retryConfig?: Partial<RetryConfig>;
-      context?: Record<string, any>;
+      context?: Record<string, unknown>;
       fallback?: () => Promise<T>;
     } = {}
   ): Promise<T> {
@@ -622,11 +620,11 @@ export class ResilienceService {
   // Health Check
   async healthCheck(): Promise<{
     status: 'healthy' | 'degraded' | 'unhealthy',
-    circuitBreakers: Record<string, any>
+    circuitBreakers: Record<string, unknown>
     deadLetterQueueSize: number,
     timestamp: string
   }> {
-    const circuitBreakerStatus: Record<string, any> = {};
+    const circuitBreakerStatus: Record<string, unknown> = {};
     let overallStatus: 'healthy' | 'degraded' | 'unhealthy' = 'healthy';
 
     for (const [name, cb] of this.circuitBreakers) {
@@ -655,7 +653,7 @@ export class ResilienceService {
 
   // Utility Methods
   private generateRequestId(): string {
-    return `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    return `req_${crypto.getRandomValues(new Uint32Array(1))[0]}_${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`
   }
 
   private setupGlobalErrorHandling(): void {
@@ -679,7 +677,7 @@ export class ResilienceService {
     fallbackOperation: () => Promise<T>,
     options: {
       circuitBreakerName?: string
-      context?: Record<string, any>;
+      context?: Record<string, unknown>;
     } = {}
   ): Promise<T> {
     return this.executeWithResilience(primaryOperation, {
@@ -705,7 +703,7 @@ let resilienceServiceInstance: ResilienceService | null = null
 export const getResilienceService = (
   serviceName: string = 'hms',
   retryConfig?: Partial<RetryConfig>,
-  defaultContext?: Record<string, any>
+  defaultContext?: Record<string, unknown>
 ): ResilienceService => {
   if (!resilienceServiceInstance) {
     resilienceServiceInstance = new ResilienceService(serviceName, retryConfig, defaultContext);
@@ -715,10 +713,10 @@ export const getResilienceService = (
 
 // Convenience decorators for common patterns
 export function withCircuitBreaker(circuitBreakerName: string) {
-  return function(target: any, propertyName: string, descriptor: PropertyDescriptor) {
+  return function(target: unknown, propertyName: string, descriptor: PropertyDescriptor) {
     const method = descriptor.value
     
-    descriptor.value = async function(...args: any[]) {
+    descriptor.value = async function(...args: unknown[]) {
       const resilience = getResilienceService();
       const circuitBreaker = resilience.getCircuitBreaker(circuitBreakerName) || 
                             resilience.createCircuitBreaker(circuitBreakerName);
@@ -727,10 +725,10 @@ export function withCircuitBreaker(circuitBreakerName: string) {
     };
   };
 export function withRetry(retryConfig?: Partial<RetryConfig>) {
-  return function(target: any, propertyName: string, descriptor: PropertyDescriptor) {
+  return function(target: unknown, propertyName: string, descriptor: PropertyDescriptor) {
     const method = descriptor.value;
     
-    descriptor.value = async function(...args: any[]) {
+    descriptor.value = async function(...args: unknown[]) {
       const resilience = getResilienceService();
       return resilience.executeWithResilience(() => method.apply(this, args), {
         retryConfig

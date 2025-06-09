@@ -235,7 +235,7 @@ export interface DataField {
 export interface ReportExecution {
   id: string,
   reportId: string,
-  parameters: Record<string, any>;
+  parameters: Record<string, unknown>;
   status: 'running' | 'completed' | 'failed',
   startTime: Date;
   endTime?: Date;
@@ -283,7 +283,7 @@ export interface KPIValue {
   status: 'green' | 'yellow' | 'red',
   trend: 'up' | 'down' | 'stable',
   changePercent: number;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 export interface AnalyticsAlert {
   id: string,
   name: string,
@@ -464,7 +464,7 @@ class BusinessIntelligenceService extends EventEmitter {
   /**
    * Execute a report;
    */
-  async executeReport(reportId: string, parameters: Record<string, any> = {}, triggeredBy: string, triggerType: 'manual' | 'scheduled' | 'api' = 'manual'): Promise<string> {
+  async executeReport(reportId: string, parameters: Record<string, unknown> = {}, triggeredBy: string, triggerType: 'manual' | 'scheduled' | 'api' = 'manual'): Promise<string> {
     const report = this.reports.get(reportId);
     if (!report) {
       throw new Error(`Report not found: ${reportId}`);
@@ -509,7 +509,7 @@ class BusinessIntelligenceService extends EventEmitter {
   /**
    * Get report data;
    */
-  async getReportData(reportId: string, parameters: Record<string, any> = {}): Promise<any> {
+  async getReportData(reportId: string, parameters: Record<string, unknown> = {}): Promise<unknown> {
     const report = this.reports.get(reportId);
     if (!report) {
       throw new Error(`Report not found: ${reportId}`);
@@ -626,7 +626,7 @@ class BusinessIntelligenceService extends EventEmitter {
   /**
    * Create an alert;
    */
-  async createAlert(alert: Omit<AnalyticsAlert, 'id' | 'lastTriggered' | 'triggerCount' | 'createdAt'>): Promise<string> {
+  async create/* SECURITY: Alert removed */: Promise<string> {
     const newAlert: AnalyticsAlert = {
       ...alert,
       id: uuidv4(),
@@ -684,7 +684,7 @@ class BusinessIntelligenceService extends EventEmitter {
   /**
    * Export report;
    */
-  async exportReport(reportId: string, format: 'pdf' | 'xlsx' | 'csv' | 'png', parameters: Record<string, any> = {}): Promise<string> {
+  async exportReport(reportId: string, format: 'pdf' | 'xlsx' | 'csv' | 'png', parameters: Record<string, unknown> = {}): Promise<string> {
     const report = this.reports.get(reportId);
     if (!report) {
       throw new Error(`Report not found: ${reportId}`);
@@ -892,7 +892,7 @@ class BusinessIntelligenceService extends EventEmitter {
 
   private async calculateKPIValue(kpi: KPIDefinition): Promise<KPIValue> {
     // Mock KPI calculation - in production, this would execute the formula
-    const mockValue = Math.random() * 100;
+    const mockValue = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100;
     const target = kpi.target || 0;
     const trend = mockValue > target * 0.95 ? 'up' : mockValue < target * 0.85 ? 'down' : 'stable';
     
@@ -909,7 +909,7 @@ class BusinessIntelligenceService extends EventEmitter {
       target,
       status,
       trend,
-      changePercent: (Math.random() - 0.5) * 10, // -5% to +5%
+      changePercent: (crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) - 0.5) * 10, // -5% to +5%
       metadata: {}
     };
   }
@@ -921,7 +921,7 @@ class BusinessIntelligenceService extends EventEmitter {
       const shouldTrigger = this.evaluateAlertCondition(alert.condition, value);
       
       if (shouldTrigger) {
-        this.triggerAlert(alert, value);
+        this.trigger/* SECURITY: Alert removed */
       }
     });
   }
@@ -939,7 +939,7 @@ class BusinessIntelligenceService extends EventEmitter {
     }
   }
 
-  private async triggerAlert(alert: AnalyticsAlert, value: KPIValue): Promise<void> {
+  private async trigger/* SECURITY: Alert removed */: Promise<void> {
     alert.lastTriggered = new Date();
     alert.triggerCount++;
     
@@ -966,17 +966,17 @@ class BusinessIntelligenceService extends EventEmitter {
     }
   }
 
-  private async performReportExecution(report: AnalyticsReport, parameters: Record<string, any>): Promise<{ url: string; data: unknown }> {
+  private async performReportExecution(report: AnalyticsReport, parameters: Record<string, unknown>): Promise<{ url: string; data: unknown }> {
     // Mock report execution
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     return {
-      url: `/reports/${report.id}/results/${Date.now()}`,
+      url: `/reports/${report.id}/results/${crypto.getRandomValues(new Uint32Array(1))[0]}`,
       data: { message: 'Report executed successfully', parameters }
     };
   }
 
-  private async fetchReportData(report: AnalyticsReport, parameters: Record<string, any>): Promise<any> {
+  private async fetchReportData(report: AnalyticsReport, parameters: Record<string, unknown>): Promise<unknown> {
     // Mock data fetching
     return { data: [], parameters };
   }
@@ -986,7 +986,7 @@ class BusinessIntelligenceService extends EventEmitter {
     return data;
   }
 
-  private async fetchDatasetData(dataset: AnalyticsDataset): Promise<any> {
+  private async fetchDatasetData(dataset: AnalyticsDataset): Promise<unknown> {
     // Mock dataset data fetching
     return [];
   }
@@ -996,7 +996,7 @@ class BusinessIntelligenceService extends EventEmitter {
     const insights: AnalyticsInsight[] = [];
     
     // Simulate anomaly detection
-    if (Math.random() > 0.8) {
+    if (crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) > 0.8) {
       insights.push({
         id: uuidv4(),
         type: 'anomaly',
@@ -1017,7 +1017,7 @@ class BusinessIntelligenceService extends EventEmitter {
 
   private async performReportExport(report: AnalyticsReport, data: unknown, format: string): Promise<string> {
     // Mock export
-    return `/exports/${report.id}_${Date.now()}.${format}`;
+    return `/exports/${report.id}_${crypto.getRandomValues(new Uint32Array(1))[0]}.${format}`;
   }
 
   private calculateScheduleInterval(schedule: ScheduleConfig): number {

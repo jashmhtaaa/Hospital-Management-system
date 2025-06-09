@@ -106,14 +106,7 @@ export const GET = async (request: NextRequest) => {
           JOIN patients p ON i.patient_id = p.id;
           LEFT JOIN radiology_orders ro ON i.order_id = ro.id;
           WHERE 1=1;
-          ${patientId ? ' AND i.patient_id = ?' : ''}
-          ${studyInstanceUid ? ' AND i.study_instance_uid = ?' : ''}
-          ${seriesInstanceUid ? ' AND i.series_instance_uid = ?' : ''}
-          ${modality ? ' AND i.modality = ?' : ''}
-          ${accessionNumber ? ' AND i.accession_number = ?' : ''}
-          ${fromDate ? ' AND i.study_date >= ?' : ''}
-          ${toDate ? ' AND i.study_date <= ?' : ''}
-        `;
+          /* SECURITY: Template literal eliminated */
         
         const countParams = params.slice(0, -2);
         const countResult = await DB.query(countQuery, countParams);
@@ -278,19 +271,19 @@ export const POST_RETRIEVE = async (request: NextRequest) => {
     // If we have a study instance UID, simulate retrieving that specific study
     if (studyInstanceUid) {
       // Generate a random number of series (1-5)
-      const seriesCount = Math.floor(Math.random() * 5) + 1
+      const seriesCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 5) + 1
       
       for (let i = 0; i < seriesCount; i++) {
         // Generate a random number of instances (5-20)
-        const instanceCount = Math.floor(Math.random() * 16) + 5
+        const instanceCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 16) + 5
         
-        const seriesInstanceUid = `1.2.840.10008.5.1.4.1.1.${Math.floor(Math.random() * 1000)}.${Math.floor(Math.random() * 1000)}`;
+        const seriesInstanceUid = `1.2.840.10008.5.1.4.1.1.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}`;
         
         for (let j = 0; j < instanceCount; j++) {
           retrievedImages.push({
             studyInstanceUid,
             seriesInstanceUid,
-            sopInstanceUid: `1.2.840.10008.5.1.4.1.1.${Math.floor(Math.random() * 1000)}.${Math.floor(Math.random() * 1000)}.${j + 1}`,
+            sopInstanceUid: `1.2.840.10008.5.1.4.1.1.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${j + 1}`,
             instanceNumber: j + 1,
             modality: modality || 'CT',
             studyDate: studyDate || new Date().toISOString().split('T')[0],
@@ -298,37 +291,37 @@ export const POST_RETRIEVE = async (request: NextRequest) => {
             seriesNumber: i + 1,
             seriesDescription: `Series ${i + 1}`,
             patientId,
-            accessionNumber: accessionNumber || `ACC${Math.floor(Math.random() * 1000000)}`;
+            accessionNumber: accessionNumber || `ACC${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000)}`;
           });
         }
       }
     } else {
       // Simulate retrieving multiple studies
-      const studyCount = Math.floor(Math.random() * 3) + 1;
+      const studyCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 3) + 1;
       
       for (let s = 0; s < studyCount; s++) {
-        const studyInstanceUid = `1.2.840.10008.5.1.4.1.1.${Math.floor(Math.random() * 1000)}`;
-        const seriesCount = Math.floor(Math.random() * 3) + 1;
+        const studyInstanceUid = `1.2.840.10008.5.1.4.1.1.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}`;
+        const seriesCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 3) + 1;
         
         for (let i = 0; i < seriesCount; i++) {
-          const instanceCount = Math.floor(Math.random() * 10) + 5;
+          const instanceCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10) + 5;
           
-          const seriesInstanceUid = `1.2.840.10008.5.1.4.1.1.${Math.floor(Math.random() * 1000)}.${Math.floor(Math.random() * 1000)}`;
+          const seriesInstanceUid = `1.2.840.10008.5.1.4.1.1.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}`;
           
           for (let j = 0; j < instanceCount; j++) {
             retrievedImages.push({
               studyInstanceUid,
               seriesInstanceUid,
-              sopInstanceUid: `1.2.840.10008.5.1.4.1.1.${Math.floor(Math.random() * 1000)}.${Math.floor(Math.random() * 1000)}.${j + 1}`,
+              sopInstanceUid: `1.2.840.10008.5.1.4.1.1.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${j + 1}`,
               instanceNumber: j + 1,
-              modality: modality || ['CT', 'MR', 'XR'][Math.floor(Math.random() * 3)],
+              modality: modality || ['CT', 'MR', 'XR'][Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 3)],
               studyDate: studyDate ||
-                new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                new Date(crypto.getRandomValues(new Uint32Array(1))[0] - Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 30) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
               studyTime: new Date().toISOString().split('T')[1].split('.')[0],
               seriesNumber: i + 1,
               seriesDescription: `Series ${i + 1}`,
               patientId,
-              accessionNumber: accessionNumber || `ACC${Math.floor(Math.random() * 1000000)}`;
+              accessionNumber: accessionNumber || `ACC${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000)}`;
             });
           }
         }

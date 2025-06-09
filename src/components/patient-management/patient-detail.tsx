@@ -285,10 +285,7 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
 <div
                 <div className="flex items-center gap-2">;
                   <CardTitle className="text-2xl">;
-                    {`${patient.lastName}, ${patient.firstName}${patient.middleName ? ' ' + patient.middleName : ''}`}
-                  </CardTitle>
-                  {patient.vip && (
-                    <Badge variant="outline" className="border-amber-500 text-amber-500">;
+                    {`${patient.lastName}, /* SECURITY: Template literal eliminated */
                       VIP
                     </Badge>
                   )}
@@ -334,14 +331,7 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
                     <div className="flex items-center text-sm">;
                       <MapPin className="h-3.5 w-3.5 mr-1 text-muted-foreground" />
 <span
-                        {`${patient.addresses[0].city}${patient.addresses[0].state ? ', ' + patient.addresses[0].state : ''}`}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-2">;
+                        {`/* SECURITY: Template literal eliminated */
               <Button>
                 variant="outline"
                 size="sm"

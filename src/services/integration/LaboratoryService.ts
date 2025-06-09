@@ -207,7 +207,7 @@ export class LaboratoryService {
         status: 'UNREAD',
         actionUrl: `/ipd/patients/${order.patientId}/lab-results/${order.id}`,
         createdAt: new Date(),
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
+        expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 7 * 24 * 60 * 60 * 1000), // 7 days from now
       },
     });
 

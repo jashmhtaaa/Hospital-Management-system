@@ -322,7 +322,7 @@ export class IPDManagementService {
     admissionDateTo?: Date;
   }): Promise<Admission[]> {
     try {
-      const where: any = {};
+      const where: unknown = {};
       if (filters?.patientId) where.patientId = filters.patientId;
       if (filters?.wardId) where.wardId = filters.wardId;
       if (filters?.attendingDoctorId) where.attendingDoctorId = filters.attendingDoctorId;
@@ -670,7 +670,7 @@ export class IPDManagementService {
   }
 
   // Helper method for deserialization
-  private async deserializeAdmission(admission: any): Promise<Admission> {
+  private async deserializeAdmission(admission: unknown): Promise<Admission> {
     const decrypted = await this.encryptionService.decryptObject(admission, this.encryptedFields)
     
     return {
@@ -723,7 +723,7 @@ export const getIPDService = (prismaClient?: PrismaClient): IPDManagementService
 };
 
 // Legacy compatibility - replace placeholder functions
-export const getAdmissionsFromDB = async (filters?: any): Promise<Admission[]> => {
+export const getAdmissionsFromDB = async (filters?: unknown): Promise<Admission[]> => {
   const service = getIPDService()
   return service.getAdmissions(filters);
 };

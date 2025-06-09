@@ -355,7 +355,7 @@ export class MarketingCampaignService {
   /**
    * Get campaign analytics;
    */
-  async getCampaignAnalytics(campaignId: string): Promise<any> {
+  async getCampaignAnalytics(campaignId: string): Promise<unknown> {
     try {
       // Check if campaign exists
       const existingCampaign = await prisma.marketingCampaign.findUnique({
@@ -444,7 +444,7 @@ export class MarketingCampaignService {
   /**
    * Add a segment to a campaign;
    */
-  async addCampaignSegment(campaignId: string, segmentId: string, userId: string): Promise<any> {
+  async addCampaignSegment(campaignId: string, segmentId: string, userId: string): Promise<unknown> {
     try {
       // Check if campaign exists
       const existingCampaign = await prisma.marketingCampaign.findUnique({
@@ -518,7 +518,7 @@ export class MarketingCampaignService {
         {
           coding: [
             {
-              system: 'http://terminology.hl7.org/CodeSystem/communication-category',
+              system: 'https://terminology.hl7.org/CodeSystem/communication-category',
               code: 'marketing',
               display: 'Marketing'
             }
@@ -557,7 +557,7 @@ export class MarketingCampaignService {
         {
           coding: [
             {
-              system: 'http://terminology.hl7.org/CodeSystem/communication-category',
+              system: 'https://terminology.hl7.org/CodeSystem/communication-category',
               code: 'marketing',
               display: 'Marketing'
             }
@@ -970,7 +970,7 @@ export class ContactService {
   /**
    * Add a note to a contact;
    */
-  async addContactNote(contactId: string, content: string, userId: string): Promise<any> {
+  async addContactNote(contactId: string, content: string, userId: string): Promise<unknown> {
     try {
       // Check if contact exists
       const existingContact = await prisma.contact.findUnique({
@@ -1123,7 +1123,7 @@ export class ContactService {
   /**
    * Add a contact to a segment;
    */
-  async addContactToSegment(segmentId: string, contactId: string, userId: string): Promise<any> {
+  async addContactToSegment(segmentId: string, contactId: string, userId: string): Promise<unknown> {
     try {
       // Check if segment exists
       const existingSegment = await prisma.contactSegment.findUnique({
@@ -1220,7 +1220,7 @@ export class ContactService {
   /**
    * Remove a contact from a segment;
    */
-  async removeContactFromSegment(segmentId: string, contactId: string, userId: string): Promise<any> {
+  async removeContactFromSegment(segmentId: string, contactId: string, userId: string): Promise<unknown> {
     try {
       // Check if segment exists
       const existingSegment = await prisma.contactSegment.findUnique({
@@ -1416,9 +1416,7 @@ export class LeadService {
         await this.notificationService.sendNotification({
           type: 'LEAD_ASSIGNED',
           title: 'New Lead Assigned',
-          message: `A new lead has been assigned to you: ${lead.contact.firstName ||
-            ''} ${lead.contact.lastName ||
-            ''}`,
+          message: `A new lead has been assigned to you: /* SECURITY: Template literal eliminated */
           recipientIds: [lead.assignedToId],
           metadata: { leadId: lead.id }
         });
@@ -1651,9 +1649,7 @@ export class LeadService {
         await this.notificationService.sendNotification({
           type: 'LEAD_ASSIGNED',
           title: 'Lead Assigned',
-          message: `A lead has been assigned to you: ${updatedLead.contact.firstName ||
-            ''} ${updatedLead.contact.lastName ||
-            ''}`,
+          message: `A lead has been assigned to you: /* SECURITY: Template literal eliminated */
           recipientIds: [data.assignedToId],
           metadata: { leadId: id }
         });
@@ -1671,7 +1667,7 @@ export class LeadService {
   /**
    * Add an activity to a lead;
    */
-  async addLeadActivity(leadId: string, data: { activityType: string; description: string; performedById: string; metadata?: unknown }): Promise<any> {
+  async addLeadActivity(leadId: string, data: { activityType: string; description: string; performedById: string; metadata?: unknown }): Promise<unknown> {
     try {
       // Check if lead exists
       const existingLead = await prisma.lead.findUnique({
@@ -1724,7 +1720,7 @@ export class LeadService {
   /**
    * Convert a lead to a patient;
    */
-  async convertLeadToPatient(leadId: string, patientData: unknown, userId: string): Promise<any> {
+  async convertLeadToPatient(leadId: string, patientData: unknown, userId: string): Promise<unknown> {
     try {
       // Check if lead exists
       const existingLead = await prisma.lead.findUnique({

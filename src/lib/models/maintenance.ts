@@ -166,14 +166,14 @@ export const toFHIRMaintenanceRequest = (request: MaintenanceRequest & {
     priority: priorityMap[request.priority] || 'routine',
     category: [{
       coding: [{
-        system: 'http://terminology.hl7.org/CodeSystem/service-category',
+        system: 'https://terminology.hl7.org/CodeSystem/service-category',
         code: 'maintenance',
         display: 'Maintenance'
       }]
     }],
     code: {
       coding: [{
-        system: 'http://hms.local/fhir/CodeSystem/maintenance-request-type',
+        system: 'https://hms.local/fhir/CodeSystem/maintenance-request-type',
         code: requestTypeMap[request.requestType]?.code || request.requestType.toLowerCase(),
         display: requestTypeMap[request.requestType]?.display || request.requestType
       }],
@@ -292,11 +292,11 @@ export const toFHIRAsset = (asset: Asset & {
     id: asset.id,
     identifier: [
       {
-        system: 'http://hms.local/identifier/asset',
+        system: 'https://hms.local/identifier/asset',
         value: asset.id
       },
       ...(asset.serialNumber ? [{
-        system: 'http://hms.local/identifier/serial-number',
+        system: 'https://hms.local/identifier/serial-number',
         value: asset.serialNumber
       }] : [])
     ],
@@ -306,7 +306,7 @@ export const toFHIRAsset = (asset: Asset & {
     serialNumber: asset.serialNumber,
     type: {
       coding: [{
-        system: 'http://hms.local/fhir/CodeSystem/asset-type',
+        system: 'https://hms.local/fhir/CodeSystem/asset-type',
         code: assetTypeMap[asset.assetType]?.code || asset.assetType.toLowerCase(),
         display: assetTypeMap[asset.assetType]?.display || asset.assetType
       }],

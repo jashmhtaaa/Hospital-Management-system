@@ -188,7 +188,7 @@ describe('AssetService', () => {
         performedBy: 'Technician',
         description: 'Regular maintenance',
         status: 'COMPLETED',
-        nextMaintenanceDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+        nextMaintenanceDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 90 * 24 * 60 * 60 * 1000),
       });
 
       expect(prisma.assetMaintenance.create).toHaveBeenCalled(),

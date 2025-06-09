@@ -328,9 +328,9 @@ class IPDTestHelper {
     maxTime: number,
     operationName: string
   ): Promise<T> {
-    const startTime = performance.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     const result = await operation();
-    const duration = performance.now() - startTime;
+    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
 
     expect(duration).toBeLessThan(maxTime);
     console.log(`${operationName} completed in ${duration.toFixed(2)}ms`);
@@ -447,8 +447,8 @@ describe('IPD Bed Management API', () => {
     test('should create new bed with valid data', async () => {
       const newBed = {
         ...TEST_CONFIG.testData.mockBed,
-        bed_number: `TEST-BED-${Date.now()}`,
-        room_number: `TEST-ROOM-${Date.now()}`
+        bed_number: `TEST-BED-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        room_number: `TEST-ROOM-${crypto.getRandomValues(new Uint32Array(1))[0]}`
       };
 
       const response = await IPDTestHelper.makeAuthenticatedRequest<Bed>('/api/ipd/beds', {
@@ -1005,9 +1005,9 @@ describe('IPD API Performance Benchmarks', () => {
       IPDTestHelper.makeAuthenticatedRequest('/api/ipd/beds')
     );
 
-    const startTime = performance.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     const responses = await Promise.all(requests);
-    const duration = performance.now() - startTime;
+    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
 
     // All requests should succeed
     responses.forEach(response => {

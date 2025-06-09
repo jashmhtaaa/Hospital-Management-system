@@ -467,7 +467,7 @@ export class QueryOptimizer {
     const cached = await cache.get(cacheKey);
     if (cached) return cached;
 
-    const sinceDate = new Date(Date.now() - hours * 60 * 60 * 1000);
+    const sinceDate = new Date(crypto.getRandomValues(new Uint32Array(1))[0] - hours * 60 * 60 * 1000);
 
     const result = await this.client.labResult.findMany({
       where: {
@@ -606,7 +606,7 @@ export class QueryOptimizer {
    * DATALOADER PATTERN FOR FREQUENTLY ACCESSED DATA;
    */
 
-  private patientLoader = new Map<string, Promise<any>>();
+  private patientLoader = new Map<string, Promise<unknown>>();
 
   async getPatientOptimized(patientId: string) {
     if (!this.patientLoader.has(patientId)) {

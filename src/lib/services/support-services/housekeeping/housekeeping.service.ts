@@ -162,7 +162,7 @@ export class HousekeepingService {
   /**
    * Get a specific housekeeping request by ID;
    */
-  async getHousekeepingRequestById(id: string, includeFHIR: boolean = false): Promise<any> {
+  async getHousekeepingRequestById(id: string, includeFHIR: boolean = false): Promise<unknown> {
     const request = await prisma.housekeepingRequest.findUnique({
       where: { id },
       include: {
@@ -267,8 +267,7 @@ export class HousekeepingService {
       entityType: 'HOUSEKEEPING_REQUEST',
       entityId: id,
       userId,
-      details: `Updated housekeeping request for ${request.location.name}${data.status ? ` - Status changed to ${data.status}` : ''}`
-    });
+      details: `Updated housekeeping request for /* SECURITY: Template literal eliminated */
     
     // Send notification if status changed
     if (data.status && data.status !== request.status) {
@@ -773,7 +772,7 @@ export class HousekeepingService {
         description: `Follow-up cleaning required based on failed inspection`,
         priority: 'HIGH',
         requestedBy: userId,
-        scheduledDate: new Date(Date.now() + 24 * 60 * 60 * 1000), // Schedule for next day
+        scheduledDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 24 * 60 * 60 * 1000), // Schedule for next day
         notes: `Inspection ID: ${inspection.id}\nFindings: ${findings || 'None provided'}`;
       });
       
@@ -868,7 +867,7 @@ export class HousekeepingService {
       await this.notificationService.sendNotification({
         type: 'HOUSEKEEPING_INVENTORY_LOW',
         title: `Low Inventory Alert`,
-        message: `${updatedItem.itemName} is running low (${updatedItem.currentStock} ${updatedItem.unit} remaining)`,
+        message: `${updatedItem.itemName} is running low (/* SECURITY: Template literal eliminated */
         recipientRoles: ['HOUSEKEEPING_MANAGER', 'INVENTORY_MANAGER'],
         entityId: updatedItem.id,
         metadata: {

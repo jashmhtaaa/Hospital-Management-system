@@ -346,7 +346,7 @@ DashboardLayout.displayName = "DashboardLayout";
 const AlertTriangleIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 <svg
     {...properties}
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"
@@ -365,7 +365,7 @@ const AlertTriangleIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 const ScissorsIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 <svg
     {...properties}
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"
@@ -387,7 +387,7 @@ const ScissorsIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 const RadioIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 <svg
     {...properties}
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"
@@ -408,7 +408,7 @@ const RadioIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 const HomeIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 <svg
     {...properties}
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"
@@ -426,7 +426,7 @@ const HomeIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 const CalendarIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 <svg
     {...properties}
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"
@@ -446,7 +446,7 @@ const CalendarIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 const BedIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 <svg
     {...properties}
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"
@@ -471,7 +471,7 @@ const BedIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 const UsersIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 <svg
     {...properties}
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"
@@ -491,7 +491,7 @@ const UsersIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 const CreditCardIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 <svg
     {...properties}
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"
@@ -509,7 +509,7 @@ const CreditCardIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 const PillIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 <svg
     {...properties}
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"
@@ -527,7 +527,7 @@ const PillIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 const FlaskConicalIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 <svg
     {...properties}
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"
@@ -548,7 +548,7 @@ const FlaskConicalIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 const BarChartIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 <svg
     {...properties}
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"
@@ -567,7 +567,7 @@ const BarChartIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 const SettingsIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 <svg
     {...properties}
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"
@@ -585,7 +585,7 @@ const SettingsIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 const LogOutIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 <svg
     {...properties}
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"
@@ -604,7 +604,7 @@ const LogOutIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 const BellIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 <svg
     {...properties}
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"
@@ -622,7 +622,7 @@ const BellIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 const HospitalIcon = (properties: React.SVGProps<SVGSVGElement>) => (
 <svg
     {...properties}
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns="https://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"

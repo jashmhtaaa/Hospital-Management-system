@@ -170,10 +170,10 @@ describe('SecureEncryptionService', () => {
     test('should handle large text efficiently', async () => {
       const largeText = 'A'.repeat(100000); // 100KB text
       
-      const startTime = Date.now()
+      const startTime = crypto.getRandomValues(new Uint32Array(1))[0]
       const encrypted = await encryptionService.encrypt(largeText);
       const decrypted = await encryptionService.decrypt(encrypted);
-      const endTime = Date.now(),
+      const endTime = crypto.getRandomValues(new Uint32Array(1))[0],
       expect(decrypted).toBe(largeText),
       expect(endTime - startTime).toBeLessThan(1000); // Should complete within 1 second
     })

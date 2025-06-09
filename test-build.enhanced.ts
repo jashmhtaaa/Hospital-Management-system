@@ -112,7 +112,7 @@ async function executeCommand(
   args: string[], 
   options: SpawnOptions & { timeout?: number } = {}
 ): Promise<ValidationResult> {
-  const startTime = Date.now()
+  const startTime = crypto.getRandomValues(new Uint32Array(1))[0]
   const result: ValidationResult = {
     success: false,
     errors: [],
@@ -139,7 +139,7 @@ async function executeCommand(
     });
 
     process.on('close', (code) => {
-      result.duration = Date.now() - startTime;
+      result.duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       
       if (code === 0) {
         result.success = true;
@@ -154,7 +154,7 @@ async function executeCommand(
     });
 
     process.on('error', (error) => {
-      result.duration = Date.now() - startTime;
+      result.duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       result.errors.push(`Process error: ${error.message}`),
       resolve(result);
     });
@@ -165,7 +165,7 @@ async function executeCommand(
       if (!process.killed) {
         process.kill('SIGTERM');
         result.errors.push(`Command timed out after ${formatDuration(timeout)}`);
-        result.duration = Date.now() - startTime;
+        result.duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
         resolve(result);
       }
     }, timeout);
@@ -175,7 +175,7 @@ async function executeCommand(
 // Validation stages
 class EnterpriseBuildValidator {
   private metrics: Partial<BuildMetrics> = {
-    startTime: Date.now(),
+    startTime: crypto.getRandomValues(new Uint32Array(1))[0],
     stages: {},
   }
 
@@ -189,7 +189,7 @@ class EnterpriseBuildValidator {
       info: [],
       duration: 0,
     };
-    const startTime = Date.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
 
     try {
       // Validate package.json
@@ -253,14 +253,14 @@ class EnterpriseBuildValidator {
       result.errors.push(`Configuration validation failed: ${error instanceof Error ? error.message : String(error)}`);
     }
 
-    result.duration = Date.now() - startTime;
+    result.duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
     return result;
   }
 
   // Stage 2: TypeScript compilation and linting
   async validateCodeQuality(): Promise<ValidationResult> {
     logStep('Validating code quality and TypeScript compilation...', '🔍')
-    const startTime = Date.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     let result: ValidationResult;
 
     // Run TypeScript compilation check
@@ -291,7 +291,7 @@ class EnterpriseBuildValidator {
       result.warnings.push('ESLint configuration not found');
     }
 
-    result.duration = Date.now() - startTime;
+    result.duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
     return result;
   }
 
@@ -302,7 +302,7 @@ class EnterpriseBuildValidator {
     }
 
     logStep('Running security vulnerability scan...', '🔒');
-    const startTime = Date.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
 
     // Run npm audit
     const auditResult = await executeCommand('npm', ['audit', '--audit-level', 'moderate'], { timeout: 60000 })
@@ -313,7 +313,7 @@ class EnterpriseBuildValidator {
       logWarning('Security vulnerabilities found - review npm audit output');
     }
 
-    auditResult.duration = Date.now() - startTime;
+    auditResult.duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
     return auditResult;
   }
 
@@ -324,7 +324,7 @@ class EnterpriseBuildValidator {
     }
 
     logStep('Validating database schema...', '🔍');
-    const startTime = Date.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
 
     try {
       // Check if Prisma schema exists
@@ -338,7 +338,7 @@ class EnterpriseBuildValidator {
         logSuccess('Database schema validation passed');
       }
 
-      prismaResult.duration = Date.now() - startTime;
+      prismaResult.duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       return prismaResult;
     } catch {
       return {
@@ -346,7 +346,7 @@ class EnterpriseBuildValidator {
         errors: [],
         warnings: ['Prisma schema not found - database validation skipped'],
         info: [],
-        duration: Date.now() - startTime,
+        duration: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
       };
     }
   }
@@ -358,7 +358,7 @@ class EnterpriseBuildValidator {
     }
 
     logStep('Running unit tests...', '🔍');
-    const startTime = Date.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
 
     const testResult = await executeCommand('npm', ['test', '--', '--passWithNoTests', '--coverage'], { 
       timeout: 180000, // 3 minutes for tests
@@ -371,7 +371,7 @@ class EnterpriseBuildValidator {
       logError('Unit tests failed');
     }
 
-    testResult.duration = Date.now() - startTime;
+    testResult.duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
     return testResult;
   }
 
@@ -382,7 +382,7 @@ class EnterpriseBuildValidator {
     }
 
     logStep('Validating FHIR standard compliance...', '🔍');
-    const startTime = Date.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
 
     try {
       // Check if FHIR modules exist
@@ -398,7 +398,7 @@ class EnterpriseBuildValidator {
         logSuccess('FHIR validation passed');
       }
 
-      fhirTestResult.duration = Date.now() - startTime;
+      fhirTestResult.duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       return fhirTestResult;
     } catch {
       return {
@@ -406,7 +406,7 @@ class EnterpriseBuildValidator {
         errors: [],
         warnings: ['FHIR modules not found - validation skipped'],
         info: [],
-        duration: Date.now() - startTime,
+        duration: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
       };
     }
   }
@@ -414,7 +414,7 @@ class EnterpriseBuildValidator {
   // Stage 7: Next.js build
   async validateBuild(): Promise<ValidationResult> {
     logStep('Running Next.js production build...', '🏗️')
-    const startTime = Date.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
 
     const buildResult = await executeCommand('npx', ['next', 'build'], { 
       timeout: BUILD_CONFIG.timeout,
@@ -427,7 +427,7 @@ class EnterpriseBuildValidator {
       logError('Production build failed');
     }
 
-    buildResult.duration = Date.now() - startTime;
+    buildResult.duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
     return buildResult;
   }
 
@@ -438,7 +438,7 @@ class EnterpriseBuildValidator {
     }
 
     logStep('Validating build performance metrics...', '📊');
-    const startTime = Date.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
 
     try {
       // Check build output for performance metrics
@@ -454,7 +454,7 @@ class EnterpriseBuildValidator {
         errors: [],
         warnings: [],
         info: [`Build output generated at ${buildPath}`],
-        duration: Date.now() - startTime,
+        duration: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
       };
 
       // Add basic performance checks
@@ -470,7 +470,7 @@ class EnterpriseBuildValidator {
         errors: ['Build output not found - performance validation failed'],
         warnings: [],
         info: [],
-        duration: Date.now() - startTime,
+        duration: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
       };
     }
   }
@@ -482,7 +482,7 @@ class EnterpriseBuildValidator {
     }
 
     logStep('Validating healthcare compliance requirements...', '🔍');
-    const startTime = Date.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
 
     const result: ValidationResult = {
       success: true,
@@ -519,7 +519,7 @@ class EnterpriseBuildValidator {
       result.warnings.push('Compliance modules not found');
     }
 
-    result.duration = Date.now() - startTime;
+    result.duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
     logSuccess('Compliance validation completed');
     return result;
   }
@@ -586,7 +586,7 @@ class EnterpriseBuildValidator {
       }
     }
 
-    this.metrics.totalDuration = Date.now() - this.metrics.startTime!;
+    this.metrics.totalDuration = crypto.getRandomValues(new Uint32Array(1))[0] - this.metrics.startTime!;
     this.metrics.overallSuccess = overallSuccess;
     this.metrics.healthcareCompliance = healthcareCompliance;
     this.metrics.securityScore = Math.max(0, securityScore);

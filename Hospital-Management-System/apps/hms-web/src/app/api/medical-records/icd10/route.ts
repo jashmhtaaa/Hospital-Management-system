@@ -196,7 +196,7 @@ export const GET = async (request: NextRequest) => {
 
     return NextResponse.json({ results, query, type });
   } catch (error) {
-    console.error('ICD-10 search error:', error);
+    /* SECURITY: Console statement removed */
     return NextResponse.json({ error: 'Search failed' }, { status: 500 });
   }
 };
@@ -241,7 +241,7 @@ export const POST = async (request: NextRequest) => {
       requiresReview: true
     });
   } catch (error) {
-    console.error('Auto-coding error:', error);
+    /* SECURITY: Console statement removed */
     return NextResponse.json({ error: 'Auto-coding failed' }, { status: 500 });
   }
 };

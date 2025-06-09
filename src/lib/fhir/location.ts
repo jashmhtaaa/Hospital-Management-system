@@ -100,7 +100,7 @@ export class FHIRLocationUtils {
       mode: 'instance',
       type: [{
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/v3-RoleCode',
+          system: 'https://terminology.hl7.org/CodeSystem/v3-RoleCode',
           code: this.getLocationTypeCode(data.type),
           display: this.getLocationTypeDisplay(data.type)
         }]
@@ -124,7 +124,7 @@ export class FHIRLocationUtils {
     if (data.physicalType) {
       location.physicalType = {
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/location-physical-type',
+          system: 'https://terminology.hl7.org/CodeSystem/location-physical-type',
           code: data.physicalType,
           display: this.getPhysicalTypeDisplay(data.physicalType)
         }]
@@ -231,7 +231,7 @@ export class FHIRLocationUtils {
     // Add ward-specific type
     location.type!.push({
       coding: [{
-        system: 'http://snomed.info/sct',
+        system: 'https://snomed.info/sct',
         code: this.getWardTypeCode(data.wardType),
         display: this.getWardTypeDisplay(data.wardType)
       }]
@@ -266,7 +266,7 @@ export class FHIRLocationUtils {
     // Add room-specific type
     location.type!.push({
       coding: [{
-        system: 'http://snomed.info/sct',
+        system: 'https://snomed.info/sct',
         code: this.getRoomTypeCode(data.roomType),
         display: this.getRoomTypeDisplay(data.roomType)
       }]
@@ -277,7 +277,7 @@ export class FHIRLocationUtils {
       data.amenities.forEach(amenity => {
         location.type!.push({
           coding: [{
-            system: 'http://terminology.hl7.org/CodeSystem/v3-RoleCode',
+            system: 'https://terminology.hl7.org/CodeSystem/v3-RoleCode',
             code: 'amenity',
             display: amenity
           }]
@@ -312,7 +312,7 @@ export class FHIRLocationUtils {
     // Add bed-specific type
     location.type!.push({
       coding: [{
-        system: 'http://snomed.info/sct',
+        system: 'https://snomed.info/sct',
         code: this.getBedTypeCode(data.bedType),
         display: this.getBedTypeDisplay(data.bedType)
       }]
@@ -320,7 +320,7 @@ export class FHIRLocationUtils {
 
     // Set operational status based on occupancy
     location.operationalStatus = {
-      system: 'http://terminology.hl7.org/CodeSystem/v2-0116',
+      system: 'https://terminology.hl7.org/CodeSystem/v2-0116',
       code: data.isOccupied ? 'O' : 'U',
       display: data.isOccupied ? 'Occupied' : 'Unoccupied'
     }
@@ -353,7 +353,7 @@ export class FHIRLocationUtils {
     // Add operating room type
     location.type!.push({
       coding: [{
-        system: 'http://snomed.info/sct',
+        system: 'https://snomed.info/sct',
         code: '225765009',
         display: 'Operating Room'
       }]
@@ -364,7 +364,7 @@ export class FHIRLocationUtils {
       data.specialties.forEach(specialty => {
         location.type!.push({
           coding: [{
-            system: 'http://snomed.info/sct',
+            system: 'https://snomed.info/sct',
             code: 'specialty',
             display: specialty
           }]

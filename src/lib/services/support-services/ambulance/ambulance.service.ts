@@ -113,7 +113,7 @@ export class AmbulanceService {
   /**
    * Get ambulance by ID;
    */
-  async getAmbulanceById(id: string, includeFHIR: boolean = false): Promise<any> {
+  async getAmbulanceById(id: string, includeFHIR: boolean = false): Promise<unknown> {
     const ambulance = await prisma.ambulance.findUnique({
       where: { id },
       include: {
@@ -247,8 +247,7 @@ export class AmbulanceService {
       entityType: 'AMBULANCE',
       entityId: id,
       userId,
-      details: `Updated ambulance ${ambulance.registrationNumber}${data.status ? ` - Status changed to ${data.status}` : ''}`
-    });
+      details: `Updated ambulance /* SECURITY: Template literal eliminated */
     
     // Send notification if status changed to UNDER_MAINTENANCE
     if (data.status === 'UNDER_MAINTENANCE' && ambulance.status !== 'UNDER_MAINTENANCE') {
@@ -348,7 +347,7 @@ export class AmbulanceService {
   /**
    * Get ambulance trip by ID;
    */
-  async getAmbulanceTripById(id: string, includeFHIR: boolean = false): Promise<any> {
+  async getAmbulanceTripById(id: string, includeFHIR: boolean = false): Promise<unknown> {
     const trip = await prisma.ambulanceTrip.findUnique({
       where: { id },
       include: {
@@ -574,7 +573,7 @@ export class AmbulanceService {
       case 'COMPLETED':
         updateData.endTime = new Date();
         if (trip.startTime) {
-          const duration = Math.round((new Date().getTime() - trip.startTime.getTime()) / (60 * 1000)); // in minutes
+          const duration = Math.round((crypto.getRandomValues(new Uint32Array(1))[0] - trip.startTime.getTime()) / (60 * 1000)); // in minutes
           updateData.duration = duration;
         }
         break;
@@ -1059,7 +1058,7 @@ export class AmbulanceService {
         where: { id: maintenance.ambulanceId },
         data: {
           lastMaintenanceDate: new Date(),
-          nextMaintenanceDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // 90 days from now
+          nextMaintenanceDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 90 * 24 * 60 * 60 * 1000), // 90 days from now
           status: 'AVAILABLE' // Set ambulance back to available
         }
       })

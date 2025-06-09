@@ -317,6 +317,6 @@ const getStockStatus = (quantity: number, reorderLevel: number): 'critical' | 'l
  */
 const generatePurchaseOrderNumber = (): string {
   const prefix = 'PO';
-  const timestamp = Date.now().toString().slice(-6);
-  const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+  const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
+  const random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10000).toString().padStart(4, '0');
   return `${prefix}-${timestamp}-${random}`;

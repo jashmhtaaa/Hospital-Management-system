@@ -28,7 +28,7 @@ interface DatabaseHealth {
     pending: number
   };
 export const GET = async (request: NextRequest): Promise<NextResponse> {
-  const startTime = Date.now();
+  const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
   
   try {
     // Basic connectivity test
@@ -50,7 +50,7 @@ export const GET = async (request: NextRequest): Promise<NextResponse> {
       total: 8
     };
     
-    const responseTime = Date.now() - startTime;
+    const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
     
     const dbHealth: DatabaseHealth = {
       status: determineDbStatus(responseTime, slowQueries),
@@ -80,7 +80,7 @@ export const GET = async (request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({
       status: 'unhealthy',
       timestamp: new Date().toISOString(),
-      responseTime: Date.now() - startTime,
+      responseTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
       error: 'Database connection failed',
       details: process.env.NODE_ENV === 'development' ? error.message : undefined
     }, { status: 503 });

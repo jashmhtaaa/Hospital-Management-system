@@ -596,7 +596,7 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
     templateId?: string,
     inputData?: unknown;
   ): Promise<ClinicalDocument> {
-    const startTime = performance.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     
     try {
       // Get patient data and context
@@ -620,7 +620,7 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
 
       // Create document
       const document: ClinicalDocument = {
-        id: `doc-${Date.now()}`,
+        id: `doc-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         documentType,
         patientId,
         encounterId,
@@ -659,7 +659,7 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
       });
 
       // Record metrics
-      const duration = performance.now() - startTime;
+      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       metricsCollector.recordTimer('clinical_docs.note_generation_time', duration);
       metricsCollector.incrementCounter('clinical_docs.notes_generated', 1, {
         documentType: documentType,

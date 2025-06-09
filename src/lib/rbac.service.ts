@@ -58,7 +58,7 @@ export enum Action {
 interface Permission {
   resource: Resource,
   action: Action;
-  constraints?: Record<string, any>;
+  constraints?: Record<string, unknown>;
 }
 
 // Role definition with permissions
@@ -232,7 +232,7 @@ export class RBACService {
     userRoles: string[],
     resource: Resource,
     action: Action,
-    constraints?: Record<string, any>
+    constraints?: Record<string, unknown>
   ): boolean {
     // Admin role has access to everything
     if (userRoles.includes(Role.ADMIN)) {
@@ -292,7 +292,7 @@ export class RBACService {
     roleDef: RoleDefinition,
     resource: Resource,
     action: Action,
-    constraints?: Record<string, any>
+    constraints?: Record<string, unknown>
   ): boolean {
     // Check for system-level permission (full access)
     const hasSystemPermission = roleDef.permissions.some(
@@ -338,7 +338,7 @@ export class RBACService {
     userRoles: string[],
     resource: Resource,
     action: Action,
-    constraints?: Record<string, any>,
+    constraints?: Record<string, unknown>,
     userId?: string,
     resourceId?: string;
   ): void {

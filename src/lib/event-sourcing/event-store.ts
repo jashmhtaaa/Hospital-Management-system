@@ -312,7 +312,7 @@ export class KafkaEventStore implements EventStore {
             
             // Filter by event type if necessary
             if (eventTypes.includes(event.type)) {
-              const startTime = performance.now();
+              const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
               
               // Decrypt sensitive data if needed
               const processedEvent = this.encryptSensitiveData;
@@ -323,7 +323,7 @@ export class KafkaEventStore implements EventStore {
               await handler(processedEvent);
               
               // Track metrics
-              const duration = performance.now() - startTime;
+              const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
               metricsCollector.recordTimer('event_store.event_processing_time', duration, {
                 eventType: event.type,
                 consumerGroup: groupId
@@ -546,7 +546,7 @@ export class KafkaEventStore implements EventStore {
     const processedEvent = JSON.parse(JSON.stringify(event)) as DomainEvent<T>;
     
     // Function to recursively process object
-    const processObject = async (obj: unknown, path = ''): Promise<any> => {
+    const processObject = async (obj: unknown, path = ''): Promise<unknown> => {
       if (!obj || typeof obj !== 'object') return obj;
       
       if (Array.isArray(obj)) {
@@ -590,7 +590,7 @@ export class KafkaEventStore implements EventStore {
     const processedEvent = JSON.parse(JSON.stringify(event)) as DomainEvent<T>;
     
     // Function to recursively process object
-    const processObject = async (obj: unknown): Promise<any> => {
+    const processObject = async (obj: unknown): Promise<unknown> => {
       if (!obj || typeof obj !== 'object') return obj;
       
       if (Array.isArray(obj)) {

@@ -138,7 +138,7 @@ const BillingPharmacyIntegration: React.FC<;
   // Generate pharmacy bill
   const handleGenerateBill = async (): Promise<void> => {
     if (selectedItems.length === 0) {
-      alert("Please select at least one item to bill");
+      /* SECURITY: Console statement removed */
       return;
     }
 
@@ -186,12 +186,12 @@ const BillingPharmacyIntegration: React.FC<;
       setSelectedItems([]);
       // Bill total is recalculated by useEffect, no need to set here
 
-      alert("Pharmacy bill generated successfully!");
+      /* SECURITY: Console statement removed */
     } catch (error) { // FIX: Added error parameter
       const message =;
         error instanceof Error ? error.message : "An unknown error occurred.";
 
-      alert(`Failed to generate pharmacy bill: ${message}`);
+      /* SECURITY: Console statement removed */
     } finally {
       setLoading(false);
     }

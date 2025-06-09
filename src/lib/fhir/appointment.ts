@@ -122,7 +122,7 @@ export class FHIRAppointmentUtils {
     if (data.appointmentType) {
       appointment.appointmentType = {
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/v2-0276',
+          system: 'https://terminology.hl7.org/CodeSystem/v2-0276',
           code: data.appointmentType,
           display: data.appointmentType
         }]
@@ -353,7 +353,7 @@ export class FHIRAppointmentUtils {
     if (hmsAppointment.appointmentType || hmsAppointment.visitType) {
       fhirAppointment.appointmentType = {
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/v2-0276',
+          system: 'https://terminology.hl7.org/CodeSystem/v2-0276',
           code: hmsAppointment.appointmentType || hmsAppointment.visitType,
           display: hmsAppointment.appointmentType || hmsAppointment.visitType
         }]

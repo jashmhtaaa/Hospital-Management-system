@@ -456,7 +456,7 @@ export class AttendanceService {
     // In production, this would integrate with a biometric verification service
     
     // Simulate 95% success rate for verification
-    const randomSuccess = Math.random() < 0.95;
+    const randomSuccess = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) < 0.95;
     
     // Log the verification attempt
     await prisma.auditLog.create({

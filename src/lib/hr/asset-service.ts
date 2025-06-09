@@ -234,7 +234,7 @@ export class AssetService {
 
     if (needsMaintenance) {
       where.nextMaintenanceDate = {
-        lte: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // Next 30 days
+        lte: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000), // Next 30 days
       };
     }
 
@@ -579,8 +579,8 @@ export class AssetService {
     
     // Calculate total lifetime (in days)
     const purchaseDate = asset.purchaseDate ||
-      new Date(Date.now() - 365 * 24 * 60 * 60 * 1000); // Default to 1 year ago
-    const totalLifetime = (new Date().getTime() - purchaseDate.getTime()) / (1000 * 60 * 60 * 24);
+      new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 365 * 24 * 60 * 60 * 1000); // Default to 1 year ago
+    const totalLifetime = (crypto.getRandomValues(new Uint32Array(1))[0] - purchaseDate.getTime()) / (1000 * 60 * 60 * 24);
     
     // Calculate total time in use (in days)
     let totalTimeInUse = 0

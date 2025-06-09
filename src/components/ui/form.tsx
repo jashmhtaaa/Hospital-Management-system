@@ -117,7 +117,7 @@ const FormControl = React.forwardRef<;
       aria-describedby={
         !error;
           ? `${formDescriptionId}`
-          : `${formDescriptionId} ${formMessageId}`;
+          : `/* SECURITY: Template literal eliminated */
       }
       aria-invalid={!!error}
       {...props}

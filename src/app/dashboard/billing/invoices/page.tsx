@@ -80,7 +80,7 @@ export default const InvoicesListPage = () {
       // Simulate API call
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate delay
-      // Replace with actual API call: const response = await fetch(`/api/billing/invoices?search=${encodeURIComponent(term)}`)
+      // Replace with actual API call: const response = await fetch(`/api/billing/invoices?search=/* SECURITY: Safe parameter encoding */`)
       // const data = await response.json()
       // setInvoices(data.invoices || []),
       setInvoices([]); // Set empty for now

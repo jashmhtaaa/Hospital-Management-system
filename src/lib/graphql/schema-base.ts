@@ -397,7 +397,7 @@ export const baseResolvers = {
       
       // Implementation would save file and return metadata
       return {
-        id: 'file-' + Date.now(),
+        id: 'file-' + crypto.getRandomValues(new Uint32Array(1))[0],
         filename,
         mimetype,
         encoding,
@@ -432,7 +432,7 @@ export const baseResolvers = {
   },
 
   User: {
-    fullName: (parent) => `${parent.firstName} ${parent.lastName}`,
+    fullName: (parent) => `/* SECURITY: Template literal eliminated */
     permissions: async (parent, args, context) => {
       // Implementation would fetch user permissions from RBAC system
       return parent.permissions || [];
@@ -547,7 +547,7 @@ export class GraphQLUtils {
     priority: string = 'MEDIUM';
   ) {
     const notification = {
-      id: `notification-${Date.now()}-${Math.random()}`,
+      id: `notification-${crypto.getRandomValues(new Uint32Array(1))[0]}-${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1)}`,
       type,
       title,
       message,

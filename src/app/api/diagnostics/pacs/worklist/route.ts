@@ -109,12 +109,7 @@ export const GET = async (request: NextRequest) => {
           JOIN patients p ON mw.patient_id = p.id;
           JOIN radiology_orders ro ON mw.order_id = ro.id;
           WHERE 1=1;
-          ${patientId ? ' AND mw.patient_id = ?' : ''}
-          ${modality ? ' AND mw.modality = ?' : ''}
-          ${status ? ' AND mw.status = ?' : ''}
-          ${scheduledDate ? ' AND DATE(mw.scheduled_date) = ?' : ''}
-          ${accessionNumber ? ' AND mw.accession_number = ?' : ''}
-          ${search ? ' AND (mw.accession_number LIKE ? OR p.patient_id LIKE ? OR CONCAT(p.first_name, " ", p.last_name) LIKE ? OR ro.procedure_name LIKE ?)' : ''}
+          /* SECURITY: Template literal eliminated */ " ", p.last_name) LIKE ? OR ro.procedure_name LIKE ?)' : ''}
         `;
         
         const countParams = params.slice(0, -2);
@@ -261,7 +256,7 @@ export const POST_SYNC = async (request: NextRequest) => {
       newEntries.push({
         id: insertResult.insertId,
         accessionNumber: order.accession_number,
-        patientName: `${order.first_name} ${order.last_name}`,
+        patientName: `/* SECURITY: Template literal eliminated */
         modality: order.modality,
         procedureName: order.procedure_name
       });

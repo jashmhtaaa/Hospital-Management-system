@@ -103,7 +103,7 @@ export class FHIRProcedureUtils {
       status: data.status || 'completed',
       code: {
         coding: [{
-          system: 'http://snomed.info/sct',
+          system: 'https://snomed.info/sct',
           code: data.procedureCode,
           display: data.procedureDisplay
         }]
@@ -124,7 +124,7 @@ export class FHIRProcedureUtils {
     if (data.category) {
       procedure.category = {
         coding: [{
-          system: 'http://snomed.info/sct',
+          system: 'https://snomed.info/sct',
           code: this.getCategoryCode(data.category),
           display: data.category.charAt(0).toUpperCase() + data.category.slice(1)
         }]
@@ -161,7 +161,7 @@ export class FHIRProcedureUtils {
     if (data.reasonCode && data.reasonDisplay) {
       procedure.reasonCode = [{
         coding: [{
-          system: 'http://snomed.info/sct',
+          system: 'https://snomed.info/sct',
           code: data.reasonCode,
           display: data.reasonDisplay
         }]
@@ -172,7 +172,7 @@ export class FHIRProcedureUtils {
     if (data.outcome) {
       procedure.outcome = {
         coding: [{
-          system: 'http://snomed.info/sct',
+          system: 'https://snomed.info/sct',
           code: this.getOutcomeCode(data.outcome),
           display: data.outcome
         }]
@@ -227,7 +227,7 @@ export class FHIRProcedureUtils {
     if (procedure.performer && procedure.performer[0]) {
       procedure.performer[0].function = {
         coding: [{
-          system: 'http://snomed.info/sct',
+          system: 'https://snomed.info/sct',
           code: '304292004',
           display: 'Surgeon'
         }]
@@ -240,7 +240,7 @@ export class FHIRProcedureUtils {
         procedure.performer!.push({
           function: {
             coding: [{
-              system: 'http://snomed.info/sct',
+              system: 'https://snomed.info/sct',
               code: '449161006',
               display: 'Surgical assistant'
             }]
@@ -257,7 +257,7 @@ export class FHIRProcedureUtils {
     if (data.complications) {
       procedure.complication = data.complications.map(complication => ({
         coding: [{
-          system: 'http://snomed.info/sct',
+          system: 'https://snomed.info/sct',
           code: 'unknown',
           display: complication
         }]
@@ -327,7 +327,7 @@ export class FHIRProcedureUtils {
     if (data.nextAppointment) {
       procedure.followUp = [{
         coding: [{
-          system: 'http://snomed.info/sct',
+          system: 'https://snomed.info/sct',
           code: '390906007',
           display: 'Follow-up appointment'
         }]

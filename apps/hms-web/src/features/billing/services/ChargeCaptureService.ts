@@ -48,7 +48,7 @@ export class ChargeCaptureService {
 
         // Create and save the patient charge (placeholder)
         const newCharge = {
-            id: `charge_${Date.now()}`,
+            id: `charge_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
             patientId,
             serviceId: chargeInput.serviceId,
             serviceName: chargeInput.serviceName || 'Unknown Service', // Placeholder

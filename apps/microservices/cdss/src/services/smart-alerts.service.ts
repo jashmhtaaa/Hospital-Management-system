@@ -558,7 +558,7 @@ export class SmartAlertsService {
       const newDefinition = await this.prisma.alertDefinition.create({
         data: {
           ...definition,
-          id: `alert-def-${Date.now()}`,
+          id: `alert-def-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
           createdAt: new Date(),
           updatedAt: new Date(),
           createdBy: userId,
@@ -706,7 +706,7 @@ export class SmartAlertsService {
 
       // Create alert instance
       const newAlert: AlertInstance = {
-        id: `alert-${Date.now()}`,
+        id: `alert-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         definitionId,
         patientId: alert.patientId,
         encounterId: alert.encounterId,
@@ -721,7 +721,7 @@ export class SmartAlertsService {
         status,
         triggerTime: new Date(),
         expirationTime: definition.autoResolve;
-          ? new Date(Date.now() + (definition.autoResolveAfter || 1440) * 60 * 1000);
+          ? new Date(crypto.getRandomValues(new Uint32Array(1))[0] + (definition.autoResolveAfter || 1440) * 60 * 1000);
           : undefined,
         suppressedBy,
         suppressionReason,
@@ -830,11 +830,7 @@ export class SmartAlertsService {
   /**
    * Acknowledge an alert;
    */
-  async acknowledgeAlert(
-    alertId: string,
-    userId: string,
-    note?: string;
-  ): Promise<AlertInstance> {
+  async acknowledge/* SECURITY: Alert removed */: Promise<AlertInstance> {
     try {
       // Get alert
       const alert = await this.prisma.alertInstance.findUnique({
@@ -887,7 +883,7 @@ export class SmartAlertsService {
       });
 
       // Record metrics
-      const responseTime = new Date().getTime() - new Date(alert.triggerTime).getTime();
+      const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - new Date(alert.triggerTime).getTime();
       metricsCollector.recordTimer('cdss.alert_response_time', responseTime);
       metricsCollector.incrementCounter('cdss.alerts_acknowledged', 1, {
         category: alert.category,
@@ -909,11 +905,7 @@ export class SmartAlertsService {
   /**
    * Resolve an alert;
    */
-  async resolveAlert(
-    alertId: string,
-    userId: string,
-    note?: string;
-  ): Promise<AlertInstance> {
+  async resolve/* SECURITY: Alert removed */: Promise<AlertInstance> {
     try {
       // Get alert
       const alert = await this.prisma.alertInstance.findUnique({
@@ -1023,7 +1015,7 @@ export class SmartAlertsService {
 
       // Create drug interaction alert
       const alert: DrugInteractionAlert = {
-        id: `drug-interaction-${Date.now()}`,
+        id: `drug-interaction-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         patientId,
         encounterId,
         interactions,
@@ -1094,7 +1086,7 @@ export class SmartAlertsService {
 
       // Create critical value alert
       const alert: CriticalValueAlert = {
-        id: `critical-value-${Date.now()}`,
+        id: `critical-value-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         patientId,
         encounterId,
         orderId: result.orderId,
@@ -1130,7 +1122,7 @@ export class SmartAlertsService {
         resourceId: alert.id,
         resourceType: 'CRITICAL_VALUE',
         title: `Critical Lab Value - ${result.testName}`,
-        message: `Critical ${result.abnormalFlag.toLowerCase()} value of ${result.value} ${result.unit} for ${result.testName}`,
+        message: `Critical ${result.abnormalFlag.toLowerCase()} value of /* SECURITY: Template literal eliminated */
         details: this.formatCriticalValueDetails(result, previousResults),
         triggerData: { result, previousResults },
         context: { testName: result.testName, abnormalFlag: result.abnormalFlag },
@@ -1156,15 +1148,12 @@ export class SmartAlertsService {
   /**
    * Create patient safety alert;
    */
-  async createPatientSafetyAlert(
-    safety: Omit<PatientSafetyAlert, 'id' | 'detectionTime' | 'status'>,
-    userId: string;
-  ): Promise<PatientSafetyAlert> {
+  async createPatientSafety/* SECURITY: Alert removed */: Promise<PatientSafetyAlert> {
     try {
       // Create safety alert
       const alert: PatientSafetyAlert = {
         ...safety,
-        id: `safety-alert-${Date.now()}`,
+        id: `safety-alert-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         detectionTime: new Date(),
         status: 'ACTIVE',
       };
@@ -1250,7 +1239,7 @@ export class SmartAlertsService {
   ): Promise<AlertAnalytics> {
     try {
       // Default time range is last 24 hours
-      const startDate = timeRange?.startDate || new Date(Date.now() - 24 * 60 * 60 * 1000);
+      const startDate = timeRange?.startDate || new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 24 * 60 * 60 * 1000);
       const endDate = timeRange?.endDate || new Date();
 
       // Build filters

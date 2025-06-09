@@ -17,7 +17,7 @@ interface SegmentBuilderProps {
 export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [segment, setSegment] = useState<any>(null);
+  const [segment, setSegment] = useState<unknown>(null);
   const [activeTab, setActiveTab] = useState<string>("details");
   const [formData, setFormData] = useState({
     name: '',
@@ -114,7 +114,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     const conditionStrings = criteria.conditions.map((condition: unknown) => {
       const fieldLabel = getFieldLabel(condition.field);
       const operatorLabel = getOperatorLabel(condition.operator);
-      return `${fieldLabel} ${operatorLabel} "${condition.value}"`;
+      return `/* SECURITY: Template literal eliminated */
     });
     
     const joinWord = criteria.type === 'AND' ? 'AND' : 'OR';
@@ -131,7 +131,7 @@ export default const SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderP
     try {
       // This would be a real API call in production
       // For now, we'll simulate with a random number
-      setEstimatedSize(Math.floor(Math.random() * 100) + 1);
+      setEstimatedSize(Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) + 1);
     } catch (error) {
 
     }

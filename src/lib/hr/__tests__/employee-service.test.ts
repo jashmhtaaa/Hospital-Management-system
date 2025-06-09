@@ -238,7 +238,7 @@ describe('EmployeeService', () => {
 
       const result = employeeService.toFhirPractitioner(mockEmployee),
       expect(result.resourceType).toEqual('Practitioner'),
-      expect(result.meta.profile).toContain('http://hl7.org/fhir/r5/StructureDefinition/Practitioner'),
+      expect(result.meta.profile).toContain('https://hl7.org/fhir/r5/StructureDefinition/Practitioner'),
       expect(result.id).toEqual('123'),
       expect(result.identifier[0].value).toEqual('EMP123'),
       expect(result.name[0].family).toEqual('Doe'),
@@ -270,7 +270,7 @@ describe('EmployeeService', () => {
 
       const result = employeeService.toFhirPractitionerRole(mockEmployee, mockPosition),
       expect(result.resourceType).toEqual('PractitionerRole'),
-      expect(result.meta.profile).toContain('http://hl7.org/fhir/r5/StructureDefinition/PractitionerRole'),
+      expect(result.meta.profile).toContain('https://hl7.org/fhir/r5/StructureDefinition/PractitionerRole'),
       expect(result.id).toEqual('456'),
       expect(result.practitioner.reference).toEqual('Practitioner/123'),
       expect(result.code[0].coding[0].code).toEqual('NURSE'),

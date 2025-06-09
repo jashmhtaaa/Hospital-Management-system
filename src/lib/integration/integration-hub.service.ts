@@ -93,7 +93,7 @@ export interface DataTransformation {
   type: 'direct' | 'lookup' | 'function' | 'concatenate' | 'split' | 'format' | 'convert';
   function?: string;
   parameters?: unknown[];
-  lookupTable?: Record<string, any>;
+  lookupTable?: Record<string, unknown>;
   format?: string;
   separator?: string;
 export interface ValidationRule {
@@ -137,7 +137,7 @@ export interface MessageMetadata {
   organizationId?: string;
   department?: string;
   version?: string;
-  custom?: Record<string, any>;
+  custom?: Record<string, unknown>;
 export interface IntegrationEvent {
   id: string,
   endpointId: string,
@@ -165,7 +165,7 @@ export interface MessageTransformer {
   version: string,
   inputFormat: string,
   outputFormat: string;
-  transform(data: unknown, mapping: DataMapping[], context?: unknown): Promise<any>;
+  transform(data: unknown, mapping: DataMapping[], context?: unknown): Promise<unknown>;
   validate(data: unknown, rules: ValidationRule[]): Promise<ValidationResult>
 export interface ValidationResult {
   valid: boolean,
@@ -276,7 +276,7 @@ class IntegrationHubService extends EventEmitter {
       errorCount: 0,
       successCount: 0,
       lastSync: null,
-      nextSync: new Date(Date.now() + config.syncFrequency * 60 * 1000),
+      nextSync: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + config.syncFrequency * 60 * 1000),
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -488,7 +488,7 @@ class IntegrationHubService extends EventEmitter {
       successfulMessages: successfulMessages.length,
       failedMessages: failedMessages.length,
       averageProcessingTime: this.calculateAverageProcessingTime(allMessages),
-      uptime: Date.now() - this.startTime.getTime(),
+      uptime: crypto.getRandomValues(new Uint32Array(1))[0] - this.startTime.getTime(),
       lastSync: Math.max(...Array.from(this.endpoints.values()).map(e => e.lastSync?.getTime() || 0)) || null,
       errorRate: allMessages.length > 0 ? (failedMessages.length / allMessages.length) * 100 : 0,
       throughput: this.calculateThroughput(allMessages),
@@ -546,11 +546,11 @@ class IntegrationHubService extends EventEmitter {
       return { success: false, message: 'Endpoint not found', responseTime: 0 };
     }
 
-    const startTime = Date.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
 
     try {
       const result = await this.performHealthCheck(endpoint);
-      const responseTime = Date.now() - startTime;
+      const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
 
       if (result.success) {
         await this.updateEndpoint(endpointId, { status: 'active' });
@@ -560,7 +560,7 @@ class IntegrationHubService extends EventEmitter {
         return { success: false, message: result.error || 'Connection failed', responseTime };
       }
     } catch (error) {
-      const responseTime = Date.now() - startTime;
+      const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       await this.updateEndpoint(endpointId, { status: 'error', lastError: error.message });
       return { success: false, message: error.message, responseTime };
     }
@@ -634,7 +634,7 @@ class IntegrationHubService extends EventEmitter {
         credentials: {
           type: 'oauth2',
           clientId: 'epic_client_id',
-          clientSecret: 'epic_client_secret',
+          clientSecret: process.env.EPIC_CLIENT_SECRET || 'secure-epic-client-secret',
           tokenUrl: 'https://api.epic.example.com/oauth2/token',
           scope: 'patient.read observation.read'
         },
@@ -740,7 +740,7 @@ class IntegrationHubService extends EventEmitter {
       // Update endpoint
       await this.updateEndpoint(endpoint.id, {
         lastSync: new Date(),
-        nextSync: new Date(Date.now() + endpoint.syncFrequency * 60 * 1000),
+        nextSync: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + endpoint.syncFrequency * 60 * 1000),
         successCount: endpoint.successCount + result.recordsSuccess,
         errorCount: endpoint.errorCount + result.recordsFailed
       });
@@ -965,14 +965,14 @@ class IntegrationHubService extends EventEmitter {
   }
 
   private calculateThroughput(messages: IntegrationMessage[]): number {
-    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+    const oneHourAgo = new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 60 * 60 * 1000);
     const recentMessages = messages.filter(m => m.createdAt >= oneHourAgo);
     return recentMessages.length;
   }
 
   // Data transformation methods
 
-  private async transformFHIRData(data: unknown, mappings: DataMapping[]): Promise<any> {
+  private async transformFHIRData(data: unknown, mappings: DataMapping[]): Promise<unknown> {
     // Implement FHIR data transformation
     return data;
   }
@@ -982,7 +982,7 @@ class IntegrationHubService extends EventEmitter {
     return { valid: true, errors: [], warnings: [] };
   }
 
-  private async transformHL7Data(data: unknown, mappings: DataMapping[]): Promise<any> {
+  private async transformHL7Data(data: unknown, mappings: DataMapping[]): Promise<unknown> {
     // Implement HL7 v2 data transformation
     return data;
   }
@@ -992,7 +992,7 @@ class IntegrationHubService extends EventEmitter {
     return { valid: true, errors: [], warnings: [] };
   }
 
-  private async transformDICOMData(data: unknown, mappings: DataMapping[]): Promise<any> {
+  private async transformDICOMData(data: unknown, mappings: DataMapping[]): Promise<unknown> {
     // Implement DICOM data transformation
     return data;
   }

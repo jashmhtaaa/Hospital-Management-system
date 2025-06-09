@@ -219,14 +219,14 @@ export const toFHIRHousekeepingRequest = (request: HousekeepingRequest & {
     priority: priorityMap[request.priority] || 'routine',
     category: [{
       coding: [{
-        system: 'http://terminology.hl7.org/CodeSystem/service-category',
+        system: 'https://terminology.hl7.org/CodeSystem/service-category',
         code: 'housekeeping',
         display: 'Housekeeping'
       }]
     }],
     code: {
       coding: [{
-        system: 'http://hms.local/fhir/CodeSystem/housekeeping-request-type',
+        system: 'https://hms.local/fhir/CodeSystem/housekeeping-request-type',
         code: requestTypeMap[request.requestType]?.code || request.requestType.toLowerCase(),
         display: requestTypeMap[request.requestType]?.display || request.requestType
       }],
@@ -324,14 +324,14 @@ export const toFHIRHousekeepingInspection = (inspection: HousekeepingInspection 
     status: statusMap[inspection.status] || 'unknown',
     category: [{
       coding: [{
-        system: 'http://terminology.hl7.org/CodeSystem/observation-category',
+        system: 'https://terminology.hl7.org/CodeSystem/observation-category',
         code: 'survey',
         display: 'Survey'
       }]
     }],
     code: {
       coding: [{
-        system: 'http://hms.local/fhir/CodeSystem/housekeeping-inspection-type',
+        system: 'https://hms.local/fhir/CodeSystem/housekeeping-inspection-type',
         code: inspection.inspectionType.toLowerCase(),
         display: inspection.inspectionType
       }],
@@ -348,14 +348,14 @@ export const toFHIRHousekeepingInspection = (inspection: HousekeepingInspection 
     valueQuantity: inspection.score ? {
       value: inspection.score,
       unit: 'score',
-      system: 'http://unitsofmeasure.org',
+      system: 'https://unitsofmeasure.org',
       code: 'score'
     } : undefined,
     component: [
       ...(inspection.findings ? [{
         code: {
           coding: [{
-            system: 'http://hms.local/fhir/CodeSystem/housekeeping-inspection',
+            system: 'https://hms.local/fhir/CodeSystem/housekeeping-inspection',
             code: 'findings',
             display: 'Findings'
           }],
@@ -366,7 +366,7 @@ export const toFHIRHousekeepingInspection = (inspection: HousekeepingInspection 
       ...(inspection.recommendations ? [{
         code: {
           coding: [{
-            system: 'http://hms.local/fhir/CodeSystem/housekeeping-inspection',
+            system: 'https://hms.local/fhir/CodeSystem/housekeeping-inspection',
             code: 'recommendations',
             display: 'Recommendations'
           }],

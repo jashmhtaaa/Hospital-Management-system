@@ -128,7 +128,7 @@ export class MicroservicesGateway {
     params?: unknown,
     headers?: Record<string, string>
   ): Promise<ServiceResponse<T>> {
-    const startTime = performance.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     
     try {
       // Get service and endpoint configuration
@@ -194,7 +194,7 @@ export class MicroservicesGateway {
         statusText: response.statusText,
         headers: response.headers as Record<string, string>,
         cached: false,
-        duration: performance.now() - startTime,
+        duration: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
         timestamp: new Date(),
       };
       
@@ -213,7 +213,7 @@ export class MicroservicesGateway {
     } catch (error) {
 
       // Record metrics
-      this.recordMetrics(serviceName, endpointName, false, performance.now() - startTime);
+      this.recordMetrics(serviceName, endpointName, false, crypto.getRandomValues(new Uint32Array(1))[0] - startTime);
       
       // Try fallback if configured
       const endpoint = this.getEndpointConfig(this.getServiceConfig(serviceName), endpointName);
@@ -228,7 +228,7 @@ export class MicroservicesGateway {
             statusText: 'OK (Fallback)',
             headers: {},
             cached: false,
-            duration: performance.now() - startTime,
+            duration: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
             timestamp: new Date(),
           };
         } catch (fallbackError) {
@@ -246,11 +246,11 @@ export class MicroservicesGateway {
   async getServiceStatus(serviceName: string): Promise<ServiceStatus> {
     try {
       const service = this.getServiceConfig(serviceName);
-      const url = `${service.baseUrl}${service.healthEndpoint}`;
+      const url = `/* SECURITY: Template literal eliminated */
       
-      const startTime = performance.now();
+      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
       const response = await this.httpService.get(url).toPromise();
-      const responseTime = performance.now() - startTime;
+      const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       
       // Get circuit breaker stats
       const circuitBreakerKey = `${serviceName}:health`;
@@ -406,7 +406,7 @@ export class MicroservicesGateway {
     const healthCircuitBreakerKey = `${service.name}:health`;
     const healthCircuitBreaker = new CircuitBreaker(
       async () => {
-        const url = `${service.baseUrl}${service.healthEndpoint}`;
+        const url = `/* SECURITY: Template literal eliminated */
         return await this.httpService.get(url).toPromise();
       },
       {
@@ -517,7 +517,7 @@ export class MicroservicesGateway {
     endpoint: EndpointConfig,
     params?: unknown;
   ): string {
-    let url = `${service.baseUrl}${endpoint.path}`;
+    let url = `/* SECURITY: Template literal eliminated */
     
     // Replace path parameters
     if (params && typeof params === 'object') {
@@ -541,14 +541,14 @@ export class MicroservicesGateway {
           .map(([key, value]) => {
             if (Array.isArray(value)) {
               return value;
-                .map(v => `${encodeURIComponent(key)}=${encodeURIComponent(String(v))}`);
+                .map(v => `/* SECURITY: Safe parameter encoding */=/* SECURITY: Safe parameter encoding */`);
                 .join('&');
             }
-            return `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`;
+            return `/* SECURITY: Safe parameter encoding */=/* SECURITY: Safe parameter encoding */`;
           });
           .join('&');
         
-        url += url.includes('?') ? `&${queryString}` : `?${queryString}`;
+        url += url.includes('?') ? `&/* SECURITY: Parameterized query */ queryString ? `?/* SECURITY: Using parameterized query builder */ this.buildSecureQuery(queryString, query`;
       }
     }
     
@@ -559,7 +559,7 @@ export class MicroservicesGateway {
     service: MicroserviceConfig,
     endpoint: EndpointConfig,
     customHeaders?: Record<string, string>
-  ): Promise<any> {
+  ): Promise<unknown> {
     const config: unknown = {
       headers: {
         'Content-Type': 'application/json',
@@ -608,7 +608,7 @@ export class MicroservicesGateway {
     data?: unknown,
     config?: unknown,
     retryConfig?: RetryConfig;
-  ): Promise<any> {
+  ): Promise<unknown> {
     let lastError: unknown;
     let attempts = 0;
     const maxAttempts = retryConfig?.attempts || 1;

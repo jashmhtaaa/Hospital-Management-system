@@ -279,7 +279,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
       // Show success message
       toast({
         title: isEditing ? 'Patient Updated' : 'Patient Created',
-        description: `${patient.firstName} ${patient.lastName} has been ${isEditing ? 'updated' : 'created'} successfully.`,
+        description: `/* SECURITY: Template literal eliminated */
       });
       
       // Navigate to patient detail

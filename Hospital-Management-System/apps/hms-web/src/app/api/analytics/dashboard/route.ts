@@ -206,7 +206,7 @@ class AdvancedAnalytics {
     const lastMonth = await prisma.admission.count({
       where: {
         admissionDate: {
-          gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+          gte: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 24 * 60 * 60 * 1000)
         }
       }
     });
@@ -284,7 +284,7 @@ export const GET = async (request: NextRequest) => {
 
     return NextResponse.json({ analytics });
   } catch (error) {
-    console.error('Analytics dashboard error:', error);
+    /* SECURITY: Console statement removed */
     return NextResponse.json({ error: 'Analytics generation failed' }, { status: 500 });
   }
 };
@@ -313,7 +313,7 @@ export const GET = async (request: NextRequest) => {
 
     return NextResponse.json({ realTimeData });
   } catch (error) {
-    console.error('Real-time analytics error:', error);
+    /* SECURITY: Console statement removed */
     return NextResponse.json({ error: 'Real-time data fetch failed' }, { status: 500 });
   }
 };

@@ -250,7 +250,7 @@ export class FHIRAnalyticsService {
    * Get comprehensive FHIR analytics;
    */
   async getAnalytics(timeframe: string = '30d'): Promise<FHIRAnalytics> {
-    const startTime = performance.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     
     try {
       // Try cache first
@@ -297,7 +297,7 @@ export class FHIRAnalyticsService {
       await cacheService.cacheResult('fhir_analytics:', timeframe, analytics, 3600); // 1 hour
 
       // Record metrics
-      const duration = performance.now() - startTime;
+      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       metricsCollector.recordTimer('fhir.analytics_generation_time', duration);
 
       return analytics;
@@ -940,7 +940,7 @@ export interface Prediction {
   accuracy: number
 export interface VisualizationData {
   chartTypes: Record<string, ChartSpecification>;
-  dataExport: Record<string, any>;
+  dataExport: Record<string, unknown>;
 export interface ChartSpecification {
   type: string,
   title: string,

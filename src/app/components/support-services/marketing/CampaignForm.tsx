@@ -44,7 +44,7 @@ interface CampaignFormProps {
 export default const CampaignForm = ({ campaignId, onSuccess }: CampaignFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [campaign, setCampaign] = useState<any>(null);
+  const [campaign, setCampaign] = useState<unknown>(null);
   const [activeTab, setActiveTab] = useState<string>("details");
   const [goalInput, setGoalInput] = useState<string>("");
   const [selectedSegments, setSelectedSegments] = useState<any[]>([]);

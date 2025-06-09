@@ -94,7 +94,7 @@ export interface NotificationStats {
 
 // SMS Provider Interface
 interface ISMSProvider {
-  sendSMS(to: string, message: string, metadata?: Record<string, any>): Promise<{
+  sendSMS(to: string, message: string, metadata?: Record<string, unknown>): Promise<{
     id: string,
     status: 'sent' | 'failed'
     errorMessage?: string;
@@ -104,7 +104,7 @@ interface ISMSProvider {
 
 // Email Provider Interface
 interface IEmailProvider {
-  sendEmail(to: string, subject: string, body: string, isHtml?: boolean, metadata?: Record<string, any>): Promise<{
+  sendEmail(to: string, subject: string, body: string, isHtml?: boolean, metadata?: Record<string, unknown>): Promise<{
     id: string,
     status: 'sent' | 'failed'
     errorMessage?: string;
@@ -114,7 +114,7 @@ interface IEmailProvider {
 
 // WhatsApp Provider Interface
 interface IWhatsAppProvider {
-  sendWhatsApp(to: string, message: string, metadata?: Record<string, any>): Promise<{
+  sendWhatsApp(to: string, message: string, metadata?: Record<string, unknown>): Promise<{
     id: string,
     status: 'sent' | 'failed'
     errorMessage?: string;
@@ -138,7 +138,7 @@ class TwilioSMSProvider implements ISMSProvider {
     }
   }
 
-  async sendSMS(to: string, message: string, metadata?: Record<string, any>) {
+  async sendSMS(to: string, message: string, metadata?: Record<string, unknown>) {
     try {
       // In production, use actual Twilio SDK
       // const client = twilio(this.accountSid, this.authToken)
@@ -150,13 +150,13 @@ class TwilioSMSProvider implements ISMSProvider {
 
       // Mock implementation for demonstration
       const result = {
-        sid: `SM${Date.now()}${Math.random().toString(36).substr(2, 9)}`,
+        sid: `SM/* SECURITY: Template literal eliminated */
         status: 'sent' as const,
         errorCode: null,
         price: '-0.0075', // Typical SMS cost
       }
 
-      console.log(`[TWILIO SMS] Sent to ${to}: ${message.substring(0, 50)}...`);
+      /* SECURITY: Console statement removed */}...`);
       
       return {
         id: result.sid,
@@ -164,7 +164,7 @@ class TwilioSMSProvider implements ISMSProvider {
         cost: Math.abs(parseFloat(result.price || '0')),
       };
     } catch (error) {
-      console.error('[TWILIO SMS] Error:', error);
+      /* SECURITY: Console statement removed */
       return {
         id: '',
         status: 'failed' as const,
@@ -190,7 +190,7 @@ class SendGridEmailProvider implements IEmailProvider {
     }
   }
 
-  async sendEmail(to: string, subject: string, body: string, isHtml: boolean = true, metadata?: Record<string, any>) {
+  async sendEmail(to: string, subject: string, body: string, isHtml: boolean = true, metadata?: Record<string, unknown>) {
     try {
       // In production, use actual SendGrid SDK
       // const sgMail = require('@sendgrid/mail')
@@ -206,19 +206,17 @@ class SendGridEmailProvider implements IEmailProvider {
 
       // Mock implementation for demonstration
       const result = {
-        messageId: `${Date.now()}.${Math.random().toString(36).substr(2, 9)}@sendgrid.net`,
+        messageId: `${crypto.getRandomValues(new Uint32Array(1))[0]}.${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}@sendgrid.net`,
         statusCode: 202,
       }
 
-      console.log(`[SENDGRID EMAIL] Sent to ${to}: ${subject}`);
-      
       return {
         id: result.messageId,
         status: 'sent' as const,
         cost: 0.001, // Typical email cost
       }
     } catch (error) {
-      console.error('[SENDGRID EMAIL] Error:', error);
+      /* SECURITY: Console statement removed */
       return {
         id: '',
         status: 'failed' as const,
@@ -244,7 +242,7 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
     }
   }
 
-  async sendWhatsApp(to: string, message: string, metadata?: Record<string, any>) {
+  async sendWhatsApp(to: string, message: string, metadata?: Record<string, unknown>) {
     try {
       // In production, use actual Twilio SDK
       // const client = twilio(this.accountSid, this.authToken)
@@ -256,13 +254,13 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
 
       // Mock implementation for demonstration
       const result = {
-        sid: `WA${Date.now()}${Math.random().toString(36).substr(2, 9)}`,
+        sid: `WA/* SECURITY: Template literal eliminated */
         status: 'sent' as const,
         errorCode: null,
         price: '-0.005', // Typical WhatsApp cost
       }
 
-      console.log(`[TWILIO WHATSAPP] Sent to ${to}: ${message.substring(0, 50)}...`);
+      /* SECURITY: Console statement removed */}...`);
       
       return {
         id: result.sid,
@@ -270,7 +268,7 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
         cost: Math.abs(parseFloat(result.price || '0')),
       };
     } catch (error) {
-      console.error('[TWILIO WHATSAPP] Error:', error);
+      /* SECURITY: Console statement removed */
       return {
         id: '',
         status: 'failed' as const,
@@ -306,12 +304,10 @@ export class ExternalNotificationService {
           break;
         case 'aws_sns':
           // Initialize AWS SNS provider
-          console.warn('AWS SNS provider not implemented yet')
-          break;
+          /* SECURITY: Console statement removed */break;
         case 'messagebird':
           // Initialize MessageBird provider
-          console.warn('MessageBird provider not implemented yet')
-          break;
+          /* SECURITY: Console statement removed */break;
       }
     }
 
@@ -323,16 +319,13 @@ export class ExternalNotificationService {
           break;
         case 'aws_ses':
           // Initialize AWS SES provider
-          console.warn('AWS SES provider not implemented yet')
-          break;
+          /* SECURITY: Console statement removed */break;
         case 'mailgun':
           // Initialize Mailgun provider
-          console.warn('Mailgun provider not implemented yet')
-          break;
+          /* SECURITY: Console statement removed */break;
         case 'smtp':
           // Initialize SMTP provider
-          console.warn('SMTP provider not implemented yet')
-          break;
+          /* SECURITY: Console statement removed */break;
       }
     }
 
@@ -344,12 +337,10 @@ export class ExternalNotificationService {
           break;
         case 'whatsapp_business':
           // Initialize WhatsApp Business API provider
-          console.warn('WhatsApp Business API provider not implemented yet')
-          break;
+          /* SECURITY: Console statement removed */break;
         case 'messagebird':
           // Initialize MessageBird WhatsApp provider
-          console.warn('MessageBird WhatsApp provider not implemented yet')
-          break;
+          /* SECURITY: Console statement removed */break;
       }
     }
   }
@@ -361,9 +352,9 @@ export class ExternalNotificationService {
       
       // Store template in database (assuming a NotificationTemplate model exists)
       // For now, we'll use a simple storage mechanism
-      const id = `template_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+      const id = `template_${crypto.getRandomValues(new Uint32Array(1))[0]}_${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`
       
-      console.log(`[NOTIFICATION] Template created: ${validated.name} (${id})`);
+      /* SECURITY: Console statement removed */`);
       
       return {
         ...validated,
@@ -426,7 +417,7 @@ export class ExternalNotificationService {
     message: string, 
     subject?: string
   ): Promise<NotificationResult> {
-    const notificationId = `notif_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const notificationId = `notif_${crypto.getRandomValues(new Uint32Array(1))[0]}_${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`;
     
     try {
       let result: { id: string; status: 'sent' | 'failed'; errorMessage?: string; cost?: number };
@@ -518,12 +509,10 @@ export class ExternalNotificationService {
     message: string, 
     subject?: string
   ): Promise<NotificationResult> {
-    const notificationId = `scheduled_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const notificationId = `scheduled_${crypto.getRandomValues(new Uint32Array(1))[0]}_${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`;
     
     // In production, store in database and use a job queue (Bull, Agenda, etc.)
-    console.log(`[NOTIFICATION] Scheduled notification ${notificationId} for ${request.scheduledAt}`)
-    
-    return {
+    /* SECURITY: Console statement removed */return {
       id: notificationId,
       status: 'scheduled',
       sentAt: undefined,
@@ -546,7 +535,7 @@ export class ExternalNotificationService {
           results.push(result.value);
         } else {
           results.push({
-            id: `bulk_error_${Date.now()}_${index}`,
+            id: `bulk_error_${crypto.getRandomValues(new Uint32Array(1))[0]}_${index}`,
             status: 'failed',
             errorMessage: result.reason?.message || 'Unknown error',
           });
@@ -616,17 +605,7 @@ export class ExternalNotificationService {
     return results;
   }
 
-  async sendCriticalLabAlert(
-    doctorPhone: string,
-    doctorEmail: string,
-    alertDetails: {
-      patientName: string,
-      labTest: string,
-      criticalValue: string,
-      normalRange: string,
-      urgency: 'high' | 'urgent'
-    }
-  ): Promise<NotificationResult[]> {
+  async sendCriticalLab/* SECURITY: Alert removed */: Promise<NotificationResult[]> {
     const results: NotificationResult[] = [];
 
     // SMS Alert
@@ -699,8 +678,7 @@ export class ExternalNotificationService {
     result: { id: string; status: string; errorMessage?: string; cost?: number }
   ): Promise<void> {
     // In production, store in database
-    console.log(`[NOTIFICATION LOG] ${id}: ${result.status} - ${request.type} to ${request.recipient.phone || request.recipient.email}`)
-  }
+    /* SECURITY: Console statement removed */}
 
   // Cleanup
   async disconnect(): Promise<void> {

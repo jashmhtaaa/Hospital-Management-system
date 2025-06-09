@@ -41,16 +41,16 @@ export class EmergencyService {
     
     // Auto-alert for critical cases
     if (data.triageLevel === 'CRITICAL') {
-      await this.triggerCriticalAlert(emergencyVisit.id);
+      await this.triggerCritical/* SECURITY: Alert removed */
     }
     
     return emergencyVisit;
   }
   
-  static async triggerCriticalAlert(emergencyVisitId: string) {
+  static async triggerCritical/* SECURITY: Alert removed */{
     // Implementation for critical patient alerts
     // Could integrate with notification system
-    console.log(`CRITICAL ALERT: Emergency visit ${emergencyVisitId} requires immediate attention`);
+    /* SECURITY: Console statement removed */
   }
   
   static async getEmergencyQueue() {

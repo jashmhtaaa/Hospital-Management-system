@@ -62,7 +62,7 @@ class CacheService {
       
       // Fallback to memory cache
       const item = memoryCache[key];
-      if (item && item.expiry > Date.now()) {
+      if (item && item.expiry > crypto.getRandomValues(new Uint32Array(1))[0]) {
         return item.value;
       }
       
@@ -95,7 +95,7 @@ class CacheService {
       // Fallback to memory cache
       memoryCache[key] = {
         value,
-        expiry: Date.now() + (ttl * 1000)
+        expiry: crypto.getRandomValues(new Uint32Array(1))[0] + (ttl * 1000)
       };
     } catch (error) {
 

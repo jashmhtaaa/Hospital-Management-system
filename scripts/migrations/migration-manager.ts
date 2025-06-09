@@ -131,7 +131,7 @@ class MigrationManager {
   }
 
   private async runSingleMigration(migration: Migration): Promise<void> {
-    const startTime = Date.now()
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0]
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     // Create backup before migration
@@ -156,7 +156,7 @@ class MigrationManager {
         }
       });
 
-      const executionTime = Date.now() - startTime;
+      const executionTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
 
       // Record successful migration
       await this.recordMigration({
@@ -172,7 +172,7 @@ class MigrationManager {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     } catch (error) {
-      const executionTime = Date.now() - startTime
+      const executionTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
       // Record failed migration

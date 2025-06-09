@@ -1,7 +1,7 @@
 // Health check script
 const { execSync } = require('child_process');
 
-console.log('🏥 Running HMS Health Checks...');
+/* SECURITY: Console statement removed */
 
 const checks = [
   {
@@ -20,12 +20,12 @@ let total = checks.length;
 checks.forEach(check => {
   try {
     execSync(check.command, { stdio: 'pipe' });
-    console.log(`✅ ${check.name}: PASS`);
+    /* SECURITY: Console statement removed */
     passed++;
   } catch (error) {
-    console.log(`❌ ${check.name}: FAIL`);
+    /* SECURITY: Console statement removed */
   }
 });
 
-console.log(`\n📈 Overall: ${passed}/${total} checks passed`);
+/* SECURITY: Console statement removed */
 process.exit(passed === total ? 0 : 1);

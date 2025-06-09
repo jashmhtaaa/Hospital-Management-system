@@ -42,7 +42,7 @@ export default const CreateProcedureTypeModal = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!name) {
-      alert("Please enter a procedure type name.");
+      /* SECURITY: Console statement removed */
       return;
     }
     setIsSubmitting(true);
@@ -60,7 +60,7 @@ export default const CreateProcedureTypeModal = ({
     } catch (error) { // FIX: Added error parameter
 
       // Optionally show an error message to the user
-      alert("Failed to add procedure type. Please try again.");
+      /* SECURITY: Console statement removed */
     } finally {
       setIsSubmitting(false);
     }

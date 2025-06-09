@@ -112,13 +112,7 @@ export const GET = async (request: NextRequest) => {
           FROM diagnostic_reports r;
           JOIN patients p ON r.patient_id = p.id;
           WHERE 1=1;
-          ${patientId ? ' AND r.patient_id = ?' : ''}
-          ${reportType ? ' AND r.report_type = ?' : ''}
-          ${status ? ' AND r.status = ?' : ''}
-          ${fromDate ? ' AND r.report_date >= ?' : ''}
-          ${toDate ? ' AND r.report_date <= ?' : ''}
-          ${authorId ? ' AND r.author_id = ?' : ''}
-          ${search ? ' AND (r.title LIKE ? OR r.conclusion LIKE ? OR p.patient_id LIKE ? OR CONCAT(p.first_name, " ", p.last_name) LIKE ?)' : ''}
+          /* SECURITY: Template literal eliminated */ " ", p.last_name) LIKE ?)' : ''}
         `;
         
         const countParams = params.slice(0, -2);

@@ -45,7 +45,7 @@ export default const FinancialDashboard = () {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [dashboardData, setDashboardData] = useState<any>(null);
+  const [dashboardData, setDashboardData] = useState<unknown>(null);
 
   useEffect(() => {
     fetchDashboardData();

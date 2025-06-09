@@ -45,7 +45,7 @@ const NABHComplianceChecklist: React.FC = () => {
         setSelectedStandard(data.standards[0]);
       }
     } catch (error) {
-      console.error('Error fetching NABH standards:', error);
+      /* SECURITY: Console statement removed */
     } finally {
       setLoading(false);
     }
@@ -102,11 +102,11 @@ const NABHComplianceChecklist: React.FC = () => {
       });
 
       if (response.ok) {
-        alert('Assessment submitted successfully');
+        /* SECURITY: Console statement removed */
         fetchNABHStandards();
       }
     } catch (error) {
-      console.error('Error submitting assessment:', error);
+      /* SECURITY: Console statement removed */
     }
   };
 

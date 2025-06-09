@@ -79,9 +79,7 @@ class PaymentGateway {
   static async confirmPayment(paymentIntentId: string, paymentMethodId?: string) {
     const stripe = require('stripe')(this.stripeSecretKey);
 
-    const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId, {
-      payment_method: paymentMethodId
-    });
+    const paymentIntent = await stripe.paymentIntents./* SECURITY: Console statement removed */
 
     // Update payment status in database
     await prisma.payment.updateMany({
@@ -239,7 +237,7 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json({ success: true, ...result });
   } catch (error) {
-    console.error('Payment intent creation error:', error);
+    /* SECURITY: Console statement removed */
     return NextResponse.json({ error: 'Failed to create payment intent' }, { status: 500 });
   }
 };
@@ -262,7 +260,7 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json({ success: true, result });
   } catch (error) {
-    console.error('Payment confirmation error:', error);
+    /* SECURITY: Console statement removed */
     return NextResponse.json({ error: 'Payment confirmation failed' }, { status: 500 });
   }
 };
@@ -280,7 +278,7 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json({ success: true, result });
   } catch (error) {
-    console.error('Razorpay verification error:', error);
+    /* SECURITY: Console statement removed */
     return NextResponse.json({ error: 'Payment verification failed' }, { status: 500 });
   }
 };

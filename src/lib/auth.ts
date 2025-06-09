@@ -310,7 +310,7 @@ export const generateSecurePassword = (length: number = 12): string {
   let password = '';
   
   for (let i = 0; i < length; i++) {
-    password += charset.charAt(Math.floor(Math.random() * charset.length));
+    password += charset.charAt(Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * charset.length));
   }
   
   return password;

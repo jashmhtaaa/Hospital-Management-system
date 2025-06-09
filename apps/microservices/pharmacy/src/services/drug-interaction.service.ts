@@ -315,7 +315,7 @@ export class DrugInteractionService extends FHIRResourceManager<FHIRMedicationRe
    * Comprehensive drug interaction and allergy checking;
    */
   async checkInteractions(request: InteractionCheckRequest): Promise<InteractionCheckResult> {
-    const startTime = performance.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     
     try {
       // Get patient's current medications if not provided
@@ -402,7 +402,7 @@ export class DrugInteractionService extends FHIRResourceManager<FHIRMedicationRe
       // Cache result for potential quick re-check
       await cacheService.cacheResult(
         'interaction_check:',
-        `${request.patientId}:${Date.now()}`,
+        `${request.patientId}:${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         result,
         300 // 5 minutes
       );
@@ -411,7 +411,7 @@ export class DrugInteractionService extends FHIRResourceManager<FHIRMedicationRe
       await this.processCriticalAlerts(result);
 
       // Record metrics
-      const duration = performance.now() - startTime;
+      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
       metricsCollector.recordTimer('pharmacy.interaction_check_time', duration);
       metricsCollector.incrementCounter('pharmacy.interaction_checks', 1, {
         patientId: request.patientId,
@@ -576,7 +576,7 @@ export class DrugInteractionService extends FHIRResourceManager<FHIRMedicationRe
           medication: medication.genericName || medication.brandName || '',
           alertType: 'HIGH_DOSE',
           currentDose: medication.dosage,
-          recommendedDose: `Maximum ${recommendedDosage.maxDaily} ${recommendedDosage.unit} daily`,
+          recommendedDose: `Maximum /* SECURITY: Template literal eliminated */
           riskDescription: 'Dose exceeds recommended maximum',
         });
       }
@@ -588,7 +588,7 @@ export class DrugInteractionService extends FHIRResourceManager<FHIRMedicationRe
           medication: medication.genericName || medication.brandName || '',
           alertType: 'LOW_DOSE',
           currentDose: medication.dosage,
-          recommendedDose: `Minimum ${recommendedDosage.minEffective} ${recommendedDosage.unit} daily`,
+          recommendedDose: `Minimum /* SECURITY: Template literal eliminated */
           riskDescription: 'Dose may be subtherapeutic',
         });
       }

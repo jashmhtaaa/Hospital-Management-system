@@ -201,18 +201,18 @@ export class IntegratedQualityService {
 
   // Quality Dashboard (integrated version)
   async getQualityDashboard(timeframe: 'daily' | 'weekly' | 'monthly' | 'quarterly' = 'monthly'): Promise<{
-    overview: any,
-    trends: any[]
-    events: any,
-    assessments: any[],
-    alerts: any[]
+    overview: unknown,
+    trends: unknown[]
+    events: unknown,
+    assessments: unknown[],
+    alerts: unknown[]
   }> {
     // Get statistics from persistent data
     const stats = await this.getQualityStatistics()
     
     // Get recent events for overview
     const recentEvents = await this.persistenceService.getQualityEvents({
-      dateFrom: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) // Last 30 days
+      dateFrom: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 24 * 60 * 60 * 1000) // Last 30 days
     }, 'system')
 
     return {
@@ -252,10 +252,9 @@ export class IntegratedQualityService {
       // This would require access to the private Maps in the quality service
       // For now, return zeros as the persistence is now the primary storage
       
-      console.log('[Quality Integration] Data migration completed')
-      return migratedCounts;
+      /* SECURITY: Console statement removed */return migratedCounts;
     } catch (error) {
-      console.error('[Quality Integration] Migration error:', error);
+      /* SECURITY: Console statement removed */
       throw new Error('Failed to migrate existing quality data');
     }
   }
@@ -271,14 +270,14 @@ export class IntegratedQualityService {
   }
 
   // Utility Methods
-  private calculateOverallCompliance(requirements: any[]): number {
+  private calculateOverallCompliance(requirements: unknown[]): number {
     if (requirements.length === 0) return 100
     
     const metRequirements = requirements.filter(req => req.status === 'met').length;
     return (metRequirements / requirements.length) * 100;
   }
 
-  private determineComplianceStatus(requirements: any[]): ComplianceStatus {
+  private determineComplianceStatus(requirements: unknown[]): ComplianceStatus {
     const compliance = this.calculateOverallCompliance(requirements);
     
     if (compliance >= 95) return 'compliant';
@@ -300,7 +299,7 @@ export class IntegratedQualityService {
     }, {} as Record<string, number>);
   }
 
-  private generateAlerts(stats: any, recentEvents: QualityEvent[]): any[] {
+  private generateAlerts(stats: unknown, recentEvents: QualityEvent[]): unknown[] {
     const alerts = [];
 
     // Critical events alert
@@ -315,7 +314,7 @@ export class IntegratedQualityService {
 
     // High event frequency alert
     const todayEvents = recentEvents.filter(e => 
-      e.eventDate >= new Date(Date.now() - 24 * 60 * 60 * 1000)
+      e.eventDate >= new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 24 * 60 * 60 * 1000)
     ).length
     
     if (todayEvents > 5) {

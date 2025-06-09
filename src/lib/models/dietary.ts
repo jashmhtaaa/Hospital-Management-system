@@ -241,7 +241,7 @@ export const toFHIRDietaryRequest = (request: DietaryRequest & {
   // Map dietary restrictions to FHIR excludeFoodModifier
   const excludeFoodModifiers = request.dietaryRestrictions.map(restriction => ({
     coding: [{
-      system: 'http://hms.local/fhir/CodeSystem/food-type',
+      system: 'https://hms.local/fhir/CodeSystem/food-type',
       code: restriction.toLowerCase().replace(/\s/g, '-'),
       display: restriction
     }]
@@ -250,7 +250,7 @@ export const toFHIRDietaryRequest = (request: DietaryRequest & {
   // Map meal preferences to FHIR foodPreferenceModifier
   const foodPreferenceModifiers = request.mealPreferences.map(preference => ({
     coding: [{
-      system: 'http://hms.local/fhir/CodeSystem/food-preference',
+      system: 'https://hms.local/fhir/CodeSystem/food-preference',
       code: preference.toLowerCase().replace(/\s/g, '-'),
       display: preference
     }]
@@ -282,7 +282,7 @@ export const toFHIRDietaryRequest = (request: DietaryRequest & {
     oralDiet: {
       type: [{
         coding: [{
-          system: 'http://hms.local/fhir/CodeSystem/diet-type',
+          system: 'https://hms.local/fhir/CodeSystem/diet-type',
           code: request.requestType.toLowerCase().replace(/_/g, '-'),
           display: request.requestType.replace(/_/g, ' ')
         }]
@@ -330,7 +330,7 @@ export const toFHIRMealPlan = (mealPlan: MealPlan & {
         event: [meal.deliveryTime?.toISOString() || mealPlan.date.toISOString()],
         code: {
           coding: [{
-            system: 'http://hms.local/fhir/CodeSystem/meal-type',
+            system: 'https://hms.local/fhir/CodeSystem/meal-type',
             code: meal.mealType.toLowerCase(),
             display: meal.mealType
           }]
@@ -346,7 +346,7 @@ export const toFHIRMealPlan = (mealPlan: MealPlan & {
     intent: 'plan',
     category: [{
       coding: [{
-        system: 'http://terminology.hl7.org/CodeSystem/care-plan-activity-category',
+        system: 'https://terminology.hl7.org/CodeSystem/care-plan-activity-category',
         code: 'diet',
         display: 'Diet'
       }]
@@ -385,7 +385,7 @@ export const toFHIRNutritionalProfile = (profile: NutritionalProfile & {
     profile.height ? {
       code: {
         coding: [{
-          system: 'http://loinc.org',
+          system: 'https://loinc.org',
           code: '8302-2',
           display: 'Body height'
         }],
@@ -394,7 +394,7 @@ export const toFHIRNutritionalProfile = (profile: NutritionalProfile & {
       valueQuantity: {
         value: profile.height,
         unit: 'cm',
-        system: 'http://unitsofmeasure.org',
+        system: 'https://unitsofmeasure.org',
         code: 'cm'
       }
     } : null,
@@ -403,7 +403,7 @@ export const toFHIRNutritionalProfile = (profile: NutritionalProfile & {
     profile.weight ? {
       code: {
         coding: [{
-          system: 'http://loinc.org',
+          system: 'https://loinc.org',
           code: '29463-7',
           display: 'Body weight'
         }],
@@ -412,7 +412,7 @@ export const toFHIRNutritionalProfile = (profile: NutritionalProfile & {
       valueQuantity: {
         value: profile.weight,
         unit: 'kg',
-        system: 'http://unitsofmeasure.org',
+        system: 'https://unitsofmeasure.org',
         code: 'kg'
       }
     } : null,
@@ -421,7 +421,7 @@ export const toFHIRNutritionalProfile = (profile: NutritionalProfile & {
     profile.bmi ? {
       code: {
         coding: [{
-          system: 'http://loinc.org',
+          system: 'https://loinc.org',
           code: '39156-5',
           display: 'Body mass index (BMI)'
         }],
@@ -430,7 +430,7 @@ export const toFHIRNutritionalProfile = (profile: NutritionalProfile & {
       valueQuantity: {
         value: profile.bmi,
         unit: 'kg/m2',
-        system: 'http://unitsofmeasure.org',
+        system: 'https://unitsofmeasure.org',
         code: 'kg/m2'
       }
     } : null,
@@ -439,7 +439,7 @@ export const toFHIRNutritionalProfile = (profile: NutritionalProfile & {
     profile.dietaryPreferences.length > 0 ? {
       code: {
         coding: [{
-          system: 'http://hms.local/fhir/CodeSystem/nutritional-assessment',
+          system: 'https://hms.local/fhir/CodeSystem/nutritional-assessment',
           code: 'dietary-preferences',
           display: 'Dietary Preferences'
         }],
@@ -452,7 +452,7 @@ export const toFHIRNutritionalProfile = (profile: NutritionalProfile & {
     profile.dietaryRestrictions.length > 0 ? {
       code: {
         coding: [{
-          system: 'http://hms.local/fhir/CodeSystem/nutritional-assessment',
+          system: 'https://hms.local/fhir/CodeSystem/nutritional-assessment',
           code: 'dietary-restrictions',
           display: 'Dietary Restrictions'
         }],
@@ -465,7 +465,7 @@ export const toFHIRNutritionalProfile = (profile: NutritionalProfile & {
     profile.allergies.length > 0 ? {
       code: {
         coding: [{
-          system: 'http://hms.local/fhir/CodeSystem/nutritional-assessment',
+          system: 'https://hms.local/fhir/CodeSystem/nutritional-assessment',
           code: 'allergies',
           display: 'Food Allergies'
         }],
@@ -478,7 +478,7 @@ export const toFHIRNutritionalProfile = (profile: NutritionalProfile & {
     profile.medicalConditions.length > 0 ? {
       code: {
         coding: [{
-          system: 'http://hms.local/fhir/CodeSystem/nutritional-assessment',
+          system: 'https://hms.local/fhir/CodeSystem/nutritional-assessment',
           code: 'medical-conditions',
           display: 'Medical Conditions'
         }],
@@ -494,14 +494,14 @@ export const toFHIRNutritionalProfile = (profile: NutritionalProfile & {
     status: 'final',
     category: [{
       coding: [{
-        system: 'http://terminology.hl7.org/CodeSystem/observation-category',
+        system: 'https://terminology.hl7.org/CodeSystem/observation-category',
         code: 'nutrition',
         display: 'Nutrition'
       }]
     }],
     code: {
       coding: [{
-        system: 'http://hms.local/fhir/CodeSystem/observation-type',
+        system: 'https://hms.local/fhir/CodeSystem/observation-type',
         code: 'nutritional-profile',
         display: 'Nutritional Profile'
       }],

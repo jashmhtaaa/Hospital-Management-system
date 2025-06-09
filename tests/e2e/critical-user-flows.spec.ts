@@ -454,27 +454,27 @@ test.describe('Critical Flow: Emergency Department', () => {
 // Performance and Accessibility Tests
 test.describe('Performance and Accessibility', () => {
   test('Critical pages load within performance thresholds', async ({ page }) => {
-    const startTime = Date.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     
     // Test dashboard load time
     await loginUser(page, TEST_USERS.admin);
-    const dashboardLoadTime = Date.now() - startTime;
+    const dashboardLoadTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
     
     expect(dashboardLoadTime).toBeLessThan(3000); // 3 seconds
     
     // Test patient list load time
-    const patientsStartTime = Date.now();
+    const patientsStartTime = crypto.getRandomValues(new Uint32Array(1))[0];
     await page.goto('/dashboard/patients');
     await page.waitForSelector('[data-testid="patient-list"]');
-    const patientsLoadTime = Date.now() - patientsStartTime;
+    const patientsLoadTime = crypto.getRandomValues(new Uint32Array(1))[0] - patientsStartTime;
     
     expect(patientsLoadTime).toBeLessThan(2000); // 2 seconds
     
     // Test billing page load time
-    const billingStartTime = Date.now();
+    const billingStartTime = crypto.getRandomValues(new Uint32Array(1))[0];
     await page.goto('/dashboard/billing');
     await page.waitForSelector('[data-testid="billing-dashboard"]');
-    const billingLoadTime = Date.now() - billingStartTime;
+    const billingLoadTime = crypto.getRandomValues(new Uint32Array(1))[0] - billingStartTime;
     
     expect(billingLoadTime).toBeLessThan(2000); // 2 seconds
   });

@@ -119,17 +119,17 @@ interface RadiologyOrder {
       // Refresh order details which might implicitly refresh related studies/reports lists
       fetchOrderDetails();
       // Consider adding a success message
-      alert("Radiology study created successfully.");
+      /* SECURITY: Console statement removed */
     } catch (error_) {
 
       const errorMessage =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
-      alert(`Error creating study: ${errorMessage}`);
+      /* SECURITY: Console statement removed */
     }
   };
 
   const handleCancelOrder = async (): Promise<void> => {
-    if (!confirm("Are you sure you want to cancel this radiology order?")) {
+    if (!/* SECURITY: Console statement removed */) {
       return;
     }
     try {
@@ -145,13 +145,13 @@ interface RadiologyOrder {
         };
         throw new Error(errorData.error || "Failed to cancel order");
       }
-      alert("Order cancelled successfully.");
+      /* SECURITY: Console statement removed */
       router.push("/dashboard/radiology"); // Go back to the list
     } catch (error_) {
 
       const errorMessage =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
-      alert(`Failed to cancel order: ${errorMessage}`);
+      /* SECURITY: Console statement removed */
     }
   };
 

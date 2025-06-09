@@ -1086,7 +1086,7 @@ export class CustomReportService {
       const newTemplate = await this.prisma.reportTemplate.create({
         data: {
           ...template,
-          id: `report-template-${Date.now()}`,
+          id: `report-template-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
           created: new Date(),
           updated: new Date(),
           createdBy: userId,
@@ -1221,7 +1221,7 @@ export class CustomReportService {
     },
     userId: string;
   ): Promise<ReportData> {
-    const startTime = performance.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     
     try {
       // Set defaults
@@ -1322,7 +1322,7 @@ export class CustomReportService {
         filterValues: options.filters || {},
         components,
         metadata: {
-          executionTime: performance.now() - startTime,
+          executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
           status: reportStatus,
           warningMessages: warningMessages.length > 0 ? warningMessages : undefined,
           cacheStatus: 'FRESH',
@@ -1368,7 +1368,7 @@ export class CustomReportService {
       });
 
       // Record metrics
-      metricsCollector.recordTimer('analytics.report_generation_time', performance.now() - startTime);
+      metricsCollector.recordTimer('analytics.report_generation_time', crypto.getRandomValues(new Uint32Array(1))[0] - startTime);
       metricsCollector.incrementCounter('analytics.reports_generated', 1, {
         templateId,
         templateName: template.name,
@@ -1393,7 +1393,7 @@ export class CustomReportService {
         filterValues: options.filters || {},
         components: {},
         metadata: {
-          executionTime: performance.now() - startTime,
+          executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
           status: 'ERROR',
           errorMessage: error.message,
           cacheStatus: 'FRESH',
@@ -1647,7 +1647,7 @@ export class CustomReportService {
 
       // Create history entry
       const historyEntry: HistoryEntry = {
-        id: `history-${Date.now()}`,
+        id: `history-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         action: 'CREATED',
         actionBy: userId,
         actionDate: new Date(),
@@ -1661,7 +1661,7 @@ export class CustomReportService {
       const newReport = await this.prisma.regulatoryReport.create({
         data: {
           ...report,
-          id: `regulatory-report-${Date.now()}`,
+          id: `regulatory-report-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
           created: new Date(),
           lastUpdated: new Date(),
           history: [historyEntry],
@@ -1711,7 +1711,7 @@ export class CustomReportService {
     },
     userId: string;
   ): Promise<{ query: NaturalLanguageQuery; data: unknown[] }> {
-    const startTime = performance.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     
     try {
       // Process natural language query
@@ -1726,14 +1726,14 @@ export class CustomReportService {
 
       // Save query for future reference
       const nlQuery: NaturalLanguageQuery = {
-        id: `nl-query-${Date.now()}`,
+        id: `nl-query-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         query,
         interpretedQuery: processedQuery,
         queryType: this.determineQueryType(processedQuery),
         confidence: queryResults.confidence,
         alternativeInterpretations: queryResults.alternativeInterpretations,
         dataSource: options.dataSource || 'default',
-        executionTime: performance.now() - startTime,
+        executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
         resultCount: queryResults.data.length,
         timestamp: new Date(),
         userId,
@@ -1780,13 +1780,13 @@ export class CustomReportService {
       
       // Create error query record
       const errorQuery: NaturalLanguageQuery = {
-        id: `nl-query-error-${Date.now()}`,
+        id: `nl-query-error-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         query,
         interpretedQuery: { fields: [], filters: [] },
         queryType: 'UNKNOWN',
         confidence: 0,
         dataSource: options.dataSource || 'default',
-        executionTime: performance.now() - startTime,
+        executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
         error: error.message,
         resultCount: 0,
         timestamp: new Date(),
@@ -1922,15 +1922,15 @@ export class CustomReportService {
             const row: Record<string, any> = {};
             component.fields.forEach(field => {
               if (field.dataType === 'NUMBER') {
-                row[field.name] = Math.floor(Math.random() * 1000);
+                row[field.name] = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000);
               } else if (field.dataType === 'DATE') {
                 const date = new Date();
-                date.setDate(date.getDate() - Math.floor(Math.random() * 365));
+                date.setDate(date.getDate() - Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 365));
                 row[field.name] = date;
               } else if (field.dataType === 'BOOLEAN') {
-                row[field.name] = Math.random() > 0.5;
+                row[field.name] = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) > 0.5;
               } else {
-                row[field.name] = `Sample ${field.name} ${i + 1}`;
+                row[field.name] = `Sample /* SECURITY: Template literal eliminated */
               }
             });
             data.push(row);
@@ -1974,7 +1974,7 @@ export class CustomReportService {
           
           data = categories.map(category => ({
             category,
-            value: Math.floor(Math.random() * 1000),
+            value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000),
           }));
           
           totalRowCount = data.length;
@@ -2021,8 +2021,8 @@ export class CustomReportService {
             },
           ];
           
-          const value = Math.floor(Math.random() * 1000);
-          const previousValue = Math.floor(Math.random() * 1000);
+          const value = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000);
+          const previousValue = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000);
           const trend = value > previousValue ? 'up' : value < previousValue ? 'down' : 'flat';
           
           data = [
@@ -2056,9 +2056,9 @@ export class CustomReportService {
           ];
           
           data = [
-            { key: 'Item 1', value: Math.floor(Math.random() * 100) },
-            { key: 'Item 2', value: Math.floor(Math.random() * 100) },
-            { key: 'Item 3', value: Math.floor(Math.random() * 100) },
+            { key: 'Item 1', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) },
+            { key: 'Item 2', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) },
+            { key: 'Item 3', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) },
           ];
           
           totalRowCount = data.length;

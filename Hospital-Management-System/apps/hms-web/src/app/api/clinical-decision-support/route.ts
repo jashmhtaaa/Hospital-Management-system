@@ -281,7 +281,7 @@ export const GET = async (request: NextRequest) => {
     });
 
   } catch (error) {
-    console.error('CDS analysis error:', error);
+    /* SECURITY: Console statement removed */
     return NextResponse.json({ error: 'Analysis failed' }, { status: 500 });
   }
 };
@@ -316,7 +316,7 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json({ analysis });
 
   } catch (error) {
-    console.error('Prescription check error:', error);
+    /* SECURITY: Console statement removed */
     return NextResponse.json({ error: 'Prescription check failed' }, { status: 500 });
   }
 };

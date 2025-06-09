@@ -416,7 +416,7 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
   createNarrative(content: string, status: FHIRNarrative['status'] = 'generated'): FHIRNarrative {
     return {
       status,
-      div: `<div xmlns="http://www.w3.org/1999/xhtml">${content}</div>`,
+      div: `<div xmlns="https://www.w3.org/1999/xhtml">${content}</div>`,
     }
   }
 
@@ -511,32 +511,32 @@ export interface FHIRSignature {
 // Common terminology systems
 export const FHIR_SYSTEMS = {
   // Patient identifiers
-  MRN: 'http://hospital.local/patient-mrn',
-  SSN: 'http://hl7.org/fhir/sid/us-ssn',
+  MRN: 'https://hospital.local/patient-mrn',
+  SSN: 'https://hl7.org/fhir/sid/us-ssn',
   
   // Lab codes
-  LOINC: 'http://loinc.org',
-  SNOMED_CT: 'http://snomed.info/sct',
+  LOINC: 'https://loinc.org',
+  SNOMED_CT: 'https://snomed.info/sct',
   
   // Medication codes
-  RXNORM: 'http://www.nlm.nih.gov/research/umls/rxnorm',
-  NDC: 'http://hl7.org/fhir/sid/ndc',
+  RXNORM: 'https://www.nlm.nih.gov/research/umls/rxnorm',
+  NDC: 'https://hl7.org/fhir/sid/ndc',
   
   // Units
-  UCUM: 'http://unitsofmeasure.org',
+  UCUM: 'https://unitsofmeasure.org',
   
   // Administrative
-  V2_0203: 'http://terminology.hl7.org/CodeSystem/v2-0203',
-  V3_ROLE_CODE: 'http://terminology.hl7.org/CodeSystem/v3-RoleCode',
+  V2_0203: 'https://terminology.hl7.org/CodeSystem/v2-0203',
+  V3_ROLE_CODE: 'https://terminology.hl7.org/CodeSystem/v3-RoleCode',
   
   // Observation categories
-  OBSERVATION_CATEGORY: 'http://terminology.hl7.org/CodeSystem/observation-category',
+  OBSERVATION_CATEGORY: 'https://terminology.hl7.org/CodeSystem/observation-category',
   
   // Request priorities
-  REQUEST_PRIORITY: 'http://hl7.org/fhir/request-priority',
+  REQUEST_PRIORITY: 'https://hl7.org/fhir/request-priority',
   
   // Medication request categories
-  MEDICATIONREQUEST_CATEGORY: 'http://terminology.hl7.org/CodeSystem/medicationrequest-category',
+  MEDICATIONREQUEST_CATEGORY: 'https://terminology.hl7.org/CodeSystem/medicationrequest-category',
 } as const
 
 // FHIR Validation utilities

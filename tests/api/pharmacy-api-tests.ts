@@ -451,7 +451,7 @@ class PharmacyTestHelper {
   static async createTestMedication(medicationData?: Partial<Medication>): Promise<Medication> {
     const testData = {
       ...PHARMACY_TEST_DATA.mockMedication,
-      generic_name: `${PHARMACY_TEST_DATA.mockMedication.generic_name}_${Date.now()}`,
+      generic_name: `${PHARMACY_TEST_DATA.mockMedication.generic_name}_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
       ...medicationData
     };
 
@@ -475,7 +475,7 @@ class PharmacyTestHelper {
     const testData = {
       ...PHARMACY_TEST_DATA.mockInventoryBatch,
       medication_id: medicationId,
-      batch_number: `${PHARMACY_TEST_DATA.mockInventoryBatch.batch_number}_${Date.now()}`,
+      batch_number: `${PHARMACY_TEST_DATA.mockInventoryBatch.batch_number}_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
       received_date: new Date().toISOString(),
       received_by: 'test_pharmacist',
       ...batchData
@@ -509,7 +509,7 @@ class PharmacyTestHelper {
       ...PHARMACY_TEST_DATA.mockPrescription,
       patient_id: patientId,
       prescriber_id: prescriberId,
-      prescription_number: `${PHARMACY_TEST_DATA.mockPrescription.prescription_number}_${Date.now()}`,
+      prescription_number: `${PHARMACY_TEST_DATA.mockPrescription.prescription_number}_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
       prescription_date: new Date().toISOString(),
       status: 'received' as PrescriptionStatus,
       items: prescriptionItems
@@ -613,9 +613,9 @@ class PharmacyTestHelper {
     maxTime: number,
     operationName: string
   ): Promise<T> {
-    const startTime = performance.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     const result = await operation();
-    const duration = performance.now() - startTime;
+    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
 
     expect(duration).toBeLessThan(maxTime);
     console.log(`${operationName} completed in ${duration.toFixed(2)}ms`);
@@ -1737,9 +1737,9 @@ describe('Pharmacy Performance Benchmarks', () => {
       )
     );
 
-    const startTime = performance.now();
+    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     const prescriptions = await Promise.all(prescriptionPromises);
-    const duration = performance.now() - startTime;
+    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
 
     // All prescriptions should be created successfully
     prescriptions.forEach(prescription => {

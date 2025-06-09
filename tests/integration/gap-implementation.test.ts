@@ -595,10 +595,10 @@ describe('Gap Implementation Integration Tests', () => {
       const operations = Array.from({ length: 10 }, (_, i) => 
         resilienceService.executeWithResilience(async () => {
           // Simulate varying response times and occasional failures
-          const delay = Math.random() * 100
+          const delay = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100
           await new Promise(resolve => setTimeout(resolve, delay));
           
-          if (Math.random() < 0.1) { // 10% failure rate
+          if (crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) < 0.1) { // 10% failure rate
             throw new Error(`Operation ${i} failed`)
           }
           

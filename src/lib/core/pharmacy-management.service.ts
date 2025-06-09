@@ -370,9 +370,9 @@ export class PharmacyManagementService {
    * Generate prescription number;
    */
   private generatePrescriptionNumber(): string {
-    const timestamp = Date.now().toString().slice(-6);
-    const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-    return `RX${timestamp}${random}`;
+    const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
+    const random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10000).toString().padStart(4, '0');
+    return `RX/* SECURITY: Template literal eliminated */
   }
 
   /**
@@ -714,7 +714,7 @@ export class PharmacyManagementService {
   /**
    * Acknowledge clinical alert;
    */
-  async acknowledgeClinicalAlert(alertId: string, pharmacistId: string, reason?: string): Promise<void> {
+  async acknowledgeClinical/* SECURITY: Alert removed */: Promise<void> {
     // Find alert across all prescriptions
     for (const [prescriptionId, alerts] of this.clinicalAlerts.entries()) {
       const alert = alerts.find(a => a.id === alertId);

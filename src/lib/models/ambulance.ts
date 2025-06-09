@@ -230,7 +230,7 @@ export const toFHIRAmbulance = (ambulance: Ambulance & {
   const properties = ambulance.features.map(feature => ({
     type: {
       coding: [{
-        system: 'http://hms.local/fhir/CodeSystem/ambulance-feature',
+        system: 'https://hms.local/fhir/CodeSystem/ambulance-feature',
         code: feature.toLowerCase().replace(/\s/g, '-'),
         display: feature
       }]
@@ -241,7 +241,7 @@ export const toFHIRAmbulance = (ambulance: Ambulance & {
   properties.push({
     type: {
       coding: [{
-        system: 'http://hms.local/fhir/CodeSystem/ambulance-property',
+        system: 'https://hms.local/fhir/CodeSystem/ambulance-property',
         code: 'capacity',
         display: 'Capacity'
       }]
@@ -249,7 +249,7 @@ export const toFHIRAmbulance = (ambulance: Ambulance & {
     valueQuantity: {
       value: ambulance.capacity,
       unit: 'persons',
-      system: 'http://unitsofmeasure.org',
+      system: 'https://unitsofmeasure.org',
       code: 'persons'
     }
   })
@@ -259,14 +259,14 @@ export const toFHIRAmbulance = (ambulance: Ambulance & {
     id: ambulance.id,
     identifier: [
       {
-        system: 'http://hms.local/fhir/identifier/registration-number',
+        system: 'https://hms.local/fhir/identifier/registration-number',
         value: ambulance.registrationNumber
       }
     ],
     status: statusMap[ambulance.status] || 'unknown',
     type: {
       coding: [{
-        system: 'http://hms.local/fhir/CodeSystem/ambulance-type',
+        system: 'https://hms.local/fhir/CodeSystem/ambulance-type',
         code: vehicleTypeMap[ambulance.vehicleType]?.code || 'ambulance',
         display: vehicleTypeMap[ambulance.vehicleType]?.display || ambulance.vehicleType
       }],
@@ -369,7 +369,7 @@ export const toFHIRAmbulanceTrip = (trip: AmbulanceTrip & {
       {
         coding: [
           {
-            system: 'http://hms.local/fhir/CodeSystem/ambulance-service',
+            system: 'https://hms.local/fhir/CodeSystem/ambulance-service',
             code: tripTypeMap[trip.tripType]?.code || 'transport',
             display: tripTypeMap[trip.tripType]?.display || trip.tripType
           }
@@ -379,7 +379,7 @@ export const toFHIRAmbulanceTrip = (trip: AmbulanceTrip & {
     code: {
       coding: [
         {
-          system: 'http://hms.local/fhir/CodeSystem/ambulance-service',
+          system: 'https://hms.local/fhir/CodeSystem/ambulance-service',
           code: 'ambulance-transport',
           display: 'Ambulance Transport'
         }
@@ -414,7 +414,7 @@ export const toFHIRAmbulanceCrew = (crew: AmbulanceCrew & {
     code: {
       coding: [
         {
-          system: 'http://hms.local/fhir/CodeSystem/ambulance-crew-role',
+          system: 'https://hms.local/fhir/CodeSystem/ambulance-crew-role',
           code: crew.role.toLowerCase().replace(/_/g, '-'),
           display: crew.role.replace(/_/g, ' ')
         }
@@ -432,11 +432,11 @@ export const toFHIRAmbulanceCrew = (crew: AmbulanceCrew & {
     id: crew.id,
     identifier: [
       {
-        system: 'http://hms.local/fhir/identifier/crew-id',
+        system: 'https://hms.local/fhir/identifier/crew-id',
         value: crew.id
       },
       {
-        system: 'http://hms.local/fhir/identifier/user-id',
+        system: 'https://hms.local/fhir/identifier/user-id',
         value: crew.userId
       }
     ],
@@ -487,7 +487,7 @@ export const toFHIRAmbulanceMaintenance = (maintenance: AmbulanceMaintenance & {
     id: maintenance.id,
     identifier: [
       {
-        system: 'http://hms.local/fhir/identifier/maintenance-id',
+        system: 'https://hms.local/fhir/identifier/maintenance-id',
         value: maintenance.id
       }
     ],
@@ -496,7 +496,7 @@ export const toFHIRAmbulanceMaintenance = (maintenance: AmbulanceMaintenance & {
     code: {
       coding: [
         {
-          system: 'http://hms.local/fhir/CodeSystem/maintenance-type',
+          system: 'https://hms.local/fhir/CodeSystem/maintenance-type',
           code: maintenanceTypeMap[maintenance.maintenanceType]?.code || 'maintenance',
           display: maintenanceTypeMap[maintenance.maintenanceType]?.display || maintenance.maintenanceType
         }

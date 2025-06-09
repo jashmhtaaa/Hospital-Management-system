@@ -79,11 +79,11 @@ export class InvoiceService {
 
         // 8. Construct the Invoice Object
         const newInvoice: Invoice = {
-            id: `inv_${Date.now()}`,
+            id: `inv_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
             patientId: mockPatient.id,
             patientName: mockPatient.name, // Denormalized for easy display
             invoiceDate: new Date(),
-            dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // Due in 30 days
+            dueDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000), // Due in 30 days
             lineItems: chargesToInvoice.map(charge => ({
                 chargeId: charge.id,
                 serviceName: charge.serviceName,

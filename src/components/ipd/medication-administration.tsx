@@ -107,7 +107,7 @@ const MedicationAdministration: React.FC<;
         const mockRecords: MedicationRecord[] = [
           {
             id: "mar_001",
-            administered_time: new Date(Date.now() - 3_600_000).toISOString(), // 1 hour ago
+            administered_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3_600_000).toISOString(), // 1 hour ago
             medication_name: "Paracetamol 500mg Tablet",
             dosage: "1 tablet",
             route: "oral",
@@ -117,7 +117,7 @@ const MedicationAdministration: React.FC<;
           },
           {
             id: "mar_002",
-            administered_time: new Date(Date.now() - 14_400_000).toISOString(), // 4 hours ago
+            administered_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 14_400_000).toISOString(), // 4 hours ago
             medication_name: "Amoxicillin 250mg Capsule",
             dosage: "1 capsule",
             route: "oral",
@@ -127,7 +127,7 @@ const MedicationAdministration: React.FC<;
         ];
         const mockPatientInfo: AdmissionInfo = {
           admission_number: "ADM123456",
-          admission_date: new Date(Date.now() - 86_400_000).toISOString(), // Yesterday
+          admission_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000).toISOString(), // Yesterday
           patient_first_name: "Jane",
           patient_last_name: "Doe",
           diagnosis: "Pneumonia",
@@ -248,11 +248,10 @@ const MedicationAdministration: React.FC<;
         (m) => m.id === formData.medication_id;
       );
       const newRecord: MedicationRecord = {
-        id: `mar_${Date.now()}`,
+        id: `mar_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         administered_time: submissionData.administered_time,
         medication_name: selectedMed;
-          ? `${selectedMed.item_name} ${selectedMed.strength} ${selectedMed.dosage_form}`
-          : "Unknown Medication",
+          ? `/* SECURITY: Template literal eliminated */
         dosage: formData.dosage,
         route: formData.route,
         administered_by_first_name: "Current", // Replace with actual user data

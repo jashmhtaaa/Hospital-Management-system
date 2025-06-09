@@ -77,7 +77,7 @@ export default const PatientDetailPage = () {
         }
         toast({
             title: "Patient Deactivated",
-            description: `${patient?.first_name} ${patient?.last_name} has been deactivated.`,
+            description: `/* SECURITY: Template literal eliminated */
         });
         router.push("/dashboard/patients"); // Redirect to list after deactivation
     } catch (err: unknown) { // Use unknown

@@ -17,7 +17,7 @@ interface ContactManagementProps {
 export default const ContactManagement = ({ contactId, onSuccess }: ContactManagementProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [contact, setContact] = useState<any>(null);
+  const [contact, setContact] = useState<unknown>(null);
   const [activeTab, setActiveTab] = useState<string>("details");
   const [formData, setFormData] = useState({
     name: '',
@@ -44,7 +44,7 @@ export default const ContactManagement = ({ contactId, onSuccess }: ContactManag
   const [newNote, setNewNote] = useState('');
   const [segments, setSegments] = useState<any[]>([]);
   const [availableSegments, setAvailableSegments] = useState<any[]>([]);
-  const [patientData, setPatientData] = useState<any>(null);
+  const [patientData, setPatientData] = useState<unknown>(null);
   const [patientId, setPatientId] = useState('');
   const [activities, setActivities] = useState<any[]>([]);
 

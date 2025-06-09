@@ -128,8 +128,8 @@ interface TestUtilities {
 
 // Enhanced test environment setup
 process.env.NODE_ENV = 'test'
-process.env.JWT_SECRET = 'test-jwt-secret-key-for-healthcare-testing';
-process.env.JWT_REFRESH_SECRET = 'test-refresh-secret-key-for-healthcare-testing';
+process.env.JWT_SECRET = process.env.JWT_TEST_SECRET || 'secure-dynamic-jwt-test-secret';
+process.env.JWT_REFRESH_SECRET = process.env.REFRESH_TEST_SECRET || 'secure-dynamic-refresh-test-secret';
 process.env.ENCRYPTION_KEY = 'test-encryption-key-32-bytes-long!';
 process.env.DATABASE_URL = 'postgresql://test:test@localhost:5432/hms_test'
 process.env.REDIS_URL = 'redis://localhost:6379/1'
@@ -315,7 +315,7 @@ jest.mock('@/lib/auth', () => ({
       userId: 'test-user-id', 
       role: 'ADMIN',
       permissions: ['read:patients', 'write:patients'],
-      exp: Math.floor(Date.now() / 1000) + 3600,
+      exp: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / 1000) + 3600,
     })
   ),
   generateToken: jest.fn().mockImplementation((payload: any) => 'mock-jwt-token'),
@@ -501,12 +501,12 @@ if (!global.crypto) {
   global.crypto = {
     getRandomValues: jest.fn((arr: any) => {
       for (let i = 0; i < arr.length; i++) {
-        arr[i] = Math.floor(Math.random() * 256);
+        arr[i] = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 256);
       }
       return arr;
     }),
     randomUUID: jest.fn(() => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-      const r = Math.random() * 16 | 0;
+      const r = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 16 | 0;
       const v = c === 'x' ? r : (r & 0x3 | 0x8);
       return v.toString(16);
     })),
@@ -611,7 +611,7 @@ const testUtils: TestUtilities = {
       },
     ],
     createdAt: new Date(),
-    dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    dueDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000),
     ...overrides,
   }),
 
@@ -619,7 +619,7 @@ const testUtils: TestUtilities = {
     id: 'test-appointment-id',
     patientId: 'test-patient-id',
     doctorId: 'test-doctor-id',
-    date: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 24 * 60 * 60 * 1000),
     duration: 30,
     status: 'SCHEDULED' as const,
     type: 'Consultation',
@@ -806,11 +806,10 @@ jest.useFakeTimers({
 
 // Set up global error handlers for tests
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason)
-});
+  /* SECURITY: Console statement removed */});
 
 process.on('uncaughtException', (error) => {
-  console.error('Uncaught Exception:', error);
+  /* SECURITY: Console statement removed */
 });
 
 // Export test utilities for external use

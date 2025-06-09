@@ -81,14 +81,14 @@ export class FHIRDiagnosticReportUtils {
       status: data.status || 'final',
       category: [{
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/v2-0074',
+          system: 'https://terminology.hl7.org/CodeSystem/v2-0074',
           code: 'LAB',
           display: 'Laboratory'
         }]
       }],
       code: {
         coding: [{
-          system: 'http://loinc.org',
+          system: 'https://loinc.org',
           code: data.reportCode,
           display: data.reportName
         }]
@@ -144,14 +144,14 @@ export class FHIRDiagnosticReportUtils {
       status: data.status || 'final',
       category: [{
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/v2-0074',
+          system: 'https://terminology.hl7.org/CodeSystem/v2-0074',
           code: 'RAD',
           display: 'Radiology'
         }]
       }],
       code: {
         coding: [{
-          system: 'http://loinc.org',
+          system: 'https://loinc.org',
           code: data.studyType,
           display: data.studyName
         }]
@@ -210,14 +210,14 @@ export class FHIRDiagnosticReportUtils {
       status: data.status || 'final',
       category: [{
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/v2-0074',
+          system: 'https://terminology.hl7.org/CodeSystem/v2-0074',
           code: 'PAT',
           display: 'Pathology'
         }]
       }],
       code: {
         coding: [{
-          system: 'http://loinc.org',
+          system: 'https://loinc.org',
           code: '60567-5',
           display: 'Pathology report'
         }]
@@ -301,14 +301,14 @@ export class FHIRDiagnosticReportUtils {
       status: data.status || 'final',
       category: [{
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/v2-0074',
+          system: 'https://terminology.hl7.org/CodeSystem/v2-0074',
           code: 'CAR',
           display: 'Cardiology'
         }]
       }],
       code: {
         coding: [{
-          system: 'http://loinc.org',
+          system: 'https://loinc.org',
           code: study.code,
           display: study.display
         }]

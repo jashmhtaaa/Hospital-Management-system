@@ -177,7 +177,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
         await new Promise((resolve) => setTimeout(resolve, 700));
         const mockPatientInfo: AdmissionInfo = {
           admission_number: "ADM123456",
-          admission_date: new Date(Date.now() - 86_400_000 * 3).toISOString(), // 3 days ago
+          admission_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000 * 3).toISOString(), // 3 days ago
           patient_first_name: "Jane",
           patient_last_name: "Doe",
           diagnosis: "Pneumonia",
@@ -186,7 +186,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
           {
             id: "pn_001",
             admission_id: admissionId,
-            note_date: new Date(Date.now() - 3_600_000 * 6).toISOString(), // 6 hours ago
+            note_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3_600_000 * 6).toISOString(), // 6 hours ago
             subjective:
               "Patient reports feeling slightly better. Cough less frequent.",
             objective:
@@ -201,7 +201,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
           {
             id: "pn_002",
             admission_id: admissionId,
-            note_date: new Date(Date.now() - 86_400_000).toISOString(), // 1 day ago
+            note_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000).toISOString(), // 1 day ago
             subjective:
               "Patient complaining of persistent cough and mild shortness of breath.",
             objective:
@@ -211,7 +211,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
             doctor_id: "doc_102",
             doctor_first_name: "Bob",
             doctor_last_name: "Johnson",
-            created_at: new Date(Date.now() - 86_400_000).toISOString(),
+            created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000).toISOString(),
           },
         ];
 
@@ -293,7 +293,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       // Mock response
       await new Promise((resolve) => setTimeout(resolve, 800));
       const newNote: NewNoteResponse = {
-        id: `pn_${Date.now()}`,
+        id: `pn_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
         admission_id: admissionId,
         doctor_id: "doc_current", // Replace with actual user ID
         doctor_first_name: "Current", // Replace with actual user data

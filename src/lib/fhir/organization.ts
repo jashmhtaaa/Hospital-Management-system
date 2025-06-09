@@ -81,7 +81,7 @@ export class FHIROrganizationUtils {
       name: data.name,
       type: [{
         coding: [{
-          system: 'http://terminology.hl7.org/CodeSystem/organization-type',
+          system: 'https://terminology.hl7.org/CodeSystem/organization-type',
           code: this.getOrganizationTypeCode(data.type),
           display: this.getOrganizationTypeDisplay(data.type)
         }]
@@ -185,7 +185,7 @@ export class FHIROrganizationUtils {
         use: 'official',
         type: {
           coding: [{
-            system: 'http://terminology.hl7.org/CodeSystem/v2-0203',
+            system: 'https://terminology.hl7.org/CodeSystem/v2-0203',
             code: 'LI',
             display: 'License number'
           }]
@@ -199,7 +199,7 @@ export class FHIROrganizationUtils {
       data.accreditation.forEach(accred => {
         hospital.type!.push({
           coding: [{
-            system: 'http://terminology.hl7.org/CodeSystem/organization-type',
+            system: 'https://terminology.hl7.org/CodeSystem/organization-type',
             code: 'accredited',
             display: accred
           }]
@@ -235,7 +235,7 @@ export class FHIROrganizationUtils {
     // Add department-specific type
     department.type!.push({
       coding: [{
-        system: 'http://snomed.info/sct',
+        system: 'https://snomed.info/sct',
         code: this.getDepartmentCode(data.departmentType),
         display: this.getDepartmentDisplay(data.departmentType)
       }]
@@ -270,7 +270,7 @@ export class FHIROrganizationUtils {
     // Add specialty type
     clinic.type!.push({
       coding: [{
-        system: 'http://snomed.info/sct',
+        system: 'https://snomed.info/sct',
         code: 'specialty-clinic',
         display: `${data.specialty} Clinic`
       }]

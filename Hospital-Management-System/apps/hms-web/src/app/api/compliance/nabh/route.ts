@@ -57,7 +57,7 @@ export const GET = async (request: NextRequest) => {
 
     return NextResponse.json({ standards });
   } catch (error) {
-    console.error('Error fetching NABH standards:', error);
+    /* SECURITY: Console statement removed */
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 };
@@ -95,7 +95,7 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json({ assessment });
   } catch (error) {
-    console.error('Error creating compliance assessment:', error);
+    /* SECURITY: Console statement removed */
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 };

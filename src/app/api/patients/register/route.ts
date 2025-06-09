@@ -147,7 +147,7 @@ export const POST = async (request: NextRequest) => {
             ).bind(
                 patientData.username,
                 hashedPassword,
-                `${patientData.first_name} ${patientData.last_name}`, // Use patient name for user name
+                `/* SECURITY: Template literal eliminated */ // Use patient name for user name
                 patientData.email, // Use patient email
                 4, // Assuming Role ID 4 is 'Patient'
                 now,

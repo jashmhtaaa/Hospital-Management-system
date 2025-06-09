@@ -544,7 +544,7 @@ export class PersistentElectronicHealthRecordsService {
     icd10_codes?: string[];
   }): Promise<ClinicalGuideline[]> {
     try {
-      const where: any = { ruleType: 'guideline' };
+      const where: unknown = { ruleType: 'guideline' };
       
       if (filters?.status) {
         where.status = filters.status;
@@ -578,7 +578,7 @@ export class PersistentElectronicHealthRecordsService {
   }
 
   // Helper methods for deserialization
-  private async deserializeSoapNote(note: any): Promise<ClinicalNote> {
+  private async deserializeSoapNote(note: unknown): Promise<ClinicalNote> {
     const decrypted = await this.encryptionService.decryptObject(note, this.encryptedFields)
     
     return {
@@ -598,7 +598,7 @@ export class PersistentElectronicHealthRecordsService {
     };
   }
 
-  private async deserializeProgressNote(note: any): Promise<ClinicalNote> {
+  private async deserializeProgressNote(note: unknown): Promise<ClinicalNote> {
     const content = JSON.parse(note.content);
     const decrypted = await this.encryptionService.decryptObject(content, this.encryptedFields);
     
@@ -625,7 +625,7 @@ export class PersistentElectronicHealthRecordsService {
     status?: string;
   }): Promise<ClinicalNote[]> {
     try {
-      const where: any = {};
+      const where: unknown = {};
       
       if (query.patientId) where.patientId = query.patientId;
       if (query.providerId) where.providerId = query.providerId;

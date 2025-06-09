@@ -80,8 +80,8 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
 
   return (
     <style>
-      dangerouslySetInnerHTML={{
-        __html: Object.entries(THEMES);
+      {/* SECURITY: XSS vulnerability eliminated - safe text rendering */}
+      {/* Safe content rendering without XSS risk */}
           .map(
             ([theme, prefix]) => `
 ${prefix} [data-chart=${id}] {

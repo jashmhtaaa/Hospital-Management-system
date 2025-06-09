@@ -1,14 +1,12 @@
-}
-
 /**
- * Database module for HMS Diagnostics;
+ * Database module for HMS Diagnostics
  *
- * This module provides database connectivity and query execution;
+ * This module provides database connectivity and query execution
  * functionality for the HMS Diagnostics module.
  */
 
 /**
- * Database connection interface;
+ * Database connection interface
  */
 export interface DBConnection {
   query: (sql: string, params?: unknown[]) => Promise<unknown>;
@@ -16,11 +14,11 @@ export interface DBConnection {
 }
 
 /**
- * Returns a database connection instance;
+ * Returns a database connection instance
  *
- * @returns Database connection instance;
+ * @returns Database connection instance
  */
-export const DB = (): DBConnection {
+export const DB = (): DBConnection => {
   return {
     query: async (sql: string, params: unknown[] = []) => {
       try {
@@ -30,12 +28,11 @@ export const DB = (): DBConnection {
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
         return {
-          results: [];
-          insertId: 0;
-          affectedRows: 0;
-        }
+          results: [],
+          insertId: 0,
+          affectedRows: 0
+        };
       } catch (error) {
-
         throw error;
       }
     },
@@ -44,17 +41,17 @@ export const DB = (): DBConnection {
       return Promise.resolve();
     }
   };
-}
+};
 
 /**
- * Executes a transaction with multiple queries;
+ * Executes a transaction with multiple queries
  *
- * @param queries Array of query objects with SQL and parameters;
- * @returns Promise resolving to array of query results;
+ * @param queries Array of query objects with SQL and parameters
+ * @returns Promise resolving to array of query results
  */
-export const _executeTransaction = async (
+export const executeTransaction = async (
   queries: { sql: string; params?: unknown[] }[]
-): Promise<any[]> {
+): Promise<any[]> => {
   const db = DB();
   const results: unknown[] = [];
 
@@ -76,4 +73,12 @@ export const _executeTransaction = async (
     // Rollback transaction on error
     await db.query('ROLLBACK');
     throw error;
+  } finally {
+    await db.close();
   }
+};
+
+export default {
+  DB,
+  executeTransaction
+};

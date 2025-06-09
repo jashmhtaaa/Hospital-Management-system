@@ -14,18 +14,18 @@ describe("ChargeCaptureService", () => {
   describe("createCharge", () => {
     it("should create a charge successfully with valid data", async () => {
       // Arrange: Setup your test data and mocks
-      const chargeData = {
-        patientId: "patient-123",
-        serviceId: "service-456",
-        amount: 100.00,
-        dateOfService: new Date(),
-        providerId: "provider-789",
+      const _chargeData = {
+        patientId: "patient-123";
+        serviceId: "service-456";
+        amount: 100.00;
+        dateOfService: new Date();
+        providerId: "provider-789";
       };
       // Mock the repository or other dependencies to return expected values
 
       // Act: Call the method being tested
-      // const chargeCaptureService = new ChargeCaptureService(/* pass mocks */)
-      // const result = await chargeCaptureService.createCharge(chargeData)
+      // const _chargeCaptureService = new ChargeCaptureService(/* pass mocks */)
+      // const _result = await chargeCaptureService.createCharge(chargeData)
 
       // Assert: Check if the result is as expected
       // expect(result).toBeDefined()
@@ -36,12 +36,12 @@ describe("ChargeCaptureService", () => {
 
     it("should throw an error if required charge data is missing", async () => {
       // Arrange
-      const chargeData = {
-        patientId: "patient-123",
+      const _chargeData = {
+        patientId: "patient-123";
         // amount is missing
       };
       // Act & Assert
-      // const chargeCaptureService = new ChargeCaptureService(/* pass mocks */)
+      // const _chargeCaptureService = new ChargeCaptureService(/* pass mocks */)
       // await expect(chargeCaptureService.createCharge(chargeData as any)).rejects.toThrow("Validation Error or similar"),
       expect(true).toBe(true); // Placeholder assertion
     });
@@ -50,12 +50,12 @@ describe("ChargeCaptureService", () => {
   describe("getChargeById", () => {
     it("should retrieve a charge if it exists", async () => {
       // Arrange
-      const chargeId = "charge-abc";
+      const _chargeId = "charge-abc";
       // Mock repository to return a charge object
 
       // Act
-      // const chargeCaptureService = new ChargeCaptureService(/* pass mocks */)
-      // const result = await chargeCaptureService.getChargeById(chargeId)
+      // const _chargeCaptureService = new ChargeCaptureService(/* pass mocks */)
+      // const _result = await chargeCaptureService.getChargeById(chargeId)
 
       // Assert
       // expect(result).toBeDefined()
@@ -65,11 +65,11 @@ describe("ChargeCaptureService", () => {
 
     it("should return null or throw an error if charge does not exist", async () => {
       // Arrange
-      const chargeId = "non-existent-charge";
+      const _chargeId = "non-existent-charge";
       // Mock repository to return null or throw
 
       // Act & Assert
-      // const chargeCaptureService = new ChargeCaptureService(/* pass mocks */)
+      // const _chargeCaptureService = new ChargeCaptureService(/* pass mocks */)
       // await expect(chargeCaptureService.getChargeById(chargeId)).resolves.toBeNull(); // or .rejects.toThrow(...)
       expect(true).toBe(true); // Placeholder assertion
     });

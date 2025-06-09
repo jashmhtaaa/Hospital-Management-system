@@ -1,3 +1,4 @@
+import {
 }
 
 /**
@@ -6,7 +7,6 @@
  * Source: ZIP 6 - FHIR R4 data models for hospital management system microservices;
  */
 
-import {
   FHIRBase,
   FHIRIdentifier,
   FHIRCodeableConcept,
@@ -72,36 +72,36 @@ export class FHIRAppointmentUtils {
    * Create a basic FHIR Appointment resource;
    */
   static createBasicAppointment(data: {
-    patientId: string,
+    patientId: string;
     practitionerId: string;
     locationId?: string;
-    start: string,
+    start: string;
     end: string;
     appointmentType?: string;
     description?: string;
     status?: 'proposed' | 'pending' | 'booked';
   }): FHIRAppointment {
     const appointment: FHIRAppointment = {
-      resourceType: 'Appointment',
-      status: data.status || 'booked',
-      start: data.start,
-      end: data.end,
+      resourceType: 'Appointment';
+      status: data.status || 'booked';
+      start: data.start;
+      end: data.end;
       participant: [
         {
           actor: {
             reference: `Patient/${data.patientId}`,
-            type: 'Patient'
+            type: 'Patient';
           },
-          required: 'required',
-          status: 'accepted'
+          required: 'required';
+          status: 'accepted';
         },
         {
           actor: {
             reference: `Practitioner/${data.practitionerId}`,
-            type: 'Practitioner'
+            type: 'Practitioner';
           },
-          required: 'required',
-          status: 'accepted'
+          required: 'required';
+          status: 'accepted';
         }
       ]
     };
@@ -111,10 +111,10 @@ export class FHIRAppointmentUtils {
       appointment.participant.push({
         actor: {
           reference: `Location/${data.locationId}`,
-          type: 'Location'
+          type: 'Location';
         },
-        required: 'required',
-        status: 'accepted'
+        required: 'required';
+        status: 'accepted';
       });
     }
 
@@ -122,9 +122,9 @@ export class FHIRAppointmentUtils {
     if (data.appointmentType) {
       appointment.appointmentType = {
         coding: [{
-          system: 'https://terminology.hl7.org/CodeSystem/v2-0276',
-          code: data.appointmentType,
-          display: data.appointmentType
+          system: 'https://terminology.hl7.org/CodeSystem/v2-0276';
+          code: data.appointmentType;
+          display: data.appointmentType;
         }]
       }
     }
@@ -149,7 +149,7 @@ export class FHIRAppointmentUtils {
     const patientParticipant = appointment.participant.find(
       p => p.actor?.type === 'Patient' || p.actor?.reference?.startsWith('Patient/');
     );
-    
+
     return patientParticipant?.actor?.reference?.replace('Patient/', '');
   }
 
@@ -160,7 +160,7 @@ export class FHIRAppointmentUtils {
     const practitionerParticipant = appointment.participant.find(
       p => p.actor?.type === 'Practitioner' || p.actor?.reference?.startsWith('Practitioner/');
     );
-    
+
     return practitionerParticipant?.actor?.reference?.replace('Practitioner/', '');
   }
 
@@ -171,7 +171,7 @@ export class FHIRAppointmentUtils {
     const locationParticipant = appointment.participant.find(
       p => p.actor?.type === 'Location' || p.actor?.reference?.startsWith('Location/');
     );
-    
+
     return locationParticipant?.actor?.reference?.replace('Location/', '');
   }
 
@@ -188,10 +188,10 @@ export class FHIRAppointmentUtils {
    */
   static isTodayAppointment(appointment: FHIRAppointment): boolean {
     if (!appointment.start) return false;
-    
+
     const appointmentDate = new Date(appointment.start);
     const today = new Date();
-    
+
     return appointmentDate.toDateString() === today.toDateString();
   }
 
@@ -202,13 +202,13 @@ export class FHIRAppointmentUtils {
     if (appointment.minutesDuration) {
       return appointment.minutesDuration
     }
-    
-    if (appointment.start && appointment.end) {
+
+    if (appointment?.start && appointment.end) {
       const startTime = new Date(appointment.start);
       const endTime = new Date(appointment.end);
       return Math.round((endTime.getTime() - startTime.getTime()) / (1000 * 60));
     }
-    
+
     return 0;
   }
 
@@ -217,23 +217,23 @@ export class FHIRAppointmentUtils {
    */
   static formatAppointmentTime(appointment: FHIRAppointment): string {
     if (!appointment.start) return 'Time not specified';
-    
+
     const startTime = new Date(appointment.start);
     const endTime = appointment.end ? new Date(appointment.end) : null;
-    
+
     const timeFormat: Intl.DateTimeFormatOptions = {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
+      hour: '2-digit';
+      minute: '2-digit';
+      hour12: true;
     };
-    
+
     const startTimeStr = startTime.toLocaleTimeString('en-US', timeFormat);
-    
-    if (endTime) {
+
+    if (endTime != null) {
       const endTimeStr = endTime.toLocaleTimeString('en-US', timeFormat);
       return `${startTimeStr} - ${endTimeStr}`;
     }
-    
+
     return startTimeStr;
   }
 
@@ -253,7 +253,7 @@ export class FHIRAppointmentUtils {
       'checked-in': 'Checked In',
       'waitlist': 'Waitlisted';
     };
-    
+
     return statusMap[status] || status;
   }
 
@@ -262,15 +262,15 @@ export class FHIRAppointmentUtils {
    */
   static validateAppointment(appointment: FHIRAppointment): { valid: boolean; errors: string[] } {
     const errors: string[] = [];
-    
+
     if (appointment.resourceType !== 'Appointment') {
       errors.push('resourceType must be "Appointment"');
     }
-    
+
     if (!appointment.status) {
       errors.push('status is required');
     }
-    
+
     if (!appointment.participant || appointment.participant.length === 0) {
       errors.push('At least one participant is required');
     } else {
@@ -283,18 +283,18 @@ export class FHIRAppointmentUtils {
         }
       }
     }
-    
-    if (appointment.start && appointment.end) {
+
+    if (appointment?.start && appointment.end) {
       const startTime = new Date(appointment.start);
       const endTime = new Date(appointment.end);
-      
+
       if (startTime >= endTime) {
         errors.push('end time must be after start time');
       }
     }
-    
+
     return {
-      valid: errors.length === 0,
+      valid: errors.length === 0;
       errors;
     };
   }
@@ -304,13 +304,13 @@ export class FHIRAppointmentUtils {
    */
   static fromHMSAppointment(hmsAppointment: unknown): FHIRAppointment {
     const fhirAppointment: FHIRAppointment = {
-      resourceType: 'Appointment',
-      id: hmsAppointment.id,
-      status: hmsAppointment.status || 'booked',
-      start: hmsAppointment.startTime || hmsAppointment.appointmentDate,
-      end: hmsAppointment.endTime,
-      description: hmsAppointment.reason || hmsAppointment.notes,
-      participant: []
+      resourceType: 'Appointment';
+      id: hmsAppointment.id;
+      status: hmsAppointment.status || 'booked';
+      start: hmsAppointment.startTime || hmsAppointment.appointmentDate;
+      end: hmsAppointment.endTime;
+      description: hmsAppointment.reason || hmsAppointment.notes;
+      participant: [];
     };
 
     // Add patient participant
@@ -318,10 +318,10 @@ export class FHIRAppointmentUtils {
       fhirAppointment.participant.push({
         actor: {
           reference: `Patient/${hmsAppointment.patientId}`,
-          type: 'Patient'
+          type: 'Patient';
         },
-        required: 'required',
-        status: 'accepted'
+        required: 'required';
+        status: 'accepted';
       });
     }
 
@@ -330,10 +330,10 @@ export class FHIRAppointmentUtils {
       fhirAppointment.participant.push({
         actor: {
           reference: `Practitioner/${hmsAppointment.doctorId || hmsAppointment.practitionerId}`,
-          type: 'Practitioner'
+          type: 'Practitioner';
         },
-        required: 'required',
-        status: 'accepted'
+        required: 'required';
+        status: 'accepted';
       });
     }
 
@@ -342,10 +342,10 @@ export class FHIRAppointmentUtils {
       fhirAppointment.participant.push({
         actor: {
           reference: `Location/${hmsAppointment.locationId}`,
-          type: 'Location'
+          type: 'Location';
         },
-        required: 'required',
-        status: 'accepted'
+        required: 'required';
+        status: 'accepted';
       });
     }
 
@@ -353,15 +353,15 @@ export class FHIRAppointmentUtils {
     if (hmsAppointment.appointmentType || hmsAppointment.visitType) {
       fhirAppointment.appointmentType = {
         coding: [{
-          system: 'https://terminology.hl7.org/CodeSystem/v2-0276',
-          code: hmsAppointment.appointmentType || hmsAppointment.visitType,
-          display: hmsAppointment.appointmentType || hmsAppointment.visitType
+          system: 'https://terminology.hl7.org/CodeSystem/v2-0276';
+          code: hmsAppointment.appointmentType || hmsAppointment.visitType;
+          display: hmsAppointment.appointmentType || hmsAppointment.visitType;
         }]
       }
     }
 
     // Calculate duration if start and end times are available
-    if (fhirAppointment.start && fhirAppointment.end) {
+    if (fhirAppointment?.start && fhirAppointment.end) {
       const startTime = new Date(fhirAppointment.start);
       const endTime = new Date(fhirAppointment.end);
       fhirAppointment.minutesDuration = Math.round((endTime.getTime() - startTime.getTime()) / (1000 * 60));
@@ -389,7 +389,7 @@ export class FHIRAppointmentWorkflow {
       'waitlist': ['booked', 'cancelled'],
       'entered-in-error': []
     };
-    
+
     return transitions[currentStatus] || [];
   }
 
@@ -407,7 +407,7 @@ export class FHIRAppointmentWorkflow {
   static getNextLogicalStatus(appointment: FHIRAppointment): FHIRAppointment['status'] | null {
     const now = new Date();
     const appointmentTime = appointment.start ? new Date(appointment.start) : null;
-    
+
     switch (appointment.status) {
       case 'proposed':
         return 'pending';
@@ -421,6 +421,6 @@ export class FHIRAppointmentWorkflow {
       case 'arrived':
       case 'checked-in':
         return 'fulfilled';
-      default: return null
+      default: return null;
     }
   }

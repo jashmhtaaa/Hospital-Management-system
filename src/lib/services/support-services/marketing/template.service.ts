@@ -1,8 +1,8 @@
-import { MarketingTemplate } from '@/lib/models/marketing';
-import { prisma } from '@/lib/prisma';
-import { AuditLogger } from '@/lib/audit';
-import { ValidationError, DatabaseError, NotFoundError } from '@/lib/errors';
 
+import { AuditLogger } from '@/lib/audit';
+import { MarketingTemplate } from '@/lib/models/marketing';
+import { ValidationError, DatabaseError, NotFoundError } from '@/lib/errors';
+import { prisma } from '@/lib/prisma';
 /**
  * Service for managing marketing templates;
  */
@@ -16,32 +16,32 @@ export class TemplateService {
     try {
       // Validate template data
       this.validateTemplateData(data);
-      
+
       // Create template in database
       const template = await prisma.marketingTemplate.create({
         data: {
-          name: data.name,
-          description: data.description,
-          type: data.type,
-          content: data.content,
-          variables: data.variables,
-          previewImage: data.previewImage,
-          isActive: data.isActive !== undefined ? data.isActive : true,
-          createdById: userId
+          name: data.name;
+          description: data.description;
+          type: data.type;
+          content: data.content;
+          variables: data.variables;
+          previewImage: data.previewImage;
+          isActive: data.isActive !== undefined ? data.isActive : true;
+          createdById: userId;
         }
       });
-      
+
       // Log audit event
       await this.auditLogger.log({
-        action: 'template.create',
-        resourceId: template.id,
+        action: 'template.create';
+        resourceId: template.id;
         userId,
-        details: { 
-          templateName: template.name,
-          templateType: template.type
+        details: {
+          templateName: template.name;
+          templateType: template.type;
         }
       });
-      
+
       return template;
     } catch (error) {
       if (error instanceof ValidationError) {
@@ -61,17 +61,17 @@ export class TemplateService {
         include: {
           createdByUser: {
             select: {
-              id: true,
-              name: true
+              id: true;
+              name: true;
             }
           }
         }
       });
-      
+
       if (!template) {
         throw new NotFoundError(`Marketing template with ID ${id} not found`);
       }
-      
+
       return template;
     } catch (error) {
       if (error instanceof NotFoundError) {
@@ -92,60 +92,60 @@ export class TemplateService {
     limit?: number;
   }): Promise<{ data: MarketingTemplate[]; pagination: { total: number; page: number; limit: number; totalPages: number } }> {
     try {
-      const { 
-        type, 
+      const {
+        type,
         isActive,
         search,
-        page = 1, 
+        page = 1,
         limit = 10;
       } = filters;
-      
+
       // Build where clause based on filters
       const where: unknown = {};
-      
-      if (type) {
+
+      if (type != null) {
         where.type = type;
       }
-      
+
       if (isActive !== undefined) {
         where.isActive = isActive;
       }
-      
-      if (search) {
+
+      if (search != null) {
         where.OR = [
           { name: { contains: search, mode: 'insensitive' } },
           { description: { contains: search, mode: 'insensitive' } }
         ];
       }
-      
+
       // Get total count for pagination
       const total = await prisma.marketingTemplate.count({ where });
-      
+
       // Get templates with pagination
       const templates = await prisma.marketingTemplate.findMany({
         where,
         include: {
           createdByUser: {
             select: {
-              id: true,
-              name: true
+              id: true;
+              name: true;
             }
           }
         },
-        skip: (page - 1) * limit,
-        take: limit,
+        skip: (page - 1) * limit;
+        take: limit;
         orderBy: {
-          createdAt: 'desc'
+          createdAt: 'desc';
         }
       });
-      
+
       return {
-        data: templates,
+        data: templates;
         pagination: {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit)
+          totalPages: Math.ceil(total / limit);
         }
       };
     } catch (error) {
@@ -162,28 +162,28 @@ export class TemplateService {
       const existingTemplate = await prisma.marketingTemplate.findUnique({
         where: { id }
       });
-      
+
       if (!existingTemplate) {
         throw new NotFoundError(`Marketing template with ID ${id} not found`);
       }
-      
+
       // Update template
       const updatedTemplate = await prisma.marketingTemplate.update({
         where: { id },
         data;
       });
-      
+
       // Log audit event
       await this.auditLogger.log({
-        action: 'template.update',
-        resourceId: id,
+        action: 'template.update';
+        resourceId: id;
         userId,
-        details: { 
-          templateName: updatedTemplate.name,
-          updatedFields: Object.keys(data)
+        details: {
+          templateName: updatedTemplate.name;
+          updatedFields: Object.keys(data);
         }
       });
-      
+
       return updatedTemplate;
     } catch (error) {
       if (error instanceof NotFoundError) {
@@ -202,24 +202,24 @@ export class TemplateService {
       const existingTemplate = await prisma.marketingTemplate.findUnique({
         where: { id }
       });
-      
+
       if (!existingTemplate) {
         throw new NotFoundError(`Marketing template with ID ${id} not found`);
       }
-      
+
       // Delete template
       await prisma.marketingTemplate.delete({
         where: { id }
       });
-      
+
       // Log audit event
       await this.auditLogger.log({
-        action: 'template.delete',
-        resourceId: id,
+        action: 'template.delete';
+        resourceId: id;
         userId,
-        details: { 
-          templateName: existingTemplate.name,
-          templateType: existingTemplate.type
+        details: {
+          templateName: existingTemplate.name;
+          templateType: existingTemplate.type;
         }
       });
     } catch (error) {
@@ -237,10 +237,10 @@ export class TemplateService {
     try {
       // Get template
       const template = await this.getTemplateById(id);
-      
+
       // Render template content with variables
       let renderedContent = template.content;
-      
+
       // Simple variable replacement
       if (variables && typeof variables === 'object') {
         Object.entries(variables).forEach(([key, value]) => {
@@ -248,7 +248,7 @@ export class TemplateService {
           renderedContent = renderedContent.replace(regex, String(value));
         });
       }
-      
+
       return renderedContent;
     } catch (error) {
       if (error instanceof NotFoundError) {
@@ -263,27 +263,27 @@ export class TemplateService {
    */
   private validateTemplateData(data: Partial<MarketingTemplate>): void {
     const errors: string[] = [];
-    
+
     // Name is required
     if (!data.name) {
       errors.push('Template name is required');
     }
-    
+
     // Type is required
     if (!data.type) {
       errors.push('Template type is required');
     }
-    
+
     // Content is required
     if (!data.content) {
       errors.push('Template content is required');
     }
-    
+
     // Validate variables if provided
-    if (data.variables && typeof data.variables !== 'object') {
+    if (data?.variables && typeof data.variables !== 'object') {
       errors.push('Template variables must be a valid object');
     }
-    
+
     if (errors.length > 0) {
       throw new ValidationError('Template validation failed', errors);
     }

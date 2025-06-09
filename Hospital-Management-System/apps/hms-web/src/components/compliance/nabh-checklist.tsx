@@ -1,11 +1,12 @@
-
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Textarea } from '@/components/ui/textarea';
+
+
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Progress } from '@/components/ui/progress';
+import { Textarea } from '@/components/ui/textarea';
 
 interface ChecklistItem {
   id: string;
@@ -45,7 +46,7 @@ const NABHComplianceChecklist: React.FC = () => {
         setSelectedStandard(data.standards[0]);
       }
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     } finally {
       setLoading(false);
     }
@@ -60,7 +61,7 @@ const NABHComplianceChecklist: React.FC = () => {
 
   const calculateComplianceScore = () => {
     if (!selectedStandard) return 0;
-    
+
     const items = selectedStandard.checklistItems;
     const totalWeight = items.reduce((sum, item) => sum + item.weight, 0);
     let achievedWeight = 0;
@@ -84,19 +85,19 @@ const NABHComplianceChecklist: React.FC = () => {
       const score = calculateComplianceScore();
       const findings = Object.entries(assessmentData).map(([itemId, data]: [string, any]) => ({
         itemId,
-        status: data.status,
-        evidence: data.evidence
+        status: data.status;
+        evidence: data.evidence;
       }));
 
       const response = await fetch('/api/compliance/nabh/assessment', {
-        method: 'POST',
+        method: 'POST';
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          standardId: selectedStandard.id,
+          standardId: selectedStandard.id;
           assessmentData: {
             score,
             findings,
-            status: score >= 80 ? 'COMPLIANT' : score >= 60 ? 'PARTIAL' : 'NON_COMPLIANT'
+            status: score >= 80 ? 'COMPLIANT' : score >= 60 ? 'PARTIAL' : 'NON_COMPLIANT';
           }
         })
       });
@@ -106,7 +107,7 @@ const NABHComplianceChecklist: React.FC = () => {
         fetchNABHStandards();
       }
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     }
   };
 
@@ -119,7 +120,7 @@ const NABHComplianceChecklist: React.FC = () => {
     }
   };
 
-  if (loading) return <div>Loading NABH compliance data...</div>;
+  if (loading != null) return <div>Loading NABH compliance data...</div>;
 
   return (
     <div className="p-6 space-y-6">
@@ -142,8 +143,8 @@ const NABHComplianceChecklist: React.FC = () => {
                 <div
                   key={standard.id}
                   className={`p-3 rounded cursor-pointer transition-colors $'{
-                    selectedStandard?.id === standard.id 
-                      ? 'bg-blue-50 border-blue-200' 
+                    selectedStandard?.id === standard.id
+                      ? 'bg-blue-50 border-blue-200'
                       : 'hover:bg-gray-50'
                   }`}
                   onClick={() => setSelectedStandard(standard)}
@@ -180,9 +181,9 @@ const NABHComplianceChecklist: React.FC = () => {
                     <h4 className="font-medium">{item.criterion}</h4>
                     <Badge variant="outline">Weight: {item.weight}</Badge>
                   </div>
-                  
+
                   <p className="text-sm text-gray-600 mb-3">{item.description}</p>
-                  
+
                   <div className="space-y-3">
                     <div>
                       <label className="text-sm font-medium">Compliance Status:</label>
@@ -191,10 +192,10 @@ const NABHComplianceChecklist: React.FC = () => {
                           <label key={status} className="flex items-center space-x-2">
                             <Checkbox
                               checked={assessmentData[item.id]?.status === status}
-                              onCheckedChange={() => 
+                              onCheckedChange={() =>
                                 updateChecklistItem(
-                                  item.id, 
-                                  status, 
+                                  item.id,
+                                  status,
                                   assessmentData[item.id]?.evidence || ''
                                 )
                               }
@@ -204,13 +205,13 @@ const NABHComplianceChecklist: React.FC = () => {
                         ))}
                       </div>
                     </div>
-                    
+
                     <div>
                       <label className="text-sm font-medium">Evidence/Comments:</label>
                       <Textarea
                         placeholder="Provide evidence or comments for this criterion..."
                         value={assessmentData[item.id]?.evidence || ''}
-                        onChange={(e) => 
+                        onChange={(e) =>
                           updateChecklistItem(
                             item.id,
                             assessmentData[item.id]?.status || 'NOT_ASSESSED',

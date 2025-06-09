@@ -1,3 +1,5 @@
+
+import { z } from 'zod';
 }
 
 /**
@@ -5,13 +7,11 @@
  * Complete surgical workflow with OR scheduling, equipment tracking, and staff coordination;
  */
 
-import { z } from 'zod';
-
 // Operating Theatre Schemas
 export const SurgicalProcedureSchema = z.object({
   patient_id: z.string().min(1, 'Patient ID is required'),
   surgeon_id: z.string().min(1, 'Primary surgeon is required'),
-  anesthesiologist_id: z.string().optional(),
+  anesthesiologist_id: z.string().optional();
   procedure_name: z.string().min(1, 'Procedure name is required'),
   cpt_codes: z.array(z.string()).min(1, 'At least one CPT code is required'),
   icd10_diagnosis_codes: z.array(z.string()).min(1, 'At least one diagnosis code is required'),
@@ -22,24 +22,24 @@ export const SurgicalProcedureSchema = z.object({
   urgency: z.enum(['routine', 'urgent', 'stat', 'emergent']).default('routine'),
   scheduled_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid scheduled date'),
   scheduled_start_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
-  or_room_preference: z.string().optional(),
+  or_room_preference: z.string().optional();
   anesthesia_type: z.enum(['general', 'regional', 'local', 'sedation', 'none']),
-  position: z.string().optional(),
-  special_equipment: z.array(z.string()).default([]),
-  special_instructions: z.string().optional(),
-  preop_requirements: z.array(z.string()).default([]),
+  position: z.string().optional();
+  special_equipment: z.array(z.string()).default([]);
+  special_instructions: z.string().optional();
+  preop_requirements: z.array(z.string()).default([]);
   postop_destination: z.enum(['pacu', 'icu', 'ward', 'discharge']),
-  blood_type_crossmatch: z.boolean().default(false),
-  units_blood_crossmatched: z.number().optional(),
-  consent_obtained: z.boolean().default(false),
-  consent_date: z.string().optional(),
+  blood_type_crossmatch: z.boolean().default(false);
+  units_blood_crossmatched: z.number().optional();
+  consent_obtained: z.boolean().default(false);
+  consent_date: z.string().optional();
   laterality: z.enum(['left', 'right', 'bilateral', 'n_a']).default('n_a'),
-  site_marking_required: z.boolean().default(false),
-  site_marked: z.boolean().default(false),
-  timeout_performed: z.boolean().default(false),
-  complications_anticipated: z.array(z.string()).default([]),
-  estimated_blood_loss: z.number().optional(),
-  surgeon_notes: z.string().optional(),
+  site_marking_required: z.boolean().default(false);
+  site_marked: z.boolean().default(false);
+  timeout_performed: z.boolean().default(false);
+  complications_anticipated: z.array(z.string()).default([]);
+  estimated_blood_loss: z.number().optional();
+  surgeon_notes: z.string().optional();
 });
 
 export const ORScheduleSchema = z.object({
@@ -51,44 +51,44 @@ export const ORScheduleSchema = z.object({
   room_setup_time: z.number().min(15).max(60).default(30), // minutes
   cleanup_time: z.number().min(15).max(60).default(30), // minutes
   block_type: z.enum(['scheduled', 'emergency', 'add_on', 'blocked']),
-  assigned_surgeon: z.string().optional(),
-  assigned_team: z.array(z.string()).default([]),
-  notes: z.string().optional(),
+  assigned_surgeon: z.string().optional();
+  assigned_team: z.array(z.string()).default([]);
+  notes: z.string().optional();
 });
 
 export const SurgicalTeamSchema = z.object({
   surgery_id: z.string().min(1, 'Surgery ID is required'),
   primary_surgeon: z.string().min(1, 'Primary surgeon is required'),
-  assistant_surgeons: z.array(z.string()).default([]),
-  anesthesiologist: z.string().optional(),
-  anesthesia_resident: z.string().optional(),
+  assistant_surgeons: z.array(z.string()).default([]);
+  anesthesiologist: z.string().optional();
+  anesthesia_resident: z.string().optional();
   circulating_nurse: z.string().min(1, 'Circulating nurse is required'),
   scrub_nurse: z.string().min(1, 'Scrub nurse is required'),
-  anesthesia_technician: z.string().optional(),
-  surgical_technician: z.string().optional(),
-  residents: z.array(z.string()).default([]),
-  students: z.array(z.string()).default([]),
-  observers: z.array(z.string()).default([]),
+  anesthesia_technician: z.string().optional();
+  surgical_technician: z.string().optional();
+  residents: z.array(z.string()).default([]);
+  students: z.array(z.string()).default([]);
+  observers: z.array(z.string()).default([]);
 });
 
 export const SurgicalInstrumentSchema = z.object({
   instrument_name: z.string().min(1, 'Instrument name is required'),
   instrument_id: z.string().min(1, 'Instrument ID is required'),
   category: z.enum(['cutting', 'grasping', 'hemostatic', 'retractor', 'suction', 'electrocautery', 'specialized']),
-  manufacturer: z.string().optional(),
-  model: z.string().optional(),
-  serial_number: z.string().optional(),
+  manufacturer: z.string().optional();
+  model: z.string().optional();
+  serial_number: z.string().optional();
   sterilization_status: z.enum(['sterile', 'dirty', 'cleaning', 'sterilizing', 'out_of_service']),
-  last_sterilized: z.string().optional(),
+  last_sterilized: z.string().optional();
   sterilization_method: z.enum(['steam', 'ethylene_oxide', 'plasma', 'radiation']).optional(),
-  expiry_date: z.string().optional(),
-  maintenance_due: z.string().optional(),
-  location: z.string().optional(),
-  cost: z.number().min(0).optional(),
-  usage_count: z.number().min(0).default(0),
-  max_usage_cycles: z.number().optional(),
-  is_single_use: z.boolean().default(false),
-  requires_count: z.boolean().default(true),
+  expiry_date: z.string().optional();
+  maintenance_due: z.string().optional();
+  location: z.string().optional();
+  cost: z.number().min(0).optional();
+  usage_count: z.number().min(0).default(0);
+  max_usage_cycles: z.number().optional();
+  is_single_use: z.boolean().default(false);
+  requires_count: z.boolean().default(true);
 });
 
 export const AnesthesiaRecordSchema = z.object({
@@ -96,47 +96,47 @@ export const AnesthesiaRecordSchema = z.object({
   anesthesiologist_id: z.string().min(1, 'Anesthesiologist ID is required'),
   anesthesia_type: z.enum(['general', 'regional', 'local', 'sedation', 'combination']),
   asa_classification: z.enum(['I', 'II', 'III', 'IV', 'V', 'VI']),
-  preop_assessment: z.string(),
-  allergies: z.array(z.string()).default([]),
-  medications: z.array(z.string()).default([]),
-  fasting_status: z.string(),
-  airway_assessment: z.string(),
+  preop_assessment: z.string();
+  allergies: z.array(z.string()).default([]);
+  medications: z.array(z.string()).default([]);
+  fasting_status: z.string();
+  airway_assessment: z.string();
   induction_agents: z.array(z.object({
-    agent: z.string(),
-    dose: z.string(),
-    time: z.string(),
+    agent: z.string();
+    dose: z.string();
+    time: z.string();
   })).default([]),
   maintenance_agents: z.array(z.object({
-    agent: z.string(),
-    concentration: z.string(),
-    duration: z.string(),
+    agent: z.string();
+    concentration: z.string();
+    duration: z.string();
   })).default([]),
   neuromuscular_blocking_agents: z.array(z.object({
-    agent: z.string(),
-    dose: z.string(),
-    time: z.string(),
+    agent: z.string();
+    dose: z.string();
+    time: z.string();
   })).default([]),
   reversal_agents: z.array(z.object({
-    agent: z.string(),
-    dose: z.string(),
-    time: z.string(),
+    agent: z.string();
+    dose: z.string();
+    time: z.string();
   })).default([]),
   intraop_events: z.array(z.object({
-    time: z.string(),
-    event: z.string(),
-    intervention: z.string().optional(),
+    time: z.string();
+    event: z.string();
+    intervention: z.string().optional();
   })).default([]),
-  blood_loss: z.number().optional(),
-  fluid_intake: z.number().optional(),
-  urine_output: z.number().optional(),
-  complications: z.array(z.string()).default([]),
-  postop_pain_management: z.string(),
-  recovery_notes: z.string().optional(),
+  blood_loss: z.number().optional();
+  fluid_intake: z.number().optional();
+  urine_output: z.number().optional();
+  complications: z.array(z.string()).default([]);
+  postop_pain_management: z.string();
+  recovery_notes: z.string().optional();
 });
 
 export type SurgicalProcedure = z.infer<typeof SurgicalProcedureSchema> & {
-  id: string,
-  case_number: string,
+  id: string;
+  case_number: string;
   status: 'scheduled' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled' | 'postponed';
   actual_start_time?: Date;
   actual_end_time?: Date;
@@ -147,7 +147,7 @@ export type SurgicalProcedure = z.infer<typeof SurgicalProcedureSchema> & {
   complications?: string[];
   cancellation_reason?: string;
   postponement_reason?: string;
-  created_at: Date,
+  created_at: Date;
   updated_at: Date;
   patient_name?: string;
   surgeon_name?: string;
@@ -155,94 +155,94 @@ export type SurgicalProcedure = z.infer<typeof SurgicalProcedureSchema> & {
 };
 
 export type ORSchedule = z.infer<typeof ORScheduleSchema> & {
-  id: string,
-  utilization_percentage: number,
-  created_at: Date,
-  updated_at: Date
+  id: string;
+  utilization_percentage: number;
+  created_at: Date;
+  updated_at: Date;
 };
 
 export type SurgicalTeam = z.infer<typeof SurgicalTeamSchema> & {
-  id: string,
-  team_complete: boolean,
-  created_at: Date,
-  updated_at: Date
+  id: string;
+  team_complete: boolean;
+  created_at: Date;
+  updated_at: Date;
 };
 
 export type SurgicalInstrument = z.infer<typeof SurgicalInstrumentSchema> & {
-  id: string,
-  available: boolean,
-  created_at: Date,
+  id: string;
+  available: boolean;
+  created_at: Date;
   updated_at: Date;
   last_used?: Date;
   next_maintenance?: Date;
-  condition: 'excellent' | 'good' | 'fair' | 'poor' | 'out_of_service'
+  condition: 'excellent' | 'good' | 'fair' | 'poor' | 'out_of_service';
 };
 
 export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
-  id: string,
-  created_at: Date,
+  id: string;
+  created_at: Date;
   updated_at: Date;
   signed_at?: Date;
   signed_by?: string;
 };
 
 export interface ORCapacity {
-  total_rooms: number,
-  active_rooms: number,
-  scheduled_cases: number,
-  in_progress_cases: number,
-  completed_cases: number,
-  cancelled_cases: number,
-  utilization_rate: number,
-  average_turnover_time: number,
+  total_rooms: number;
+  active_rooms: number;
+  scheduled_cases: number;
+  in_progress_cases: number;
+  completed_cases: number;
+  cancelled_cases: number;
+  utilization_rate: number;
+  average_turnover_time: number;
   rooms_by_status: {
-    available: number,
-    occupied: number,
-    cleaning: number,
-    setup: number,
-    maintenance: number
+    available: number;
+    occupied: number;
+    cleaning: number;
+    setup: number;
+    maintenance: number;
   };
   upcoming_cases: SurgicalProcedure[]
 export interface ORMetrics {
-  daily_volume: number,
-  utilization_rate: number,
-  average_case_duration: number,
-  average_turnover_time: number,
-  first_case_start_delay: number,
-  cancellation_rate: number,
-  postponement_rate: number,
-  complication_rate: number,
-  on_time_start_rate: number,
+  daily_volume: number;
+  utilization_rate: number;
+  average_case_duration: number;
+  average_turnover_time: number;
+  first_case_start_delay: number;
+  cancellation_rate: number;
+  postponement_rate: number;
+  complication_rate: number;
+  on_time_start_rate: number;
   surgeon_productivity: {
-    surgeon_id: string,
-    cases_performed: number,
-    average_duration: number,
-    complication_rate: number,
-    on_time_rate: number
+    surgeon_id: string;
+    cases_performed: number;
+    average_duration: number;
+    complication_rate: number;
+    on_time_rate: number;
   }[];
   room_efficiency: {
-    room_id: string,
-    utilization_rate: number,
-    cases_performed: number,
-    average_turnover: number
+    room_id: string;
+    utilization_rate: number;
+    cases_performed: number;
+    average_turnover: number;
   }[];
 export interface InstrumentCount {
-  instrument_id: string,
-  instrument_name: string,
-  opening_count: number,
-  closing_count: number,
-  discrepancy: boolean,
-  counted_by: string,
-  count_time: Date,
+  instrument_id: string;
+  instrument_name: string;
+  opening_count: number;
+  closing_count: number;
+  discrepancy: boolean;
+  counted_by: string;
+  count_time: Date;
   location: 'field' | 'back_table' | 'mayo_stand' | 'basin' | 'floor'
 export interface SafetyChecklist {
-  surgery_id: string,
-  checklist_type: 'sign_in' | 'time_out' | 'sign_out',
-  completed: boolean,
-  completed_by: string,
-  completed_at: Date,
+  surgery_id: string;
+  checklist_type: 'sign_in' | 'time_out' | 'sign_out';
+  completed: boolean;
+  completed_by: string;
+  completed_at: Date;
   items: {
-    item: string,
+    item: string;
     checked: boolean;
     notes?: string;
   }[];
@@ -278,10 +278,10 @@ export class OperatingTheatreService {
     rooms.forEach(room => {
       this.orRooms.set(room.id, {
         ...room,
-        status: 'available',
-        current_case: null,
-        last_cleaned: new Date(),
-        maintenance_due: null,
+        status: 'available';
+        current_case: null;
+        last_cleaned: new Date();
+        maintenance_due: null;
       });
       this.orSchedules.set(room.id, []);
     });
@@ -293,72 +293,72 @@ export class OperatingTheatreService {
   private initializeSurgicalInstruments(): void {
     const instruments: Omit<SurgicalInstrument, 'id' | 'created_at' | 'updated_at'>[] = [
       {
-        instrument_name: 'Mayo Scissors',
-        instrument_id: 'MAYO-001',
-        category: 'cutting',
-        manufacturer: 'Aesculap',
-        sterilization_status: 'sterile',
-        location: 'Instrument Storage',
-        cost: 150.00,
-        usage_count: 245,
-        max_usage_cycles: 1000,
-        is_single_use: false,
-        requires_count: true,
-        available: true,
-        condition: 'good',
+        instrument_name: 'Mayo Scissors';
+        instrument_id: 'MAYO-001';
+        category: 'cutting';
+        manufacturer: 'Aesculap';
+        sterilization_status: 'sterile';
+        location: 'Instrument Storage';
+        cost: 150.00;
+        usage_count: 245;
+        max_usage_cycles: 1000;
+        is_single_use: false;
+        requires_count: true;
+        available: true;
+        condition: 'good';
       },
       {
-        instrument_name: 'DeBakey Forceps',
-        instrument_id: 'DEBAKEY-001',
-        category: 'grasping',
-        manufacturer: 'KLS Martin',
-        sterilization_status: 'sterile',
-        location: 'Instrument Storage',
-        cost: 120.00,
-        usage_count: 189,
-        max_usage_cycles: 800,
-        is_single_use: false,
-        requires_count: true,
-        available: true,
-        condition: 'excellent',
+        instrument_name: 'DeBakey Forceps';
+        instrument_id: 'DEBAKEY-001';
+        category: 'grasping';
+        manufacturer: 'KLS Martin';
+        sterilization_status: 'sterile';
+        location: 'Instrument Storage';
+        cost: 120.00;
+        usage_count: 189;
+        max_usage_cycles: 800;
+        is_single_use: false;
+        requires_count: true;
+        available: true;
+        condition: 'excellent';
       },
       {
-        instrument_name: 'Bovie Electrocautery',
-        instrument_id: 'BOVIE-001',
-        category: 'electrocautery',
-        manufacturer: 'Medtronic',
-        sterilization_status: 'sterile',
-        location: 'OR-01',
-        cost: 25.00,
-        usage_count: 67,
-        is_single_use: true,
-        requires_count: false,
-        available: true,
-        condition: 'excellent',
+        instrument_name: 'Bovie Electrocautery';
+        instrument_id: 'BOVIE-001';
+        category: 'electrocautery';
+        manufacturer: 'Medtronic';
+        sterilization_status: 'sterile';
+        location: 'OR-01';
+        cost: 25.00;
+        usage_count: 67;
+        is_single_use: true;
+        requires_count: false;
+        available: true;
+        condition: 'excellent';
       },
       {
-        instrument_name: 'Weitlaner Retractor',
-        instrument_id: 'WEIT-001',
-        category: 'retractor',
-        manufacturer: 'Integra',
-        sterilization_status: 'sterile',
-        location: 'Instrument Storage',
-        cost: 200.00,
-        usage_count: 156,
-        max_usage_cycles: 500,
-        is_single_use: false,
-        requires_count: true,
-        available: true,
-        condition: 'good',
+        instrument_name: 'Weitlaner Retractor';
+        instrument_id: 'WEIT-001';
+        category: 'retractor';
+        manufacturer: 'Integra';
+        sterilization_status: 'sterile';
+        location: 'Instrument Storage';
+        cost: 200.00;
+        usage_count: 156;
+        max_usage_cycles: 500;
+        is_single_use: false;
+        requires_count: true;
+        available: true;
+        condition: 'good';
       },
     ];
 
     instruments.forEach(instrumentData => {
       const instrument: SurgicalInstrument = {
         ...instrumentData,
-        id: uuidv4(),
-        created_at: new Date(),
-        updated_at: new Date(),
+        id: uuidv4();
+        created_at: new Date();
+        updated_at: new Date();
       };
       this.instruments.set(instrument.instrument_id, instrument);
     });
@@ -369,7 +369,7 @@ export class OperatingTheatreService {
    */
   async scheduleSurgicalProcedure(procedureData: z.infer<typeof SurgicalProcedureSchema>): Promise<SurgicalProcedure> {
     const validatedData = SurgicalProcedureSchema.parse(procedureData);
-    
+
     const procedureId = uuidv4();
     const caseNumber = this.generateCaseNumber();
 
@@ -383,18 +383,18 @@ export class OperatingTheatreService {
 
     const procedure: SurgicalProcedure = {
       ...validatedData,
-      id: procedureId,
-      case_number: caseNumber,
-      status: 'scheduled',
-      or_room_assigned: orRoom,
-      created_at: new Date(),
-      updated_at: new Date(),
+      id: procedureId;
+      case_number: caseNumber;
+      status: 'scheduled';
+      or_room_assigned: orRoom;
+      created_at: new Date();
+      updated_at: new Date();
     };
 
     this.surgicalProcedures.set(procedureId, procedure);
 
     // Schedule OR room
-    if (orRoom) {
+    if (orRoom != null) {
       await this.scheduleORRoom(orRoom, validatedData.scheduled_date, validatedData.scheduled_start_time, validatedData.estimated_duration, procedureId);
     }
 
@@ -405,18 +405,18 @@ export class OperatingTheatreService {
    * Generate case number;
    */
   private generateCaseNumber(): string {
-    const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
-    const random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
-    return `CASE/* SECURITY: Template literal eliminated */
+    const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
+    const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    return `CASE/* SECURITY: Template literal eliminated */;
   }
 
   /**
    * Find available OR room;
    */
   private async findAvailableORRoom(
-    date: string,
-    startTime: string,
-    duration: number,
+    date: string;
+    startTime: string;
+    duration: number;
     preference?: string;
   ): Promise<string | undefined> {
     const scheduledDateTime = new Date(`/* SECURITY: Template literal eliminated */
@@ -428,13 +428,13 @@ export class OperatingTheatreService {
       const isAvailable = !roomSchedule.some(schedule => {
         const scheduleStart = new Date(`/* SECURITY: Template literal eliminated */
         const scheduleEnd = new Date(`/* SECURITY: Template literal eliminated */
-        
+
         return (scheduledDateTime >= scheduleStart && scheduledDateTime < scheduleEnd) ||;
                (endTime > scheduleStart && endTime <= scheduleEnd) ||;
                (scheduledDateTime <= scheduleStart && endTime >= scheduleEnd);
       });
-      
-      if (isAvailable) {
+
+      if (isAvailable != null) {
         return preference;
       }
     }
@@ -445,13 +445,13 @@ export class OperatingTheatreService {
       const isAvailable = !roomSchedule.some(schedule => {
         const scheduleStart = new Date(`/* SECURITY: Template literal eliminated */
         const scheduleEnd = new Date(`/* SECURITY: Template literal eliminated */
-        
+
         return (scheduledDateTime >= scheduleStart && scheduledDateTime < scheduleEnd) ||;
                (endTime > scheduleStart && endTime <= scheduleEnd) ||;
                (scheduledDateTime <= scheduleStart && endTime >= scheduleEnd);
       });
-      
-      if (isAvailable) {
+
+      if (isAvailable != null) {
         return roomId;
       }
     }
@@ -463,26 +463,26 @@ export class OperatingTheatreService {
    * Schedule OR room;
    */
   private async scheduleORRoom(
-    roomId: string,
-    date: string,
-    startTime: string,
-    duration: number,
+    roomId: string;
+    date: string;
+    startTime: string;
+    duration: number;
     surgeryId: string;
   ): Promise<void> {
     const endTime = new Date(`/* SECURITY: Template literal eliminated */
     endTime.setMinutes(endTime.getMinutes() + duration);
-    
+
     const schedule: ORSchedule = {
-      id: uuidv4(),
-      or_room_id: roomId,
+      id: uuidv4();
+      or_room_id: roomId;
       date,
-      start_time: startTime,
+      start_time: startTime;
       end_time: endTime.toTimeString().slice(0, 5),
-      block_type: 'scheduled',
-      assigned_team: [],
+      block_type: 'scheduled';
+      assigned_team: [];
       utilization_percentage: 85, // Estimated
-      created_at: new Date(),
-      updated_at: new Date(),
+      created_at: new Date();
+      updated_at: new Date();
     };
 
     const roomSchedules = this.orSchedules.get(roomId) || [];
@@ -495,22 +495,22 @@ export class OperatingTheatreService {
    */
   async assignSurgicalTeam(teamData: z.infer<typeof SurgicalTeamSchema>): Promise<SurgicalTeam> {
     const validatedData = SurgicalTeamSchema.parse(teamData);
-    
+
     const teamId = uuidv4();
-    
+
     // Check if team is complete
     const teamComplete = !!(
-      validatedData.primary_surgeon &&
-      validatedData.circulating_nurse &&
+      validatedData?.primary_surgeon &&
+      validatedData?.circulating_nurse &&
       validatedData.scrub_nurse;
     );
 
     const team: SurgicalTeam = {
       ...validatedData,
-      id: teamId,
-      team_complete: teamComplete,
-      created_at: new Date(),
-      updated_at: new Date(),
+      id: teamId;
+      team_complete: teamComplete;
+      created_at: new Date();
+      updated_at: new Date();
     };
 
     this.surgicalTeams.set(teamId, team);
@@ -533,7 +533,7 @@ export class OperatingTheatreService {
     // Verify safety checklist
     const checklists = this.safetyChecklists.get(procedureId) || [];
     const timeoutCompleted = checklists.some(c => c.checklist_type === 'time_out' && c.completed);
-    
+
     if (!timeoutCompleted) {
       throw new Error('Timeout checklist must be completed before starting procedure');
     }
@@ -545,7 +545,7 @@ export class OperatingTheatreService {
     // Update OR room status
     if (procedure.or_room_assigned) {
       const room = this.orRooms.get(procedure.or_room_assigned);
-      if (room) {
+      if (room != null) {
         room.status = 'occupied';
         room.current_case = procedureId;
         this.orRooms.set(procedure.or_room_assigned, room);
@@ -560,7 +560,7 @@ export class OperatingTheatreService {
    * Complete surgical procedure;
    */
   async completeSurgicalProcedure(
-    procedureId: string,
+    procedureId: string;
     completionData: {
       complications?: string[];
       estimated_blood_loss?: number;
@@ -579,13 +579,13 @@ export class OperatingTheatreService {
     const now = new Date();
     procedure.status = 'completed';
     procedure.actual_end_time = now;
-    
+
     if (procedure.actual_start_time) {
       procedure.actual_duration = Math.round(
         (now.getTime() - procedure.actual_start_time.getTime()) / (1000 * 60);
       );
     }
-    
+
     procedure.complications = completionData.complications;
     procedure.estimated_blood_loss = completionData.estimated_blood_loss;
     procedure.updated_at = now;
@@ -593,7 +593,7 @@ export class OperatingTheatreService {
     // Update OR room status
     if (procedure.or_room_assigned) {
       const room = this.orRooms.get(procedure.or_room_assigned);
-      if (room) {
+      if (room != null) {
         room.status = 'cleaning';
         room.current_case = null;
         this.orRooms.set(procedure.or_room_assigned, room);
@@ -608,28 +608,28 @@ export class OperatingTheatreService {
    * Perform instrument count;
    */
   async performInstrumentCount(
-    surgeryId: string,
+    surgeryId: string;
     countData: {
       instrument_id: string;
       opening_count?: number;
       closing_count?: number;
-      location: InstrumentCount['location'],
-      counted_by: string
+      location: InstrumentCount['location'];
+      counted_by: string;
     }[]
   ): Promise<InstrumentCount[]> {
     const counts: InstrumentCount[] = countData.map(data => {
       const instrument = this.instruments.get(data.instrument_id);
-      
+
       return {
-        instrument_id: data.instrument_id,
-        instrument_name: instrument?.instrument_name || 'Unknown',
-        opening_count: data.opening_count || 0,
-        closing_count: data.closing_count || 0,
+        instrument_id: data.instrument_id;
+        instrument_name: instrument?.instrument_name || 'Unknown';
+        opening_count: data.opening_count || 0;
+        closing_count: data.closing_count || 0;
         discrepancy: data.opening_count !== undefined && data.closing_count !== undefined ?;
           data.opening_count !== data.closing_count : false,
-        counted_by: data.counted_by,
-        count_time: new Date(),
-        location: data.location,
+        counted_by: data.counted_by;
+        count_time: new Date();
+        location: data.location;
       };
     });
 
@@ -641,17 +641,17 @@ export class OperatingTheatreService {
    * Complete safety checklist;
    */
   async completeSafetyChecklist(
-    surgeryId: string,
-    checklistType: SafetyChecklist['checklist_type'],
-    staffId: string,
+    surgeryId: string;
+    checklistType: SafetyChecklist['checklist_type'];
+    staffId: string;
     items: { item: string; checked: boolean; notes?: string }[]
   ): Promise<SafetyChecklist> {
     const checklist: SafetyChecklist = {
-      surgery_id: surgeryId,
-      checklist_type: checklistType,
-      completed: items.every(item => item.checked),
-      completed_by: staffId,
-      completed_at: new Date(),
+      surgery_id: surgeryId;
+      checklist_type: checklistType;
+      completed: items.every(item => item.checked);
+      completed_by: staffId;
+      completed_at: new Date();
       items,
     };
 
@@ -667,14 +667,14 @@ export class OperatingTheatreService {
    */
   async createAnesthesiaRecord(recordData: z.infer<typeof AnesthesiaRecordSchema>): Promise<AnesthesiaRecord> {
     const validatedData = AnesthesiaRecordSchema.parse(recordData);
-    
+
     const recordId = uuidv4();
-    
+
     const record: AnesthesiaRecord = {
       ...validatedData,
-      id: recordId,
-      created_at: new Date(),
-      updated_at: new Date(),
+      id: recordId;
+      created_at: new Date();
+      updated_at: new Date();
     };
 
     this.anesthesiaRecords.set(recordId, record);
@@ -704,7 +704,7 @@ export class OperatingTheatreService {
   async getORCapacity(): Promise<ORCapacity> {
     const rooms = Array.from(this.orRooms.values());
     const procedures = Array.from(this.surgicalProcedures.values());
-    
+
     const today = new Date().toISOString().split('T')[0];
     const todaysProcedures = procedures.filter(p => p.scheduled_date === today);
 
@@ -718,12 +718,12 @@ export class OperatingTheatreService {
     const utilizationRate = activeRooms > 0 ? (inProgressCases / activeRooms) * 100 : 0;
 
     // Calculate average turnover time
-    const completedToday = procedures.filter(p => 
+    const _completedToday = procedures.filter(p =>
       p.status === 'completed' &&;
-      p.actual_end_time &&
+      p?.actual_end_time &&
       p.actual_end_time.toISOString().split('T')[0] === today;
     );
-    
+
     const averageTurnoverTime = 30; // Simplified - would calculate from actual room turnover data
 
     const roomsByStatus = rooms.reduce((acc, room) => {
@@ -734,7 +734,7 @@ export class OperatingTheatreService {
     // Get upcoming cases (next 4 hours)
     const now = new Date()
     const nextFourHours = new Date(now.getTime() + 4 * 60 * 60 * 1000);
-    
+
     const upcomingCases = procedures.filter(p => {
       if (p.status !== 'scheduled') return false;
       const scheduledTime = new Date(`/* SECURITY: Template literal eliminated */
@@ -742,16 +742,16 @@ export class OperatingTheatreService {
     }).slice(0, 10);
 
     return {
-      total_rooms: totalRooms,
-      active_rooms: activeRooms,
-      scheduled_cases: scheduledCases,
-      in_progress_cases: inProgressCases,
-      completed_cases: completedCases,
-      cancelled_cases: cancelledCases,
-      utilization_rate: Math.round(utilizationRate * 100) / 100,
-      average_turnover_time: averageTurnoverTime,
-      rooms_by_status: roomsByStatus,
-      upcoming_cases: upcomingCases,
+      total_rooms: totalRooms;
+      active_rooms: activeRooms;
+      scheduled_cases: scheduledCases;
+      in_progress_cases: inProgressCases;
+      completed_cases: completedCases;
+      cancelled_cases: cancelledCases;
+      utilization_rate: Math.round(utilizationRate * 100) / 100;
+      average_turnover_time: averageTurnoverTime;
+      rooms_by_status: roomsByStatus;
+      upcoming_cases: upcomingCases;
     };
   }
 
@@ -760,17 +760,17 @@ export class OperatingTheatreService {
    */
   async getORMetrics(dateFrom?: string, dateTo?: string): Promise<ORMetrics> {
     const procedures = Array.from(this.surgicalProcedures.values());
-    
+
     let filteredProcedures = procedures;
-    if (dateFrom) {
+    if (dateFrom != null) {
       filteredProcedures = filteredProcedures.filter(p => p.scheduled_date >= dateFrom);
     }
-    if (dateTo) {
+    if (dateTo != null) {
       filteredProcedures = filteredProcedures.filter(p => p.scheduled_date <= dateTo);
     }
 
     const dailyVolume = filteredProcedures.length;
-    
+
     // Calculate utilization rate
     const totalRoomHours = Array.from(this.orRooms.values()).length * 8; // Assume 8 hours per room per day
     const usedHours = filteredProcedures;
@@ -787,8 +787,8 @@ export class OperatingTheatreService {
     const totalScheduled = filteredProcedures.length;
     const cancelled = filteredProcedures.filter(p => p.status === 'cancelled').length;
     const postponed = filteredProcedures.filter(p => p.status === 'postponed').length;
-    const withComplications = filteredProcedures.filter(p => p.complications && p.complications.length > 0).length;
-    
+    const withComplications = filteredProcedures.filter(p => p?.complications && p.complications.length > 0).length;
+
     const cancellationRate = totalScheduled > 0 ? (cancelled / totalScheduled) * 100 : 0;
     const postponementRate = totalScheduled > 0 ? (postponed / totalScheduled) * 100 : 0;
     const complicationRate = completedCases.length > 0 ? (withComplications / completedCases.length) * 100 : 0;
@@ -801,27 +801,27 @@ export class OperatingTheatreService {
       const delayMinutes = (actualStart.getTime() - scheduledStart.getTime()) / (1000 * 60);
       return delayMinutes <= 15; // Consider on-time if within 15 minutes
     }).length;
-    
+
     const onTimeStartRate = completedCases.length > 0 ? (onTimeStarts / completedCases.length) * 100 : 0;
 
     // Surgeon productivity
     const surgeonStats = new Map<string, any>();
     filteredProcedures.forEach(p => {
       if (!p.surgeon_id) return;
-      
+
       const current = surgeonStats.get(p.surgeon_id) || {
-        surgeon_id: p.surgeon_id,
-        cases_performed: 0,
-        total_duration: 0,
-        complications: 0,
-        on_time_starts: 0,
+        surgeon_id: p.surgeon_id;
+        cases_performed: 0;
+        total_duration: 0;
+        complications: 0;
+        on_time_starts: 0;
       };
-      
+
       current.cases_performed++;
       if (p.actual_duration) {
         current.total_duration += p.actual_duration;
       }
-      if (p.complications && p.complications.length > 0) {
+      if (p?.complications && p.complications.length > 0) {
         current.complications++;
       }
       if (p.actual_start_time) {
@@ -831,66 +831,66 @@ export class OperatingTheatreService {
           current.on_time_starts++;
         }
       }
-      
+
       surgeonStats.set(p.surgeon_id, current);
     });
 
     const surgeonProductivity = Array.from(surgeonStats.values()).map(stats => ({
-      surgeon_id: stats.surgeon_id,
-      cases_performed: stats.cases_performed,
-      average_duration: stats.cases_performed > 0 ? stats.total_duration / stats.cases_performed : 0,
-      complication_rate: stats.cases_performed > 0 ? (stats.complications / stats.cases_performed) * 100 : 0,
-      on_time_rate: stats.cases_performed > 0 ? (stats.on_time_starts / stats.cases_performed) * 100 : 0,
+      surgeon_id: stats.surgeon_id;
+      cases_performed: stats.cases_performed;
+      average_duration: stats.cases_performed > 0 ? stats.total_duration / stats.cases_performed : 0;
+      complication_rate: stats.cases_performed > 0 ? (stats.complications / stats.cases_performed) * 100 : 0;
+      on_time_rate: stats.cases_performed > 0 ? (stats.on_time_starts / stats.cases_performed) * 100 : 0;
     }));
 
     // Room efficiency
     const roomStats = new Map<string, any>();
     filteredProcedures.forEach(p => {
       if (!p.or_room_assigned) return;
-      
+
       const current = roomStats.get(p.or_room_assigned) || {
-        room_id: p.or_room_assigned,
-        cases_performed: 0,
-        total_duration: 0,
-        total_turnover: 0,
+        room_id: p.or_room_assigned;
+        cases_performed: 0;
+        total_duration: 0;
+        total_turnover: 0;
       };
-      
+
       current.cases_performed++;
       if (p.actual_duration) {
         current.total_duration += p.actual_duration;
         current.total_turnover += 30; // Simplified turnover time
       }
-      
+
       roomStats.set(p.or_room_assigned, current);
     });
 
     const roomEfficiency = Array.from(roomStats.values()).map(stats => ({
-      room_id: stats.room_id,
+      room_id: stats.room_id;
       utilization_rate: (stats.total_duration / (8 * 60)) * 100, // Assume 8-hour day
-      cases_performed: stats.cases_performed,
-      average_turnover: stats.cases_performed > 0 ? stats.total_turnover / stats.cases_performed : 0,
+      cases_performed: stats.cases_performed;
+      average_turnover: stats.cases_performed > 0 ? stats.total_turnover / stats.cases_performed : 0;
     }));
 
     return {
-      daily_volume: dailyVolume,
-      utilization_rate: Math.round(utilizationRate * 100) / 100,
-      average_case_duration: Math.round(averageCaseDuration * 100) / 100,
+      daily_volume: dailyVolume;
+      utilization_rate: Math.round(utilizationRate * 100) / 100;
+      average_case_duration: Math.round(averageCaseDuration * 100) / 100;
       average_turnover_time: 30, // Simplified
       first_case_start_delay: 12, // Simplified
-      cancellation_rate: Math.round(cancellationRate * 100) / 100,
-      postponement_rate: Math.round(postponementRate * 100) / 100,
-      complication_rate: Math.round(complicationRate * 100) / 100,
-      on_time_start_rate: Math.round(onTimeStartRate * 100) / 100,
+      cancellation_rate: Math.round(cancellationRate * 100) / 100;
+      postponement_rate: Math.round(postponementRate * 100) / 100;
+      complication_rate: Math.round(complicationRate * 100) / 100;
+      on_time_start_rate: Math.round(onTimeStartRate * 100) / 100;
       surgeon_productivity: surgeonProductivity.map(s => ({
         ...s,
-        average_duration: Math.round(s.average_duration * 100) / 100,
-        complication_rate: Math.round(s.complication_rate * 100) / 100,
-        on_time_rate: Math.round(s.on_time_rate * 100) / 100,
+        average_duration: Math.round(s.average_duration * 100) / 100;
+        complication_rate: Math.round(s.complication_rate * 100) / 100;
+        on_time_rate: Math.round(s.on_time_rate * 100) / 100;
       })),
       room_efficiency: roomEfficiency.map(r => ({
         ...r,
-        utilization_rate: Math.round(r.utilization_rate * 100) / 100,
-        average_turnover: Math.round(r.average_turnover * 100) / 100,
+        utilization_rate: Math.round(r.utilization_rate * 100) / 100;
+        average_turnover: Math.round(r.average_turnover * 100) / 100;
       })),
     };
   }
@@ -909,12 +909,12 @@ export class OperatingTheatreService {
     limit?: number;
   }): Promise<{ procedures: SurgicalProcedure[]; total: number; totalPages: number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
-    
+
     let filteredProcedures = Array.from(this.surgicalProcedures.values());
 
     // Apply filters
     Object.entries(searchFilters).forEach(([key, value]) => {
-      if (value) {
+      if (value != null) {
         filteredProcedures = filteredProcedures.filter(procedure => {
           const procedureValue = (procedure as any)[key];
           if (key.includes('date')) {
@@ -954,15 +954,15 @@ export class OperatingTheatreService {
    */
   async getSurgicalInstruments(category?: string, available?: boolean): Promise<SurgicalInstrument[]> {
     let instruments = Array.from(this.instruments.values());
-    
-    if (category) {
+
+    if (category != null) {
       instruments = instruments.filter(instrument => instrument.category === category);
     }
-    
+
     if (available !== undefined) {
       instruments = instruments.filter(instrument => instrument.available === available);
     }
-    
+
     return instruments.sort((a, b) => a.instrument_name.localeCompare(b.instrument_name));
   }
 
@@ -982,4 +982,4 @@ export class OperatingTheatreService {
 }
 
 // Export singleton instance
-export const operatingTheatreService = new OperatingTheatreService();
+export const _operatingTheatreService = new OperatingTheatreService();

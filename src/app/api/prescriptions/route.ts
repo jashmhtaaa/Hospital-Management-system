@@ -1,37 +1,38 @@
 import { NextRequest, NextResponse } from "next/server";
-import { DB } from "@/lib/database";
-import { getSession } from "@/lib/session";
 import { z } from "zod";
-import { Prescription } from "@/types/opd";
-import type { D1ResultWithMeta } from "@/types/cloudflare"; // Import the specific type
 
+
+import type { D1ResultWithMeta } from "@/types/cloudflare"; // Import the specific type
+import { DB } from "@/lib/database";
+import { Prescription } from "@/types/opd";
+import { getSession } from "@/lib/session";
 // Zod schema for creating a prescription
 const prescriptionItemSchema = z.object({
-    inventory_item_id: z.number(),
-    drug_name: z.string().min(1),
-    dosage: z.string().min(1),
-    frequency: z.string().min(1),
-    duration: z.string().min(1),
-    route: z.string().optional().nullable(),
-    instructions: z.string().optional().nullable(),
-    quantity_prescribed: z.number().positive().optional().nullable(),
+    inventory_item_id: z.number();
+    drug_name: z.string().min(1);
+    dosage: z.string().min(1);
+    frequency: z.string().min(1);
+    duration: z.string().min(1);
+    route: z.string().optional().nullable();
+    instructions: z.string().optional().nullable();
+    quantity_prescribed: z.number().positive().optional().nullable();
 });
 
 const prescriptionCreateSchema = z.object({
-    patient_id: z.number(),
+    patient_id: z.number();
     doctor_id: z.number(), // Or derive from session
-    consultation_id: z.number().optional().nullable(),
+    consultation_id: z.number().optional().nullable();
     prescription_date: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid prescription date format",
+        message: "Invalid prescription date format";
     }),
-    notes: z.string().optional().nullable(),
-    items: z.array(prescriptionItemSchema).min(1, "At least one medication item is required"),
+    notes: z.string().optional().nullable();
+    items: z.array(prescriptionItemSchema).min(1, "At least one medication item is required"),;
 });
 
 // type PrescriptionCreateBody = z.infer<typeof prescriptionCreateSchema>
 
 // GET /api/prescriptions - Fetch list of prescriptions (with filtering/pagination)
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
     const session = await getSession()
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -53,8 +54,8 @@ export const GET = async (request: NextRequest) => {
         // Validate sort parameters
         const validSortColumns = ["prescription_date", "created_at"];
         const validSortOrders = ["asc", "desc"];
-        const finalSortBy = validSortColumns.includes(sortBy) ? sortBy : "prescription_date";
-        const finalSortOrder = validSortOrders.includes(sortOrder) ? sortOrder.toUpperCase() : "DESC";
+        const _finalSortBy = validSortColumns.includes(sortBy) ? sortBy : "prescription_date";
+        const _finalSortOrder = validSortOrders.includes(sortOrder) ? sortOrder.toUpperCase() : "DESC";
 
         let query = `;
             SELECT;
@@ -71,31 +72,31 @@ export const GET = async (request: NextRequest) => {
         let countQuery = `SELECT COUNT(*) as total FROM Prescriptions WHERE 1=1`;
         const countParameters: (string | number)[] = [];
 
-        if (patientIdFilter) {
+        if (patientIdFilter != null) {
             query += " AND pr.patient_id = ?";
             queryParameters.push(Number.parseInt(patientIdFilter));
             countQuery += " AND patient_id = ?";
             countParameters.push(Number.parseInt(patientIdFilter));
         }
-        if (doctorIdFilter) {
+        if (doctorIdFilter != null) {
             query += " AND pr.doctor_id = ?";
             queryParameters.push(Number.parseInt(doctorIdFilter));
             countQuery += " AND doctor_id = ?";
             countParameters.push(Number.parseInt(doctorIdFilter));
         }
-        if (consultationIdFilter) {
+        if (consultationIdFilter != null) {
             query += " AND pr.consultation_id = ?";
             queryParameters.push(Number.parseInt(consultationIdFilter));
             countQuery += " AND consultation_id = ?";
             countParameters.push(Number.parseInt(consultationIdFilter));
         }
-        if (dateFromFilter) {
+        if (dateFromFilter != null) {
             query += " AND DATE(pr.prescription_date) >= ?";
             queryParameters.push(dateFromFilter);
             countQuery += " AND DATE(prescription_date) >= ?";
             countParameters.push(dateFromFilter);
         }
-        if (dateToFilter) {
+        if (dateToFilter != null) {
             query += " AND DATE(pr.prescription_date) <= ?";
             queryParameters.push(dateToFilter);
             countQuery += " AND DATE(prescription_date) <= ?";
@@ -118,12 +119,12 @@ export const GET = async (request: NextRequest) => {
         // This might be better done in the GET /api/prescriptions/[id] endpoint
 
         return NextResponse.json({
-            data: results,
+            data: results;
             pagination: {
                 page,
                 limit,
                 total,
-                totalPages: Math.ceil(total / limit),
+                totalPages: Math.ceil(total / limit);
             },
         });
 
@@ -141,7 +142,7 @@ export const GET = async (request: NextRequest) => {
 }
 
 // POST /api/prescriptions - Create a new prescription
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
     const session = await getSession();
     if (!session.isLoggedIn || !session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -167,7 +168,7 @@ export const POST = async (request: NextRequest) => {
         const doctorId = session.user.userId; // Use doctor ID from session
 
         // Start transaction or use batch
-        // const batchOperations = []
+        // const _batchOperations = []
 
         // 1. Insert into Prescriptions table
         const insertPrescriptionStmt = DB.prepare(

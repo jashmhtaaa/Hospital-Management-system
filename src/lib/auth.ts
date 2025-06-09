@@ -1,12 +1,12 @@
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
-import { NextRequest } from 'next/server';
 
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { NextRequest } from 'next/server';
 export interface User {
-  id: string,
-  username: string,
-  email: string,
-  role: string,
+  id: string;
+  username: string;
+  email: string;
+  role: string;
   permissions: string[];
   department?: string;
   isActive: boolean
@@ -23,29 +23,29 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
 // User permissions mapping
 export const PERMISSIONS = {
   // Patient Management
-  PATIENT_READ: 'patient:read',
-  PATIENT_WRITE: 'patient:write',
-  PATIENT_DELETE: 'patient:delete',
-  
+  PATIENT_READ: 'patient:read';
+  PATIENT_WRITE: 'patient:write';
+  PATIENT_DELETE: 'patient:delete';
+
   // Clinical
-  CLINICAL_READ: 'clinical:read',
-  CLINICAL_WRITE: 'clinical:write',
-  
+  CLINICAL_READ: 'clinical:read';
+  CLINICAL_WRITE: 'clinical:write';
+
   // Administrative
-  ADMIN_READ: 'admin:read',
-  ADMIN_WRITE: 'admin:write',
-  
+  ADMIN_READ: 'admin:read';
+  ADMIN_WRITE: 'admin:write';
+
   // Billing
-  BILLING_READ: 'billing:read',
-  BILLING_WRITE: 'billing:write',
-  
+  BILLING_READ: 'billing:read';
+  BILLING_WRITE: 'billing:write';
+
   // Reports
-  REPORTS_READ: 'reports:read',
-  REPORTS_GENERATE: 'reports:generate',
-  
+  REPORTS_READ: 'reports:read';
+  REPORTS_GENERATE: 'reports:generate';
+
   // System
-  SYSTEM_ADMIN: 'system:admin',
-  USER_MANAGEMENT: 'users:manage'
+  SYSTEM_ADMIN: 'system:admin';
+  USER_MANAGEMENT: 'users:manage';
 } as const;
 
 // Role-based permissions
@@ -88,7 +88,7 @@ const ROLE_PERMISSIONS: Record<string, string[]> = {
 /**
  * Hash password using bcrypt;
  */
-export const hashPassword = async (password: string): Promise<string> {
+export const _hashPassword = async (password: string): Promise<string> {
   try {
     const saltRounds = 12;
     return await bcrypt.hash(password, saltRounds);
@@ -100,7 +100,7 @@ export const hashPassword = async (password: string): Promise<string> {
 /**
  * Verify password against hash;
  */
-export const verifyPassword = async (password: string, hash: string): Promise<boolean> {
+export const _verifyPassword = async (password: string, hash: string): Promise<boolean> {
   try {
     return await bcrypt.compare(password, hash);
   } catch (error) {
@@ -111,20 +111,20 @@ export const verifyPassword = async (password: string, hash: string): Promise<bo
 /**
  * Generate JWT token for authenticated user;
  */
-export const generateToken = (user: User): string {
+export const _generateToken = (user: User): string {
   try {
     const payload = {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      role: user.role,
-      permissions: user.permissions
+      id: user.id;
+      username: user.username;
+      email: user.email;
+      role: user.role;
+      permissions: user.permissions;
     };
-    
-    return jwt.sign(payload, JWT_SECRET, { 
-      expiresIn: JWT_EXPIRES_IN,
-      issuer: 'HMS-Enterprise',
-      audience: 'HMS-Users'
+
+    return jwt.sign(payload, JWT_SECRET, {
+      expiresIn: JWT_EXPIRES_IN;
+      issuer: 'HMS-Enterprise';
+      audience: 'HMS-Users';
     });
   } catch (error) {
     throw new Error('Token generation failed');
@@ -137,17 +137,17 @@ export const generateToken = (user: User): string {
 export const verifyToken = (token: string): User | null {
   try {
     const decoded = jwt.verify(token, JWT_SECRET, {
-      issuer: 'HMS-Enterprise',
-      audience: 'HMS-Users'
+      issuer: 'HMS-Enterprise';
+      audience: 'HMS-Users';
     }) as any;
-    
+
     return {
-      id: decoded.id,
-      username: decoded.username,
-      email: decoded.email,
-      role: decoded.role,
-      permissions: decoded.permissions || ROLE_PERMISSIONS[decoded.role] || [],
-      isActive: true
+      id: decoded.id;
+      username: decoded.username;
+      email: decoded.email;
+      role: decoded.role;
+      permissions: decoded.permissions || ROLE_PERMISSIONS[decoded.role] || [];
+      isActive: true;
     };
   } catch (error) {
     return null;
@@ -160,21 +160,21 @@ export const verifyToken = (token: string): User | null {
 export const checkUserRole = async (requiredRole: string, request?: NextRequest): Promise<AuthResult> {
   try {
     const user = await getCurrentUser(request);
-    
+
     if (!user.success || !user.user) {
       return { success: false, error: 'Authentication required' };
     }
-    
+
     // SuperAdmin can access everything
     if (user.user.role === 'SuperAdmin') {
       return { success: true, user: user.user };
     }
-    
+
     // Check if user has required role
     if (user.user.role === requiredRole) {
       return { success: true, user: user.user };
     }
-    
+
     return { success: false, error: 'Insufficient role permissions' };
   } catch (error) {
     return { success: false, error: 'Role validation failed' };
@@ -189,34 +189,34 @@ export const getCurrentUser = async (request?: NextRequest): Promise<AuthResult>
     if (!request) {
       return { success: false, error: 'Request object required' };
     }
-    
+
     // Try to get token from Authorization header
     const authHeader = request.headers.get('Authorization');
     let token: string | undefined;
-    
+
     if (authHeader && authHeader.startsWith('Bearer ')) {
       token = authHeader.substring(7);
     }
-    
+
     // Fallback to cookie
     if (!token) {
       token = request.cookies.get('auth-token')?.value;
     }
-    
+
     if (!token) {
       return { success: false, error: 'No authentication token found' };
     }
-    
+
     const user = verifyToken(token);
-    
+
     if (!user) {
       return { success: false, error: 'Invalid or expired token' };
     }
-    
+
     if (!user.isActive) {
       return { success: false, error: 'User account is inactive' };
     }
-    
+
     return { success: true, user };
   } catch (error) {
     return { success: false, error: 'Authentication verification failed' };
@@ -227,26 +227,26 @@ export const getCurrentUser = async (request?: NextRequest): Promise<AuthResult>
  * Check if user has specific permission;
  */
 export const hasPermission = async (
-  permission: string, 
+  permission: string;
   request?: NextRequest;
 ): Promise<AuthResult> {
   try {
     const user = await getCurrentUser(request);
-    
+
     if (!user.success || !user.user) {
       return { success: false, error: 'Authentication required' };
     }
-    
+
     // SuperAdmin has all permissions
     if (user.user.role === 'SuperAdmin') {
       return { success: true, user: user.user };
     }
-    
+
     // Check if user has the specific permission
     if (user.user.permissions.includes(permission)) {
       return { success: true, user: user.user };
     }
-    
+
     return { success: false, error: 'Insufficient permissions' };
   } catch (error) {
     return { success: false, error: 'Permission validation failed' };
@@ -256,48 +256,48 @@ export const hasPermission = async (
 /**
  * Clear authentication cookie;
  */
-export const clearAuthCookie = (): string {
+export const _clearAuthCookie = (): string {
   return 'auth-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict; Secure';
 }
 
 /**
  * Set authentication cookie;
  */
-export const setAuthCookie = (token: string): string {
+export const _setAuthCookie = (token: string): string {
   const isProduction = process.env.NODE_ENV === 'production';
   const maxAge = 24 * 60 * 60; // 24 hours in seconds
-  
+
   return `auth-token=${token}; Path=/; Max-Age=${maxAge}; HttpOnly; SameSite=Strict${isProduction ? '; Secure' : ''}`;
 }
 
 /**
  * Validate password strength;
  */
-export const validatePassword = (password: string): { valid: boolean; errors: string[] } {
+export const _validatePassword = (password: string): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
-  
+
   if (password.length < 8) {
     errors.push('Password must be at least 8 characters long');
   }
-  
+
   if (!/[A-Z]/.test(password)) {
     errors.push('Password must contain at least one uppercase letter');
   }
-  
+
   if (!/[a-z]/.test(password)) {
     errors.push('Password must contain at least one lowercase letter');
   }
-  
+
   if (!/\d/.test(password)) {
     errors.push('Password must contain at least one number');
   }
-  
+
   if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
     errors.push('Password must contain at least one special character');
   }
-  
+
   return {
-    valid: errors.length === 0,
+    valid: errors.length === 0;
     errors;
   };
 }
@@ -305,37 +305,37 @@ export const validatePassword = (password: string): { valid: boolean; errors: st
 /**
  * Generate secure random password;
  */
-export const generateSecurePassword = (length: number = 12): string {
+export const _generateSecurePassword = (length: number = 12): string {
   const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
   let password = '';
-  
+
   for (let i = 0; i < length; i++) {
     password += charset.charAt(Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * charset.length));
   }
-  
+
   return password;
 }
 
 /**
  * Middleware helper for API route protection;
  */
-export const requireAuth = (handler: Function) {
+export const _requireAuth = (handler: Function) {
   return async (request: NextRequest, context: unknown) => {
     const authResult = await getCurrentUser(request);
-    
+
     if (!authResult.success) {
       return new Response(
         JSON.stringify({ error: authResult.error }),
-        { 
-          status: 401,
+        {
+          status: 401;
           headers: { 'Content-Type': 'application/json' }
         }
       );
     }
-    
+
     // Add user to request context
     (request as any).user = authResult.user;
-    
+
     return handler(request, context);
   };
 }
@@ -343,24 +343,24 @@ export const requireAuth = (handler: Function) {
 /**
  * Middleware helper for role-based protection;
  */
-export const requireRole = (requiredRole: string) {
+export const _requireRole = (requiredRole: string) {
   return function(handler: Function) {
     return async (request: NextRequest, context: unknown) => {
       const authResult = await checkUserRole(requiredRole, request);
-      
+
       if (!authResult.success) {
         return new Response(
           JSON.stringify({ error: authResult.error }),
-          { 
-            status: 403,
+          {
+            status: 403;
             headers: { 'Content-Type': 'application/json' }
           }
         );
       }
-      
+
       // Add user to request context
       (request as any).user = authResult.user;
-      
+
       return handler(request, context);
     };
   };
@@ -369,24 +369,24 @@ export const requireRole = (requiredRole: string) {
 /**
  * Middleware helper for permission-based protection;
  */
-export const requirePermission = (permission: string) {
+export const _requirePermission = (permission: string) {
   return function(handler: Function) {
     return async (request: NextRequest, context: unknown) => {
       const authResult = await hasPermission(permission, request);
-      
+
       if (!authResult.success) {
         return new Response(
           JSON.stringify({ error: authResult.error }),
-          { 
-            status: 403,
+          {
+            status: 403;
             headers: { 'Content-Type': 'application/json' }
           }
         );
       }
-      
+
       // Add user to request context
       (request as any).user = authResult.user;
-      
+
       return handler(request, context);
     };
   };

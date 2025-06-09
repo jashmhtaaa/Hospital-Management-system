@@ -1,36 +1,37 @@
-}
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+}
 interface RadiologyReport {
-  id: string,
-  patientName: string,
-  patientId: string,
-  reportDate: string,
-  studyType: string,
-  status: 'draft' | 'preliminary' | 'final' | 'amended',
-  radiologist: string
+  id: string;
+  patientName: string;
+  patientId: string;
+  reportDate: string;
+  studyType: string;
+  status: 'draft' | 'preliminary' | 'final' | 'amended';
+  radiologist: string;
 }
 
 interface RadiologyReportsListProps {
-  reports: RadiologyReport[],
-  onViewReport: (reportId: string) => void
+  reports: RadiologyReport[];
+  onViewReport: (reportId: string) => void;
 }
 
 /**
  * Radiology reports list component;
  */
-export const RadiologyReportsList = ({ reports, onViewReport }: RadiologyReportsListProps) => {
+export const _RadiologyReportsList = ({ reports, onViewReport }: RadiologyReportsListProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'draft': return <Badge variant="secondary">Draft</Badge>;
       case 'preliminary': return <Badge variant="warning">Preliminary</Badge>;
       case 'final': return <Badge variant="success">Final</Badge>;
       case 'amended': return <Badge variant="info">Amended</Badge>;
-      default: return <Badge>Unknown</Badge>
+      default: return <Badge>Unknown</Badge>;
     }
   };
 

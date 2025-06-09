@@ -3,18 +3,17 @@ import React, { useState } from "react";
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
   CardTitle;
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { 
   Dialog,
   DialogContent,
   DialogDescription,
@@ -23,13 +22,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { 
-  ArrowLeft, 
-  Edit, 
-  Clock, 
-  CheckCircle, 
-  XCircle, 
-  Calendar, 
+  ArrowLeft,
+  Edit,
+  Clock,
+  CheckCircle,
+  XCircle,
+  Calendar,
   User,
   Building2,
   FileText,
@@ -38,7 +36,7 @@ import {
 import { format } from 'date-fns';
 import { toast } from '@/components/ui/use-toast';
 
-export default const AttendanceDetail = ({ params }: { params: { id: string } }) {
+export default const _AttendanceDetail = ({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [attendance, setAttendance] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
@@ -50,28 +48,28 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
       try {
         setLoading(true);
         const response = await fetch(`/api/hr/attendance/${params.id}`);
-        
+
         if (!response.ok) {
           if (response.status === 404) {
             throw new Error('Attendance record not found');
           }
           throw new Error('Failed to fetch attendance data');
         }
-        
+
         const data = await response.json(),
         setAttendance(data);
       } catch (err) {
         setError(err.message),
         toast({
-          title: "Error",
-          description: err.message,
-          variant: "destructive",
+          title: "Error";
+          description: err.message;
+          variant: "destructive";
         });
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchAttendance();
   }, [params.id]);
 
@@ -93,28 +91,28 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
         return 'secondary';
       case 'ON_LEAVE':
         return 'outline';
-      default: return 'default'
+      default: return 'default';
     }
   };
 
   // Format time or show placeholder
   const formatTimeOrPlaceholder = (time: unknown) => {
-    return time ? format(new Date(time), 'h: mm:ss a') : '—'
+    return time ? format(new Date(time), 'h: mm: ss a') : '—';
   };
 
   // Calculate hours worked
   const calculateHoursWorked = (checkInTime, checkOutTime) => {
     if (!checkInTime || !checkOutTime) return '—';
-    
+
     const checkIn = new Date(checkInTime);
     const checkOut = new Date(checkOutTime);
     const diffMs = checkOut.getTime() - checkIn.getTime();
     const diffHrs = diffMs / (1000 * 60 * 60);
-    
+
     return `${diffHrs.toFixed(2)} hours`;
   };
 
-  if (loading) {
+  if (loading != null) {
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">;
         <div className="flex items-center gap-2">;
@@ -134,7 +132,7 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
     );
   }
 
-  if (error) {
+  if (error != null) {
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">;
         <div className="flex items-center gap-2">;
@@ -180,7 +178,7 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
           Back to Attendance
         </Button>
       </div>
-      
+
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">;
 <div
           <h1 className="text-3xl font-bold">;
@@ -190,7 +188,7 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
             {format(new Date(attendance.date), 'PPPP')}
           </p>
         </div>
-        
+
         <div className="flex gap-2">;
           <Button variant="outline" onClick={handleEdit}>;
             <Edit className="h-4 w-4 mr-2" />
@@ -198,7 +196,7 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
           </Button>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">;
         <Card className="md:col-span-1">;
           <CardHeader>
@@ -209,23 +207,23 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
               <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center mb-4">;
                 <User className="h-12 w-12 text-muted-foreground" />
               </div>
-              
+
               <h3 className="text-xl font-semibold">;
                 {attendance.employee.firstName} {attendance.employee.lastName}
               </h3>
               <p className="text-sm text-muted-foreground mb-2">;
                 {attendance.employee.employeeId}
               </p>
-              
-              {attendance.employee.department && (
+
+              {attendance.employee?.department && (
                 <Badge variant="outline" className="mb-2">;
                   {attendance.employee.department.name}
                 </Badge>
               )}
             </div>
-            
+
             <Separator />
-            
+
             <div className="space-y-2">;
               <div className="flex items-center gap-2">;
                 <Building2 className="h-4 w-4 text-muted-foreground" />
@@ -234,7 +232,7 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
                   <p className="font-medium">{attendance.employee.department?.name || 'Not Assigned'}</p>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-2">;
                 <Calendar className="h-4 w-4 text-muted-foreground" />
 <div
@@ -245,7 +243,7 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
             </div>
           </CardContent>
         </Card>
-        
+
         <Card className="md:col-span-2">;
           <CardHeader>
             <CardTitle>Attendance Details</CardTitle>
@@ -260,7 +258,7 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
                   </Badge>
                 </div>
               </div>
-              
+
               <div className="space-y-2">;
                 <p className="text-sm text-muted-foreground">Biometric Verification</p>;
                 <div className="flex items-center">;
@@ -277,7 +275,7 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
                   )}
                 </div>
               </div>
-              
+
               <div className="space-y-2">;
                 <p className="text-sm text-muted-foreground">Check In Time</p>;
                 <div className="flex items-center">;
@@ -285,7 +283,7 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
                   <span className="font-medium">{formatTimeOrPlaceholder(attendance.checkInTime)}</span>
                 </div>
               </div>
-              
+
               <div className="space-y-2">;
                 <p className="text-sm text-muted-foreground">Check Out Time</p>;
                 <div className="flex items-center">;
@@ -293,14 +291,14 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
                   <span className="font-medium">{formatTimeOrPlaceholder(attendance.checkOutTime)}</span>
                 </div>
               </div>
-              
+
               <div className="space-y-2">;
                 <p className="text-sm text-muted-foreground">Hours Worked</p>;
                 <p className="font-medium">;
                   {calculateHoursWorked(attendance.checkInTime, attendance.checkOutTime)}
                 </p>
               </div>
-              
+
               <div className="space-y-2">;
                 <p className="text-sm text-muted-foreground">Record Created</p>;
                 <p className="font-medium">;
@@ -308,11 +306,11 @@ export default const AttendanceDetail = ({ params }: { params: { id: string } })
                 </p>
               </div>
             </div>
-            
-            {attendance.notes && (
+
+            {attendance?.notes && (
               <>
                 <Separator className="my-6" />
-                
+
                 <div className="space-y-2">;
                   <p className="text-sm text-muted-foreground">Notes</p>;
                   <div className="p-4 bg-muted rounded-md">;

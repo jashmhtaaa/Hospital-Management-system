@@ -3,47 +3,43 @@ import React, { useState } from "react";
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
   CardTitle;
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
   TableRow;
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
   SelectValue;
 } from '@/components/ui/select';
-import { 
-  Pagination, 
-  PaginationContent, 
-  PaginationItem, 
-  PaginationLink, 
-  PaginationNext, 
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
   PaginationPrevious;
 } from '@/components/ui/pagination';
 import { Badge } from '@/components/ui/badge';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { 
-  Search, 
-  Calendar as CalendarIcon, 
-  Filter, 
-  Download, 
+  Search,
+  Calendar as CalendarIcon,
+  Filter,
+  Download,
   Plus,
   DollarSign,
   FileText,
@@ -54,20 +50,20 @@ import {
 import { format } from 'date-fns';
 import { toast } from '@/components/ui/use-toast';
 
-export default const PayrollManagement = () {
+export default const _PayrollManagement = () {
   const router = useRouter();
   const [payrollPeriods, setPayrollPeriods] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<any | null>(null);
   const [statusFilter, setStatusFilter] = useState('');
   const [dateRange, setDateRange] = useState({
-    from: null,
-    to: null
+    from: null;
+    to: null;
   });
   const [pagination, setPagination] = useState({
-    skip: 0,
-    take: 10,
-    total: 0
+    skip: 0;
+    take: 10;
+    total: 0;
   });
   const [activeTab, setActiveTab] = useState('periods');
 
@@ -77,44 +73,44 @@ export default const PayrollManagement = () {
       try {
         setLoading(true);
         const queryParams = new URLSearchParams({
-          skip: pagination.skip.toString(),
-          take: pagination.take.toString()
+          skip: pagination.skip.toString();
+          take: pagination.take.toString();
         });
-        
-        if (statusFilter) queryParams.append('status', statusFilter);
-        
+
+        if (statusFilter != null) queryParams.append('status', statusFilter);
+
         if (dateRange.from) {
           queryParams.append('startDate', format(dateRange.from, 'yyyy-MM-dd'));
         }
-        
+
         if (dateRange.to) {
           queryParams.append('endDate', format(dateRange.to, 'yyyy-MM-dd'));
         }
-        
+
         const response = await fetch(`/api/hr/payroll/periods?${queryParams.toString()}`);
-        
+
         if (!response.ok) {
           throw new Error('Failed to fetch payroll periods');
         }
-        
+
         const data = await response.json(),
         setPayrollPeriods(data.periods || []);
         setPagination(prev => ({
           ...prev,
-          total: data.total || 0
+          total: data.total || 0;
         }));
       } catch (err) {
         setError(err.message),
         toast({
-          title: "Error",
-          description: err.message,
-          variant: "destructive",
+          title: "Error";
+          description: err.message;
+          variant: "destructive";
         });
       } finally {
         setLoading(false);
       }
     };
-    
+
     if (activeTab === 'periods') {
       fetchPayrollPeriods();
     }
@@ -125,7 +121,7 @@ export default const PayrollManagement = () {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take
+        skip: prev.skip - prev.take;
       }));
     }
   };
@@ -134,7 +130,7 @@ export default const PayrollManagement = () {
     if (pagination.skip + pagination.take < pagination.total) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take
+        skip: prev.skip + prev.take;
       }));
     }
   };
@@ -145,7 +141,7 @@ export default const PayrollManagement = () {
     // Reset pagination when changing tabs
     setPagination(prev => ({
       ...prev,
-      skip: 0
+      skip: 0;
     }));
   };
 
@@ -159,22 +155,22 @@ export default const PayrollManagement = () {
     try {
       // In a real implementation, this would call an API endpoint to generate a CSV/Excel file
       toast({
-        title: "Export Started",
-        description: "Your payroll report is being generated and will download shortly.",
+        title: "Export Started";
+        description: "Your payroll report is being generated and will download shortly.";
       });
-      
+
       // Simulate download delay
       setTimeout(() => {
         toast({
-          title: "Export Complete",
-          description: "Payroll report has been downloaded.",
+          title: "Export Complete";
+          description: "Payroll report has been downloaded.";
         });
       }, 2000);
     } catch (error) {
       toast({
-        title: "Export Failed",
-        description: error.message,
-        variant: "destructive",
+        title: "Export Failed";
+        description: error.message;
+        variant: "destructive";
       });
     }
   };
@@ -190,15 +186,15 @@ export default const PayrollManagement = () {
         return 'default';
       case 'PAID':
         return 'success';
-      default: return 'default'
+      default: return 'default';
     }
   };
 
   // Format currency
-  const formatCurrency = (amount: unknown) => {
+  const _formatCurrency = (amount: unknown) => {
     return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+      style: 'currency';
+      currency: 'USD';
     }).format(amount);
   };
 
@@ -210,7 +206,7 @@ export default const PayrollManagement = () {
           Manage salary structures, payroll periods, and process payments
         </p>
       </div>
-      
+
       <Tabs defaultValue="periods" value={activeTab} onValueChange={handleTabChange}>;
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">;
           <TabsList>
@@ -218,7 +214,7 @@ export default const PayrollManagement = () {
             <TabsTrigger value="structures">Salary Structures</TabsTrigger>;
             <TabsTrigger value="reports">Reports & Analytics</TabsTrigger>
           </TabsList>
-          
+
           <div className="flex flex-wrap gap-2">;
             {activeTab === 'periods' && (
               <Button onClick={handleCreatePeriod}>;
@@ -238,13 +234,13 @@ export default const PayrollManagement = () {
             </Button>
           </div>
         </div>
-        
+
         <TabsContent value="periods" className="mt-0">;
           <Card>
             <CardHeader className="pb-2">;
               <CardTitle>Payroll Periods</CardTitle>
               <CardDescription>
-                {loading ? 'Loading payroll periods...' : 
+                {loading ? 'Loading payroll periods...' :
                   `Showing ${payrollPeriods.length} of ${pagination.total} payroll periods`}
               </CardDescription>
             </CardHeader>
@@ -255,7 +251,7 @@ export default const PayrollManagement = () {
                     <PopoverTrigger asChild>
                       <Button variant="outline" className="w-full md:w-[240px] justify-start">;
                         <CalendarIcon className="mr-2 h-4 w-4" />
-                        {dateRange.from && dateRange.to ? (
+                        {dateRange?.from && dateRange.to ? (
                           <>
                             {format(dateRange.from, 'PP')} - {format(dateRange.to, 'PP')}
                           </>
@@ -274,7 +270,7 @@ export default const PayrollManagement = () {
                     </PopoverContent>
                   </Popover>
                 </div>
-                
+
                 <div className="flex flex-col md:flex-row gap-2">;
                   <Select value={statusFilter} onValueChange={setStatusFilter}>;
                     <SelectTrigger className="w-full md:w-[180px]">;
@@ -290,7 +286,7 @@ export default const PayrollManagement = () {
                   </Select>
                 </div>
               </div>
-              
+
               {error ? (
                 <div className="text-center py-4 text-red-500">;
                   Error: {error}
@@ -378,7 +374,7 @@ export default const PayrollManagement = () {
             </CardFooter>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="structures" className="mt-0">;
           <Card>
             <CardHeader className="pb-2">;
@@ -395,7 +391,7 @@ export default const PayrollManagement = () {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="reports" className="mt-0">;
           <Card>
             <CardHeader className="pb-2">;
@@ -413,7 +409,7 @@ export default const PayrollManagement = () {
           </Card>
         </TabsContent>
       </Tabs>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
         <Card>
           <CardHeader className="pb-2">;
@@ -428,7 +424,7 @@ export default const PayrollManagement = () {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">;
             <CardTitle className="text-sm font-medium">Processing</CardTitle>
@@ -442,7 +438,7 @@ export default const PayrollManagement = () {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">;
             <CardTitle className="text-sm font-medium">Approved</CardTitle>
@@ -456,7 +452,7 @@ export default const PayrollManagement = () {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">;
             <CardTitle className="text-sm font-medium">Paid</CardTitle>

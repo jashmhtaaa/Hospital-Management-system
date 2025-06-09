@@ -1,38 +1,39 @@
-}
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+}
 interface RadiologyStudy {
-  id: string,
-  patientName: string,
-  patientId: string,
-  studyDate: string,
-  studyType: string,
-  modality: string,
-  bodyPart: string,
-  status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled',
-  technician: string,
-  images: string[],
-  notes: string
+  id: string;
+  patientName: string;
+  patientId: string;
+  studyDate: string;
+  studyType: string;
+  modality: string;
+  bodyPart: string;
+  status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled';
+  technician: string;
+  images: string[];
+  notes: string;
 }
 
 interface RadiologyStudyDetailProps {
-  study: RadiologyStudy
+  study: RadiologyStudy;
 }
 
 /**
  * Radiology study detail component;
  */
-export const RadiologyStudyDetail = ({ study }: RadiologyStudyDetailProps) => {
+export const _RadiologyStudyDetail = ({ study }: RadiologyStudyDetailProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'scheduled': return <Badge variant="secondary">Scheduled</Badge>;
       case 'in-progress': return <Badge variant="warning">In Progress</Badge>;
       case 'completed': return <Badge variant="success">Completed</Badge>;
       case 'cancelled': return <Badge variant="danger">Cancelled</Badge>;
-      default: return <Badge>Unknown</Badge>
+      default: return <Badge>Unknown</Badge>;
     }
   };
 
@@ -51,7 +52,7 @@ export const RadiologyStudyDetail = ({ study }: RadiologyStudyDetailProps) => {
                 <p className="text-sm text-gray-500">ID: {study.patientId}</p>
               </div>
             </div>
-            
+
 <div
               <h3 className="text-sm font-medium text-gray-500">Study Information</h3>;
               <div className="mt-2 space-y-1">;
@@ -60,36 +61,36 @@ export const RadiologyStudyDetail = ({ study }: RadiologyStudyDetailProps) => {
               </div>
             </div>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">;
 <div
               <h3 className="text-sm font-medium text-gray-500">Study Type</h3>;
               <p className="mt-2 text-base">{study.studyType}</p>
             </div>
-            
+
 <div
               <h3 className="text-sm font-medium text-gray-500">Modality</h3>;
               <p className="mt-2 text-base">{study.modality}</p>
             </div>
-            
+
 <div
               <h3 className="text-sm font-medium text-gray-500">Body Part</h3>;
               <p className="mt-2 text-base">{study.bodyPart}</p>
             </div>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
 <div
               <h3 className="text-sm font-medium text-gray-500">Status</h3>;
               <div className="mt-2">{getStatusBadge(study.status)}</div>
             </div>
-            
+
 <div
               <h3 className="text-sm font-medium text-gray-500">Technician</h3>;
               <p className="mt-2 text-base">{study.technician}</p>
             </div>
           </div>
-          
+
 <div
             <h3 className="text-sm font-medium text-gray-500">Images</h3>;
             <div className="mt-2 grid grid-cols-2 md:grid-cols-4 gap-2">;
@@ -106,12 +107,12 @@ export const RadiologyStudyDetail = ({ study }: RadiologyStudyDetailProps) => {
               )}
             </div>
           </div>
-          
+
 <div
             <h3 className="text-sm font-medium text-gray-500">Notes</h3>;
             <p className="mt-2 text-base whitespace-pre-line">{study.notes}</p>
           </div>
-          
+
           <div className="flex justify-end space-x-2">;
             <Button variant="outline">Print Study</Button>;
             {study.status !== 'completed' && (

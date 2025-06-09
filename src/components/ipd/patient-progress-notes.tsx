@@ -1,9 +1,9 @@
+import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import {
 }
 
 "use client";
 
-import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
-import {
   Card,
   CardHeader,
   CardTitle,
@@ -21,14 +21,14 @@ import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast
 
 // Define interfaces for data structures
 interface ProgressNote {
-  id: string,
-  admission_id: string,
-  note_date: string,
-  subjective: string,
-  objective: string,
-  assessment: string,
-  plan: string,
-  doctor_id: string,
+  id: string;
+  admission_id: string;
+  note_date: string;
+  subjective: string;
+  objective: string;
+  assessment: string;
+  plan: string;
+  doctor_id: string;
   created_at: string;
   // Assuming these come from a join or separate fetch
   doctor_first_name?: string;
@@ -36,18 +36,18 @@ interface ProgressNote {
 }
 
 interface AdmissionInfo {
-  admission_number: string,
-  admission_date: string,
-  patient_first_name: string,
+  admission_number: string;
+  admission_date: string;
+  patient_first_name: string;
   patient_last_name: string;
   diagnosis?: string;
 }
 
 interface FormData {
-  subjective: string,
-  objective: string,
-  assessment: string,
-  plan: string
+  subjective: string;
+  objective: string;
+  assessment: string;
+  plan: string;
 }
 
 // FIX: Define type for API error response
@@ -59,13 +59,13 @@ interface FormData {
 type NewNoteResponse = ProgressNote
 
 interface PatientProgressNotesProperties {
-  admissionId: string | null
+  admissionId: string | null;
 }
 
 // FIX: Create a sub-component to manage individual note tabs state
 interface NoteDisplayProperties {
-  note: ProgressNote,
-  formatDateTime: (dateString: string | undefined) => string
+  note: ProgressNote;
+  formatDateTime: (dateString: string | undefined) => string;
 }
 
 const NoteDisplay: React.FC<NoteDisplayProperties> = ({
@@ -138,10 +138,10 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>();
   const [formData, setFormData] = useState<FormData>({
-    subjective: "",
-    objective: "",
-    assessment: "",
-    plan: "",
+    subjective: "";
+    objective: "";
+    assessment: "";
+    plan: "";
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [patientInfo, setPatientInfo] = useState<AdmissionInfo | null>();
@@ -160,12 +160,12 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       setError(undefined);
       try {
         // Simulate API call
-        // const response = await fetch(`/api/ipd/admissions/${admissionId}/progress-notes`)
+        // const _response = await fetch(`/api/ipd/admissions/${admissionId}/progress-notes`)
         // if (!response.ok) {
-        //   let errorMsg = "Failed to fetch progress notes"
+        //   let _errorMsg = "Failed to fetch progress notes"
         //   try {
-        //       const errorData: ApiErrorResponse = await response.json()
-        //       errorMsg = errorData.error || errorMsg
+        //       const _errorData: ApiErrorResponse = await response.json()
+        //       _errorMsg = errorData.error || errorMsg
         //   } catch (jsonError) { /* Ignore */ }
         //   throw new Error(errorMsg)
         // }
@@ -176,42 +176,40 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
         // Mock data simulation
         await new Promise((resolve) => setTimeout(resolve, 700));
         const mockPatientInfo: AdmissionInfo = {
-          admission_number: "ADM123456",
+          admission_number: "ADM123456";
           admission_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000 * 3).toISOString(), // 3 days ago
-          patient_first_name: "Jane",
-          patient_last_name: "Doe",
-          diagnosis: "Pneumonia",
+          patient_first_name: "Jane";
+          patient_last_name: "Doe";
+          diagnosis: "Pneumonia";
         };
         const mockProgressNotes: ProgressNote[] = [
           {
-            id: "pn_001",
-            admission_id: admissionId,
+            id: "pn_001";
+            admission_id: admissionId;
             note_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3_600_000 * 6).toISOString(), // 6 hours ago
-            subjective:
-              "Patient reports feeling slightly better. Cough less frequent.",
+            subjective: "Patient reports feeling slightly better. Cough less frequent.";
             objective:
               "Temp 37.2C, HR 85, RR 18, SpO2 98% on RA. Lungs clearer on auscultation.",
-            assessment: "Improving pneumonia.",
-            plan: "Continue current antibiotics. Monitor respiratory status. Encourage ambulation.",
-            doctor_id: "doc_101",
-            doctor_first_name: "Alice",
-            doctor_last_name: "Smith",
-            created_at: new Date().toISOString(),
+            assessment: "Improving pneumonia.";
+            plan: "Continue current antibiotics. Monitor respiratory status. Encourage ambulation.";
+            doctor_id: "doc_101";
+            doctor_first_name: "Alice";
+            doctor_last_name: "Smith";
+            created_at: new Date().toISOString();
           },
           {
-            id: "pn_002",
-            admission_id: admissionId,
+            id: "pn_002";
+            admission_id: admissionId;
             note_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000).toISOString(), // 1 day ago
-            subjective:
-              "Patient complaining of persistent cough and mild shortness of breath.",
+            subjective: "Patient complaining of persistent cough and mild shortness of breath.";
             objective:
               "Temp 37.8C, HR 90, RR 22, SpO2 95% on 2L NC. Crackles heard in right lower lobe.",
-            assessment: "Community-acquired pneumonia.",
-            plan: "Continue IV Ceftriaxone. Monitor O2 saturation. Chest physiotherapy.",
-            doctor_id: "doc_102",
-            doctor_first_name: "Bob",
-            doctor_last_name: "Johnson",
-            created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000).toISOString(),
+            assessment: "Community-acquired pneumonia.";
+            plan: "Continue IV Ceftriaxone. Monitor O2 saturation. Chest physiotherapy.";
+            doctor_id: "doc_102";
+            doctor_first_name: "Bob";
+            doctor_last_name: "Johnson";
+            created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000).toISOString();
           },
         ];
 
@@ -247,9 +245,9 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
     event.preventDefault();
     if (!admissionId) {
       toast({
-        title: "Error",
-        description: "Admission ID is missing.",
-        variant: "destructive",
+        title: "Error";
+        description: "Admission ID is missing.";
+        variant: "destructive";
       });
       return;
     }
@@ -258,9 +256,9 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
     try {
       // Basic validation
       if (
-        !formData.subjective &&
-        !formData.objective &&
-        !formData.assessment &&
+        !formData?.subjective &&
+        !formData?.objective &&
+        !formData?.assessment &&
         !formData.plan;
       ) {
         throw new Error(
@@ -270,21 +268,21 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
 
       const submissionData = {
         ...formData,
-        note_date: new Date().toISOString(),
-        // doctor_id: session?.user?.id // Get from session
+        note_date: new Date().toISOString();
+        // doctor_id: session?.user?.id // Get from session;
       }
 
       // Simulate API call
-      // const response = await fetch(`/api/ipd/admissions/${admissionId}/progress-notes`, {
-      //   method: "POST",
+      // const _response = await fetch(`/api/ipd/admissions/${admissionId}/progress-notes`, {
+      //   method: "POST";
       //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(submissionData),
+      //   body: JSON.stringify(submissionData);
       // })
       // if (!response.ok) {
-      //   let errorMsg = "Failed to create progress note"
+      //   let _errorMsg = "Failed to create progress note"
       //   try {
-      //       const errorData: ApiErrorResponse = await response.json()
-      //       errorMsg = errorData.error || errorMsg
+      //       const _errorData: ApiErrorResponse = await response.json()
+      //       _errorMsg = errorData.error || errorMsg
       //   } catch (jsonError) { /* Ignore */ }
       //   throw new Error(errorMsg)
       // }
@@ -294,11 +292,11 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       await new Promise((resolve) => setTimeout(resolve, 800));
       const newNote: NewNoteResponse = {
         id: `pn_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-        admission_id: admissionId,
+        admission_id: admissionId;
         doctor_id: "doc_current", // Replace with actual user ID
         doctor_first_name: "Current", // Replace with actual user data
-        doctor_last_name: "Doctor",
-        created_at: new Date().toISOString(),
+        doctor_last_name: "Doctor";
+        created_at: new Date().toISOString();
         ...submissionData,
       };
 
@@ -307,14 +305,14 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
 
       // Reset form
       setFormData({
-        subjective: "",
-        objective: "",
-        assessment: "",
-        plan: "",
+        subjective: "";
+        objective: "";
+        assessment: "";
+        plan: "";
       }),
       toast({
-        title: "Success",
-        description: "Progress note added successfully!",
+        title: "Success";
+        description: "Progress note added successfully!";
       });
     } catch (error_: unknown) {
       // FIX: Use unknown
@@ -332,12 +330,12 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
     if (!dateString) return "N/A";
     try {
       const options: Intl.DateTimeFormatOptions = {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
+        year: "numeric";
+        month: "short";
+        day: "numeric";
+        hour: "2-digit";
+        minute: "2-digit";
+        hour12: true;
       };
       return new Intl.DateTimeFormat(undefined, options).format(
         new Date(dateString);
@@ -357,7 +355,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
           <p className="text-sm text-gray-700">;
             Admission: {patientInfo.admission_number} | Date:{" "}
             {formatDateTime(patientInfo.admission_date)}
-            {patientInfo.diagnosis &&
+            {patientInfo?.diagnosis &&
               ` | Admission Diagnosis: ${patientInfo.diagnosis}`}
           </p>
         </div>

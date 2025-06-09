@@ -1,8 +1,9 @@
-// src/app/api/session/check-permission/route.ts
 import { NextResponse } from "next/server";
-import { getSession } from "@/lib/session"; // Keep original getSession for server-side use
 
-export const GET = async (request: Request) => {
+
+import { getSession } from "@/lib/session"; // Keep original getSession for server-side use
+// src/app/api/session/check-permission/route.ts
+export const _GET = async (request: Request) => {
   const { searchParams } = new URL(request.url);
   const permission = searchParams.get("permission");
 

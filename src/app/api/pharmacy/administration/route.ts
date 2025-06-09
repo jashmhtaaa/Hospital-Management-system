@@ -1,49 +1,50 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+
+import { BarcodeAdministrationService } from '../../services/barcode-administration-service';
+import { FHIRMapper } from '../../models/fhir-mappers';
+import { PharmacyDomain } from '../../models/domain-models';
+import { auditLog } from '../../../../lib/audit';
+import { errorHandler } from '../../../../lib/error-handler';
+import { getMedicationById, getPrescriptionById } from '../../../../lib/services/pharmacy/pharmacy.service';
+import { validateAdministrationRequest, validateBarcodeVerificationRequest } from '../../../../lib/validation/pharmacy-validation';
 /**
  * Medication Administration API Routes;
- * 
+ *
  * This file implements the FHIR-compliant API endpoints for medication administration;
  * following enterprise-grade requirements for security, validation, and error handling.
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { BarcodeAdministrationService } from '../../services/barcode-administration-service';
-import { validateAdministrationRequest, validateBarcodeVerificationRequest } from '../../../../lib/validation/pharmacy-validation';
-import { auditLog } from '../../../../lib/audit';
-import { errorHandler } from '../../../../lib/error-handler';
-import { PharmacyDomain } from '../../models/domain-models';
-import { FHIRMapper } from '../../models/fhir-mappers';
-import { getMedicationById, getPrescriptionById } from '../../../../lib/services/pharmacy/pharmacy.service';
-
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
-  findAll: () => Promise.resolve([]),
-  search: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: getMedicationById;
+  findAll: () => Promise.resolve([]);
+  search: () => Promise.resolve([]);
+  save: () => Promise.resolve('');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 }
 
 const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
-  findById: getPrescriptionById,
-  findByPatientId: () => Promise.resolve([]),
-  findByPrescriberId: () => Promise.resolve([]),
-  findByMedicationId: () => Promise.resolve([]),
-  findByStatus: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: getPrescriptionById;
+  findByPatientId: () => Promise.resolve([]);
+  findByPrescriberId: () => Promise.resolve([]);
+  findByMedicationId: () => Promise.resolve([]);
+  findByStatus: () => Promise.resolve([]);
+  save: () => Promise.resolve('');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 };
 
 const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
-  findById: () => Promise.resolve(null),
-  findByPatientId: () => Promise.resolve([]),
-  findByPrescriptionId: () => Promise.resolve([]),
-  findByMedicationId: () => Promise.resolve([]),
-  findByStatus: () => Promise.resolve([]),
-  save: (administration) => Promise.resolve(administration.id || 'new-id'),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: () => Promise.resolve(null);
+  findByPatientId: () => Promise.resolve([]);
+  findByPrescriptionId: () => Promise.resolve([]);
+  findByMedicationId: () => Promise.resolve([]);
+  findByStatus: () => Promise.resolve([]);
+  save: (administration) => Promise.resolve(administration.id || 'new-id');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 };
 
 // Initialize services
@@ -99,23 +100,23 @@ export const POST = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
-      action: 'CREATE',
-      resourceType: 'MedicationAdministration',
-      resourceId: administrationId,
-      userId: userId,
-      patientId: data.patientId,
+      action: 'CREATE';
+      resourceType: 'MedicationAdministration';
+      resourceId: administrationId;
+      userId: userId;
+      patientId: data.patientId;
       details: {
-        medicationId: data.medicationId,
-        prescriptionId: data.prescriptionId
+        medicationId: data.medicationId;
+        prescriptionId: data.prescriptionId;
       }
     });
 
     // Return response
     return NextResponse.json(
-      { 
-        id: administrationId,
-        message: 'Medication administration recorded successfully'
-      }, 
+      {
+        id: administrationId;
+        message: 'Medication administration recorded successfully';
+      },
       { status: 201 }
     );
   } catch (error) {
@@ -149,12 +150,12 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
-      action: 'READ',
-      resourceType: 'MedicationAdministration',
+      action: 'READ';
+      resourceType: 'MedicationAdministration';
       userId: 'current-user-id', // In production, extract from token
-      patientId: patientId,
+      patientId: patientId;
       details: {
-        count: administrations.length
+        count: administrations.length;
       }
     });
 
@@ -198,14 +199,14 @@ export const verifyAdministration = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
-      action: 'VERIFY',
-      resourceType: 'MedicationAdministration',
+      action: 'VERIFY';
+      resourceType: 'MedicationAdministration';
       userId: 'current-user-id', // In production, extract from token
-      patientId: verificationResult.patientId,
+      patientId: verificationResult.patientId;
       details: {
-        medicationId: verificationResult.medicationId,
-        prescriptionId: data.prescriptionId,
-        success: verificationResult.success
+        medicationId: verificationResult.medicationId;
+        prescriptionId: data.prescriptionId;
+        success: verificationResult.success;
       }
     });
 
@@ -261,24 +262,24 @@ export const recordMissedDose = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
-      action: 'MISSED_DOSE',
-      resourceType: 'MedicationAdministration',
-      resourceId: administrationId,
-      userId: userId,
-      patientId: data.patientId,
+      action: 'MISSED_DOSE';
+      resourceType: 'MedicationAdministration';
+      resourceId: administrationId;
+      userId: userId;
+      patientId: data.patientId;
       details: {
-        medicationId: data.medicationId,
-        prescriptionId: data.prescriptionId,
-        reason: data.reason
+        medicationId: data.medicationId;
+        prescriptionId: data.prescriptionId;
+        reason: data.reason;
       }
     });
 
     // Return response
     return NextResponse.json(
-      { 
-        id: administrationId,
-        message: 'Missed dose recorded successfully'
-      }, 
+      {
+        id: administrationId;
+        message: 'Missed dose recorded successfully';
+      },
       { status: 201 }
     );
   } catch (error) {
@@ -324,14 +325,14 @@ export const getAdministrationSchedule = async (req: NextRequest, { params }: { 
 
       for (const scheduleTime of scheduleTimes) {
         schedule.push({
-          prescriptionId: prescription.id,
-          medicationId: medication.id,
-          medicationName: medication.name,
-          dose: prescription.dosage.value,
-          unit: prescription.dosage.unit,
-          route: prescription.dosage.route,
-          scheduledTime: scheduleTime,
-          status: 'scheduled'
+          prescriptionId: prescription.id;
+          medicationId: medication.id;
+          medicationName: medication.name;
+          dose: prescription.dosage.value;
+          unit: prescription.dosage.unit;
+          route: prescription.dosage.route;
+          scheduledTime: scheduleTime;
+          status: 'scheduled';
         });
       }
     }
@@ -341,12 +342,12 @@ export const getAdministrationSchedule = async (req: NextRequest, { params }: { 
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
-      action: 'SCHEDULE_VIEW',
-      resourceType: 'MedicationAdministration',
+      action: 'SCHEDULE_VIEW';
+      resourceType: 'MedicationAdministration';
       userId: 'current-user-id', // In production, extract from token
-      patientId: patientId,
+      patientId: patientId;
       details: {
-        count: schedule.length
+        count: schedule.length;
       }
     });
 
@@ -362,7 +363,7 @@ export const getAdministrationSchedule = async (req: NextRequest, { params }: { 
  */
 const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[] {
   const times: Date[] = [];
-  
+
   // Parse frequency
   if (frequency.includes('daily')) {
     // Once daily - default to 9 AM
@@ -378,7 +379,7 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
     if (morning > start && morning < end) {
       times.push(morning);
     }
-    
+
     const evening = new Date(start);
     evening.setHours(17, 0, 0, 0);
     if (evening > start && evening < end) {
@@ -391,13 +392,13 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
     if (morning > start && morning < end) {
       times.push(morning);
     }
-    
+
     const afternoon = new Date(start);
     afternoon.setHours(13, 0, 0, 0);
     if (afternoon > start && afternoon < end) {
       times.push(afternoon);
     }
-    
+
     const evening = new Date(start);
     evening.setHours(21, 0, 0, 0);
     if (evening > start && evening < end) {
@@ -410,19 +411,19 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
     if (morning > start && morning < end) {
       times.push(morning);
     }
-    
+
     const noon = new Date(start);
     noon.setHours(13, 0, 0, 0);
     if (noon > start && noon < end) {
       times.push(noon);
     }
-    
+
     const afternoon = new Date(start);
     afternoon.setHours(17, 0, 0, 0);
     if (afternoon > start && afternoon < end) {
       times.push(afternoon);
     }
-    
+
     const evening = new Date(start);
     evening.setHours(21, 0, 0, 0);
     if (evening > start && evening < end) {
@@ -436,7 +437,7 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
       const time = new Date(start);
       time.setMinutes(0, 0, 0);
       time.setHours(Math.ceil(time.getHours() / hours) * hours);
-      
+
       while (time < end) {
         if (time > start) {
           times.push(new Date(time));
@@ -454,7 +455,7 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
       times.push(time);
     }
   }
-  
+
   return times;
 }
 
@@ -487,7 +488,7 @@ export const recordPRNAdministration = async (req: NextRequest) => {
     if (!prescription) {
       return NextResponse.json({ error: 'Prescription not found' }, { status: 404 });
     }
-    
+
     if (!prescription.dosage.frequency.includes('PRN') && !prescription.dosage.frequency.includes('as needed')) {
       return NextResponse.json(
         { error: 'Prescription is not PRN (as needed)' },
@@ -516,24 +517,24 @@ export const recordPRNAdministration = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
-      action: 'PRN_ADMINISTRATION',
-      resourceType: 'MedicationAdministration',
-      resourceId: administrationId,
-      userId: userId,
-      patientId: data.patientId,
+      action: 'PRN_ADMINISTRATION';
+      resourceType: 'MedicationAdministration';
+      resourceId: administrationId;
+      userId: userId;
+      patientId: data.patientId;
       details: {
-        medicationId: data.medicationId,
-        prescriptionId: data.prescriptionId,
-        reason: data.reason
+        medicationId: data.medicationId;
+        prescriptionId: data.prescriptionId;
+        reason: data.reason;
       }
     });
 
     // Return response
     return NextResponse.json(
-      { 
-        id: administrationId,
-        message: 'PRN medication administration recorded successfully'
-      }, 
+      {
+        id: administrationId;
+        message: 'PRN medication administration recorded successfully';
+      },
       { status: 201 }
     );
   } catch (error) {
@@ -567,15 +568,15 @@ export const recordPatientEducation = async (req: NextRequest) => {
 
     // Create education record
     const education = {
-      id: crypto.randomUUID(),
-      patientId: data.patientId,
-      medicationId: data.medicationId,
-      educatedBy: userId,
-      educatedAt: new Date(),
-      content: data.educationContent,
-      patientUnderstanding: data.patientUnderstanding || 'good',
-      additionalInstructions: data.additionalInstructions || '',
-      educationMaterials: data.educationMaterials || []
+      id: crypto.randomUUID();
+      patientId: data.patientId;
+      medicationId: data.medicationId;
+      educatedBy: userId;
+      educatedAt: new Date();
+      content: data.educationContent;
+      patientUnderstanding: data.patientUnderstanding || 'good';
+      additionalInstructions: data.additionalInstructions || '';
+      educationMaterials: data.educationMaterials || [];
     };
 
     // In a real implementation, save to education repository
@@ -584,23 +585,23 @@ export const recordPatientEducation = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('MEDICATION_EDUCATION', {
-      action: 'CREATE',
-      resourceType: 'MedicationEducation',
-      resourceId: education.id,
-      userId: userId,
-      patientId: data.patientId,
+      action: 'CREATE';
+      resourceType: 'MedicationEducation';
+      resourceId: education.id;
+      userId: userId;
+      patientId: data.patientId;
       details: {
-        medicationId: data.medicationId,
-        understanding: data.patientUnderstanding
+        medicationId: data.medicationId;
+        understanding: data.patientUnderstanding;
       }
     });
 
     // Return response
     return NextResponse.json(
-      { 
-        id: education.id,
-        message: 'Patient education recorded successfully'
-      }, 
+      {
+        id: education.id;
+        message: 'Patient education recorded successfully';
+      },
       { status: 201 }
     );
   } catch (error) {
@@ -634,18 +635,18 @@ export const recordAdverseReaction = async (req: NextRequest) => {
 
     // Create reaction record
     const reaction = {
-      id: crypto.randomUUID(),
-      patientId: data.patientId,
-      medicationId: data.medicationId,
-      administrationId: data.administrationId,
-      reportedBy: userId,
-      reportedAt: new Date(),
-      reaction: data.reaction,
-      severity: data.severity,
-      onset: data.onset || new Date(),
-      duration: data.duration,
-      interventions: data.interventions || [],
-      outcome: data.outcome || 'unknown'
+      id: crypto.randomUUID();
+      patientId: data.patientId;
+      medicationId: data.medicationId;
+      administrationId: data.administrationId;
+      reportedBy: userId;
+      reportedAt: new Date();
+      reaction: data.reaction;
+      severity: data.severity;
+      onset: data.onset || new Date();
+      duration: data.duration;
+      interventions: data.interventions || [];
+      outcome: data.outcome || 'unknown';
     };
 
     // In a real implementation, save to reaction repository
@@ -655,29 +656,29 @@ export const recordAdverseReaction = async (req: NextRequest) => {
     // For severe reactions, create an alert
     if (data.severity === 'severe' || data.severity === 'life-threatening') {
       // In a real implementation, send alert to appropriate staff
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
     }
 
     // Audit logging
     await auditLog('MEDICATION_REACTION', {
-      action: 'CREATE',
-      resourceType: 'AdverseReaction',
-      resourceId: reaction.id,
-      userId: userId,
-      patientId: data.patientId,
+      action: 'CREATE';
+      resourceType: 'AdverseReaction';
+      resourceId: reaction.id;
+      userId: userId;
+      patientId: data.patientId;
       details: {
-        medicationId: data.medicationId,
-        severity: data.severity,
-        reaction: data.reaction
+        medicationId: data.medicationId;
+        severity: data.severity;
+        reaction: data.reaction;
       }
     });
 
     // Return response
     return NextResponse.json(
-      { 
-        id: reaction.id,
-        message: 'Adverse reaction recorded successfully'
-      }, 
+      {
+        id: reaction.id;
+        message: 'Adverse reaction recorded successfully';
+      },
       { status: 201 }
     );
   } catch (error) {
@@ -709,45 +710,45 @@ export const getDueMedications = async (req: NextRequest) => {
     // In a real implementation, get patients in ward and their schedules
     // For now, return mock data
     const now = new Date();
-    const windowEnd = new Date(now.getTime() + timeWindow * 60000);
+    const _windowEnd = new Date(now.getTime() + timeWindow * 60000);
 
     const dueMedications = [
       {
-        patientId: 'patient1',
-        patientName: 'John Doe',
-        bedNumber: '101-A',
-        prescriptionId: 'rx1',
-        medicationId: 'med1',
-        medicationName: 'Lisinopril',
-        dose: 10,
-        unit: 'mg',
-        route: 'oral',
-        scheduledTime: new Date(now.getTime() + 15 * 60000),
-        status: 'due'
+        patientId: 'patient1';
+        patientName: 'John Doe';
+        bedNumber: '101-A';
+        prescriptionId: 'rx1';
+        medicationId: 'med1';
+        medicationName: 'Lisinopril';
+        dose: 10;
+        unit: 'mg';
+        route: 'oral';
+        scheduledTime: new Date(now.getTime() + 15 * 60000);
+        status: 'due';
       },
       {
-        patientId: 'patient2',
-        patientName: 'Jane Smith',
-        bedNumber: '102-B',
-        prescriptionId: 'rx2',
-        medicationId: 'med2',
-        medicationName: 'Metoprolol',
-        dose: 25,
-        unit: 'mg',
-        route: 'oral',
-        scheduledTime: new Date(now.getTime() + 30 * 60000),
-        status: 'due'
+        patientId: 'patient2';
+        patientName: 'Jane Smith';
+        bedNumber: '102-B';
+        prescriptionId: 'rx2';
+        medicationId: 'med2';
+        medicationName: 'Metoprolol';
+        dose: 25;
+        unit: 'mg';
+        route: 'oral';
+        scheduledTime: new Date(now.getTime() + 30 * 60000);
+        status: 'due';
       }
     ];
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
-      action: 'DUE_MEDICATIONS_VIEW',
+      action: 'DUE_MEDICATIONS_VIEW';
       userId: 'current-user-id', // In production, extract from token
       details: {
-        wardId: wardId,
-        timeWindow: timeWindow,
-        count: dueMedications.length
+        wardId: wardId;
+        timeWindow: timeWindow;
+        count: dueMedications.length;
       }
     });
 
@@ -782,47 +783,47 @@ export const getOverdueMedications = async (req: NextRequest) => {
     // In a real implementation, get patients in ward and their schedules
     // For now, return mock data
     const now = new Date();
-    const thresholdTime = new Date(now.getTime() - overdueThreshold * 60000);
+    const _thresholdTime = new Date(now.getTime() - overdueThreshold * 60000);
 
     const overdueMedications = [
       {
-        patientId: 'patient3',
-        patientName: 'Robert Johnson',
-        bedNumber: '103-A',
-        prescriptionId: 'rx3',
-        medicationId: 'med3',
-        medicationName: 'Furosemide',
-        dose: 40,
-        unit: 'mg',
-        route: 'oral',
-        scheduledTime: new Date(now.getTime() - 45 * 60000),
-        status: 'overdue',
-        overdueBy: 45 // minutes
+        patientId: 'patient3';
+        patientName: 'Robert Johnson';
+        bedNumber: '103-A';
+        prescriptionId: 'rx3';
+        medicationId: 'med3';
+        medicationName: 'Furosemide';
+        dose: 40;
+        unit: 'mg';
+        route: 'oral';
+        scheduledTime: new Date(now.getTime() - 45 * 60000);
+        status: 'overdue';
+        overdueBy: 45 // minutes;
       },
       {
-        patientId: 'patient4',
-        patientName: 'Mary Williams',
-        bedNumber: '104-B',
-        prescriptionId: 'rx4',
-        medicationId: 'med4',
-        medicationName: 'Insulin Regular',
-        dose: 10,
-        unit: 'units',
-        route: 'subcutaneous',
-        scheduledTime: new Date(now.getTime() - 60 * 60000),
-        status: 'overdue',
-        overdueBy: 60 // minutes
+        patientId: 'patient4';
+        patientName: 'Mary Williams';
+        bedNumber: '104-B';
+        prescriptionId: 'rx4';
+        medicationId: 'med4';
+        medicationName: 'Insulin Regular';
+        dose: 10;
+        unit: 'units';
+        route: 'subcutaneous';
+        scheduledTime: new Date(now.getTime() - 60 * 60000);
+        status: 'overdue';
+        overdueBy: 60 // minutes;
       }
     ]
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
-      action: 'OVERDUE_MEDICATIONS_VIEW',
+      action: 'OVERDUE_MEDICATIONS_VIEW';
       userId: 'current-user-id', // In production, extract from token
       details: {
-        wardId: wardId,
-        overdueThreshold: overdueThreshold,
-        count: overdueMedications.length
+        wardId: wardId;
+        overdueThreshold: overdueThreshold;
+        count: overdueMedications.length;
       }
     });
 
@@ -860,26 +861,26 @@ export const generateAdministrationReports = async (req: NextRequest) => {
     // In a real implementation, generate report based on parameters
     // For now, return mock data
     let report;
-    
+
     if (reportType === 'summary') {
       report = {
-        reportType: 'summary',
+        reportType: 'summary';
         startDate,
         endDate,
         wardId,
-        totalAdministrations: 1250,
-        completedAdministrations: 1180,
-        missedDoses: 70,
+        totalAdministrations: 1250;
+        completedAdministrations: 1180;
+        missedDoses: 70;
         administrationsByRoute: {
-          oral: 850,
-          intravenous: 200,
-          subcutaneous: 150,
-          intramuscular: 50
+          oral: 850;
+          intravenous: 200;
+          subcutaneous: 150;
+          intramuscular: 50;
         },
         administrationsByShift: {
-          morning: 450,
-          afternoon: 400,
-          evening: 400
+          morning: 450;
+          afternoon: 400;
+          evening: 400;
         },
         topMedications: [
           { id: 'med1', name: 'Lisinopril', count: 120 },
@@ -889,11 +890,11 @@ export const generateAdministrationReports = async (req: NextRequest) => {
       };
     } else if (reportType === 'missed-doses') {
       report = {
-        reportType: 'missed-doses',
+        reportType: 'missed-doses';
         startDate,
         endDate,
         wardId,
-        totalMissedDoses: 70,
+        totalMissedDoses: 70;
         missedDosesByReason: {
           'patient-refused': 30,
           'patient-unavailable': 15,
@@ -913,21 +914,21 @@ export const generateAdministrationReports = async (req: NextRequest) => {
       };
     } else if (reportType === 'medication-specific' && medicationId) {
       report = {
-        reportType: 'medication-specific',
+        reportType: 'medication-specific';
         startDate,
         endDate,
         medicationId,
-        medicationName: 'Lisinopril',
-        totalAdministrations: 120,
-        completedAdministrations: 115,
-        missedDoses: 5,
+        medicationName: 'Lisinopril';
+        totalAdministrations: 120;
+        completedAdministrations: 115;
+        missedDoses: 5;
         administrationsByRoute: {
-          oral: 120
+          oral: 120;
         },
         administrationsByShift: {
-          morning: 60,
-          afternoon: 0,
-          evening: 60
+          morning: 60;
+          afternoon: 0;
+          evening: 60;
         },
         administrationsByWard: {
           'Ward A': 50,
@@ -941,7 +942,7 @@ export const generateAdministrationReports = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
-      action: 'REPORT_GENERATION',
+      action: 'REPORT_GENERATION';
       userId: 'current-user-id', // In production, extract from token
       details: {
         reportType,

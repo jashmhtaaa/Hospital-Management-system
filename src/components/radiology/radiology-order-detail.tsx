@@ -1,10 +1,10 @@
+import React, { useState, useEffect } from "react";
+import {
+import { useParams, useRouter } from "next/navigation";
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
-import {
   Card,
   CardContent,
   CardHeader,
@@ -23,15 +23,15 @@ import CreateRadiologyStudyModal, {
 
 // Define interface for Radiology Order data
 interface RadiologyOrder {
-  id: string,
-  patient_name: string,
-  patient_id: string,
-  procedure_name: string,
+  id: string;
+  patient_name: string;
+  patient_id: string;
+  procedure_name: string;
   order_datetime: string; // Assuming ISO string format
-  status: "pending" | "scheduled" | "in_progress" | "completed" | "cancelled",
-  priority: "routine" | "urgent" | "stat",
-  referring_doctor_name: string | null,
-  clinical_indication: string
+  status: "pending" | "scheduled" | "in_progress" | "completed" | "cancelled";
+  priority: "routine" | "urgent" | "stat";
+  referring_doctor_name: string | null;
+  clinical_indication: string;
 }
 
 // FIX: Remove unused CreateStudyData interface
@@ -40,7 +40,7 @@ interface RadiologyOrder {
 //   modality_id: string
 //   scheduled_datetime: string
 //   notes?: string
-// export default const RadiologyOrderDetail = () {
+// export default const _RadiologyOrderDetail = () {
   const parameters = useParams()
   const router = useRouter();
   const orderId = parameters.id as string; // Assume id is always a string
@@ -57,7 +57,7 @@ interface RadiologyOrder {
     try {
       const response = await fetch(`/api/radiology/orders/${orderId}`);
       if (response.ok) {
-        const data: RadiologyOrder = await response.json(),
+        const data: RadiologyOrder = await response.json();
         setOrder(data);
         setError(undefined);
       } else {
@@ -88,7 +88,7 @@ interface RadiologyOrder {
   }, [orderId]); // Added orderId dependency for useCallback
 
   useEffect(() => {
-    if (orderId) {
+    if (orderId != null) {
       fetchOrderDetails();
     }
   }, [orderId, fetchOrderDetails]); // Added fetchOrderDetails dependency
@@ -97,7 +97,7 @@ interface RadiologyOrder {
   const handleCreateStudy = async (studyData: StudyPayload): Promise<void> => {
     try {
       const response = await fetch("/api/radiology/studies", {
-        method: "POST",
+        method: "POST";
         headers: {
           "Content-Type": "application/json",
         },
@@ -119,12 +119,12 @@ interface RadiologyOrder {
       // Refresh order details which might implicitly refresh related studies/reports lists
       fetchOrderDetails();
       // Consider adding a success message
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     } catch (error_) {
 
       const errorMessage =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     }
   };
 
@@ -134,7 +134,7 @@ interface RadiologyOrder {
     }
     try {
       const response = await fetch(`/api/radiology/orders/${orderId}`, {
-        method: "DELETE",
+        method: "DELETE";
       });
       if (!response.ok) {
         // FIX: Type the error data using type assertion
@@ -151,7 +151,7 @@ interface RadiologyOrder {
 
       const errorMessage =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     }
   };
 
@@ -159,11 +159,11 @@ interface RadiologyOrder {
     status: RadiologyOrder["status"]
   ): React.ReactNode => {
     const statusStyles: { [key in RadiologyOrder["status"]]: string } = {
-      pending: "bg-yellow-100 text-yellow-800",
-      scheduled: "bg-blue-100 text-blue-800",
-      in_progress: "bg-purple-100 text-purple-800",
-      completed: "bg-green-100 text-green-800",
-      cancelled: "bg-red-100 text-red-800",
+      pending: "bg-yellow-100 text-yellow-800";
+      scheduled: "bg-blue-100 text-blue-800";
+      in_progress: "bg-purple-100 text-purple-800";
+      completed: "bg-green-100 text-green-800";
+      cancelled: "bg-red-100 text-red-800";
     };
     const statusText =;
       status?.charAt(0).toUpperCase() + status?.slice(1).replace("_", " ");
@@ -174,7 +174,7 @@ interface RadiologyOrder {
     );
   };
 
-  if (loading) {
+  if (loading != null) {
     return (
       <div className="flex justify-center items-center h-64">;
         <Loader2 className="h-16 w-16 animate-spin text-primary" />
@@ -183,7 +183,7 @@ interface RadiologyOrder {
   }
 
   // Separate check for error after loading
-  if (error) {
+  if (error != null) {
     return (
       <div className="container mx-auto p-4 space-y-6">;
         <Button>

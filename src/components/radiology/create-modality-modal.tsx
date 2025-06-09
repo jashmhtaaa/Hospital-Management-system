@@ -1,9 +1,9 @@
+import React, { useState } from "react";
+import {
 }
 
 "use client";
 
-import React, { useState } from "react";
-import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -27,12 +27,12 @@ export interface ModalityFormData {
 // FIX: Define interface for props, including isOpen
 interface CreateModalityModalProperties {
   isOpen: boolean; // Add isOpen prop
-  onClose: () => void,
-  onSubmit: (data: ModalityFormData) => Promise<void> | void
+  onClose: () => void;
+  onSubmit: (data: ModalityFormData) => Promise<void> | void;
 }
 
 // FIX: Apply props interface
-export default const CreateModalityModal = ({
+export default const _CreateModalityModal = ({
   isOpen,
   onClose,
   onSubmit,
@@ -61,7 +61,7 @@ export default const CreateModalityModal = ({
     } catch (error) { // FIX: Added error parameter
 
       // Optionally show an error message to the user
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     } finally {
       setIsSubmitting(false);
     }

@@ -1,3 +1,8 @@
+
+import fs from 'fs/promises';
+import path from 'path';
+import { PrismaClient } from '@prisma/client';
+import { execSync } from 'child_process';
 }
 }
 
@@ -6,30 +11,25 @@
  * Comprehensive migration system with rollback support and safety checks;
  */;
 
-import { PrismaClient } from '@prisma/client';
-import { execSync } from 'child_process';
-import fs from 'fs/promises';
-import path from 'path';
-
 interface Migration {
-  id: string,
-  name: string,
-  version: string,
-  up: string,
-  down: string,
+  id: string;
+  name: string;
+  version: string;
+  up: string;
+  down: string;
   checksum: string;
   appliedAt?: Date;
   rolledBackAt?: Date;
 }
 
 interface MigrationRecord {
-  id: string,
-  name: string,
-  version: string,
-  checksum: string,
+  id: string;
+  name: string;
+  version: string;
+  checksum: string;
   appliedAt: Date;
   rolledBackAt?: Date;
-  executionTime: number,
+  executionTime: number;
   status: 'SUCCESS' | 'FAILED' | 'ROLLED_BACK';
   errorMessage?: string;
 }
@@ -47,14 +47,14 @@ class MigrationManager {
 
   async initialize(): Promise<void> {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    
+
     // Create migrations table if it doesn't exist
     await this.createMigrationsTable();
-    
+
     // Ensure directories exist
     await this.ensureDirectories();
-    
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
   }
 
   private async createMigrationsTable(): Promise<void> {
@@ -78,7 +78,7 @@ class MigrationManager {
     await this.prisma.$executeRaw`;
       CREATE INDEX IF NOT EXISTS idx_migration_history_version ON _migration_history(version);
     `;
-    
+
     await this.prisma.$executeRaw`;
       CREATE INDEX IF NOT EXISTS idx_migration_history_status ON _migration_history(status);
     `;
@@ -113,9 +113,9 @@ class MigrationManager {
 
   async runMigrations(): Promise<void> {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    
+
     const pendingMigrations = await this.getPendingMigrations()
-    
+
     if (pendingMigrations.length === 0) {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       return
@@ -127,7 +127,7 @@ class MigrationManager {
       await this.runSingleMigration(migration)
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
   }
 
   private async runSingleMigration(migration: Migration): Promise<void> {
@@ -136,7 +136,7 @@ class MigrationManager {
 
     // Create backup before migration
     const backupFile = await this.createBackup(migration.version);
-    
+
     try {
       // Validate migration integrity
       const currentChecksum = this.generateChecksum(migration.up + migration.down);
@@ -148,7 +148,7 @@ class MigrationManager {
       await this.prisma.$transaction(async (tx) => {
         // Split SQL by statements and execute each one
         const statements = this.splitSqlStatements(migration.up);
-        
+
         for (const statement of statements) {
           if (statement.trim()) {
             await tx.$executeRawUnsafe(statement);
@@ -160,16 +160,16 @@ class MigrationManager {
 
       // Record successful migration
       await this.recordMigration({
-        id: migration.id,
-        name: migration.name,
-        version: migration.version,
-        checksum: migration.checksum,
-        appliedAt: new Date(),
+        id: migration.id;
+        name: migration.name;
+        version: migration.version;
+        checksum: migration.checksum;
+        appliedAt: new Date();
         executionTime,
-        status: 'SUCCESS',
+        status: 'SUCCESS';
       });
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
 
     } catch (error) {
       const executionTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime
@@ -177,20 +177,20 @@ class MigrationManager {
 
       // Record failed migration
       await this.recordMigration({
-        id: migration.id,
-        name: migration.name,
-        version: migration.version,
-        checksum: migration.checksum,
-        appliedAt: new Date(),
+        id: migration.id;
+        name: migration.name;
+        version: migration.version;
+        checksum: migration.checksum;
+        appliedAt: new Date();
         executionTime,
-        status: 'FAILED',
+        status: 'FAILED';
         errorMessage,
       });
 
       // Restore from backup
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       await this.restoreFromBackup(backupFile)
-      
+
       throw error;
     }
   }
@@ -220,7 +220,7 @@ class MigrationManager {
       // Execute rollback in transaction
       await this.prisma.$transaction(async (tx) => {
         const statements = this.splitSqlStatements(migration.down);
-        
+
         for (const statement of statements) {
           if (statement.trim()) {
             await tx.$executeRawUnsafe(statement);
@@ -238,14 +238,14 @@ class MigrationManager {
         WHERE version = ${version}
       `;
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
 
     } catch (error) {
 
       // Restore from backup
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       await this.restoreFromBackup(backupFile)
-      
+
       throw error;
     }
   }
@@ -253,7 +253,7 @@ class MigrationManager {
   async rollbackToVersion(targetVersion: string): Promise<void> {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-    const appliedMigrations = await this.getAppliedMigrations()
+    const _appliedMigrations = await this.getAppliedMigrations()
 \1;
     ).sort((a, b) => b.version.localeCompare(a.version)); // Reverse order
 
@@ -268,19 +268,19 @@ class MigrationManager {
       await this.rollbackMigration(migrationRecord.version)
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
   }
 
   private async getPendingMigrations(): Promise<Migration[]> {
     // Get all migration files
     const migrationFiles = await this.getMigrationFiles();
-    
+
     // Get applied migrations
     const appliedVersions = await this.getAppliedVersions();
-    
+
     // Filter pending migrations
     const pendingMigrations: Migration[] = [];
-    
+
     for (const file of migrationFiles) {
       const migration = await this.loadMigration(file.replace('.json', ''));
       if (migration && !appliedVersions.includes(migration.version)) {
@@ -316,7 +316,7 @@ class MigrationManager {
 \1;
       ORDER BY version;
     `;
-    
+
     return result.map(row => row.version);
   }
 
@@ -324,17 +324,17 @@ class MigrationManager {
 \1;
       ORDER BY version;
     `;
-    
+
     return result.map(row => ({
-      id: row.id,
-      name: row.name,
-      version: row.version,
-      checksum: row.checksum,
-      appliedAt: row.applied_at,
-      rolledBackAt: row.rolled_back_at,
-      executionTime: row.execution_time,
-      status: row.status,
-      errorMessage: row.error_message,
+      id: row.id;
+      name: row.name;
+      version: row.version;
+      checksum: row.checksum;
+      appliedAt: row.applied_at;
+      rolledBackAt: row.rolled_back_at;
+      executionTime: row.execution_time;
+      status: row.status;
+      errorMessage: row.error_message;
     }));
   }
 
@@ -342,20 +342,20 @@ class MigrationManager {
 \1;
       LIMIT 1;
     `;
-    
+
     if (result.length === 0) return null;
-    
+
     const row = result[0];
     return {
-      id: row.id,
-      name: row.name,
-      version: row.version,
-      checksum: row.checksum,
-      appliedAt: row.applied_at,
-      rolledBackAt: row.rolled_back_at,
-      executionTime: row.execution_time,
-      status: row.status,
-      errorMessage: row.error_message,
+      id: row.id;
+      name: row.name;
+      version: row.version;
+      checksum: row.checksum;
+      appliedAt: row.applied_at;
+      rolledBackAt: row.rolled_back_at;
+      executionTime: row.execution_time;
+      status: row.status;
+      errorMessage: row.error_message;
     };
   }
 
@@ -379,20 +379,20 @@ class MigrationManager {
   private async createBackup(identifier: string): Promise<string> {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
     const backupFile = path.join(this.backupDir, `backup_${identifier}_${timestamp}.sql`);
-    
+
     try {
       // Use pg_dump to create backup
       const dbUrl = process.env.DATABASE_URL;
-      if (dbUrl) {
+      if (dbUrl != null) {
         execSync(`pg_dump "${dbUrl}" > "${backupFile}"`, { stdio: 'pipe' });
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
       } else {
 
       }
     } catch (error) {
 
     }
-    
+
     return backupFile
   }
 
@@ -401,7 +401,7 @@ class MigrationManager {
       const dbUrl = process.env.DATABASE_URL;
       if (dbUrl && await this.fileExists(backupFile)) {
         execSync(`psql "${dbUrl}" < "${backupFile}"`, { stdio: 'pipe' });
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
       } else {
 
       }
@@ -425,11 +425,11 @@ class MigrationManager {
     let current = '';
     let inQuotes = false;
     let quoteChar = '';
-    
+
     for (let i = 0; i < sql.length; i++) {
       const char = sql[i];
       const prevChar = i > 0 ? sql[i - 1] : '';
-      
+
       if ((char === '"' || char === "'") && prevChar !== '\\') {
         if (!inQuotes) {
           inQuotes = true;
@@ -439,7 +439,7 @@ class MigrationManager {
           quoteChar = '';
         }
       }
-      
+
       if (char === ';' && !inQuotes) {
         if (current.trim()) {
           statements.push(current.trim());
@@ -449,11 +449,11 @@ class MigrationManager {
         current += char;
       }
     }
-    
+
     if (current.trim()) {
       statements.push(current.trim());
     }
-    
+
     return statements;
   }
 
@@ -469,17 +469,17 @@ class MigrationManager {
   }
 
   async getMigrationStatus(): Promise<{
-    applied: MigrationRecord[],
-    pending: Migration[],
-    total: number
+    applied: MigrationRecord[];
+    pending: Migration[];
+    total: number;
   }> {
     const applied = await this.getAppliedMigrations();
     const pending = await this.getPendingMigrations();
-    
+
     return {
       applied,
       pending,
-      total: applied.length + pending.length,
+      total: applied.length + pending.length;
     };
   }
 
@@ -489,7 +489,7 @@ class MigrationManager {
 }
 
 // CLI Commands
-export async const migrate = (): Promise<void> {;
+export async const _migrate = (): Promise<void> {;
   const manager = new MigrationManager();
   try {
     await manager.initialize();
@@ -501,7 +501,7 @@ export async const rollback = (version?: string): Promise<void> {;
   const manager = new MigrationManager();
   try {
     await manager.initialize();
-    if (version) {
+    if (version != null) {
       await manager.rollbackToVersion(version);
     } else {
       // Rollback last migration
@@ -509,11 +509,11 @@ export async const rollback = (version?: string): Promise<void> {;
       const lastApplied = status.applied;
         .filter(m => m.status === 'SUCCESS');
         .sort((a, b) => b.version.localeCompare(a.version))[0];
-      
-      if (lastApplied) {
+
+      if (lastApplied != null) {
         await manager.rollbackMigration(lastApplied.version);
       } else {
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
       }
     }
   } finally {
@@ -524,21 +524,21 @@ export async const status = (): Promise<void> {;
   try {
     await manager.initialize();
     const migrationStatus = await manager.getMigrationStatus();
-    
+
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    
+
     if (migrationStatus.pending.length > 0) {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       migrationStatus.pending.forEach(migration => {
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
       })
     }
-    
+
     if (migrationStatus.applied.length > 0) {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       migrationStatus.applied
@@ -546,7 +546,7 @@ export async const status = (): Promise<void> {;
         .sort((a, b) => b.version.localeCompare(a.version));
         .slice(0, 10) // Show last 10
         .forEach(migration => {
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
         })
     }
   } finally {

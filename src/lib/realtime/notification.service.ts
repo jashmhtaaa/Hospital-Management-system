@@ -1,3 +1,10 @@
+
+import jwt from 'jsonwebtoken';
+import { EventEmitter } from 'events';
+import { IncomingMessage } from 'http';
+import { PrismaClient } from '@prisma/client';
+import { WebSocket, WebSocketServer } from 'ws';
+import { parse } from 'url';
 }
 
 /**
@@ -6,18 +13,11 @@
  * Based on enterprise requirements from ZIP 6 resources;
  */
 
-import { EventEmitter } from 'events';
-import { WebSocket, WebSocketServer } from 'ws';
-import { IncomingMessage } from 'http';
-import { parse } from 'url';
-import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client';
-
 export interface NotificationMessage {
-  id: string,
-  type: NotificationMessageType,
-  priority: NotificationPriority,
-  title: string,
+  id: string;
+  type: NotificationMessageType;
+  priority: NotificationPriority;
+  title: string;
   message: string;
   data?: unknown;
   userId?: string;
@@ -29,7 +29,7 @@ export interface NotificationMessage {
   acknowledged?: boolean;
   acknowledgedAt?: string;
   acknowledgedBy?: string;
-export type NotificationMessageType = 
+export type NotificationMessageType =
   | 'patient_admission';
   | 'patient_discharge';
   | 'critical_result';
@@ -46,40 +46,40 @@ export type NotificationMessageType =
 export type NotificationPriority = 'low' | 'normal' | 'high' | 'critical';
 
 export interface NotificationSubscription {
-  userId: string,
+  userId: string;
   types: NotificationMessageType[];
   departments?: string[];
   roles?: string[];
-  channels: NotificationChannel[],
+  channels: NotificationChannel[];
   preferences: {
     enableSound?: boolean;
     enablePopup?: boolean;
     enableEmail?: boolean;
     enableSMS?: boolean;
     quietHours?: {
-      start: string; // HH: MM,
-      end: string; // HH: MM
+      start: string; // HH: MM;
+      end: string; // HH: MM;
     }
   };
 export type NotificationChannel = 'websocket' | 'email' | 'sms' | 'push';
 
 export interface ConnectedClient {
-  id: string,
-  userId: string,
-  ws: WebSocket,
-  subscriptions: NotificationSubscription,
-  lastSeen: Date,
+  id: string;
+  userId: string;
+  ws: WebSocket;
+  subscriptions: NotificationSubscription;
+  lastSeen: Date;
   metadata: {
     userAgent?: string;
     ipAddress?: string;
     platform?: string;
   };
 export interface NotificationHistory {
-  id: string,
-  messageId: string,
-  userId: string,
-  channel: NotificationChannel,
-  status: 'sent' | 'delivered' | 'read' | 'failed',
+  id: string;
+  messageId: string;
+  userId: string;
+  channel: NotificationChannel;
+  status: 'sent' | 'delivered' | 'read' | 'failed';
   sentAt: Date;
   deliveredAt?: Date;
   readAt?: Date;
@@ -97,10 +97,10 @@ export class NotificationService extends EventEmitter {
     super();
     this.prisma = new PrismaClient();
     this.jwtSecret = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production';
-    
+
     // Clean up inactive clients every 30 seconds
     setInterval(() => this.cleanupInactiveClients(), 30000);
-    
+
     // Process message queue every 5 seconds
     setInterval(() => this.processMessageQueue(), 5000);
   }
@@ -109,9 +109,9 @@ export class NotificationService extends EventEmitter {
    * Initialize WebSocket server;
    */
   async initializeWebSocketServer(port = 8080): Promise<void> {
-    this.wss = new WebSocketServer({ 
+    this.wss = new WebSocketServer({
       port,
-      verifyClient: this.verifyClient.bind(this)
+      verifyClient: this.verifyClient.bind(this);
     });
 
     this.wss.on('connection', this.handleConnection.bind(this));
@@ -119,7 +119,7 @@ export class NotificationService extends EventEmitter {
 
     });
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
   }
 
   /**
@@ -157,15 +157,15 @@ export class NotificationService extends EventEmitter {
       const subscription = await this.getUserSubscription(userId);
 
       const client: ConnectedClient = {
-        id: clientId,
+        id: clientId;
         userId,
         ws,
-        subscriptions: subscription,
-        lastSeen: new Date(),
+        subscriptions: subscription;
+        lastSeen: new Date();
         metadata: {
-          userAgent: req.headers['user-agent'],
-          ipAddress: req.socket.remoteAddress,
-          platform: this.detectPlatform(req.headers['user-agent'] || '')
+          userAgent: req.headers['user-agent'];
+          ipAddress: req.socket.remoteAddress;
+          platform: this.detectPlatform(req.headers['user-agent'] || '');
         }
       };
 
@@ -173,11 +173,11 @@ export class NotificationService extends EventEmitter {
 
       // Send welcome message
       this.sendToClient(clientId, {
-        type: 'connection_established',
+        type: 'connection_established';
         payload: {
           clientId,
-          serverTime: new Date().toISOString(),
-          subscriptions: subscription
+          serverTime: new Date().toISOString();
+          subscriptions: subscription;
         }
       });
 
@@ -236,8 +236,7 @@ export class NotificationService extends EventEmitter {
           this.markNotificationAsRead(message.notificationId, client.userId);
           break;
 
-        default:
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        default: // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
       }
     } catch (error) {
 
@@ -249,7 +248,7 @@ export class NotificationService extends EventEmitter {
    */
   private handleClientDisconnect(clientId: string): void {
     const client = this.clients.get(clientId);
-    if (client) {
+    if (client != null) {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       this.clients.delete(clientId)
       this.emit('client_disconnected', { clientId, userId: client.userId });
@@ -262,7 +261,7 @@ export class NotificationService extends EventEmitter {
   private handleClientError(clientId: string, error: Error): void {
 
     const client = this.clients.get(clientId);
-    if (client) {
+    if (client != null) {
       this.emit('client_error', { clientId, userId: client.userId, error });
     }
   }
@@ -273,8 +272,8 @@ export class NotificationService extends EventEmitter {
   async sendNotification(notification: Omit<NotificationMessage, 'id' | 'createdAt'>): Promise<string> {
     const message: NotificationMessage = {
       ...notification,
-      id: uuidv4(),
-      createdAt: new Date().toISOString()
+      id: uuidv4();
+      createdAt: new Date().toISOString();
     };
 
     // Store notification in database
@@ -326,17 +325,17 @@ export class NotificationService extends EventEmitter {
    */
   async sendEmergency/* SECURITY: Alert removed */: Promise<string[]> {
     return this.broadcastNotification({
-      type: 'emergency_alert',
-      priority: 'critical',
+      type: 'emergency_alert';
+      priority: 'critical';
       title,
       message,
       data,
       department,
-      requiresAcknowledgment: true,
-      expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 24 * 60 * 60 * 1000).toISOString() // 24 hours
+      requiresAcknowledgment: true;
+      expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 24 * 60 * 60 * 1000).toISOString() // 24 hours;
     }, {
       department,
-      all: !department
+      all: !department;
     })
   }
 
@@ -345,9 +344,9 @@ export class NotificationService extends EventEmitter {
    */
   async sendCriticalResult/* SECURITY: Alert removed */: Promise<string> {
     return this.sendNotification({
-      type: 'critical_result',
-      priority: 'critical',
-      title: 'Critical Lab Result',
+      type: 'critical_result';
+      priority: 'critical';
+      title: 'Critical Lab Result';
       message: `Critical result for ${testName}: ${value}`,
       data: {
         patientId,
@@ -355,8 +354,8 @@ export class NotificationService extends EventEmitter {
         value,
         practitionerId;
       },
-      userId: practitionerId,
-      requiresAcknowledgment: true
+      userId: practitionerId;
+      requiresAcknowledgment: true;
     });
   }
 
@@ -365,17 +364,17 @@ export class NotificationService extends EventEmitter {
    */
   async sendVitalSign/* SECURITY: Alert removed */: Promise<string> {
     return this.sendNotification({
-      type: 'vital_sign_alert',
-      priority: 'high',
-      title: 'Vital Sign Alert',
+      type: 'vital_sign_alert';
+      priority: 'high';
+      title: 'Vital Sign Alert';
       message: `Abnormal ${vitalSign}: ${value}`,
       data: {
         patientId,
         vitalSign,
         value;
       },
-      userId: assignedNurseId,
-      requiresAcknowledgment: true
+      userId: assignedNurseId;
+      requiresAcknowledgment: true;
     });
   }
 
@@ -383,22 +382,22 @@ export class NotificationService extends EventEmitter {
    * Send appointment reminder;
    */
   async sendAppointmentReminder(
-    patientId: string,
-    appointmentId: string,
-    appointmentTime: string,
+    patientId: string;
+    appointmentId: string;
+    appointmentTime: string;
     practitionerId: string;
   ): Promise<string> {
     return this.sendNotification({
-      type: 'appointment_reminder',
-      priority: 'normal',
-      title: 'Upcoming Appointment',
+      type: 'appointment_reminder';
+      priority: 'normal';
+      title: 'Upcoming Appointment';
       message: `Patient appointment scheduled for ${appointmentTime}`,
       data: {
         patientId,
         appointmentId,
         appointmentTime;
       },
-      userId: practitionerId
+      userId: practitionerId;
     });
   }
 
@@ -410,10 +409,10 @@ export class NotificationService extends EventEmitter {
 
     let sent = false;
     for (const [clientId, client] of this.clients.entries()) {
-      if (client.userId === message.userId && this.shouldSendToClient(client, message)) {
+      if (client.userId === message?.userId && this.shouldSendToClient(client, message)) {
         this.sendToClient(clientId, {
-          type: 'notification',
-          payload: message
+          type: 'notification';
+          payload: message;
         });
         sent = true;
       }
@@ -448,7 +447,7 @@ export class NotificationService extends EventEmitter {
     }
 
     // Check department filter
-    if (subscription.departments && subscription.departments.length > 0) {
+    if (subscription?.departments && subscription.departments.length > 0) {
       if (!message.department || !subscription.departments.includes(message.department)) {
         return false;
       }
@@ -459,7 +458,7 @@ export class NotificationService extends EventEmitter {
       const now = new Date();
       const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
       const { start, end } = subscription.preferences.quietHours;
-      
+
       if (currentTime >= start && currentTime <= end && message.priority !== 'critical') {
         return false;
       }
@@ -475,7 +474,7 @@ export class NotificationService extends EventEmitter {
     if (!this.messageQueue.has(userId)) {
       this.messageQueue.set(userId, []);
     }
-    
+
     const queue = this.messageQueue.get(userId)!;
     queue.push(message);
 
@@ -504,14 +503,14 @@ export class NotificationService extends EventEmitter {
    */
   private processMessageQueue(): void {
     const now = new Date();
-    
+
     for (const [userId, messages] of this.messageQueue.entries()) {
       // Remove expired messages
       const validMessages = messages.filter(msg => {
         if (!msg.expiresAt) return true;
         return new Date(msg.expiresAt) > now;
       });
-      
+
       if (validMessages.length !== messages.length) {
         this.messageQueue.set(userId, validMessages);
       }
@@ -531,7 +530,7 @@ export class NotificationService extends EventEmitter {
           client.ws.close();
         }
         this.clients.delete(clientId);
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
       }
     }
   }
@@ -553,12 +552,12 @@ export class NotificationService extends EventEmitter {
         'appointment_reminder', 'medication_due', 'lab_result_ready', 'vital_sign_alert',
         'system_maintenance', 'staff_message', 'resource_availability', 'workflow_update';
       ],
-      channels: ['websocket'],
+      channels: ['websocket'];
       preferences: {
-        enableSound: true,
-        enablePopup: true,
-        enableEmail: false,
-        enableSMS: false
+        enableSound: true;
+        enablePopup: true;
+        enableEmail: false;
+        enableSMS: false;
       }
     };
 
@@ -609,7 +608,7 @@ export class NotificationService extends EventEmitter {
   private async storeNotification(notification: NotificationMessage): Promise<void> {
     try {
       // In a real implementation, this would store in the database
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
     } catch (error) {
 
     }
@@ -622,7 +621,7 @@ export class NotificationService extends EventEmitter {
     if (!message.userId) return
 
     const subscription = await this.getUserSubscription(message.userId);
-    
+
     for (const channel of subscription.channels) {
       if (channel === 'websocket') continue;
 
@@ -649,7 +648,7 @@ export class NotificationService extends EventEmitter {
    */
   private async sendEmail(message: NotificationMessage): Promise<void> {
     // Implementation would integrate with email service
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
   }
 
   /**
@@ -657,7 +656,7 @@ export class NotificationService extends EventEmitter {
    */
   private async sendSMS(message: NotificationMessage): Promise<void> {
     // Implementation would integrate with SMS service
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
   }
 
   /**
@@ -665,7 +664,7 @@ export class NotificationService extends EventEmitter {
    */
   private async sendPushNotification(message: NotificationMessage): Promise<void> {
     // Implementation would integrate with push notification service
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
   }
 
   /**
@@ -713,19 +712,19 @@ export class NotificationService extends EventEmitter {
    * Get notification statistics;
    */
   getStatistics(): {
-    connectedClients: number,
-    connectedUsers: number,
-    queuedMessages: number,
-    subscriptions: number
+    connectedClients: number;
+    connectedUsers: number;
+    queuedMessages: number;
+    subscriptions: number;
   } {
     const queuedMessages = Array.from(this.messageQueue.values());
       .reduce((total, queue) => total + queue.length, 0);
 
     return {
-      connectedClients: this.clients.size,
-      connectedUsers: this.getConnectedUserIds().length,
+      connectedClients: this.clients.size;
+      connectedUsers: this.getConnectedUserIds().length;
       queuedMessages,
-      subscriptions: this.subscriptions.size
+      subscriptions: this.subscriptions.size;
     };
   }
 
@@ -752,4 +751,4 @@ export class NotificationService extends EventEmitter {
 }
 
 // Export singleton instance
-export const notificationService = new NotificationService();
+export const _notificationService = new NotificationService();

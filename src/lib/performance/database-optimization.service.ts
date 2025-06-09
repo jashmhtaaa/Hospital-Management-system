@@ -1,6 +1,9 @@
+
+import { PrismaClient } from '@prisma/client';
+import { performance } from 'perf_hooks';
 /**
  * Database Performance Optimization Service
- * 
+ *
  * Addresses the performance and scalability gaps by implementing:
  * - Database query optimization and monitoring
  * - Index management and recommendations
@@ -9,55 +12,52 @@
  * - Automated optimization strategies
  */
 
-import { PrismaClient } from '@prisma/client';
-import { performance } from 'perf_hooks';
-
 export interface QueryPerformanceMetric {
-  queryId: string,
-  sql: string,
-  executionTime: number,
+  queryId: string;
+  sql: string;
+  executionTime: number;
   timestamp: Date;
   rowsAffected?: number;
-  database: string,
+  database: string;
   operation: 'SELECT' | 'INSERT' | 'UPDATE' | 'DELETE';
   table?: string;
 export interface IndexRecommendation {
-  table: string,
-  columns: string[],
-  reason: string,
+  table: string;
+  columns: string[];
+  reason: string;
   estimatedImprovement: number; // percentage
-  priority: 'high' | 'medium' | 'low',
+  priority: 'high' | 'medium' | 'low';
   queries: string[]; // affected queries
 export interface PerformanceAlert {
-  type: 'slow_query' | 'high_cpu' | 'connection_pool_full' | 'index_scan',
+  type: 'slow_query' | 'high_cpu' | 'connection_pool_full' | 'index_scan';
   severity: 'critical' | 'warning' | 'info'
-  message: string,
-  details: unknown,
-  timestamp: Date,
+  message: string;
+  details: unknown;
+  timestamp: Date;
   resolved: boolean
 export interface DatabaseStats {
   connectionPool: {
-    total: number,
-    active: number,
-    idle: number,
-    utilization: number
+    total: number;
+    active: number;
+    idle: number;
+    utilization: number;
   };
   queryMetrics: {
-    totalQueries: number,
-    averageExecutionTime: number,
-    slowQueries: number,
-    queriesPerSecond: number
+    totalQueries: number;
+    averageExecutionTime: number;
+    slowQueries: number;
+    queriesPerSecond: number;
   };
   indexUsage: {
-    totalIndexes: number,
-    unusedIndexes: number,
-    indexHitRatio: number
+    totalIndexes: number;
+    unusedIndexes: number;
+    indexHitRatio: number;
   };
   tableStats: Array<{
-    table: string,
-    rowCount: number,
-    sizeKB: number,
-    indexSizeKB: number
+    table: string;
+    rowCount: number;
+    sizeKB: number;
+    indexSizeKB: number;
   }>;
 export class DatabaseOptimizationService {
   private prisma: PrismaClient;
@@ -79,7 +79,7 @@ export class DatabaseOptimizationService {
     if (this.isMonitoring) return;
 
     this.isMonitoring = true;
-    
+
     // Monitor every 30 seconds
     this.monitoringInterval = setInterval(async () => {
       await this.collectPerformanceMetrics()
@@ -101,7 +101,7 @@ export class DatabaseOptimizationService {
     if (this.monitoringInterval) {
       clearInterval(this.monitoringInterval);
     }
-    /* SECURITY: Console statement removed */
+    /* SECURITY: Console statement removed */;
   }
 
   /**
@@ -122,33 +122,33 @@ export class DatabaseOptimizationService {
           queryId,
           sql: `${params.model}.${params.action}`, // Simplified for Prisma
           executionTime,
-          timestamp: new Date(),
-          database: 'primary',
-          operation: this.mapPrismaActionToSql(params.action),
-          table: params.model
+          timestamp: new Date();
+          database: 'primary';
+          operation: this.mapPrismaActionToSql(params.action);
+          table: params.model;
         })
 
         // Check for slow queries
         if (executionTime > this.slowQueryThreshold) {
           await this.create/* SECURITY: Alert removed */}ms`,
             details: { queryId, executionTime, model: params.model, action: params.action },
-            timestamp: new Date(),
-            resolved: false
+            timestamp: new Date();
+            resolved: false;
           })
         }
 
         return result;
       } catch (error) {
         const executionTime = crypto.getRandomValues(new Uint32Array(1))[0] - start;
-        
+
         await this.logQueryPerformance({
           queryId,
           sql: `${params.model}.${params.action}`,
           executionTime,
-          timestamp: new Date(),
-          database: 'primary',
-          operation: this.mapPrismaActionToSql(params.action),
-          table: params.model
+          timestamp: new Date();
+          database: 'primary';
+          operation: this.mapPrismaActionToSql(params.action);
+          table: params.model;
         });
 
         throw error;
@@ -161,7 +161,7 @@ export class DatabaseOptimizationService {
    */
   private async logQueryPerformance(metric: QueryPerformanceMetric): Promise<void> {
     const key = `${metric.table}_${metric.operation}`;
-    
+
     if (!this.performanceMetrics.has(key)) {
       this.performanceMetrics.set(key, []);
     }
@@ -178,11 +178,11 @@ export class DatabaseOptimizationService {
     try {
       await this.prisma.$executeRaw`
         INSERT INTO query_performance_log (
-          query_id, sql_query, execution_time, timestamp, 
+          query_id, sql_query, execution_time, timestamp,
           rows_affected, database_name, operation_type, table_name
         ) VALUES (
-          ${metric.queryId}, ${metric.sql}, ${metric.executionTime}, 
-          ${metric.timestamp}, ${metric.rowsAffected || 0}, 
+          ${metric.queryId}, ${metric.sql}, ${metric.executionTime},
+          ${metric.timestamp}, ${metric.rowsAffected || 0},
           ${metric.database}, ${metric.operation}, ${metric.table}
         )
       `
@@ -198,7 +198,7 @@ export class DatabaseOptimizationService {
     try {
       // Get connection pool stats (if available)
       const connectionStats = await this.getConnectionPoolStats()
-      
+
       // Calculate query metrics
       const queryMetrics = this.calculateQueryMetrics()
 
@@ -206,7 +206,7 @@ export class DatabaseOptimizationService {
       const tableStats = await this.getTableStatistics()
 
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     }
   }
 
@@ -221,7 +221,7 @@ export class DatabaseOptimizationService {
       await this.checkIndexUsage();
 
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     }
   }
 
@@ -235,18 +235,18 @@ export class DatabaseOptimizationService {
       // Analyze slow queries for index opportunities
       for (const [key, metrics] of this.performanceMetrics) {
         const slowQueries = metrics.filter(m => m.executionTime > this.slowQueryThreshold)
-        
+
         if (slowQueries.length > 5) { // More than 5 slow queries
           const avgTime = slowQueries.reduce((sum, m) => sum + m.executionTime, 0) / slowQueries.length
-          
+
           if (avgTime > 2000) { // Average > 2 seconds
             recommendations.push({
-              table: slowQueries[0].table || 'unknown',
+              table: slowQueries[0].table || 'unknown';
               columns: ['id'], // Would need query analysis to determine actual columns
               reason: `${slowQueries.length} slow queries detected with average time ${avgTime.toFixed(2)}ms`,
-              estimatedImprovement: 70,
-              priority: 'high',
-              queries: slowQueries.map(q => q.sql).slice(0, 3)
+              estimatedImprovement: 70;
+              priority: 'high';
+              queries: slowQueries.map(q => q.sql).slice(0, 3);
             })
           }
         }
@@ -276,9 +276,9 @@ export class DatabaseOptimizationService {
       const indexStats = await this.getIndexStatistics();
 
       return {
-        connectionPool: connectionStats,
+        connectionPool: connectionStats;
         queryMetrics,
-        indexUsage: indexStats,
+        indexUsage: indexStats;
         tableStats
       };
     } catch (error) {
@@ -300,7 +300,7 @@ export class DatabaseOptimizationService {
   async resolve/* SECURITY: Alert removed */: Promise<void> {
     if (alertIndex >= 0 && alertIndex < this.alerts.length) {
       this.alerts[alertIndex].resolved = true;
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     }
   }
 
@@ -325,17 +325,17 @@ export class DatabaseOptimizationService {
    * Apply automatic optimizations
    */
   async applyAutomaticOptimizations(): Promise<{
-    indexesCreated: number,
-    optimizationsApplied: string[]
+    indexesCreated: number;
+    optimizationsApplied: string[];
   }> {
     const result = {
-      indexesCreated: 0,
-      optimizationsApplied: [] as string[]
+      indexesCreated: 0;
+      optimizationsApplied: [] as string[];
     };
 
     try {
       const recommendations = await this.generateRecommendations();
-      
+
       for (const rec of recommendations) {
         if (rec.priority === 'high' && rec.estimatedImprovement > 50) {
           try {
@@ -344,7 +344,7 @@ export class DatabaseOptimizationService {
             result.indexesCreated++;
             result.optimizationsApplied.push(`Created index on ${rec.table}(${rec.columns.join(', ')})`);
           } catch (error) {
-            /* SECURITY: Console statement removed */
+            /* SECURITY: Console statement removed */;
           }
         }
       }
@@ -376,13 +376,13 @@ export class DatabaseOptimizationService {
       case 'delete':
       case 'deleteMany':
         return 'DELETE';
-      default: return 'SELECT'
+      default: return 'SELECT';
     }
   }
 
   private async create/* SECURITY: Alert removed */: Promise<void> {
     this.alerts.push(alert);
-    
+
     // Keep only last 100 alerts
     if (this.alerts.length > 100) {
       this.alerts.splice(0, this.alerts.length - 100)
@@ -394,10 +394,10 @@ export class DatabaseOptimizationService {
   private async getConnectionPoolStats(): Promise<DatabaseStats['connectionPool']> {
     // Mock implementation - would need actual database driver stats
     return {
-      total: 20,
-      active: 5,
-      idle: 15,
-      utilization: 25
+      total: 20;
+      active: 5;
+      idle: 15;
+      utilization: 25;
     }
   }
 
@@ -409,17 +409,17 @@ export class DatabaseOptimizationService {
 
     if (allMetrics.length === 0) {
       return {
-        totalQueries: 0,
-        averageExecutionTime: 0,
-        slowQueries: 0,
-        queriesPerSecond: 0
+        totalQueries: 0;
+        averageExecutionTime: 0;
+        slowQueries: 0;
+        queriesPerSecond: 0;
       };
     }
 
     const totalQueries = allMetrics.length;
     const averageExecutionTime = allMetrics.reduce((sum, m) => sum + m.executionTime, 0) / totalQueries;
     const slowQueries = allMetrics.filter(m => m.executionTime > this.slowQueryThreshold).length;
-    
+
     // Calculate QPS over last minute
     const oneMinuteAgo = new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 60000)
     const recentQueries = allMetrics.filter(m => m.timestamp > oneMinuteAgo).length;
@@ -452,9 +452,9 @@ export class DatabaseOptimizationService {
   private async getIndexStatistics(): Promise<DatabaseStats['indexUsage']> {
     // Mock implementation - would need actual database queries
     return {
-      totalIndexes: 45,
-      unusedIndexes: 3,
-      indexHitRatio: 94.5
+      totalIndexes: 45;
+      unusedIndexes: 3;
+      indexHitRatio: 94.5;
     }
   }
 
@@ -464,34 +464,34 @@ export class DatabaseOptimizationService {
       allMetrics.push(...metrics);
     }
 
-    const recentSlowQueries = allMetrics.filter(m => 
-      m.executionTime > this.slowQueryThreshold &&
+    const recentSlowQueries = allMetrics.filter(m =>
+      m.executionTime > this?.slowQueryThreshold &&
       m.timestamp > new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 300000) // Last 5 minutes
     )
 
     if (recentSlowQueries.length > 10) {
-      await this.create/* SECURITY: Alert removed */,
-        resolved: false
+      await this.create/* SECURITY: Alert removed */;
+        resolved: false;
       });
     }
   }
 
   private async checkConnectionPoolUtilization(): Promise<void> {
     const stats = await this.getConnectionPoolStats();
-    
+
     if (stats.utilization > 90) {
-      await this.create/* SECURITY: Alert removed */,
-        resolved: false
+      await this.create/* SECURITY: Alert removed */;
+        resolved: false;
       });
     }
   }
 
   private async checkIndexUsage(): Promise<void> {
     const indexStats = await this.getIndexStatistics();
-    
+
     if (indexStats.indexHitRatio < 85) {
-      await this.create/* SECURITY: Alert removed */,
-        resolved: false
+      await this.create/* SECURITY: Alert removed */;
+        resolved: false;
       });
     }
   }
@@ -500,23 +500,23 @@ export class DatabaseOptimizationService {
     // Mock implementation - would analyze schema for missing FK indexes
     return [
       {
-        table: 'ClinicalNote',
-        columns: ['patientId'],
-        reason: 'Foreign key without index detected',
-        estimatedImprovement: 60,
-        priority: 'medium',
-        queries: ['SELECT * FROM ClinicalNote WHERE patientId = ?']
+        table: 'ClinicalNote';
+        columns: ['patientId'];
+        reason: 'Foreign key without index detected';
+        estimatedImprovement: 60;
+        priority: 'medium';
+        queries: ['SELECT * FROM ClinicalNote WHERE patientId = ?'];
       }
     ]
   }
 
   private async analyzeExistingSchema(): Promise<void> {
-    
+
     // This would analyze the current schema for optimization opportunities
     const recommendations = await this.generateRecommendations()
-    
+
     if (recommendations.length > 0) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     }
   }
 
@@ -538,7 +538,7 @@ export class DatabaseOptimizationService {
 // Singleton instance for application use
 let dbOptimizationServiceInstance: DatabaseOptimizationService | null = null
 
-export const getDatabaseOptimizationService = (): DatabaseOptimizationService => {
+export const _getDatabaseOptimizationService = (): DatabaseOptimizationService => {
   if (!dbOptimizationServiceInstance) {
     dbOptimizationServiceInstance = new DatabaseOptimizationService();
   }

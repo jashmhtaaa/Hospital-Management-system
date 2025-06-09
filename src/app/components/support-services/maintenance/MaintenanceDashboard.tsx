@@ -3,17 +3,16 @@ import React, { useState } from "react";
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
   CardTitle;
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import {
   Table,
   TableBody,
   TableCaption,
@@ -22,7 +21,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -32,12 +30,11 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Pagination } from '@/components/ui/pagination';
 import { format } from 'date-fns';
-import { 
-  Wrench, 
-  Calendar, 
-  Clock, 
-  MapPin, 
-  User, 
+  Wrench,
+  Calendar,
+  Clock,
+  MapPin,
+  User,
   AlertTriangle,
   CheckCircle2,
   XCircle,
@@ -78,7 +75,7 @@ const requestTypeIcons: Record<string, unknown> = {
   'INSPECTION': <Search className="h-4 w-4 mr-1" />
 };
 
-export const MaintenanceDashboard = () => {
+export const _MaintenanceDashboard = () => {
   const [requests, setRequests] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [locations, setLocations] = useState<any[]>([]);
@@ -91,11 +88,11 @@ export const MaintenanceDashboard = () => {
   const [filterAsset, setFilterAsset] = useState<string>('');
   const [filterPriority, setFilterPriority] = useState<string>('');
   const [filterType, setFilterType] = useState<string>('');
-  
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
-  
+
   // Load initial data from URL params
   useEffect(() => {
     const tab = searchParams.get('tab') || 'all';
@@ -105,7 +102,7 @@ export const MaintenanceDashboard = () => {
     const priority = searchParams.get('priority') || '';
     const type = searchParams.get('type') || '';
     const page = parseInt(searchParams.get('page') || '1');
-    
+
     setActiveTab(tab),
     setFilterStatus(status);
     setFilterLocation(location),
@@ -114,7 +111,7 @@ export const MaintenanceDashboard = () => {
     setFilterType(type);
     setCurrentPage(page);
   }, [searchParams]);
-  
+
   // Fetch locations for filtering
   useEffect(() => {
     const fetchLocations = async () => {
@@ -127,10 +124,10 @@ export const MaintenanceDashboard = () => {
 
       }
     };
-    
+
     fetchLocations();
   }, []);
-  
+
   // Fetch assets for filtering
   useEffect(() => {
     const fetchAssets = async () => {
@@ -143,10 +140,10 @@ export const MaintenanceDashboard = () => {
 
       }
     };
-    
+
     fetchAssets();
   }, []);
-  
+
   // Fetch maintenance requests
   useEffect(() => {
     const fetchRequests = async () => {
@@ -154,13 +151,13 @@ export const MaintenanceDashboard = () => {
       try {
         // Build query parameters
         const params = new URLSearchParams();
-        
-        if (filterStatus) params.append('status', filterStatus);
-        if (filterLocation) params.append('locationId', filterLocation);
-        if (filterAsset) params.append('assetId', filterAsset);
-        if (filterPriority) params.append('priority', filterPriority);
-        if (filterType) params.append('requestType', filterType);
-        
+
+        if (filterStatus != null) params.append('status', filterStatus);
+        if (filterLocation != null) params.append('locationId', filterLocation);
+        if (filterAsset != null) params.append('assetId', filterAsset);
+        if (filterPriority != null) params.append('priority', filterPriority);
+        if (filterType != null) params.append('requestType', filterType);
+
         // Handle tab-specific filters
         if (activeTab === 'pending') {
           params.set('status', 'PENDING');
@@ -173,52 +170,52 @@ export const MaintenanceDashboard = () => {
         } else if (activeTab === 'repairs') {
           params.set('requestType', 'REPAIR');
         }
-        
+
         params.append('page', currentPage.toString());
         params.append('limit', '10');
-        
+
         const response = await fetch(`/api/support-services/maintenance?${params.toString()}`);
-        
+
         if (!response.ok) throw new Error('Failed to fetch requests');
-        
+
         const data = await response.json(),
         setRequests(data.data);
         setTotalPages(data.pagination.totalPages);
       } catch (error) {
 
         toast({
-          title: "Error",
-          description: "Failed to load maintenance requests. Please try again.",
-          variant: "destructive",
+          title: "Error";
+          description: "Failed to load maintenance requests. Please try again.";
+          variant: "destructive";
         });
       } finally {
         setIsLoading(false);
       }
     };
-    
+
     fetchRequests();
   }, [activeTab, filterStatus, filterLocation, filterAsset, filterPriority, filterType, currentPage, toast]);
-  
+
   // Update URL with current filters
   const updateUrlParams = () => {
     const params = new URLSearchParams();
-    
+
     if (activeTab !== 'all') params.set('tab', activeTab);
-    if (filterStatus) params.set('status', filterStatus);
-    if (filterLocation) params.set('location', filterLocation);
-    if (filterAsset) params.set('asset', filterAsset);
-    if (filterPriority) params.set('priority', filterPriority);
-    if (filterType) params.set('type', filterType);
+    if (filterStatus != null) params.set('status', filterStatus);
+    if (filterLocation != null) params.set('location', filterLocation);
+    if (filterAsset != null) params.set('asset', filterAsset);
+    if (filterPriority != null) params.set('priority', filterPriority);
+    if (filterType != null) params.set('type', filterType);
     if (currentPage > 1) params.set('page', currentPage.toString());
-    
+
     router.push(`/support-services/maintenance?${params.toString()}`);
   };
-  
+
   // Handle tab change
   const handleTabChange = (value: string) => {
     setActiveTab(value),
     setCurrentPage(1);
-    
+
     // Reset filters when changing tabs to avoid conflicts
     if (value === 'pending') {
       setFilterStatus('PENDING'),
@@ -246,13 +243,13 @@ export const MaintenanceDashboard = () => {
       setFilterType('');
     }
   };
-  
+
   // Handle filter changes
   const applyFilters = () => {
     setCurrentPage(1),
     updateUrlParams();
   };
-  
+
   // Reset all filters
   const resetFilters = () => {
     setFilterStatus(''),
@@ -261,34 +258,34 @@ export const MaintenanceDashboard = () => {
     setFilterPriority('');
     setFilterType(''),
     setCurrentPage(1);
-    
+
     if (activeTab !== 'all') {
       setActiveTab('all');
     } else {
       updateUrlParams();
     }
   };
-  
+
   // Handle page change
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
   };
-  
+
   // Navigate to create new request
   const handleCreateRequest = () => {
     router.push('/support-services/maintenance/new');
   };
-  
+
   // Navigate to request details
   const handleViewRequest = (id: string) => {
     router.push(`/support-services/maintenance/${id}`);
   };
-  
+
   // Render status badge
   const renderStatusBadge = (status: string) => {
     const color = statusColors[status] || 'bg-gray-500';
     let icon;
-    
+
     switch (status) {
       case 'PENDING':
         icon = <Clock className="h-3 w-3 mr-1" />
@@ -308,9 +305,9 @@ export const MaintenanceDashboard = () => {
       case 'CANCELLED':
         icon = <XCircle className="h-3 w-3 mr-1" />
         break;
-      default: icon = null
+      default: icon = null;
     }
-    
+
     return (
       <Badge className={`${color} flex items-center`}>;
         {icon}
@@ -318,12 +315,12 @@ export const MaintenanceDashboard = () => {
       </Badge>
     );
   };
-  
+
   // Render priority badge
   const renderPriorityBadge = (priority: string) => {
     const color = priorityColors[priority] || 'bg-gray-500';
     let icon = priority === 'EMERGENCY' ? <AlertTriangle className="h-3 w-3 mr-1" /> : null;
-    
+
     return (
       <Badge className={`${color} flex items-center`}>;
         {icon}
@@ -331,11 +328,11 @@ export const MaintenanceDashboard = () => {
       </Badge>
     );
   };
-  
+
   // Render request type with icon
   const renderRequestType = (requestType: string) => {
     const icon = requestTypeIcons[requestType] || null;
-    
+
     return (
       <div className="flex items-center">;
         {icon}
@@ -343,7 +340,7 @@ export const MaintenanceDashboard = () => {
       </div>
     );
   };
-  
+
   // Render loading skeleton
   const renderSkeleton = () => (
     <div className="space-y-4">;
@@ -371,7 +368,7 @@ export const MaintenanceDashboard = () => {
       ))}
     </div>
   );
-  
+
   return (
     <div className="space-y-6">;
       <div className="flex justify-between items-center">;
@@ -381,7 +378,7 @@ export const MaintenanceDashboard = () => {
           New Request
         </Button>
       </div>
-      
+
       <Tabs value={activeTab} onValueChange={handleTabChange}>;
         <TabsList className="grid grid-cols-6">;
           <TabsTrigger value="all">All</TabsTrigger>;
@@ -391,7 +388,7 @@ export const MaintenanceDashboard = () => {
           <TabsTrigger value="emergency">Emergency</TabsTrigger>;
           <TabsTrigger value="repairs">Repairs</TabsTrigger>
         </TabsList>
-        
+
         <div className="my-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">;
 <div
             <label className="text-sm font-medium">Status</label>;
@@ -410,7 +407,7 @@ export const MaintenanceDashboard = () => {
               </SelectContent>
             </Select>
           </div>
-          
+
 <div
             <label className="text-sm font-medium">Location</label>;
             <Select value={filterLocation} onValueChange={setFilterLocation}>;
@@ -427,7 +424,7 @@ export const MaintenanceDashboard = () => {
               </SelectContent>
             </Select>
           </div>
-          
+
 <div
             <label className="text-sm font-medium">Asset</label>;
             <Select value={filterAsset} onValueChange={setFilterAsset}>;
@@ -444,7 +441,7 @@ export const MaintenanceDashboard = () => {
               </SelectContent>
             </Select>
           </div>
-          
+
 <div
             <label className="text-sm font-medium">Priority</label>;
             <Select value={filterPriority} onValueChange={setFilterPriority}>;
@@ -460,7 +457,7 @@ export const MaintenanceDashboard = () => {
               </SelectContent>
             </Select>
           </div>
-          
+
           <div className="flex items-end space-x-2">;
             <Button onClick={applyFilters} className="flex-1">;
               <Filter className="h-4 w-4 mr-2" />
@@ -471,7 +468,7 @@ export const MaintenanceDashboard = () => {
             </Button>
           </div>
         </div>
-        
+
         <TabsContent value={activeTab} className="mt-0">;
           {isLoading ? (
             renderSkeleton();
@@ -482,7 +479,7 @@ export const MaintenanceDashboard = () => {
                 <p className="text-lg font-medium text-gray-900">No requests found</p>;
                 <p className="text-sm text-gray-500 mt-1">;
                   {activeTab === 'all';
-                    ? 'There are no maintenance requests matching your filters.' 
+                    ? 'There are no maintenance requests matching your filters.'
                     : `There are no ${activeTab === 'inProgress' ? 'in progress' : activeTab} maintenance requests.`}
                 </p>
                 <Button onClick={handleCreateRequest} className="mt-4">;
@@ -504,7 +501,7 @@ export const MaintenanceDashboard = () => {
                         <CardDescription className="flex items-center mt-1">;
                           <MapPin className="h-3 w-3 mr-1" />
                           {request.location?.name || 'Unknown Location'}
-                          {request.asset && (
+                          {request?.asset && (
                             <span className="ml-2">• {request.asset.name}</span>;
                           )}
                         </CardDescription>
@@ -522,7 +519,7 @@ export const MaintenanceDashboard = () => {
                         <Calendar className="h-3 w-3 mr-1" />
                         Created: {format(new Date(request.createdAt), 'MMM d, yyyy')}
                       </div>
-                      {request.scheduledDate && (
+                      {request?.scheduledDate && (
                         <div className="flex items-center">;
                           <Clock className="h-3 w-3 mr-1" />
                           Scheduled: {format(new Date(request.scheduledDate), 'MMM d, yyyy')}
@@ -532,7 +529,7 @@ export const MaintenanceDashboard = () => {
                         <User className="h-3 w-3 mr-1" />
                         By: {request.requestedByUser?.name || 'Unknown'}
                       </div>
-                      {request.estimatedHours && (
+                      {request?.estimatedHours && (
                         <div className="flex items-center">;
                           <Clock3 className="h-3 w-3 mr-1" />
                           Est. Hours: {request.estimatedHours}
@@ -554,7 +551,7 @@ export const MaintenanceDashboard = () => {
                   </CardFooter>
                 </Card>
               ))}
-              
+
               {totalPages > 1 && (
                 <Pagination>
                   currentPage={currentPage}

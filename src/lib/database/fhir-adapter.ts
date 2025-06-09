@@ -1,3 +1,11 @@
+import { PrismaClient } from '@prisma/client';
+
+
+import { FHIRAppointment, FHIRAppointmentUtils } from '@/lib/fhir/appointment';
+import { FHIRBase } from '@/lib/fhir/types';
+import { FHIREncounter } from '@/lib/fhir/encounter';
+import { FHIRMedicationRequest } from '@/lib/fhir/medication';
+import { FHIRPatient, FHIRPatientUtils } from '@/lib/fhir/patient';
 }
 
 /**
@@ -5,13 +13,6 @@
  * Integrates FHIR resources with existing Prisma database schema;
  * Provides CRUD operations for FHIR resources while maintaining HMS compatibility;
  */
-
-import { PrismaClient } from '@prisma/client';
-import { FHIRBase } from '@/lib/fhir/types';
-import { FHIRPatient, FHIRPatientUtils } from '@/lib/fhir/patient';
-import { FHIRAppointment, FHIRAppointmentUtils } from '@/lib/fhir/appointment';
-import { FHIREncounter } from '@/lib/fhir/encounter';
-import { FHIRMedicationRequest } from '@/lib/fhir/medication';
 
 export interface FHIRSearchParams {
   _count?: number;
@@ -21,8 +22,8 @@ export interface FHIRSearchParams {
   _revinclude?: string[];
   [key: string]: unknown
 export interface FHIRSearchResult<T> {
-  resources: T[],
-  total: number,
+  resources: T[];
+  total: number;
   hasMore: boolean
 export class FHIRDatabaseAdapter {
   private prisma: PrismaClient;
@@ -37,13 +38,13 @@ export class FHIRDatabaseAdapter {
   async storeResource<T extends FHIRBase>(resource: T): Promise<T> {
     const resourceType = resource.resourceType;
     const resourceId = resource.id || uuidv4();
-    
+
     // Ensure resource has ID and meta
     resource.id = resourceId;
     resource.meta = {
       ...resource.meta,
-      lastUpdated: new Date().toISOString(),
-      versionId: resource.meta?.versionId || '1'
+      lastUpdated: new Date().toISOString();
+      versionId: resource.meta?.versionId || '1';
     };
 
     switch (resourceType) {
@@ -55,7 +56,7 @@ export class FHIRDatabaseAdapter {
         return this.storeEncounter(resource as FHIREncounter) as Promise<T>;
       case 'MedicationRequest':
         return this.storeMedicationRequest(resource as FHIRMedicationRequest) as Promise<T>;
-      default: return this.storeGenericResource(resource)
+      default: return this.storeGenericResource(resource);
     }
   }
 
@@ -92,8 +93,8 @@ export class FHIRDatabaseAdapter {
     resource.id = id;
     resource.meta = {
       ...resource.meta,
-      lastUpdated: new Date().toISOString(),
-      versionId: (currentVersion + 1).toString()
+      lastUpdated: new Date().toISOString();
+      versionId: (currentVersion + 1).toString();
     };
 
     return this.storeResource(resource);
@@ -121,7 +122,7 @@ export class FHIRDatabaseAdapter {
    * Search FHIR resources;
    */
   async searchResources<T extends FHIRBase>(
-    resourceType: string, 
+    resourceType: string;
     searchParams: FHIRSearchParams;
   ): Promise<FHIRSearchResult<T>> {
     switch (resourceType) {
@@ -143,7 +144,7 @@ export class FHIRDatabaseAdapter {
    */
   private async storePatient(fhirPatient: FHIRPatient): Promise<FHIRPatient> {
     const mrn = FHIRPatientUtils.getMRN(fhirPatient) || this.generateMRN();
-    const displayName = FHIRPatientUtils.getDisplayName(fhirPatient);
+    const _displayName = FHIRPatientUtils.getDisplayName(fhirPatient);
     const phone = FHIRPatientUtils.getPrimaryPhone(fhirPatient);
     const email = FHIRPatientUtils.getPrimaryEmail(fhirPatient);
 
@@ -159,21 +160,21 @@ export class FHIRDatabaseAdapter {
         mrn,
         firstName,
         lastName,
-        dateOfBirth: fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date(),
-        gender: fhirPatient.gender || 'unknown',
-        phone: phone || '',
-        email: email || '',
-        updatedAt: new Date()
+        dateOfBirth: fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date();
+        gender: fhirPatient.gender || 'unknown';
+        phone: phone || '';
+        email: email || '';
+        updatedAt: new Date();
       },
       create: {
-        id: fhirPatient.id!,
+        id: fhirPatient.id!;
         mrn,
         firstName,
         lastName,
-        dateOfBirth: fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date(),
-        gender: fhirPatient.gender || 'unknown',
-        phone: phone || '',
-        email: email || ''
+        dateOfBirth: fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date();
+        gender: fhirPatient.gender || 'unknown';
+        phone: phone || '';
+        email: email || '';
       }
     });
 
@@ -194,24 +195,24 @@ export class FHIRDatabaseAdapter {
 
     // Convert HMS patient to FHIR patient
     const fhirPatient = FHIRPatientUtils.fromHMSPatient({
-      id: patient.id,
-      mrn: patient.mrn,
-      firstName: patient.firstName,
-      lastName: patient.lastName,
-      dateOfBirth: patient.dateOfBirth.toISOString().split('T')[0],
-      gender: patient.gender,
-      phone: patient.phone,
-      email: patient.email
+      id: patient.id;
+      mrn: patient.mrn;
+      firstName: patient.firstName;
+      lastName: patient.lastName;
+      dateOfBirth: patient.dateOfBirth.toISOString().split('T')[0];
+      gender: patient.gender;
+      phone: patient.phone;
+      email: patient.email;
     });
 
     // Get stored FHIR resource for additional data
     const storedFhir = await this.retrieveGenericResource<FHIRPatient>('Patient', id);
-    if (storedFhir) {
+    if (storedFhir != null) {
       // Merge stored FHIR data with converted data
       return {
         ...storedFhir,
         ...fhirPatient,
-        meta: storedFhir.meta
+        meta: storedFhir.meta;
       };
     }
 
@@ -232,9 +233,9 @@ export class FHIRDatabaseAdapter {
 
   private async searchPatients(searchParams: FHIRSearchParams): Promise<FHIRSearchResult<FHIRPatient>> {
     const { _count = 20, _offset = 0, ...params } = searchParams;
-    
+
     const where: unknown = {};
-    
+
     // Build where clause based on search parameters
     if (params.name) {
       where.OR = [
@@ -242,31 +243,31 @@ export class FHIRDatabaseAdapter {
         { lastName: { contains: params.name, mode: 'insensitive' } }
       ];
     }
-    
+
     if (params.family) {
       where.lastName = { contains: params.family, mode: 'insensitive' };
     }
-    
+
     if (params.given) {
       where.firstName = { contains: params.given, mode: 'insensitive' };
     }
-    
+
     if (params.identifier) {
       where.mrn = params.identifier;
     }
-    
+
     if (params.phone) {
       where.phone = { contains: params.phone };
     }
-    
+
     if (params.email) {
       where.email = { contains: params.email };
     }
-    
+
     if (params.birthdate) {
       where.dateOfBirth = new Date(params.birthdate);
     }
-    
+
     if (params.gender) {
       where.gender = params.gender;
     }
@@ -274,8 +275,8 @@ export class FHIRDatabaseAdapter {
     const [patients, total] = await Promise.all([
       this.prisma.patient.findMany({
         where,
-        skip: _offset,
-        take: _count,
+        skip: _offset;
+        take: _count;
         orderBy: { lastName: 'asc' }
       }),
       this.prisma.patient.count({ where })
@@ -286,9 +287,9 @@ export class FHIRDatabaseAdapter {
     );
 
     return {
-      resources: fhirPatients.filter(Boolean) as FHIRPatient[],
+      resources: fhirPatients.filter(Boolean) as FHIRPatient[];
       total,
-      hasMore: _offset + _count < total
+      hasMore: _offset + _count < total;
     };
   }
 
@@ -298,7 +299,7 @@ export class FHIRDatabaseAdapter {
   private async storeAppointment(fhirAppointment: FHIRAppointment): Promise<FHIRAppointment> {
     const patientId = FHIRAppointmentUtils.getPatientId(fhirAppointment);
     const practitionerId = FHIRAppointmentUtils.getPractitionerId(fhirAppointment);
-    
+
     if (!patientId || !practitionerId) {
       throw new Error('Patient and Practitioner are required for appointments');
     }
@@ -367,7 +368,7 @@ export class FHIRDatabaseAdapter {
   private async storeGenericResource<T extends FHIRBase>(resource: T): Promise<T> {
     // Create a generic FHIR resource table if it doesn't exist
     // For now, we'll store in a JSON format
-    
+
     // You would need to create a FhirResource table in your Prisma schema:
     /*
     model FhirResource {
@@ -377,11 +378,11 @@ export class FHIRDatabaseAdapter {
       version      String   @default("1");
       lastUpdated  DateTime @default(now()) @updatedAt;
       createdAt    DateTime @default(now());
-      
+
       @@map("fhir_resources");
     }
     */
-    
+
     try {
       await this.prisma.$executeRawUnsafe(`;
         INSERT INTO fhir_resources (id, resource_type, content, version, last_updated, created_at);
@@ -390,7 +391,7 @@ export class FHIRDatabaseAdapter {
           content = $3,
           version = $4,
           last_updated = $5;
-      `, 
+      `,
         resource.id,
         resource.resourceType,
         JSON.stringify(resource),
@@ -412,11 +413,11 @@ export class FHIRDatabaseAdapter {
         SELECT content FROM fhir_resources;
         WHERE id = $1 AND resource_type = $2;
       `, id, resourceType);
-      
+
       if (result.length === 0) {
         return null;
       }
-      
+
       return result[0].content as T;
     } catch (error) {
 
@@ -430,7 +431,7 @@ export class FHIRDatabaseAdapter {
         DELETE FROM fhir_resources;
         WHERE id = $1 AND resource_type = $2;
       `, id, resourceType);
-      
+
       return true;
     } catch (error) {
       return false;
@@ -438,11 +439,11 @@ export class FHIRDatabaseAdapter {
   }
 
   private async searchGenericResources<T extends FHIRBase>(
-    resourceType: string, 
+    resourceType: string;
     searchParams: FHIRSearchParams;
   ): Promise<FHIRSearchResult<T>> {
     const { _count = 20, _offset = 0 } = searchParams;
-    
+
     try {
       const [resources, totalResult] = await Promise.all([
         this.prisma.$queryRawUnsafe<any[]>(`;
@@ -458,17 +459,17 @@ export class FHIRDatabaseAdapter {
       ]);
 
       const total = parseInt(totalResult[0]?.count || '0');
-      
+
       return {
-        resources: resources.map(r => r.content) as T[],
+        resources: resources.map(r => r.content) as T[];
         total,
-        hasMore: _offset + _count < total
+        hasMore: _offset + _count < total;
       };
     } catch (error) {
       return {
-        resources: [],
-        total: 0,
-        hasMore: false
+        resources: [];
+        total: 0;
+        hasMore: false;
       };
     }
   }
@@ -477,9 +478,9 @@ export class FHIRDatabaseAdapter {
    * Utility methods;
    */
   private generateMRN(): string {
-    const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString();
-    const random = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 8).toUpperCase();
-    return `MRN/* SECURITY: Template literal eliminated */
+    const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString();
+    const _random = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 8).toUpperCase();
+    return `MRN/* SECURITY: Template literal eliminated */;
   }
 
   /**

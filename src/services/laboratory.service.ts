@@ -1,74 +1,75 @@
-import { PrismaClient } from '@prisma/client';
-import { AuditService } from './audit_log_service.ts';
-import { NotificationService } from '../lib/notifications';
-import { EncryptionService } from './encryption_service.ts';
 import * as z from 'zod';
+import { PrismaClient } from '@prisma/client';
 
+
+import { AuditService } from './audit_log_service.ts';
+import { EncryptionService } from './encryption_service.ts';
+import { NotificationService } from '../lib/notifications';
 const prisma = new PrismaClient();
 
 // Define schema for lab test
 const LabTestSchema = z.object({
   testCode: z.string().min(1, "Test code is required"),
   testName: z.string().min(1, "Test name is required"),
-  shortName: z.string().optional(),
-  description: z.string().optional(),
+  shortName: z.string().optional();
+  description: z.string().optional();
   testCategory: z.string().min(1, "Test category is required"),
   testType: z.string().min(1, "Test type is required"),
-  sampleTypes: z.array(z.string()),
-  containerTypes: z.array(z.string()),
-  defaultPriority: z.string().default("Routine"),
-  defaultDepartment: z.string().optional(),
-  methodUsed: z.string().optional(),
-  equipmentUsed: z.string().optional(),
-  loinc: z.string().optional(),
-  cptCode: z.string().optional(),
-  price: z.number().optional(),
-  requiresConsent: z.boolean().default(false),
-  processTime: z.number().optional(),
-  turnaroundTime: z.number().optional(),
-  specialInstructions: z.string().optional(),
-  patientPreparation: z.string().optional(),
-  samplePreservation: z.string().optional(),
-  status: z.string().default("Active"),
-  isVisible: z.boolean().default(true),
-  referralTest: z.boolean().default(false),
-  referralLabId: z.string().optional(),
+  sampleTypes: z.array(z.string());
+  containerTypes: z.array(z.string());
+  defaultPriority: z.string().default("Routine");
+  defaultDepartment: z.string().optional();
+  methodUsed: z.string().optional();
+  equipmentUsed: z.string().optional();
+  loinc: z.string().optional();
+  cptCode: z.string().optional();
+  price: z.number().optional();
+  requiresConsent: z.boolean().default(false);
+  processTime: z.number().optional();
+  turnaroundTime: z.number().optional();
+  specialInstructions: z.string().optional();
+  patientPreparation: z.string().optional();
+  samplePreservation: z.string().optional();
+  status: z.string().default("Active");
+  isVisible: z.boolean().default(true);
+  referralTest: z.boolean().default(false);
+  referralLabId: z.string().optional();
 });
 
 // Define schema for lab order
 const LabOrderSchema = z.object({
   patientId: z.string().min(1, "Patient ID is required"),
-  encounterId: z.string().optional(),
+  encounterId: z.string().optional();
   orderingProviderId: z.string().min(1, "Ordering provider ID is required"),
   orderingProviderName: z.string().min(1, "Ordering provider name is required"),
-  orderDateTime: z.date().default(() => new Date()),
-  priority: z.string().default("Routine"),
-  collectionType: z.string().default("Lab Draw"),
-  clinicalInfo: z.string().optional(),
-  diagnosis: z.string().optional(),
-  diagnosisCode: z.string().optional(),
-  isFasting: z.boolean().default(false),
-  collectionDateTime: z.date().optional(),
-  collectionSite: z.string().optional(),
-  collectedBy: z.string().optional(),
-  specimenReceivedDateTime: z.date().optional(),
-  receivedBy: z.string().optional(),
-  status: z.string().default("Ordered"),
-  departmentId: z.string().optional(),
-  locationId: z.string().optional(),
-  notes: z.string().optional(),
-  isRecurring: z.boolean().default(false),
-  recurringPattern: z.string().optional(),
+  orderDateTime: z.date().default(() => new Date());
+  priority: z.string().default("Routine");
+  collectionType: z.string().default("Lab Draw");
+  clinicalInfo: z.string().optional();
+  diagnosis: z.string().optional();
+  diagnosisCode: z.string().optional();
+  isFasting: z.boolean().default(false);
+  collectionDateTime: z.date().optional();
+  collectionSite: z.string().optional();
+  collectedBy: z.string().optional();
+  specimenReceivedDateTime: z.date().optional();
+  receivedBy: z.string().optional();
+  status: z.string().default("Ordered");
+  departmentId: z.string().optional();
+  locationId: z.string().optional();
+  notes: z.string().optional();
+  isRecurring: z.boolean().default(false);
+  recurringPattern: z.string().optional();
   orderItems: z.array(z.object({
-    testId: z.string().optional(),
-    profileId: z.string().optional(),
-    status: z.string().default("Ordered"),
-    priority: z.string().default("Routine"),
-    scheduledDateTime: z.date().optional(),
-    performingLabId: z.string().optional(),
-    referralLabId: z.string().optional(),
-    billable: z.boolean().default(true),
-    notes: z.string().optional(),
+    testId: z.string().optional();
+    profileId: z.string().optional();
+    status: z.string().default("Ordered");
+    priority: z.string().default("Routine");
+    scheduledDateTime: z.date().optional();
+    performingLabId: z.string().optional();
+    referralLabId: z.string().optional();
+    billable: z.boolean().default(true);
+    notes: z.string().optional();
   })).min(1, "At least one test must be ordered"),
 });
 
@@ -78,54 +79,54 @@ const LabSampleSchema = z.object({
   patientId: z.string().min(1, "Patient ID is required"),
   sampleTypeId: z.string().min(1, "Sample type ID is required"),
   containerType: z.string().min(1, "Container type is required"),
-  volume: z.string().optional(),
-  collectionDateTime: z.date().optional(),
-  collectedBy: z.string().optional(),
-  collectionSite: z.string().optional(),
-  collectionMethod: z.string().optional(),
-  receivedDateTime: z.date().optional(),
-  receivedBy: z.string().optional(),
-  receivedCondition: z.string().optional(),
-  status: z.string().default("Ordered"),
-  storageLocation: z.string().optional(),
-  parentSampleId: z.string().optional(),
-  isAliquot: z.boolean().default(false),
-  processingNotes: z.string().optional(),
-  notes: z.string().optional(),
+  volume: z.string().optional();
+  collectionDateTime: z.date().optional();
+  collectedBy: z.string().optional();
+  collectionSite: z.string().optional();
+  collectionMethod: z.string().optional();
+  receivedDateTime: z.date().optional();
+  receivedBy: z.string().optional();
+  receivedCondition: z.string().optional();
+  status: z.string().default("Ordered");
+  storageLocation: z.string().optional();
+  parentSampleId: z.string().optional();
+  isAliquot: z.boolean().default(false);
+  processingNotes: z.string().optional();
+  notes: z.string().optional();
 });
 
 // Define schema for lab result
 const LabResultSchema = z.object({
   orderId: z.string().min(1, "Order ID is required"),
-  sampleId: z.string().optional(),
+  sampleId: z.string().optional();
   parameterId: z.string().min(1, "Parameter ID is required"),
   resultValue: z.string().min(1, "Result value is required"),
-  resultValueNumeric: z.number().optional(),
-  units: z.string().optional(),
-  referenceRange: z.string().optional(),
-  flags: z.string().optional(),
-  interpretation: z.string().optional(),
-  status: z.string().default("Preliminary"),
+  resultValueNumeric: z.number().optional();
+  units: z.string().optional();
+  referenceRange: z.string().optional();
+  flags: z.string().optional();
+  interpretation: z.string().optional();
+  status: z.string().default("Preliminary");
   performedBy: z.string().min(1, "Performed by is required"),
-  performedDateTime: z.date().default(() => new Date()),
-  verifiedBy: z.string().optional(),
-  verifiedDateTime: z.date().optional(),
-  reportedDateTime: z.date().optional(),
-  correctedResultId: z.string().optional(),
-  correctionReason: z.string().optional(),
-  analyticalMethod: z.string().optional(),
-  equipmentId: z.string().optional(),
-  equipmentName: z.string().optional(),
-  batchId: z.string().optional(),
-  runId: z.string().optional(),
-  dilutionFactor: z.string().optional(),
-  notes: z.string().optional(),
-  isCritical: z.boolean().default(false),
-  criticalNotifiedTo: z.string().optional(),
-  criticalNotifiedDateTime: z.date().optional(),
-  criticalNotifiedBy: z.string().optional(),
-  criticalAcknowledgedBy: z.string().optional(),
-  criticalAcknowledgedDateTime: z.date().optional(),
+  performedDateTime: z.date().default(() => new Date());
+  verifiedBy: z.string().optional();
+  verifiedDateTime: z.date().optional();
+  reportedDateTime: z.date().optional();
+  correctedResultId: z.string().optional();
+  correctionReason: z.string().optional();
+  analyticalMethod: z.string().optional();
+  equipmentId: z.string().optional();
+  equipmentName: z.string().optional();
+  batchId: z.string().optional();
+  runId: z.string().optional();
+  dilutionFactor: z.string().optional();
+  notes: z.string().optional();
+  isCritical: z.boolean().default(false);
+  criticalNotifiedTo: z.string().optional();
+  criticalNotifiedDateTime: z.date().optional();
+  criticalNotifiedBy: z.string().optional();
+  criticalAcknowledgedBy: z.string().optional();
+  criticalAcknowledgedDateTime: z.date().optional();
 });
 
 /**
@@ -148,28 +149,28 @@ export class LaboratoryService {
   private async generateOrderNumber(): Promise<string> {
     // Get current date for prefix
     const currentDate = new Date();
-    const year = currentDate.getFullYear().toString().slice(-2);
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-    const day = currentDate.getDate().toString().padStart(2, '0');
-    
+    const _year = currentDate.getFullYear().toString().slice(-2);
+    const _month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    const _day = currentDate.getDate().toString().padStart(2, '0');
+
     // Get count of orders for the day to generate a sequential number
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     const orderCount = await prisma.labOrder.count({
       where: {
         orderDateTime: {
-          gte: today
+          gte: today;
         }
       }
     });
-    
+
     // Generate sequential number with padding
-    const sequentialNumber = (orderCount + 1).toString().padStart(4, '0');
-    
+    const _sequentialNumber = (orderCount + 1).toString().padStart(4, '0');
+
     // Combine to create Order Number: LAB-YYMMDD-XXXX
     const orderNumber = `LAB-/* SECURITY: Template literal eliminated */
-    
+
     return orderNumber;
   }
 
@@ -179,28 +180,28 @@ export class LaboratoryService {
   private async generateSampleId(sampleTypeCode: string): Promise<string> {
     // Get current date for prefix
     const currentDate = new Date();
-    const year = currentDate.getFullYear().toString().slice(-2);
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-    const day = currentDate.getDate().toString().padStart(2, '0');
-    
+    const _year = currentDate.getFullYear().toString().slice(-2);
+    const _month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    const _day = currentDate.getDate().toString().padStart(2, '0');
+
     // Get count of samples for the day to generate a sequential number
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     const sampleCount = await prisma.labSample.count({
       where: {
         createdAt: {
-          gte: today
+          gte: today;
         }
       }
     });
-    
+
     // Generate sequential number with padding
-    const sequentialNumber = (sampleCount + 1).toString().padStart(4, '0');
-    
+    const _sequentialNumber = (sampleCount + 1).toString().padStart(4, '0');
+
     // Combine to create Sample ID: TYPE-YYMMDD-XXXX
     const sampleId = `${sampleTypeCode}-/* SECURITY: Template literal eliminated */
-    
+
     return sampleId;
   }
 
@@ -211,33 +212,33 @@ export class LaboratoryService {
     try {
       // Validate test data
       const validatedTest = LabTestSchema.parse(testData);
-      
+
       // Check if test code already exists
       const existingTest = await prisma.labTest.findUnique({
         where: { testCode: validatedTest.testCode }
       });
-      
-      if (existingTest) {
+
+      if (existingTest != null) {
         throw new Error(`Test with code ${validatedTest.testCode} already exists`);
       }
-      
+
       // Create test
       const test = await prisma.labTest.create({
         data: {
           ...validatedTest,
-          price: validatedTest.price ? parseFloat(validatedTest.price.toString()) : null,
+          price: validatedTest.price ? parseFloat(validatedTest.price.toString()) : null;
         }
       });
-      
+
       // Log audit
       await this.auditService.logAction({
-        action: 'Create',
-        resourceType: 'LabTest',
-        resourceId: test.id,
+        action: 'Create';
+        resourceType: 'LabTest';
+        resourceId: test.id;
         description: `Created lab test: ${test.testName} (${test.testCode})`,
-        performedBy: userId
+        performedBy: userId;
       });
-      
+
       return test;
     } catch (error) {
 
@@ -256,31 +257,31 @@ export class LaboratoryService {
         include: {
           testParameters: {
             include: {
-              referenceRanges: true,
-              criticalRanges: true
+              referenceRanges: true;
+              criticalRanges: true;
             }
           },
           sampleRequirements: {
             include: {
-              sampleType: true
+              sampleType: true;
             }
           }
         }
       });
-      
+
       if (!test) {
         throw new Error('Lab test not found');
       }
-      
+
       // Log audit
       await this.auditService.logAction({
-        action: 'View',
-        resourceType: 'LabTest',
-        resourceId: testId,
+        action: 'View';
+        resourceType: 'LabTest';
+        resourceId: testId;
         description: `Viewed lab test: ${test.testName} (${test.testCode})`,
-        performedBy: userId
+        performedBy: userId;
       });
-      
+
       return test;
     } catch (error) {
 
@@ -295,45 +296,45 @@ export class LaboratoryService {
     try {
       // Validate test data
       const validatedTest = LabTestSchema.parse(testData);
-      
+
       // Check if test exists
       const existingTest = await prisma.labTest.findUnique({
         where: { id: testId }
       });
-      
+
       if (!existingTest) {
         throw new Error('Lab test not found');
       }
-      
+
       // If changing test code, check if new code already exists
       if (validatedTest.testCode !== existingTest.testCode) {
         const duplicateTest = await prisma.labTest.findUnique({
           where: { testCode: validatedTest.testCode }
         });
-        
-        if (duplicateTest) {
+
+        if (duplicateTest != null) {
           throw new Error(`Test with code ${validatedTest.testCode} already exists`);
         }
       }
-      
+
       // Update test
       const test = await prisma.labTest.update({
         where: { id: testId },
         data: {
           ...validatedTest,
-          price: validatedTest.price ? parseFloat(validatedTest.price.toString()) : null,
+          price: validatedTest.price ? parseFloat(validatedTest.price.toString()) : null;
         }
       });
-      
+
       // Log audit
       await this.auditService.logAction({
-        action: 'Update',
-        resourceType: 'LabTest',
-        resourceId: testId,
+        action: 'Update';
+        resourceType: 'LabTest';
+        resourceId: testId;
         description: `Updated lab test: ${test.testName} (${test.testCode})`,
-        performedBy: userId
+        performedBy: userId;
       });
-      
+
       return test;
     } catch (error) {
 
@@ -348,90 +349,90 @@ export class LaboratoryService {
     try {
       // Validate order data
       const validatedOrder = LabOrderSchema.parse(orderData);
-      
+
       // Check if at least one of testId or profileId is provided for each item
       validatedOrder.orderItems.forEach(item => {
-        if (!item.testId && !item.profileId) {
+        if (!item?.testId && !item.profileId) {
           throw new Error('Each order item must have either a test or profile specified');
         }
       });
-      
+
       // Generate order number
       const orderNumber = await this.generateOrderNumber();
-      
+
       // Create order with transaction
       const order = await prisma.$transaction(async (tx) => {
         // Create order
         const newOrder = await tx.labOrder.create({
           data: {
             orderNumber,
-            patientId: validatedOrder.patientId,
-            encounterId: validatedOrder.encounterId,
-            orderingProviderId: validatedOrder.orderingProviderId,
-            orderingProviderName: validatedOrder.orderingProviderName,
-            orderDateTime: validatedOrder.orderDateTime,
-            priority: validatedOrder.priority,
-            collectionType: validatedOrder.collectionType,
-            clinicalInfo: validatedOrder.clinicalInfo,
-            diagnosis: validatedOrder.diagnosis,
-            diagnosisCode: validatedOrder.diagnosisCode,
-            isFasting: validatedOrder.isFasting,
-            collectionDateTime: validatedOrder.collectionDateTime,
-            collectionSite: validatedOrder.collectionSite,
-            collectedBy: validatedOrder.collectedBy,
-            specimenReceivedDateTime: validatedOrder.specimenReceivedDateTime,
-            receivedBy: validatedOrder.receivedBy,
-            status: validatedOrder.status,
-            departmentId: validatedOrder.departmentId,
-            locationId: validatedOrder.locationId,
-            notes: validatedOrder.notes,
-            isRecurring: validatedOrder.isRecurring,
-            recurringPattern: validatedOrder.recurringPattern,
+            patientId: validatedOrder.patientId;
+            encounterId: validatedOrder.encounterId;
+            orderingProviderId: validatedOrder.orderingProviderId;
+            orderingProviderName: validatedOrder.orderingProviderName;
+            orderDateTime: validatedOrder.orderDateTime;
+            priority: validatedOrder.priority;
+            collectionType: validatedOrder.collectionType;
+            clinicalInfo: validatedOrder.clinicalInfo;
+            diagnosis: validatedOrder.diagnosis;
+            diagnosisCode: validatedOrder.diagnosisCode;
+            isFasting: validatedOrder.isFasting;
+            collectionDateTime: validatedOrder.collectionDateTime;
+            collectionSite: validatedOrder.collectionSite;
+            collectedBy: validatedOrder.collectedBy;
+            specimenReceivedDateTime: validatedOrder.specimenReceivedDateTime;
+            receivedBy: validatedOrder.receivedBy;
+            status: validatedOrder.status;
+            departmentId: validatedOrder.departmentId;
+            locationId: validatedOrder.locationId;
+            notes: validatedOrder.notes;
+            isRecurring: validatedOrder.isRecurring;
+            recurringPattern: validatedOrder.recurringPattern;
           }
         });
-        
+
         // Create order items
         for (const item of validatedOrder.orderItems) {
           await tx.labOrderItem.create({
             data: {
-              orderId: newOrder.id,
-              testId: item.testId,
-              profileId: item.profileId,
-              status: item.status || 'Ordered',
-              priority: item.priority || validatedOrder.priority,
-              scheduledDateTime: item.scheduledDateTime,
-              performingLabId: item.performingLabId,
-              referralLabId: item.referralLabId,
-              billable: item.billable,
-              notes: item.notes,
+              orderId: newOrder.id;
+              testId: item.testId;
+              profileId: item.profileId;
+              status: item.status || 'Ordered';
+              priority: item.priority || validatedOrder.priority;
+              scheduledDateTime: item.scheduledDateTime;
+              performingLabId: item.performingLabId;
+              referralLabId: item.referralLabId;
+              billable: item.billable;
+              notes: item.notes;
             }
           });
         }
-        
+
         return newOrder;
       });
-      
+
       // Log audit
       await this.auditService.logAction({
-        action: 'Create',
-        resourceType: 'LabOrder',
-        resourceId: order.id,
+        action: 'Create';
+        resourceType: 'LabOrder';
+        resourceId: order.id;
         description: `Created lab order: ${order.orderNumber} for patient ${order.patientId}`,
-        performedBy: userId
+        performedBy: userId;
       });
-      
+
       // Send notification to lab department
       await this.notificationService.sendNotification({
-        type: 'LabOrderCreated',
-        title: 'New Lab Order',
+        type: 'LabOrderCreated';
+        title: 'New Lab Order';
         message: `New lab order ${order.orderNumber} created for patient ${order.patientId}`,
-        priority: order.priority === 'STAT' ? 'high' : 'medium',
+        priority: order.priority === 'STAT' ? 'high' : 'medium';
         recipientRoles: ['Lab Technician', 'Lab Manager'],
-        recipientIds: [],
-        relatedResourceType: 'LabOrder',
-        relatedResourceId: order.id,
+        recipientIds: [];
+        relatedResourceType: 'LabOrder';
+        relatedResourceId: order.id;
       });
-      
+
       return order;
     } catch (error) {
 
@@ -450,36 +451,36 @@ export class LaboratoryService {
         include: {
           orderItems: {
             include: {
-              test: true,
-              profile: true
+              test: true;
+              profile: true;
             }
           },
           samples: {
             include: {
-              sampleType: true
+              sampleType: true;
             }
           },
           results: {
             include: {
-              parameter: true
+              parameter: true;
             }
           }
         }
       });
-      
+
       if (!order) {
         throw new Error('Lab order not found');
       }
-      
+
       // Log audit
       await this.auditService.logAction({
-        action: 'View',
-        resourceType: 'LabOrder',
-        resourceId: orderId,
+        action: 'View';
+        resourceType: 'LabOrder';
+        resourceId: orderId;
         description: `Viewed lab order: ${order.orderNumber}`,
-        performedBy: userId
+        performedBy: userId;
       });
-      
+
       return order;
     } catch (error) {
 
@@ -496,60 +497,60 @@ export class LaboratoryService {
       const existingOrder = await prisma.labOrder.findUnique({
         where: { id: orderId }
       });
-      
+
       if (!existingOrder) {
         throw new Error('Lab order not found');
       }
-      
+
       // Validate status
       const validStatuses = ['Ordered', 'Collected', 'In Process', 'Completed', 'Cancelled'];
       if (!validStatuses.includes(statusData.status)) {
         throw new Error(`Invalid status: ${statusData.status}. Must be one of: ${validStatuses.join(', ')}`);
       }
-      
+
       // Update order status
       const order = await prisma.labOrder.update({
         where: { id: orderId },
         data: {
-          status: statusData.status,
-          notes: statusData.notes ? `/* SECURITY: Template literal eliminated */
+          status: statusData.status;
+          notes: statusData.notes ? `/* SECURITY: Template literal eliminated */;
         }
       });
-      
+
       // Log audit
       await this.auditService.logAction({
-        action: 'Update',
-        resourceType: 'LabOrder',
-        resourceId: orderId,
+        action: 'Update';
+        resourceType: 'LabOrder';
+        resourceId: orderId;
         description: `Updated lab order status: ${order.orderNumber} to ${statusData.status}`,
-        performedBy: userId
+        performedBy: userId;
       });
-      
+
       // Send notification for status change
       if (statusData.status === 'Completed') {
         await this.notificationService.sendNotification({
-          type: 'LabOrderCompleted',
-          title: 'Lab Order Completed',
+          type: 'LabOrderCompleted';
+          title: 'Lab Order Completed';
           message: `Lab order ${order.orderNumber} has been completed`,
-          priority: 'medium',
+          priority: 'medium';
           recipientRoles: ['Physician', 'Nurse'],
-          recipientIds: [order.orderingProviderId],
-          relatedResourceType: 'LabOrder',
-          relatedResourceId: order.id,
+          recipientIds: [order.orderingProviderId];
+          relatedResourceType: 'LabOrder';
+          relatedResourceId: order.id;
         });
       } else if (statusData.status === 'Cancelled') {
         await this.notificationService.sendNotification({
-          type: 'LabOrderCancelled',
-          title: 'Lab Order Cancelled',
+          type: 'LabOrderCancelled';
+          title: 'Lab Order Cancelled';
           message: `Lab order ${order.orderNumber} has been cancelled`,
-          priority: 'medium',
+          priority: 'medium';
           recipientRoles: ['Physician', 'Nurse'],
-          recipientIds: [order.orderingProviderId],
-          relatedResourceType: 'LabOrder',
-          relatedResourceId: order.id,
+          recipientIds: [order.orderingProviderId];
+          relatedResourceType: 'LabOrder';
+          relatedResourceId: order.id;
         });
       }
-      
+
       return order;
     } catch (error) {
 
@@ -564,90 +565,90 @@ export class LaboratoryService {
     try {
       // Validate sample data
       const validatedSample = LabSampleSchema.parse(sampleData);
-      
+
       // Check if order exists
       const order = await prisma.labOrder.findUnique({
         where: { id: validatedSample.orderId },
         include: {
-          orderItems: true
+          orderItems: true;
         }
       });
-      
+
       if (!order) {
         throw new Error('Lab order not found');
       }
-      
+
       // Get sample type
       const sampleType = await prisma.labSampleType.findUnique({
         where: { id: validatedSample.sampleTypeId }
       });
-      
+
       if (!sampleType) {
         throw new Error('Sample type not found');
       }
-      
+
       // Generate sample ID
       const sampleId = await this.generateSampleId(sampleType.sampleTypeCode);
-      
+
       // Create sample
       const sample = await prisma.labSample.create({
         data: {
           sampleId,
-          orderId: validatedSample.orderId,
-          patientId: validatedSample.patientId,
-          sampleTypeId: validatedSample.sampleTypeId,
-          containerType: validatedSample.containerType,
-          volume: validatedSample.volume,
-          collectionDateTime: validatedSample.collectionDateTime,
-          collectedBy: validatedSample.collectedBy,
-          collectionSite: validatedSample.collectionSite,
-          collectionMethod: validatedSample.collectionMethod,
-          receivedDateTime: validatedSample.receivedDateTime,
-          receivedBy: validatedSample.receivedBy,
-          receivedCondition: validatedSample.receivedCondition,
-          status: validatedSample.status,
-          storageLocation: validatedSample.storageLocation,
-          parentSampleId: validatedSample.parentSampleId,
-          isAliquot: validatedSample.isAliquot,
-          processingNotes: validatedSample.processingNotes,
-          notes: validatedSample.notes
+          orderId: validatedSample.orderId;
+          patientId: validatedSample.patientId;
+          sampleTypeId: validatedSample.sampleTypeId;
+          containerType: validatedSample.containerType;
+          volume: validatedSample.volume;
+          collectionDateTime: validatedSample.collectionDateTime;
+          collectedBy: validatedSample.collectedBy;
+          collectionSite: validatedSample.collectionSite;
+          collectionMethod: validatedSample.collectionMethod;
+          receivedDateTime: validatedSample.receivedDateTime;
+          receivedBy: validatedSample.receivedBy;
+          receivedCondition: validatedSample.receivedCondition;
+          status: validatedSample.status;
+          storageLocation: validatedSample.storageLocation;
+          parentSampleId: validatedSample.parentSampleId;
+          isAliquot: validatedSample.isAliquot;
+          processingNotes: validatedSample.processingNotes;
+          notes: validatedSample.notes;
         }
       });
-      
+
       // If sample is collected, update order status if it's still in 'Ordered' status
-      if (validatedSample.collectionDateTime && order.status === 'Ordered') {
+      if (validatedSample?.collectionDateTime && order.status === 'Ordered') {
         await prisma.labOrder.update({
           where: { id: order.id },
           data: {
-            status: 'Collected',
-            collectionDateTime: validatedSample.collectionDateTime,
-            collectedBy: validatedSample.collectedBy,
-            collectionSite: validatedSample.collectionSite
+            status: 'Collected';
+            collectionDateTime: validatedSample.collectionDateTime;
+            collectedBy: validatedSample.collectedBy;
+            collectionSite: validatedSample.collectionSite;
           }
         });
       }
-      
+
       // If sample is received, update order status if it's in 'Collected' status
-      if (validatedSample.receivedDateTime && order.status === 'Collected') {
+      if (validatedSample?.receivedDateTime && order.status === 'Collected') {
         await prisma.labOrder.update({
           where: { id: order.id },
           data: {
-            status: 'In Process',
-            specimenReceivedDateTime: validatedSample.receivedDateTime,
-            receivedBy: validatedSample.receivedBy
+            status: 'In Process';
+            specimenReceivedDateTime: validatedSample.receivedDateTime;
+            receivedBy: validatedSample.receivedBy;
           }
         });
       }
-      
+
       // Log audit
       await this.auditService.logAction({
-        action: 'Create',
-        resourceType: 'LabSample',
-        resourceId: sample.id,
+        action: 'Create';
+        resourceType: 'LabSample';
+        resourceId: sample.id;
         description: `Registered lab sample: ${sample.sampleId} for order ${order.orderNumber}`,
-        performedBy: userId
+        performedBy: userId;
       });
-      
+
       return sample;
     } catch (error) {
 
@@ -662,149 +663,149 @@ export class LaboratoryService {
     try {
       // Validate result data
       const validatedResult = LabResultSchema.parse(resultData);
-      
+
       // Check if order exists
       const order = await prisma.labOrder.findUnique({
         where: { id: validatedResult.orderId }
       });
-      
+
       if (!order) {
         throw new Error('Lab order not found');
       }
-      
+
       // Check if parameter exists
       const parameter = await prisma.labTestParameter.findUnique({
         where: { id: validatedResult.parameterId },
         include: {
-          criticalRanges: true,
-          referenceRanges: true,
-          test: true
+          criticalRanges: true;
+          referenceRanges: true;
+          test: true;
         }
       });
-      
+
       if (!parameter) {
         throw new Error('Test parameter not found');
       }
-      
+
       // Check if sample exists if provided
       if (validatedResult.sampleId) {
         const sample = await prisma.labSample.findUnique({
           where: { id: validatedResult.sampleId }
         });
-        
+
         if (!sample) {
           throw new Error('Lab sample not found');
         }
       }
-      
+
       // If numeric result provided, check critical ranges
       let isCritical = validatedResult.isCritical;
       let flags = validatedResult.flags;
       let referenceRange = validatedResult.referenceRange;
-      
+
       if (validatedResult.resultValueNumeric !== undefined && parameter.criticalRanges.length > 0) {
         // Simplistic approach - in a real system would check age, gender, etc.
         const criticalRange = parameter.criticalRanges[0]
-        
-        if (criticalRange.lowerCritical &&
+
+        if (criticalRange?.lowerCritical &&
           validatedResult.resultValueNumeric < parseFloat(criticalRange.lowerCritical)) {
           isCritical = true;
           flags = flags || 'CL'; // Critical Low
-        } else if (criticalRange.upperCritical &&
+        } else if (criticalRange?.upperCritical &&
           validatedResult.resultValueNumeric > parseFloat(criticalRange.upperCritical)) {
           isCritical = true;
           flags = flags || 'CH'; // Critical High
         }
       }
-      
+
       // If numeric result provided, check reference ranges
       if (validatedResult.resultValueNumeric !== undefined && parameter.referenceRanges.length > 0) {
         // Simplistic approach - in a real system would check age, gender, etc.
         const refRange = parameter.referenceRanges[0]
-        
-        if (refRange.lowerLimit && refRange.upperLimit) {
+
+        if (refRange?.lowerLimit && refRange.upperLimit) {
           referenceRange = referenceRange || `${refRange.lowerLimit}-${refRange.upperLimit}`;
-          
-          if (refRange.lowerLimit && validatedResult.resultValueNumeric < parseFloat(refRange.lowerLimit)) {
+
+          if (refRange?.lowerLimit && validatedResult.resultValueNumeric < parseFloat(refRange.lowerLimit)) {
             flags = flags || 'L'; // Low
-          } else if (refRange.upperLimit && validatedResult.resultValueNumeric > parseFloat(refRange.upperLimit)) {
+          } else if (refRange?.upperLimit && validatedResult.resultValueNumeric > parseFloat(refRange.upperLimit)) {
             flags = flags || 'H'; // High
           }
         } else if (refRange.textualRange) {
           referenceRange = referenceRange || refRange.textualRange;
         }
       }
-      
+
       // Generate result ID
       const resultId = `RES-${order.orderNumber}-${parameter.parameterCode}`;
-      
+
       // Create result
       const result = await prisma.labResult.create({
         data: {
           resultId,
-          orderId: validatedResult.orderId,
-          sampleId: validatedResult.sampleId,
-          parameterId: validatedResult.parameterId,
-          resultValue: validatedResult.resultValue,
-          resultValueNumeric: validatedResult.resultValueNumeric,
-          units: validatedResult.units || parameter.units,
+          orderId: validatedResult.orderId;
+          sampleId: validatedResult.sampleId;
+          parameterId: validatedResult.parameterId;
+          resultValue: validatedResult.resultValue;
+          resultValueNumeric: validatedResult.resultValueNumeric;
+          units: validatedResult.units || parameter.units;
           referenceRange,
           flags,
-          interpretation: validatedResult.interpretation,
-          status: validatedResult.status,
-          performedBy: validatedResult.performedBy,
-          performedDateTime: validatedResult.performedDateTime,
-          verifiedBy: validatedResult.verifiedBy,
-          verifiedDateTime: validatedResult.verifiedDateTime,
-          reportedDateTime: validatedResult.reportedDateTime,
-          correctedResultId: validatedResult.correctedResultId,
-          correctionReason: validatedResult.correctionReason,
-          analyticalMethod: validatedResult.analyticalMethod,
-          equipmentId: validatedResult.equipmentId,
-          equipmentName: validatedResult.equipmentName,
-          batchId: validatedResult.batchId,
-          runId: validatedResult.runId,
-          dilutionFactor: validatedResult.dilutionFactor,
-          notes: validatedResult.notes,
+          interpretation: validatedResult.interpretation;
+          status: validatedResult.status;
+          performedBy: validatedResult.performedBy;
+          performedDateTime: validatedResult.performedDateTime;
+          verifiedBy: validatedResult.verifiedBy;
+          verifiedDateTime: validatedResult.verifiedDateTime;
+          reportedDateTime: validatedResult.reportedDateTime;
+          correctedResultId: validatedResult.correctedResultId;
+          correctionReason: validatedResult.correctionReason;
+          analyticalMethod: validatedResult.analyticalMethod;
+          equipmentId: validatedResult.equipmentId;
+          equipmentName: validatedResult.equipmentName;
+          batchId: validatedResult.batchId;
+          runId: validatedResult.runId;
+          dilutionFactor: validatedResult.dilutionFactor;
+          notes: validatedResult.notes;
           isCritical,
-          criticalNotifiedTo: validatedResult.criticalNotifiedTo,
-          criticalNotifiedDateTime: validatedResult.criticalNotifiedDateTime,
-          criticalNotifiedBy: validatedResult.criticalNotifiedBy,
-          criticalAcknowledgedBy: validatedResult.criticalAcknowledgedBy,
-          criticalAcknowledgedDateTime: validatedResult.criticalAcknowledgedDateTime,
+          criticalNotifiedTo: validatedResult.criticalNotifiedTo;
+          criticalNotifiedDateTime: validatedResult.criticalNotifiedDateTime;
+          criticalNotifiedBy: validatedResult.criticalNotifiedBy;
+          criticalAcknowledgedBy: validatedResult.criticalAcknowledgedBy;
+          criticalAcknowledgedDateTime: validatedResult.criticalAcknowledgedDateTime;
         }
       });
-      
+
       // Log audit
       await this.auditService.logAction({
-        action: 'Create',
-        resourceType: 'LabResult',
-        resourceId: result.id,
+        action: 'Create';
+        resourceType: 'LabResult';
+        resourceId: result.id;
         description: `Entered lab result for ${parameter.test.testName} - ${parameter.parameterName} on order ${order.orderNumber}`,
-        performedBy: userId
+        performedBy: userId;
       });
-      
+
       // Send notification for critical result
-      if (isCritical) {
+      if (isCritical != null) {
         await this.notificationService.sendNotification({
-          type: 'CriticalLabResult',
-          title: 'Critical Lab Result',
+          type: 'CriticalLabResult';
+          title: 'Critical Lab Result';
           message: `Critical lab result for ${parameter.test.testName} - ${parameter.parameterName} on order ${order.orderNumber}`,
-          priority: 'high',
+          priority: 'high';
           recipientRoles: ['Physician', 'Nurse'],
-          recipientIds: [order.orderingProviderId],
-          relatedResourceType: 'LabResult',
-          relatedResourceId: result.id,
+          recipientIds: [order.orderingProviderId];
+          relatedResourceType: 'LabResult';
+          relatedResourceId: result.id;
         });
       }
-      
+
       // Check if all required results are entered and update order status if needed
       const allOrderItems = await prisma.labOrderItem.findMany({
         where: { orderId: order.id },
         include: {
           test: {
             include: {
-              testParameters: true
+              testParameters: true;
             }
           },
           profile: {
@@ -813,7 +814,7 @@ export class LaboratoryService {
                 include: {
                   test: {
                     include: {
-                      testParameters: true
+                      testParameters: true;
                     }
                   }
                 }
@@ -822,10 +823,10 @@ export class LaboratoryService {
           }
         }
       });
-      
+
       // Collect all parameters that need results
       const requiredParameters: string[] = [];
-      
+
       for (const item of allOrderItems) {
         if (item.test) {
           // Add test parameters
@@ -845,37 +846,37 @@ export class LaboratoryService {
           });
         }
       }
-      
+
       // Get all entered results for this order
       const results = await prisma.labResult.findMany({
         where: { orderId: order.id, status: { not: 'Cancelled' } }
       });
-      
+
       const enteredParameters = results.map(r => r.parameterId);
-      
+
       // Check if all required parameters have results
       const allResultsEntered = requiredParameters.every(param => enteredParameters.includes(param));
-      
+
       // Update order status if all results are entered and status is 'In Process'
       if (allResultsEntered && order.status === 'In Process') {
         await prisma.labOrder.update({
           where: { id: order.id },
           data: { status: 'Completed' }
         })
-        
+
         // Send notification for completed order
         await this.notificationService.sendNotification({
-          type: 'LabOrderCompleted',
-          title: 'Lab Order Completed',
+          type: 'LabOrderCompleted';
+          title: 'Lab Order Completed';
           message: `All results for lab order ${order.orderNumber} have been entered`,
-          priority: 'medium',
+          priority: 'medium';
           recipientRoles: ['Physician', 'Nurse'],
-          recipientIds: [order.orderingProviderId],
-          relatedResourceType: 'LabOrder',
-          relatedResourceId: order.id,
+          recipientIds: [order.orderingProviderId];
+          relatedResourceType: 'LabOrder';
+          relatedResourceId: order.id;
         });
       }
-      
+
       return result;
     } catch (error) {
 
@@ -894,37 +895,37 @@ export class LaboratoryService {
         include: {
           parameter: {
             include: {
-              test: true
+              test: true;
             }
           },
-          order: true
+          order: true;
         }
       });
-      
+
       if (!existingResult) {
         throw new Error('Lab result not found');
       }
-      
+
       // Update result status to Final and set verification info
       const result = await prisma.labResult.update({
         where: { id: resultId },
         data: {
-          status: 'Final',
-          verifiedBy: verificationData.verifiedBy,
-          verifiedDateTime: new Date(),
-          notes: verificationData.notes ? `/* SECURITY: Template literal eliminated */
+          status: 'Final';
+          verifiedBy: verificationData.verifiedBy;
+          verifiedDateTime: new Date();
+          notes: verificationData.notes ? `/* SECURITY: Template literal eliminated */;
         }
       });
-      
+
       // Log audit
       await this.auditService.logAction({
-        action: 'Update',
-        resourceType: 'LabResult',
-        resourceId: resultId,
+        action: 'Update';
+        resourceType: 'LabResult';
+        resourceId: resultId;
         description: `Verified lab result for ${existingResult.parameter.test.testName} - ${existingResult.parameter.parameterName} on order ${existingResult.order.orderNumber}`,
-        performedBy: userId
+        performedBy: userId;
       });
-      
+
       return result;
     } catch (error) {
 
@@ -939,48 +940,48 @@ export class LaboratoryService {
     try {
       // Build where clause based on search parameters
       const where: unknown = {};
-      
+
       if (searchParams.orderNumber) {
         where.orderNumber = {
-          contains: searchParams.orderNumber,
+          contains: searchParams.orderNumber;
         };
       }
-      
+
       if (searchParams.patientId) {
         where.patientId = searchParams.patientId;
       }
-      
+
       if (searchParams.orderingProviderId) {
         where.orderingProviderId = searchParams.orderingProviderId;
       }
-      
+
       if (searchParams.status) {
         where.status = searchParams.status;
       }
-      
+
       if (searchParams.priority) {
         where.priority = searchParams.priority;
       }
-      
-      if (searchParams.startDate && searchParams.endDate) {
+
+      if (searchParams?.startDate && searchParams.endDate) {
         where.orderDateTime = {
-          gte: new Date(searchParams.startDate),
-          lte: new Date(searchParams.endDate)
+          gte: new Date(searchParams.startDate);
+          lte: new Date(searchParams.endDate);
         };
       } else if (searchParams.startDate) {
         where.orderDateTime = {
-          gte: new Date(searchParams.startDate)
+          gte: new Date(searchParams.startDate);
         };
       } else if (searchParams.endDate) {
         where.orderDateTime = {
-          lte: new Date(searchParams.endDate)
+          lte: new Date(searchParams.endDate);
         };
       }
-      
+
       // Add pagination parameters
       const skip = searchParams.page ? (searchParams.page - 1) * (searchParams.limit || 10) : 0;
       const take = searchParams.limit || 10;
-      
+
       // Perform search
       const [orders, total] = await Promise.all([
         prisma.labOrder.findMany({
@@ -988,14 +989,14 @@ export class LaboratoryService {
           include: {
             orderItems: {
               include: {
-                test: true,
-                profile: true
+                test: true;
+                profile: true;
               }
             },
             _count: {
               select: {
-                samples: true,
-                results: true
+                samples: true;
+                results: true;
               }
             }
           },
@@ -1005,21 +1006,21 @@ export class LaboratoryService {
         }),
         prisma.labOrder.count({ where })
       ]);
-      
+
       // Log audit
       await this.auditService.logAction({
-        action: 'Search',
-        resourceType: 'LabOrder',
-        description: 'Performed lab order search',
-        performedBy: userId
+        action: 'Search';
+        resourceType: 'LabOrder';
+        description: 'Performed lab order search';
+        performedBy: userId;
       });
-      
+
       return {
         orders,
         total,
-        page: searchParams.page || 1,
-        limit: take,
-        totalPages: Math.ceil(total / take)
+        page: searchParams.page || 1;
+        limit: take;
+        totalPages: Math.ceil(total / take);
       };
     } catch (error) {
 
@@ -1036,84 +1037,84 @@ export class LaboratoryService {
       const results = await prisma.labResult.findMany({
         where: {
           order: {
-            patientId: patientId
+            patientId: patientId;
           },
           status: { in: ['Final', 'Preliminary'] }
         },
         include: {
           parameter: {
             include: {
-              test: true
+              test: true;
             }
           },
           order: {
             select: {
-              orderNumber: true,
-              orderDateTime: true,
-              orderingProviderName: true
+              orderNumber: true;
+              orderDateTime: true;
+              orderingProviderName: true;
             }
           }
         },
         orderBy: [
           { performedDateTime: 'desc' }
         ],
-        take: options.limit
+        take: options.limit;
       });
-      
+
       // Log audit
       await this.auditService.logAction({
-        action: 'View',
-        resourceType: 'LabResult',
+        action: 'View';
+        resourceType: 'LabResult';
         description: `Viewed lab results for patient ${patientId}`,
-        performedBy: userId
+        performedBy: userId;
       });
-      
+
       // If not grouping by test, return the flat list
       if (!options.groupByTest) {
         return results;
       }
-      
+
       // Group results by test
       const groupedResults = results.reduce((acc, result) => {
         const testId = result.parameter.testId;
         const testName = result.parameter.test.testName;
-        
+
         if (!acc[testId]) {
           acc[testId] = {
             testId,
             testName,
-            testCode: result.parameter.test.testCode,
-            latestDate: result.performedDateTime,
-            parameters: []
+            testCode: result.parameter.test.testCode;
+            latestDate: result.performedDateTime;
+            parameters: [];
           };
         }
-        
+
         // Update latest date if this result is newer
         if (new Date(result.performedDateTime) > new Date(acc[testId].latestDate)) {
           acc[testId].latestDate = result.performedDateTime;
         }
-        
+
         // Add parameter to test
         acc[testId].parameters.push({
-          id: result.id,
-          parameterId: result.parameterId,
-          parameterName: result.parameter.parameterName,
-          resultValue: result.resultValue,
-          units: result.units,
-          referenceRange: result.referenceRange,
-          flags: result.flags,
-          isCritical: result.isCritical,
-          performedDateTime: result.performedDateTime,
-          status: result.status,
-          orderNumber: result.order.orderNumber,
-          orderDateTime: result.order.orderDateTime
+          id: result.id;
+          parameterId: result.parameterId;
+          parameterName: result.parameter.parameterName;
+          resultValue: result.resultValue;
+          units: result.units;
+          referenceRange: result.referenceRange;
+          flags: result.flags;
+          isCritical: result.isCritical;
+          performedDateTime: result.performedDateTime;
+          status: result.status;
+          orderNumber: result.order.orderNumber;
+          orderDateTime: result.order.orderDateTime;
         });
-        
+
         return acc;
       }, {} as Record<string, unknown>);
-      
+
       // Convert to array and sort by latest date
-      return Object.values(groupedResults).sort((a, b) => 
+      return Object.values(groupedResults).sort((a, b) =>
         new Date(b.latestDate).getTime() - new Date(a.latestDate).getTime();
       );
     } catch (error) {
@@ -1133,20 +1134,20 @@ export class LaboratoryService {
         startDate = new Date();
         startDate.setMonth(startDate.getMonth() - options.months);
       }
-      
+
       // Get parameter details
       const parameter = await prisma.labTestParameter.findUnique({
         where: { id: parameterId },
         include: {
-          test: true,
-          referenceRanges: true
+          test: true;
+          referenceRanges: true;
         }
       });
-      
+
       if (!parameter) {
         throw new Error('Test parameter not found');
       }
-      
+
       // Get results for the specific parameter
       const results = await prisma.labResult.findMany({
         where: {
@@ -1156,61 +1157,61 @@ export class LaboratoryService {
           },
           status: { in: ['Final', 'Preliminary'] },
           performedDateTime: startDate ? {
-            gte: startDate
+            gte: startDate;
           } : undefined;
         },
         include: {
           order: {
             select: {
-              orderNumber: true,
-              orderDateTime: true
+              orderNumber: true;
+              orderDateTime: true;
             }
           }
         },
         orderBy: { performedDateTime: 'asc' }
       });
-      
+
       // Log audit
       await this.auditService.logAction({
-        action: 'View',
-        resourceType: 'LabResult',
+        action: 'View';
+        resourceType: 'LabResult';
         description: `Viewed result trend for patient ${patientId}, test parameter ${parameter.parameterName}`,
-        performedBy: userId
+        performedBy: userId;
       });
-      
+
       // Extract reference ranges
       let referenceRanges = null;
       if (parameter.referenceRanges.length > 0) {
         // In a real system, would select the appropriate range based on patient demographics
         const refRange = parameter.referenceRanges[0];
-        if (refRange.lowerLimit && refRange.upperLimit) {
+        if (refRange?.lowerLimit && refRange.upperLimit) {
           referenceRanges = {
-            lower: parseFloat(refRange.lowerLimit),
-            upper: parseFloat(refRange.upperLimit)
+            lower: parseFloat(refRange.lowerLimit);
+            upper: parseFloat(refRange.upperLimit);
           };
         }
       }
-      
+
       // Format the response
       return {
         parameter: {
-          id: parameter.id,
-          name: parameter.parameterName,
-          units: parameter.units,
-          testName: parameter.test.testName,
-          testCode: parameter.test.testCode
+          id: parameter.id;
+          name: parameter.parameterName;
+          units: parameter.units;
+          testName: parameter.test.testName;
+          testCode: parameter.test.testCode;
         },
         referenceRanges,
         results: results.map(result => ({
-          id: result.id,
-          resultValue: result.resultValue,
-          resultValueNumeric: result.resultValueNumeric,
-          units: result.units,
-          flags: result.flags,
-          isCritical: result.isCritical,
-          performedDateTime: result.performedDateTime,
-          status: result.status,
-          orderNumber: result.order.orderNumber
+          id: result.id;
+          resultValue: result.resultValue;
+          resultValueNumeric: result.resultValueNumeric;
+          units: result.units;
+          flags: result.flags;
+          isCritical: result.isCritical;
+          performedDateTime: result.performedDateTime;
+          status: result.status;
+          orderNumber: result.order.orderNumber;
         }));
       };
     } catch (error) {

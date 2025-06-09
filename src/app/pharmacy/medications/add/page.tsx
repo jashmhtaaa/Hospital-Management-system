@@ -1,35 +1,35 @@
+
+import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 }
 
 "use client";
 export const dynamic = 'force-dynamic';
 
-import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
-import { useRouter } from "next/navigation";
-
 // Define interfaces for data structures
 interface Category {
-  id: string,
-  name: string
+  id: string;
+  name: string;
 }
 
 interface Manufacturer {
-  id: string,
-  name: string
+  id: string;
+  name: string;
 }
 
 interface MedicationFormData {
-  item_code: string,
-  generic_name: string,
-  brand_name: string,
-  category_id: string,
-  manufacturer_id: string,
-  dosage_form: string,
-  strength: string,
-  route: string,
-  unit_of_measure: string,
-  prescription_required: boolean,
-  narcotic: boolean,
-  description: string
+  item_code: string;
+  generic_name: string;
+  brand_name: string;
+  category_id: string;
+  manufacturer_id: string;
+  dosage_form: string;
+  strength: string;
+  route: string;
+  unit_of_measure: string;
+  prescription_required: boolean;
+  narcotic: boolean;
+  description: string;
 }
 
 type FormErrors = Partial<Record<keyof MedicationFormData, string>>;
@@ -40,18 +40,18 @@ const AddMedicationPage: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [manufacturers, setManufacturers] = useState<Manufacturer[]>([]);
   const [formData, setFormData] = useState<MedicationFormData>({
-    item_code: "",
-    generic_name: "",
-    brand_name: "",
-    category_id: "",
-    manufacturer_id: "",
-    dosage_form: "",
-    strength: "",
-    route: "",
-    unit_of_measure: "",
-    prescription_required: false,
-    narcotic: false,
-    description: "",
+    item_code: "";
+    generic_name: "";
+    brand_name: "";
+    category_id: "";
+    manufacturer_id: "";
+    dosage_form: "";
+    strength: "";
+    route: "";
+    unit_of_measure: "";
+    prescription_required: false;
+    narcotic: false;
+    description: "";
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitError, setSubmitError] = useState<string>("");
@@ -141,16 +141,16 @@ const AddMedicationPage: React.FC = () => {
 
     try {
       // Simulate API call
-      // const response = await fetch('/api/pharmacy/medications', {
-      //   method: 'POST',
+      // const _response = await fetch('/api/pharmacy/medications', {
+      //   method: 'POST';
       //   headers: {
       //     'Content-Type': 'application/json',
       //   },
-      //   body: JSON.stringify(formData),
+      //   body: JSON.stringify(formData);
       // })
 
       // if (!response.ok) {
-      //   const errorData = await response.json().catch(() => ({}))
+      //   const _errorData = await response.json().catch(() => ({}))
       //   throw new Error(errorData.error || 'Failed to add medication')
       // }
 
@@ -161,18 +161,18 @@ const AddMedicationPage: React.FC = () => {
 
       // Reset form
       setFormData({
-        item_code: "",
-        generic_name: "",
-        brand_name: "",
-        category_id: "",
-        manufacturer_id: "",
-        dosage_form: "",
-        strength: "",
-        route: "",
-        unit_of_measure: "",
-        prescription_required: false,
-        narcotic: false,
-        description: "",
+        item_code: "";
+        generic_name: "";
+        brand_name: "";
+        category_id: "";
+        manufacturer_id: "";
+        dosage_form: "";
+        strength: "";
+        route: "";
+        unit_of_measure: "";
+        prescription_required: false;
+        narcotic: false;
+        description: "";
       }),
       setErrors({}); // Clear errors on success
 
@@ -260,7 +260,7 @@ const AddMedicationPage: React.FC = () => {
                   errors.generic_name ? "generic_name-error" : undefined;
                 }
               />
-              {errors.generic_name && (
+              {errors?.generic_name && (
                 <p>
                   id="generic_name-error"
                   className="mt-1 text-sm text-red-500"
@@ -312,7 +312,7 @@ const AddMedicationPage: React.FC = () => {
                   errors.dosage_form ? "dosage_form-error" : undefined;
                 }
               />
-              {errors.dosage_form && (
+              {errors?.dosage_form && (
                 <p id="dosage_form-error" className="mt-1 text-sm text-red-500">;
                   {errors.dosage_form}
                 </p>
@@ -342,7 +342,7 @@ const AddMedicationPage: React.FC = () => {
                   errors.strength ? "strength-error" : undefined;
                 }
               />
-              {errors.strength && (
+              {errors?.strength && (
                 <p id="strength-error" className="mt-1 text-sm text-red-500">;
                   {errors.strength}
                 </p>
@@ -372,7 +372,7 @@ const AddMedicationPage: React.FC = () => {
                   errors.unit_of_measure ? "unit_of_measure-error" : undefined;
                 }
               />
-              {errors.unit_of_measure && (
+              {errors?.unit_of_measure && (
                 <p>
                   id="unit_of_measure-error"
                   className="mt-1 text-sm text-red-500"

@@ -1,9 +1,10 @@
-// src/app/api/auth/me/route.ts
 import { NextRequest, NextResponse } from "next/server";
+
 import { getCurrentUser } from "@/lib/auth";
+// src/app/api/auth/me/route.ts
 // import { getRequestContext } from '@cloudflare/next-on-pages'
 
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   try {
     const user = await getCurrentUser(request);
 
@@ -20,27 +21,27 @@ export const GET = async (request: NextRequest) => {
     // Mock user details for development
     // Assuming user.roles is an array and we take the first role
     const userRole =;
-      user.roles && user.roles.length > 0 ? user.roles[0] : "User"; // Adjusted to use user.roles
+      user?.roles && user.roles.length > 0 ? user.roles[0] : "User"; // Adjusted to use user.roles
 
     const userDetails = {
-      first_name: user.name?.split(" ")[0] || "Test",
-      last_name: user.name?.split(" ")[1] || "User",
-      email: user.email,
+      first_name: user.name?.split(" ")[0] || "Test";
+      last_name: user.name?.split(" ")[1] || "User";
+      email: user.email;
       role: userRole, // Use the adjusted role
-      last_login: new Date().toISOString(),
+      last_login: new Date().toISOString();
     };
 
     // Return user information
     return NextResponse.json({
       user: {
-        id: user.id,
-        email: userDetails.email,
+        id: user.id;
+        email: userDetails.email;
         name: `/* SECURITY: Template literal eliminated */
-        firstName: userDetails.first_name,
-        lastName: userDetails.last_name,
+        firstName: userDetails.first_name;
+        lastName: userDetails.last_name;
         role: userDetails.role, // This now uses the corrected role from userDetails
-        lastLogin: userDetails.last_login,
-        permissions: user.permissions || [],
+        lastLogin: userDetails.last_login;
+        permissions: user.permissions || [];
       },
     });
   } catch (error) {

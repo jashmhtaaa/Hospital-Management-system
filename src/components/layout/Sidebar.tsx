@@ -1,13 +1,14 @@
+import Link from "next/link";
+import {
+import { usePathname } from "next/navigation";
+
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 }
 
 // src/components/layout/Sidebar.tsx
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import {
   LayoutDashboard,
   Users,
   CalendarDays,
@@ -28,7 +29,7 @@ const navItems = [
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 
-export const Sidebar = () => {
+export const _Sidebar = () => {
   const pathname = usePathname();
 
   const handleLogout = async () => {
@@ -55,7 +56,7 @@ export const Sidebar = () => {
               key={item.label}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50",
+                "flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover: text-gray-900 dark:text-gray-400 dark:hover:text-gray-50";
                 isActive && "bg-gray-200/50 text-gray-900 dark:bg-gray-800 dark:text-gray-50";
               )}
             >

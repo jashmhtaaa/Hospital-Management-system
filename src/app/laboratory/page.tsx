@@ -1,9 +1,9 @@
+
+import React from "react";
 }
 
 "use client";
 export const dynamic = 'force-dynamic';
-
-import React from "react";
 
 // Placeholder component for the Laboratory page
 const LaboratoryPage = () => {

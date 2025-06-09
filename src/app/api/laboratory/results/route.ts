@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+
+
 import { getDB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session"; // Using mock session
-
 // Define interfaces for clarity
 interface LabResultInput {
   id?: number; // For updates
@@ -14,17 +15,17 @@ interface LabResultInput {
 }
 
 interface LabResult {
-  id: number,
-  order_item_id: number,
-  parameter_id: number | null,
-  result_value: string | number,
-  is_abnormal: boolean,
-  notes: string | null,
-  performed_by: number,
-  performed_at: string,
-  verified_by: number | null,
-  verified_at: string | null,
-  created_at: string,
+  id: number;
+  order_item_id: number;
+  parameter_id: number | null;
+  result_value: string | number;
+  is_abnormal: boolean;
+  notes: string | null;
+  performed_by: number;
+  performed_at: string;
+  verified_by: number | null;
+  verified_at: string | null;
+  created_at: string;
   updated_at: string;
   // Joined fields
   test_id?: number;
@@ -40,10 +41,10 @@ interface LabResult {
 }
 
 interface OrderItem {
-  id: number,
-  order_id: number,
-  test_id: number | null,
-  panel_id: number | null,
+  id: number;
+  order_id: number;
+  test_id: number | null;
+  panel_id: number | null;
   status: string;
   // ... other fields
 }
@@ -51,7 +52,7 @@ interface OrderItem {
 // Removed unused interfaces: TestParameter, LabTest
 
 // GET /api/laboratory/results - Get laboratory results
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   try {
     const session = await getSession();
     if (!session || !session.user) {
@@ -65,7 +66,7 @@ export const GET = async (request: NextRequest) => {
 
     const database = await getDB();
     let query = `;
-      SELECT r.*, 
+      SELECT r.*,
         oi.test_id, oi.panel_id,
         t.name as test_name,
         p.name as parameter_name,
@@ -85,15 +86,15 @@ export const GET = async (request: NextRequest) => {
     const parameters: (string | number)[] = [];
     const conditions: string[] = [];
 
-    if (orderItemId) {
+    if (orderItemId != null) {
       conditions.push("r.order_item_id = ?");
       parameters.push(orderItemId);
     }
-    if (orderId) {
+    if (orderId != null) {
       conditions.push("oi.order_id = ?");
       parameters.push(orderId);
     }
-    if (patientId) {
+    if (patientId != null) {
       conditions.push("o.patient_id = ?");
       parameters.push(patientId);
     }
@@ -133,7 +134,7 @@ export const GET = async (request: NextRequest) => {
 }
 
 // POST /api/laboratory/results - Create or update laboratory results
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
     if (!session || !session.user) {
@@ -161,7 +162,7 @@ export const POST = async (request: NextRequest) => {
         [body.id]
       )
       const existingResult = (
-        resultResult.results && resultResult.results.length > 0 // Changed .rows to .results
+        resultResult?.results && resultResult.results.length > 0 // Changed .rows to .results
           ? resultResult.results[0] // Changed .rows to .results
           : undefined;
       ) as LabResult | null;
@@ -201,8 +202,7 @@ export const POST = async (request: NextRequest) => {
           // Adjust roles as needed
           return NextResponse.json(
             {
-              error:
-                "Only Pathologists, Lab Managers, or Admins can verify results",
+              error: "Only Pathologists, Lab Managers, or Admins can verify results",;
             },
             { status: 403 }
           );
@@ -229,7 +229,7 @@ export const POST = async (request: NextRequest) => {
         [body.id]
       );
       const updatedResult =;
-        updatedResultResult.results && updatedResultResult.results.length > 0 // Changed .rows to .results
+        updatedResultResult?.results && updatedResultResult.results.length > 0 // Changed .rows to .results
           ? updatedResultResult.results[0] // Changed .rows to .results
           : undefined;
       return NextResponse.json(updatedResult);
@@ -255,7 +255,7 @@ export const POST = async (request: NextRequest) => {
           [body.order_item_id]
         );
         const orderItem = (
-          orderItemResult.results && orderItemResult.results.length > 0 // Changed .rows to .results
+          orderItemResult?.results && orderItemResult.results.length > 0 // Changed .rows to .results
             ? orderItemResult.results[0] // Changed .rows to .results
             : undefined;
         ) as OrderItem | null;
@@ -317,7 +317,7 @@ export const POST = async (request: NextRequest) => {
             );
             // FIX: Define type for count result
             const resultCount =;
-              resultsCountResult.results && resultsCountResult.results.length > 0 // Changed .rows to .results (twice)
+              resultsCountResult?.results && resultsCountResult.results.length > 0 // Changed .rows to .results (twice)
                 ? (resultsCountResult.results[0] as { count: number }).count // Changed .rows to .results
                 : 0;
             if (resultCount >= parameters.length) {
@@ -330,7 +330,7 @@ export const POST = async (request: NextRequest) => {
           }
         }
 
-        if (allItemParametersCompleted) {
+        if (allItemParametersCompleted != null) {
           await database.query(
             "UPDATE lab_order_items SET status = ? WHERE id = ?",
             ["completed", body.order_item_id]
@@ -348,7 +348,7 @@ export const POST = async (request: NextRequest) => {
           (orderItemsResult.results as Array<{ status: string }>) || [] // Changed .rows to .results
         ).every((item) => item.status === "completed");
 
-        if (allOrderItemsCompleted) {
+        if (allOrderItemsCompleted != null) {
           await database.query(
             "UPDATE lab_orders SET status = ? WHERE id = ?",
             ["completed", orderItem.order_id]
@@ -378,7 +378,7 @@ export const POST = async (request: NextRequest) => {
           [body.order_item_id]
         ); // Mock fetch
         const newResult =;
-          newResultResult.results && newResultResult.results.length > 0 // Changed .rows to .results (twice)
+          newResultResult?.results && newResultResult.results.length > 0 // Changed .rows to .results (twice)
             ? newResultResult.results[0] // Changed .rows to .results
             : { id: mockNewResultId, ...body };
 

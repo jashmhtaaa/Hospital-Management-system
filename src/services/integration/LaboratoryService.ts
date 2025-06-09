@@ -1,33 +1,34 @@
-import { z } from 'zod';
 import { PrismaClient } from '@prisma/client';
-import { logger } from '@/lib/logger';
-import { logAudit, AuditAction } from '@/lib/audit';
+import { z } from 'zod';
 
+
+import { logAudit, AuditAction } from '@/lib/audit';
+import { logger } from '@/lib/logger';
 // Initialize Prisma client
 const prisma = new PrismaClient();
 
 // Validation schemas
 export const LabOrderSchema = z.object({
-  encounterId: z.string().uuid(),
+  encounterId: z.string().uuid();
   tests: z.array(z.object({
-    testId: z.string().uuid(),
-    testName: z.string().min(1),
-    testCode: z.string().min(1),
-    specimenType: z.string().min(1),
+    testId: z.string().uuid();
+    testName: z.string().min(1);
+    testCode: z.string().min(1);
+    specimenType: z.string().min(1);
     priority: z.enum(['STAT', 'URGENT', 'ROUTINE']).optional(),
-    orderNotes: z.string().optional(),
+    orderNotes: z.string().optional();
   })).min(1),
 });
 
 export const LabCancelSchema = z.object({
-  orderId: z.string().uuid(),
-  reason: z.string().min(1),
+  orderId: z.string().uuid();
+  reason: z.string().min(1);
 });
 
 export const LabResultNotificationSchema = z.object({
-  orderId: z.string().uuid(),
-  notifyUserId: z.string().uuid().optional(),
-  criticalResult: z.boolean().optional(),
+  orderId: z.string().uuid();
+  notifyUserId: z.string().uuid().optional();
+  criticalResult: z.boolean().optional();
 });
 
 /**
@@ -42,18 +43,18 @@ export class LaboratoryService {
    */
   async createLabOrder(data: z.infer<typeof LabOrderSchema>, userId: string) {
     logger.info({ method: 'createLabOrder', encounterId: data.encounterId }, 'Creating laboratory order');
-    
+
     // Get encounter details
     const encounter = await prisma.encounter.findUnique({
       where: { id: data.encounterId },
       include: {
         patient: {
           select: {
-            id: true,
-            name: true,
-            mrn: true,
-            dateOfBirth: true,
-            gender: true,
+            id: true;
+            name: true;
+            mrn: true;
+            dateOfBirth: true;
+            gender: true;
           },
         },
       },
@@ -69,19 +70,19 @@ export class LaboratoryService {
     for (const test of data.tests) {
       const order = await prisma.labOrder.create({
         data: {
-          patientId: encounter.patientId,
-          encounterId: encounter.id,
-          testId: test.testId,
-          testName: test.testName,
-          testCode: test.testCode,
-          specimenType: test.specimenType,
-          priority: test.priority || 'ROUTINE',
-          status: 'ORDERED',
-          orderNotes: test.orderNotes,
-          orderedBy: userId,
-          orderedAt: new Date(),
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          patientId: encounter.patientId;
+          encounterId: encounter.id;
+          testId: test.testId;
+          testName: test.testName;
+          testCode: test.testCode;
+          specimenType: test.specimenType;
+          priority: test.priority || 'ROUTINE';
+          status: 'ORDERED';
+          orderNotes: test.orderNotes;
+          orderedBy: userId;
+          orderedAt: new Date();
+          createdAt: new Date();
+          updatedAt: new Date();
         },
       });
 
@@ -93,18 +94,18 @@ export class LaboratoryService {
         'LAB_ORDER',
         order.id,
         {
-          orderId: order.id,
-          patientId: encounter.patientId,
-          encounterId: encounter.id,
-          testId: test.testId,
-          testName: test.testName,
+          orderId: order.id;
+          patientId: encounter.patientId;
+          encounterId: encounter.id;
+          testId: test.testId;
+          testName: test.testName;
         }
       );
     }
 
     return {
-      success: true,
-      orders: createdOrders,
+      success: true;
+      orders: createdOrders;
       message: `${createdOrders.length} laboratory tests ordered successfully`,
     };
   }
@@ -117,7 +118,7 @@ export class LaboratoryService {
    */
   async cancelLabOrder(data: z.infer<typeof LabCancelSchema>, userId: string) {
     logger.info({ method: 'cancelLabOrder', orderId: data.orderId }, 'Cancelling laboratory order');
-    
+
     // Get lab order details
     const order = await prisma.labOrder.findUnique({
       where: { id: data.orderId },
@@ -136,11 +137,11 @@ export class LaboratoryService {
     const updatedOrder = await prisma.labOrder.update({
       where: { id: data.orderId },
       data: {
-        status: 'CANCELLED',
-        cancelReason: data.reason,
-        cancelledBy: userId,
-        cancelledAt: new Date(),
-        updatedAt: new Date(),
+        status: 'CANCELLED';
+        cancelReason: data.reason;
+        cancelledBy: userId;
+        cancelledAt: new Date();
+        updatedAt: new Date();
       },
     });
 
@@ -150,20 +151,20 @@ export class LaboratoryService {
       'LAB_ORDER',
       order.id,
       {
-        orderId: order.id,
-        patientId: order.patientId,
-        encounterId: order.encounterId,
-        testId: order.testId,
-        testName: order.testName,
-        reason: data.reason,
-        action: 'CANCELLED',
+        orderId: order.id;
+        patientId: order.patientId;
+        encounterId: order.encounterId;
+        testId: order.testId;
+        testName: order.testName;
+        reason: data.reason;
+        action: 'CANCELLED';
       }
     );
 
     return {
-      success: true,
-      order: updatedOrder,
-      message: 'Laboratory order cancelled successfully',
+      success: true;
+      order: updatedOrder;
+      message: 'Laboratory order cancelled successfully';
     };
   }
 
@@ -175,16 +176,16 @@ export class LaboratoryService {
    */
   async sendLabResultNotification(data: z.infer<typeof LabResultNotificationSchema>, userId: string) {
     logger.info({ method: 'sendLabResultNotification', orderId: data.orderId }, 'Sending laboratory result notification');
-    
+
     // Get lab order details
     const order = await prisma.labOrder.findUnique({
       where: { id: data.orderId },
       include: {
         patient: {
           select: {
-            id: true,
-            name: true,
-            mrn: true,
+            id: true;
+            name: true;
+            mrn: true;
           },
         },
       },
@@ -198,16 +199,16 @@ export class LaboratoryService {
     const notification = await prisma.notification.create({
       data: {
         userId: data.notifyUserId || null, // If null, will be sent to all relevant staff
-        patientId: order.patientId,
-        encounterId: order.encounterId,
-        type: 'LAB_RESULT',
+        patientId: order.patientId;
+        encounterId: order.encounterId;
+        type: 'LAB_RESULT';
         title: `Lab Result Available: ${order.testName}`,
         message: `Laboratory results for ${order.testName} are now available for patient ${order.patient.name} (${order.patient.mrn}).`,
-        priority: data.criticalResult ? 'HIGH' : 'NORMAL',
-        status: 'UNREAD',
+        priority: data.criticalResult ? 'HIGH' : 'NORMAL';
+        status: 'UNREAD';
         actionUrl: `/ipd/patients/${order.patientId}/lab-results/${order.id}`,
-        createdAt: new Date(),
-        expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 7 * 24 * 60 * 60 * 1000), // 7 days from now
+        createdAt: new Date();
+        expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 7 * 24 * 60 * 60 * 1000), // 7 days from now;
       },
     });
 
@@ -216,9 +217,9 @@ export class LaboratoryService {
       await prisma.labOrder.update({
         where: { id: data.orderId },
         data: {
-          status: 'RESULTED',
-          resultedAt: new Date(),
-          updatedAt: new Date(),
+          status: 'RESULTED';
+          resultedAt: new Date();
+          updatedAt: new Date();
         },
       });
     }
@@ -229,20 +230,20 @@ export class LaboratoryService {
       'NOTIFICATION',
       notification.id,
       {
-        notificationId: notification.id,
-        orderId: order.id,
-        patientId: order.patientId,
-        encounterId: order.encounterId,
-        testId: order.testId,
-        testName: order.testName,
-        criticalResult: data.criticalResult || false,
+        notificationId: notification.id;
+        orderId: order.id;
+        patientId: order.patientId;
+        encounterId: order.encounterId;
+        testId: order.testId;
+        testName: order.testName;
+        criticalResult: data.criticalResult || false;
       }
     );
 
     return {
-      success: true,
+      success: true;
       notification,
-      message: 'Laboratory result notification sent successfully',
+      message: 'Laboratory result notification sent successfully';
     };
   }
 
@@ -253,7 +254,7 @@ export class LaboratoryService {
    */
   async getPendingLabOrders(patientId: string) {
     logger.info({ method: 'getPendingLabOrders', patientId }, 'Getting pending laboratory orders');
-    
+
     // Get pending lab orders for the patient
     const pendingOrders = await prisma.labOrder.findMany({
       where: {
@@ -266,7 +267,7 @@ export class LaboratoryService {
     return {
       patientId,
       pendingOrders,
-      count: pendingOrders.length,
+      count: pendingOrders.length;
     };
   }
 
@@ -280,24 +281,24 @@ export class LaboratoryService {
    */
   async getLabResults(patientId: string, encounterId?: string, limit: number = 50, includeDetails: boolean = false) {
     logger.info({ method: 'getLabResults', patientId, encounterId, limit, includeDetails }, 'Getting laboratory results');
-    
+
     // Build query
     const query: unknown = {
       where: {
         patientId,
-        status: 'RESULTED',
+        status: 'RESULTED';
       },
       orderBy: { resultedAt: 'desc' },
-      take: limit,
+      take: limit;
     };
 
     // Add encounter filter if provided
-    if (encounterId) {
+    if (encounterId != null) {
       query.where.encounterId = encounterId;
     }
 
     // Add result details if requested
-    if (includeDetails) {
+    if (includeDetails != null) {
       query.include = {
         results: {
           orderBy: { createdAt: 'desc' },
@@ -309,9 +310,9 @@ export class LaboratoryService {
     const labResults = await prisma.labOrder.findMany(query);
 
     // Group by test category if results are available
-    let groupedResults = {};
+    let _groupedResults = {};
     if (labResults.length > 0 && includeDetails) {
-      groupedResults = labResults.reduce((groups, result) => {
+      _groupedResults = labResults.reduce((groups, result) => {
         const category = result.testCategory || 'Uncategorized';
         const group = groups[category] || [];
         group.push(result);
@@ -322,10 +323,10 @@ export class LaboratoryService {
 
     return {
       patientId,
-      encounterId: encounterId || null,
+      encounterId: encounterId || null;
       labResults,
-      groupedResults: includeDetails ? groupedResults : null,
-      count: labResults.length,
+      _groupedResults: includeDetails ? _groupedResults : null;
+      count: labResults.length;
     };
   }
 
@@ -337,18 +338,18 @@ export class LaboratoryService {
    */
   async getLabResultDetails(orderId: string, userId: string) {
     logger.info({ method: 'getLabResultDetails', orderId }, 'Getting laboratory result details');
-    
+
     // Get lab order with results
     const labOrder = await prisma.labOrder.findUnique({
       where: { id: orderId },
       include: {
         patient: {
           select: {
-            id: true,
-            name: true,
-            mrn: true,
-            dateOfBirth: true,
-            gender: true,
+            id: true;
+            name: true;
+            mrn: true;
+            dateOfBirth: true;
+            gender: true;
           },
         },
         results: {
@@ -373,10 +374,10 @@ export class LaboratoryService {
       orderId,
       {
         orderId,
-        patientId: labOrder.patientId,
-        encounterId: labOrder.encounterId,
-        testId: labOrder.testId,
-        testName: labOrder.testName,
+        patientId: labOrder.patientId;
+        encounterId: labOrder.encounterId;
+        testId: labOrder.testId;
+        testName: labOrder.testName;
       }
     );
 

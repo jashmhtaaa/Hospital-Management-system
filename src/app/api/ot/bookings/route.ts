@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { D1Database } from "@cloudflare/workers-types";
 
-export const runtime = "edge";
+import { D1Database } from "@cloudflare/workers-types";
+import { NextRequest, NextResponse } from "next/server";
+export const _runtime = "edge";
 
 // Interface for the POST request body
 interface OTBookingBody {
@@ -19,7 +19,7 @@ interface OTBookingBody {
 }
 
 // GET /api/ot/bookings - List OT bookings
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const theatreId = searchParams.get("theatreId");
@@ -33,10 +33,10 @@ export const GET = async (request: NextRequest) => {
     const DB = process.env.DB as unknown as D1Database
     let query = `;
       SELECT;
-        b.id, b.scheduled_start_time, b.scheduled_end_time, b.status, b.priority, 
-        p.name as patient_name, p.mrn as patient_mrn, 
-        s.name as surgery_name, 
-        t.name as theatre_name, 
+        b.id, b.scheduled_start_time, b.scheduled_end_time, b.status, b.priority,
+        p.name as patient_name, p.mrn as patient_mrn,
+        s.name as surgery_name,
+        t.name as theatre_name,
         u_surgeon.name as surgeon_name;
       FROM OTBookings b;
       JOIN Patients p ON b.patient_id = p.id;
@@ -47,27 +47,27 @@ export const GET = async (request: NextRequest) => {
     const conditions: string[] = [];
     const parameters: string[] = [];
 
-    if (theatreId) {
+    if (theatreId != null) {
       conditions.push("b.theatre_id = ?");
       parameters.push(theatreId);
     }
-    if (surgeonId) {
+    if (surgeonId != null) {
       conditions.push("b.lead_surgeon_id = ?");
       parameters.push(surgeonId);
     }
-    if (patientId) {
+    if (patientId != null) {
       conditions.push("b.patient_id = ?");
       parameters.push(patientId);
     }
-    if (status) {
+    if (status != null) {
       conditions.push("b.status = ?");
       parameters.push(status);
     }
-    if (startDate) {
+    if (startDate != null) {
       conditions.push("date(b.scheduled_start_time) >= date(?)");
       parameters.push(startDate);
     }
-    if (endDate) {
+    if (endDate != null) {
       conditions.push("date(b.scheduled_start_time) <= date(?)");
       parameters.push(endDate);
     }
@@ -95,7 +95,7 @@ export const GET = async (request: NextRequest) => {
 }
 
 // POST /api/ot/bookings - Create a new OT booking
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     const body = (await request.json()) as OTBookingBody;
     const {
@@ -135,8 +135,8 @@ export const POST = async (request: NextRequest) => {
 
     await DB.prepare(
       `INSERT INTO OTBookings (
-        id, patient_id, surgery_type_id, theatre_id, lead_surgeon_id, anesthesiologist_id, 
-        scheduled_start_time, scheduled_end_time, booking_type, priority, status, 
+        id, patient_id, surgery_type_id, theatre_id, lead_surgeon_id, anesthesiologist_id,
+        scheduled_start_time, scheduled_end_time, booking_type, priority, status,
         booking_notes, created_by_id, created_at, updated_at;
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     );
@@ -163,10 +163,10 @@ export const POST = async (request: NextRequest) => {
     const { results } = await DB.prepare(
       `
         SELECT;
-            b.*, 
-            p.name as patient_name, 
-            s.name as surgery_name, 
-            t.name as theatre_name, 
+            b.*,
+            p.name as patient_name,
+            s.name as surgery_name,
+            t.name as theatre_name,
             u_surgeon.name as surgeon_name,
             u_anes.name as anesthesiologist_name;
         FROM OTBookings b;

@@ -1,9 +1,9 @@
+import React, { useState, useEffect } from "react";
+import {
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react";
-import {
   Table,
   TableBody,
   TableCell,
@@ -18,13 +18,13 @@ import { Edit, Trash2, Activity, WifiOff } from "lucide-react";
 
 // Mock data structure - replace with actual API response type
 interface Theatre {
-  id: string,
-  name: string,
-  location: string | null,
-  specialty: string | null,
-  status: string,
+  id: string;
+  name: string;
+  location: string | null;
+  specialty: string | null;
+  status: string;
   updated_at: string
-export default const OTTheatreList = () {
+export default const _OTTheatreList = () {
   const [theatres, setTheatres] = useState<Theatre[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>();
@@ -36,47 +36,47 @@ export default const OTTheatreList = () {
         setError(undefined);
 
         // Replace with actual API call
-        // const response = await fetch("/api/ot/theatres")
+        // const _response = await fetch("/api/ot/theatres")
         // if (!response.ok) {
         //   throw new Error("Failed to fetch theatres")
         // }
-        // const data = await response.json()
+        // const _data = await response.json()
         // setTheatres(data)
 
         // Mock data for demonstration
         await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
         const mockData: Theatre[] = [
           {
-            id: "theatre-1",
-            name: "OT-1",
+            id: "theatre-1";
+            name: "OT-1";
             location: "Floor 2, Wing A",
-            specialty: "General Surgery",
-            status: "available",
-            updated_at: "2025-04-28T10:00:00Z",
+            specialty: "General Surgery";
+            status: "available";
+            updated_at: "2025-04-28T10:00:00Z";
           },
           {
-            id: "theatre-2",
-            name: "OT-2",
+            id: "theatre-2";
+            name: "OT-2";
             location: "Floor 2, Wing A",
-            specialty: "Orthopedics",
-            status: "in_use",
-            updated_at: "2025-04-28T09:30:00Z",
+            specialty: "Orthopedics";
+            status: "in_use";
+            updated_at: "2025-04-28T09:30:00Z";
           },
           {
-            id: "theatre-3",
-            name: "OT-3",
+            id: "theatre-3";
+            name: "OT-3";
             location: "Floor 2, Wing B",
-            specialty: "Cardiology",
-            status: "maintenance",
-            updated_at: "2025-04-27T15:00:00Z",
+            specialty: "Cardiology";
+            status: "maintenance";
+            updated_at: "2025-04-27T15:00:00Z";
           },
           {
-            id: "theatre-4",
-            name: "OT-4 (Hybrid)",
+            id: "theatre-4";
+            name: "OT-4 (Hybrid)";
             location: "Floor 3, Wing C",
-            specialty: "Neurosurgery",
-            status: "available",
-            updated_at: "2025-04-28T11:00:00Z",
+            specialty: "Neurosurgery";
+            status: "available";
+            updated_at: "2025-04-28T11:00:00Z";
           },
         ];
         setTheatres(mockData),

@@ -1,15 +1,16 @@
-
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import {
+
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { 
-  Video, 
-  VideoOff, 
-  Mic, 
-  MicOff, 
-  Phone, 
+
+  Video,
+  VideoOff,
+  Mic,
+  MicOff,
+  Phone,
   PhoneOff,
   Monitor,
   Camera,
@@ -55,7 +56,7 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
   useEffect(() => {
     fetchSession();
     initializeWebRTC();
-    
+
     // Session timer
     const timer = setInterval(() => {
       setSessionDuration(prev => prev + 1);
@@ -73,7 +74,7 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
       const data = await response.json();
       setSession(data.session);
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     }
   };
 
@@ -81,8 +82,8 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
     try {
       // Get user media
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true
+        video: true;
+        audio: true;
       });
 
       localStreamRef.current = stream;
@@ -115,12 +116,12 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
       peerConnection.onicecandidate = (event) => {
         if (event.candidate) {
           // Send candidate to remote peer via signaling server
-          /* SECURITY: Console statement removed */
+          /* SECURITY: Console statement removed */;
         }
       };
 
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     }
   };
 
@@ -136,7 +137,7 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
   const toggleVideo = () => {
     if (localStreamRef.current) {
       const videoTrack = localStreamRef.current.getVideoTracks()[0];
-      if (videoTrack) {
+      if (videoTrack != null) {
         videoTrack.enabled = !videoTrack.enabled;
         setIsVideoEnabled(videoTrack.enabled);
       }
@@ -146,7 +147,7 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
   const toggleAudio = () => {
     if (localStreamRef.current) {
       const audioTrack = localStreamRef.current.getAudioTracks()[0];
-      if (audioTrack) {
+      if (audioTrack != null) {
         audioTrack.enabled = !audioTrack.enabled;
         setIsAudioEnabled(audioTrack.enabled);
       }
@@ -156,18 +157,18 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
   const startScreenShare = async () => {
     try {
       const screenStream = await navigator.mediaDevices.getDisplayMedia({
-        video: true,
-        audio: true
+        video: true;
+        audio: true;
       });
 
       // Replace video track with screen share
-      if (peerConnectionRef.current && localStreamRef.current) {
+      if (peerConnectionRef?.current && localStreamRef.current) {
         const videoTrack = screenStream.getVideoTracks()[0];
-        const sender = peerConnectionRef.current.getSenders().find(s => 
-          s.track && s.track.kind === 'video'
+        const sender = peerConnectionRef.current.getSenders().find(s =>
+          s?.track && s.track.kind === 'video'
         );
-        
-        if (sender) {
+
+        if (sender != null) {
           await sender.replaceTrack(videoTrack);
           setIsScreenSharing(true);
         }
@@ -179,8 +180,8 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
         // Switch back to camera
         if (localStreamRef.current) {
           const cameraTrack = localStreamRef.current.getVideoTracks()[0];
-          const sender = peerConnectionRef.current?.getSenders().find(s => 
-            s.track && s.track.kind === 'video'
+          const sender = peerConnectionRef.current?.getSenders().find(s =>
+            s?.track && s.track.kind === 'video'
           );
           if (sender && cameraTrack) {
             sender.replaceTrack(cameraTrack);
@@ -188,35 +189,35 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
         }
       };
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     }
   };
 
   const endSession = async () => {
     try {
       await fetch(`/api/telemedicine/sessions/${sessionId}/end`, {
-        method: 'PUT',
+        method: 'PUT';
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           consultationNotes,
-          duration: sessionDuration
+          duration: sessionDuration;
         })
       });
 
       cleanupWebRTC();
       // Navigate away or show end session UI
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     }
   };
 
   const sendMessage = () => {
     if (newMessage.trim()) {
       const message = {
-        id: crypto.getRandomValues(new Uint32Array(1))[0].toString(),
-        text: newMessage,
+        id: crypto.getRandomValues(new Uint32Array(1))[0].toString();
+        text: newMessage;
         sender: 'doctor', // or 'patient' based on user role
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString();
       };
       setChatMessages([...chatMessages, message]);
       setNewMessage('');
@@ -248,7 +249,7 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
             <Clock className="h-3 w-3" />
             <span>{formatDuration(sessionDuration)}</span>
           </Badge>
-          <Badge 
+          <Badge
             className={session.status === 'IN_PROGRESS' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}
           >
             {session.status}
@@ -266,7 +267,7 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
             playsInline
             className="w-full h-full object-cover bg-gray-800"
           />
-          
+
           {/* Local Video (Picture-in-Picture) */}
           <div className="absolute top-4 right-4 w-48 h-36 bg-gray-800 rounded-lg overflow-hidden">
             <video
@@ -288,7 +289,7 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
             >
               {isVideoEnabled ? <Video className="h-5 w-5" /> : <VideoOff className="h-5 w-5" />}
             </Button>
-            
+
             <Button
               size="lg"
               variant={isAudioEnabled ? "default" : "destructive"}
@@ -297,7 +298,7 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
             >
               {isAudioEnabled ? <Mic className="h-5 w-5" /> : <MicOff className="h-5 w-5" />}
             </Button>
-            
+
             <Button
               size="lg"
               variant={isScreenSharing ? "secondary" : "outline"}
@@ -306,7 +307,7 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
             >
               <Monitor className="h-5 w-5" />
             </Button>
-            
+
             <Button
               size="lg"
               variant="destructive"
@@ -340,8 +341,8 @@ const TelemedicineConsultation: React.FC<{ sessionId: string }> = ({ sessionId }
               {chatMessages.map((message) => (
                 <div key={message.id} className={`flex ${message.sender === 'doctor' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-xs px-3 py-2 rounded-lg text-sm ${
-                    message.sender === 'doctor' 
-                      ? 'bg-blue-500 text-white' 
+                    message.sender === 'doctor'
+                      ? 'bg-blue-500 text-white'
                       : 'bg-gray-200 text-gray-800'
                   }`}>
                     {message.text}

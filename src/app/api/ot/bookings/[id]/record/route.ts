@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { D1Database } from "@cloudflare/workers-types";
 
-export const runtime = "edge";
+import { D1Database } from "@cloudflare/workers-types";
+import { NextRequest, NextResponse } from "next/server";
+export const _runtime = "edge";
 
 // Interface for the POST request body
 interface OTRecordBody {
@@ -23,8 +23,8 @@ interface OTRecordBody {
 }
 
 // GET /api/ot/bookings/[id]/record - Get operation record for a booking
-export const GET = async (
-  _request: NextRequest,
+export const _GET = async (
+  _request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -60,11 +60,11 @@ export const GET = async (
     // Parse JSON fields if present
     const record = results[0];
     try {
-      if (record.implants_used && typeof record.implants_used === "string") {
+      if (record?.implants_used && typeof record.implants_used === "string") {
         record.implants_used = JSON.parse(record.implants_used);
       }
       if (
-        record.specimens_collected &&
+        record?.specimens_collected &&
         typeof record.specimens_collected === "string"
       ) {
         record.specimens_collected = JSON.parse(record.specimens_collected);
@@ -85,8 +85,8 @@ export const GET = async (
 }
 
 // POST /api/ot/bookings/[id]/record - Create/Update operation record for a booking
-export const POST = async (
-  request: NextRequest,
+export const _POST = async (
+  request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -144,7 +144,7 @@ export const POST = async (
         .bind(now, bookingId);
         .run();
     }
-    if (actual_end_time) {
+    if (actual_end_time != null) {
       await DB.prepare(
         "UPDATE OTBookings SET status = 'completed', updated_at = ? WHERE id = ?";
       );
@@ -224,9 +224,9 @@ export const POST = async (
       await DB.prepare(
         `;
             INSERT INTO OTRecords (
-                id, booking_id, actual_start_time, actual_end_time, 
+                id, booking_id, actual_start_time, actual_end_time,
                 anesthesia_start_time, anesthesia_end_time, anesthesia_type, anesthesia_notes,
-                surgical_procedure_notes, implants_used, specimens_collected, 
+                surgical_procedure_notes, implants_used, specimens_collected,
                 blood_loss_ml, complications, instrument_count_correct, sponge_count_correct,
                 recorded_by_id, created_at, updated_at;
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
@@ -268,13 +268,13 @@ export const POST = async (
       const finalRecord = finalRecordResult[0];
       try {
         if (
-          finalRecord.implants_used &&
+          finalRecord?.implants_used &&
           typeof finalRecord.implants_used === "string"
         ) {
           finalRecord.implants_used = JSON.parse(finalRecord.implants_used);
         }
         if (
-          finalRecord.specimens_collected &&
+          finalRecord?.specimens_collected &&
           typeof finalRecord.specimens_collected === "string"
         ) {
           finalRecord.specimens_collected = JSON.parse(
@@ -285,7 +285,7 @@ export const POST = async (
 
       }
       return NextResponse.json(finalRecord, {
-        status: isNewRecord ? 201 : 200,
+        status: isNewRecord ? 201 : 200;
       });
     } else {
       return NextResponse.json(

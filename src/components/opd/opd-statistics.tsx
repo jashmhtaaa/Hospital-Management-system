@@ -1,23 +1,23 @@
+
+import Image from "next/image";
+import React, { useState, useEffect } from "react";
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
-
 interface OPDStatisticsProperties {
-  date: Date
+  date: Date;
 }
 
 interface StatisticsData {
-  totalAppointments: number,
-  checkedIn: number,
-  completed: number,
-  cancelled: number,
+  totalAppointments: number;
+  checkedIn: number;
+  completed: number;
+  cancelled: number;
   averageWaitTime: number; // in minutes
   doctorPerformance: {
-    doctorName: string,
-    patientsServed: number,
+    doctorName: string;
+    patientsServed: number;
     averageConsultationTime: number; // in minutes
   }[];
 }
@@ -28,7 +28,7 @@ type StatisticsApiResponse = StatisticsData;
 
 interface ApiErrorResponse {
   error?: string;
-export default const OPDStatistics = ({ date }: OPDStatisticsProperties) {
+export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
   const [statistics, setStatistics] = useState<StatisticsData | null>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>();
@@ -80,11 +80,11 @@ export default const OPDStatistics = ({ date }: OPDStatisticsProperties) {
     fetchStatistics();
   }, [date]);
 
-  if (loading) {
+  if (loading != null) {
     return <div className="text-center p-4">Loading statistics...</div>;
   }
 
-  if (error) {
+  if (error != null) {
     return <div className="text-red-500 p-4">Error: {error}</div>;
   }
 

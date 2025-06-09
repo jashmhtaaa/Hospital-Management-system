@@ -3,8 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Define interface for Pre-Authorization data
 interface PreAuthorization {
-  id: number | string,
-  patient_insurance_id: number | string,
+  _id: number | string;
+  patient_insurance_id: number | string;
   requested_procedure: string;
   estimated_cost?: number | undefined;
   request_date: string; // ISO string
@@ -24,39 +24,39 @@ interface PreAuthorization {
 // FIX: Changed let to const for prefer-const rule
 const mockPreAuths: PreAuthorization[] = [
   {
-    id: 1,
-    patient_insurance_id: 101,
-    requested_procedure: "Appendectomy",
-    estimated_cost: 150_000,
+    _id: 1;
+    patient_insurance_id: 101;
+    requested_procedure: "Appendectomy";
+    estimated_cost: 150_000;
     request_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days ago
     status: "Approved", // e.g., "Pending", "Approved", "Rejected", "More Info Required"
-    authorization_number: "AUTH12345",
-    approved_amount: 140_000,
+    authorization_number: "AUTH12345";
+    approved_amount: 140_000;
     expiry_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 25 * 24 * 60 * 60 * 1000).toISOString(), // Expires in 25 days
-    notes: "Approved with co-pay.",
-    created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 5 * 24 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 24 * 60 * 60 * 1000).toISOString(), // Updated 3 days ago
+    notes: "Approved with co-pay.";
+    created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 5 * 24 * 60 * 60 * 1000).toISOString();
+    updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 24 * 60 * 60 * 1000).toISOString(), // Updated 3 days ago;
   },
   {
-    id: 2,
-    patient_insurance_id: 102,
-    requested_procedure: "MRI Brain",
-    estimated_cost: 15_000,
+    _id: 2;
+    patient_insurance_id: 102;
+    requested_procedure: "MRI Brain";
+    estimated_cost: 15_000;
     request_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
-    status: "Pending",
-    authorization_number: undefined,
-    approved_amount: undefined,
-    expiry_date: undefined,
-    notes: "Awaiting review.",
-    created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 2 * 24 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    status: "Pending";
+    authorization_number: undefined;
+    approved_amount: undefined;
+    expiry_date: undefined;
+    notes: "Awaiting review.";
+    created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 2 * 24 * 60 * 60 * 1000).toISOString();
+    updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 2 * 24 * 60 * 60 * 1000).toISOString();
   },
 ];
 let nextPreAuthId = 3;
 
 // Define interface for pre-authorization creation input
 interface PreAuthorizationInput {
-  patient_insurance_id: number | string,
+  patient_insurance_id: number | string;
   requested_procedure: string;
   estimated_cost?: number;
   request_date?: string; // Optional, defaults to now
@@ -88,7 +88,7 @@ async const getPreAuthorizationsFromDB = (
   filters: PreAuthorizationFilters = {}
 ) {
 
-    "Simulating DB fetch for pre-authorizations with filters:",
+    "Simulating DB fetch for pre-authorizations with filters: ";
     filters
   );
   let filteredPreAuths = [...mockPreAuths];
@@ -128,9 +128,9 @@ async const getPreAuthorizationsFromDB = (
 }
 
 // Helper function to simulate DB interaction (GET by ID) - Belongs in [id]/route.ts
-// async function getPreAuthorizationByIdFromDB(id: number) { // Unused function
+// async function getPreAuthorizationByIdFromDB(_id: number): unknown { // Unused function
 //   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-//   const preAuth = mockPreAuths.find(pa => pa.id === id)
+//   const _preAuth = mockPreAuths.find(pa => pa._id === id)
 //   if (!preAuth) {
 //     throw new Error("Pre-authorization request not found")
 //   }
@@ -146,36 +146,36 @@ async const createPreAuthorizationInDB = (
   const now = new Date().toISOString()
   // FIX: Ensure created object matches PreAuthorization interface
   const newPreAuth: PreAuthorization = {
-    id: nextPreAuthId++,
-    patient_insurance_id: data.patient_insurance_id,
-    requested_procedure: data.requested_procedure,
+    _id: nextPreAuthId++;
+    patient_insurance_id: data.patient_insurance_id;
+    requested_procedure: data.requested_procedure;
     estimated_cost: data.estimated_cost ?? undefined, // Use nullish coalescing for optional number
-    request_date: data.request_date || now,
-    status: "Pending",
-    authorization_number: undefined,
-    approved_amount: undefined,
-    expiry_date: undefined,
+    request_date: data.request_date || now;
+    status: "Pending";
+    authorization_number: undefined;
+    approved_amount: undefined;
+    expiry_date: undefined;
     notes: data.notes || undefined, // Use null for optional string
-    referring_doctor_id: data.referring_doctor_id || undefined,
-    diagnosis_code: data.diagnosis_code || undefined,
-    rejection_reason: undefined,
-    created_at: now,
-    updated_at: now,
+    referring_doctor_id: data.referring_doctor_id || undefined;
+    diagnosis_code: data.diagnosis_code || undefined;
+    rejection_reason: undefined;
+    created_at: now;
+    updated_at: now;
   };
   mockPreAuths.push(newPreAuth);
   return newPreAuth;
 }
 
 // Helper function to simulate DB interaction (PUT) - Belongs in [id]/route.ts
-// async function updatePreAuthorizationInDB(id: number, data: PreAuthorizationUpdateInput) { // Unused function
+// async function updatePreAuthorizationInDB(_id: number, data: PreAuthorizationUpdateInput): unknown { // Unused function
 //   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-//   const preAuthIndex = mockPreAuths.findIndex(pa => pa.id === id)
-//   if (preAuthIndex === -1) {
+//   const _preAuthIndex = mockPreAuths.findIndex(pa => pa._id === id)
+//   if (_preAuthIndex === -1) {
 //     throw new Error("Pre-authorization request not found")
 //   }
 //   const now = new Date().toISOString()
 //   // FIX: Ensure updated object matches PreAuthorization interface
-//   const updatedPreAuth = {
+//   const _updatedPreAuth = {
 //     ...mockPreAuths[preAuthIndex],
 //     ...data,
 //     approved_amount: data.approved_amount === undefined ? null : data.approved_amount, // Allow null
@@ -193,10 +193,10 @@ export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const filters: PreAuthorizationFilters = {
-      status: searchParams.get("status") ?? undefined,
-      patient_insurance_id: searchParams.get("patient_insurance_id") ?? undefined,
-      date_from: searchParams.get("date_from") ?? undefined,
-      date_to: searchParams.get("date_to") ?? undefined,
+      status: searchParams.get("status") ?? undefined;
+      patient_insurance_id: searchParams.get("patient_insurance_id") ?? undefined;
+      date_from: searchParams.get("date_from") ?? undefined;
+      date_to: searchParams.get("date_to") ?? undefined;
     };
 
     const preAuthorizations = await getPreAuthorizationsFromDB(filters);
@@ -209,8 +209,8 @@ export const GET = async (request: NextRequest) => {
     }
     return NextResponse.json(
       {
-        error: "Failed to fetch pre-authorization requests",
-        details: errorMessage,
+        error: "Failed to fetch pre-authorization requests";
+        details: errorMessage;
       },
       { status: 500 }
     );
@@ -231,8 +231,7 @@ export const POST = async (request: NextRequest) => {
     if (!preAuthData.patient_insurance_id || !preAuthData.requested_procedure) {
       return NextResponse.json(
         {
-          error:
-            "Missing required fields (patient_insurance_id, requested_procedure)",
+          error: "Missing required fields (patient_insurance_id, requested_procedure)",;
         },
         { status: 400 }
       )
@@ -250,8 +249,8 @@ export const POST = async (request: NextRequest) => {
     }
     return NextResponse.json(
       {
-        error: "Failed to create pre-authorization request",
-        details: errorMessage,
+        error: "Failed to create pre-authorization request";
+        details: errorMessage;
       },
       { status: 500 }
     );

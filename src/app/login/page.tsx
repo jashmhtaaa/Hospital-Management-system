@@ -1,15 +1,16 @@
+import Image from "next/image";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation"; // Use next/navigation for App Router
+
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast"; // Assuming use-toast hook is available from template
 }
 
 // src/app/login/page.tsx
 "use client"; // Add this directive for client-side interactivity
-
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation"; // Use next/navigation for App Router
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import Image from "next/image";
-import { useToast } from "@/hooks/use-toast"; // Assuming use-toast hook is available from template
 
 // Define interface for the expected API response
 interface LoginApiResponse {
@@ -19,7 +20,7 @@ interface LoginApiResponse {
     // Add other user properties if known/needed
   };
   // Add other potential properties
-export default const LoginPage = () {
+export default const _LoginPage = () {
   const router = useRouter();
   const { toast } = useToast();
   const [identifier, setIdentifier] = useState("");
@@ -34,7 +35,7 @@ export default const LoginPage = () {
 
     try {
       const response = await fetch("/api/auth/login", {
-        method: "POST",
+        method: "POST";
         headers: {
           "Content-Type": "application/json",
         },
@@ -50,7 +51,7 @@ export default const LoginPage = () {
 
       // Login successful
       toast({
-        title: "Login Successful",
+        title: "Login Successful";
         description: `Welcome back, ${data.user?.username || "user"}!`, // Use optional chaining
       });
 
@@ -62,9 +63,9 @@ export default const LoginPage = () {
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
       setError(message),
       toast({
-        title: "Login Failed",
-        description: message,
-        variant: "destructive",
+        title: "Login Failed";
+        description: message;
+        variant: "destructive";
       });
     } finally {
       setIsLoading(false);

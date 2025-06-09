@@ -1,12 +1,13 @@
+import express from 'express';
+import http from 'http';
 import { ApolloGateway, IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway';
 import { ApolloServer } from 'apollo-server-express';
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
-import express from 'express';
-import http from 'http';
-import { authService } from '@/lib/security/auth.service';
-import { metricsCollector } from '@/lib/monitoring/metrics-collector';
-import { logger } from '@/lib/core/logging';
 
+
+import { authService } from '@/lib/security/auth.service';
+import { logger } from '@/lib/core/logging';
+import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 // Custom data source class that includes auth headers in requests to services
 class AuthenticatedDataSource extends RemoteGraphQLDataSource {
   willSendRequest({ request, context }) {
@@ -36,13 +37,13 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
     // Track response metrics
     const operationName = request.operationName || 'unknown';
     const serviceName = this.url.split('/').pop() || 'unknown';
-    
+
     metricsCollector.recordTimer(
-      'graphql.federation.service_response_time', 
+      'graphql.federation.service_response_time',
       context.startTime ? crypto.getRandomValues(new Uint32Array(1))[0] - context.startTime : 0,
       {
-        service: serviceName,
-        operation: operationName
+        service: serviceName;
+        operation: operationName;
       }
     );
 
@@ -53,24 +54,24 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
     // Log and track errors
     const operationName = request.operationName || 'unknown';
     const serviceName = this.url.split('/').pop() || 'unknown';
-    
+
     logger.error(`GraphQL federation error in service ${serviceName} for operation ${operationName}:`, {
-      error: error.message,
-      stack: error.stack,
+      error: error.message;
+      stack: error.stack;
       operationName,
       serviceName,
-      userId: context.user?.id,
-      requestId: context.requestId,
-      correlationId: context.correlationId
+      userId: context.user?.id;
+      requestId: context.requestId;
+      correlationId: context.correlationId;
     });
-    
+
     metricsCollector.incrementCounter('graphql.federation.errors', 1, {
-      service: serviceName,
-      operation: operationName,
-      errorType: error.name || 'UnknownError'
+      service: serviceName;
+      operation: operationName;
+      errorType: error.name || 'UnknownError';
     });
   }
-export const createGraphQLFederationServer = async (app: express.Application) => {
+export const _createGraphQLFederationServer = async (app: express.Application) => {
   // Get the HTTP server instance
   const httpServer = http.createServer(app);
 
@@ -90,7 +91,7 @@ export const createGraphQLFederationServer = async (app: express.Application) =>
   // Create the gateway
   const gateway = new ApolloGateway({
     supergraphSdl: new IntrospectAndCompose({
-      subgraphs: serviceList,
+      subgraphs: serviceList;
       pollIntervalInMs: 60000, // Poll for schema changes every minute
       introspectionHeaders: {
         'x-api-key': process.env.INTERNAL_API_KEY || 'internal-federation-key'
@@ -101,29 +102,29 @@ export const createGraphQLFederationServer = async (app: express.Application) =>
     },
     experimental_didUpdateComposition: ({ graphRef, supergraphSdl, isInitialComposition }) => {
       // Log when schema composition is updated
-      logger.info(`GraphQL federation schema ${isInitialComposition ? 'initialized' : 'updated'}`, { 
+      logger.info(`GraphQL federation schema ${isInitialComposition ? 'initialized' : 'updated'}`, {
         graphRef,
-        schemaLength: supergraphSdl.length,
-        timestamp: new Date().toISOString()
+        schemaLength: supergraphSdl.length;
+        timestamp: new Date().toISOString();
       });
 
       // Track metrics
       metricsCollector.incrementCounter('graphql.federation.schema_updates', 1, {
-        isInitial: isInitialComposition.toString()
+        isInitial: isInitialComposition.toString();
       });
     },
     experimental_didFailComposition: ({ graphRef, errors, isInitialComposition }) => {
       // Log schema composition errors
       logger.error(`GraphQL federation schema composition failed`, {
         graphRef,
-        errors: errors.map(e => e.message),
+        errors: errors.map(e => e.message);
         isInitialComposition,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString();
       });
 
       // Track metrics
       metricsCollector.incrementCounter('graphql.federation.schema_errors', 1, {
-        isInitial: isInitialComposition.toString()
+        isInitial: isInitialComposition.toString();
       });
     }
   });
@@ -136,24 +137,24 @@ export const createGraphQLFederationServer = async (app: express.Application) =>
       const requestId = req.headers['x-request-id'] ||;
         `req-${crypto.getRandomValues(new Uint32Array(1))[0]}-${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 10)}`;
       const correlationId = req.headers['x-correlation-id'] || requestId;
-      
+
       // Authenticate the request
       const authToken = req.headers.authorization;
       let user = null;
-      
+
       if (authToken && authToken.startsWith('Bearer ')) {
         try {
           user = await authService.validateToken(authToken.replace('Bearer ', ''));
         } catch (error) {
-          logger.warn('Invalid auth token in GraphQL request', { 
+          logger.warn('Invalid auth token in GraphQL request', {
             requestId,
             correlationId,
-            error: error.message
+            error: error.message;
           });
         }
       }
-      
-      return { 
+
+      return {
         authToken,
         user,
         requestId,
@@ -167,56 +168,56 @@ export const createGraphQLFederationServer = async (app: express.Application) =>
         async requestDidStart({ request, context }) {
           // Log request start
           const operationName = request.operationName || 'unknown';
-          
+
           logger.debug(`GraphQL federation request started: ${operationName}`, {
             operationName,
-            requestId: context.requestId,
-            correlationId: context.correlationId,
-            userId: context.user?.id
+            requestId: context.requestId;
+            correlationId: context.correlationId;
+            userId: context.user?.id;
           });
-          
+
           return {
             async willSendResponse({ response }) {
               // Record request metrics on completion
               const duration = crypto.getRandomValues(new Uint32Array(1))[0] - context.startTime;
-              
+
               metricsCollector.recordTimer('graphql.federation.request_time', duration, {
-                operation: operationName,
-                hasErrors: (response.errors?.length > 0).toString()
+                operation: operationName;
+                hasErrors: (response.errors?.length > 0).toString();
               });
-              
+
               // Log completion
               logger.debug(`GraphQL federation request completed: ${operationName}`, {
                 operationName,
                 duration: `${duration.toFixed(2)}ms`,
-                hasErrors: response.errors?.length > 0,
-                requestId: context.requestId,
-                correlationId: context.correlationId
+                hasErrors: response.errors?.length > 0;
+                requestId: context.requestId;
+                correlationId: context.correlationId;
               });
             }
           };
         }
       }
     ],
-    introspection: process.env.NODE_ENV !== 'production',
+    introspection: process.env.NODE_ENV !== 'production';
     // Cache control directives
-    csrfPrevention: true,
-    cache: 'bounded',
+    csrfPrevention: true;
+    cache: 'bounded';
   });
 
   // Start the server
   await server.start();
-  
+
   // Apply the Apollo middleware to the Express app
-  server.applyMiddleware({ 
+  server.applyMiddleware({
     app,
-    path: '/graphql',
+    path: '/graphql';
     cors: {
       origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : '*',
-      credentials: true,
+      credentials: true;
       methods: ['GET', 'POST', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'Apollo-Federation-Include-Trace']
+      allowedHeaders: ['Content-Type', 'Authorization', 'Apollo-Federation-Include-Trace'];
     }
   });
-  
+
   return { server, httpServer };

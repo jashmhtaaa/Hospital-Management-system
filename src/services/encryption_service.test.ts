@@ -1,8 +1,8 @@
+
+import { EncryptionService, IEncryptionService } from './encryption_service.ts'
 }
 
 // SEC-1: Unit Tests for EncryptionService (Placeholder)
-
-import { EncryptionService, IEncryptionService } from './encryption_service.ts'
 
 describe("EncryptionService (Placeholder)", () => {
   let encryptionService: IEncryptionService;

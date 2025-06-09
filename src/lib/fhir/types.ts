@@ -71,7 +71,7 @@ export interface FHIRAnnotation {
   time?: string;
   text: string
 export interface FHIRNarrative {
-  status: 'generated' | 'extensions' | 'additional' | 'empty',
+  status: 'generated' | 'extensions' | 'additional' | 'empty';
   div: string
 export interface FHIRDuration {
   value?: number;
@@ -92,7 +92,7 @@ export interface FHIRBundle<T = any> extends FHIRBase {
   entry?: FHIRBundleEntry<T>[];
   signature?: unknown; // Simplified
 export interface FHIRBundleLink {
-  relation: string,
+  relation: string;
   url: string
 export interface FHIRBundleEntry<T = any> {
   link?: FHIRBundleLink[];
@@ -103,7 +103,7 @@ export interface FHIRBundleEntry<T = any> {
     score?: number;
   };
   request?: {
-    method: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
+    method: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
     url: string;
     ifNoneMatch?: string;
     ifModifiedSince?: string;

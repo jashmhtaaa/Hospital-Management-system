@@ -1,25 +1,26 @@
-// app/api/auth/login/route.ts
+import { cookies } from "next/headers";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { getIronSession } from "iron-session";
+import { z } from "zod";
+
+
+import { User } from "@/types/user";
 import { comparePassword } from "@/lib/authUtils";
 import { sessionOptions, IronSessionData } from "@/lib/session";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
-import { z } from "zod";
-import { User } from "@/types/user";
-
+// app/api/auth/login/route.ts
 // Input validation schema
 const LoginSchema = z.object({
   identifier: z.string().min(1, "Username or email is required"), // Can be username or email
-  password: z.string().min(1, "Password is required"),
+  password: z.string().min(1, "Password is required"),;
 });
-export const POST = async (request: Request) => {
+export const _POST = async (request: Request) => {
   try {
     const body = await request.json();
     const validation = LoginSchema.safeParse(body);
 
     if (!validation.success) {
       return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
-        status: 400,
+        status: 400;
         headers: { "Content-Type": "application/json" },
       });
     }
@@ -43,14 +44,14 @@ export const POST = async (request: Request) => {
       .bind(identifier, identifier);
       // Define the expected result type more accurately
       .first<{
-          userId: number,
-          username: string,
-          email: string,
-          password_hash: string,
-          fullName: string | null,
-          roleId: number,
-          isActive: boolean,
-          roleName: string
+          userId: number;
+          username: string;
+          email: string;
+          password_hash: string;
+          fullName: string | null;
+          roleId: number;
+          isActive: boolean;
+          roleName: string;
       }>();
 
     if (!userResult) {
@@ -77,14 +78,14 @@ export const POST = async (request: Request) => {
     // Prepare user data for session (exclude sensitive info)
     // Initialize permissions as empty array for now
     const sessionUser: User = {
-        userId: userResult.userId,
-        username: userResult.username,
-        email: userResult.email,
-        fullName: userResult.fullName,
-        roleId: userResult.roleId,
+        userId: userResult.userId;
+        username: userResult.username;
+        email: userResult.email;
+        fullName: userResult.fullName;
+        roleId: userResult.roleId;
         roleName: userResult.roleName, // Include roleName from query
-        isActive: userResult.isActive,
-        permissions: [], // Initialize permissions as empty array
+        isActive: userResult.isActive;
+        permissions: [], // Initialize permissions as empty array;
     };
 
     session.user = sessionUser;
@@ -92,7 +93,7 @@ export const POST = async (request: Request) => {
 
     // 4. Return success response (maybe with user info, excluding sensitive data)
     return new Response(JSON.stringify({ message: "Login successful", user: sessionUser }), {
-      status: 200,
+      status: 200;
       headers: { "Content-Type": "application/json" },
     })
 
@@ -100,7 +101,7 @@ export const POST = async (request: Request) => {
 
     const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
     return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-      status: 500,
+      status: 500;
       headers: { "Content-Type": "application/json" },
     });
   }

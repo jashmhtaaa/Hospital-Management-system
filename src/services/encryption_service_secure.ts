@@ -1,5 +1,5 @@
-import * as crypto from 'crypto';
 
+import * as crypto from 'crypto';
 /**
  * Production-ready Encryption Service for Healthcare Data
  * Implements AES-256-GCM encryption with secure key management
@@ -16,11 +16,11 @@ export interface IEncryptionService {
 }
 
 interface EncryptedData {
-  encrypted: string,
-  iv: string,
-  tag: string,
-  version: string,
-  algorithm: string,
+  encrypted: string;
+  iv: string;
+  tag: string;
+  version: string;
+  algorithm: string;
   timestamp: number
 export class SecureEncryptionService implements IEncryptionService {
   private readonly algorithm = 'aes-256-gcm';
@@ -28,7 +28,7 @@ export class SecureEncryptionService implements IEncryptionService {
   private readonly ivLength = 16; // 128 bits
   private readonly tagLength = 16; // 128 bits
   private readonly currentVersion = '1.0'
-  
+
   private masterKey: Buffer;
   private keyCache: Map<string, Buffer> = new Map();
   private keyRotationInterval: NodeJS.Timeout | null = null;
@@ -36,8 +36,8 @@ export class SecureEncryptionService implements IEncryptionService {
   constructor(masterKeyBase64?: string) {
     // Initialize master key from environment or generate new one
     const keyFromEnv = masterKeyBase64 || process.env.HMS_MASTER_KEY
-    
-    if (keyFromEnv) {
+
+    if (keyFromEnv != null) {
       this.masterKey = Buffer.from(keyFromEnv, 'base64');
       if (this.masterKey.length !== this.keyLength) {
         throw new Error('Invalid master key length. Expected 32 bytes (256 bits).');
@@ -64,7 +64,7 @@ export class SecureEncryptionService implements IEncryptionService {
     // Use PBKDF2 for key derivation
     const salt = crypto.createHash('sha256').update(context).digest()
     const derivedKey = crypto.pbkdf2Sync(this.masterKey, salt, 100000, this.keyLength, 'sha512');
-    
+
     this.keyCache.set(context, derivedKey);
     return derivedKey;
   }
@@ -74,7 +74,7 @@ export class SecureEncryptionService implements IEncryptionService {
    */
   async encrypt(text: string, context: string = 'default'): Promise<string> {
     if (!text || typeof text !== 'string') {
-      throw new Error('Invalid input: text must be a non-empty string')
+      throw new Error('Invalid input: text must be a non-empty string');
     }
 
     try {
@@ -85,16 +85,16 @@ export class SecureEncryptionService implements IEncryptionService {
 
       let encrypted = cipher.update(text, 'utf8', 'hex');
       encrypted += cipher.final('hex');
-      
+
       const tag = cipher.getAuthTag();
 
       const encryptedData: EncryptedData = {
         encrypted,
-        iv: iv.toString('hex'),
-        tag: tag.toString('hex'),
-        version: this.currentVersion,
-        algorithm: this.algorithm,
-        timestamp: crypto.getRandomValues(new Uint32Array(1))[0]
+        iv: iv.toString('hex');
+        tag: tag.toString('hex');
+        version: this.currentVersion;
+        algorithm: this.algorithm;
+        timestamp: crypto.getRandomValues(new Uint32Array(1))[0];
       };
 
       return Buffer.from(JSON.stringify(encryptedData)).toString('base64');
@@ -108,7 +108,7 @@ export class SecureEncryptionService implements IEncryptionService {
    */
   async decrypt(encryptedText: string, context: string = 'default'): Promise<string> {
     if (!encryptedText || typeof encryptedText !== 'string') {
-      throw new Error('Invalid input: encryptedText must be a non-empty string')
+      throw new Error('Invalid input: encryptedText must be a non-empty string');
     }
 
     try {
@@ -128,7 +128,7 @@ export class SecureEncryptionService implements IEncryptionService {
 
       const key = this.deriveKey(context);
       const decipher = crypto.createDecipher(encryptedData.algorithm, key);
-      
+
       decipher.setAAD(Buffer.from(context));
       decipher.setAuthTag(Buffer.from(encryptedData.tag, 'hex'));
 
@@ -146,11 +146,11 @@ export class SecureEncryptionService implements IEncryptionService {
    */
   async encryptObject(obj: Record<string, unknown>, fields: string[]): Promise<Record<string, unknown>> {
     const result = { ...obj };
-    
+
     for (const field of fields) {
       if (result[field] !== undefined && result[field] !== null) {
-        const fieldValue = typeof result[field] === 'string' 
-          ? result[field] 
+        const fieldValue = typeof result[field] === 'string'
+          ? result[field]
           : JSON.stringify(result[field]);
         result[field] = await this.encrypt(fieldValue, field);
       }
@@ -164,7 +164,7 @@ export class SecureEncryptionService implements IEncryptionService {
    */
   async decryptObject(obj: Record<string, unknown>, fields: string[]): Promise<Record<string, unknown>> {
     const result = { ...obj };
-    
+
     for (const field of fields) {
       if (result[field] !== undefined && result[field] !== null) {
         try {
@@ -176,7 +176,7 @@ export class SecureEncryptionService implements IEncryptionService {
             // Keep as string if not valid JSON
           }
         } catch (error) {
-          /* SECURITY: Console statement removed */// Keep encrypted value if decryption fails
+          /* SECURITY: Console statement removed */// Keep encrypted value if decryption fails;
         }
       }
     }
@@ -219,19 +219,19 @@ export class SecureEncryptionService implements IEncryptionService {
   async rotateKeys(): Promise<void> {
     /* SECURITY: Console statement removed */
     this.keyCache.clear();
-    
+
     // In production, this would involve: // 1. Generating new master key
     // 2. Re-encrypting all data with new key
     // 3. Updating key storage systems
     // 4. Notifying key management systems
-    
+
     /* SECURITY: Console statement removed */}
 
   /**
    * Initializes automatic key rotation
    */
   private initializeKeyRotation(): void {
-    const rotationInterval = process.env.KEY_ROTATION_HOURS 
+    const rotationInterval = process.env.KEY_ROTATION_HOURS
       ? parseInt(process.env.KEY_ROTATION_HOURS) * 60 * 60 * 1000
       : 24 * 60 * 60 * 1000; // Default 24 hours
 
@@ -239,7 +239,7 @@ export class SecureEncryptionService implements IEncryptionService {
       try {
         await this.rotateKeys()
       } catch (error) {
-        /* SECURITY: Console statement removed */
+        /* SECURITY: Console statement removed */;
       }
     }, rotationInterval);
   }
@@ -260,7 +260,7 @@ export class SecureEncryptionService implements IEncryptionService {
 // Singleton instance for application use
 let encryptionServiceInstance: SecureEncryptionService | null = null
 
-export const getEncryptionService = (): SecureEncryptionService => {
+export const _getEncryptionService = (): SecureEncryptionService => {
   if (!encryptionServiceInstance) {
     encryptionServiceInstance = new SecureEncryptionService();
   }
@@ -268,4 +268,4 @@ export const getEncryptionService = (): SecureEncryptionService => {
 };
 
 // Export both the class and interface for different use cases
-export { SecureEncryptionService as EncryptionService 
+export { SecureEncryptionService as EncryptionService

@@ -1,3 +1,6 @@
+
+import { Pool } from 'pg';
+import { PrismaClient } from '@prisma/client';
 }
 
 /**
@@ -5,23 +8,20 @@
  * Optimized for high-performance healthcare applications;
  */
 
-import { PrismaClient } from '@prisma/client';
-import { Pool } from 'pg';
-
 // Connection Pool Configuration
 interface PoolConfig {
-  host: string,
-  port: number,
-  database: string,
-  user: string,
-  password: string,
+  host: string;
+  port: number;
+  database: string;
+  user: string;
+  password: string;
   max: number;           // Maximum number of connections
   min: number;           // Minimum number of connections
   idle: number;          // Idle timeout in milliseconds
   acquire: number;       // Acquire timeout in milliseconds
   evict: number;         // Eviction timeout in milliseconds
-  handleDisconnects: boolean,
-  logging: boolean
+  handleDisconnects: boolean;
+  logging: boolean;
 }
 
 // Enhanced Prisma Client with Connection Pooling
@@ -46,32 +46,32 @@ class DatabasePool {
 
   private getPoolConfig(): PoolConfig {
     return {
-      host: process.env.DB_HOST || 'localhost',
-      port: parseInt(process.env.DB_PORT || '5432'),
-      database: process.env.DB_NAME || 'hospital_management',
-      user: process.env.DB_USER || 'postgres',
-      password: process.env.DB_PASSWORD || 'password',
+      host: process.env.DB_HOST || 'localhost';
+      port: parseInt(process.env.DB_PORT || '5432');
+      database: process.env.DB_NAME || 'hospital_management';
+      user: process.env.DB_USER || 'postgres';
+      password: process.env.DB_PASSWORD || 'password';
       max: parseInt(process.env.DB_POOL_MAX || '20'),        // 20 connections max
       min: parseInt(process.env.DB_POOL_MIN || '5'),         // 5 connections min
       idle: parseInt(process.env.DB_POOL_IDLE || '10000'),   // 10 seconds
       acquire: parseInt(process.env.DB_POOL_ACQUIRE || '30000'), // 30 seconds
       evict: parseInt(process.env.DB_POOL_EVICT || '1000'),  // 1 second
-      handleDisconnects: true,
-      logging: process.env.NODE_ENV === 'development'
+      handleDisconnects: true;
+      logging: process.env.NODE_ENV === 'development';
     };
   }
 
   private initializePrismaClient(): void {
     const databaseUrl = this.buildConnectionString();
-    
+
     this.prismaClient = new PrismaClient({
       datasources: {
         db: {
-          url: databaseUrl
+          url: databaseUrl;
         }
       },
       log: this.config.logging ? ['query', 'info', 'warn', 'error'] : ['error'],
-      errorFormat: 'pretty',
+      errorFormat: 'pretty';
     });
 
     // Enable query optimization features
@@ -92,18 +92,18 @@ class DatabasePool {
 
   private initializePgPool(): void {
     this.pgPool = new Pool({
-      host: this.config.host,
-      port: this.config.port,
-      database: this.config.database,
-      user: this.config.user,
-      password: this.config.password,
-      max: this.config.max,
-      min: this.config.min,
-      idleTimeoutMillis: this.config.idle,
-      connectionTimeoutMillis: this.config.acquire,
+      host: this.config.host;
+      port: this.config.port;
+      database: this.config.database;
+      user: this.config.user;
+      password: this.config.password;
+      max: this.config.max;
+      min: this.config.min;
+      idleTimeoutMillis: this.config.idle;
+      connectionTimeoutMillis: this.config.acquire;
       maxUses: 1000, // Maximum uses per connection before recreation
-      allowExitOnIdle: true,
-      application_name: 'hospital-management-system'
+      allowExitOnIdle: true;
+      application_name: 'hospital-management-system';
     });
 
     // Pool event listeners
@@ -120,13 +120,13 @@ class DatabasePool {
 
     this.pgPool.on('acquire', () => {
       if (this.config.logging) {
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
       }
     })
 
     this.pgPool.on('release', () => {
       if (this.config.logging) {
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
       }
     })
   }
@@ -138,7 +138,7 @@ class DatabasePool {
     params.set('connect_timeout', '30');
     params.set('socket_timeout', '30');
     params.set('pool_min', this.config.min.toString());
-    
+
     return `postgresql://${this.config.user}:${this.config.password}@${this.config.host}:${this.config.port}/${this.config.database}?${params.toString()}`
   }
 
@@ -154,31 +154,31 @@ class DatabasePool {
 
   // Connection pool health check
   public async healthCheck(): Promise<{
-    prisma: boolean,
-    pool: boolean,
-    stats: unknown
+    prisma: boolean;
+    pool: boolean;
+    stats: unknown;
   }> {
     try {
       // Test Prisma connection
       const prismaHealthy = await this.testPrismaConnection();
-      
+
       // Test pool connection
       const poolHealthy = await this.testPoolConnection();
-      
+
       // Get pool statistics
       const stats = this.getPoolStats();
-      
+
       return {
-        prisma: prismaHealthy,
-        pool: poolHealthy,
+        prisma: prismaHealthy;
+        pool: poolHealthy;
         stats;
       };
     } catch (error) {
 
       return {
-        prisma: false,
-        pool: false,
-        stats: null
+        prisma: false;
+        pool: false;
+        stats: null;
       };
     }
   }
@@ -207,22 +207,22 @@ class DatabasePool {
 
   private getPoolStats(): unknown {
     return {
-      totalCount: this.pgPool.totalCount,
-      idleCount: this.pgPool.idleCount,
-      waitingCount: this.pgPool.waitingCount,
-      maxConnections: this.config.max,
-      minConnections: this.config.min
+      totalCount: this.pgPool.totalCount;
+      idleCount: this.pgPool.idleCount;
+      waitingCount: this.pgPool.waitingCount;
+      maxConnections: this.config.max;
+      minConnections: this.config.min;
     };
   }
 
   // Graceful shutdown
   public async shutdown(): Promise<void> {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    
+
     try {
       await this.prismaClient.$disconnect()
       await this.pgPool.end();
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
     } catch (error) {
 
     }
@@ -230,10 +230,10 @@ class DatabasePool {
 
   // Query optimization helper
   public async executeOptimizedQuery<T>(
-    queryFn: (client: PrismaClient) => Promise<T>,
+    queryFn: (client: PrismaClient) => Promise<T>;
     useTransaction = false;
   ): Promise<T> {
-    if (useTransaction) {
+    if (useTransaction != null) {
       return this.prismaClient.$transaction(async (tx) => {
         return queryFn(tx as PrismaClient);
       });
@@ -276,11 +276,11 @@ export async function withBatch<T>(
 }
 
 // Database health check endpoint helper
-export const getDatabaseHealth = async () => {
+export const _getDatabaseHealth = async () => {
   return dbPool.healthCheck();
 }
 
 // Graceful shutdown helper
-export const shutdownDatabase = async () => {
+export const _shutdownDatabase = async () => {
   return dbPool.shutdown();
 export default dbPool;

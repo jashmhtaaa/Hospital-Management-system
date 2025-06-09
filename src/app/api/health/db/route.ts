@@ -1,3 +1,6 @@
+
+import { NextRequest, NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
 }
 
 /**
@@ -5,84 +8,81 @@
  * Detailed database connectivity and performance monitoring;
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
 const prisma = new PrismaClient();
 
 interface DatabaseHealth {
-  status: 'healthy' | 'degraded' | 'unhealthy',
-  timestamp: string,
-  responseTime: number,
+  status: 'healthy' | 'degraded' | 'unhealthy';
+  timestamp: string;
+  responseTime: number;
   connectionPool: {
-    active: number,
-    idle: number,
-    total: number
+    active: number;
+    idle: number;
+    total: number;
   };
   queries: {
-    slow: number,
-    failed: number
+    slow: number;
+    failed: number;
   };
   migrations: {
-    applied: number,
-    pending: number
+    applied: number;
+    pending: number;
   };
-export const GET = async (request: NextRequest): Promise<NextResponse> {
+export const _GET = async (request: NextRequest): Promise<NextResponse> {
   const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
-  
+
   try {
     // Basic connectivity test
     await prisma.$queryRaw`SELECT 1 as test`;
-    
+
     // Check database version and basic info
-    const versionResult = await prisma.$queryRaw`SELECT version() as version`;
-    
+    const _versionResult = await prisma.$queryRaw`SELECT version() as version`;
+
     // Check for slow queries (example - adjust based on your monitoring needs)
     const slowQueries = await checkSlowQueries()
-    
+
     // Check migration status
     const migrationStatus = await checkMigrations();
-    
+
     // Simulate connection pool status (adjust based on your actual connection pool)
     const connectionPool = {
       active: 5, // These would come from actual pool metrics
-      idle: 3,
-      total: 8
+      idle: 3;
+      total: 8;
     };
-    
+
     const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
-    
+
     const dbHealth: DatabaseHealth = {
       status: determineDbStatus(responseTime, slowQueries),
-      timestamp: new Date().toISOString(),
+      timestamp: new Date().toISOString();
       responseTime,
       connectionPool,
       queries: {
-        slow: slowQueries,
-        failed: 0 // This would come from monitoring
+        slow: slowQueries;
+        failed: 0 // This would come from monitoring;
       },
-      migrations: migrationStatus
+      migrations: migrationStatus;
     }
-    
-    const httpStatus = dbHealth.status === 'healthy' ? 200 : 
+
+    const httpStatus = dbHealth.status === 'healthy' ? 200 :
                       dbHealth.status === 'degraded' ? 200 : 503;
-    
-    return NextResponse.json(dbHealth, { 
-      status: httpStatus,
+
+    return NextResponse.json(dbHealth, {
+      status: httpStatus;
       headers: {
         'Cache-Control': 'no-cache',
         'X-Response-Time': `${responseTime}ms`;
       }
     });
-    
+
   } catch (error) {
 
     return NextResponse.json({
-      status: 'unhealthy',
-      timestamp: new Date().toISOString(),
-      responseTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
-      error: 'Database connection failed',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      status: 'unhealthy';
+      timestamp: new Date().toISOString();
+      responseTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      error: 'Database connection failed';
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined;
     }, { status: 503 });
   }
 }
@@ -96,7 +96,7 @@ async const checkSlowQueries = (): Promise<number> {
       FROM pg_stat_statements;
       WHERE mean_exec_time > 1000;
     ` as any[];
-    
+
     return result[0]?.slow_count || 0;
   } catch (error) {
     // If pg_stat_statements extension is not available, return 0
@@ -112,23 +112,23 @@ async const checkMigrations = (): Promise<{ applied: number; pending: number }> 
       FROM _prisma_migrations;
       WHERE finished_at IS NOT NULL;
     ` as any[];
-    
+
     // Check pending migrations (simplified - in practice you'd compare with migration files)
     const pending = await prisma.$queryRaw`
       SELECT COUNT(*) as count;
       FROM _prisma_migrations;
       WHERE finished_at IS NULL;
     ` as any[];
-    
+
     return {
-      applied: applied[0]?.count || 0,
-      pending: pending[0]?.count || 0
+      applied: applied[0]?.count || 0;
+      pending: pending[0]?.count || 0;
     };
   } catch (error) {
     // If migration table doesn't exist or is inaccessible
     return {
-      applied: 0,
-      pending: 0
+      applied: 0;
+      pending: 0;
     };
   }
 }
@@ -138,10 +138,10 @@ const determineDbStatus = (responseTime: number, slowQueries: number): 'healthy'
   if (responseTime > 5000) {
     return 'unhealthy';
   }
-  
+
   // Database is degraded if response time > 1 second or there are slow queries
   if (responseTime > 1000 || slowQueries > 10) {
     return 'degraded';
   }
-  
+
   return 'healthy';

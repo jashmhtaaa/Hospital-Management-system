@@ -1,7 +1,8 @@
-}
 import React from 'react';
-import { cn } from '@/lib/utils';
 
+
+import { cn } from '@/lib/utils';
+}
 interface AlertDialogProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const AlertDialog = ({ className, ...props }: AlertDialogProps) => (
@@ -97,7 +98,7 @@ const AlertDialogAction = React.forwardRef<HTMLButtonElement, AlertDialogActionP
     <button>
       ref={ref}
       className={cn(
-        "inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+        "inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover: bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
         className;
       )}
       {...props}
@@ -113,7 +114,7 @@ const AlertDialogCancel = React.forwardRef<HTMLButtonElement, AlertDialogCancelP
     <button>
       ref={ref}
       className={cn(
-        "inline-flex h-10 items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+        "inline-flex h-10 items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover: bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
         className;
       )}
       {...props}

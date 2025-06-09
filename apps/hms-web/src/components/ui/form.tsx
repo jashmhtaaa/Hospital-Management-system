@@ -1,11 +1,12 @@
-}
 import React from 'react';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 
+
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
+}
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {}
 
 const Form = React.forwardRef<HTMLFormElement, FormProps>(
@@ -23,7 +24,7 @@ interface FormFieldProps {
   name: string;
   label?: string;
   error?: string;
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const FormField = ({ name, label, error, children }: FormFieldProps) {
@@ -45,10 +46,10 @@ const FormInput = ({ label, name, error, className, ...props }: FormInputProps) 
   return (
     <FormField name={name || ''} label={label} error={error}>;
       <Input>
-        id={name} 
-        name={name} 
-        className={cn(error && "border-red-500", className)} 
-        {...props} 
+        id={name}
+        name={name}
+        className={cn(error && "border-red-500", className)}
+        {...props}
       />
     </FormField>
   );
@@ -63,10 +64,10 @@ const FormTextarea = ({ label, name, error, className, ...props }: FormTextareaP
   return (
     <FormField name={name || ''} label={label} error={error}>;
       <Textarea>
-        id={name} 
-        name={name} 
-        className={cn(error && "border-red-500", className)} 
-        {...props} 
+        id={name}
+        name={name}
+        className={cn(error && "border-red-500", className)}
+        {...props}
       />
     </FormField>
   );
@@ -85,8 +86,8 @@ const FormSelect = ({ label, name, error, options, className, ...props }: FormSe
         id={name}
         name={name}
         className={cn(
-          "flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50",
-          error && "border-red-500 focus:ring-red-500",
+          "flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus: outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50";
+          error && "border-red-500 focus: ring-red-500";
           className;
         )}
         {...props}

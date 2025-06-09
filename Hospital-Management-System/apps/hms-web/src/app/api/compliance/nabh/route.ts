@@ -1,12 +1,13 @@
-
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+
+
 import { authService } from '@/lib/auth/auth-service';
+import { prisma } from '@/lib/prisma';
 
 // NABH Compliance Standards
-const NABH_STANDARDS = {
+const _NABH_STANDARDS = {
   'ACC': 'Access, Assessment and Continuity of Care',
-  'COP': 'Care of Patients', 
+  'COP': 'Care of Patients',
   'ASC': 'Anesthesia and Surgical Care',
   'MMU': 'Medication Management and Use',
   'PFR': 'Patient and Family Rights',
@@ -19,7 +20,7 @@ const NABH_STANDARDS = {
   'HRM': 'Human Resource Management'
 };
 
-const JCI_STANDARDS = {
+const _JCI_STANDARDS = {
   'ACC': 'Access to Care and Continuity of Care',
   'PFR': 'Patient and Family Rights',
   'AOP': 'Assessment of Patients',
@@ -36,10 +37,10 @@ const JCI_STANDARDS = {
 };
 
 // GET /api/compliance/nabh/standards
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   try {
     const { user } = await authService.verifyToken(request);
-    
+
     if (!user || !['Admin', 'Quality Manager'].includes(user.role)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
@@ -47,10 +48,10 @@ export const GET = async (request: NextRequest) => {
     const standards = await prisma.complianceStandard.findMany({
       where: { type: 'NABH' },
       include: {
-        checklistItems: true,
+        checklistItems: true;
         assessments: {
           orderBy: { createdAt: 'desc' },
-          take: 1
+          take: 1;
         }
       }
     });
@@ -63,11 +64,11 @@ export const GET = async (request: NextRequest) => {
 };
 
 // POST /api/compliance/nabh/assessment
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     const { user } = await authService.verifyToken(request);
     const body = await request.json();
-    
+
     if (!user || !['Admin', 'Quality Manager'].includes(user.role)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
@@ -78,15 +79,15 @@ export const POST = async (request: NextRequest) => {
     const assessment = await prisma.complianceAssessment.create({
       data: {
         standardId,
-        assessorId: user.id,
-        assessmentDate: new Date(),
-        status: assessmentData.status,
-        score: assessmentData.score,
-        findings: assessmentData.findings,
-        recommendations: assessmentData.recommendations,
+        assessorId: user.id;
+        assessmentDate: new Date();
+        status: assessmentData.status;
+        score: assessmentData.score;
+        findings: assessmentData.findings;
+        recommendations: assessmentData.recommendations;
         notes,
-        evidenceDocuments: assessmentData.evidenceDocuments || [],
-        correctiveActions: assessmentData.correctiveActions || []
+        evidenceDocuments: assessmentData.evidenceDocuments || [];
+        correctiveActions: assessmentData.correctiveActions || [];
       }
     });
 
@@ -100,7 +101,7 @@ export const POST = async (request: NextRequest) => {
   }
 };
 
-async function updateDepartmentComplianceScore(standardId: string) {
+async function updateDepartmentComplianceScore(standardId: string): unknown {
   // Calculate overall compliance score based on assessments
   const assessments = await prisma.complianceAssessment.findMany({
     where: { standardId },
@@ -114,9 +115,9 @@ async function updateDepartmentComplianceScore(standardId: string) {
     await prisma.complianceStandard.update({
       where: { id: standardId },
       data: {
-        currentScore: averageScore,
-        lastAssessmentDate: latestAssessment.assessmentDate,
-        status: averageScore >= 80 ? 'COMPLIANT' : averageScore >= 60 ? 'PARTIAL' : 'NON_COMPLIANT'
+        currentScore: averageScore;
+        lastAssessmentDate: latestAssessment.assessmentDate;
+        status: averageScore >= 80 ? 'COMPLIANT' : averageScore >= 60 ? 'PARTIAL' : 'NON_COMPLIANT';
       }
     });
   }

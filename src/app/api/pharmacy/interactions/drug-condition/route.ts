@@ -1,29 +1,30 @@
-}
-
-/**
- * Drug-Condition Interaction API Routes;
- * 
- * This file implements the API endpoints for checking drug-condition contraindications;
- * with severity classification and detailed interaction information.
- */
-
 import { NextRequest, NextResponse } from 'next/server';
+
+
 import { DrugInteractionService } from '../../../services/drug-interaction-service';
-import { validateDrugConditionInteractionRequest } from '../../../../../lib/validation/pharmacy-validation';
+import { PharmacyDomain } from '../../../models/domain-models';
 import { auditLog } from '../../../../../lib/audit';
 import { errorHandler } from '../../../../../lib/error-handler';
 import { getMedicationById } from '../../../../../lib/services/pharmacy/pharmacy.service';
 import { getPatientConditions } from '../../../../../lib/services/patient/patient.service';
-import { PharmacyDomain } from '../../../models/domain-models';
+import { validateDrugConditionInteractionRequest } from '../../../../../lib/validation/pharmacy-validation';
+}
+
+/**
+ * Drug-Condition Interaction API Routes;
+ *
+ * This file implements the API endpoints for checking drug-condition contraindications;
+ * with severity classification and detailed interaction information.
+ */
 
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
-  findAll: () => Promise.resolve([]),
-  search: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: getMedicationById;
+  findAll: () => Promise.resolve([]);
+  search: () => Promise.resolve([]);
+  save: () => Promise.resolve('');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 }
 
 // Initialize services
@@ -59,9 +60,9 @@ export const POST = async (req: NextRequest) => {
 
     // Get patient conditions
     let conditions = data.conditions || [];
-    
+
     // If patientId is provided, fetch conditions from patient record
-    if (data.patientId && conditions.length === 0) {
+    if (data?.patientId && conditions.length === 0) {
       const patientConditions = await getPatientConditions(data.patientId);
       conditions = patientConditions.map(c => c.code);
     }
@@ -74,26 +75,26 @@ export const POST = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
-      action: 'CHECK_DRUG_CONDITION',
-      resourceType: 'DrugInteraction',
-      userId: userId,
-      patientId: data.patientId,
+      action: 'CHECK_DRUG_CONDITION';
+      resourceType: 'DrugInteraction';
+      userId: userId;
+      patientId: data.patientId;
       details: {
-        medicationIds: data.medicationIds,
-        conditionCount: conditions.length,
-        contraindicationCount: contraindications.length
+        medicationIds: data.medicationIds;
+        conditionCount: conditions.length;
+        contraindicationCount: contraindications.length;
       }
     });
 
     // Return response
-    return NextResponse.json({ 
+    return NextResponse.json({
       contraindications,
       metadata: {
-        totalCount: contraindications.length,
+        totalCount: contraindications.length;
         severityCounts: {
-          absolute: contraindications.filter(c => c.contraindicationType === 'absolute').length,
-          relative: contraindications.filter(c => c.contraindicationType === 'relative').length,
-          caution: contraindications.filter(c => c.contraindicationType === 'caution').length
+          absolute: contraindications.filter(c => c.contraindicationType === 'absolute').length;
+          relative: contraindications.filter(c => c.contraindicationType === 'relative').length;
+          caution: contraindications.filter(c => c.contraindicationType === 'caution').length;
         }
       }
     }, { status: 200 });

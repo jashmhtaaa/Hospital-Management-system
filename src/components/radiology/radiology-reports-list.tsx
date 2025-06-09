@@ -1,11 +1,12 @@
+import React, { useState, useEffect } from "react";
+import {
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import {
   Table,
   TableBody,
   TableCell,
@@ -27,7 +28,7 @@ interface RadiologyReport {
   report_datetime: string; // Or Date
   status: string; // Consider using a specific enum/literal type
   // Add other fields as needed
-export default const RadiologyReportsList = () {
+export default const _RadiologyReportsList = () {
   const [reports, setReports] = useState<RadiologyReport[]>([]); // FIX: Type the state
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(); // FIX: Type the state
@@ -62,10 +63,10 @@ export default const RadiologyReportsList = () {
   // FIX: Type the parameter
   const getStatusBadge = (status: string) => {
     const statusStyles: { [key: string]: string } = {
-      // FIX: Add index signature,
-      preliminary: "bg-yellow-100 text-yellow-800",
-      final: "bg-green-100 text-green-800",
-      addendum: "bg-blue-100 text-blue-800",
+      // FIX: Add index signature;
+      preliminary: "bg-yellow-100 text-yellow-800";
+      final: "bg-green-100 text-green-800";
+      addendum: "bg-blue-100 text-blue-800";
     }
 
     return (

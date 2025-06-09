@@ -1,50 +1,51 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+
+import { FHIRMapper } from '../../../models/fhir-mappers';
+import { PharmacyDomain } from '../../../models/domain-models';
+import { auditLog } from '../../../../../lib/audit';
+import { errorHandler } from '../../../../../lib/error-handler';
+import { getMedicationById, getPrescriptionById } from '../../../../../lib/services/pharmacy/pharmacy.service';
 }
 
 /**
  * Due Medications API Routes;
- * 
+ *
  * This file implements the API endpoints for retrieving medications due for administration;
  * with filtering and alerting capabilities.
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { auditLog } from '../../../../../lib/audit';
-import { errorHandler } from '../../../../../lib/error-handler';
-import { PharmacyDomain } from '../../../models/domain-models';
-import { FHIRMapper } from '../../../models/fhir-mappers';
-import { getMedicationById, getPrescriptionById } from '../../../../../lib/services/pharmacy/pharmacy.service';
-
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
-  findAll: () => Promise.resolve([]),
-  search: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: getMedicationById;
+  findAll: () => Promise.resolve([]);
+  search: () => Promise.resolve([]);
+  save: () => Promise.resolve('');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 }
 
 const prescriptionRepository = {
-  findById: getPrescriptionById,
-  findByPatientId: (patientId: string) => Promise.resolve([]),
-  findByPrescriberId: () => Promise.resolve([]),
-  findByMedicationId: () => Promise.resolve([]),
-  findByStatus: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: getPrescriptionById;
+  findByPatientId: (patientId: string) => Promise.resolve([]);
+  findByPrescriberId: () => Promise.resolve([]);
+  findByMedicationId: () => Promise.resolve([]);
+  findByStatus: () => Promise.resolve([]);
+  save: () => Promise.resolve('');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 };
 
 const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
-  findById: () => Promise.resolve(null),
-  findByPatientId: () => Promise.resolve([]),
-  findByPrescriptionId: () => Promise.resolve([]),
-  findByMedicationId: () => Promise.resolve([]),
-  findByStatus: () => Promise.resolve([]),
-  findDue: (timeWindow: number) => Promise.resolve([]),
-  save: (administration) => Promise.resolve(administration.id || 'new-id'),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: () => Promise.resolve(null);
+  findByPatientId: () => Promise.resolve([]);
+  findByPrescriptionId: () => Promise.resolve([]);
+  findByMedicationId: () => Promise.resolve([]);
+  findByStatus: () => Promise.resolve([]);
+  findDue: (timeWindow: number) => Promise.resolve([]);
+  save: (administration) => Promise.resolve(administration.id || 'new-id');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 };
 
 /**
@@ -73,7 +74,7 @@ export const GET = async (req: NextRequest) => {
 
     // Get current time
     const now = new Date();
-    
+
     // Calculate time window boundaries
     const startTime = new Date(now);
     const endTime = new Date(now);
@@ -81,7 +82,7 @@ export const GET = async (req: NextRequest) => {
 
     // Get active prescriptions
     let activePrescriptions = [];
-    if (patientId) {
+    if (patientId != null) {
       // If patient ID is provided, get prescriptions for that patient
       activePrescriptions = await prescriptionRepository.findByPatientId(patientId);
     } else {
@@ -94,24 +95,24 @@ export const GET = async (req: NextRequest) => {
 
     // Generate due administrations
     const dueAdministrations = [];
-    
+
     for (const prescription of activePrescriptions) {
       // Skip PRN medications
       if (prescription.dosage.frequency.includes('PRN') || prescription.dosage.frequency.includes('as needed')) {
         continue;
       }
-      
+
       // Get medication
       const medication = await medicationRepository.findById(prescription.medicationId);
       if (!medication) continue;
-      
+
       // Get previous administrations for this prescription
       const previousAdministrations = await administrationRepository.findByPrescriptionId(prescription.id);
-      
+
       // Generate schedule times
       const frequency = prescription.dosage.frequency;
       const scheduleTimes = generateScheduleTimes(frequency, startTime, endTime);
-      
+
       for (const scheduleTime of scheduleTimes) {
         // Check if this dose has already been administered
         const isAdministered = previousAdministrations.some(a => {
@@ -119,61 +120,61 @@ export const GET = async (req: NextRequest) => {
           // Consider it administered if within 30 minutes of scheduled time
           return Math.abs(adminTime.getTime() - scheduleTime.getTime()) < 30 * 60 * 1000;
         });
-        
+
         // Skip if already administered
-        if (isAdministered) continue;
-        
+        if (isAdministered != null) continue;
+
         // Add to due administrations
         dueAdministrations.push({
-          prescriptionId: prescription.id,
-          patientId: prescription.patientId,
-          medicationId: medication.id,
-          medicationName: medication.name,
-          dose: prescription.dosage.value,
-          unit: prescription.dosage.unit,
-          route: prescription.dosage.route,
-          scheduledTime: scheduleTime,
-          status: 'due'
+          prescriptionId: prescription.id;
+          patientId: prescription.patientId;
+          medicationId: medication.id;
+          medicationName: medication.name;
+          dose: prescription.dosage.value;
+          unit: prescription.dosage.unit;
+          route: prescription.dosage.route;
+          scheduledTime: scheduleTime;
+          status: 'due';
         });
       }
     }
-    
+
     // Sort by scheduled time
     dueAdministrations.sort((a, b) => a.scheduledTime.getTime() - b.scheduledTime.getTime());
-    
+
     // Apply pagination
     const total = dueAdministrations.length;
     const paginatedAdministrations = dueAdministrations.slice((page - 1) * limit, page * limit);
 
     // Map to FHIR resources (in a real implementation)
-    // const fhirAdministrations = paginatedAdministrations.map(FHIRMapper.toFHIRMedicationAdministration)
+    // const _fhirAdministrations = paginatedAdministrations.map(FHIRMapper.toFHIRMedicationAdministration)
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
-      action: 'LIST_DUE',
-      resourceType: 'MedicationAdministration',
-      userId: userId,
+      action: 'LIST_DUE';
+      resourceType: 'MedicationAdministration';
+      userId: userId;
       details: {
         timeWindow,
         locationId,
         patientId,
         unitId,
-        resultCount: paginatedAdministrations.length
+        resultCount: paginatedAdministrations.length;
       }
     });
 
     // Return response
-    return NextResponse.json({ 
-      dueAdministrations: paginatedAdministrations,
+    return NextResponse.json({
+      dueAdministrations: paginatedAdministrations;
       timeWindow: {
-        start: startTime,
-        end: endTime
+        start: startTime;
+        end: endTime;
       },
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit);
       }
     }, { status: 200 });
   } catch (error) {
@@ -186,7 +187,7 @@ export const GET = async (req: NextRequest) => {
  */
 const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[] {
   const times: Date[] = [];
-  
+
   // Parse frequency
   if (frequency.includes('daily')) {
     // Once daily - default to 9 AM
@@ -202,7 +203,7 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
     if (morning >= start && morning <= end) {
       times.push(morning);
     }
-    
+
     const evening = new Date(start);
     evening.setHours(17, 0, 0, 0);
     if (evening >= start && evening <= end) {
@@ -215,13 +216,13 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
     if (morning >= start && morning <= end) {
       times.push(morning);
     }
-    
+
     const afternoon = new Date(start);
     afternoon.setHours(13, 0, 0, 0);
     if (afternoon >= start && afternoon <= end) {
       times.push(afternoon);
     }
-    
+
     const evening = new Date(start);
     evening.setHours(21, 0, 0, 0);
     if (evening >= start && evening <= end) {
@@ -234,19 +235,19 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
     if (morning >= start && morning <= end) {
       times.push(morning);
     }
-    
+
     const noon = new Date(start);
     noon.setHours(13, 0, 0, 0);
     if (noon >= start && noon <= end) {
       times.push(noon);
     }
-    
+
     const afternoon = new Date(start);
     afternoon.setHours(17, 0, 0, 0);
     if (afternoon >= start && afternoon <= end) {
       times.push(afternoon);
     }
-    
+
     const evening = new Date(start);
     evening.setHours(21, 0, 0, 0);
     if (evening >= start && evening <= end) {
@@ -260,7 +261,7 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
       const time = new Date(start);
       time.setMinutes(0, 0, 0);
       time.setHours(Math.ceil(time.getHours() / hours) * hours);
-      
+
       while (time <= end) {
         if (time >= start) {
           times.push(new Date(time));
@@ -278,5 +279,5 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
       times.push(time);
     }
   }
-  
+
   return times;

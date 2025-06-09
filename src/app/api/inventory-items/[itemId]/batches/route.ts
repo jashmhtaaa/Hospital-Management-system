@@ -1,11 +1,12 @@
-// app/api/inventory-items/[itemId]/batches/route.ts
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { sessionOptions, IronSessionData } from "@/lib/session"; // FIX: Import IronSessionData
-import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
-import { StockBatch } from "@/types/inventory";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { getIronSession } from "iron-session";
 import { z } from "zod";
 
+
+import { StockBatch } from "@/types/inventory";
+import { sessionOptions, IronSessionData } from "@/lib/session"; // FIX: Import IronSessionData
+// app/api/inventory-items/[itemId]/batches/route.ts
 // Define roles allowed to view/manage stock batches (adjust as needed)
 const ALLOWED_ROLES_VIEW = ["Admin", "Pharmacist", "Nurse", "Inventory Manager"]
 const ALLOWED_ROLES_MANAGE = ["Admin", "Pharmacist", "Inventory Manager"];
@@ -20,7 +21,7 @@ const getItemId = (pathname: string): number | null {
 }
 
 // GET handler for listing batches for a specific inventory item
-export const GET = async (request: Request) => {
+export const _GET = async (request: Request) => {
     const cookieStore = await cookies(); // FIX: Await cookies()
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);
@@ -29,14 +30,14 @@ export const GET = async (request: Request) => {
     // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_VIEW.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401,
+            status: 401;
             headers: { "Content-Type": "application/json" },
         });
     }
 
     if (inventoryItemId === null) {
         return new Response(JSON.stringify({ error: "Invalid Inventory Item ID" }), {
-            status: 400,
+            status: 400;
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -59,7 +60,7 @@ export const GET = async (request: Request) => {
 
         // 3. Return batch list
         return new Response(JSON.stringify(batchesResult.results), {
-            status: 200,
+            status: 200;
             headers: { "Content-Type": "application/json" },
         });
 
@@ -67,7 +68,7 @@ export const GET = async (request: Request) => {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500,
+            status: 500;
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -75,17 +76,17 @@ export const GET = async (request: Request) => {
 
 // POST handler for adding a new stock batch for an item
 const AddStockBatchSchema = z.object({
-    batch_number: z.string().optional(),
+    batch_number: z.string().optional();
     expiry_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Expiry date must be in YYYY-MM-DD format").optional().nullable(),
-    quantity_received: z.number().int().positive("Quantity received must be positive"),
-    cost_price_per_unit: z.number().nonnegative("Cost price must be non-negative").optional().nullable(),
-    selling_price_per_unit: z.number().nonnegative("Selling price must be non-negative").optional().nullable(),
+    quantity_received: z.number().int().positive("Quantity received must be positive");
+    cost_price_per_unit: z.number().nonnegative("Cost price must be non-negative").optional().nullable();
+    selling_price_per_unit: z.number().nonnegative("Selling price must be non-negative").optional().nullable();
     supplier_id: z.number().int().positive().optional().nullable(), // Assuming Suppliers table exists later
     received_date: z.string().datetime({ message: "Invalid ISO 8601 datetime string for received date" }).optional(), // Default is CURRENT_TIMESTAMP in DB
-    notes: z.string().optional(),
+    notes: z.string().optional();
 });
 
-export const POST = async (request: Request) => {
+export const _POST = async (request: Request) => {
     const cookieStore = await cookies(); // FIX: Await cookies()
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);
@@ -94,14 +95,14 @@ export const POST = async (request: Request) => {
     // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_MANAGE.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401,
+            status: 401;
             headers: { "Content-Type": "application/json" },
         });
     }
 
     if (inventoryItemId === null) {
         return new Response(JSON.stringify({ error: "Invalid Inventory Item ID" }), {
-            status: 400,
+            status: 400;
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -112,7 +113,7 @@ export const POST = async (request: Request) => {
 
         if (!validation.success) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
-                status: 400,
+                status: 400;
                 headers: { "Content-Type": "application/json" },
             });
         }
@@ -131,7 +132,7 @@ export const POST = async (request: Request) => {
                                 .first();
         if (!itemCheck) {
             return new Response(JSON.stringify({ error: "Inventory item not found or is inactive" }), {
-                status: 404,
+                status: 404;
                 headers: { "Content-Type": "application/json" },
             });
         }
@@ -177,7 +178,7 @@ export const POST = async (request: Request) => {
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         // Handle potential constraint errors if any
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500,
+            status: 500;
             headers: { "Content-Type": "application/json" },
         });
     }

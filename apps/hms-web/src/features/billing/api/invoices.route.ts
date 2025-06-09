@@ -1,8 +1,9 @@
-}
 import { NextApiRequest, NextApiResponse } from "next";
-import { InvoiceService } from "../../../../features/billing/services/InvoiceService.ts"; // Adjust path as per actual structure
-import { Invoice } from "../../../../features/billing/types.ts"; // Adjust path
 
+
+import { Invoice } from "../../../../features/billing/types.ts"; // Adjust path
+import { InvoiceService } from "../../../../features/billing/services/InvoiceService.ts"; // Adjust path as per actual structure
+}
 const invoiceService = new InvoiceService();
 
 /**
@@ -67,7 +68,7 @@ const invoiceService = new InvoiceService();
  *       500:
  *         description: Server error.
  */
-export default async const handler = (req: NextApiRequest, res: NextApiResponse) {
+export default async const _handler = (req: NextApiRequest, res: NextApiResponse) {
     const { invoiceId } = req.query;
 
     if (req.method === "POST") {

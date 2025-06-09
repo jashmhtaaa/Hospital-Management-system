@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
-import { D1Database } from "@cloudflare/workers-types";
 
-export const runtime = "edge";
+import { D1Database } from "@cloudflare/workers-types";
+import { NextRequest, NextResponse } from "next/server";
+export const _runtime = "edge";
 
 // Interface for checklist item (re-used from [id] route, consider moving to a shared types file)
 interface ChecklistItem {
   id: string; // Unique ID for the item within the template
-  text: string,
+  text: string;
   type: "checkbox" | "text" | "number" | "select"; // Example types
   options?: string[]; // For select type
   required?: boolean;
@@ -14,13 +14,13 @@ interface ChecklistItem {
 
 // Interface for the POST request body
 interface ChecklistTemplateCreateBody {
-  name: string,
-  phase: "pre-op" | "intra-op" | "post-op",
-  items: ChecklistItem[]
+  name: string;
+  phase: "pre-op" | "intra-op" | "post-op";
+  items: ChecklistItem[];
 }
 
 // GET /api/ot/checklist-templates - List all checklist templates
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const phase = searchParams.get("phase");
@@ -29,7 +29,7 @@ export const GET = async (request: NextRequest) => {
     let query = "SELECT id, name, phase, updated_at FROM OTChecklistTemplates";
     const parameters: string[] = [];
 
-    if (phase) {
+    if (phase != null) {
       query += " WHERE phase = ?";
       parameters.push(phase);
     }
@@ -52,7 +52,7 @@ export const GET = async (request: NextRequest) => {
 }
 
 // POST /api/ot/checklist-templates - Create a new checklist template
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     const body = (await request.json()) as ChecklistTemplateCreateBody;
     const { name, phase, items } = body;
@@ -85,15 +85,14 @@ export const POST = async (request: NextRequest) => {
         (item) =>
           typeof item === "object" &&
           item !== undefined &&
-          item.id &&
-          item.text &&
+          item?.id &&
+          item?.text &&
           item.type;
       );
     ) {
       return NextResponse.json(
         {
-          message:
-            "Each item must be an object with id, text, and type properties",
+          message: "Each item must be an object with id, text, and type properties",;
         },
         { status: 400 }
       );
@@ -120,7 +119,7 @@ export const POST = async (request: NextRequest) => {
       const newTemplate = results[0];
       // Parse items JSON before sending response
       try {
-        if (newTemplate.items && typeof newTemplate.items === "string") {
+        if (newTemplate?.items && typeof newTemplate.items === "string") {
           newTemplate.items = JSON.parse(newTemplate.items);
         }
       } catch (parseError) {
@@ -142,8 +141,8 @@ export const POST = async (request: NextRequest) => {
     if (errorMessage?.includes("UNIQUE constraint failed")) {
       return NextResponse.json(
         {
-          message: "Checklist template name must be unique",
-          details: errorMessage,
+          message: "Checklist template name must be unique";
+          details: errorMessage;
         },
         { status: 409 }
       );

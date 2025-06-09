@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import AmbulanceMap from './AmbulanceMap.ts';
 
-export default const AmbulanceDashboard = () {
+export default const _AmbulanceDashboard = () {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('active');
   const [ambulances, setAmbulances] = useState<any[]>([]);
@@ -24,10 +24,10 @@ export default const AmbulanceDashboard = () {
   const [selectedAmbulance, setSelectedAmbulance] = useState<any | null>(null);
   const [selectedTrip, setSelectedTrip] = useState<any | null>(null);
   const [filters, setFilters] = useState({
-    status: '',
-    vehicleType: '',
-    tripType: '',
-    priority: '',
+    status: '';
+    vehicleType: '';
+    tripType: '';
+    priority: '';
   }),
   useEffect(() => {
     fetchAmbulances(),
@@ -37,31 +37,31 @@ export default const AmbulanceDashboard = () {
   const fetchAmbulances = async () => {
     setLoading(true);
     try {
-      const statusFilter = activeTab === 'active' ?;
-        'status=AVAILABLE&status=ON_DUTY' : 
+      const _statusFilter = activeTab === 'active' ?;
+        'status=AVAILABLE&status=ON_DUTY' :
         activeTab === 'maintenance' ?;
           'status=UNDER_MAINTENANCE' : '';
-      
-      const vehicleTypeFilter = filters.vehicleType ? `&vehicleType=${filters.vehicleType}` : '';
-      
+
+      const _vehicleTypeFilter = filters.vehicleType ? `&vehicleType=${filters.vehicleType}` : '';
+
       const response = await fetch(`/api/support-services/ambulance?/* SECURITY: Template literal eliminated */
       const data = await response.json();
-      
+
       if (data.success) {
         setAmbulances(data.data);
       } else {
         toast({
-          title: "Error",
-          description: data.message || "Failed to fetch ambulances",
-          variant: "destructive"
+          title: "Error";
+          description: data.message || "Failed to fetch ambulances";
+          variant: "destructive";
         });
       }
     } catch (error) {
 
       toast({
-        title: "Error",
-        description: "Failed to fetch ambulances",
-        variant: "destructive"
+        title: "Error";
+        description: "Failed to fetch ambulances";
+        variant: "destructive";
       });
     } finally {
       setLoading(false);
@@ -71,36 +71,36 @@ export default const AmbulanceDashboard = () {
   const fetchTrips = async () => {
     setLoading(true);
     try {
-      let statusFilter = '';
+      let _statusFilter = '';
       if (activeTab === 'active') {
-        statusFilter = 'status=SCHEDULED&status=EN_ROUTE_TO_PICKUP&status=ARRIVED_AT_PICKUP&status=EN_ROUTE_TO_DESTINATION&status=ARRIVED_AT_DESTINATION';
+        _statusFilter = 'status=SCHEDULED&status=EN_ROUTE_TO_PICKUP&status=ARRIVED_AT_PICKUP&status=EN_ROUTE_TO_DESTINATION&status=ARRIVED_AT_DESTINATION';
       } else if (activeTab === 'completed') {
-        statusFilter = 'status=COMPLETED';
+        _statusFilter = 'status=COMPLETED';
       } else if (activeTab === 'cancelled') {
-        statusFilter = 'status=CANCELLED';
+        _statusFilter = 'status=CANCELLED';
       }
-      
-      const tripTypeFilter = filters.tripType ? `&tripType=${filters.tripType}` : '';
-      const priorityFilter = filters.priority ? `&priority=${filters.priority}` : '';
-      
+
+      const _tripTypeFilter = filters.tripType ? `&tripType=${filters.tripType}` : '';
+      const _priorityFilter = filters.priority ? `&priority=${filters.priority}` : '';
+
       const response = await fetch(`/api/support-services/ambulance/trips?/* SECURITY: Template literal eliminated */
       const data = await response.json();
-      
+
       if (data.success) {
         setTrips(data.data);
       } else {
         toast({
-          title: "Error",
-          description: data.message || "Failed to fetch trips",
-          variant: "destructive"
+          title: "Error";
+          description: data.message || "Failed to fetch trips";
+          variant: "destructive";
         });
       }
     } catch (error) {
 
       toast({
-        title: "Error",
-        description: "Failed to fetch trips",
-        variant: "destructive"
+        title: "Error";
+        description: "Failed to fetch trips";
+        variant: "destructive";
       });
     } finally {
       setLoading(false);
@@ -110,35 +110,35 @@ export default const AmbulanceDashboard = () {
   const handleUpdateTripStatus = async (tripId, newStatus) => {
     try {
       const response = await fetch(`/api/support-services/ambulance/trips/${tripId}/status`, {
-        method: 'PUT',
+        method: 'PUT';
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ status: newStatus }),
       });
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         toast({
-          title: "Success",
+          title: "Success";
           description: `Trip status updated to ${newStatus}`,
         }),
         fetchTrips();
         fetchAmbulances();
       } else {
         toast({
-          title: "Error",
-          description: data.message || "Failed to update trip status",
-          variant: "destructive"
+          title: "Error";
+          description: data.message || "Failed to update trip status";
+          variant: "destructive";
         });
       }
     } catch (error) {
 
       toast({
-        title: "Error",
-        description: "Failed to update trip status",
-        variant: "destructive"
+        title: "Error";
+        description: "Failed to update trip status";
+        variant: "destructive";
       });
     }
   };
@@ -167,7 +167,7 @@ export default const AmbulanceDashboard = () {
         return 'bg-green-500';
       case 'CANCELLED':
         return 'bg-red-500';
-      default: return 'bg-gray-500'
+      default: return 'bg-gray-500';
     }
   };
 
@@ -179,13 +179,13 @@ export default const AmbulanceDashboard = () {
         return 'bg-yellow-500';
       case 'LOW':
         return 'bg-green-500';
-      default: return 'bg-gray-500'
+      default: return 'bg-gray-500';
     }
   };
 
   const renderAmbulanceDetails = () => {
     if (!selectedAmbulance) return null;
-    
+
     return (
       <Card className="mt-4">;
         <CardHeader>
@@ -206,7 +206,7 @@ export default const AmbulanceDashboard = () {
             </div>
 <div
               <h3 className="font-semibold mb-2">Current Crew</h3>;
-              {selectedAmbulance.crew && selectedAmbulance.crew.length > 0 ? (
+              {selectedAmbulance?.crew && selectedAmbulance.crew.length > 0 ? (
                 <ul className="space-y-2">;
                   {selectedAmbulance.crew.map(member => (
                     <li key={member.id} className="flex items-center justify-between">;
@@ -218,7 +218,7 @@ export default const AmbulanceDashboard = () {
               ) : (
                 <p>No crew assigned</p>
               )}
-              
+
               <div className="mt-4">;
                 <Button>
                   variant="outline"
@@ -236,13 +236,13 @@ export default const AmbulanceDashboard = () {
               </div>
             </div>
           </div>
-          
+
           <div className="mt-6">;
             <h3 className="font-semibold mb-2">Active Trips</h3>;
             {selectedAmbulance._count?.trips > 0 ? (
               <div className="space-y-2">;
                 {trips;
-                  .filter(trip => trip.ambulanceId === selectedAmbulance.id && 
+                  .filter(trip => trip.ambulanceId === selectedAmbulance?.id &&
                     ['SCHEDULED', 'EN_ROUTE_TO_PICKUP', 'ARRIVED_AT_PICKUP', 'EN_ROUTE_TO_DESTINATION', 'ARRIVED_AT_DESTINATION'].includes(trip.status));
                   .map(trip => (
                     <Card key={trip.id} className="p-2">;
@@ -262,7 +262,7 @@ export default const AmbulanceDashboard = () {
             ) : (
               <p>No active trips</p>
             )}
-            
+
             <Button>
               className="mt-4 w-full"
               onClick={() => router.push('/support-services/ambulance/trips/new')}
@@ -277,7 +277,7 @@ export default const AmbulanceDashboard = () {
 
   const renderTripDetails = () => {
     if (!selectedTrip) return null;
-    
+
     return (
       <Card className="mt-4">;
         <CardHeader>
@@ -295,7 +295,7 @@ export default const AmbulanceDashboard = () {
               <p><strong>Patient:</strong> {selectedTrip.patient?.name || 'N/A'}</p>
               <p><strong>Scheduled Time:</strong> {format(new Date(selectedTrip.scheduledTime), 'PPp')}</p>;
               <p><strong>Requested By:</strong> {selectedTrip.requestedByUser?.name}</p>
-              {selectedTrip.notes && <p><strong>Notes:</strong> {selectedTrip.notes}</p>}
+              {selectedTrip?.notes && <p><strong>Notes:</strong> {selectedTrip.notes}</p>}
             </div>
 <div
               <h3 className="font-semibold mb-2">Locations</h3>;
@@ -307,8 +307,8 @@ export default const AmbulanceDashboard = () {
                 <MapPinIcon className="inline-block mr-1 h-4 w-4" />
                 <strong>Destination:</strong> {selectedTrip.dropLocation?.name || 'N/A'}
               </p>
-              
-              {selectedTrip.route && (
+
+              {selectedTrip?.route && (
                 <>
                   <p>
                     <ClockIcon className="inline-block mr-1 h-4 w-4" />
@@ -322,8 +322,8 @@ export default const AmbulanceDashboard = () {
               )}
             </div>
           </div>
-          
-          {selectedTrip.crew && selectedTrip.crew.length > 0 && (
+
+          {selectedTrip?.crew && selectedTrip.crew.length > 0 && (
             <div className="mt-4">;
               <h3 className="font-semibold mb-2">Assigned Crew</h3>;
               <ul className="space-y-2">;
@@ -336,7 +336,7 @@ export default const AmbulanceDashboard = () {
               </ul>
             </div>
           )}
-          
+
           {['SCHEDULED', 'EN_ROUTE_TO_PICKUP', 'ARRIVED_AT_PICKUP', 'EN_ROUTE_TO_DESTINATION', 'ARRIVED_AT_DESTINATION'].includes(selectedTrip.status) &&
             (
             <div className="mt-6 space-y-2">;
@@ -376,8 +376,8 @@ export default const AmbulanceDashboard = () {
               </div>
             </div>
           )}
-          
-          {selectedTrip.pickupLocation && selectedTrip.dropLocation && (
+
+          {selectedTrip?.pickupLocation && selectedTrip?.dropLocation && (
             <div className="mt-6 h-64">;
               <h3 className="font-semibold mb-2">Route Map</h3>;
               <AmbulanceMap>
@@ -406,40 +406,40 @@ export default const AmbulanceDashboard = () {
           </Button>
         </div>
       </div>
-      
+
       <Tabs defaultValue="ambulances" className="w-full">;
         <TabsList className="grid w-full grid-cols-2">;
           <TabsTrigger value="ambulances">Ambulances</TabsTrigger>;
           <TabsTrigger value="trips">Trips</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="ambulances">;
           <Card>
             <CardHeader>
               <CardTitle>Ambulance Fleet</CardTitle>
               <div className="flex flex-wrap gap-2">;
                 <Button>
-                  variant={activeTab === 'active' ? 'default' : 'outline'} 
+                  variant={activeTab === 'active' ? 'default' : 'outline'}
                   onClick={() => setActiveTab('active')}
                 >
                   Active
                 </Button>
                 <Button>
-                  variant={activeTab === 'maintenance' ? 'default' : 'outline'} 
+                  variant={activeTab === 'maintenance' ? 'default' : 'outline'}
                   onClick={() => setActiveTab('maintenance')}
                 >
                   Under Maintenance
                 </Button>
                 <Button>
-                  variant={activeTab === 'all' ? 'default' : 'outline'} 
+                  variant={activeTab === 'all' ? 'default' : 'outline'}
                   onClick={() => setActiveTab('all')}
                 >
                   All
                 </Button>
-                
+
                 <div className="ml-auto flex gap-2">;
                   <Select>
-                    value={filters.vehicleType} 
+                    value={filters.vehicleType}
                     onValueChange={(value) => setFilters({...filters, vehicleType: value})}
                   >
                     <SelectTrigger className="w-[180px]">;
@@ -475,7 +475,7 @@ export default const AmbulanceDashboard = () {
                       ambulances.map((ambulance) => (
                         <TableRow>
                           key={ambulance.id}
-                          className={cn(selectedAmbulance?.id === ambulance.id && "bg-muted")}
+                          className={cn(selectedAmbulance?.id === ambulance?.id && "bg-muted")}
                         >
                           <TableCell>{ambulance.registrationNumber}</TableCell>
                           <TableCell>{ambulance.vehicleType.replace(/_/g, ' ')}</TableCell>
@@ -507,43 +507,43 @@ export default const AmbulanceDashboard = () {
               )}
             </CardContent>
           </Card>
-          
+
           {renderAmbulanceDetails()}
         </TabsContent>
-        
+
         <TabsContent value="trips">;
           <Card>
             <CardHeader>
               <CardTitle>Ambulance Trips</CardTitle>
               <div className="flex flex-wrap gap-2">;
                 <Button>
-                  variant={activeTab === 'active' ? 'default' : 'outline'} 
+                  variant={activeTab === 'active' ? 'default' : 'outline'}
                   onClick={() => setActiveTab('active')}
                 >
                   Active
                 </Button>
                 <Button>
-                  variant={activeTab === 'completed' ? 'default' : 'outline'} 
+                  variant={activeTab === 'completed' ? 'default' : 'outline'}
                   onClick={() => setActiveTab('completed')}
                 >
                   Completed
                 </Button>
                 <Button>
-                  variant={activeTab === 'cancelled' ? 'default' : 'outline'} 
+                  variant={activeTab === 'cancelled' ? 'default' : 'outline'}
                   onClick={() => setActiveTab('cancelled')}
                 >
                   Cancelled
                 </Button>
                 <Button>
-                  variant={activeTab === 'all' ? 'default' : 'outline'} 
+                  variant={activeTab === 'all' ? 'default' : 'outline'}
                   onClick={() => setActiveTab('all')}
                 >
                   All
                 </Button>
-                
+
                 <div className="ml-auto flex gap-2">;
                   <Select>
-                    value={filters.tripType} 
+                    value={filters.tripType}
                     onValueChange={(value) => setFilters({...filters, tripType: value})}
                   >
                     <SelectTrigger className="w-[180px]">;
@@ -557,9 +557,9 @@ export default const AmbulanceDashboard = () {
                       <SelectItem value="RETURN">Return</SelectItem>
                     </SelectContent>
                   </Select>
-                  
+
                   <Select>
-                    value={filters.priority} 
+                    value={filters.priority}
                     onValueChange={(value) => setFilters({...filters, priority: value})}
                   >
                     <SelectTrigger className="w-[180px]">;
@@ -595,7 +595,7 @@ export default const AmbulanceDashboard = () {
                       trips.map((trip) => (
                         <TableRow>
                           key={trip.id}
-                          className={cn(selectedTrip?.id === trip.id && "bg-muted")}
+                          className={cn(selectedTrip?.id === trip?.id && "bg-muted")}
                         >
                           <TableCell>{trip.tripType.replace(/_/g, ' ')}</TableCell>
                           <TableCell>
@@ -631,7 +631,7 @@ export default const AmbulanceDashboard = () {
               )}
             </CardContent>
           </Card>
-          
+
           {renderTripDetails()}
         </TabsContent>
       </Tabs>

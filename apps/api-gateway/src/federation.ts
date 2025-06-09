@@ -1,26 +1,27 @@
+import Redis from 'ioredis';
+import responseCachePlugin from 'apollo-server-plugin-response-cache';
+import { ApolloGateway, IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway';
+import { ApolloServer } from 'apollo-server-express';
+import { ApolloServerPluginCacheControl, ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
+import { Express } from 'express';
+import { GraphQLSchema } from 'graphql';
+import { RedisCache } from 'apollo-server-cache-redis';
+
+import { ILogger } from '../../lib/core/logging';
+import { MetricsCollector } from '../../lib/monitoring/metrics-collector';
+import { authMiddleware } from '../middleware/auth';
 /**
  * GraphQL Federation Configuration
- * 
+ *
  * This module configures Apollo Federation to create a unified GraphQL schema
  * across multiple microservices. It implements:
- * 
+ *
  * - Service discovery for GraphQL endpoints
  * - Schema composition with conflict resolution
  * - Type merging and references across services
  * - Query planning and execution
  * - Caching with invalidation
  */
-import { ApolloGateway, IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway';
-import { ApolloServer } from 'apollo-server-express';
-import { ApolloServerPluginCacheControl, ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
-import { GraphQLSchema } from 'graphql';
-import { Express } from 'express';
-import { RedisCache } from 'apollo-server-cache-redis';
-import Redis from 'ioredis';
-import responseCachePlugin from 'apollo-server-plugin-response-cache';
-import { authMiddleware } from '../middleware/auth';
-import { ILogger } from '../../lib/core/logging';
-import { MetricsCollector } from '../../lib/monitoring/metrics-collector';
 export interface ServiceDefinition {
   name: string;
   url: string;
@@ -55,10 +56,10 @@ export class GraphQLFederation {
     this.metrics = config.metrics;
     // Initialize Redis
     this.redis = new Redis({
-      host: config.redisConfig.host,
-      port: config.redisConfig.port,
-      password: config.redisConfig.password,
-      db: config.redisConfig.db || 0,
+      host: config.redisConfig.host;
+      port: config.redisConfig.port;
+      password: config.redisConfig.password;
+      db: config.redisConfig.db || 0;
     })
     // Create authenticated data source class
     class AuthenticatedDataSource extends RemoteGraphQLDataSource {
@@ -81,8 +82,8 @@ export class GraphQLFederation {
         const serviceName = this.url.split('/').pop() || 'unknown'
         const operationName = request.operationName || 'unknown';
         this.metrics.recordHistogram('graphql.service_response_time', response.extensions?.timing || 0, {
-          service: serviceName,
-          operation: operationName
+          service: serviceName;
+          operation: operationName;
         });
         return response;
       }
@@ -91,14 +92,14 @@ export class GraphQLFederation {
         const serviceName = this.url.split('/').pop() || 'unknown'
         const operationName = request.operationName || 'unknown';
         this.metrics.incrementCounter('graphql.service_errors', 1, {
-          service: serviceName,
-          operation: operationName,
-          errorType: error.name || 'UnknownError'
+          service: serviceName;
+          operation: operationName;
+          errorType: error.name || 'UnknownError';
         });
         this.logger.error('GraphQL federation service error', {
-          service: serviceName,
-          operation: operationName,
-          error: error.message
+          service: serviceName;
+          operation: operationName;
+          error: error.message;
         });
         // Pass through the error
         return error
@@ -108,14 +109,14 @@ export class GraphQLFederation {
     this.gateway = new ApolloGateway({
       supergraphSdl: new IntrospectAndCompose({
         subgraphs: config.services.map(service => ({
-          name: service.name,
-          url: service.url
+          name: service.name;
+          url: service.url;
         })),
-        pollIntervalInMs: 60000, // Poll for schema changes every minute
+        pollIntervalInMs: 60000, // Poll for schema changes every minute;
       }),
       buildService: ({ url }) => new AuthenticatedDataSource({ url }),
       experimental_didUpdateComposition: ({ typeDefs, errors }) => {
-        if (errors) {
+        if (errors != null) {
           this.logger.error('Error composing GraphQL schema', { errors })
           return;
         }
@@ -124,19 +125,19 @@ export class GraphQLFederation {
       experimental_didFailComposition: ({ errors }) => {
         this.logger.error('Failed to compose GraphQL schema', { errors });
       },
-      __exposeQueryPlanExperimental: config.enablePlayground
+      __exposeQueryPlanExperimental: config.enablePlayground;
     });
     // Initialize Apollo Server
     this.server = new ApolloServer({
-      gateway: this.gateway,
+      gateway: this.gateway;
       plugins: [
         ApolloServerPluginCacheControl({
-          defaultMaxAge: 30, // Default max age of 30 seconds
+          defaultMaxAge: 30, // Default max age of 30 seconds;
         }),
         responseCachePlugin({
           cache: new RedisCache({
-            client: this.redis,
-            prefix: 'apollo-cache:'
+            client: this.redis;
+            prefix: 'apollo-cache:';
           }),
           sessionId: (requestContext) => {
             // Create a cache key based on user and roles
@@ -164,17 +165,17 @@ export class GraphQLFederation {
                 const endTime = process.hrtime.bigint();
                 const duration = Number(endTime - startTime) / 1_000_000; // Convert to ms
                 config.metrics.recordHistogram('graphql.request_duration', duration, {
-                  operation: requestContext.operationName || 'unknown'
+                  operation: requestContext.operationName || 'unknown';
                 })
                 config.metrics.incrementCounter('graphql.requests', 1, {
-                  operation: requestContext.operationName || 'unknown',
-                  status: requestContext.errors ? 'error' : 'success'
+                  operation: requestContext.operationName || 'unknown';
+                  status: requestContext.errors ? 'error' : 'success';
                 });
               },
               async didEncounterError(requestContext) {
                 config.metrics.incrementCounter('graphql.errors', 1, {
-                  operation: requestContext.operationName || 'unknown',
-                  errorType: requestContext.errors?.[0]?.extensions?.code || 'UNKNOWN'
+                  operation: requestContext.operationName || 'unknown';
+                  errorType: requestContext.errors?.[0]?.extensions?.code || 'UNKNOWN';
                 });
               }
             };
@@ -184,17 +185,17 @@ export class GraphQLFederation {
       context: ({ req }) => {
         // Get user from request (set by authMiddleware)
         return {
-          user: req.user,
+          user: req.user;
           trace: {
-            traceId: req.headers['x-trace-id'] || '',
-            spanId: req.headers['x-span-id'] || ''
+            traceId: req.headers['x-trace-id'] || '';
+            spanId: req.headers['x-span-id'] || '';
           }
         }
       },
-      introspection: config.enableIntrospection,
+      introspection: config.enableIntrospection;
       cache: new RedisCache({
-        client: this.redis,
-        prefix: 'apollo-schema:'
+        client: this.redis;
+        prefix: 'apollo-schema:';
       }),
     });
   }
@@ -224,8 +225,8 @@ export class GraphQLFederation {
       app,
       path,
       cors: {
-        origin: '*',
-        credentials: true
+        origin: '*';
+        credentials: true;
       }
     })
     this.logger.info(`GraphQL Federation endpoint available at ${path}`);
@@ -251,13 +252,13 @@ export class GraphQLFederation {
    */
   public async invalidateCache(typename: string, id?: string): Promise<void> {
     try {
-      const pattern = id 
-        ? `apollo-cache:${typename}:${id}:*` 
+      const pattern = id
+        ? `apollo-cache:${typename}:${id}:*`
         : `apollo-cache:${typename}:*`;
       const keys = await this.redis.keys(pattern);
       if (keys.length > 0) {
         await this.redis.del(...keys);
-        this.logger.debug(`Invalidated ${keys.length} cache entries for /* SECURITY: Template literal eliminated */
+        this.logger.debug(`Invalidated ${keys.length} cache entries for /* SECURITY: Template literal eliminated */;
       }
     } catch (error) {
       this.logger.error('Error invalidating GraphQL cache', { error, typename, id });

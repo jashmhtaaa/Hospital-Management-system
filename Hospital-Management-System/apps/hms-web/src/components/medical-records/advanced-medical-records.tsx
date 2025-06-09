@@ -1,16 +1,17 @@
-
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import {
+
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Search, 
-  Brain, 
-  FileText, 
-  Code, 
+import { Textarea } from '@/components/ui/textarea';
+
+  Search,
+  Brain,
+  FileText,
+  Code,
   CheckCircle,
   AlertCircle,
   Archive
@@ -45,14 +46,14 @@ const AdvancedMedicalRecords: React.FC = () => {
 
   const searchICD10 = async (query: string, type: string = 'search') => {
     if (!query.trim()) return;
-    
+
     setLoading(true);
     try {
       const response = await fetch(`/api/medical-records/icd10/search?q=/* SECURITY: Safe parameter encoding */&type=${type}`);
       const data = await response.json();
       setIcdResults(data.results);
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     } finally {
       setLoading(false);
     }
@@ -64,11 +65,11 @@ const AdvancedMedicalRecords: React.FC = () => {
     setLoading(true);
     try {
       const response = await fetch('/api/medical-records/auto-code', {
-        method: 'POST',
+        method: 'POST';
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          patientId: selectedRecord.patientId,
-          visitId: selectedRecord.id,
+          patientId: selectedRecord.patientId;
+          visitId: selectedRecord.id;
           clinicalNotes,
           diagnoses
         })
@@ -76,13 +77,13 @@ const AdvancedMedicalRecords: React.FC = () => {
       const data = await response.json();
       setSuggestedCodes(data.suggestedCodes);
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     } finally {
       setLoading(false);
     }
   };
 
-  const validateICD10Code = async (code: string) => {
+  const _validateICD10Code = async (code: string) => {
     try {
       const response = await fetch(`/api/medical-records/icd10/search?q=${code}&type=validate`);
       const data = await response.json();
@@ -132,7 +133,7 @@ const AdvancedMedicalRecords: React.FC = () => {
                     className="mt-1"
                   />
                 </div>
-                
+
                 <div>
                   <label className="text-sm font-medium">Diagnoses</label>
                   <Input
@@ -160,8 +161,8 @@ const AdvancedMedicalRecords: React.FC = () => {
                   </div>
                 </div>
 
-                <Button 
-                  onClick={generateAutoCoding} 
+                <Button
+                  onClick={generateAutoCoding}
                   disabled={loading || diagnoses.length === 0}
                   className="w-full"
                 >
@@ -186,17 +187,17 @@ const AdvancedMedicalRecords: React.FC = () => {
                       <div key={index} className="border rounded-lg p-4">
                         <div className="font-medium text-lg mb-2">{item.diagnosis}</div>
                         <div className="space-y-2">
-                          {item.suggestions.map((suggestion: any, suggestionIndex: number) => (
+                          {item.suggestions.map((suggestion: unknown, suggestionIndex: number) => (
                             <div key={suggestionIndex} className="flex items-center justify-between p-2 bg-gray-50 rounded">
                               <div>
                                 <div className="font-mono font-medium">{suggestion.code}</div>
                                 <div className="text-sm text-gray-600">{suggestion.description}</div>
-                                {suggestion.category && (
+                                {suggestion?.category && (
                                   <div className="text-xs text-gray-500">{suggestion.category}</div>
                                 )}
                               </div>
                               <div className="flex items-center space-x-2">
-                                {suggestion.confidence && (
+                                {suggestion?.confidence && (
                                   <Badge variant="outline">
                                     {Math.round(suggestion.confidence * 100)}%
                                   </Badge>
@@ -245,19 +246,19 @@ const AdvancedMedicalRecords: React.FC = () => {
                   <Card key={index} className="cursor-pointer hover:shadow-md transition-shadow">
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between mb-2">
-                        <Badge 
+                        <Badge
                           variant={result.type === 'specific' ? 'default' : 'secondary'}
                         >
                           {result.code}
                         </Badge>
-                        {result.confidence && (
+                        {result?.confidence && (
                           <Badge variant="outline">
                             {Math.round(result.confidence * 100)}%
                           </Badge>
                         )}
                       </div>
                       <p className="text-sm">{result.description}</p>
-                      {result.category && (
+                      {result?.category && (
                         <p className="text-xs text-gray-500 mt-1">{result.category}</p>
                       )}
                     </CardContent>

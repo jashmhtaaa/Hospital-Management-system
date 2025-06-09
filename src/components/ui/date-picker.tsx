@@ -6,7 +6,7 @@ import { format } from 'date-fns';
 
 /**
  * Date Picker Component;
- * 
+ *
  * A reusable date picker component for the HMS Financial Management module;
  */
 export const DatePicker = ({
@@ -18,13 +18,13 @@ export const DatePicker = ({
 }) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [date, setDate] = React.useState(value || null);
-  
+
   const handleSelect = (selectedDate: unknown) => {
     setDate(selectedDate);
     onChange?.(selectedDate);
     setIsOpen(false);
   };
-  
+
   return (
     <div className={`relative ${className}`}>;
 <div
@@ -36,7 +36,7 @@ export const DatePicker = ({
           {date ? format(date, 'PPP') : placeholder}
         </span>
       </div>
-      
+
       {isOpen && (
         <div className="absolute top-full mt-1 z-50 bg-white border rounded-md shadow-lg p-3">;
           <div className="calendar-placeholder">;

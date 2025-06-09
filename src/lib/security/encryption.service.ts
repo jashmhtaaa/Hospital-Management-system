@@ -1,3 +1,7 @@
+import crypto from 'crypto';
+
+
+import { logAuditEvent } from '@/lib/audit';
 }
 
 /**
@@ -5,21 +9,18 @@
  * HIPAA-compliant encryption for PHI/PII data protection;
  */
 
-import crypto from 'crypto';
-import { logAuditEvent } from '@/lib/audit';
-
 export interface EncryptionConfig {
-  algorithm: string,
-  keyLength: number,
-  ivLength: number,
-  tagLength: number,
+  algorithm: string;
+  keyLength: number;
+  ivLength: number;
+  tagLength: number;
   keyDerivationIterations: number
 export interface EncryptedData {
-  data: string,
-  iv: string,
-  tag: string,
-  algorithm: string,
-  keyId: string,
+  data: string;
+  iv: string;
+  tag: string;
+  algorithm: string;
+  keyId: string;
   version: string
 export interface EncryptionContext {
   userId?: string;
@@ -35,11 +36,11 @@ export class EncryptionService {
 
   private constructor() {
     this.config = {
-      algorithm: 'aes-256-gcm',
+      algorithm: 'aes-256-gcm';
       keyLength: 32, // 256 bits
       ivLength: 12,  // 96 bits for GCM
       tagLength: 16, // 128 bits
-      keyDerivationIterations: 100000
+      keyDerivationIterations: 100000;
     };
 
     // In production, these should come from secure key management service
@@ -58,7 +59,7 @@ export class EncryptionService {
    * Encrypt sensitive data with field-level encryption;
    */
   encrypt(
-    plaintext: string,
+    plaintext: string;
     context?: EncryptionContext;
   ): string {
     try {
@@ -68,26 +69,26 @@ export class EncryptionService {
 
       // Generate random IV for each encryption
       const iv = crypto.randomBytes(this.config.ivLength);
-      
+
       // Create cipher
       const cipher = crypto.createCipher(this.config.algorithm, this.masterKey);
       cipher.setAAD(Buffer.from(this.keyId)); // Additional authenticated data
-      
+
       // Encrypt data
       let encrypted = cipher.update(plaintext, 'utf8', 'hex');
       encrypted += cipher.final('hex');
-      
+
       // Get authentication tag
       const tag = cipher.getAuthTag();
 
       // Create encrypted data object
       const encryptedData: EncryptedData = {
-        data: encrypted,
-        iv: iv.toString('hex'),
-        tag: tag.toString('hex'),
-        algorithm: this.config.algorithm,
-        keyId: this.keyId,
-        version: this.version
+        data: encrypted;
+        iv: iv.toString('hex');
+        tag: tag.toString('hex');
+        algorithm: this.config.algorithm;
+        keyId: this.keyId;
+        version: this.version;
       };
 
       // Log encryption event for audit
@@ -107,7 +108,7 @@ export class EncryptionService {
    * Decrypt sensitive data;
    */
   decrypt(
-    encryptedText: string,
+    encryptedText: string;
     context?: EncryptionContext;
   ): string {
     try {
@@ -131,10 +132,10 @@ export class EncryptionService {
 
       // Create decipher
       const decipher = crypto.createDecipher(
-        encryptedData.algorithm, 
+        encryptedData.algorithm,
         this.masterKey;
       );
-      
+
       decipher.setAAD(Buffer.from(encryptedData.keyId));
       decipher.setAuthTag(Buffer.from(encryptedData.tag, 'hex'));
 
@@ -220,12 +221,12 @@ export class EncryptionService {
   generateSecureRandom(length: number = 16): string {
     const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
-    
+
     for (let i = 0; i < length; i++) {
       const randomIndex = crypto.randomInt(0, charset.length);
       result += charset[randomIndex];
     }
-    
+
     return result;
   }
 
@@ -233,12 +234,12 @@ export class EncryptionService {
    * Encrypt multiple fields at once;
    */
   encryptObject<T extends Record<string, unknown>>(
-    obj: T,
-    fieldsToEncrypt: (keyof T)[],
+    obj: T;
+    fieldsToEncrypt: (keyof T)[];
     context?: EncryptionContext;
   ): T {
     const encrypted = { ...obj };
-    
+
     for (const field of fieldsToEncrypt) {
       const value = obj[field];
       if (typeof value === 'string' && value) {
@@ -248,7 +249,7 @@ export class EncryptionService {
         }) as T[keyof T];
       }
     }
-    
+
     return encrypted;
   }
 
@@ -256,12 +257,12 @@ export class EncryptionService {
    * Decrypt multiple fields at once;
    */
   decryptObject<T extends Record<string, unknown>>(
-    obj: T,
-    fieldsToDecrypt: (keyof T)[],
+    obj: T;
+    fieldsToDecrypt: (keyof T)[];
     context?: EncryptionContext;
   ): T {
     const decrypted = { ...obj };
-    
+
     for (const field of fieldsToDecrypt) {
       const value = obj[field];
       if (typeof value === 'string' && value) {
@@ -276,7 +277,7 @@ export class EncryptionService {
         }
       }
     }
-    
+
     return decrypted;
   }
 
@@ -284,29 +285,29 @@ export class EncryptionService {
    * Key rotation - re-encrypt data with new key;
    */
   async rotateEncryption(
-    encryptedData: string,
+    encryptedData: string;
     context?: EncryptionContext;
   ): Promise<string> {
     try {
       // Decrypt with old key
       const plaintext = this.decrypt(encryptedData, context);
-      
+
       // Re-encrypt with new key (same instance for now, but could use new key)
       const newEncrypted = this.encrypt(plaintext, context)
-      
+
       await logAuditEvent({
-        eventType: 'ENCRYPTION_KEY_ROTATION',
-        userId: context?.userId,
-        resource: context?.resource || 'encrypted_data',
-        details: { 
-          oldKeyId: this.keyId,
-          newKeyId: this.keyId,
-          purpose: context?.purpose 
+        eventType: 'ENCRYPTION_KEY_ROTATION';
+        userId: context?.userId;
+        resource: context?.resource || 'encrypted_data';
+        details: {
+          oldKeyId: this.keyId;
+          newKeyId: this.keyId;
+          purpose: context?.purpose ;
         },
-        ipAddress: context?.ipAddress,
-        severity: 'MEDIUM'
+        ipAddress: context?.ipAddress;
+        severity: 'MEDIUM';
       });
-      
+
       return newEncrypted;
     } catch (error) {
 
@@ -321,10 +322,10 @@ export class EncryptionService {
     if (!data || data.length <= visibleChars) {
       return maskChar.repeat(data?.length || 8)
     }
-    
+
     const visible = data.substring(0, visibleChars);
     const masked = maskChar.repeat(data.length - visibleChars);
-    
+
     return visible + masked;
   }
 
@@ -336,14 +337,14 @@ export class EncryptionService {
       const parsed: EncryptedData = JSON.parse(
         Buffer.from(encryptedData, 'base64').toString('utf8');
       );
-      
+
       // Validate required fields
       return !!(
-        parsed.data &&
-        parsed.iv &&
-        parsed.tag &&
-        parsed.algorithm &&
-        parsed.keyId &&
+        parsed?.data &&
+        parsed?.iv &&
+        parsed?.tag &&
+        parsed?.algorithm &&
+        parsed?.keyId &&
         parsed.version;
       );
     } catch (error) {
@@ -357,7 +358,7 @@ export class EncryptionService {
   private deriveMasterKey(): Buffer {
     const passphrase = process.env.ENCRYPTION_PASSPHRASE || 'default-passphrase';
     const salt = process.env.ENCRYPTION_SALT || 'default-salt';
-    
+
     return crypto.pbkdf2Sync(
       passphrase,
       salt,
@@ -368,8 +369,8 @@ export class EncryptionService {
   }
 
   private async logEncryptionEvent(
-    operation: string,
-    success: boolean,
+    operation: string;
+    success: boolean;
     context?: EncryptionContext,
     error?: string;
   ): Promise<void> {
@@ -377,18 +378,18 @@ export class EncryptionService {
     if (!success || context?.resource?.includes('sensitive')) {
       await logAuditEvent({
         eventType: `ENCRYPTION_${operation}`,
-        userId: context?.userId,
-        resource: context?.resource || 'encrypted_data',
+        userId: context?.userId;
+        resource: context?.resource || 'encrypted_data';
         details: {
           operation,
           success,
-          algorithm: this.config.algorithm,
-          keyId: this.keyId,
-          purpose: context?.purpose,
+          algorithm: this.config.algorithm;
+          keyId: this.keyId;
+          purpose: context?.purpose;
           error;
         },
-        ipAddress: context?.ipAddress,
-        severity: success ? 'LOW' : 'HIGH'
+        ipAddress: context?.ipAddress;
+        severity: success ? 'LOW' : 'HIGH';
       });
     }
   }

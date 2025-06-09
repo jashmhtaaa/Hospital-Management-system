@@ -1,3 +1,4 @@
+import { MedicationAdministrationRecord } from './pharmacy.ts';
 }
 
 // src/types/api.ts
@@ -9,6 +10,5 @@ export interface ApiErrorResponse {
 }
 
 // Specific response for fetching administration records
-import { MedicationAdministrationRecord } from './pharmacy.ts';
 export interface AdminRecordsApiResponse {
   records: MedicationAdministrationRecord[]

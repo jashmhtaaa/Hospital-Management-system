@@ -1,5 +1,5 @@
-import { z } from 'zod';
 
+import { z } from 'zod';
 // Create enums to match Prisma schema
 export enum HousekeepingTaskStatus {
   PENDING = 'PENDING',
@@ -16,18 +16,18 @@ export enum HousekeepingTaskPriority {
 // Validation schemas
 export const createHousekeepingTaskSchema = z.object({
   taskName: z.string().min(1, 'Task name is required'),
-  description: z.string().optional(),
+  description: z.string().optional();
   location: z.string().min(1, 'Location is required'),
-  assignedToId: z.string().optional().nullable(),
-  status: z.nativeEnum(HousekeepingTaskStatus).default(HousekeepingTaskStatus.PENDING),
-  priority: z.nativeEnum(HousekeepingTaskPriority).default(HousekeepingTaskPriority.MEDIUM),
-  requestedAt: z.date().default(() => new Date()),
-  completedAt: z.date().optional().nullable(),
-  notes: z.string().optional(),
+  assignedToId: z.string().optional().nullable();
+  status: z.nativeEnum(HousekeepingTaskStatus).default(HousekeepingTaskStatus.PENDING);
+  priority: z.nativeEnum(HousekeepingTaskPriority).default(HousekeepingTaskPriority.MEDIUM);
+  requestedAt: z.date().default(() => new Date());
+  completedAt: z.date().optional().nullable();
+  notes: z.string().optional();
 });
 
 export const updateHousekeepingTaskSchema = createHousekeepingTaskSchema.partial().extend({
-  id: z.string(),
+  id: z.string();
 });
 
 export type CreateHousekeepingTaskInput = z.infer<typeof createHousekeepingTaskSchema>;
@@ -49,12 +49,12 @@ export class HousekeepingService {
     try {
       // Validate input data
       const validatedData = createHousekeepingTaskSchema.parse(data);
-      
+
       // Create the task
       const task = await prisma.housekeepingTask.create({
-        data: validatedData,
+        data: validatedData;
       });
-      
+
       return task;
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -77,8 +77,8 @@ export class HousekeepingService {
   }) {
     try {
       const where: unknown = {};
-      
-      if (filters) {
+
+      if (filters != null) {
         if (filters.status) {
           where.status = filters.status;
         }
@@ -92,7 +92,7 @@ export class HousekeepingService {
           where.assignedToId = filters.assignedToId;
         }
       }
-      
+
       const tasks = await prisma.housekeepingTask.findMany({
         where,
         orderBy: [
@@ -102,13 +102,13 @@ export class HousekeepingService {
         include: {
           assignedTo: {
             select: {
-              id: true,
-              name: true,
+              id: true;
+              name: true;
             },
           },
         },
       });
-      
+
       return tasks;
     } catch (error) {
       throw error;
@@ -127,13 +127,13 @@ export class HousekeepingService {
         include: {
           assignedTo: {
             select: {
-              id: true,
-              name: true,
+              id: true;
+              name: true;
             },
           },
         },
       });
-      
+
       return task;
     } catch (error) {
       throw error;
@@ -150,24 +150,24 @@ export class HousekeepingService {
     try {
       // Validate input data
       const validatedData = updateHousekeepingTaskSchema.parse({ ...data, id });
-      
+
       // Remove id from the data to be updated
       const { id: _, ...updateData } = validatedData;
-      
+
       // Update the task
       const task = await prisma.housekeepingTask.update({
         where: { id },
-        data: updateData,
+        data: updateData;
         include: {
           assignedTo: {
             select: {
-              id: true,
-              name: true,
+              id: true;
+              name: true;
             },
           },
         },
       });
-      
+
       return task;
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -187,7 +187,7 @@ export class HousekeepingService {
       const task = await prisma.housekeepingTask.delete({
         where: { id },
       });
-      
+
       return task;
     } catch (error) {
       throw error;
@@ -205,19 +205,19 @@ export class HousekeepingService {
       const task = await prisma.housekeepingTask.update({
         where: { id: taskId },
         data: {
-          assignedToId: userId,
-          status: HousekeepingTaskStatus.IN_PROGRESS,
+          assignedToId: userId;
+          status: HousekeepingTaskStatus.IN_PROGRESS;
         },
         include: {
           assignedTo: {
             select: {
-              id: true,
-              name: true,
+              id: true;
+              name: true;
             },
           },
         },
       });
-      
+
       return task;
     } catch (error) {
       throw error;
@@ -234,19 +234,19 @@ export class HousekeepingService {
       const task = await prisma.housekeepingTask.update({
         where: { id: taskId },
         data: {
-          status: HousekeepingTaskStatus.COMPLETED,
-          completedAt: new Date(),
+          status: HousekeepingTaskStatus.COMPLETED;
+          completedAt: new Date();
         },
         include: {
           assignedTo: {
             select: {
-              id: true,
-              name: true,
+              id: true;
+              name: true;
             },
           },
         },
       });
-      
+
       return task;
     } catch (error) {
       throw error;
@@ -263,18 +263,18 @@ export class HousekeepingService {
       const task = await prisma.housekeepingTask.update({
         where: { id: taskId },
         data: {
-          status: HousekeepingTaskStatus.CANCELLED,
+          status: HousekeepingTaskStatus.CANCELLED;
         },
         include: {
           assignedTo: {
             select: {
-              id: true,
-              name: true,
+              id: true;
+              name: true;
             },
           },
         },
       });
-      
+
       return task;
     } catch (error) {
       throw error;
@@ -283,4 +283,4 @@ export class HousekeepingService {
 }
 
 // Export a singleton instance
-export const housekeepingService = new HousekeepingService();
+export const _housekeepingService = new HousekeepingService();

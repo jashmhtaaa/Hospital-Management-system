@@ -1,5 +1,5 @@
-import { z } from 'zod';
 
+import { z } from 'zod';
 // Create enums to match Prisma schema
 export enum DietType {
   REGULAR = 'REGULAR',
@@ -21,17 +21,17 @@ export enum DietOrderStatus {
 // Validation schemas
 export const createDietOrderSchema = z.object({
   patientId: z.string().min(1, 'Patient ID is required'),
-  dietType: z.nativeEnum(DietType),
-  instructions: z.string().optional(),
-  startDate: z.date().default(() => new Date()),
-  endDate: z.date().optional().nullable(),
-  status: z.nativeEnum(DietOrderStatus).default(DietOrderStatus.ACTIVE),
+  dietType: z.nativeEnum(DietType);
+  instructions: z.string().optional();
+  startDate: z.date().default(() => new Date());
+  endDate: z.date().optional().nullable();
+  status: z.nativeEnum(DietOrderStatus).default(DietOrderStatus.ACTIVE);
   createdBy: z.string().min(1, 'Creator ID is required'),
-  notes: z.string().optional(),
+  notes: z.string().optional();
 });
 
 export const updateDietOrderSchema = createDietOrderSchema.partial().extend({
-  id: z.string(),
+  id: z.string();
 });
 
 export type CreateDietOrderInput = z.infer<typeof createDietOrderSchema>;
@@ -53,12 +53,12 @@ export class DietaryService {
     try {
       // Validate input data
       const validatedData = createDietOrderSchema.parse(data);
-      
+
       // Create the diet order
       const order = await prisma.dietOrder.create({
-        data: validatedData,
+        data: validatedData;
       });
-      
+
       return order;
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -81,8 +81,8 @@ export class DietaryService {
   }) {
     try {
       const where: unknown = {};
-      
-      if (filters) {
+
+      if (filters != null) {
         if (filters.status) {
           where.status = filters.status;
         }
@@ -101,7 +101,7 @@ export class DietaryService {
           ];
         }
       }
-      
+
       const orders = await prisma.dietOrder.findMany({
         where,
         orderBy: [
@@ -110,13 +110,13 @@ export class DietaryService {
         include: {
           patient: {
             select: {
-              id: true,
-              name: true,
+              id: true;
+              name: true;
             },
           },
         },
       });
-      
+
       return orders;
     } catch (error) {
       throw error;
@@ -135,13 +135,13 @@ export class DietaryService {
         include: {
           patient: {
             select: {
-              id: true,
-              name: true,
+              id: true;
+              name: true;
             },
           },
         },
       });
-      
+
       return order;
     } catch (error) {
       throw error;
@@ -158,24 +158,24 @@ export class DietaryService {
     try {
       // Validate input data
       const validatedData = updateDietOrderSchema.parse({ ...data, id });
-      
+
       // Remove id from the data to be updated
       const { id: _, ...updateData } = validatedData;
-      
+
       // Update the diet order
       const order = await prisma.dietOrder.update({
         where: { id },
-        data: updateData,
+        data: updateData;
         include: {
           patient: {
             select: {
-              id: true,
-              name: true,
+              id: true;
+              name: true;
             },
           },
         },
       });
-      
+
       return order;
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -195,7 +195,7 @@ export class DietaryService {
       const order = await prisma.dietOrder.delete({
         where: { id },
       });
-      
+
       return order;
     } catch (error) {
       throw error;
@@ -212,19 +212,19 @@ export class DietaryService {
       const order = await prisma.dietOrder.update({
         where: { id },
         data: {
-          status: DietOrderStatus.CANCELLED,
-          endDate: new Date(),
+          status: DietOrderStatus.CANCELLED;
+          endDate: new Date();
         },
         include: {
           patient: {
             select: {
-              id: true,
-              name: true,
+              id: true;
+              name: true;
             },
           },
         },
       });
-      
+
       return order;
     } catch (error) {
       throw error;
@@ -241,19 +241,19 @@ export class DietaryService {
       const order = await prisma.dietOrder.update({
         where: { id },
         data: {
-          status: DietOrderStatus.COMPLETED,
-          endDate: new Date(),
+          status: DietOrderStatus.COMPLETED;
+          endDate: new Date();
         },
         include: {
           patient: {
             select: {
-              id: true,
-              name: true,
+              id: true;
+              name: true;
             },
           },
         },
       });
-      
+
       return order;
     } catch (error) {
       throw error;
@@ -274,18 +274,18 @@ export class DietaryService {
             { endDate: null },
             { endDate: { gte: date } },
           ],
-          status: DietOrderStatus.ACTIVE,
+          status: DietOrderStatus.ACTIVE;
         },
         include: {
           patient: {
             select: {
-              id: true,
-              name: true,
+              id: true;
+              name: true;
             },
           },
         },
       });
-      
+
       return orders;
     } catch (error) {
       throw error;
@@ -294,4 +294,4 @@ export class DietaryService {
 }
 
 // Export a singleton instance
-export const dietaryService = new DietaryService();
+export const _dietaryService = new DietaryService();

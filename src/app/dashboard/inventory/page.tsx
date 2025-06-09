@@ -1,13 +1,14 @@
+import React, { useState, useEffect } from "react";
+import {
+
+import { Button } from "@/components/ui/button";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 }
 
 // src/app/dashboard/inventory/page.tsx
 "use client";
 export const dynamic = 'force-dynamic';
 
-import React, { useState, useEffect } from "react";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { Button } from "@/components/ui/button";
-import {
   Table,
   TableBody,
   TableCell,
@@ -22,7 +23,7 @@ import { InventoryItem } from "@/types/inventory";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 
-export default const InventoryPage = () {
+export default const _InventoryPage = () {
   const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +35,7 @@ export default const InventoryPage = () {
       setError(null);
       try {
         const params = new URLSearchParams();
-        if (searchTerm) {
+        if (searchTerm != null) {
             params.append("name", searchTerm);
         }
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -44,15 +45,15 @@ export default const InventoryPage = () {
           const errorData: { error?: string } = await response.json();
           throw new Error(errorData.error || "Failed to fetch inventory items");
         }
-        const data: InventoryItem[] = await response.json(),
+        const data: InventoryItem[] = await response.json();
         setInventoryItems(data);
       } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setError(message),
         toast({
-          title: "Error Fetching Inventory",
-          description: message,
-          variant: "destructive",
+          title: "Error Fetching Inventory";
+          description: message;
+          variant: "destructive";
         });
       } finally {
         setIsLoading(false);

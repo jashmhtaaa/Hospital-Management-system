@@ -1,11 +1,12 @@
-// app/api/consultations/[consultationId]/route.ts
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { sessionOptions, IronSessionData } from "@/lib/session";
-import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
-import { Consultation } from "@/types/opd";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { getIronSession } from "iron-session";
 import { z } from "zod";
 
+
+import { Consultation } from "@/types/opd";
+import { sessionOptions, IronSessionData } from "@/lib/session";
+// app/api/consultations/[consultationId]/route.ts
 // Define roles allowed to view/update consultations (adjust as needed)
 const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse"]
 const ALLOWED_ROLES_UPDATE = ["Doctor"]; // Only the doctor who created it?
@@ -19,7 +20,7 @@ const getConsultationId = (pathname: string): number | null {
 }
 
 // GET handler for retrieving a specific consultation with full details
-export const GET = async (request: Request) => {
+export const _GET = async (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);
@@ -44,24 +45,24 @@ export const GET = async (request: Request) => {
 
         // 2. Retrieve the main consultation record
         interface ConsultationQueryResult {
-            consultation_id: number,
-            patient_id: number,
-            doctor_id: number,
-            opd_visit_id: number | null,
-            admission_id: number | null,
-            consultation_datetime: string,
-            chief_complaint: string | null,
-            history_of_present_illness: string | null,
-            physical_examination: string | null,
-            diagnosis: string | null,
-            treatment_plan: string | null,
-            follow_up_instructions: string | null,
-            notes: string | null,
-            created_at: string,
-            updated_at: string,
-            patient_first_name: string,
-            patient_last_name: string,
-            doctor_full_name: string
+            consultation_id: number;
+            patient_id: number;
+            doctor_id: number;
+            opd_visit_id: number | null;
+            admission_id: number | null;
+            consultation_datetime: string;
+            chief_complaint: string | null;
+            history_of_present_illness: string | null;
+            physical_examination: string | null;
+            diagnosis: string | null;
+            treatment_plan: string | null;
+            follow_up_instructions: string | null;
+            notes: string | null;
+            created_at: string;
+            updated_at: string;
+            patient_first_name: string;
+            patient_last_name: string;
+            doctor_full_name: string;
         }
 
         const consultResult = await DB.prepare(
@@ -90,28 +91,28 @@ export const GET = async (request: Request) => {
 
         // 4. Format the response
         const consultation: Consultation = {
-            consultation_id: consultResult.consultation_id,
-            patient_id: consultResult.patient_id,
-            doctor_id: consultResult.doctor_id,
-            opd_visit_id: consultResult.opd_visit_id,
-            admission_id: consultResult.admission_id,
-            consultation_datetime: consultResult.consultation_datetime,
-            chief_complaint: consultResult.chief_complaint,
-            history_of_present_illness: consultResult.history_of_present_illness,
-            physical_examination: consultResult.physical_examination,
-            diagnosis: consultResult.diagnosis,
-            treatment_plan: consultResult.treatment_plan,
-            follow_up_instructions: consultResult.follow_up_instructions,
-            notes: consultResult.notes,
-            created_at: consultResult.created_at,
-            updated_at: consultResult.updated_at,
+            consultation_id: consultResult.consultation_id;
+            patient_id: consultResult.patient_id;
+            doctor_id: consultResult.doctor_id;
+            opd_visit_id: consultResult.opd_visit_id;
+            admission_id: consultResult.admission_id;
+            consultation_datetime: consultResult.consultation_datetime;
+            chief_complaint: consultResult.chief_complaint;
+            history_of_present_illness: consultResult.history_of_present_illness;
+            physical_examination: consultResult.physical_examination;
+            diagnosis: consultResult.diagnosis;
+            treatment_plan: consultResult.treatment_plan;
+            follow_up_instructions: consultResult.follow_up_instructions;
+            notes: consultResult.notes;
+            created_at: consultResult.created_at;
+            updated_at: consultResult.updated_at;
             patient: {
-                patient_id: consultResult.patient_id,
-                first_name: consultResult.patient_first_name,
-                last_name: consultResult.patient_last_name,
+                patient_id: consultResult.patient_id;
+                first_name: consultResult.patient_first_name;
+                last_name: consultResult.patient_last_name;
             },
             doctor: {
-                doctor_id: consultResult.doctor_id,
+                doctor_id: consultResult.doctor_id;
                 user: { fullName: consultResult.doctor_full_name }
             }
         };
@@ -128,16 +129,16 @@ export const GET = async (request: Request) => {
 
 // PUT handler for updating a consultation
 const UpdateConsultationSchema = z.object({
-    chief_complaint: z.string().optional().nullable(),
-    history_of_present_illness: z.string().optional().nullable(),
-    physical_examination: z.string().optional().nullable(),
-    diagnosis: z.string().optional().nullable(),
-    treatment_plan: z.string().optional().nullable(),
-    follow_up_instructions: z.string().optional().nullable(),
-    notes: z.string().optional().nullable(),
+    chief_complaint: z.string().optional().nullable();
+    history_of_present_illness: z.string().optional().nullable();
+    physical_examination: z.string().optional().nullable();
+    diagnosis: z.string().optional().nullable();
+    treatment_plan: z.string().optional().nullable();
+    follow_up_instructions: z.string().optional().nullable();
+    notes: z.string().optional().nullable();
 });
 
-export const PUT = async (request: Request) => {
+export const _PUT = async (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);

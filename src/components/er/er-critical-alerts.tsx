@@ -1,10 +1,10 @@
+import React, { useState, useEffect } from "react";
+import {
 }
 
 // src/components/er/ERCriticalAlerts.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
-import {
   Table,
   TableBody,
   TableCell,
@@ -19,13 +19,13 @@ import { useToast } from "@/components/ui/use-toast"; // Changed import
 
 // Mock data structure - replace with API data
 interface CriticalAlert {
-  id: string,
-  visit_id: string,
+  id: string;
+  visit_id: string;
   patient_name: string; // Need to join with visits/patients table
   mrn: string; // Need to join
   location: string; // Need to join
   alert_type: string; // Sepsis, Stroke, STEMI, Critical Lab, etc.
-  activation_timestamp: string,
+  activation_timestamp: string;
   status: string; // Active, Acknowledged, Resolved
   details?: string;
 }
@@ -33,48 +33,48 @@ interface CriticalAlert {
 // Mock data - replace with API fetch
 const mockAlerts: CriticalAlert[] = [
   {
-    id: "alert_uuid_1",
-    visit_id: "visit_1",
-    patient_name: "John Doe",
-    mrn: "MRN001",
-    location: "Room 3",
-    alert_type: "STEMI",
-    activation_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 60 * 1000).toISOString(),
-    status: "Active",
-    details: "ECG shows ST elevation.",
+    id: "alert_uuid_1";
+    visit_id: "visit_1";
+    patient_name: "John Doe";
+    mrn: "MRN001";
+    location: "Room 3";
+    alert_type: "STEMI";
+    activation_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 60 * 1000).toISOString();
+    status: "Active";
+    details: "ECG shows ST elevation.";
   },
   {
-    id: "alert_uuid_2",
-    visit_id: "visit_4",
-    patient_name: "Alice Wonderland",
-    mrn: "MRN004",
-    location: "Triage Room 2",
-    alert_type: "Stroke",
-    activation_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 10 * 60 * 1000).toISOString(),
-    status: "Active",
-    details: "FAST positive, right-sided weakness.",
+    id: "alert_uuid_2";
+    visit_id: "visit_4";
+    patient_name: "Alice Wonderland";
+    mrn: "MRN004";
+    location: "Triage Room 2";
+    alert_type: "Stroke";
+    activation_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 10 * 60 * 1000).toISOString();
+    status: "Active";
+    details: "FAST positive, right-sided weakness.",;
   },
   {
-    id: "alert_uuid_3",
-    visit_id: "visit_5",
-    patient_name: "Bob Builder",
-    mrn: "MRN005",
-    location: "Room 1",
-    alert_type: "Sepsis",
-    activation_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 60 * 60 * 1000).toISOString(),
-    status: "Acknowledged",
-    details: "Meets SIRS criteria, lactate elevated.",
+    id: "alert_uuid_3";
+    visit_id: "visit_5";
+    patient_name: "Bob Builder";
+    mrn: "MRN005";
+    location: "Room 1";
+    alert_type: "Sepsis";
+    activation_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 60 * 60 * 1000).toISOString();
+    status: "Acknowledged";
+    details: "Meets SIRS criteria, lactate elevated.",;
   },
   {
-    id: "alert_uuid_4",
-    visit_id: "visit_2",
-    patient_name: "Jane Smith",
-    mrn: "MRN002",
-    location: "Room 5",
-    alert_type: "Critical Lab",
-    activation_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 5 * 60 * 1000).toISOString(),
-    status: "Active",
-    details: "Potassium: 6.8 mmol/L",
+    id: "alert_uuid_4";
+    visit_id: "visit_2";
+    patient_name: "Jane Smith";
+    mrn: "MRN002";
+    location: "Room 5";
+    alert_type: "Critical Lab";
+    activation_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 5 * 60 * 1000).toISOString();
+    status: "Active";
+    details: "Potassium: 6.8 mmol/L";
   },
 ];
 
@@ -95,7 +95,7 @@ const getAlertBadgeVariant = (
   }
 };
 
-export default const ERCriticalAlerts = () {
+export default const _ERCriticalAlerts = () {
   const [alerts, setAlerts] = useState<CriticalAlert[]>(mockAlerts);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast(); // Added hook call
@@ -122,14 +122,14 @@ export default const ERCriticalAlerts = () {
         );
       );
       toast({
-        title: "Alert Acknowledged",
+        title: "Alert Acknowledged";
         description: `Alert ${alertId} marked as acknowledged.`,
       });
     } catch {
       toast({
-        title: "Error",
-        description: "Failed to acknowledge alert.",
-        variant: "destructive",
+        title: "Error";
+        description: "Failed to acknowledge alert.";
+        variant: "destructive";
       });
     } finally {
       setIsLoading(false);
@@ -148,14 +148,14 @@ export default const ERCriticalAlerts = () {
           previousAlerts.filter((alert) => alert.id !== alertId) // Remove resolved alerts from view
       );
       toast({
-        title: "Alert Resolved",
+        title: "Alert Resolved";
         description: `Alert ${alertId} marked as resolved.`,
       });
     } catch {
       toast({
-        title: "Error",
-        description: "Failed to resolve alert.",
-        variant: "destructive",
+        title: "Error";
+        description: "Failed to resolve alert.";
+        variant: "destructive";
       });
     } finally {
       setIsLoading(false);

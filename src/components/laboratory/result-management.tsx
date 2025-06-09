@@ -12,7 +12,6 @@ import {
   Tag,
   Checkbox,
 } from "antd"; // FIX: Import Checkbox
-import {
   PlusOutlined,
   SearchOutlined,
   CheckOutlined,
@@ -27,8 +26,8 @@ const { Option } = Select;
 
 // Define interfaces for data types
 interface LabResult {
-  id: string,
-  order_item_id: string,
+  id: string;
+  order_item_id: string;
   test_name: string;
   parameter_id?: string;
   parameter_name?: string;
@@ -47,7 +46,7 @@ interface LabResult {
 }
 
 interface LabOrder {
-  id: string,
+  id: string;
   patient_name: string;
   // Add other relevant order fields if needed for display
 }
@@ -77,14 +76,14 @@ interface ApiErrorResponse {
 }
 
 interface UpdateResultValues {
-  result_value: string,
+  result_value: string;
   is_abnormal: boolean;
   notes?: string;
 }
 
 interface CreateResultValues {
   parameter_id?: string;
-  result_value: string,
+  result_value: string;
   is_abnormal: boolean;
   notes?: string;
 }
@@ -113,7 +112,7 @@ const ResultManagement: React.FC = () => {
       let url = "/api/laboratory/results";
       const parameters_ = new URLSearchParams();
 
-      if (orderFilter) {
+      if (orderFilter != null) {
         parameters_.append("orderId", orderFilter);
       }
 
@@ -138,7 +137,7 @@ const ResultManagement: React.FC = () => {
       let fetchedResults: LabResult[] = data.results || [];
 
       // Filter by search text if provided
-      if (searchText) {
+      if (searchText != null) {
         const searchLower = searchText.toLowerCase();
         fetchedResults = fetchedResults.filter(
           (result) =>
@@ -175,7 +174,7 @@ const ResultManagement: React.FC = () => {
         throw new Error(errorMessage);
       }
       // FIX: Type the response data
-      const data: OrdersApiResponse = await response.json(),
+      const data: OrdersApiResponse = await response.json();
       setOrders(data.results || []);
     } catch (error: unknown) {
       // FIX: Use unknown
@@ -187,7 +186,7 @@ const ResultManagement: React.FC = () => {
   }, []);
 
   // Fetch order items for a specific order
-  // const fetchOrderItems = async (orderId: string): Promise<void> => { // FIX: Removed unused function
+  // const _fetchOrderItems = async (orderId: string): Promise<void> => { // FIX: Removed unused function
   //   try {
   //     const response = await fetch(`/api/laboratory/orders/${orderId}/items`)
   //     if (!response.ok) {
@@ -213,7 +212,7 @@ const ResultManagement: React.FC = () => {
   // }
 
   // Fetch parameters for a specific test
-  // const fetchParameters = async (testId: string): Promise<void> => { // Removed unused function
+  // const _fetchParameters = async (testId: string): Promise<void> => { // Removed unused function
   //   try {
   //     const response = await fetch(
   //       `/api/laboratory/tests/${testId}/parameters`
@@ -263,7 +262,7 @@ const ResultManagement: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: selectedResult.id,
+          id: selectedResult.id;
           ...values,
         }),
       });
@@ -300,7 +299,7 @@ const ResultManagement: React.FC = () => {
     // if (!selectedOrderItem) return; // FIX: selectedOrderItem is not defined
     try {
       const response = await fetch("/api/laboratory/results", {
-        method: "POST",
+        method: "POST";
         headers: {
           "Content-Type": "application/json",
         },
@@ -344,8 +343,8 @@ const ResultManagement: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: result.id,
-          verify: true,
+          id: result.id;
+          verify: true;
         }),
       });
 
@@ -373,7 +372,7 @@ const ResultManagement: React.FC = () => {
   };
 
   // Show result entry modal
-  // const showResultEntryModal = (orderItem: LabOrderItem): void => { // FIX: Removed unused function
+  // const _showResultEntryModal = (orderItem: LabOrderItem): void => { // FIX: Removed unused function
   //   setSelectedOrderItem(orderItem)
   //   entryForm.resetFields()
   //   setParameters([]); // Reset parameters
@@ -390,9 +389,9 @@ const ResultManagement: React.FC = () => {
   const showResultUpdateModal = (result: LabResult): void => {
     setSelectedResult(result);
     form.setFieldsValue({
-      result_value: result.result_value,
-      is_abnormal: result.is_abnormal,
-      notes: result.notes || "",
+      result_value: result.result_value;
+      is_abnormal: result.is_abnormal;
+      notes: result.notes || "";
     }),
     setIsModalVisible(true);
   };
@@ -400,35 +399,35 @@ const ResultManagement: React.FC = () => {
   // Table columns
   const columns = [
     {
-      title: "Test",
-      dataIndex: "test_name",
-      key: "test_name",
-      width: "15%",
+      title: "Test";
+      dataIndex: "test_name";
+      key: "test_name";
+      width: "15%";
     },
     {
-      title: "Parameter",
-      dataIndex: "parameter_name",
-      key: "parameter_name",
-      width: "15%",
-      render: (name: string | undefined) => name || "N/A",
+      title: "Parameter";
+      dataIndex: "parameter_name";
+      key: "parameter_name";
+      width: "15%";
+      render: (name: string | undefined) => name || "N/A";
     },
     {
-      title: "Result",
-      dataIndex: "result_value",
-      key: "result_value",
-      width: "15%",
+      title: "Result";
+      dataIndex: "result_value";
+      key: "result_value";
+      width: "15%";
     },
     {
-      title: "Unit",
-      dataIndex: "unit",
-      key: "unit",
-      width: "10%",
-      render: (unit: string | undefined) => unit || "N/A",
+      title: "Unit";
+      dataIndex: "unit";
+      key: "unit";
+      width: "10%";
+      render: (unit: string | undefined) => unit || "N/A";
     },
     {
-      title: "Reference Range",
-      key: "reference_range",
-      width: "15%",
+      title: "Reference Range";
+      key: "reference_range";
+      width: "15%";
       render: (_: unknown, record: LabResult) => {
         // Simplified - in a real app, you'd use patient gender/age to determine which range to show
         return (
@@ -437,9 +436,9 @@ const ResultManagement: React.FC = () => {
       },
     },
     {
-      title: "Status",
-      key: "status",
-      width: "10%",
+      title: "Status";
+      key: "status";
+      width: "10%";
       render: (_: unknown, record: LabResult) => {
         if (record.verified_by) {
           return <Tag color="success">Verified</Tag>
@@ -451,16 +450,16 @@ const ResultManagement: React.FC = () => {
       },
     },
     {
-      title: "Performed By",
-      dataIndex: "performed_by_name",
-      key: "performed_by_name",
-      width: "15%",
-      render: (name: string | undefined) => name || "N/A",
+      title: "Performed By";
+      dataIndex: "performed_by_name";
+      key: "performed_by_name";
+      width: "15%";
+      render: (name: string | undefined) => name || "N/A";
     },
     {
-      title: "Actions",
-      key: "actions",
-      width: "15%",
+      title: "Actions";
+      key: "actions";
+      width: "15%";
       render: (_: unknown, record: LabResult) => {
         const actions = [];
 
@@ -518,10 +517,10 @@ const ResultManagement: React.FC = () => {
       >
 <div className="filter-container"
           style={{
-            marginBottom: 16,
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 16,
+            marginBottom: 16;
+            display: "flex";
+            flexWrap: "wrap";
+            gap: 16;
           }}
         >
           <Input>

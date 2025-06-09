@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+
+
 import { getDB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session";
-
 // Define interface for POST request body
 interface VitalSignsInput {
   record_time?: string; // Optional, defaults to now
@@ -15,8 +16,8 @@ interface VitalSignsInput {
 }
 
 // GET /api/ipd/admissions/[id]/vital-signs - Get all vital signs for an admission
-export const GET = async (
-  _request: NextRequest,
+export const _GET = async (
+  _request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -43,7 +44,7 @@ export const GET = async (
       [admissionId]
     );
     const admission =;
-      admissionResult.results && admissionResult.results.length > 0 // Changed .rows to .results
+      admissionResult?.results && admissionResult.results.length > 0 // Changed .rows to .results
         ? admissionResult.results[0] // Changed .rows to .results
         : undefined;
 
@@ -81,7 +82,7 @@ export const GET = async (
 
     return NextResponse.json({
       admission,
-      vital_signs: vitalSignsResult.results || [], // Changed .rows to .results
+      vital_signs: vitalSignsResult.results || [], // Changed .rows to .results;
     });
   } catch (error: unknown) {
 
@@ -94,8 +95,8 @@ export const GET = async (
 }
 
 // POST /api/ipd/admissions/[id]/vital-signs - Create a new vital signs record
-export const POST = async (
-  request: NextRequest,
+export const _POST = async (
+  request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -123,11 +124,11 @@ export const POST = async (
 
     // Basic validation (using typed data)
     if (
-      !data.temperature &&
-      !data.pulse &&
-      !data.respiratory_rate &&
-      !data.blood_pressure &&
-      !data.oxygen_saturation &&
+      !data?.temperature &&
+      !data?.pulse &&
+      !data?.respiratory_rate &&
+      !data?.blood_pressure &&
+      !data?.oxygen_saturation &&
       !data.pain_level
     ) {
       return NextResponse.json(
@@ -145,7 +146,7 @@ export const POST = async (
       [admissionId]
     );
     const admission =;
-      admissionResult.results && admissionResult.results.length > 0 // Changed .rows to .results
+      admissionResult?.results && admissionResult.results.length > 0 // Changed .rows to .results
         ? (admissionResult.results[0] as { id: string; status: string }) // Changed .rows to .results
         : undefined;
 
@@ -168,7 +169,7 @@ export const POST = async (
     await database.query(
       `;
       INSERT INTO vital_signs_records (
-        admission_id, recorded_by, record_time, temperature, pulse, respiratory_rate, 
+        admission_id, recorded_by, record_time, temperature, pulse, respiratory_rate,
         blood_pressure, oxygen_saturation, pain_level, notes;
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `,

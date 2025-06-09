@@ -1,55 +1,56 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+
+import { PharmacyDomain } from '../../../models/domain-models';
+import { auditLog } from '../../../../../lib/audit';
+import { errorHandler } from '../../../../../lib/error-handler';
+import { getMedicationById, getPrescriptionById } from '../../../../../lib/services/pharmacy/pharmacy.service';
+import { validatePartialDispensingRequest } from '../../../../../lib/validation/pharmacy-validation';
 }
 
 /**
  * Partial Dispensing API Routes;
- * 
+ *
  * This file implements the API endpoints for recording partial medication dispensing;
  * with tracking of remaining quantities.
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { validatePartialDispensingRequest } from '../../../../../lib/validation/pharmacy-validation';
-import { auditLog } from '../../../../../lib/audit';
-import { errorHandler } from '../../../../../lib/error-handler';
-import { PharmacyDomain } from '../../../models/domain-models';
-import { getMedicationById, getPrescriptionById } from '../../../../../lib/services/pharmacy/pharmacy.service';
-
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
-  findAll: () => Promise.resolve([]),
-  search: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: getMedicationById;
+  findAll: () => Promise.resolve([]);
+  search: () => Promise.resolve([]);
+  save: () => Promise.resolve('');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 }
 
 const prescriptionRepository = {
-  findById: getPrescriptionById,
-  findByPatientId: () => Promise.resolve([]),
-  findByPrescriberId: () => Promise.resolve([]),
-  findByMedicationId: () => Promise.resolve([]),
-  findByStatus: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: getPrescriptionById;
+  findByPatientId: () => Promise.resolve([]);
+  findByPrescriberId: () => Promise.resolve([]);
+  findByMedicationId: () => Promise.resolve([]);
+  findByStatus: () => Promise.resolve([]);
+  save: () => Promise.resolve('');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 };
 
 const dispensingRepository = {
-  findById: (id: string) => Promise.resolve(null),
-  findByPrescriptionId: (prescriptionId: string) => Promise.resolve([]),
-  findByPatientId: (patientId: string) => Promise.resolve([]),
-  findByStatus: (status: string) => Promise.resolve([]),
-  save: (dispensing: unknown) => Promise.resolve(dispensing.id || 'new-id'),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: (id: string) => Promise.resolve(null);
+  findByPrescriptionId: (prescriptionId: string) => Promise.resolve([]);
+  findByPatientId: (patientId: string) => Promise.resolve([]);
+  findByStatus: (status: string) => Promise.resolve([]);
+  save: (dispensing: unknown) => Promise.resolve(dispensing.id || 'new-id');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 };
 
 const inventoryRepository = {
-  findById: (id: string) => Promise.resolve(null),
-  findByLocationId: (locationId: string) => Promise.resolve([]),
-  findByMedicationId: (medicationId: string) => Promise.resolve([]),
-  adjustStock: (inventoryId: string, newQuantity: number) => Promise.resolve(true)
+  findById: (id: string) => Promise.resolve(null);
+  findByLocationId: (locationId: string) => Promise.resolve([]);
+  findByMedicationId: (medicationId: string) => Promise.resolve([]);
+  adjustStock: (inventoryId: string, newQuantity: number) => Promise.resolve(true);
 };
 
 /**
@@ -91,8 +92,8 @@ export const POST = async (req: NextRequest) => {
 
     // Check inventory availability
     const inventoryItems = await inventoryRepository.findByMedicationId(prescription.medicationId);
-    const availableInventory = inventoryItems.find(item => 
-      item.quantityOnHand >= data.quantityDispensed &&;
+    const availableInventory = inventoryItems.find(item =>
+      item.quantityOnHand >= data?.quantityDispensed &&;
       (!item.expiryDate || new Date(item.expiryDate) > new Date());
     );
 
@@ -105,26 +106,26 @@ export const POST = async (req: NextRequest) => {
 
     // Get previous dispensing records for this prescription
     const previousDispensings = await dispensingRepository.findByPrescriptionId(data.prescriptionId);
-    
+
     // Calculate total quantity already dispensed
     const totalDispensed = previousDispensings.reduce(
-      (sum, record) => sum + record.quantityDispensed, 
+      (sum, record) => sum + record.quantityDispensed,
       0;
     );
-    
+
     // Calculate remaining quantity to be dispensed (based on prescription)
     const totalPrescribed = prescription.dosage.getTotalQuantity()
     const remainingAfterThisDispensing = totalPrescribed - (totalDispensed + data.quantityDispensed);
-    
+
     // Check if this would exceed the prescribed amount
     if (remainingAfterThisDispensing < 0) {
       return NextResponse.json(
-        { 
-          error: 'Dispensing would exceed prescribed amount',
+        {
+          error: 'Dispensing would exceed prescribed amount';
           totalPrescribed,
-          alreadyDispensed: totalDispensed,
-          requested: data.quantityDispensed,
-          maxAllowed: totalPrescribed - totalDispensed
+          alreadyDispensed: totalDispensed;
+          requested: data.quantityDispensed;
+          maxAllowed: totalPrescribed - totalDispensed;
         },
         { status: 400 }
       );
@@ -132,23 +133,23 @@ export const POST = async (req: NextRequest) => {
 
     // Create partial dispensing record
     const dispensing = {
-      id: data.id || crypto.randomUUID(),
-      prescriptionId: data.prescriptionId,
-      patientId: prescription.patientId,
-      medicationId: prescription.medicationId,
-      inventoryId: availableInventory.id,
-      quantityDispensed: data.quantityDispensed,
-      daysSupply: data.daysSupply,
-      dispensedBy: userId,
-      dispensedAt: new Date(),
-      status: 'completed',
-      notes: data.notes || '',
-      location: data.location || 'main-pharmacy',
-      dispensingType: 'partial',
-      remainingQuantity: remainingAfterThisDispensing,
-      partialReason: data.partialReason || 'inventory-shortage',
-      isPartial: true,
-      isLastDispensing: remainingAfterThisDispensing === 0
+      id: data.id || crypto.randomUUID();
+      prescriptionId: data.prescriptionId;
+      patientId: prescription.patientId;
+      medicationId: prescription.medicationId;
+      inventoryId: availableInventory.id;
+      quantityDispensed: data.quantityDispensed;
+      daysSupply: data.daysSupply;
+      dispensedBy: userId;
+      dispensedAt: new Date();
+      status: 'completed';
+      notes: data.notes || '';
+      location: data.location || 'main-pharmacy';
+      dispensingType: 'partial';
+      remainingQuantity: remainingAfterThisDispensing;
+      partialReason: data.partialReason || 'inventory-shortage';
+      isPartial: true;
+      isLastDispensing: remainingAfterThisDispensing === 0;
     };
 
     // Save dispensing record
@@ -162,29 +163,29 @@ export const POST = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('DISPENSING', {
-      action: 'PARTIAL_DISPENSE',
-      resourceType: 'MedicationDispense',
-      resourceId: dispensingId,
-      userId: userId,
-      patientId: prescription.patientId,
+      action: 'PARTIAL_DISPENSE';
+      resourceType: 'MedicationDispense';
+      resourceId: dispensingId;
+      userId: userId;
+      patientId: prescription.patientId;
       details: {
-        medicationId: prescription.medicationId,
-        prescriptionId: data.prescriptionId,
-        quantity: data.quantityDispensed,
-        remainingQuantity: remainingAfterThisDispensing,
-        partialReason: data.partialReason,
-        isLastDispensing: remainingAfterThisDispensing === 0
+        medicationId: prescription.medicationId;
+        prescriptionId: data.prescriptionId;
+        quantity: data.quantityDispensed;
+        remainingQuantity: remainingAfterThisDispensing;
+        partialReason: data.partialReason;
+        isLastDispensing: remainingAfterThisDispensing === 0;
       }
     });
 
     // Return response
     return NextResponse.json(
-      { 
-        id: dispensingId,
-        message: 'Partial medication dispensing recorded successfully',
-        remainingQuantity: remainingAfterThisDispensing,
-        isLastDispensing: remainingAfterThisDispensing === 0
-      }, 
+      {
+        id: dispensingId;
+        message: 'Partial medication dispensing recorded successfully';
+        remainingQuantity: remainingAfterThisDispensing;
+        isLastDispensing: remainingAfterThisDispensing === 0;
+      },
       { status: 201 }
     );
   } catch (error) {

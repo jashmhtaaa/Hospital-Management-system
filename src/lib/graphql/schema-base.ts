@@ -1,3 +1,6 @@
+
+import { PubSub } from 'graphql-subscriptions';
+import { gql } from 'graphql-tag';
 }
 
 /**
@@ -5,46 +8,43 @@
  * Real-time subscriptions and comprehensive API structure;
  */
 
-import { gql } from 'graphql-tag';
-import { PubSub } from 'graphql-subscriptions';
-
 // GraphQL PubSub instance for real-time subscriptions
 export const pubsub = new PubSub();
 
 // Subscription event types
-export const SUBSCRIPTION_EVENTS = {
+export const _SUBSCRIPTION_EVENTS = {
   // Laboratory events
-  LAB_ORDER_CREATED: 'LAB_ORDER_CREATED',
-  LAB_RESULT_UPDATED: 'LAB_RESULT_UPDATED',
-  CRITICAL_RESULT_ALERT: 'CRITICAL_RESULT_ALERT',
-  SAMPLE_STATUS_CHANGED: 'SAMPLE_STATUS_CHANGED',
-  
+  LAB_ORDER_CREATED: 'LAB_ORDER_CREATED';
+  LAB_RESULT_UPDATED: 'LAB_RESULT_UPDATED';
+  CRITICAL_RESULT_ALERT: 'CRITICAL_RESULT_ALERT';
+  SAMPLE_STATUS_CHANGED: 'SAMPLE_STATUS_CHANGED';
+
   // Pharmacy events
-  PRESCRIPTION_CREATED: 'PRESCRIPTION_CREATED',
-  MEDICATION_DISPENSED: 'MEDICATION_DISPENSED',
-  DRUG_INTERACTION_ALERT: 'DRUG_INTERACTION_ALERT',
-  INVENTORY_LOW_STOCK: 'INVENTORY_LOW_STOCK',
-  
+  PRESCRIPTION_CREATED: 'PRESCRIPTION_CREATED';
+  MEDICATION_DISPENSED: 'MEDICATION_DISPENSED';
+  DRUG_INTERACTION_ALERT: 'DRUG_INTERACTION_ALERT';
+  INVENTORY_LOW_STOCK: 'INVENTORY_LOW_STOCK';
+
   // Emergency Department events
-  PATIENT_TRIAGED: 'PATIENT_TRIAGED',
-  BED_ASSIGNMENT_CHANGED: 'BED_ASSIGNMENT_CHANGED',
-  CRITICAL_PATIENT_ALERT: 'CRITICAL_PATIENT_ALERT',
-  ED_CAPACITY_ALERT: 'ED_CAPACITY_ALERT',
-  
+  PATIENT_TRIAGED: 'PATIENT_TRIAGED';
+  BED_ASSIGNMENT_CHANGED: 'BED_ASSIGNMENT_CHANGED';
+  CRITICAL_PATIENT_ALERT: 'CRITICAL_PATIENT_ALERT';
+  ED_CAPACITY_ALERT: 'ED_CAPACITY_ALERT';
+
   // Clinical Documentation events
-  CLINICAL_NOTE_CREATED: 'CLINICAL_NOTE_CREATED',
-  CARE_PLAN_UPDATED: 'CARE_PLAN_UPDATED',
-  QUALITY_METRIC_ALERT: 'QUALITY_METRIC_ALERT',
-  
+  CLINICAL_NOTE_CREATED: 'CLINICAL_NOTE_CREATED';
+  CARE_PLAN_UPDATED: 'CARE_PLAN_UPDATED';
+  QUALITY_METRIC_ALERT: 'QUALITY_METRIC_ALERT';
+
   // Patient Management events
-  PATIENT_REGISTERED: 'PATIENT_REGISTERED',
-  PATIENT_UPDATED: 'PATIENT_UPDATED',
-  APPOINTMENT_SCHEDULED: 'APPOINTMENT_SCHEDULED',
-  INSURANCE_VERIFIED: 'INSURANCE_VERIFIED',
+  PATIENT_REGISTERED: 'PATIENT_REGISTERED';
+  PATIENT_UPDATED: 'PATIENT_UPDATED';
+  APPOINTMENT_SCHEDULED: 'APPOINTMENT_SCHEDULED';
+  INSURANCE_VERIFIED: 'INSURANCE_VERIFIED';
 } as const;
 
 // Base GraphQL types
-export const baseTypeDefs = gql`
+export const _baseTypeDefs = gql`
   scalar DateTime;
   scalar JSON;
   scalar Upload;
@@ -69,29 +69,29 @@ export const baseTypeDefs = gql`
 
   # Base interfaces;
   interface Node {
-    id: ID!,
-    createdAt: DateTime!,
-    updatedAt: DateTime!
+    id: ID!;
+    createdAt: DateTime!;
+    updatedAt: DateTime!;
   }
 
   interface AuditableEntity {
-    id: ID!,
-    createdAt: DateTime!,
-    updatedAt: DateTime!,
-    createdBy: String!,
-    updatedBy: String,
-    version: Int!
+    id: ID!;
+    createdAt: DateTime!;
+    updatedAt: DateTime!;
+    createdBy: String!;
+    updatedBy: String;
+    version: Int!;
   }
 
   # Common types;
   type Address {
-    line1: String!,
-    line2: String,
-    city: String!,
-    state: String!,
-    postalCode: String!,
-    country: String!,
-    type: AddressType!
+    line1: String!;
+    line2: String;
+    city: String!;
+    state: String!;
+    postalCode: String!;
+    country: String!;
+    type: AddressType!;
   }
 
   enum AddressType {
@@ -102,17 +102,17 @@ export const baseTypeDefs = gql`
   }
 
   type ContactInfo {
-    phone: String,
-    mobile: String,
-    email: String,
-    fax: String
+    phone: String;
+    mobile: String;
+    email: String;
+    fax: String;
   }
 
   type Identifier {
-    system: String!,
-    value: String!,
-    type: String,
-    use: IdentifierUse
+    system: String!;
+    value: String!;
+    type: String;
+    use: IdentifierUse;
   }
 
   enum IdentifierUse {
@@ -125,38 +125,38 @@ export const baseTypeDefs = gql`
 
   # FHIR-compliant coding;
   type Coding {
-    system: String,
-    version: String,
-    code: String,
-    display: String,
-    userSelected: Boolean
+    system: String;
+    version: String;
+    code: String;
+    display: String;
+    userSelected: Boolean;
   }
 
   type CodeableConcept {
     coding: [Coding!]
-    text: String
+    text: String;
   }
 
   # Pagination;
   type PageInfo {
-    hasNextPage: Boolean!,
-    hasPreviousPage: Boolean!,
-    startCursor: String,
-    endCursor: String,
-    total: Int!
+    hasNextPage: Boolean!;
+    hasPreviousPage: Boolean!;
+    startCursor: String;
+    endCursor: String;
+    total: Int!;
   }
 
   # Common input types;
   input PaginationInput {
-    first: Int,
-    after: String,
-    last: Int,
-    before: String
+    first: Int;
+    after: String;
+    last: Int;
+    before: String;
   }
 
   input SortInput {
-    field: String!,
-    direction: SortDirection!
+    field: String!;
+    direction: SortDirection!;
   }
 
   enum SortDirection {
@@ -165,9 +165,9 @@ export const baseTypeDefs = gql`
   }
 
   input FilterInput {
-    field: String!,
-    operator: FilterOperator!,
-    value: String!
+    field: String!;
+    operator: FilterOperator!;
+    value: String!;
   }
 
   enum FilterOperator {
@@ -189,29 +189,29 @@ export const baseTypeDefs = gql`
 
   # Error handling;
   type Error {
-    code: String!,
-    message: String!,
-    field: String,
-    details: JSON
+    code: String!;
+    message: String!;
+    field: String;
+    details: JSON;
   }
 
   type MutationResponse {
-    success: Boolean!,
+    success: Boolean!;
     errors: [Error!]
-    message: String
+    message: String;
   }
 
   # Real-time notifications;
   type Notification {
-    id: ID!,
+    id: ID!;
     type: NotificationType!
-    title: String!,
-    message: String!,
-    data: JSON,
-    priority: Priority!,
-    timestamp: DateTime!,
-    userId: String,
-    read: Boolean!
+    title: String!;
+    message: String!;
+    data: JSON;
+    priority: Priority!;
+    timestamp: DateTime!;
+    userId: String;
+    read: Boolean!;
   }
 
   enum NotificationType {
@@ -224,22 +224,22 @@ export const baseTypeDefs = gql`
 
   # File upload;
   type FileUpload {
-    id: ID!,
-    filename: String!,
-    mimetype: String!,
-    encoding: String!,
-    url: String!,
-    size: Int!,
-    uploadedAt: DateTime!,
-    uploadedBy: String!
+    id: ID!;
+    filename: String!;
+    mimetype: String!;
+    encoding: String!;
+    url: String!;
+    size: Int!;
+    uploadedAt: DateTime!;
+    uploadedBy: String!;
   }
 
   # System health;
   type HealthStatus {
-    service: String!,
-    status: HealthStatusType!,
-    timestamp: DateTime!,
-    details: JSON
+    service: String!;
+    status: HealthStatusType!;
+    timestamp: DateTime!;
+    details: JSON;
   }
 
   enum HealthStatusType {
@@ -253,19 +253,19 @@ export const baseTypeDefs = gql`
   type Query {
     # Health check;
     health: [HealthStatus!]!;
-    
+
     # System information;
     systemInfo: SystemInfo!;
-    
+
     # Current user context;
-    me: User
+    me: User;
   }
 
   # Base mutations (will be extended by each module);
   type Mutation {
     # File upload;
     uploadFile(file: Upload!): FileUpload!;
-    
+
     # Mark notification as read;
     markNotificationRead(id: ID!): MutationResponse!
   }
@@ -274,39 +274,39 @@ export const baseTypeDefs = gql`
   type Subscription {
     # Global notifications;
     notifications(userId: String): Notification!;
-    
+
     # System health updates;
-    healthUpdates: HealthStatus!
+    healthUpdates: HealthStatus!;
   }
 
   # System info;
   type SystemInfo {
-    version: String!,
-    environment: String!,
-    uptime: Int!,
-    timestamp: DateTime!,
-    features: [String!]!
+    version: String!;
+    environment: String!;
+    uptime: Int!;
+    timestamp: DateTime!;
+    features: [String!]!;
   }
 
   # User type (basic structure);
   type User implements Node {
-    id: ID!,
-    email: String!,
-    firstName: String!,
-    lastName: String!,
-    fullName: String!,
-    role: String!,
-    department: String,
-    isActive: Boolean!,
-    lastLoginAt: DateTime,
-    createdAt: DateTime!,
-    updatedAt: DateTime!,
-    permissions: [String!]!
+    id: ID!;
+    email: String!;
+    firstName: String!;
+    lastName: String!;
+    fullName: String!;
+    role: String!;
+    department: String;
+    isActive: Boolean!;
+    lastLoginAt: DateTime;
+    createdAt: DateTime!;
+    updatedAt: DateTime!;
+    permissions: [String!]!;
   }
 `;
 
 // Base resolvers
-export const baseResolvers = {
+export const _baseResolvers = {
   DateTime: {
     serialize: (date: unknown) => {
       if (date instanceof Date) {
@@ -323,8 +323,8 @@ export const baseResolvers = {
   },
 
   JSON: {
-    serialize: (value: unknown) => value,
-    parseValue: (value: unknown) => value,
+    serialize: (value: unknown) => value;
+    parseValue: (value: unknown) => value;
     parseLiteral: (ast: unknown) => {
       switch (ast.kind) {
         case 'StringValue':
@@ -340,7 +340,7 @@ export const baseResolvers = {
           }, {});
         case 'ListValue':
           return ast.values.map((value: unknown) => value),
-        default: return null
+        default: return null;
       }
     },
   },
@@ -350,31 +350,31 @@ export const baseResolvers = {
       // Implementation would check actual services
       return [
         {
-          service: 'database',
-          status: 'HEALTHY',
-          timestamp: new Date(),
+          service: 'database';
+          status: 'HEALTHY';
+          timestamp: new Date();
           details: { connections: 10, responseTime: '50ms' },
         },
         {
-          service: 'cache',
-          status: 'HEALTHY',
-          timestamp: new Date(),
+          service: 'cache';
+          status: 'HEALTHY';
+          timestamp: new Date();
           details: { hitRate: 0.95, memoryUsage: '45%' },
         },
         {
-          service: 'fhir-server',
-          status: 'HEALTHY',
-          timestamp: new Date(),
+          service: 'fhir-server';
+          status: 'HEALTHY';
+          timestamp: new Date();
           details: { resources: 1250 },
         },
       ];
     },
 
     systemInfo: () => ({
-      version: process.env.npm_package_version || '1.0.0',
-      environment: process.env.NODE_ENV || 'development',
-      uptime: Math.floor(process.uptime()),
-      timestamp: new Date(),
+      version: process.env.npm_package_version || '1.0.0';
+      environment: process.env.NODE_ENV || 'development';
+      uptime: Math.floor(process.uptime());
+      timestamp: new Date();
       features: [
         'FHIR_R4_COMPLIANCE',
         'REAL_TIME_SUBSCRIPTIONS',
@@ -394,26 +394,26 @@ export const baseResolvers = {
     uploadFile: async (parent, { file }, context) => {
       // File upload implementation
       const { createReadStream, filename, mimetype, encoding } = await file;
-      
+
       // Implementation would save file and return metadata
       return {
-        id: 'file-' + crypto.getRandomValues(new Uint32Array(1))[0],
+        id: 'file-' + crypto.getRandomValues(new Uint32Array(1))[0];
         filename,
         mimetype,
         encoding,
         url: `/uploads/${filename}`,
         size: 1024, // Would be actual file size
-        uploadedAt: new Date(),
-        uploadedBy: context.user?.id || 'system',
+        uploadedAt: new Date();
+        uploadedBy: context.user?.id || 'system';
       };
     },
 
     markNotificationRead: async (parent, { id }, context) => {
       // Implementation would update notification status
       return {
-        success: true,
-        message: 'Notification marked as read',
-        errors: [],
+        success: true;
+        message: 'Notification marked as read';
+        errors: [];
       };
     },
   },
@@ -427,7 +427,7 @@ export const baseResolvers = {
     },
 
     healthUpdates: {
-      subscribe: () => pubsub.asyncIterator(['HEALTH_UPDATE']),
+      subscribe: () => pubsub.asyncIterator(['HEALTH_UPDATE']);
     },
   },
 
@@ -444,21 +444,21 @@ export const baseResolvers = {
 export class GraphQLUtils {
   static formatError(error: unknown) {
     return {
-      message: error.message,
-      code: error.extensions?.code || 'INTERNAL_ERROR',
-      field: error.extensions?.field,
-      details: error.extensions?.details,
+      message: error.message;
+      code: error.extensions?.code || 'INTERNAL_ERROR';
+      field: error.extensions?.field;
+      details: error.extensions?.details;
     };
   }
 
   static createConnection<T>(
-    items: T[],
-    args: unknown,
+    items: T[];
+    args: unknown;
     totalCount: number;
   ) {
     const edges = items.map((item: unknown, index) => ({
       cursor: Buffer.from(`${index}`).toString('base64'),
-      node: item,
+      node: item;
     }));
 
     const hasNextPage = args.first ? items.length === args.first : false;
@@ -469,19 +469,19 @@ export class GraphQLUtils {
       pageInfo: {
         hasNextPage,
         hasPreviousPage,
-        startCursor: edges.length > 0 ? edges[0].cursor : null,
-        endCursor: edges.length > 0 ? edges[edges.length - 1].cursor : null,
-        total: totalCount,
+        startCursor: edges.length > 0 ? edges[0].cursor : null;
+        endCursor: edges.length > 0 ? edges[edges.length - 1].cursor : null;
+        total: totalCount;
       },
     };
   }
 
   static buildFilters(filters: unknown[]): unknown {
     const where: unknown = {};
-    
+
     filters?.forEach((filter) => {
       const { field, operator, value } = filter;
-      
+
       switch (operator) {
         case 'EQUALS':
           where[field] = value;
@@ -527,7 +527,7 @@ export class GraphQLUtils {
           break;
       }
     });
-    
+
     return where;
   }
 
@@ -539,9 +539,9 @@ export class GraphQLUtils {
 
   // Real-time notification utilities
   static async publishNotification(
-    type: string,
-    title: string,
-    message: string,
+    type: string;
+    title: string;
+    message: string;
     data?: unknown,
     userId?: string,
     priority: string = 'MEDIUM';
@@ -553,9 +553,9 @@ export class GraphQLUtils {
       message,
       data,
       priority,
-      timestamp: new Date(),
+      timestamp: new Date();
       userId,
-      read: false,
+      read: false;
     };
 
     const eventName = userId ? `NOTIFICATION_${userId}` : 'NOTIFICATION_GLOBAL';
@@ -568,7 +568,7 @@ export class GraphQLUtils {
     const healthUpdate = {
       service,
       status,
-      timestamp: new Date(),
+      timestamp: new Date();
       details,
     };
 
@@ -580,9 +580,9 @@ export class GraphQLUtils {
   static fhirToGraphQL(fhirResource: unknown, resourceType: string) {
     // Convert FHIR resource to GraphQL format
     const graphqlResource = {
-      id: fhirResource.id,
+      id: fhirResource.id;
       resourceType,
-      meta: fhirResource.meta,
+      meta: fhirResource.meta;
       ...fhirResource,
     };
 
@@ -598,11 +598,11 @@ export class GraphQLUtils {
     // Convert GraphQL data to FHIR format
     const fhirResource = {
       resourceType,
-      id: graphqlData.id,
+      id: graphqlData.id;
       meta: {
-        versionId: '1',
-        lastUpdated: new Date().toISOString(),
-        source: 'HMS-GraphQL',
+        versionId: '1';
+        lastUpdated: new Date().toISOString();
+        source: 'HMS-GraphQL';
       },
       ...graphqlData,
     };

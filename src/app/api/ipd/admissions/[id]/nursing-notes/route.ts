@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+
+
 import { getDB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session";
-
 // Define interface for POST request body
 interface NursingNoteInput {
   note_date?: string; // Optional, defaults to now
@@ -13,8 +14,8 @@ interface NursingNoteInput {
 }
 
 // GET /api/ipd/admissions/[id]/nursing-notes - Get all nursing notes for an admission
-export const GET = async (
-  _request: NextRequest,
+export const _GET = async (
+  _request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -41,7 +42,7 @@ export const GET = async (
       [admissionId]
     );
     const admission =;
-      admissionResult.results && admissionResult.results.length > 0 // Changed .rows to .results
+      admissionResult?.results && admissionResult.results.length > 0 // Changed .rows to .results
         ? admissionResult.results[0] // Changed .rows to .results
         : undefined;
 
@@ -79,7 +80,7 @@ export const GET = async (
 
     return NextResponse.json({
       admission,
-      nursing_notes: nursingNotesResult.results || [], // Changed .rows to .results
+      nursing_notes: nursingNotesResult.results || [], // Changed .rows to .results;
     });
   } catch (error: unknown) {
 
@@ -92,8 +93,8 @@ export const GET = async (
 }
 
 // POST /api/ipd/admissions/[id]/nursing-notes - Create a new nursing note
-export const POST = async (
-  request: NextRequest,
+export const _POST = async (
+  request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -135,7 +136,7 @@ export const POST = async (
       [admissionId]
     );
     const admission =;
-      admissionResult.results && admissionResult.results.length > 0 // Changed .rows to .results
+      admissionResult?.results && admissionResult.results.length > 0 // Changed .rows to .results
         ? (admissionResult.results[0] as { id: string; status: string }) // Changed .rows to .results
         : undefined;
 

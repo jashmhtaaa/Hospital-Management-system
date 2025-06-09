@@ -4,7 +4,7 @@
 
 interface DischargeSummaryProperties {
   admissionId: string | null
-export default const DischargeSummary = ({ admissionId }: DischargeSummaryProperties): React.ReactElement | null {
+export default const _DischargeSummary = ({ admissionId }: DischargeSummaryProperties): React.ReactElement | null {
   if (!admissionId) {
     return null; // Or some placeholder if ID is missing
   }

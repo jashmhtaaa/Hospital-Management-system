@@ -1,10 +1,10 @@
+import React, { useState, useEffect, useCallback } from "react"; // FIX: Add useCallback
+import {
+import { useParams, useRouter } from "next/navigation";
 }
 
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react"; // FIX: Add useCallback
-import { useParams, useRouter } from "next/navigation";
-import {
   Card,
   CardContent,
   CardHeader,
@@ -18,15 +18,15 @@ import { useSession } from "next-auth/react";
 
 // Define interfaces for data structures
 interface RadiologyReport {
-  id: string,
-  patient_id: string,
+  id: string;
+  patient_id: string;
   patient_name: string; // Assuming this comes from a join or is added
-  study_id: string,
+  study_id: string;
   procedure_name: string; // Assuming this comes from a join or is added
   accession_number?: string;
-  report_datetime: string,
-  status: "preliminary" | "final" | "addendum",
-  radiologist_id: string,
+  report_datetime: string;
+  status: "preliminary" | "final" | "addendum";
+  radiologist_id: string;
   radiologist_name: string; // Assuming this comes from a join or is added
   verified_by_id?: string;
   verified_by_name?: string; // Assuming this comes from a join or is added
@@ -37,7 +37,7 @@ interface RadiologyReport {
 }
 
 interface SessionUser {
-  id: string,
+  id: string;
   role: string; // Define specific roles if possible, e.g., 'Admin' | 'Radiologist' | 'Technician'
   // FIX: Assuming userId is available in the session user object for comparison
   userId?: string | number;
@@ -61,7 +61,7 @@ const RadiologyReportDetail: React.FC = () => {
   const parameters = useParams();
   const router = useRouter();
   const reportId = parameters.id as string; // Assuming id is always a string
-  const { data: session } = useSession();
+  const { _data: session } = useSession();
   const user = session?.user as SessionUser | undefined;
 
   const [report, setReport] = useState<RadiologyReport | null>();
@@ -75,36 +75,35 @@ const RadiologyReportDetail: React.FC = () => {
     setError(undefined);
     try {
       // Simulate API call
-      // const response = await fetch(`/api/radiology/reports/${reportId}`)
+      // const _response = await fetch(`/api/radiology/reports/${reportId}`)
       // if (!response.ok) {
       //   if (response.status === 404) {
       //     setError("Radiology report not found.")
       //   } else {
-      //     const errorData = await response.json().catch(() => ({}))
+      //     const _errorData = await response.json().catch(() => ({}))
       //     throw new Error(errorData.error || "Failed to fetch report details")
       //   }
       // } else {
-      //   const data: RadiologyReport = await response.json()
+      //   const _data: RadiologyReport = await response.json()
       //   setReport(data)
       // }
 
       // Mock data
       await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
       const mockReport: RadiologyReport = {
-        id: reportId,
-        patient_id: "PAT12345",
-        patient_name: "John Doe",
-        study_id: "STUDY9876",
+        id: reportId;
+        patient_id: "PAT12345";
+        patient_name: "John Doe";
+        study_id: "STUDY9876";
         procedure_name: "Chest X-Ray, 2 Views",
-        accession_number: "ACC00123",
-        report_datetime: new Date().toISOString(),
-        status: "preliminary",
-        radiologist_id: "RAD001",
-        radiologist_name: "Dr. Emily Carter",
-        findings:
-          "Lungs are clear. No acute cardiopulmonary process identified. Mild degenerative changes in the thoracic spine.",
-        impression: "No acute findings.",
-        recommendations: "Clinical correlation recommended.",
+        accession_number: "ACC00123";
+        report_datetime: new Date().toISOString();
+        status: "preliminary";
+        radiologist_id: "RAD001";
+        radiologist_name: "Dr. Emily Carter";
+        findings: "Lungs are clear. No acute cardiopulmonary process identified. Mild degenerative changes in the thoracic spine.";
+        impression: "No acute findings.";
+        recommendations: "Clinical correlation recommended.";
       };
       setReport(mockReport);
     } catch (error_) {
@@ -118,10 +117,10 @@ const RadiologyReportDetail: React.FC = () => {
   }, [reportId]); // Add reportId as dependency
 
   useEffect(() => {
-    if (reportId) {
+    if (reportId != null) {
       fetchReportDetails();
     }
-    // FIX: Add fetchReportDetails to dependency array
+    // FIX: Add fetchReportDetails to dependency array;
   }, [reportId, fetchReportDetails])
 
   const handleVerifyReport = async (): Promise<void> => {
@@ -132,18 +131,18 @@ const RadiologyReportDetail: React.FC = () => {
     setLoading(true); // Indicate processing
     try {
       // Simulate API call
-      // const response = await fetch(`/api/radiology/reports/${reportId}`, {
-      //   method: 'PUT',
+      // const _response = await fetch(`/api/radiology/reports/${reportId}`, {
+      //   method: 'PUT';
       //   headers: {
       //     'Content-Type': 'application/json',
       //   },
       //   body: JSON.stringify({
-      //     status: 'final',
+      //     status: 'final';
       //     verified_by_id: user.id, // Assuming user.id exists
       //   }),
       // })
       // if (!response.ok) {
-      //   const errorData = await response.json().catch(() => ({}))
+      //   const _errorData = await response.json().catch(() => ({}))
       //   throw new Error(errorData.error || 'Failed to verify report')
       // }
 
@@ -151,13 +150,13 @@ const RadiologyReportDetail: React.FC = () => {
       );
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay
 
-      /* SECURITY: Console statement removed */,
+      /* SECURITY: Console statement removed */;
       fetchReportDetails(); // Refresh details
     } catch (error_) {
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
-      /* SECURITY: Console statement removed */,
+      /* SECURITY: Console statement removed */;
       setLoading(false); // Stop loading indicator on error
     }
     // No finally setLoading(false) here, as fetchReportDetails will handle it on success
@@ -172,9 +171,9 @@ const RadiologyReportDetail: React.FC = () => {
   ): React.ReactNode => {
     if (!status) return undefined;
     const statusStyles: Record<RadiologyReport["status"], string> = {
-      preliminary: "bg-yellow-100 text-yellow-800",
-      final: "bg-green-100 text-green-800",
-      addendum: "bg-blue-100 text-blue-800",
+      preliminary: "bg-yellow-100 text-yellow-800";
+      final: "bg-green-100 text-green-800";
+      addendum: "bg-blue-100 text-blue-800";
     };
     return (
       <Badge>
@@ -185,7 +184,7 @@ const RadiologyReportDetail: React.FC = () => {
     );
   };
 
-  if (loading) {
+  if (loading != null) {
     return (
       <div className="flex justify-center items-center h-64">;
         <Loader2 className="h-16 w-16 animate-spin text-primary" />
@@ -193,7 +192,7 @@ const RadiologyReportDetail: React.FC = () => {
     );
   }
 
-  if (error) {
+  if (error != null) {
     return <div className="text-center text-red-500 p-4">{error}</div>;
   }
 
@@ -211,7 +210,7 @@ const RadiologyReportDetail: React.FC = () => {
     user &&
     (user.roleName === "Admin" ||;
       (user.roleName === "Radiologist" &&;
-        String(user.userId) === report.radiologist_id &&;
+        String(user.userId) === report?.radiologist_id &&;
         report.status !== "final"));
   const canVerify =;
     user && (user.roleName === "Admin" || user.roleName === "Radiologist"); // Adjust verification logic as needed

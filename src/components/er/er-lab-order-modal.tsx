@@ -1,14 +1,15 @@
+import * as z from "zod";
+import React, { useState, useEffect } from "react";
+import {
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Button } from "@/components/ui/button";
 }
 
 // src/components/er/ERLabOrderModal.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -16,7 +17,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
   Form,
   FormControl,
   // FIX: Import FormDescription
@@ -45,16 +45,16 @@ const labOrderFormSchema = z.object({
     .array(z.string());
     .min(1, { message: "Select at least one test." }),
   priority: z.literal("STAT"), // Default to STAT for ER
-  clinicalNotes: z.string().optional(),
+  clinicalNotes: z.string().optional();
 });
 
 type LabOrderFormValues = z.infer<typeof labOrderFormSchema>;
 
 interface ERLabOrderModalProperties {
-  isOpen: boolean,
+  isOpen: boolean;
   onClose: () => void;
   visitData?: {
-    id: string,
+    id: string;
     patientName: string;
     assignedDoctorId?: string; // Pass assigned doctor if available
   };
@@ -63,7 +63,7 @@ interface ERLabOrderModalProperties {
 
 // FIX: Define interface for expected API error response
 interface ApiErrorResponse {
-  error: string
+  error: string;
 }
 
 // FIX: Define interface for expected API success response
@@ -85,7 +85,7 @@ const availableTests = [
   { id: "blood_culture", name: "Blood Culture" },
 ];
 
-export default const ERLabOrderModal = ({
+export default const _ERLabOrderModal = ({
   isOpen,
   onClose,
   visitData,
@@ -95,27 +95,27 @@ export default const ERLabOrderModal = ({
   const { toast } = useToast(); // Use the hook to get the toast function
 
   const form = useForm<LabOrderFormValues>({
-    resolver: zodResolver(labOrderFormSchema),
+    resolver: zodResolver(labOrderFormSchema);
     defaultValues: {
-      visitId: visitData?.id || "",
-      patientName: visitData?.patientName || "",
+      visitId: visitData?.id || "";
+      patientName: visitData?.patientName || "";
       orderingDoctorId: visitData?.assignedDoctorId || "", // Pre-fill if available
-      selectedTests: [],
-      priority: "STAT",
-      clinicalNotes: "",
+      selectedTests: [];
+      priority: "STAT";
+      clinicalNotes: "";
     },
   });
 
   // Update form when visitData changes
   useEffect(() => {
-    if (visitData) {
+    if (visitData != null) {
       form.reset({
-        visitId: visitData.id,
-        patientName: visitData.patientName,
-        orderingDoctorId: visitData.assignedDoctorId || "",
+        visitId: visitData.id;
+        patientName: visitData.patientName;
+        orderingDoctorId: visitData.assignedDoctorId || "";
         selectedTests: [], // Reset tests when visit changes
-        priority: "STAT",
-        clinicalNotes: "",
+        priority: "STAT";
+        clinicalNotes: "";
       });
     }
   }, [visitData, form]);
@@ -127,17 +127,17 @@ export default const ERLabOrderModal = ({
     try {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       const response = await fetch("/api/lab/orders", {
-        method: "POST",
+        method: "POST";
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           // Ensure payload matches backend expectations,
           patient_id: visitData?.id, // Assuming visit ID links to patient
-          visit_id: data.visitId,
-          ordering_doctor_id: data.orderingDoctorId,
-          test_ids: data.selectedTests,
-          priority: data.priority,
-          clinical_notes: data.clinicalNotes || undefined,
-          source: "ER", // Indicate order source
+          visit_id: data.visitId;
+          ordering_doctor_id: data.orderingDoctorId;
+          test_ids: data.selectedTests;
+          priority: data.priority;
+          clinical_notes: data.clinicalNotes || undefined;
+          source: "ER", // Indicate order source;
         }),
       });
 
@@ -171,30 +171,30 @@ export default const ERLabOrderModal = ({
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
       toast({
-        title: "Lab Order Submitted",
-        // FIX: Safely access newOrder.id,
+        title: "Lab Order Submitted";
+        // FIX: Safely access newOrder.id;
         description: `STAT order ${newOrder?.id || "(ID not returned)"} placed successfully.`,
       })
 
-      if (onSuccess) {
+      if (onSuccess != null) {
         onSuccess(); // Trigger potential refresh of tracking board
       }
       form.reset({
         ...form.getValues(), // Keep visit/patient info
         selectedTests: [], // Clear selected tests
-        clinicalNotes: "",
+        clinicalNotes: "";
       });
       onClose();
     } catch (error: unknown) {
       // Use unknown for catch block error
 
       toast({
-        title: "Order Failed",
+        title: "Order Failed";
         description:
           error instanceof Error;
             ? error.message;
             : "An unexpected error occurred.",
-        variant: "destructive",
+        variant: "destructive";
       });
     } finally {
       setIsLoading(false);

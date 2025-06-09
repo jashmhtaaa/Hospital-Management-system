@@ -1,9 +1,9 @@
-import { ContactSegment, SegmentMember } from '@/lib/models/marketing';
-import { prisma } from '@/lib/prisma';
+
 import { AuditLogger } from '@/lib/audit';
+import { ContactSegment, SegmentMember } from '@/lib/models/marketing';
 import { NotificationService } from '@/lib/notifications';
 import { ValidationError, DatabaseError, NotFoundError } from '@/lib/errors';
-
+import { prisma } from '@/lib/prisma';
 /**
  * Service for managing contact segments and segmentation;
  */
@@ -18,38 +18,38 @@ export class SegmentService {
     try {
       // Validate segment data
       this.validateSegmentData(data);
-      
+
       // Create segment in database
       const segment = await prisma.contactSegment.create({
         data: {
-          name: data.name,
-          description: data.description,
-          criteria: data.criteria,
-          isActive: data.isActive !== undefined ? data.isActive : true,
-          createdById: userId
+          name: data.name;
+          description: data.description;
+          criteria: data.criteria;
+          isActive: data.isActive !== undefined ? data.isActive : true;
+          createdById: userId;
         }
       });
-      
+
       // Log audit event
       await this.auditLogger.log({
-        action: 'segment.create',
-        resourceId: segment.id,
+        action: 'segment.create';
+        resourceId: segment.id;
         userId,
-        details: { 
-          segmentName: segment.name,
-          hasCriteria: !!segment.criteria
+        details: {
+          segmentName: segment.name;
+          hasCriteria: !!segment.criteria;
         }
       });
-      
+
       // Notify relevant users
       await this.notificationService.sendNotification({
-        type: 'SEGMENT_CREATED',
-        title: 'New Contact Segment Created',
+        type: 'SEGMENT_CREATED';
+        title: 'New Contact Segment Created';
         message: `A new contact segment "${segment.name}" has been created`,
         recipientRoles: ['MARKETING_MANAGER', 'MARKETING_STAFF'],
         metadata: { segmentId: segment.id }
       });
-      
+
       return segment;
     } catch (error) {
       if (error instanceof ValidationError) {
@@ -69,35 +69,35 @@ export class SegmentService {
         include: {
           createdByUser: {
             select: {
-              id: true,
-              name: true
+              id: true;
+              name: true;
             }
           },
           members: includeMembers ? {
             where: {
-              isActive: true
+              isActive: true;
             },
             include: {
-              contact: true
+              contact: true;
             }
           } : false,
           _count: {
             select: {
               members: {
                 where: {
-                  isActive: true
+                  isActive: true;
                 }
               },
-              campaigns: true
+              campaigns: true;
             }
           }
         }
       });
-      
+
       if (!segment) {
         throw new NotFoundError(`Contact segment with ID ${id} not found`);
       }
-      
+
       return segment;
     } catch (error) {
       if (error instanceof NotFoundError) {
@@ -117,65 +117,65 @@ export class SegmentService {
     limit?: number;
   }): Promise<{ data: ContactSegment[]; pagination: { total: number; page: number; limit: number; totalPages: number } }> {
     try {
-      const { 
-        isActive, 
+      const {
+        isActive,
         search,
-        page = 1, 
+        page = 1,
         limit = 10;
       } = filters;
-      
+
       // Build where clause based on filters
       const where: unknown = {};
-      
+
       if (isActive !== undefined) {
         where.isActive = isActive;
       }
-      
-      if (search) {
+
+      if (search != null) {
         where.OR = [
           { name: { contains: search, mode: 'insensitive' } },
           { description: { contains: search, mode: 'insensitive' } }
         ];
       }
-      
+
       // Get total count for pagination
       const total = await prisma.contactSegment.count({ where });
-      
+
       // Get segments with pagination
       const segments = await prisma.contactSegment.findMany({
         where,
         include: {
           createdByUser: {
             select: {
-              id: true,
-              name: true
+              id: true;
+              name: true;
             }
           },
           _count: {
             select: {
               members: {
                 where: {
-                  isActive: true
+                  isActive: true;
                 }
               },
-              campaigns: true
+              campaigns: true;
             }
           }
         },
-        skip: (page - 1) * limit,
-        take: limit,
+        skip: (page - 1) * limit;
+        take: limit;
         orderBy: {
-          createdAt: 'desc'
+          createdAt: 'desc';
         }
       });
-      
+
       return {
-        data: segments,
+        data: segments;
         pagination: {
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit)
+          totalPages: Math.ceil(total / limit);
         }
       };
     } catch (error) {
@@ -192,28 +192,28 @@ export class SegmentService {
       const existingSegment = await prisma.contactSegment.findUnique({
         where: { id }
       });
-      
+
       if (!existingSegment) {
         throw new NotFoundError(`Contact segment with ID ${id} not found`);
       }
-      
+
       // Update segment
       const updatedSegment = await prisma.contactSegment.update({
         where: { id },
         data;
       });
-      
+
       // Log audit event
       await this.auditLogger.log({
-        action: 'segment.update',
-        resourceId: id,
+        action: 'segment.update';
+        resourceId: id;
         userId,
-        details: { 
-          segmentName: updatedSegment.name,
-          updatedFields: Object.keys(data)
+        details: {
+          segmentName: updatedSegment.name;
+          updatedFields: Object.keys(data);
         }
       });
-      
+
       return updatedSegment;
     } catch (error) {
       if (error instanceof NotFoundError) {
@@ -232,20 +232,20 @@ export class SegmentService {
       const existingSegment = await prisma.contactSegment.findUnique({
         where: { id: segmentId }
       });
-      
+
       if (!existingSegment) {
         throw new NotFoundError(`Contact segment with ID ${segmentId} not found`);
       }
-      
+
       // Check if contact exists
       const existingContact = await prisma.contact.findUnique({
         where: { id: contactId }
       });
-      
+
       if (!existingContact) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
-      
+
       // Check if contact is already in segment
       const existingMember = await prisma.segmentMember.findFirst({
         where: {
@@ -253,55 +253,55 @@ export class SegmentService {
           contactId;
         }
       });
-      
-      if (existingMember) {
+
+      if (existingMember != null) {
         // If member exists but is inactive, reactivate
         if (!existingMember.isActive) {
           const updatedMember = await prisma.segmentMember.update({
             where: { id: existingMember.id },
             data: {
-              isActive: true,
-              removedAt: null
+              isActive: true;
+              removedAt: null;
             }
           });
-          
+
           // Log audit event
           await this.auditLogger.log({
-            action: 'segment.member.reactivate',
-            resourceId: segmentId,
+            action: 'segment.member.reactivate';
+            resourceId: segmentId;
             userId,
-            details: { 
+            details: {
               contactId,
-              memberId: updatedMember.id
+              memberId: updatedMember.id;
             }
           });
-          
+
           return updatedMember;
         }
-        
+
         return existingMember;
       }
-      
+
       // Add contact to segment
       const member = await prisma.segmentMember.create({
         data: {
           segmentId,
           contactId,
-          isActive: true
+          isActive: true;
         }
       });
-      
+
       // Log audit event
       await this.auditLogger.log({
-        action: 'segment.member.add',
-        resourceId: segmentId,
+        action: 'segment.member.add';
+        resourceId: segmentId;
         userId,
-        details: { 
+        details: {
           contactId,
-          memberId: member.id
+          memberId: member.id;
         }
       });
-      
+
       return member;
     } catch (error) {
       if (error instanceof NotFoundError) {
@@ -320,53 +320,53 @@ export class SegmentService {
       const existingSegment = await prisma.contactSegment.findUnique({
         where: { id: segmentId }
       });
-      
+
       if (!existingSegment) {
         throw new NotFoundError(`Contact segment with ID ${segmentId} not found`);
       }
-      
+
       // Check if contact exists
       const existingContact = await prisma.contact.findUnique({
         where: { id: contactId }
       });
-      
+
       if (!existingContact) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
-      
+
       // Check if contact is in segment
       const existingMember = await prisma.segmentMember.findFirst({
         where: {
           segmentId,
           contactId,
-          isActive: true
+          isActive: true;
         }
       });
-      
+
       if (!existingMember) {
         throw new NotFoundError(`Contact is not a member of this segment`);
       }
-      
+
       // Remove contact from segment (soft delete)
       const updatedMember = await prisma.segmentMember.update({
         where: { id: existingMember.id },
         data: {
-          isActive: false,
-          removedAt: new Date()
+          isActive: false;
+          removedAt: new Date();
         }
       })
-      
+
       // Log audit event
       await this.auditLogger.log({
-        action: 'segment.member.remove',
-        resourceId: segmentId,
+        action: 'segment.member.remove';
+        resourceId: segmentId;
         userId,
-        details: { 
+        details: {
           contactId,
-          memberId: existingMember.id
+          memberId: existingMember.id;
         }
       });
-      
+
       return updatedMember;
     } catch (error) {
       if (error instanceof NotFoundError) {
@@ -385,47 +385,47 @@ export class SegmentService {
       const segment = await prisma.contactSegment.findUnique({
         where: { id: segmentId }
       });
-      
+
       if (!segment) {
         throw new NotFoundError(`Contact segment with ID ${segmentId} not found`);
       }
-      
+
       if (!segment.criteria) {
         throw new ValidationError('Segment has no criteria defined', ['No criteria']);
       }
-      
+
       // Convert criteria to Prisma query
       const where = this.buildPrismaQueryFromCriteria(segment.criteria);
-      
+
       // Find matching contacts
       const matchingContacts = await prisma.contact.findMany({
         where,
         select: {
-          id: true
+          id: true;
         }
       });
-      
+
       // Add contacts to segment
       let addedCount = 0;
-      
+
       for (const contact of matchingContacts) {
         try {
           // Check if already a member
           const existingMember = await prisma.segmentMember.findFirst({
             where: {
               segmentId,
-              contactId: contact.id
+              contactId: contact.id;
             }
           });
-          
-          if (existingMember) {
+
+          if (existingMember != null) {
             // If inactive, reactivate
             if (!existingMember.isActive) {
               await prisma.segmentMember.update({
                 where: { id: existingMember.id },
                 data: {
-                  isActive: true,
-                  removedAt: null
+                  isActive: true;
+                  removedAt: null;
                 }
               });
               addedCount++;
@@ -435,8 +435,8 @@ export class SegmentService {
             await prisma.segmentMember.create({
               data: {
                 segmentId,
-                contactId: contact.id,
-                isActive: true
+                contactId: contact.id;
+                isActive: true;
               }
             });
             addedCount++;
@@ -446,21 +446,21 @@ export class SegmentService {
           // Continue with next contact
         }
       }
-      
+
       // Log audit event
       await this.auditLogger.log({
-        action: 'segment.criteria.apply',
-        resourceId: segmentId,
+        action: 'segment.criteria.apply';
+        resourceId: segmentId;
         userId,
-        details: { 
-          matchedContacts: matchingContacts.length,
-          addedContacts: addedCount
+        details: {
+          matchedContacts: matchingContacts.length;
+          addedContacts: addedCount;
         }
       });
-      
+
       return {
-        added: addedCount,
-        total: matchingContacts.length
+        added: addedCount;
+        total: matchingContacts.length;
       };
     } catch (error) {
       if (error instanceof NotFoundError || error instanceof ValidationError) {
@@ -476,23 +476,23 @@ export class SegmentService {
   private buildPrismaQueryFromCriteria(criteria: unknown): unknown {
     // Example implementation - would need to be expanded based on actual criteria structure
     const query: unknown = { AND: [] };
-    
+
     // Process demographic criteria
     if (criteria.demographics) {
       if (criteria.demographics.gender) {
         query.AND.push({ gender: criteria.demographics.gender });
       }
-      
+
       if (criteria.demographics.ageRange) {
         const { min, max } = criteria.demographics.ageRange;
         const today = new Date();
-        
+
         if (min !== undefined) {
           const maxDate = new Date();
           maxDate.setFullYear(today.getFullYear() - min);
           query.AND.push({ dateOfBirth: { lte: maxDate } });
         }
-        
+
         if (max !== undefined) {
           const minDate = new Date();
           minDate.setFullYear(today.getFullYear() - max);
@@ -500,7 +500,7 @@ export class SegmentService {
         }
       }
     }
-    
+
     // Process source criteria
     if (criteria.source) {
       if (Array.isArray(criteria.source)) {
@@ -509,39 +509,39 @@ export class SegmentService {
         query.AND.push({ source: criteria.source });
       }
     }
-    
+
     // Process status criteria
     if (criteria.status) {
       query.AND.push({ status: criteria.status });
     }
-    
+
     // Process tag criteria
-    if (criteria.tags && criteria.tags.length > 0) {
+    if (criteria?.tags && criteria.tags.length > 0) {
       query.AND.push({ tags: { hasSome: criteria.tags } });
     }
-    
+
     // Process patient criteria
     if (criteria.isPatient !== undefined) {
       query.AND.push({ patientId: criteria.isPatient ? { not: null } : null });
     }
-    
+
     // Process creation date criteria
     if (criteria.createdAt) {
       const createdAtQuery: unknown = {};
-      
+
       if (criteria.createdAt.from) {
         createdAtQuery.gte = new Date(criteria.createdAt.from);
       }
-      
+
       if (criteria.createdAt.to) {
         createdAtQuery.lte = new Date(criteria.createdAt.to);
       }
-      
+
       if (Object.keys(createdAtQuery).length > 0) {
         query.AND.push({ createdAt: createdAtQuery });
       }
     }
-    
+
     return query;
   }
 
@@ -550,19 +550,19 @@ export class SegmentService {
    */
   private validateSegmentData(data: Partial<ContactSegment>): void {
     const errors: string[] = [];
-    
+
     // Name is required
     if (!data.name) {
       errors.push('Segment name is required');
     }
-    
+
     // Name length validation
-    if (data.name && (data.name.length < 3 || data.name.length > 100)) {
+    if (data?.name && (data.name.length < 3 || data.name.length > 100)) {
       errors.push('Segment name must be between 3 and 100 characters');
     }
-    
+
     // Validate criteria if provided
-    if (data.criteria && typeof data.criteria === 'object') {
+    if (data?.criteria && typeof data.criteria === 'object') {
       try {
         // Validate criteria structure
         this.validateCriteriaStructure(data.criteria);
@@ -570,7 +570,7 @@ export class SegmentService {
         errors.push(`Invalid criteria: ${error.message}`);
       }
     }
-    
+
     if (errors.length > 0) {
       throw new ValidationError('Segment validation failed', errors);
     }

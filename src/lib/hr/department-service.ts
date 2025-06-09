@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 /**
@@ -10,7 +10,7 @@ export class DepartmentService {
    * Create a new department;
    */
   async createDepartment(data: {
-    name: string,
+    name: string;
     code: string;
     description?: string;
     parentId?: string;
@@ -18,7 +18,7 @@ export class DepartmentService {
     return prisma.department.create({
       data,
       include: {
-        parent: true,
+        parent: true;
       },
     });
   }
@@ -30,18 +30,18 @@ export class DepartmentService {
     return prisma.department.findUnique({
       where: { id },
       include: {
-        parent: true,
-        children: true,
+        parent: true;
+        children: true;
         employees: {
           select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            employeeId: true,
-            active: true,
+            id: true;
+            firstName: true;
+            lastName: true;
+            employeeId: true;
+            active: true;
           },
         },
-        positions: true,
+        positions: true;
       },
     });
   }
@@ -50,7 +50,7 @@ export class DepartmentService {
    * Update a department;
    */
   async updateDepartment(
-    id: string,
+    id: string;
     data: {
       name?: string;
       code?: string;
@@ -62,7 +62,7 @@ export class DepartmentService {
       where: { id },
       data,
       include: {
-        parent: true,
+        parent: true;
       },
     });
   }
@@ -83,11 +83,11 @@ export class DepartmentService {
   }) {
     const where: unknown = {};
 
-    if (parentId) {
+    if (parentId != null) {
       where.parentId = parentId;
     }
 
-    if (search) {
+    if (search != null) {
       where.OR = [
         { name: { contains: search, mode: 'insensitive' } },
         { code: { contains: search, mode: 'insensitive' } },
@@ -102,12 +102,12 @@ export class DepartmentService {
         take,
         orderBy: { name: 'asc' },
         include: {
-          parent: true,
+          parent: true;
           _count: {
             select: {
-              children: true,
-              employees: true,
-              positions: true,
+              children: true;
+              employees: true;
+              positions: true;
             },
           },
         },
@@ -132,7 +132,7 @@ export class DepartmentService {
       include: {
         _count: {
           select: {
-            employees: true,
+            employees: true;
           },
         },
       },
@@ -146,17 +146,17 @@ export class DepartmentService {
     allDepartments.forEach(dept => {
       departmentMap.set(dept.id, {
         ...dept,
-        children: [],
+        children: [];
       });
     });
 
     // Second pass: build hierarchy
     allDepartments.forEach(dept => {
       const departmentWithChildren = departmentMap.get(dept.id);
-      
+
       if (dept.parentId) {
         const parent = departmentMap.get(dept.parentId);
-        if (parent) {
+        if (parent != null) {
           parent.children.push(departmentWithChildren);
         }
       } else {
@@ -171,7 +171,7 @@ export class DepartmentService {
    * Create a new position;
    */
   async createPosition(data: {
-    title: string,
+    title: string;
     code: string;
     description?: string;
     departmentId?: string;
@@ -179,7 +179,7 @@ export class DepartmentService {
     return prisma.position.create({
       data,
       include: {
-        department: true,
+        department: true;
       },
     });
   }
@@ -191,21 +191,21 @@ export class DepartmentService {
     return prisma.position.findUnique({
       where: { id },
       include: {
-        department: true,
+        department: true;
         employeePositions: {
           include: {
             employee: {
               select: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                employeeId: true,
-                active: true,
+                id: true;
+                firstName: true;
+                lastName: true;
+                employeeId: true;
+                active: true;
               },
             },
           },
           where: {
-            endDate: null, // Only current assignments
+            endDate: null, // Only current assignments;
           },
         },
       },
@@ -216,7 +216,7 @@ export class DepartmentService {
    * Update a position;
    */
   async updatePosition(
-    id: string,
+    id: string;
     data: {
       title?: string;
       code?: string;
@@ -228,7 +228,7 @@ export class DepartmentService {
       where: { id },
       data,
       include: {
-        department: true,
+        department: true;
       },
     });
   }
@@ -249,11 +249,11 @@ export class DepartmentService {
   }) {
     const where: unknown = {};
 
-    if (departmentId) {
+    if (departmentId != null) {
       where.departmentId = departmentId;
     }
 
-    if (search) {
+    if (search != null) {
       where.OR = [
         { title: { contains: search, mode: 'insensitive' } },
         { code: { contains: search, mode: 'insensitive' } },
@@ -268,12 +268,12 @@ export class DepartmentService {
         take,
         orderBy: { title: 'asc' },
         include: {
-          department: true,
+          department: true;
           _count: {
             select: {
               employeePositions: {
                 where: {
-                  endDate: null, // Only current assignments
+                  endDate: null, // Only current assignments;
                 },
               },
             },
@@ -290,4 +290,4 @@ export class DepartmentService {
       take,
     };
   }
-export const departmentService = new DepartmentService();
+export const _departmentService = new DepartmentService();

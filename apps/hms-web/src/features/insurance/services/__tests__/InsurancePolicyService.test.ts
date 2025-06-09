@@ -13,19 +13,19 @@ describe("InsurancePolicyService", () => {
   describe("createPolicy", () => {
     it("should create an insurance policy successfully with valid data", async () => {
       // Arrange
-      const policyData = {
-        patientId: "patient-policy-123",
-        insurerName: "HealthGuard Inc.",
-        policyNumber: "HG123456789",
-        coverageStartDate: new Date("2024-01-01"),
-        coverageEndDate: new Date("2024-12-31"),
-        coverageDetails: "Comprehensive plan covering hospital visits and specialist consultations.",
+      const _policyData = {
+        _patientId: "patient-policy-123";
+        insurerName: "HealthGuard Inc.";
+        policyNumber: "HG123456789";
+        coverageStartDate: new Date("2024-01-01");
+        coverageEndDate: new Date("2024-12-31");
+        coverageDetails: "Comprehensive plan covering hospital visits and specialist consultations.";
       };
       // Mock repository to save the policy
 
       // Act
-      // const policyService = new InsurancePolicyService(/* pass mocks */)
-      // const result = await policyService.createPolicy(policyData)
+      // const _policyService = new InsurancePolicyService(/* pass mocks */)
+      // const _result = await policyService.createPolicy(policyData)
 
       // Assert
       // expect(result).toBeDefined()
@@ -38,11 +38,11 @@ describe("InsurancePolicyService", () => {
   describe("getPolicyByPatientId", () => {
     it("should retrieve policies for a given patient ID", async () => {
       // Arrange
-      const patientId = "patient-policy-456";
+      const _patientId = "patient-policy-456";
       // Mock repository to return an array of policies
 
       // Act
-      // const policyService = new InsurancePolicyService(/* pass mocks */)
+      // const _policyService = new InsurancePolicyService(/* pass mocks */)
       // const policies = await policyService.getPolicyByPatientId(patientId)
 
       // Assert

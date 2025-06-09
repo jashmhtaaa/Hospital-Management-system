@@ -1,6 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import {
+
   View,
   Text,
   StyleSheet,
@@ -56,7 +56,7 @@ const HomeScreen = ({ navigation }) => {
         });
         const data = await response.json();
         setPatientData(data);
-        
+
         // Cache the data for offline use
         await AsyncStorage.setItem('patientData', JSON.stringify(data));
       }
@@ -76,7 +76,7 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles.offlineText}>Offline Mode - Limited functionality</Text>
         </View>
       )}
-      
+
       <View style={styles.header}>
         <Text style={styles.welcomeText}>
           Welcome back, {patientData?.full_name || 'Patient'}
@@ -85,7 +85,7 @@ const HomeScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.quickActions}>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.actionCard}
           onPress={() => navigation.navigate('Appointments')}
         >
@@ -93,7 +93,7 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles.actionSubtitle}>Schedule your next visit</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.actionCard}
           onPress={() => navigation.navigate('Records')}
         >
@@ -101,7 +101,7 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles.actionSubtitle}>View your health history</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.actionCard}
           onPress={() => navigation.navigate('Bills')}
         >

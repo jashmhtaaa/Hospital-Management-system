@@ -1,5 +1,5 @@
-// src/app/api/billing/categories/route.ts
 import { NextResponse } from "next/server";
+// src/app/api/billing/categories/route.ts
 // import { getRequestContext } from "@cloudflare/next-on-pages"
 
 /**

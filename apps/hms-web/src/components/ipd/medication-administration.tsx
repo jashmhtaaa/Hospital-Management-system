@@ -1,26 +1,27 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 interface Medication {
-  id: string,
-  name: string,
-  dose: string,
-  route: string,
-  frequency: string,
+  id: string;
+  name: string;
+  dose: string;
+  route: string;
+  frequency: string;
   startDate: string;
   endDate?: string;
-  status: 'active' | 'discontinued' | 'completed'
+  status: 'active' | 'discontinued' | 'completed';
 }
 
 interface MedicationAdministration {
-  id: string,
-  medicationId: string,
-  medicationName: string,
-  dose: string,
-  route: string,
+  id: string;
+  medicationId: string;
+  medicationName: string;
+  dose: string;
+  route: string;
   scheduledTime: string;
   administeredTime?: string;
   administeredBy?: string;
@@ -29,18 +30,18 @@ interface MedicationAdministration {
 }
 
 interface MedicationAdministrationProps {
-  patientId: string,
-  patientName: string,
-  medications: Medication[],
-  administrations: MedicationAdministration[]
+  patientId: string;
+  patientName: string;
+  medications: Medication[];
+  administrations: MedicationAdministration[];
 }
 
 /**
  * IPD Medication Administration component;
  */
-export const MedicationAdministration = ({ patientId, 
-  patientName, 
-  medications, 
+export const MedicationAdministration = ({ patientId,
+  patientName,
+  medications,
   administrations
 }: MedicationAdministrationProps) => {
   const getStatusBadge = (status: string) => {
@@ -49,7 +50,7 @@ export const MedicationAdministration = ({ patientId,
       case 'administered': return <Badge variant="success">Administered</Badge>;
       case 'missed': return <Badge variant="danger">Missed</Badge>;
       case 'delayed': return <Badge variant="warning">Delayed</Badge>;
-      default: return <Badge>Unknown</Badge>
+      default: return <Badge>Unknown</Badge>;
     }
   };
 
@@ -93,8 +94,8 @@ export const MedicationAdministration = ({ patientId,
                       <TableCell>
                         <Badge>
                           variant={
-                            medication.status === 'active' ? 'success' : 
-                            medication.status === 'discontinued' ? 'danger' : 
+                            medication.status === 'active' ? 'success' :
+                            medication.status === 'discontinued' ? 'danger' :
                             'secondary';
                           }
                         >
@@ -107,7 +108,7 @@ export const MedicationAdministration = ({ patientId,
               </TableBody>
             </Table>
           </div>
-          
+
 <div
             <h3 className="text-lg font-medium mb-2">Administration Schedule</h3>;
             <Table>

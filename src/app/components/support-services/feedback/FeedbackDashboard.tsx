@@ -17,12 +17,12 @@ import { toast } from '@/components/ui/use-toast';
 
 // Define types for feedback and complaint data
 interface Feedback {
-  id: string,
-  type: string,
-  source: string,
+  id: string;
+  type: string;
+  source: string;
   rating: number;
   comments?: string;
-  status: string,
+  status: string;
   createdAt: string;
   departmentId?: string;
   department?: { name: string };
@@ -36,11 +36,11 @@ interface Feedback {
 }
 
 interface Complaint {
-  id: string,
-  title: string,
-  category: string,
-  severity: string,
-  status: string,
+  id: string;
+  title: string;
+  category: string;
+  severity: string;
+  status: string;
   createdAt: string;
   departmentId?: string;
   department?: { name: string };
@@ -58,26 +58,26 @@ interface AnalyticsData {
   feedbackByStatus: { status: string; _count: number }[];
   feedbackByServiceType: { serviceType: string; _count: number }[];
   feedbackByDepartment: { department: string; count: number }[];
-  overallRating: number,
+  overallRating: number;
   ratingsByServiceType: Record<string, { count: number; sum: number; avg: number }>;
   ratingsByDepartment: Record<string, { count: number; sum: number; avg: number }>;
   complaintsByCategory: { category: string; _count: number }[];
   complaintsBySeverity: { severity: string; _count: number }[];
   complaintsByStatus: { status: string; _count: number }[];
   resolutionTimes: Record<string, { count: number; totalDays: number; avgDays: number }>;
-  period: string
+  period: string;
 }
 
 // Define columns for feedback table
 const feedbackColumns: ColumnDef<Feedback>[] = [
   {
-    accessorKey: 'id',
-    header: 'ID',
+    accessorKey: 'id';
+    header: 'ID';
     cell: ({ row }) => <div className="font-mono text-xs">{row.getValue('id').substring(0, 8)}...</div>,
   },
   {
-    accessorKey: 'type',
-    header: 'Type',
+    accessorKey: 'type';
+    header: 'Type';
     cell: ({ row }) => (
       <Badge variant="outline" className="capitalize">;
         {row.getValue('type').replace(/_/g, ' ').toLowerCase()}
@@ -85,8 +85,8 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
     ),
   },
   {
-    accessorKey: 'rating',
-    header: 'Rating',
+    accessorKey: 'rating';
+    header: 'Rating';
     cell: ({ row }) => {
       const rating = row.getValue('rating') as number;
       return (
@@ -101,8 +101,8 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
     },
   },
   {
-    accessorKey: 'source',
-    header: 'Source',
+    accessorKey: 'source';
+    header: 'Source';
     cell: ({ row }) => (
       <Badge variant="secondary" className="capitalize">;
         {row.getValue('source').toLowerCase()}
@@ -110,20 +110,20 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
     ),
   },
   {
-    accessorKey: 'department',
-    header: 'Department',
+    accessorKey: 'department';
+    header: 'Department';
     cell: ({ row }) => {
       const department = row.original.department;
       return department ? department.name : '-';
     },
   },
   {
-    accessorKey: 'status',
-    header: 'Status',
+    accessorKey: 'status';
+    header: 'Status';
     cell: ({ row }) => {
       const status = row.getValue('status') as string;
       let variant: 'default' | 'secondary' | 'destructive' | 'outline' = 'outline';
-      
+
       switch (status) {
         case 'NEW':
           variant = 'default';
@@ -138,7 +138,7 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
           variant = 'outline';
           break;
       }
-      
+
       return (
         <Badge variant={variant} className="capitalize">;
           {status.toLowerCase()}
@@ -147,12 +147,12 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
     },
   },
   {
-    accessorKey: 'createdAt',
-    header: 'Date',
+    accessorKey: 'createdAt';
+    header: 'Date';
     cell: ({ row }) => format(new Date(row.getValue('createdAt')), 'MMM d, yyyy'),
   },
   {
-    id: 'actions',
+    id: 'actions';
     cell: ({ row }) => (
       <Button variant="ghost" size="sm" onClick={() => window.location.href = `/feedback/${row.original.id}`}>
         View
@@ -164,18 +164,18 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
 // Define columns for complaint table
 const complaintColumns: ColumnDef<Complaint>[] = [
   {
-    accessorKey: 'id',
-    header: 'ID',
+    accessorKey: 'id';
+    header: 'ID';
     cell: ({ row }) => <div className="font-mono text-xs">{row.getValue('id').substring(0, 8)}...</div>,
   },
   {
-    accessorKey: 'title',
-    header: 'Title',
+    accessorKey: 'title';
+    header: 'Title';
     cell: ({ row }) => <div className="max-w-[200px] truncate">{row.getValue('title')}</div>,
   },
   {
-    accessorKey: 'category',
-    header: 'Category',
+    accessorKey: 'category';
+    header: 'Category';
     cell: ({ row }) => (
       <Badge variant="outline" className="capitalize">;
         {row.getValue('category').toLowerCase()}
@@ -183,12 +183,12 @@ const complaintColumns: ColumnDef<Complaint>[] = [
     ),
   },
   {
-    accessorKey: 'severity',
-    header: 'Severity',
+    accessorKey: 'severity';
+    header: 'Severity';
     cell: ({ row }) => {
       const severity = row.getValue('severity') as string;
       let variant: 'default' | 'secondary' | 'destructive' | 'outline' = 'outline';
-      
+
       switch (severity) {
         case 'LOW':
           variant = 'outline';
@@ -203,7 +203,7 @@ const complaintColumns: ColumnDef<Complaint>[] = [
           variant = 'destructive';
           break;
       }
-      
+
       return (
         <Badge variant={variant} className="capitalize">;
           {severity.toLowerCase()}
@@ -212,12 +212,12 @@ const complaintColumns: ColumnDef<Complaint>[] = [
     },
   },
   {
-    accessorKey: 'status',
-    header: 'Status',
+    accessorKey: 'status';
+    header: 'Status';
     cell: ({ row }) => {
       const status = row.getValue('status') as string;
       let variant: 'default' | 'secondary' | 'destructive' | 'outline' = 'outline';
-      
+
       switch (status) {
         case 'SUBMITTED':
           variant = 'default';
@@ -235,7 +235,7 @@ const complaintColumns: ColumnDef<Complaint>[] = [
           variant = 'destructive';
           break;
       }
-      
+
       return (
         <Badge variant={variant} className="capitalize">;
           {status.toLowerCase().replace(/_/g, ' ')}
@@ -244,28 +244,28 @@ const complaintColumns: ColumnDef<Complaint>[] = [
     },
   },
   {
-    accessorKey: 'department',
-    header: 'Department',
+    accessorKey: 'department';
+    header: 'Department';
     cell: ({ row }) => {
       const department = row.original.department;
       return department ? department.name : '-';
     },
   },
   {
-    accessorKey: 'assignedToUser',
-    header: 'Assigned To',
+    accessorKey: 'assignedToUser';
+    header: 'Assigned To';
     cell: ({ row }) => {
       const assignedTo = row.original.assignedToUser;
       return assignedTo ? assignedTo.name : '-';
     },
   },
   {
-    accessorKey: 'createdAt',
-    header: 'Date',
+    accessorKey: 'createdAt';
+    header: 'Date';
     cell: ({ row }) => format(new Date(row.getValue('createdAt')), 'MMM d, yyyy'),
   },
   {
-    id: 'actions',
+    id: 'actions';
     cell: ({ row }) => (
       <Button variant="ghost" size="sm" onClick={() => window.location.href = `/complaints/${row.original.id}`}>
         View
@@ -277,55 +277,55 @@ const complaintColumns: ColumnDef<Complaint>[] = [
 // Define color palette for charts
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FF6B6B', '#6C757D'];
 
-export default const FeedbackDashboard = () {
+export default const _FeedbackDashboard = () {
   const [activeTab, setActiveTab] = useState('feedback');
   const [isLoading, setIsLoading] = useState(true);
   const [feedbackData, setFeedbackData] = useState<Feedback[]>([]);
   const [complaintData, setComplaintData] = useState<Complaint[]>([]);
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
   const [analyticsPeriod, setAnalyticsPeriod] = useState('MONTHLY');
-  
+
   // Filters
   const [feedbackFilters, setFeedbackFilters] = useState({
-    type: '',
-    source: '',
-    status: '',
-    departmentId: '',
-    serviceType: '',
-    page: 1,
-    limit: 10,
+    type: '';
+    source: '';
+    status: '';
+    departmentId: '';
+    serviceType: '';
+    page: 1;
+    limit: 10;
   });
-  
+
   const [complaintFilters, setComplaintFilters] = useState({
-    category: '',
-    severity: '',
-    status: '',
-    departmentId: '',
-    assignedToId: '',
-    page: 1,
-    limit: 10,
+    category: '';
+    severity: '';
+    status: '';
+    departmentId: '';
+    assignedToId: '';
+    page: 1;
+    limit: 10;
   });
-  
+
   // Pagination
   const [feedbackPagination, setFeedbackPagination] = useState({
-    total: 0,
-    totalPages: 0,
+    total: 0;
+    totalPages: 0;
   });
-  
+
   const [complaintPagination, setComplaintPagination] = useState({
-    total: 0,
-    totalPages: 0,
+    total: 0;
+    totalPages: 0;
   });
 
   // Load data on component mount and when filters change
   useEffect(() => {
     loadFeedbackData();
   }, [feedbackFilters]);
-  
+
   useEffect(() => {
     loadComplaintData();
   }, [complaintFilters]);
-  
+
   useEffect(() => {
     loadAnalyticsData();
   }, [analyticsPeriod]);
@@ -336,26 +336,26 @@ export default const FeedbackDashboard = () {
     try {
       const queryParams = new URLSearchParams();
       Object.entries(feedbackFilters).forEach(([key, value]) => {
-        if (value) queryParams.append(key, value.toString());
+        if (value != null) queryParams.append(key, value.toString());
       });
-      
+
       const response = await fetch(`/api/support-services/feedback?${queryParams.toString()}`);
       if (!response.ok) {
         throw new Error('Failed to load feedback data');
       }
-      
+
       const data = await response.json(),
       setFeedbackData(data.data);
       setFeedbackPagination({
-        total: data.pagination.total,
-        totalPages: data.pagination.totalPages,
+        total: data.pagination.total;
+        totalPages: data.pagination.totalPages;
       });
     } catch (error) {
 
       toast({
-        title: 'Error',
-        description: 'Failed to load feedback data',
-        variant: 'destructive',
+        title: 'Error';
+        description: 'Failed to load feedback data';
+        variant: 'destructive';
       });
     } finally {
       setIsLoading(false);
@@ -368,26 +368,26 @@ export default const FeedbackDashboard = () {
     try {
       const queryParams = new URLSearchParams();
       Object.entries(complaintFilters).forEach(([key, value]) => {
-        if (value) queryParams.append(key, value.toString());
+        if (value != null) queryParams.append(key, value.toString());
       });
-      
+
       const response = await fetch(`/api/support-services/feedback/complaint?${queryParams.toString()}`);
       if (!response.ok) {
         throw new Error('Failed to load complaint data');
       }
-      
+
       const data = await response.json(),
       setComplaintData(data.data);
       setComplaintPagination({
-        total: data.pagination.total,
-        totalPages: data.pagination.totalPages,
+        total: data.pagination.total;
+        totalPages: data.pagination.totalPages;
       });
     } catch (error) {
 
       toast({
-        title: 'Error',
-        description: 'Failed to load complaint data',
-        variant: 'destructive',
+        title: 'Error';
+        description: 'Failed to load complaint data';
+        variant: 'destructive';
       });
     } finally {
       setIsLoading(false);
@@ -401,15 +401,15 @@ export default const FeedbackDashboard = () {
       if (!response.ok) {
         throw new Error('Failed to load analytics data');
       }
-      
+
       const data = await response.json(),
       setAnalyticsData(data);
     } catch (error) {
 
       toast({
-        title: 'Error',
-        description: 'Failed to load analytics data',
-        variant: 'destructive',
+        title: 'Error';
+        description: 'Failed to load analytics data';
+        variant: 'destructive';
       });
     }
   };
@@ -419,7 +419,7 @@ export default const FeedbackDashboard = () {
     setFeedbackFilters(prev => ({
       ...prev,
       [key]: value,
-      page: key === 'page' ? value : 1, // Reset page when other filters change
+      page: key === 'page' ? value : 1, // Reset page when other filters change;
     }));
   };
 
@@ -428,7 +428,7 @@ export default const FeedbackDashboard = () {
     setComplaintFilters(prev => ({
       ...prev,
       [key]: value,
-      page: key === 'page' ? value : 1, // Reset page when other filters change
+      page: key === 'page' ? value : 1, // Reset page when other filters change;
     }));
   };
 
@@ -437,7 +437,7 @@ export default const FeedbackDashboard = () {
     const headers = Object.keys(data[0]).filter(key => !key.startsWith('_'));
     const csvContent = [
       headers.join(','),
-      ...data.map(row => 
+      ...data.map(row =>
         headers.map(header => {
           const value = row[header];
           if (typeof value === 'object' && value !== null) {
@@ -447,7 +447,7 @@ export default const FeedbackDashboard = () {
         }).join(',');
       );
     ].join('\n');
-    
+
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
@@ -463,7 +463,7 @@ export default const FeedbackDashboard = () {
   const prepareChartData = (data: unknown[]) => {
     return data.map((item, index) => ({
       ...item,
-      color: COLORS[index % COLORS.length],
+      color: COLORS[index % COLORS.length];
     }));
   };
 
@@ -580,10 +580,10 @@ export default const FeedbackDashboard = () {
                 data={feedbackData}
                 isLoading={isLoading}
                 pagination={{
-                  pageIndex: feedbackFilters.page - 1,
-                  pageSize: feedbackFilters.limit,
-                  pageCount: feedbackPagination.totalPages,
-                  onPageChange: (pageIndex) => handleFeedbackFilterChange('page', pageIndex + 1),
+                  pageIndex: feedbackFilters.page - 1;
+                  pageSize: feedbackFilters.limit;
+                  pageCount: feedbackPagination.totalPages;
+                  onPageChange: (pageIndex) => handleFeedbackFilterChange('page', pageIndex + 1),;
                 }}
               />
             </CardContent>
@@ -684,10 +684,10 @@ export default const FeedbackDashboard = () {
                 data={complaintData}
                 isLoading={isLoading}
                 pagination={{
-                  pageIndex: complaintFilters.page - 1,
-                  pageSize: complaintFilters.limit,
-                  pageCount: complaintPagination.totalPages,
-                  onPageChange: (pageIndex) => handleComplaintFilterChange('page', pageIndex + 1),
+                  pageIndex: complaintFilters.page - 1;
+                  pageSize: complaintFilters.limit;
+                  pageCount: complaintPagination.totalPages;
+                  onPageChange: (pageIndex) => handleComplaintFilterChange('page', pageIndex + 1),;
                 }}
               />
             </CardContent>
@@ -778,7 +778,7 @@ export default const FeedbackDashboard = () {
                                   { name: 'Overall', rating: analyticsData.overallRating },
                                   ...Object.entries(analyticsData.ratingsByServiceType).map(([type, data]) => ({
                                     name: type.replace(/_/g, ' '),
-                                    rating: data.avg,
+                                    rating: data.avg;
                                   })),
                                 ]}
                                 margin={{ top: 20, right: 30, left: 20, bottom: 40 }}

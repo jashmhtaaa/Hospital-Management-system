@@ -1,3 +1,7 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+
+import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 }
 
 /**
@@ -5,10 +9,7 @@
  * Provides access to system metrics and health data;
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { metricsCollector } from '@/lib/monitoring/metrics-collector';
-
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const format = searchParams.get('format') || 'json';
@@ -16,28 +17,28 @@ export const GET = async (request: NextRequest) => {
     const timeWindow = searchParams.get('window');
 
     // Check authentication/authorization here if needed
-    // const user = await getCurrentUser(request)
+    // const _user = await getCurrentUser(request)
     // if (!user || !hasMonitoringAccess(user)) {
     //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     // }
 
-    if (metric) {
+    if (metric != null) {
       // Return specific metric
       const timeWindowSeconds = timeWindow ? parseInt(timeWindow) : undefined;
       const metrics = metricsCollector.getMetrics(metric, timeWindowSeconds);
-      
+
       return NextResponse.json({
         metric,
-        timeWindow: timeWindowSeconds,
-        data: metrics,
-        count: metrics.length,
+        timeWindow: timeWindowSeconds;
+        data: metrics;
+        count: metrics.length;
       });
     }
 
     if (format === 'prometheus') {
       // Return Prometheus format
       const prometheusData = metricsCollector.exportMetrics('prometheus');
-      
+
       return new NextResponse(prometheusData, {
         headers: {
           'Content-Type': 'text/plain; charset=utf-8',
@@ -47,24 +48,24 @@ export const GET = async (request: NextRequest) => {
 
     // Return dashboard metrics
     const dashboardMetrics = metricsCollector.getDashboardMetrics();
-    
+
     return NextResponse.json({
-      timestamp: new Date().toISOString(),
-      status: 'success',
-      data: dashboardMetrics,
+      timestamp: new Date().toISOString();
+      status: 'success';
+      data: dashboardMetrics;
     });
 
   } catch (error) {
 
     return NextResponse.json(
       {
-        error: 'Internal server error',
-        message: error instanceof Error ? error.message : 'Unknown error',
+        error: 'Internal server error';
+        message: error instanceof Error ? error.message : 'Unknown error';
       },
       { status: 500 }
     );
   }
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     const body = await request.json();
     const { action } = body;
@@ -95,8 +96,8 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json(
       {
-        error: 'Internal server error',
-        message: error instanceof Error ? error.message : 'Unknown error',
+        error: 'Internal server error';
+        message: error instanceof Error ? error.message : 'Unknown error';
       },
       { status: 500 }
     );

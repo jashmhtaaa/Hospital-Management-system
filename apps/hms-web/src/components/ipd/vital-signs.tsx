@@ -1,31 +1,32 @@
-}
 import React from 'react';
+
+
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-
+}
 interface VitalSign {
-  id: string,
-  date: string,
-  time: string,
-  temperature: string,
-  pulse: string,
-  respiration: string,
-  bloodPressure: string,
-  oxygenSaturation: string,
-  recordedBy: string
+  id: string;
+  date: string;
+  time: string;
+  temperature: string;
+  pulse: string;
+  respiration: string;
+  bloodPressure: string;
+  oxygenSaturation: string;
+  recordedBy: string;
 }
 
 interface VitalSignsProps {
-  patientId: string,
-  patientName: string,
-  vitalSigns: VitalSign[]
+  patientId: string;
+  patientName: string;
+  vitalSigns: VitalSign[];
 }
 
 /**
  * IPD Vital Signs component;
  */
-export const VitalSigns = ({ patientId, patientName, vitalSigns }: VitalSignsProps) => {
+export const _VitalSigns = ({ patientId, patientName, vitalSigns }: VitalSignsProps) => {
   return (
     <Card>
       <CardHeader>
@@ -36,7 +37,7 @@ export const VitalSigns = ({ patientId, patientName, vitalSigns }: VitalSignsPro
           <div className="flex justify-end">;
             <Button>Record Vital Signs</Button>
           </div>
-          
+
           <Table>
             <TableHeader>
               <TableRow>

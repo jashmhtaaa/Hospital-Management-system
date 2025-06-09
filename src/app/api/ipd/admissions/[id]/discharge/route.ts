@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
+
+
 import { getDB } from "@/lib/database"; // Using the mock DB from lib/db.ts
 import { getSession } from "@/lib/session";
-
 // Define interface for the POST request body
 // interface DischargeInput {
 
 // GET /api/ipd/admissions/[id]/discharge - Get discharge summary for an admission
-export const GET = async (
-  _request: NextRequest,
+export const _GET = async (
+  _request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -34,7 +35,7 @@ export const GET = async (
       [admissionId]
     );
     const admission =;
-      admissionResult.results && admissionResult.results.length > 0 // Changed .rows to .results
+      admissionResult?.results && admissionResult.results.length > 0 // Changed .rows to .results
         ? admissionResult.results[0] // Changed .rows to .results
         : undefined;
 
@@ -68,13 +69,13 @@ export const GET = async (
       [admissionId]
     );
     const dischargeSummary =;
-      dischargeSummaryResult.results && dischargeSummaryResult.results.length > 0 // Changed .rows to .results
+      dischargeSummaryResult?.results && dischargeSummaryResult.results.length > 0 // Changed .rows to .results
         ? dischargeSummaryResult.results[0] // Changed .rows to .results
         : undefined;
 
     return NextResponse.json({
       admission,
-      discharge_summary: dischargeSummary || undefined,
+      discharge_summary: dischargeSummary || undefined;
     });
   } catch (error: unknown) {
 

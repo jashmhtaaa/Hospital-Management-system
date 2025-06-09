@@ -1,19 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
+
+
 import { getDB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session";
-
 // Define interface for POST request body
 interface MedicationAdminInput {
-  medication_id: number | string,
-  dosage: string,
+  medication_id: number | string;
+  dosage: string;
   route: string;
   administered_time?: string; // Optional, defaults to now
   notes?: string | null;
 }
 
 // GET /api/ipd/admissions/[id]/medication-administration - Get all medication administration records for an admission
-export const GET = async (
-  _request: NextRequest,
+export const _GET = async (
+  _request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -40,7 +41,7 @@ export const GET = async (
       [admissionId]
     );
     const admission =;
-      admissionResult.results && admissionResult.results.length > 0 // Changed .rows to .results
+      admissionResult?.results && admissionResult.results.length > 0 // Changed .rows to .results
         ? admissionResult.results[0] // Changed .rows to .results
         : undefined;
 
@@ -68,10 +69,10 @@ export const GET = async (
     // Assuming db.query exists and returns { results: [...] } based on db.ts mock
     const medicationRecordsResult = await database.query(
       `;
-      SELECT ma.*, 
+      SELECT ma.*,
              m.generic_name as medication_name, -- Changed from pharmacy_inventory to medications;
              m.brand_name as medication_brand_name, -- Added brand name;
-             u.first_name as administered_by_first_name, 
+             u.first_name as administered_by_first_name,
              u.last_name as administered_by_last_name;
       FROM medication_administration ma;
       JOIN medications m ON ma.medication_id = m.id -- Changed from pharmacy_inventory;
@@ -84,15 +85,15 @@ export const GET = async (
 
     return NextResponse.json({
       admission,
-      medication_administration: medicationRecordsResult.results || [], // Changed .rows to .results
+      medication_administration: medicationRecordsResult.results || [], // Changed .rows to .results;
     });
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
       {
-        error: "Failed to fetch medication administration records",
-        details: errorMessage,
+        error: "Failed to fetch medication administration records";
+        details: errorMessage;
       },
       { status: 500 }
     );
@@ -100,8 +101,8 @@ export const GET = async (
 }
 
 /// POST /api/ipd/admissions/[id]/medication-administration - Create a new medication administration record
-export const POST = async (
-  request: NextRequest,
+export const _POST = async (
+  request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -152,7 +153,7 @@ export const POST = async (
       [admissionId]
     );
     const admission =;
-      admissionResult.results && admissionResult.results.length > 0 // Changed .rows to .results
+      admissionResult?.results && admissionResult.results.length > 0 // Changed .rows to .results
         ? (admissionResult.results[0] as { id: string; status: string }) // Changed .rows to .results
         : undefined;
 
@@ -166,8 +167,7 @@ export const POST = async (
     if (admission.status !== "active") {
       return NextResponse.json(
         {
-          error:
-            "Cannot record medication administration for a non-active admission",
+          error: "Cannot record medication administration for a non-active admission";
         },
         { status: 409 }
       );
@@ -180,7 +180,7 @@ export const POST = async (
       [data.medication_id]
     ); // Changed from pharmacy_inventory
     const medication =;
-      medicationResult.results && medicationResult.results.length > 0 // Changed .rows to .results
+      medicationResult?.results && medicationResult.results.length > 0 // Changed .rows to .results
         ? medicationResult.results[0] // Changed .rows to .results
         : undefined;
 
@@ -220,8 +220,8 @@ export const POST = async (
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
       {
-        error: "Failed to create medication administration record",
-        details: errorMessage,
+        error: "Failed to create medication administration record";
+        details: errorMessage;
       },
       { status: 500 }
     );

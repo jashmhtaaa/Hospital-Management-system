@@ -1,16 +1,17 @@
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery, ApiBody } from '@nestjs/swagger';
+import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
+
+
+import { DashboardService } from '../services/dashboard.service';
+import { JwtAuthGuard } from '@/lib/security/guards/jwt-auth.guard';
+import { Roles } from '@/lib/security/decorators/roles.decorator';
+import { RolesGuard } from '@/lib/security/guards/roles.guard';
 }
 }
 
 /**
  * Dashboard Controller;
  */
-
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery, ApiBody } from '@nestjs/swagger';
-import { JwtAuthGuard } from '@/lib/security/guards/jwt-auth.guard';
-import { RolesGuard } from '@/lib/security/guards/roles.guard';
-import { Roles } from '@/lib/security/decorators/roles.decorator';
-import { DashboardService } from '../services/dashboard.service';
 
 @ApiTags('Dashboards');
 @Controller('analytics/dashboards');
@@ -34,11 +35,11 @@ export class DashboardController {
     @Query('isTemplate') isTemplate?: string,
   ) {
     return this.dashboardService.getAllDashboards({
-      category: category as any,
+      category: category as any;
       status,
-      isPublic: isPublic !== undefined ? isPublic === 'true' : undefined,
+      isPublic: isPublic !== undefined ? isPublic === 'true' : undefined;
       createdBy,
-      isTemplate: isTemplate !== undefined ? isTemplate === 'true' : undefined,
+      isTemplate: isTemplate !== undefined ? isTemplate === 'true' : undefined;
     });
   }
 
@@ -67,8 +68,8 @@ export class DashboardController {
   @ApiResponse({ status: 200, description: 'Dashboard updated' });
   @ApiResponse({ status: 404, description: 'Dashboard not found' });
   async updateDashboard(
-    @Param('id') id: string,
-    @Body() updates: unknown,
+    @Param('id') id: string;
+    @Body() updates: unknown;
     @Req() req: unknown;
   ) {
     return this.dashboardService.updateDashboard(id, updates, req.user.id);
@@ -81,8 +82,8 @@ export class DashboardController {
   @ApiResponse({ status: 201, description: 'Widget created' });
   @ApiResponse({ status: 404, description: 'Dashboard not found' });
   async createWidget(
-    @Param('id') id: string,
-    @Body() widget: unknown,
+    @Param('id') id: string;
+    @Body() widget: unknown;
     @Req() req: unknown;
   ) {
     return this.dashboardService.createWidget(id, widget, req.user.id);
@@ -96,9 +97,9 @@ export class DashboardController {
   @ApiResponse({ status: 200, description: 'Widget updated' });
   @ApiResponse({ status: 404, description: 'Dashboard or widget not found' });
   async updateWidget(
-    @Param('id') id: string,
-    @Param('widgetId') widgetId: string,
-    @Body() updates: unknown,
+    @Param('id') id: string;
+    @Param('widgetId') widgetId: string;
+    @Body() updates: unknown;
     @Req() req: unknown;
   ) {
     return this.dashboardService.updateWidget(id, widgetId, updates, req.user.id);
@@ -111,8 +112,8 @@ export class DashboardController {
   @ApiResponse({ status: 200, description: 'Widget deleted' });
   @ApiResponse({ status: 404, description: 'Dashboard or widget not found' });
   async deleteWidget(
-    @Param('id') id: string,
-    @Param('widgetId') widgetId: string,
+    @Param('id') id: string;
+    @Param('widgetId') widgetId: string;
     @Req() req: unknown;
   ) {
     return this.dashboardService.deleteWidget(id, widgetId, req.user.id);
@@ -125,8 +126,8 @@ export class DashboardController {
   @ApiResponse({ status: 200, description: 'Dashboard data' });
   @ApiResponse({ status: 404, description: 'Dashboard not found' });
   async getDashboardData(
-    @Param('id') id: string,
-    @Body() options: unknown,
+    @Param('id') id: string;
+    @Body() options: unknown;
     @Req() req: unknown;
   ) {
     return this.dashboardService.getDashboardData(id, options, req.user.id);
@@ -139,8 +140,8 @@ export class DashboardController {
   @ApiResponse({ status: 200, description: 'Export URL' });
   @ApiResponse({ status: 404, description: 'Dashboard not found' });
   async exportDashboard(
-    @Param('id') id: string,
-    @Body() options: unknown,
+    @Param('id') id: string;
+    @Body() options: unknown;
     @Req() req: unknown;
   ) {
     return this.dashboardService.exportDashboard(id, options, req.user.id);
@@ -153,8 +154,8 @@ export class DashboardController {
   @ApiResponse({ status: 201, description: 'Dashboard created from template' });
   @ApiResponse({ status: 404, description: 'Template not found' });
   async createDashboardFromTemplate(
-    @Param('templateId') templateId: string,
-    @Body() options: unknown,
+    @Param('templateId') templateId: string;
+    @Body() options: unknown;
     @Req() req: unknown;
   ) {
     return this.dashboardService.createDashboardFromTemplate(templateId, options, req.user.id);
@@ -167,8 +168,8 @@ export class DashboardController {
   @ApiResponse({ status: 200, description: 'Share link and details' });
   @ApiResponse({ status: 404, description: 'Dashboard not found' });
   async shareDashboard(
-    @Param('id') id: string,
-    @Body() options: unknown,
+    @Param('id') id: string;
+    @Body() options: unknown;
     @Req() req: unknown;
   ) {
     return this.dashboardService.shareDashboard(id, options, req.user.id);
@@ -186,9 +187,9 @@ export class DashboardController {
     @Query('tags') tags?: string,
   ) {
     return this.dashboardService.getKPIs({
-      category: category as any,
+      category: category as any;
       status,
-      tags: tags ? tags.split(',') : undefined,
+      tags: tags ? tags.split(',') : undefined,;
     });
   }
 
@@ -218,8 +219,8 @@ export class DashboardController {
   @ApiResponse({ status: 404, description: 'KPI not found' });
   @Roles('ADMIN', 'ANALYST', 'QUALITY_MANAGER');
   async updateKPI(
-    @Param('id') id: string,
-    @Body() updates: unknown,
+    @Param('id') id: string;
+    @Body() updates: unknown;
     @Req() req: unknown;
   ) {
     return this.dashboardService.updateKPI(id, updates, req.user.id);
@@ -232,7 +233,7 @@ export class DashboardController {
   @ApiResponse({ status: 200, description: 'KPI value' });
   @ApiResponse({ status: 404, description: 'KPI not found' });
   async calculateKPIValue(
-    @Param('id') id: string,
+    @Param('id') id: string;
     @Body() options: unknown;
   ) {
     return this.dashboardService.calculateKPIValue(id, options);

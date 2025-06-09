@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+
+
 import { DB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session";
-
 // Interface for the request body when creating a lab test
 interface LabTestCreateBody {
-  category_id: number,
-  code: string,
+  category_id: number;
+  code: string;
   name: string;
   description?: string;
   sample_type: string;
@@ -16,7 +17,7 @@ interface LabTestCreateBody {
 }
 
 // GET /api/laboratory/tests - Get all laboratory tests
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   try {
     const session = await getSession();
 
@@ -39,7 +40,7 @@ export const GET = async (request: NextRequest) => {
     // Add filters
     const conditions: string[] = [];
 
-    if (categoryId) {
+    if (categoryId != null) {
       conditions.push("t.category_id = ?");
       parameters.push(categoryId);
     }
@@ -70,7 +71,7 @@ export const GET = async (request: NextRequest) => {
 }
 
 // POST /api/laboratory/tests - Create a new laboratory test
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
 
@@ -112,7 +113,7 @@ export const POST = async (request: NextRequest) => {
     // Insert new test using DB.query
     const insertQuery = `;
       INSERT INTO lab_tests (
-        category_id, code, name, description, sample_type, 
+        category_id, code, name, description, sample_type,
         sample_volume, processing_time, price, is_active;
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
@@ -133,13 +134,12 @@ export const POST = async (request: NextRequest) => {
     // Mock response as we cannot get last_row_id from mock DB.query
     const mockTestId = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10_000);
     const mockCreatedTest = {
-      id: mockTestId,
+      id: mockTestId;
       ...body, // Include other details from the request body
       is_active: body.is_active === undefined ? true : body.is_active, // Ensure is_active is set
-      description: body.description || "",
-      sample_volume: body.sample_volume || "",
-      processing_time:
-        body.processing_time === undefined ? undefined : body.processing_time,
+      description: body.description || "";
+      sample_volume: body.sample_volume || "";
+      processing_time: body.processing_time === undefined ? undefined : body.processing_time;
     };
 
     return NextResponse.json(mockCreatedTest, { status: 201 });

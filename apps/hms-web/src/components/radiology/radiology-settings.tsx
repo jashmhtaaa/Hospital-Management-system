@@ -1,16 +1,17 @@
-}
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Select } from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
 
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+}
 /**
  * Radiology settings component;
  */
-export const RadiologySettings = () => {
+export const _RadiologySettings = () => {
   return (
     <Card>
       <CardHeader>
@@ -24,14 +25,14 @@ export const RadiologySettings = () => {
             <TabsTrigger value="templates">Report Templates</TabsTrigger>;
             <TabsTrigger value="protocols">Protocols</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="general">;
             <div className="space-y-4">;
               <div className="space-y-2">;
                 <Label htmlFor="departmentName">Department Name</Label>;
                 <Input id="departmentName" defaultValue="Radiology Department" />
               </div>
-              
+
               <div className="space-y-2">;
                 <Label htmlFor="defaultPriority">Default Order Priority</Label>;
                 <Select>
@@ -44,7 +45,7 @@ export const RadiologySettings = () => {
                   defaultValue="routine"
                 />
               </div>
-              
+
               <div className="space-y-2">;
                 <Label htmlFor="autoAssign">Auto-assign Radiologist</Label>;
                 <Select>
@@ -56,7 +57,7 @@ export const RadiologySettings = () => {
                   defaultValue="false"
                 />
               </div>
-              
+
               <div className="space-y-2">;
                 <Label htmlFor="reportFormat">Default Report Format</Label>;
                 <Select>
@@ -69,11 +70,11 @@ export const RadiologySettings = () => {
                   defaultValue="structured"
                 />
               </div>
-              
+
               <Button className="mt-4">Save Settings</Button>
             </div>
           </TabsContent>
-          
+
           <TabsContent value="modalities">;
             <div className="space-y-4">;
               <div className="space-y-2">;
@@ -105,11 +106,11 @@ export const RadiologySettings = () => {
                   </div>
                 </div>
               </div>
-              
+
               <Button className="mt-4">Save Modalities</Button>
             </div>
           </TabsContent>
-          
+
           <TabsContent value="templates">;
             <div className="space-y-4">;
               <div className="space-y-2">;
@@ -138,11 +139,11 @@ export const RadiologySettings = () => {
                   </div>
                 </div>
               </div>
-              
+
               <Button>Add New Template</Button>
             </div>
           </TabsContent>
-          
+
           <TabsContent value="protocols">;
             <div className="space-y-4">;
               <div className="space-y-2">;
@@ -171,7 +172,7 @@ export const RadiologySettings = () => {
                   </div>
                 </div>
               </div>
-              
+
               <Button>Add New Protocol</Button>
             </div>
           </TabsContent>

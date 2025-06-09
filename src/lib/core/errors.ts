@@ -7,13 +7,13 @@
 
 // Base application error class
 export class AppError extends Error {
-  statusCode: number,
-  errorCode: string,
+  statusCode: number;
+  errorCode: string;
   isOperational: boolean;
   context?: Record<string, unknown>;
 
   constructor(
-    message: string,
+    message: string;
     statusCode = 500,
     errorCode = 'INTERNAL_ERROR',
     isOperational = true,
@@ -24,7 +24,7 @@ export class AppError extends Error {
     this.errorCode = errorCode;
     this.isOperational = isOperational;
     this.context = context;
-    
+
     Error.captureStackTrace(this, this.constructor);
   }
 }
@@ -224,25 +224,25 @@ export class BillingCalculationError extends BillingError {
 }
 
 // Error formatting utility
-export const formatError = (error: Error) {
+export const _formatError = (error: Error) {
   const isDev = process.env.NODE_ENV === 'development';
-  
+
   if (error instanceof AppError) {
     return {
-      status: 'error',
-      statusCode: error.statusCode,
-      errorCode: error.errorCode,
-      message: error.message,
-      details: error.context,
+      status: 'error';
+      statusCode: error.statusCode;
+      errorCode: error.errorCode;
+      message: error.message;
+      details: error.context;
       ...(isDev && { stack: error.stack }),
     };
   }
-  
+
   // For non-AppError instances (unexpected errors)
   return {
-    status: 'error',
-    statusCode: 500,
-    errorCode: 'INTERNAL_ERROR',
-    message: isDev ? error.message : 'An unexpected error occurred',
+    status: 'error';
+    statusCode: 500;
+    errorCode: 'INTERNAL_ERROR';
+    message: isDev ? error.message : 'An unexpected error occurred';
     ...(isDev && { stack: error.stack }),
   }

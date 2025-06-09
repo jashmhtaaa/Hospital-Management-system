@@ -1,10 +1,11 @@
+import React, { useState, useEffect, FormEvent } from "react";
+import {
+
+import { Button } from "@/components/ui/button";
 }
 
 "use client";
 
-import React, { useState, useEffect, FormEvent } from "react";
-import { Button } from "@/components/ui/button";
-import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -13,7 +14,6 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -27,26 +27,26 @@ import { toast } from "@/components/ui/use-toast"; // Import toast for notificat
 
 // Define the type for the form data submitted
 export interface ReportFormData {
-  study_id: string,
-  radiologist_id: string,
-  findings: string | null,
-  impression: string,
-  recommendations: string | null,
+  study_id: string;
+  radiologist_id: string;
+  findings: string | null;
+  impression: string;
+  recommendations: string | null;
   status: "preliminary" | "final" | "addendum"; // Use specific statuses
 }
 
 // Define the type for Radiologist data fetched from API
 // Assuming the API returns users with id and name
 interface Radiologist {
-  id: string,
+  id: string;
   name: string;
   // Add other relevant fields if needed, e.g., email
 }
 
 // Define the type for the component props
 interface CreateRadiologyReportModalProperties {
-  isOpen: boolean,
-  onClose: () => void,
+  isOpen: boolean;
+  onClose: () => void;
   onSubmit: (data: ReportFormData) => Promise<void>; // Ensure onSubmit is async
   studyId: string;
   patientName?: string; // Optional but helpful context
@@ -61,7 +61,7 @@ interface SessionUser {
   email?: string | null;
   image?: string | null;
   role?: string; // Assuming role is part of the user object in the session
-export default const CreateRadiologyReportModal = ({
+export default const _CreateRadiologyReportModal = ({
   isOpen,
   onClose,
   onSubmit,
@@ -132,9 +132,9 @@ export default const CreateRadiologyReportModal = ({
     event.preventDefault();
     if (!radiologistId || !impression) {
       toast({
-        title: "Missing Information",
-        description: "Please select a Radiologist and enter the Impression.",
-        variant: "destructive",
+        title: "Missing Information";
+        description: "Please select a Radiologist and enter the Impression.";
+        variant: "destructive";
       });
       return;
     }
@@ -142,12 +142,12 @@ export default const CreateRadiologyReportModal = ({
     setError(undefined);
     try {
       await onSubmit({
-        study_id: studyId,
-        radiologist_id: radiologistId,
-        findings: findings || null,
-        impression: impression,
-        recommendations: recommendations || null,
-        status: status,
+        study_id: studyId;
+        radiologist_id: radiologistId;
+        findings: findings || null;
+        impression: impression;
+        recommendations: recommendations || null;
+        status: status;
       });
       // Reset form on successful submission (optional, parent might handle closing)
       setFindings(""),
@@ -165,9 +165,9 @@ export default const CreateRadiologyReportModal = ({
 
       setError(`Submission failed: ${message}`),
       toast({
-        title: "Submission Failed",
-        description: message,
-        variant: "destructive",
+        title: "Submission Failed";
+        description: message;
+        variant: "destructive";
       });
     } finally {
       setIsSubmitting(false);

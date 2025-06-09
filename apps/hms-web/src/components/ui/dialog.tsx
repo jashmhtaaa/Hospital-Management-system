@@ -1,7 +1,8 @@
-}
 import React from 'react';
-import { cn } from '@/lib/utils';
 
+
+import { cn } from '@/lib/utils';
+}
 interface DialogProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const Dialog = ({ className, ...props }: DialogProps) => (

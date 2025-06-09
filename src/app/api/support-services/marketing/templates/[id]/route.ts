@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
-import { TemplateService } from '@/lib/services/support-services/marketing';
-import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 
+
+import { TemplateService } from '@/lib/services/support-services/marketing';
+import { authOptions } from '@/lib/auth';
+import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 const templateService = new TemplateService();
 
 /**
@@ -11,21 +12,21 @@ const templateService = new TemplateService();
  * Get a specific template by ID;
  */
 export const GET = async (
-  request: NextRequest,
+  request: NextRequest;
   { params }: { params: { id: string } }
 ) => {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
-      
+
       const template = await templateService.getTemplateById(params.id);
-      
+
       return NextResponse.json(template);
     },
     {
-      requiredPermission: 'marketing.templates.read',
-      auditAction: 'TEMPLATE_VIEW',
+      requiredPermission: 'marketing.templates.read';
+      auditAction: 'TEMPLATE_VIEW';
     }
   );
 }
@@ -35,7 +36,7 @@ export const GET = async (
  * Update a specific template;
  */
 export const PUT = async (
-  request: NextRequest,
+  request: NextRequest;
   { params }: { params: { id: string } }
 ) => {
   return withErrorHandling(
@@ -43,18 +44,18 @@ export const PUT = async (
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const data = await req.json();
-      
+
       const template = await templateService.updateTemplate(
         params.id,
         data,
         session?.user?.id as string;
       );
-      
+
       return NextResponse.json(template);
     },
     {
-      requiredPermission: 'marketing.templates.update',
-      auditAction: 'TEMPLATE_UPDATE',
+      requiredPermission: 'marketing.templates.update';
+      auditAction: 'TEMPLATE_UPDATE';
     }
   );
 }
@@ -64,23 +65,23 @@ export const PUT = async (
  * Delete a specific template;
  */
 export const DELETE = async (
-  request: NextRequest,
+  request: NextRequest;
   { params }: { params: { id: string } }
 ) => {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
-      
+
       await templateService.deleteTemplate(
         params.id,
         session?.user?.id as string;
       );
-      
+
       return NextResponse.json({ success: true }, { status: 200 });
     },
     {
-      requiredPermission: 'marketing.templates.delete',
-      auditAction: 'TEMPLATE_DELETE',
+      requiredPermission: 'marketing.templates.delete';
+      auditAction: 'TEMPLATE_DELETE';
     }
   );

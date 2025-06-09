@@ -1,9 +1,9 @@
+import React, { useState, useEffect } from "react";
+import {
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -15,7 +15,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -27,23 +26,23 @@ import { PlusCircle, Trash2 } from "lucide-react";
 
 // Define ChecklistItem type
 interface ChecklistItem {
-  id: string,
-  text: string
+  id: string;
+  text: string;
 }
 
 // Define ChecklistTemplate type
 interface ChecklistTemplate {
   id?: string; // Optional for new templates
-  name: string,
-  phase: string,
+  name: string;
+  phase: string;
   items: ChecklistItem[];
   updated_at?: string; // Optional, may not be present on new/unsaved
 }
 
 // Define the type for data passed to onSave
 interface ChecklistTemplateSaveData {
-  name: string,
-  phase: string,
+  name: string;
+  phase: string;
   items: { id: string; text: string }[]; // Ensure ID is included if needed by backend
 }
 
@@ -52,15 +51,15 @@ interface OTChecklistTemplateModalProperties {
   trigger: React.ReactNode;
   template?: ChecklistTemplate; // Use ChecklistTemplate type
   onSave: (templateData: ChecklistTemplateSaveData) => Promise<void>; // Use specific save data type
-export default const OTChecklistTemplateModal = ({
+export default const _OTChecklistTemplateModal = ({
   trigger,
   template,
   onSave,
 }: OTChecklistTemplateModalProperties) {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState(() => ({
-    name: template?.name || "",
-    phase: template?.phase || "pre-op",
+    name: template?.name || "";
+    phase: template?.phase || "pre-op";
   }));
   const [items, setItems] = useState<ChecklistItem[]>(() =>
     template?.items && template.items.length > 0;
@@ -72,10 +71,10 @@ export default const OTChecklistTemplateModal = ({
 
   // Reset form when template prop changes or modal opens
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen != null) {
       setFormData({
-        name: template?.name || "",
-        phase: template?.phase || "pre-op",
+        name: template?.name || "";
+        phase: template?.phase || "pre-op";
       }),
       setItems(
         template?.items && template.items.length > 0;
@@ -123,9 +122,9 @@ export default const OTChecklistTemplateModal = ({
       // Validate items are not empty
       if (items.some((item) => !item.text.trim())) {
         toast({
-          title: "Error",
-          description: "Checklist item text cannot be empty.",
-          variant: "destructive",
+          title: "Error";
+          description: "Checklist item text cannot be empty.";
+          variant: "destructive";
         }),
         setIsSaving(false);
         return;
@@ -137,15 +136,15 @@ export default const OTChecklistTemplateModal = ({
       };
 
       // Replace with actual API call
-      // const url = template ? `/api/ot/checklist-templates/${template.id}` : `/api/ot/checklist-templates`
-      // const method = template ? "PUT" : "POST"
-      // const response = await fetch(url, {
-      //   method: method,
+      // const _url = template ? `/api/ot/checklist-templates/${template.id}` : `/api/ot/checklist-templates`
+      // const _method = template ? "PUT" : "POST"
+      // const _response = await fetch(url, {
+      //   _method: method;
       //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(apiData),
+      //   body: JSON.stringify(apiData);
       // })
       // if (!response.ok) {
-      //   const errorData = await response.json()
+      //   const _errorData = await response.json()
       //   throw new Error(errorData.message || "Failed to save checklist template")
       // }
 
@@ -156,7 +155,7 @@ export default const OTChecklistTemplateModal = ({
       await onSave(apiData); // Call parent callback to refresh list
 
       toast({
-        title: "Success",
+        title: "Success";
         description: `Checklist Template ${template ? "updated" : "created"} successfully.`,
       }),
       setIsOpen(false);
@@ -168,9 +167,9 @@ export default const OTChecklistTemplateModal = ({
         errorMessage = error.message;
       }
       toast({
-        title: "Error",
-        description: errorMessage,
-        variant: "destructive",
+        title: "Error";
+        description: errorMessage;
+        variant: "destructive";
       });
     } finally {
       setIsSaving(false);

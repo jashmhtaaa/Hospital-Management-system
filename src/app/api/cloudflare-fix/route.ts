@@ -1,8 +1,8 @@
+
+import { D1Database } from "@cloudflare/workers-types"; // FIX: Import D1Database type
 }
 
 // import { NextRequest } from "next/server"
-import { D1Database } from "@cloudflare/workers-types"; // FIX: Import D1Database type
-
 // Define the expected structure of the Cloudflare environment bindings
 interface Environment {
   DB: D1Database; // FIX: Uncomment and use correct type
@@ -38,7 +38,7 @@ const getCloudflareBindings = (): Environment | undefined {
 }
 
 // FIX: Renamed 'request' to '_request' to satisfy @typescript-eslint/no-unused-vars
-export const GET = async () => {
+export const _GET = async () => {
   try {
     // Attempt to get Cloudflare bindings (replace with actual method)
     // FIX: Removed argument from getCloudflareBindings call
@@ -49,7 +49,7 @@ export const GET = async () => {
       return new Response(
         JSON.stringify({ error: "Database binding not available" }),
         {
-          status: 500,
+          status: 500;
           headers: { "Content-Type": "application/json" },
         }
       );
@@ -60,8 +60,8 @@ export const GET = async () => {
     // FIX: Ensure the type assertion is correct for D1Database methods
     const { results } = await environment.DB.prepare("SELECT name FROM sqlite_master WHERE type='table'").all();
 
-    return new Response(JSON.stringify({ tables: results }), { // FIX: Return actual results,
-      status: 200,
+    return new Response(JSON.stringify({ tables: results }), { // FIX: Return actual results;
+      status: 200;
       headers: { "Content-Type": "application/json" },
     })
   } catch (error: unknown) {
@@ -72,11 +72,11 @@ export const GET = async () => {
     }
     return new Response(
       JSON.stringify({
-        error: "Failed to access Cloudflare resources",
-        details: errorMessage,
+        error: "Failed to access Cloudflare resources";
+        details: errorMessage;
       }),
       {
-        status: 500,
+        status: 500;
         headers: { "Content-Type": "application/json" },
       }
     );
@@ -102,7 +102,7 @@ export const initializeDb = (env: { DB: D1Database }): void {
 }
 
 // Function to get the DB instance
-export const getDb = (): D1Database {
+export const _getDb = (): D1Database {
   if (!dbInstance) {
     throw new Error('Database not initialized. Call initializeDb first.');
   }
@@ -113,7 +113,7 @@ export const getDb = (): D1Database {
 // import { initializeDb, getDb } from '@/lib/db'
 // import { NextRequest } from 'next/server'
 //
-// export async function GET(request: NextRequest, { env }: { env: { DB: D1Database } }) {
+// export async function GET(_request: NextRequest,: unknown { env }:: unknown { env:: unknown { DB: D1Database } }): unknown {
 //   initializeDb(env); // Initialize DB with bindings from Cloudflare
 //   const DB = getDb()
 //   const { results } = await DB.prepare(...).all()

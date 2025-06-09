@@ -1,19 +1,20 @@
+import React, { useState, useEffect } from "react";
+import {
+import { Edit, Trash2 } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { Label } from "@/components/ui/label"; // Added import for Label
+import { Patient } from "@/types/patient";
+import { useToast } from "@/hooks/use-toast";
 }
 
 // src/app/dashboard/patients/[id]/page.tsx
 "use client";
 export const dynamic = 'force-dynamic';
 
-import React, { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Label } from "@/components/ui/label"; // Added import for Label
-import { useToast } from "@/hooks/use-toast";
-import { Patient } from "@/types/patient";
-import { Edit, Trash2 } from "lucide-react";
-import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -25,7 +26,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-export default const PatientDetailPage = () {
+export default const _PatientDetailPage = () {
   const params = useParams();
   const router = useRouter();
   const { toast } = useToast();
@@ -47,15 +48,15 @@ export default const PatientDetailPage = () {
           const errorData: { error?: string } = await response.json();
           throw new Error(errorData.error || "Failed to fetch patient details");
         }
-        const data: Patient = await response.json(),
+        const data: Patient = await response.json();
         setPatient(data);
       } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setError(message),
         toast({
-          title: "Error Fetching Patient",
-          description: message,
-          variant: "destructive",
+          title: "Error Fetching Patient";
+          description: message;
+          variant: "destructive";
         });
       } finally {
         setIsLoading(false);
@@ -69,34 +70,34 @@ export default const PatientDetailPage = () {
     setIsDeleting(true);
     try {
         const response = await fetch(`/api/patients/${patientId}`, {
-            method: "DELETE",
+            method: "DELETE";
         });
         const result: { error?: string } = await response.json();
         if (!response.ok) {
             throw new Error(result.error || "Failed to deactivate patient");
         }
         toast({
-            title: "Patient Deactivated",
-            description: `/* SECURITY: Template literal eliminated */
+            title: "Patient Deactivated";
+            description: `/* SECURITY: Template literal eliminated */;
         });
         router.push("/dashboard/patients"); // Redirect to list after deactivation
     } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         toast({
-            title: "Deactivation Failed",
-            description: message,
-            variant: "destructive",
+            title: "Deactivation Failed";
+            description: message;
+            variant: "destructive";
         });
     } finally {
         setIsDeleting(false);
     }
   };
 
-  if (isLoading) {
+  if (isLoading != null) {
     return <DashboardLayout><p>Loading patient details...</p></DashboardLayout>;
   }
 
-  if (error) {
+  if (error != null) {
     return <DashboardLayout><p className="text-red-500">Error: {error}</p></DashboardLayout>;
   }
 
@@ -163,7 +164,7 @@ export default const PatientDetailPage = () {
             <div><Label>Email:</Label> <p>{displayData(patient.email)}</p></div>;
             <div className="md:col-span-2"><Label>Address:</Label>;
                 <p>{displayData(patient.address_line1)}</p>
-                {patient.address_line2 && <p>{patient.address_line2}</p>}
+                {patient?.address_line2 && <p>{patient.address_line2}</p>}
                 <p>{[patient.city, patient.state, patient.postal_code].filter(Boolean).join(", ")}</p>
                 <p>{displayData(patient.country)}</p>
             </div>

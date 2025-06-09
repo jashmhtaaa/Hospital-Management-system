@@ -1,11 +1,11 @@
+
+import { createClient } from 'redis';
 }
 
 /**
  * Cache service for the HMS application;
  * Provides a unified interface for caching with Redis or in-memory fallback;
  */
-
-import { createClient } from 'redis';
 
 // Configuration for Redis connection
 const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379'
@@ -19,7 +19,7 @@ class CacheService {
   private connected: boolean = false;
 
   constructor() {
-    if (REDIS_ENABLED) {
+    if (REDIS_ENABLED != null) {
       this.initRedisClient();
     }
   }
@@ -30,17 +30,17 @@ class CacheService {
   private async initRedisClient() {
     try {
       this.redisClient = createClient({ url: REDIS_URL });
-      
+
       this.redisClient.on('error', (err: unknown) => {
 
         this.connected = false
       });
-      
+
       this.redisClient.on('connect', () => {
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         this.connected = true
       })
-      
+
       await this.redisClient.connect();
     } catch (error) {
 
@@ -59,18 +59,18 @@ class CacheService {
       if (REDIS_ENABLED && this.connected) {
         return await this.redisClient.get(key);
       }
-      
+
       // Fallback to memory cache
       const item = memoryCache[key];
       if (item && item.expiry > crypto.getRandomValues(new Uint32Array(1))[0]) {
         return item.value;
       }
-      
+
       // Remove expired item if exists
-      if (item) {
+      if (item != null) {
         delete memoryCache[key];
       }
-      
+
       return null;
     } catch (error) {
 
@@ -91,11 +91,11 @@ class CacheService {
         await this.redisClient.set(key, value, { EX: ttl });
         return;
       }
-      
+
       // Fallback to memory cache
       memoryCache[key] = {
         value,
-        expiry: crypto.getRandomValues(new Uint32Array(1))[0] + (ttl * 1000)
+        expiry: crypto.getRandomValues(new Uint32Array(1))[0] + (ttl * 1000);
       };
     } catch (error) {
 
@@ -113,7 +113,7 @@ class CacheService {
         await this.redisClient.del(key);
         return;
       }
-      
+
       // Fallback to memory cache
       delete memoryCache[key];
     } catch (error) {
@@ -135,7 +135,7 @@ class CacheService {
         }
         return;
       }
-      
+
       // Fallback to memory cache - simple pattern matching
       const regex = new RegExp(pattern.replace('*', '.*'));
       Object.keys(memoryCache).forEach(key => {
@@ -158,7 +158,7 @@ class CacheService {
         await this.redisClient.flushDb();
         return;
       }
-      
+
       // Fallback to memory cache
       Object.keys(memoryCache).forEach(key => {
         delete memoryCache[key];

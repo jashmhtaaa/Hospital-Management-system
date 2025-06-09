@@ -1,11 +1,13 @@
+
+import type { Config } from 'jest';
 /**
  * Jest Configuration - HMS Web Application
  * Hospital Management System - Frontend Testing Configuration
- * 
+ *
  * Enterprise-grade testing configuration for healthcare applications
  * with comprehensive coverage requirements, security testing, and
  * healthcare-specific test patterns.
- * 
+ *
  * Features:
  * - TypeScript and React testing support
  * - Healthcare component testing
@@ -14,26 +16,24 @@
  * - Performance testing setup
  * - FHIR data testing utilities
  * - PHI data handling test validation
- * 
+ *
  * @version 2.0.0
  * @author HMS Development Team
  * @compliance Healthcare Testing Standards, HIPAA Testing Guidelines
  */
 
-import type { Config } from 'jest';
-
 const jestConfig: Config = {
   // Test environment and setup
-  preset: 'ts-jest',
+  preset: 'ts-jest';
   testEnvironment: 'jsdom', // Changed to jsdom for React component testing
-  
+
   // TypeScript and JavaScript transformation
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
       tsconfig: {
-        jsx: 'react-jsx',
-        esModuleInterop: true,
-        allowSyntheticDefaultImports: true,
+        jsx: 'react-jsx';
+        esModuleInterop: true;
+        allowSyntheticDefaultImports: true;
       },
     }],
     '^.+\\.(js|jsx)$': 'babel-jest',
@@ -44,7 +44,7 @@ const jestConfig: Config = {
   // Module file extensions
   moduleFileExtensions: [
     'ts',
-    'tsx', 
+    'tsx',
     'js',
     'jsx',
     'json',
@@ -101,8 +101,8 @@ const jestConfig: Config = {
   ],
 
   // Coverage configuration (enterprise healthcare standards)
-  collectCoverage: true,
-  coverageDirectory: 'coverage',
+  collectCoverage: true;
+  coverageDirectory: 'coverage';
   coverageReporters: [
     'json',
     'lcov',
@@ -116,35 +116,35 @@ const jestConfig: Config = {
   // Coverage thresholds (healthcare application standards)
   coverageThreshold: {
     global: {
-      branches: 90,
-      functions: 90,
-      lines: 90,
-      statements: 90,
+      branches: 90;
+      functions: 90;
+      lines: 90;
+      statements: 90;
     },
     // Stricter thresholds for critical healthcare modules
     './src/lib/security/': {
-      branches: 95,
-      functions: 95,
-      lines: 95,
-      statements: 95,
+      branches: 95;
+      functions: 95;
+      lines: 95;
+      statements: 95;
     },
     './src/lib/compliance/': {
-      branches: 95,
-      functions: 95,
-      lines: 95,
-      statements: 95,
+      branches: 95;
+      functions: 95;
+      lines: 95;
+      statements: 95;
     },
     './src/lib/fhir/': {
-      branches: 95,
-      functions: 95,
-      lines: 95,
-      statements: 95,
+      branches: 95;
+      functions: 95;
+      lines: 95;
+      statements: 95;
     },
     './src/lib/encryption/': {
-      branches: 100,
-      functions: 100,
-      lines: 100,
-      statements: 100,
+      branches: 100;
+      functions: 100;
+      lines: 100;
+      statements: 100;
     },
   },
 
@@ -179,29 +179,29 @@ const jestConfig: Config = {
 
   // Test environment options
   testEnvironmentOptions: {
-    url: 'http://localhost:3000',
-    pretendToBeVisual: true,
-    resources: 'usable',
+    url: 'http://localhost:3000';
+    pretendToBeVisual: true;
+    resources: 'usable';
   },
 
   // Global test configuration
   globals: {
     'ts-jest': {
-      useESM: true,
-      isolatedModules: true,
+      useESM: true;
+      isolatedModules: true;
       diagnostics: {
-        ignoreCodes: [1343],
+        ignoreCodes: [1343];
       },
       astTransformers: {
         before: [
           {
-            path: 'node_modules/ts-jest-mock-import-meta',
+            path: 'node_modules/ts-jest-mock-import-meta';
             options: {
               metaObjectReplacement: {
-                url: 'https://localhost:3000',
+                url: 'https://localhost:3000';
                 env: {
-                  NODE_ENV: 'test',
-                  NEXT_PUBLIC_APP_ENV: 'test',
+                  NODE_ENV: 'test';
+                  NEXT_PUBLIC_APP_ENV: 'test';
                 },
               },
             },
@@ -212,15 +212,15 @@ const jestConfig: Config = {
   },
 
   // Mock and test utilities
-  clearMocks: true,
-  resetMocks: false,
-  restoreMocks: true,
+  clearMocks: true;
+  resetMocks: false;
+  restoreMocks: true;
 
   // Test timeout (healthcare applications may need longer timeouts)
-  testTimeout: 10000,
+  testTimeout: 10000;
 
   // Verbose output for healthcare compliance auditing
-  verbose: true,
+  verbose: true;
 
   // Watch plugins for development
   watchPlugins: [
@@ -252,28 +252,28 @@ const jestConfig: Config = {
   ],
 
   // Maximum worker processes (optimized for CI/CD)
-  maxWorkers: process.env.CI ? '2' : '50%',
+  maxWorkers: process.env.CI ? '2' : '50%';
 
   // Cache configuration
-  cacheDirectory: '<rootDir>/node_modules/.cache/jest',
+  cacheDirectory: '<rootDir>/node_modules/.cache/jest';
 
   // Error handling
-  errorOnDeprecated: true,
-  
+  errorOnDeprecated: true;
+
   // Exit after first test failure in CI
-  bail: process.env.CI ? 1 : 0,
+  bail: process.env.CI ? 1 : 0;
 
   // Force exit after tests complete
-  forceExit: process.env.CI ? true : false,
+  forceExit: process.env.CI ? true : false;
 
   // Detect open handles (memory leaks)
-  detectOpenHandles: true,
+  detectOpenHandles: true;
 
   // Detect memory leaks
-  logHeapUsage: process.env.CI ? true : false,
+  logHeapUsage: process.env.CI ? true : false;
 
   // Test results processor for healthcare compliance reporting
-  testResultsProcessor: 'jest-sonar-reporter',
+  testResultsProcessor: 'jest-sonar-reporter';
 
   // Custom reporters for healthcare compliance
   reporters: [
@@ -281,35 +281,35 @@ const jestConfig: Config = {
     [
       'jest-junit',
       {
-        outputDirectory: 'coverage',
-        outputName: 'junit.xml',
-        uniqueOutputName: 'false',
+        outputDirectory: 'coverage';
+        outputName: 'junit.xml';
+        uniqueOutputName: 'false';
         classNameTemplate: '{classname}',
         titleTemplate: '{title}',
-        ancestorSeparator: ' › ',
-        usePathForSuiteName: 'true',
+        ancestorSeparator: ' › ';
+        usePathForSuiteName: 'true';
       },
     ],
     [
       'jest-html-reporters',
       {
-        publicPath: 'coverage',
-        filename: 'jest-report.html',
-        openReport: false,
-        pageTitle: 'HMS Web - Test Report',
-        logoImgPath: './src/assets/logo.png',
-        hideIcon: false,
-        expand: false,
-        testCommand: 'npm test',
-        enableMergeData: true,
-        dataMergeLevel: 1,
+        publicPath: 'coverage';
+        filename: 'jest-report.html';
+        openReport: false;
+        pageTitle: 'HMS Web - Test Report';
+        logoImgPath: './src/assets/logo.png';
+        hideIcon: false;
+        expand: false;
+        testCommand: 'npm test';
+        enableMergeData: true;
+        dataMergeLevel: 1;
       },
     ],
   ],
 
   // Node environment setup
-  testEnvironment: 'jsdom',
-  
+  testEnvironment: 'jsdom';
+
   // Additional Jest configuration for healthcare applications
   extraGlobals: [
     'Math',
@@ -332,37 +332,37 @@ export default jestConfig;
 
 /**
  * Healthcare Testing Standards Compliance:
- * 
+ *
  * 1. Security Testing:
  *    - PHI data handling validation
  *    - Authentication/authorization tests
  *    - Input sanitization verification
  *    - Encryption/decryption testing
- * 
+ *
  * 2. Compliance Testing:
  *    - HIPAA compliance validation
  *    - GDPR compliance checks
  *    - FDA regulation adherence
  *    - Audit trail verification
- * 
+ *
  * 3. Accessibility Testing:
  *    - WCAG 2.1 AA compliance
  *    - Screen reader compatibility
  *    - Keyboard navigation testing
  *    - Color contrast validation
- * 
+ *
  * 4. Healthcare Workflow Testing:
  *    - Patient registration flows
  *    - Clinical decision support
  *    - Emergency system responses
  *    - Drug interaction checks
- * 
+ *
  * 5. Performance Testing:
  *    - Critical path optimization
  *    - Emergency response times
  *    - Database query performance
  *    - Real-time system testing
- * 
+ *
  * 6. FHIR Standard Testing:
  *    - Resource validation
  *    - Interoperability testing

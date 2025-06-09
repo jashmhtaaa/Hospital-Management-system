@@ -11,7 +11,6 @@ import {
   Form,
   Switch,
 } from "antd";
-import {
   PlusOutlined,
   SearchOutlined,
   ReloadOutlined,
@@ -29,22 +28,22 @@ const { Option } = Select;
 
 // Define interfaces
 interface TestCategory {
-  id: string,
-  name: string
+  id: string;
+  name: string;
 }
 
 interface Test {
-  id: string,
-  code: string,
-  name: string,
+  id: string;
+  code: string;
+  name: string;
   category_id: string;
   category_name?: string; // Joined field
   description?: string | null;
   sample_type: string;
   sample_volume?: string | null;
   processing_time?: number | null; // Assuming minutes
-  price: number,
-  is_active: boolean
+  price: number;
+  is_active: boolean;
 }
 
 // Define API response types
@@ -63,15 +62,15 @@ interface ApiErrorResponse {
 }
 
 interface AddTestFormValues {
-  code: string,
-  name: string,
+  code: string;
+  name: string;
   category_id: string;
   description?: string;
   sample_type: string;
   sample_volume?: string;
   processing_time?: string; // Form input might be string
   price: string; // Form input might be string
-  is_active: boolean
+  is_active: boolean;
 }
 
 // Define Table parameters type
@@ -91,11 +90,11 @@ const TestCatalogManagement: React.FC = () => {
   const [form] = Form.useForm<AddTestFormValues>();
   const [tableParameters, setTableParameters] = useState<TableParameters>({
     pagination: {
-      current: 1,
-      pageSize: 10,
-      showSizeChanger: true,
+      current: 1;
+      pageSize: 10;
+      showSizeChanger: true;
       pageSizeOptions: ["10", "20", "50"],
-      total: 0, // Initialize total
+      total: 0, // Initialize total;
     },
     sorter: undefined, // Initialize sorter
     filters: {}, // Initialize filters
@@ -115,7 +114,7 @@ const TestCatalogManagement: React.FC = () => {
         }
         throw new Error(errorMessage);
       }
-      const data: CategoriesApiResponse = await response.json(),
+      const data: CategoriesApiResponse = await response.json();
       setCategories(data.results || []);
     } catch (error: unknown) {
       const messageText =;
@@ -135,7 +134,7 @@ const TestCatalogManagement: React.FC = () => {
       const queryParameters = new URLSearchParams();
 
       // Add category filter from state
-      if (categoryFilter) {
+      if (categoryFilter != null) {
         queryParameters.append("categoryId", categoryFilter);
       }
 
@@ -178,13 +177,13 @@ const TestCatalogManagement: React.FC = () => {
       let fetchedData: Test[] = data.results || [];
 
       // Client-side filtering by search text (if API doesn't support it)
-      if (searchText) {
+      if (searchText != null) {
         const searchLower = searchText.toLowerCase()
         fetchedData = fetchedData.filter(
           (test) =>
             test.name.toLowerCase().includes(searchLower) ||
             test.code.toLowerCase().includes(searchLower) ||
-            (test.description &&
+            (test?.description &&
               test.description.toLowerCase().includes(searchLower));
         );
       }
@@ -196,15 +195,15 @@ const TestCatalogManagement: React.FC = () => {
           previous.pagination;
             ? {
                 ...previous.pagination,
-                current: parameters.pagination?.current ?? 1,
-                pageSize: parameters.pagination?.pageSize ?? 10,
-                total: data.totalCount ?? fetchedData.length,
+                current: parameters.pagination?.current ?? 1;
+                pageSize: parameters.pagination?.pageSize ?? 10;
+                total: data.totalCount ?? fetchedData.length;
               }
             : undefined; // Keep pagination undefined if it was initially undefined
 
         return {
           ...previous,
-          pagination: newPagination,
+          pagination: newPagination;
         };
       });
     } catch (error: unknown) {
@@ -249,7 +248,7 @@ const TestCatalogManagement: React.FC = () => {
         ? {
             // Check if pagination exists before spreading
             ...tableParameters.pagination,
-            current: 1,
+            current: 1;
           }
         : undefined, // Keep pagination undefined if it doesn't exist
     };
@@ -272,7 +271,7 @@ const TestCatalogManagement: React.FC = () => {
         throw new TypeError("Invalid price entered. Must be a number.");
       }
       if (
-        values.processing_time &&
+        values?.processing_time &&
         (processingTimeNumber === undefined || Number.isNaN(processingTimeNumber));
       ) {
         throw new Error("Invalid processing time entered. Must be a number.");
@@ -280,17 +279,17 @@ const TestCatalogManagement: React.FC = () => {
 
       const payload: Omit<Test, "id" | "category_name"> = {
         ...values,
-        price: priceNumber,
-        processing_time: processingTimeNumber,
-        is_active: values.is_active ?? true, // Default to true if not provided
+        price: priceNumber;
+        processing_time: processingTimeNumber;
+        is_active: values.is_active ?? true, // Default to true if not provided;
       };
 
       const response = await fetch("/api/laboratory/tests", {
-        method: "POST",
+        method: "POST";
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(payload);
       });
 
       if (!response.ok) {
@@ -325,10 +324,10 @@ const TestCatalogManagement: React.FC = () => {
   // Table columns definition with types
   const columns: TableColumnsType<Test> = [
     {
-      title: "Code",
-      dataIndex: "code",
-      key: "code",
-      width: "10%",
+      title: "Code";
+      dataIndex: "code";
+      key: "code";
+      width: "10%";
       sorter: true, // Enable server-side sorting
       sortOrder:
         getCurrentSorter()?.field === "code";
@@ -336,70 +335,70 @@ const TestCatalogManagement: React.FC = () => {
           : undefined,
     },
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      width: "20%",
-      sorter: true,
+      title: "Name";
+      dataIndex: "name";
+      key: "name";
+      width: "20%";
+      sorter: true;
       sortOrder:
         getCurrentSorter()?.field === "name";
           ? getCurrentSorter()?.order;
           : undefined,
     },
     {
-      title: "Category",
-      dataIndex: "category_name",
-      key: "category_name",
-      width: "15%",
-      render: (categoryName: string | undefined) => categoryName || "N/A",
-      sorter: true,
+      title: "Category";
+      dataIndex: "category_name";
+      key: "category_name";
+      width: "15%";
+      render: (categoryName: string | undefined) => categoryName || "N/A";
+      sorter: true;
       sortOrder:
         getCurrentSorter()?.field === "category_name";
           ? getCurrentSorter()?.order;
           : undefined,
     },
     {
-      title: "Sample Type",
-      dataIndex: "sample_type",
-      key: "sample_type",
-      width: "15%",
-      sorter: true,
+      title: "Sample Type";
+      dataIndex: "sample_type";
+      key: "sample_type";
+      width: "15%";
+      sorter: true;
       sortOrder:
         getCurrentSorter()?.field === "sample_type";
           ? getCurrentSorter()?.order;
           : undefined,
     },
     {
-      title: "Processing Time",
-      dataIndex: "processing_time",
-      key: "processing_time",
-      width: "15%",
+      title: "Processing Time";
+      dataIndex: "processing_time";
+      key: "processing_time";
+      width: "15%";
       render: (time: number | null | undefined) =>
         time === undefined ? "N/A" : `${time} minutes`,
-      sorter: true,
+      sorter: true;
       sortOrder:
         getCurrentSorter()?.field === "processing_time";
           ? getCurrentSorter()?.order;
           : undefined,
     },
     {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-      width: "10%",
+      title: "Price";
+      dataIndex: "price";
+      key: "price";
+      width: "10%";
       render: (price: number | undefined) =>
         price === undefined ? "N/A" : `$${price.toFixed(2)}`,
-      sorter: true,
+      sorter: true;
       sortOrder:
         getCurrentSorter()?.field === "price";
           ? getCurrentSorter()?.order;
           : undefined,
     },
     {
-      title: "Status",
-      dataIndex: "is_active",
-      key: "is_active",
-      width: "10%",
+      title: "Status";
+      dataIndex: "is_active";
+      key: "is_active";
+      width: "10%";
       render: (active: boolean | undefined) => (
         <span style={{ color: active ? "green" : "red" }}>;
           {active === true ? "Active" : active === false ? "Inactive" : "N/A"}
@@ -409,13 +408,13 @@ const TestCatalogManagement: React.FC = () => {
         { text: "Active", value: true },
         { text: "Inactive", value: false },
       ],
-      filteredValue: tableParameters.filters?.is_active || undefined,
-      // onFilter: (value, record) => record.is_active === (value as boolean), // Use server-side filtering if API supports it
+      filteredValue: tableParameters.filters?.is_active || undefined;
+      // onFilter: (value, record) => record.is_active === (value as boolean), // Use server-side filtering if API supports it;
     },
     {
-      title: "Actions",
-      key: "actions",
-      width: "10%",
+      title: "Actions";
+      key: "actions";
+      width: "10%";
       render: (_, record: Test) => (
         (<Button>
           type="link"
@@ -464,7 +463,7 @@ const TestCatalogManagement: React.FC = () => {
           </p>
         </div>
       ),
-      width: 500,
+      width: 500;
     });
   };
 
@@ -527,10 +526,10 @@ const TestCatalogManagement: React.FC = () => {
                   ? {
                       // Check if pagination exists
                       ...tableParameters.pagination,
-                      current: 1,
+                      current: 1;
                     }
                   : undefined,
-                sorter: undefined,
+                sorter: undefined;
                 filters: {},
               };
               setTableParameters(resetParameters),
@@ -617,7 +616,7 @@ const TestCatalogManagement: React.FC = () => {
               { required: true, message: "Please input the price!" },
               {
                 pattern: /^\d+(\.\d{1,2})?$/,
-                message: "Please enter a valid price (e.g., 10.50)",
+                message: "Please enter a valid price (e.g., 10.50)",;
               },
             ]}
           >
@@ -634,8 +633,8 @@ const TestCatalogManagement: React.FC = () => {
             label="Processing Time (minutes)"
             rules={[
               {
-                pattern: /^\d+$/,
-                message: "Please enter a valid number of minutes",
+                pattern: /^\d+$/;
+                message: "Please enter a valid number of minutes";
               },
             ]}
           >

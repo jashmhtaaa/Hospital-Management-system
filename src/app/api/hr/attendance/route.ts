@@ -1,26 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { attendanceService } from '@/lib/hr/attendance-service';
 import { z } from 'zod';
 
+
+import { attendanceService } from '@/lib/hr/attendance-service';
 // Schema for check-in request
 const checkInSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid date format"
+    message: "Invalid date format";
   }),
   checkInTime: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid time format"
+    message: "Invalid time format";
   }),
-  biometricData: z.string().optional(),
-  notes: z.string().optional(),
+  biometricData: z.string().optional();
+  notes: z.string().optional();
 });
 
 // POST handler for check-in
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     // Parse request body
     const body = await request.json();
-    
+
     // Validate request data
     const validationResult = checkInSchema.safeParse(body);
     if (!validationResult.success) {
@@ -29,12 +30,12 @@ export const POST = async (request: NextRequest) => {
         { status: 400 }
       );
     }
-    
+
     const { employeeId, date, checkInTime, biometricData, notes } = validationResult.data;
-    
+
     // Verify biometric data if provided
     let biometricVerified = false;
-    if (biometricData) {
+    if (biometricData != null) {
       biometricVerified = await attendanceService.verifyBiometric(employeeId, biometricData);
       if (!biometricVerified) {
         return NextResponse.json(
@@ -43,16 +44,16 @@ export const POST = async (request: NextRequest) => {
         );
       }
     }
-    
+
     // Record check-in
     const attendance = await attendanceService.recordCheckIn({
       employeeId,
-      date: new Date(date),
-      checkInTime: new Date(checkInTime),
+      date: new Date(date);
+      checkInTime: new Date(checkInTime);
       biometricVerified,
       notes,
     });
-    
+
     return NextResponse.json(attendance);
   } catch (error) {
 
@@ -64,14 +65,14 @@ export const POST = async (request: NextRequest) => {
 }
 
 // GET handler for attendance records
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   try {
     const searchParams = request.nextUrl.searchParams;
-    
+
     // Parse pagination parameters
     const skip = parseInt(searchParams.get('skip') || '0');
     const take = parseInt(searchParams.get('take') || '10');
-    
+
     // Parse filter parameters
     const date = searchParams.get('date') ? new Date(searchParams.get('date')) : undefined;
     const startDate = searchParams.get('startDate') ? new Date(searchParams.get('startDate')) : undefined;
@@ -81,7 +82,7 @@ export const GET = async (request: NextRequest) => {
     const biometricVerified = searchParams.get('biometricVerified');
       ? searchParams.get('biometricVerified') === 'true';
       : undefined;
-    
+
     // Get attendance records
     const result = await attendanceService.listAttendance({
       skip,
@@ -93,7 +94,7 @@ export const GET = async (request: NextRequest) => {
       status,
       biometricVerified,
     });
-    
+
     return NextResponse.json(result);
   } catch (error) {
 

@@ -1,10 +1,11 @@
-// src/lib/auth/auth-service.ts
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { prisma } from '@/lib/prisma';
 import { UserRole } from '@prisma/client';
-import { logger } from '@/lib/logger';
 
+
+import { logger } from '@/lib/logger';
+import { prisma } from '@/lib/prisma';
+// src/lib/auth/auth-service.ts
 export interface AuthUser {
   id: string;
   email: string;
@@ -41,8 +42,8 @@ export class AuthService {
     const user = await prisma.user.findUnique({
       where: { email, isActive: true },
       include: {
-        permissions: true,
-        department: true
+        permissions: true;
+        department: true;
       }
     });
 
@@ -66,9 +67,9 @@ export class AuthService {
 
     // Generate tokens
     const authUser: AuthUser = {
-      id: user.id,
-      email: user.email,
-      role: user.role,
+      id: user.id;
+      email: user.email;
+      role: user.role;
       permissions: user.permissions.map(p => `${p.resource}:${p.action}`)
     };
 
@@ -78,10 +79,10 @@ export class AuthService {
     // Create session
     await prisma.userSession.create({
       data: {
-        userId: user.id,
-        sessionToken: accessToken,
+        userId: user.id;
+        sessionToken: accessToken;
         refreshToken,
-        expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 24 * 60 * 60 * 1000) // 24 hours
+        expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 24 * 60 * 60 * 1000) // 24 hours;
       }
     });
 
@@ -98,7 +99,7 @@ export class AuthService {
       where: { email }
     });
 
-    if (existingUser) {
+    if (existingUser != null) {
       throw new Error('User already exists');
     }
 
@@ -109,37 +110,37 @@ export class AuthService {
     const user = await prisma.user.create({
       data: {
         email,
-        password: hashedPassword,
+        password: hashedPassword;
         firstName,
         lastName,
         role
       },
       include: {
-        permissions: true
+        permissions: true;
       }
     });
 
     logger.info('User registered successfully', { userId: user.id, email });
 
     return {
-      id: user.id,
-      email: user.email,
-      role: user.role,
+      id: user.id;
+      email: user.email;
+      role: user.role;
       permissions: user.permissions.map(p => `${p.resource}:${p.action}`)
     };
   }
 
   static async verifyToken(token: string): Promise<AuthUser | null> {
     try {
-      const decoded = jwt.verify(token, this.JWT_SECRET) as any;
-      
+      const _decoded = jwt.verify(token, this.JWT_SECRET) as any;
+
       // Check if session is still valid
       const session = await prisma.userSession.findUnique({
         where: { sessionToken: token, isActive: true },
         include: {
           user: {
             include: {
-              permissions: true
+              permissions: true;
             }
           }
         }
@@ -150,9 +151,9 @@ export class AuthService {
       }
 
       return {
-        id: session.user.id,
-        email: session.user.email,
-        role: session.user.role,
+        id: session.user.id;
+        email: session.user.email;
+        role: session.user.role;
         permissions: session.user.permissions.map(p => `${p.resource}:${p.action}`)
       };
     } catch (error) {
@@ -171,10 +172,10 @@ export class AuthService {
   private static generateAccessToken(user: AuthUser): string {
     return jwt.sign(
       {
-        userId: user.id,
-        email: user.email,
-        role: user.role,
-        permissions: user.permissions
+        userId: user.id;
+        email: user.email;
+        role: user.role;
+        permissions: user.permissions;
       },
       this.JWT_SECRET,
       { expiresIn: this.JWT_EXPIRES_IN }

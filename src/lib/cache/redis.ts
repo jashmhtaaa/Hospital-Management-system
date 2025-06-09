@@ -1,10 +1,11 @@
 import { createClient } from 'redis';
-import { config } from '@/config';
 
+
+import { config } from '@/config';
 // Create Redis client
 const redisClient = createClient({
-  url: config.redis.url,
-  password: config.redis.password,
+  url: config.redis.url;
+  password: config.redis.password;
 });
 
 // Connect to Redis
@@ -72,25 +73,25 @@ export class RedisCache {
    * Get data from cache or fetch from source;
    */
   static async getOrSet<T>(
-    key: string,
-    fetchFn: () => Promise<T>,
+    key: string;
+    fetchFn: () => Promise<T>;
     ttlSeconds: number = 3600;
   ): Promise<T> {
     try {
       // Try to get from cache
       const cachedData = await RedisCache.get<T>(key);
-      
+
       // If found in cache, return it
-      if (cachedData) {
+      if (cachedData != null) {
         return cachedData;
       }
-      
+
       // Otherwise, fetch data
       const data = await fetchFn();
-      
+
       // Store in cache for future requests
       await RedisCache.set(key, data, ttlSeconds);
-      
+
       return data;
     } catch (error) {
 

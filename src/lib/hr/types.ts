@@ -7,11 +7,11 @@
 
 // Staff Management Types
 export interface Practitioner {
-  id: string,
-  identifier: Identifier[],
-  active: boolean,
-  name: HumanName[],
-  telecom: ContactPoint[],
+  id: string;
+  identifier: Identifier[];
+  active: boolean;
+  name: HumanName[];
+  telecom: ContactPoint[];
   address: Address[];
   gender?: 'male' | 'female' | 'other' | 'unknown';
   birthDate?: string;
@@ -19,8 +19,8 @@ export interface Practitioner {
   qualification: Qualification[];
   communication?: CodeableConcept[];
 export interface PractitionerRole {
-  id: string,
-  identifier: Identifier[],
+  id: string;
+  identifier: Identifier[];
   active: boolean;
   period?: Period;
   practitioner: Reference;
@@ -42,68 +42,68 @@ export interface Qualification {
 
 // Attendance Management Types
 export interface Attendance {
-  id: string,
-  employeeId: string,
+  id: string;
+  employeeId: string;
   date: string;
   checkInTime?: string;
   checkOutTime?: string;
-  status: 'present' | 'absent' | 'late' | 'half-day' | 'on-leave',
+  status: 'present' | 'absent' | 'late' | 'half-day' | 'on-leave';
   biometricVerified: boolean;
   notes?: string;
-  createdAt: string,
+  createdAt: string;
   updatedAt: string
 export interface Leave {
-  id: string,
-  employeeId: string,
-  leaveType: 'annual' | 'sick' | 'maternity' | 'paternity' | 'unpaid' | 'other',
-  startDate: string,
-  endDate: string,
+  id: string;
+  employeeId: string;
+  leaveType: 'annual' | 'sick' | 'maternity' | 'paternity' | 'unpaid' | 'other';
+  startDate: string;
+  endDate: string;
   status: 'pending' | 'approved' | 'rejected' | 'cancelled';
   reason?: string;
   approvedBy?: string;
   approvedAt?: string;
-  createdAt: string,
-  updatedAt: string
+  createdAt: string;
+  updatedAt: string;
 }
 
 // Payroll Types
 export interface Payroll {
-  id: string,
-  periodStart: string,
-  periodEnd: string,
-  processedDate: string,
-  status: 'draft' | 'processing' | 'completed' | 'error',
-  totalAmount: number,
-  employeeCount: number,
+  id: string;
+  periodStart: string;
+  periodEnd: string;
+  processedDate: string;
+  status: 'draft' | 'processing' | 'completed' | 'error';
+  totalAmount: number;
+  employeeCount: number;
   processedBy: string;
   notes?: string;
-  createdAt: string,
+  createdAt: string;
   updatedAt: string
 export interface EmployeePayroll {
-  id: string,
-  payrollId: string,
-  employeeId: string,
-  basicSalary: number,
-  allowances: PayrollItem[],
-  deductions: PayrollItem[],
-  tax: number,
-  netSalary: number,
+  id: string;
+  payrollId: string;
+  employeeId: string;
+  basicSalary: number;
+  allowances: PayrollItem[];
+  deductions: PayrollItem[];
+  tax: number;
+  netSalary: number;
   paymentStatus: 'pending' | 'paid' | 'failed';
   paymentDate?: string;
   paymentReference?: string;
-  createdAt: string,
+  createdAt: string;
   updatedAt: string
 export interface PayrollItem {
-  name: string,
-  amount: number,
-  type: string
+  name: string;
+  amount: number;
+  type: string;
 }
 
 // Asset Management Types
 export interface Asset {
-  id: string,
-  identifier: Identifier[],
-  status: 'active' | 'inactive' | 'entered-in-error' | 'unknown',
+  id: string;
+  identifier: Identifier[];
+  status: 'active' | 'inactive' | 'entered-in-error' | 'unknown';
   type: CodeableConcept;
   name?: string;
   modelNumber?: string;
@@ -119,13 +119,13 @@ export interface Asset {
   lastMaintenanceDate?: string;
   nextMaintenanceDate?: string;
   notes?: string;
-  createdAt: string,
-  updatedAt: string
+  createdAt: string;
+  updatedAt: string;
 }
 
 // Biomedical Equipment Types
 export interface Device {
-  id: string,
+  id: string;
   identifier: Identifier[];
   definition?: Reference;
   udiCarrier?: UdiCarrier[];
@@ -163,11 +163,11 @@ export interface Calibration {
   performer?: Reference;
   notes?: string;
 export interface DeviceName {
-  name: string,
+  name: string;
   type: 'udi-label-name' | 'user-friendly-name' | 'patient-reported-name' | 'manufacturer-name' | 'model-name' | 'other'
 export interface UdiCarrier {
-  deviceIdentifier: string,
-  issuer: string,
+  deviceIdentifier: string;
+  issuer: string;
   jurisdiction: string;
   carrierAIDC?: string;
   carrierHRF?: string;

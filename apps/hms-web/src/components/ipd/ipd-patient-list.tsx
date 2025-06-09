@@ -1,38 +1,39 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 interface IPDPatient {
-  id: string,
-  name: string,
-  age: number,
-  gender: string,
-  admissionDate: string,
-  diagnosis: string,
-  ward: string,
-  bedNumber: string,
-  attendingDoctor: string,
-  status: 'stable' | 'critical' | 'improving' | 'deteriorating'
+  id: string;
+  name: string;
+  age: number;
+  gender: string;
+  admissionDate: string;
+  diagnosis: string;
+  ward: string;
+  bedNumber: string;
+  attendingDoctor: string;
+  status: 'stable' | 'critical' | 'improving' | 'deteriorating';
 }
 
 interface IPDPatientListProps {
-  patients: IPDPatient[],
-  onViewPatient: (patientId: string) => void
+  patients: IPDPatient[];
+  onViewPatient: (patientId: string) => void;
 }
 
 /**
  * IPD Patient List component;
  */
-export const IPDPatientList = ({ patients, onViewPatient }: IPDPatientListProps) => {
+export const _IPDPatientList = ({ patients, onViewPatient }: IPDPatientListProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'stable': return <Badge variant="success">Stable</Badge>;
       case 'critical': return <Badge variant="danger">Critical</Badge>;
       case 'improving': return <Badge variant="info">Improving</Badge>;
       case 'deteriorating': return <Badge variant="warning">Deteriorating</Badge>;
-      default: return <Badge>Unknown</Badge>
+      default: return <Badge>Unknown</Badge>;
     }
   };
 

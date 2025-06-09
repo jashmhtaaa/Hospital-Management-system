@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
-import { ContactService } from '@/lib/services/support-services/marketing';
-import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 
+
+import { ContactService } from '@/lib/services/support-services/marketing';
+import { authOptions } from '@/lib/auth';
+import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 const contactService = new ContactService();
 
 /**
@@ -16,13 +17,13 @@ export const GET = async (request: NextRequest) => {
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
-      
+
       // Parse query parameters
       const filters = {
-        status: searchParams.get('status') || undefined,
-        source: searchParams.get('source') || undefined,
-        search: searchParams.get('search') || undefined,
-        segmentId: searchParams.get('segmentId') || undefined,
+        status: searchParams.get('status') || undefined;
+        source: searchParams.get('source') || undefined;
+        search: searchParams.get('search') || undefined;
+        segmentId: searchParams.get('segmentId') || undefined;
         hasPatient: searchParams.has('hasPatient');
           ? searchParams.get('hasPatient') === 'true';
           : undefined,
@@ -33,14 +34,14 @@ export const GET = async (request: NextRequest) => {
           ? parseInt(searchParams.get('limit') || '10', 10);
           : 10,
       };
-      
+
       const result = await contactService.getContacts(filters);
-      
+
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'marketing.contacts.read',
-      auditAction: 'CONTACTS_LIST',
+      requiredPermission: 'marketing.contacts.read';
+      auditAction: 'CONTACTS_LIST';
     }
   );
 }
@@ -55,16 +56,16 @@ export const POST = async (request: NextRequest) => {
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const data = await req.json();
-      
+
       const contact = await contactService.createContact(
         data,
         session?.user?.id as string;
       );
-      
+
       return NextResponse.json(contact, { status: 201 });
     },
     {
-      requiredPermission: 'marketing.contacts.create',
-      auditAction: 'CONTACT_CREATE',
+      requiredPermission: 'marketing.contacts.create';
+      auditAction: 'CONTACT_CREATE';
     }
   );

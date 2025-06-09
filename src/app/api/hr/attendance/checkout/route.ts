@@ -1,26 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { attendanceService } from '@/lib/hr/attendance-service';
 import { z } from 'zod';
 
+
+import { attendanceService } from '@/lib/hr/attendance-service';
 // Schema for check-out request
 const checkOutSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid date format"
+    message: "Invalid date format";
   }),
   checkOutTime: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid time format"
+    message: "Invalid time format";
   }),
-  biometricData: z.string().optional(),
-  notes: z.string().optional(),
+  biometricData: z.string().optional();
+  notes: z.string().optional();
 });
 
 // POST handler for check-out
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     // Parse request body
     const body = await request.json();
-    
+
     // Validate request data
     const validationResult = checkOutSchema.safeParse(body);
     if (!validationResult.success) {
@@ -29,12 +30,12 @@ export const POST = async (request: NextRequest) => {
         { status: 400 }
       );
     }
-    
+
     const { employeeId, date, checkOutTime, biometricData, notes } = validationResult.data;
-    
+
     // Verify biometric data if provided
     let biometricVerified = false;
-    if (biometricData) {
+    if (biometricData != null) {
       biometricVerified = await attendanceService.verifyBiometric(employeeId, biometricData);
       if (!biometricVerified) {
         return NextResponse.json(
@@ -43,16 +44,16 @@ export const POST = async (request: NextRequest) => {
         );
       }
     }
-    
+
     // Record check-out
     const attendance = await attendanceService.recordCheckOut({
       employeeId,
-      date: new Date(date),
-      checkOutTime: new Date(checkOutTime),
+      date: new Date(date);
+      checkOutTime: new Date(checkOutTime);
       biometricVerified,
       notes,
     });
-    
+
     return NextResponse.json(attendance);
   } catch (error) {
 

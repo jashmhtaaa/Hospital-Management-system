@@ -1,6 +1,6 @@
+
 import React, { useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react"; // Added import for icons
-
 // UI components barrel file
 // This file exports all UI components to make imports cleaner
 
@@ -19,26 +19,22 @@ export const Button = ({
   className = "",
   ...properties;
 }: ButtonProperties) => {
-  const baseStyles =;
+  const _baseStyles =;
     "inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none";
 
-  const variantStyles: { [key: string]: string } = {
-    default:
-      "bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-500",
-    destructive:
-      "bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500",
-    outline:
-      "border border-gray-300 bg-transparent hover:bg-gray-50 focus-visible:ring-gray-400",
-    ghost: "bg-transparent hover:bg-gray-100 focus-visible:ring-gray-400",
-    success:
-      "bg-green-600 text-white hover:bg-green-700 focus-visible:ring-green-500",
+  const _variantStyles: { [key: string]: string } = {
+    default: "bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-500";
+    destructive: "bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500";
+    outline: "border border-gray-300 bg-transparent hover:bg-gray-50 focus-visible:ring-gray-400";
+    ghost: "bg-transparent hover:bg-gray-100 focus-visible:ring-gray-400";
+    success: "bg-green-600 text-white hover:bg-green-700 focus-visible:ring-green-500";
   };
 
-  const sizeStyles: { [key: string]: string } = {
-    sm: "h-8 px-3 text-xs",
-    md: "h-10 px-4 py-2",
-    lg: "h-12 px-6 py-3 text-lg",
-    icon: "h-10 w-10",
+  const _sizeStyles: { [key: string]: string } = {
+    sm: "h-8 px-3 text-xs";
+    md: "h-10 px-4 py-2";
+    lg: "h-12 px-6 py-3 text-lg";
+    icon: "h-10 w-10";
   };
 
   const combinedClassName = `/* SECURITY: Template literal eliminated */
@@ -203,17 +199,17 @@ export const Badge = ({
   className = "",
   ...properties;
 }: BadgeProperties) => {
-  const variantStyles: { [key: string]: string } = {
-    default: "bg-blue-100 text-blue-800",
-    secondary: "bg-gray-100 text-gray-800",
-    destructive: "bg-red-100 text-red-800",
-    outline: "text-gray-800 border border-gray-200 bg-transparent",
-    success: "bg-green-100 text-green-800",
+  const _variantStyles: { [key: string]: string } = {
+    default: "bg-blue-100 text-blue-800";
+    secondary: "bg-gray-100 text-gray-800";
+    destructive: "bg-red-100 text-red-800";
+    outline: "text-gray-800 border border-gray-200 bg-transparent";
+    success: "bg-green-100 text-green-800";
   };
 
   return (
 <span
-      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold /* SECURITY: Template literal eliminated */
+      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold /* SECURITY: Template literal eliminated */;
 };
 Badge.displayName = "Badge";
 
@@ -227,16 +223,16 @@ export const Alert = ({
   className = "",
   ...properties;
 }: AlertProperties) => {
-  const variantStyles: { [key: string]: string } = {
-    default: "bg-blue-50 text-blue-800 border-blue-200",
-    destructive: "bg-red-50 text-red-800 border-red-200",
-    warning: "bg-yellow-50 text-yellow-800 border-yellow-200",
-    success: "bg-green-50 text-green-800 border-green-200",
+  const _variantStyles: { [key: string]: string } = {
+    default: "bg-blue-50 text-blue-800 border-blue-200";
+    destructive: "bg-red-50 text-red-800 border-red-200";
+    warning: "bg-yellow-50 text-yellow-800 border-yellow-200";
+    success: "bg-green-50 text-green-800 border-green-200";
   };
 
   return (
 <div
-      className={`p-4 rounded-md border /* SECURITY: Template literal eliminated */
+      className={`p-4 rounded-md border /* SECURITY: Template literal eliminated */;
 };
 Alert.displayName = "Alert";
 
@@ -349,8 +345,8 @@ TableCell.displayName = "TableCell";
 
 // Define specific props type for Tabs component
 interface TabsProperties extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode,
-  value: string,
+  children: React.ReactNode;
+  value: string;
   onValueChange: (value: string) => void;
   className?: string;
 }
@@ -378,7 +374,7 @@ export const Tabs = ({
               value: child.type === TabsContent ? value : undefined, // Pass value only to TabsContent
               onValueChange:
                 child.type === TabsTrigger ? onValueChange : undefined, // Pass onValueChange only to TabsTrigger
-              parentValue: value, // Pass parent value to children for comparison
+              parentValue: value, // Pass parent value to children for comparison;
             }
           );
         }
@@ -413,7 +409,7 @@ TabsList.displayName = "TabsList";
 // Define specific props type for TabsTrigger component
 interface TabsTriggerProperties;
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode,
+  children: React.ReactNode;
   value: string;
   className?: string;
   onValueChange?: (value: string) => void; // Received from Tabs
@@ -430,13 +426,13 @@ export const TabsTrigger = ({
 
   return (
     <button>
-      className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 /* SECURITY: Template literal eliminated */
+      className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled: pointer-events-none disabled:opacity-50 /* SECURITY: Template literal eliminated */;
 };
 TabsTrigger.displayName = "TabsTrigger";
 
 // Define specific props type for TabsContent component
 interface TabsContentProperties extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode,
+  children: React.ReactNode;
   value: string;
   className?: string;
   parentValue?: string; // Received from Tabs
@@ -474,7 +470,7 @@ interface DialogProperties extends React.HTMLAttributes<HTMLDivElement> {
 // Dialog components
 export const Dialog = ({
   children,
-  open: controlledOpen,
+  open: controlledOpen;
   onOpenChange,
   ...properties;
 }: DialogProperties) => {
@@ -494,7 +490,7 @@ export const Dialog = ({
             }>,
             {
               open,
-              setOpen: setOpen as React.Dispatch<React.SetStateAction<boolean>>, // Cast for internal state setter compatibility
+              setOpen: setOpen as React.Dispatch<React.SetStateAction<boolean>>, // Cast for internal state setter compatibility;
             }
           );
         }
@@ -533,7 +529,7 @@ export const DialogTrigger = ({
       children as React.ReactElement<React.HTMLAttributes<HTMLElement>>,
       {
         ...properties,
-         
+
         onClick: (event: React.MouseEvent<HTMLElement>) => {
           childOnClick?.(event); // FIX: Use the correct variable name
           handleClick();
@@ -576,7 +572,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentPrope
         ref={reference}
         className={`fixed inset-0 z-50 flex items-center justify-center bg-black/50 ${className}`}
         {...properties}
-         
+
         onClick={(_event_: React.MouseEvent<HTMLElement>) => {
           // Close on overlay click
           setOpen?.(false);
@@ -766,7 +762,7 @@ interface CalendarProperties {
 
 // Calendar component (placeholder - use react-day-picker)
 export const Calendar = ({
-   
+
   mode: _mode = "single", // FIX: Prefix unused variable
   selected,
   onSelect,
@@ -780,7 +776,7 @@ export const Calendar = ({
   const [currentMonth, setCurrentMonth] = React.useState(month || new Date());
 
   React.useEffect(() => {
-    if (month) {
+    if (month != null) {
       setCurrentMonth(month);
     }
   }, [month]);
@@ -829,9 +825,9 @@ export const Calendar = ({
         <button>
           key={day}
           className={`p-1.5 rounded-md text-center hover:bg-gray-100 ${
-            isSelected ? "bg-blue-600 text-white hover:bg-blue-700" : ""
+            isSelected ? "bg-blue-600 text-white hover: bg-blue-700" : "";
           }`}
-           
+
           onClick={(_event: React.MouseEvent<HTMLElement>) => onSelect?.(currentDate)} // Pass the date object
         >
           {day}
@@ -856,8 +852,8 @@ export const Calendar = ({
               )}
               <div className="text-sm font-medium">;
                 {monthToRender.toLocaleString("default", {
-                  month: "long",
-                  year: "numeric",
+                  month: "long";
+                  year: "numeric";
                 })}
               </div>
               {index === numberOfMonths - 1 && (

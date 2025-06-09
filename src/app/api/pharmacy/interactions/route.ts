@@ -1,40 +1,41 @@
-}
-
-/**
- * Drug Interaction API Routes;
- * 
- * This file implements the FHIR-compliant API endpoints for drug interaction checking;
- * following enterprise-grade requirements for security, validation, and error handling.
- */
-
 import { NextRequest, NextResponse } from 'next/server';
+
+
 import { DrugInteractionService } from '../../services/drug-interaction-service';
-import { validateInteractionCheckRequest } from '../../../../lib/validation/pharmacy-validation';
+import { PharmacyDomain } from '../../models/domain-models';
 import { auditLog } from '../../../../lib/audit';
 import { errorHandler } from '../../../../lib/error-handler';
 import { getMedicationById, getPrescriptionById } from '../../../../lib/services/pharmacy/pharmacy.service';
 import { getPatientById } from '../../../../lib/services/patient/patient.service';
-import { PharmacyDomain } from '../../models/domain-models';
+import { validateInteractionCheckRequest } from '../../../../lib/validation/pharmacy-validation';
+}
+
+/**
+ * Drug Interaction API Routes;
+ *
+ * This file implements the FHIR-compliant API endpoints for drug interaction checking;
+ * following enterprise-grade requirements for security, validation, and error handling.
+ */
 
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
-  findAll: () => Promise.resolve([]),
-  search: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: getMedicationById;
+  findAll: () => Promise.resolve([]);
+  search: () => Promise.resolve([]);
+  save: () => Promise.resolve('');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 }
 
 const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
-  findById: getPrescriptionById,
-  findByPatientId: () => Promise.resolve([]),
-  findByPrescriberId: () => Promise.resolve([]),
-  findByMedicationId: () => Promise.resolve([]),
-  findByStatus: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: getPrescriptionById;
+  findByPatientId: () => Promise.resolve([]);
+  findByPrescriberId: () => Promise.resolve([]);
+  findByMedicationId: () => Promise.resolve([]);
+  findByStatus: () => Promise.resolve([]);
+  save: () => Promise.resolve('');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 };
 
 // Initialize services
@@ -73,12 +74,12 @@ export const POST = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
-      action: 'CHECK',
-      resourceType: 'DrugInteraction',
-      userId: userId,
+      action: 'CHECK';
+      resourceType: 'DrugInteraction';
+      userId: userId;
       details: {
-        medicationIds: data.medicationIds,
-        interactionCount: interactions.length
+        medicationIds: data.medicationIds;
+        interactionCount: interactions.length;
       }
     });
 
@@ -119,27 +120,27 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
     // Get active prescriptions for patient
     const prescriptions = await prescriptionRepository.findByPatientId(patientId);
     const activePrescriptions = prescriptions.filter(p => p.isActive());
-    
+
     // Extract medication IDs
     const medicationIds = activePrescriptions.map(p => p.medicationId);
-    
+
     // Check for interactions
     const interactions = await interactionService.checkInteractions(medicationIds);
 
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
-      action: 'CHECK_PATIENT',
-      resourceType: 'DrugInteraction',
-      userId: userId,
-      patientId: patientId,
+      action: 'CHECK_PATIENT';
+      resourceType: 'DrugInteraction';
+      userId: userId;
+      patientId: patientId;
       details: {
-        medicationCount: medicationIds.length,
-        interactionCount: interactions.length
+        medicationCount: medicationIds.length;
+        interactionCount: interactions.length;
       }
     });
 
     // Return response
-    return NextResponse.json({ 
+    return NextResponse.json({
       patientId,
       medicationIds,
       interactions;

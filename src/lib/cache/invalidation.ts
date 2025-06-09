@@ -1,6 +1,6 @@
+
 import { RedisCache } from './redis.ts';
 import { config } from '@/config';
-
 export class CacheInvalidation {
   /**
    * Invalidate test-related caches;
@@ -8,67 +8,67 @@ export class CacheInvalidation {
   static async invalidateTest(testId: number): Promise<void> {
     // Invalidate specific test
     await RedisCache.delete(`/* SECURITY: Template literal eliminated */
-    
+
     // Invalidate test lists
     await RedisCache.deletePattern(`${config.cache.prefix.test}list:*`);
-    
+
     // Invalidate related entities
     await this.invalidateRelatedTestPanels(testId);
   }
-  
+
   /**
    * Invalidate specimen-related caches;
    */
   static async invalidateSpecimen(specimenId: number): Promise<void> {
     // Invalidate specific specimen
     await RedisCache.delete(`/* SECURITY: Template literal eliminated */
-    
+
     // Invalidate specimen lists
     await RedisCache.deletePattern(`${config.cache.prefix.specimen}list:*`);
-    
+
     // Invalidate related entities
     await this.invalidateRelatedResults(specimenId);
   }
-  
+
   /**
    * Invalidate result-related caches;
    */
   static async invalidateResult(resultId: number): Promise<void> {
     // Invalidate specific result
     await RedisCache.delete(`/* SECURITY: Template literal eliminated */
-    
+
     // Invalidate result lists
     await RedisCache.deletePattern(`${config.cache.prefix.result}list:*`);
-    
+
     // Invalidate related entities
     await this.invalidateRelatedReports(resultId);
   }
-  
+
   /**
    * Invalidate radiology order-related caches;
    */
   static async invalidateRadiologyOrder(orderId: number): Promise<void> {
     // Invalidate specific order
     await RedisCache.delete(`/* SECURITY: Template literal eliminated */
-    
+
     // Invalidate order lists
     await RedisCache.deletePattern(`${config.cache.prefix.radiologyOrder}list:*`);
-    
+
     // Invalidate related entities
     await this.invalidateRelatedReports(orderId);
   }
-  
+
   /**
    * Invalidate report-related caches;
    */
   static async invalidateReport(reportId: number): Promise<void> {
     // Invalidate specific report
     await RedisCache.delete(`/* SECURITY: Template literal eliminated */
-    
+
     // Invalidate report lists
     await RedisCache.deletePattern(`${config.cache.prefix.report}list: *`)
   }
-  
+
   /**
    * Invalidate related test panels when a test changes;
    */
@@ -76,16 +76,16 @@ export class CacheInvalidation {
     // Get related test panel IDs
     // This is a simplified example - in a real implementation, you would query the database
     const relatedPanelIds = await getRelatedTestPanelIds(testId);
-    
+
     // Invalidate each related panel
     for (const panelId of relatedPanelIds) {
       await RedisCache.delete(`diagnostic:lab:panel:${panelId}`);
     }
-    
+
     // Invalidate panel lists
-    await RedisCache.deletePattern('diagnostic: lab:panel:list:*')
+    await RedisCache.deletePattern('diagnostic: lab: panel:list:*');
   }
-  
+
   /**
    * Invalidate related results when a specimen changes;
    */
@@ -93,13 +93,13 @@ export class CacheInvalidation {
     // Get related result IDs
     // This is a simplified example - in a real implementation, you would query the database
     const relatedResultIds = await getRelatedResultIds(specimenId);
-    
+
     // Invalidate each related result
     for (const resultId of relatedResultIds) {
       await this.invalidateResult(resultId);
     }
   }
-  
+
   /**
    * Invalidate related reports when a result or order changes;
    */
@@ -107,7 +107,7 @@ export class CacheInvalidation {
     // Get related report IDs
     // This is a simplified example - in a real implementation, you would query the database
     const relatedReportIds = await getRelatedReportIds(entityId);
-    
+
     // Invalidate each related report
     for (const reportId of relatedReportIds) {
       await this.invalidateReport(reportId);

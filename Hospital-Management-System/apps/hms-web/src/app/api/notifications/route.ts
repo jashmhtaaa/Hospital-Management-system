@@ -1,7 +1,8 @@
-
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+
+
 import { authService } from '@/lib/auth/auth-service';
+import { prisma } from '@/lib/prisma';
 
 // Push Notification Service
 class PushNotificationService {
@@ -20,10 +21,10 @@ class PushNotificationService {
     urgency: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
   }) {
     const results = {
-      push: null,
-      sms: null,
-      email: null,
-      whatsapp: null
+      push: null;
+      sms: null;
+      email: null;
+      whatsapp: null;
     };
 
     // Get user notification preferences
@@ -39,14 +40,14 @@ class PushNotificationService {
     // Store notification in database
     const storedNotification = await prisma.notification.create({
       data: {
-        userId: notification.userId,
-        title: notification.title,
-        message: notification.message,
-        type: notification.type,
-        urgency: notification.urgency,
-        channels: notification.channels,
+        userId: notification.userId;
+        title: notification.title;
+        message: notification.message;
+        type: notification.type;
+        urgency: notification.urgency;
+        channels: notification.channels;
         data: notification.data || {},
-        status: 'PENDING'
+        status: 'PENDING';
       }
     });
 
@@ -76,7 +77,7 @@ class PushNotificationService {
             break;
         }
       } catch (error) {
-        /* SECURITY: Console statement removed */
+        /* SECURITY: Console statement removed */;
       }
     }
 
@@ -84,48 +85,48 @@ class PushNotificationService {
     await prisma.notification.update({
       where: { id: storedNotification.id },
       data: {
-        status: 'SENT',
-        deliveryResults: results,
-        sentAt: new Date()
+        status: 'SENT';
+        deliveryResults: results;
+        sentAt: new Date();
       }
     });
 
     return { notificationId: storedNotification.id, results };
   }
 
-  static async sendPushNotification(fcmToken: string, notification: any) {
+  static async sendPushNotification(fcmToken: string, notification: unknown) {
     if (!this.fcmServerKey) {
       throw new Error('FCM server key not configured');
     }
 
     const payload = {
-      to: fcmToken,
+      to: fcmToken;
       notification: {
-        title: notification.title,
-        body: notification.message,
-        icon: '/icons/hospital-icon.png',
-        badge: '/icons/badge.png'
+        title: notification.title;
+        body: notification.message;
+        icon: '/icons/hospital-icon.png';
+        badge: '/icons/badge.png';
       },
       data: {
-        type: notification.type,
-        urgency: notification.urgency,
+        type: notification.type;
+        urgency: notification.urgency;
         ...notification.data
       }
     };
 
     const response = await fetch('https://fcm.googleapis.com/fcm/send', {
-      method: 'POST',
+      method: 'POST';
       headers: {
         'Authorization': `key=${this.fcmServerKey}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload);
     });
 
     return await response.json();
   }
 
-  static async sendSMS(phoneNumber: string, notification: any) {
+  static async sendSMS(phoneNumber: string, notification: unknown) {
     if (!this.twilioAccountSid || !this.twilioAuthToken) {
       throw new Error('Twilio credentials not configured');
     }
@@ -136,41 +137,41 @@ class PushNotificationService {
 
     const message = await client.messages.create({
       body: `${notification.title}: ${notification.message}`,
-      from: process.env.TWILIO_PHONE_NUMBER,
-      to: phoneNumber
+      from: process.env.TWILIO_PHONE_NUMBER;
+      to: phoneNumber;
     });
 
     return { messageId: message.sid, status: message.status };
   }
 
-  static async sendEmail(email: string, notification: any) {
+  static async sendEmail(email: string, notification: unknown) {
     // Email service implementation (using SendGrid, AWS SES, etc.)
-    const emailPayload = {
-      to: email,
-      subject: notification.title,
-      html: this.generateEmailTemplate(notification),
-      urgency: notification.urgency
+    const _emailPayload = {
+      to: email;
+      subject: notification.title;
+      html: this.generateEmailTemplate(notification);
+      urgency: notification.urgency;
     };
 
     // Mock email sending - replace with actual service
     return { emailId: 'mock-email-id', status: 'sent' };
   }
 
-  static async sendWhatsApp(phoneNumber: string, notification: any) {
+  static async sendWhatsApp(phoneNumber: string, notification: unknown) {
     if (!this.whatsappApiToken) {
       throw new Error('WhatsApp API token not configured');
     }
 
     const payload = {
-      messaging_product: 'whatsapp',
+      messaging_product: 'whatsapp';
       to: phoneNumber.replace('+', ''),
-      type: 'template',
+      type: 'template';
       template: {
-        name: 'hospital_notification',
+        name: 'hospital_notification';
         language: { code: 'en' },
         components: [
           {
-            type: 'body',
+            type: 'body';
             parameters: [
               { type: 'text', text: notification.title },
               { type: 'text', text: notification.message }
@@ -181,18 +182,18 @@ class PushNotificationService {
     };
 
     const response = await fetch(`https://graph.facebook.com/v17.0/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`, {
-      method: 'POST',
+      method: 'POST';
       headers: {
         'Authorization': `Bearer ${this.whatsappApiToken}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload);
     });
 
     return await response.json();
   }
 
-  static generateEmailTemplate(notification: any): string {
+  static generateEmailTemplate(notification: unknown): string {
     return `
       <!DOCTYPE html>
       <html>
@@ -225,9 +226,9 @@ class PushNotificationService {
   }
 
   // Bulk notification methods
-  static async sendBulkNotifications(notifications: any[]) {
+  static async sendBulkNotifications(notifications: unknown[]) {
     const results = [];
-    
+
     for (const notification of notifications) {
       try {
         const result = await this.sendNotification(notification);
@@ -241,12 +242,12 @@ class PushNotificationService {
   }
 
   // Scheduled notifications
-  static async scheduleNotification(notification: any, scheduledTime: Date) {
+  static async scheduleNotification(notification: unknown, scheduledTime: Date) {
     const scheduledNotification = await prisma.scheduledNotification.create({
       data: {
         ...notification,
         scheduledTime,
-        status: 'SCHEDULED'
+        status: 'SCHEDULED';
       }
     });
 
@@ -258,7 +259,7 @@ class PushNotificationService {
 export const POST = async (request: NextRequest) => {
   try {
     const notification = await request.json();
-    
+
     const { user } = await authService.verifyToken(request);
     if (!user || !['Admin', 'Doctor', 'Nurse'].includes(user.role)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
@@ -277,7 +278,7 @@ export const POST = async (request: NextRequest) => {
 export const POST = async (request: NextRequest) => {
   try {
     const { notifications } = await request.json();
-    
+
     const { user } = await authService.verifyToken(request);
     if (!user || !['Admin'].includes(user.role)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });

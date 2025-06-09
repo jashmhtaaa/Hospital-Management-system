@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
-import { D1Database } from "@cloudflare/workers-types";
 
-export const runtime = "edge";
+import { D1Database } from "@cloudflare/workers-types";
+import { NextRequest, NextResponse } from "next/server";
+export const _runtime = "edge";
 
 // Interface for checklist item
 interface ChecklistItem {
   id: string; // Unique ID for the item within the template
-  text: string,
+  text: string;
   type: "checkbox" | "text" | "number" | "select"; // Example types
   options?: string[]; // For select type
   required?: boolean;
@@ -20,8 +20,8 @@ interface ChecklistTemplateUpdateBody {
 }
 
 // GET /api/ot/checklist-templates/[id] - Get details of a specific checklist template
-export const GET = async (
-  _request: NextRequest,
+export const _GET = async (
+  _request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -50,7 +50,7 @@ export const GET = async (
     const template = results[0];
     // Parse items JSON before sending response
     try {
-      if (template.items && typeof template.items === "string") {
+      if (template?.items && typeof template.items === "string") {
         template.items = JSON.parse(template.items);
       }
     } catch (parseError) {
@@ -64,8 +64,8 @@ export const GET = async (
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
       {
-        message: "Error fetching checklist template details",
-        details: errorMessage,
+        message: "Error fetching checklist template details";
+        details: errorMessage;
       },
       { status: 500 }
     );
@@ -73,8 +73,8 @@ export const GET = async (
 }
 
 // PUT /api/ot/checklist-templates/[id] - Update an existing checklist template
-export const PUT = async (
-  _request: NextRequest,
+export const _PUT = async (
+  _request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -119,15 +119,14 @@ export const PUT = async (
           (item) =>
             typeof item === "object" &&
             item !== undefined &&;
-            item.id &&
-            item.text &&
+            item?.id &&
+            item?.text &&
             item.type;
         );
       ) {
         return NextResponse.json(
           {
-            message:
-              "Invalid items format. Each item must have id, text, and type.",
+            message: "Invalid items format. Each item must have id, text, and type.",;
           },
           { status: 400 }
         );
@@ -182,7 +181,7 @@ export const PUT = async (
     const updatedTemplate = results[0];
     // Parse items JSON before sending response
     try {
-      if (updatedTemplate.items && typeof updatedTemplate.items === "string") {
+      if (updatedTemplate?.items && typeof updatedTemplate.items === "string") {
         updatedTemplate.items = JSON.parse(updatedTemplate.items);
       }
     } catch (parseError) {
@@ -198,8 +197,8 @@ export const PUT = async (
       // FIX: Check errorMessage instead of error.message
       return NextResponse.json(
         {
-          message: "Checklist template name must be unique",
-          details: errorMessage,
+          message: "Checklist template name must be unique";
+          details: errorMessage;
         },
         { status: 409 }
       );
@@ -213,7 +212,7 @@ export const PUT = async (
 
 // DELETE /api/ot/checklist-templates/[id] - Delete a checklist template
 export const DELETE = async (
-  _request: NextRequest,
+  _request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -254,8 +253,8 @@ export const DELETE = async (
       // FIX: Check errorMessage instead of error.message
       return NextResponse.json(
         {
-          message: "Cannot delete template with existing responses",
-          details: errorMessage,
+          message: "Cannot delete template with existing responses";
+          details: errorMessage;
         },
         { status: 409 }
       );

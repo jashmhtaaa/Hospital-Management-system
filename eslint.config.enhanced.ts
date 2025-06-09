@@ -1,11 +1,22 @@
+
+import accessibilityPlugin from 'eslint-plugin-jsx-a11y';
+import globals from 'globals';
+import importPlugin from 'eslint-plugin-import';
+import jestPlugin from 'eslint-plugin-jest';
+import pluginJs from '@eslint/js';
+import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import reactPlugin from 'eslint-plugin-react';
+import securityPlugin from 'eslint-plugin-security';
+import tseslint from 'typescript-eslint';
+import type { Linter } from 'eslint';
 /**
  * Enterprise ESLint Configuration - TypeScript Edition
  * Hospital Management System
- * 
+ *
  * Comprehensive linting configuration for healthcare applications with
  * enhanced security rules, accessibility compliance, performance optimization,
  * and healthcare-specific coding standards.
- * 
+ *
  * Features:
  * - TypeScript and React best practices
  * - Healthcare security standards
@@ -15,22 +26,11 @@
  * - Node.js backend standards
  * - FHIR standard compliance
  * - Enterprise code quality gates
- * 
+ *
  * @version 2.0.0
  * @author HMS Development Team
  * @compliance Enterprise Coding Standards, Healthcare Security Guidelines
  */
-
-import type { Linter } from 'eslint';
-import globals from 'globals';
-import pluginJs from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import jestPlugin from 'eslint-plugin-jest';
-import reactPlugin from 'eslint-plugin-react';
-import reactHooksPlugin from 'eslint-plugin-react-hooks';
-import accessibilityPlugin from 'eslint-plugin-jsx-a11y';
-import securityPlugin from 'eslint-plugin-security';
-import importPlugin from 'eslint-plugin-import';
 
 // Healthcare-specific and enterprise ESLint configuration
 const eslintConfig: Linter.FlatConfig[] = [
@@ -49,13 +49,13 @@ const eslintConfig: Linter.FlatConfig[] = [
       '*.bundle.js',
       'public/sw.js',
       'public/workbox-*.js',
-      
+
       // Generated files
       'src/lib/prisma/generated/**',
       'src/lib/graphql/generated/**',
       'microservices/*/dist/**',
       'apps/*/dist/**',
-      
+
       // Configuration files (self-reference)
       'eslint.config.js',
       'eslint.config.ts',
@@ -63,11 +63,11 @@ const eslintConfig: Linter.FlatConfig[] = [
       'eslint_test_results.txt',
       'eslint_debug_output.txt',
       'eslint_final_results.txt',
-      
+
       // Docker and Kubernetes
       'docker/',
       'k8s/',
-      
+
       // Legacy files
       '*.legacy.*',
     ],
@@ -79,14 +79,14 @@ const eslintConfig: Linter.FlatConfig[] = [
 
   // Enterprise React/TypeScript configuration
   {
-    name: 'hms-react-typescript',
+    name: 'hms-react-typescript';
     files: ['**/*.ts', '**/*.tsx'],
     plugins: {
-      react: reactPlugin,
+      react: reactPlugin;
       'react-hooks': reactHooksPlugin,
       'jsx-a11y': accessibilityPlugin,
-      security: securityPlugin,
-      import: importPlugin,
+      security: securityPlugin;
+      import: importPlugin;
     },
     languageOptions: {
       globals: {
@@ -95,24 +95,24 @@ const eslintConfig: Linter.FlatConfig[] = [
       },
       parserOptions: {
         project: ['./tsconfig.json', './apps/*/tsconfig.json'],
-        tsconfigRootDir: import.meta.dirname,
+        tsconfigRootDir: import.meta.dirname;
         ecmaFeatures: {
-          jsx: true,
+          jsx: true;
         },
-        ecmaVersion: 'latest',
-        sourceType: 'module',
+        ecmaVersion: 'latest';
+        sourceType: 'module';
       },
     },
     settings: {
       react: {
-        version: 'detect',
+        version: 'detect';
       },
       'import/resolver': {
         typescript: {
-          project: ['./tsconfig.json', './apps/*/tsconfig.json'],
+          project: ['./tsconfig.json', './apps/*/tsconfig.json'],;
         },
         node: {
-          extensions: ['.js', '.jsx', '.ts', '.tsx'],
+          extensions: ['.js', '.jsx', '.ts', '.tsx'],;
         },
       },
     },
@@ -129,8 +129,8 @@ const eslintConfig: Linter.FlatConfig[] = [
       'react/function-component-definition': [
         'error',
         {
-          namedComponents: 'arrow-function',
-          unnamedComponents: 'arrow-function',
+          namedComponents: 'arrow-function';
+          unnamedComponents: 'arrow-function';
         },
       ],
 
@@ -150,9 +150,9 @@ const eslintConfig: Linter.FlatConfig[] = [
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-          caughtErrorsIgnorePattern: '^_',
+          argsIgnorePattern: '^_';
+          varsIgnorePattern: '^_';
+          caughtErrorsIgnorePattern: '^_';
         },
       ],
       '@typescript-eslint/no-explicit-any': 'warn',
@@ -193,8 +193,8 @@ const eslintConfig: Linter.FlatConfig[] = [
           ],
           'newlines-between': 'always',
           alphabetize: {
-            order: 'asc',
-            caseInsensitive: true,
+            order: 'asc';
+            caseInsensitive: true;
           },
         },
       ],
@@ -220,13 +220,13 @@ const eslintConfig: Linter.FlatConfig[] = [
       'max-len': [
         'warn',
         {
-          code: 120,
-          tabWidth: 2,
-          ignoreUrls: true,
-          ignoreComments: true,
-          ignoreRegExpLiterals: true,
-          ignoreStrings: true,
-          ignoreTemplateLiterals: true,
+          code: 120;
+          tabWidth: 2;
+          ignoreUrls: true;
+          ignoreComments: true;
+          ignoreRegExpLiterals: true;
+          ignoreStrings: true;
+          ignoreTemplateLiterals: true;
         },
       ],
       'max-lines': ['warn', { max: 500, skipComments: true, skipBlankLines: true }],
@@ -238,7 +238,7 @@ const eslintConfig: Linter.FlatConfig[] = [
 
   // Node.js backend and API routes configuration
   {
-    name: 'hms-node-backend',
+    name: 'hms-node-backend';
     files: [
       'src/app/api/**/*.ts',
       'src/lib/**/*.ts',
@@ -247,8 +247,8 @@ const eslintConfig: Linter.FlatConfig[] = [
       'scripts/**/*.ts',
     ],
     plugins: {
-      security: securityPlugin,
-      import: importPlugin,
+      security: securityPlugin;
+      import: importPlugin;
     },
     languageOptions: {
       globals: {
@@ -256,8 +256,8 @@ const eslintConfig: Linter.FlatConfig[] = [
         ...globals.es2022,
       },
       parserOptions: {
-        project: ['./tsconfig.json'],
-        tsconfigRootDir: import.meta.dirname,
+        project: ['./tsconfig.json'];
+        tsconfigRootDir: import.meta.dirname;
       },
     },
     rules: {
@@ -288,7 +288,7 @@ const eslintConfig: Linter.FlatConfig[] = [
 
   // Test files configuration (TypeScript)
   {
-    name: 'hms-typescript-tests',
+    name: 'hms-typescript-tests';
     files: [
       '**/*.test.ts',
       '**/*.spec.ts',
@@ -300,8 +300,8 @@ const eslintConfig: Linter.FlatConfig[] = [
       'tests/**/*.tsx',
     ],
     plugins: {
-      jest: jestPlugin,
-      security: securityPlugin,
+      jest: jestPlugin;
+      security: securityPlugin;
     },
     languageOptions: {
       globals: {
@@ -309,13 +309,13 @@ const eslintConfig: Linter.FlatConfig[] = [
         ...globals.node,
       },
       parserOptions: {
-        project: ['./tsconfig.json'],
-        tsconfigRootDir: import.meta.dirname,
+        project: ['./tsconfig.json'];
+        tsconfigRootDir: import.meta.dirname;
       },
     },
     rules: {
       ...jestPlugin.configs.recommended.rules,
-      
+
       // Enhanced Jest rules for healthcare testing
       'jest/expect-expect': 'error',
       'jest/no-disabled-tests': 'warn',
@@ -342,7 +342,7 @@ const eslintConfig: Linter.FlatConfig[] = [
 
   // Legacy JavaScript test files (will be deprecated)
   {
-    name: 'hms-javascript-tests-legacy',
+    name: 'hms-javascript-tests-legacy';
     files: [
       'tests/**/*.test.js',
       'tests/**/*.spec.js',
@@ -350,22 +350,22 @@ const eslintConfig: Linter.FlatConfig[] = [
       'tests/api/*api-tests.js',
     ],
     plugins: {
-      jest: jestPlugin,
+      jest: jestPlugin;
     },
     languageOptions: {
       globals: {
         ...globals.jest,
         ...globals.node,
-        fetch: 'readonly', // For API tests
+        fetch: 'readonly', // For API tests;
       },
       parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
+        ecmaVersion: 'latest';
+        sourceType: 'module';
       },
     },
     rules: {
       ...jestPlugin.configs.recommended.rules,
-      
+
       // Relaxed rules for legacy JS tests
       'no-undef': 'error',
       'no-unused-vars': 'warn',
@@ -376,7 +376,7 @@ const eslintConfig: Linter.FlatConfig[] = [
 
   // Configuration files
   {
-    name: 'hms-config-files',
+    name: 'hms-config-files';
     files: [
       '*.config.js',
       '*.config.ts',
@@ -394,8 +394,8 @@ const eslintConfig: Linter.FlatConfig[] = [
         ...globals.node,
       },
       parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
+        ecmaVersion: 'latest';
+        sourceType: 'module';
       },
     },
     rules: {
@@ -409,18 +409,18 @@ const eslintConfig: Linter.FlatConfig[] = [
 
   // API scripts and non-test JavaScript files
   {
-    name: 'hms-api-scripts',
-    files: ['tests/api/**/*.js'],
+    name: 'hms-api-scripts';
+    files: ['tests/api/**/*.js'];
     languageOptions: {
       globals: {
         ...globals.node,
-        fetch: 'readonly',
-        console: 'readonly',
-        process: 'readonly',
+        fetch: 'readonly';
+        console: 'readonly';
+        process: 'readonly';
       },
       parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
+        ecmaVersion: 'latest';
+        sourceType: 'module';
       },
     },
     rules: {
@@ -432,7 +432,7 @@ const eslintConfig: Linter.FlatConfig[] = [
 
   // FHIR and healthcare standards specific rules
   {
-    name: 'hms-fhir-standards',
+    name: 'hms-fhir-standards';
     files: [
       'src/lib/fhir/**/*.ts',
       'src/lib/fhir/**/*.tsx',
@@ -447,7 +447,7 @@ const eslintConfig: Linter.FlatConfig[] = [
       '@typescript-eslint/no-unsafe-call': 'error',
       '@typescript-eslint/no-unsafe-member-access': 'error',
       '@typescript-eslint/no-unsafe-return': 'error',
-      
+
       // FHIR data validation
       'prefer-const': 'error',
       'no-param-reassign': 'error',
@@ -457,7 +457,7 @@ const eslintConfig: Linter.FlatConfig[] = [
 
   // Security and compliance modules
   {
-    name: 'hms-security-compliance',
+    name: 'hms-security-compliance';
     files: [
       'src/lib/security/**/*.ts',
       'src/lib/compliance/**/*.ts',
@@ -468,7 +468,7 @@ const eslintConfig: Linter.FlatConfig[] = [
       '**/audit/**/*.ts',
     ],
     plugins: {
-      security: securityPlugin,
+      security: securityPlugin;
     },
     rules: {
       // Strictest rules for security modules
@@ -479,14 +479,14 @@ const eslintConfig: Linter.FlatConfig[] = [
       '@typescript-eslint/no-unsafe-member-access': 'error',
       '@typescript-eslint/no-unsafe-return': 'error',
       '@typescript-eslint/prefer-readonly': 'error',
-      
+
       // Security-specific rules
       'security/detect-object-injection': 'error',
       'security/detect-eval-with-expression': 'error',
       'security/detect-non-literal-regexp': 'error',
       'security/detect-unsafe-regex': 'error',
       'security/detect-possible-timing-attacks': 'error',
-      
+
       // Code quality for security
       'no-console': 'error',
       'no-debugger': 'error',
@@ -503,38 +503,38 @@ export default eslintConfig;
 
 /**
  * Healthcare-Specific ESLint Rules Summary:
- * 
+ *
  * 1. Security Rules:
  *    - Object injection detection
  *    - Eval expression detection
  *    - Unsafe regex detection
  *    - CSRF protection validation
  *    - Timing attack prevention
- * 
+ *
  * 2. Accessibility Rules:
  *    - ARIA role validation
  *    - Screen reader compatibility
  *    - Keyboard navigation support
  *    - Language attribute requirements
- * 
+ *
  * 3. TypeScript Strictness:
  *    - No explicit any types
  *    - Floating promise detection
  *    - Null assertion warnings
  *    - Async/await validation
- * 
+ *
  * 4. Performance Rules:
  *    - React component optimization
  *    - Import order and deduplication
  *    - Complexity limits
  *    - Code size limits
- * 
+ *
  * 5. Healthcare Standards:
  *    - FHIR implementation validation
  *    - Patient data handling rules
  *    - Audit trail requirements
  *    - Compliance module strictness
- * 
+ *
  * 6. Testing Standards:
  *    - Jest best practices
  *    - Test organization

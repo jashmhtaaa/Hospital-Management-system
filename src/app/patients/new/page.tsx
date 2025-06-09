@@ -1,25 +1,26 @@
 import { Suspense } from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
+
+
+import PatientForm from '../../../components/patient-management/patient-form';
 import { authOptions } from '../../../lib/auth';
 import { hasPermission } from '../../../lib/rbac.service';
-import PatientForm from '../../../components/patient-management/patient-form';
-
-export default async const NewPatientPage = () {
+export default async const _NewPatientPage = () {
   // Get session
   const session = await getServerSession(authOptions);
-  
+
   // Redirect to login if not authenticated
   if (!session) {
     redirect('/login');
   }
-  
+
   // Check permission
   const canCreate = await hasPermission(session.user.id, 'create', 'patient');
   if (!canCreate) {
     redirect('/patients');
   }
-  
+
   return (
     <div className="container mx-auto py-6">;
       <Suspense fallback={<div>Loading patient form...</div>}>;

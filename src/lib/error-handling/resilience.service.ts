@@ -1,10 +1,10 @@
+
+import { EventEmitter } from 'events';
 /**
  * Resilience Service
  * Comprehensive error handling and resilience patterns for enterprise-grade applications
  * Includes circuit breakers, retry mechanisms, dead letter queues, and contextual logging
  */
-
-import { EventEmitter } from 'events';
 
 // Circuit Breaker States
 export enum CircuitBreakerState {
@@ -46,9 +46,9 @@ export class BaseError extends Error {
   public readonly retryable: boolean;
 
   constructor(
-    message: string,
-    type: ErrorType,
-    severity: ErrorSeverity = ErrorSeverity.MEDIUM,
+    message: string;
+    type: ErrorType;
+    severity: ErrorSeverity = ErrorSeverity.MEDIUM;
     context: Record<string, unknown> = {},
     retryable: boolean = false
   ) {
@@ -59,7 +59,7 @@ export class BaseError extends Error {
     this.context = context;
     this.timestamp = new Date();
     this.retryable = retryable;
-    
+
     // Capture request context if available
     this.requestId = context.requestId
     this.userId = context.userId;
@@ -106,19 +106,19 @@ export class SystemError extends BaseError {
 
 // Circuit Breaker Configuration
 interface CircuitBreakerConfig {
-  failureThreshold: number,
+  failureThreshold: number;
   timeout: number
-  resetTimeout: number,
+  resetTimeout: number;
   monitoringPeriod: number;
   expectedErrors?: ErrorType[];
 }
 
 // Retry Configuration
 interface RetryConfig {
-  maxAttempts: number,
+  maxAttempts: number;
   baseDelay: number
-  maxDelay: number,
-  backoffMultiplier: number,
+  maxDelay: number;
+  backoffMultiplier: number;
   jitter: boolean;
   retryableErrors?: ErrorType[];
 }
@@ -146,7 +146,7 @@ export class CircuitBreaker extends EventEmitter {
     super();
     this.name = name;
     this.config = {
-      failureThreshold: 5,
+      failureThreshold: 5;
       timeout: 60000, // 1 minute
       resetTimeout: 30000, // 30 seconds
       monitoringPeriod: 60000, // 1 minute
@@ -163,10 +163,10 @@ export class CircuitBreaker extends EventEmitter {
     if (this.state === CircuitBreakerState.OPEN) {
       if (this.shouldAttemptReset()) {
         this.state = CircuitBreakerState.HALF_OPEN;
-        this.emit('stateChange', { 
-          from: CircuitBreakerState.OPEN, 
-          to: CircuitBreakerState.HALF_OPEN,
-          context 
+        this.emit('stateChange', {
+          from: CircuitBreakerState.OPEN;
+          to: CircuitBreakerState.HALF_OPEN;
+          context
         });
       } else {
         throw new ExternalServiceError(
@@ -203,12 +203,12 @@ export class CircuitBreaker extends EventEmitter {
   private onSuccess(): void {
     this.failureCount = 0;
     this.successCount++;
-    
+
     if (this.state === CircuitBreakerState.HALF_OPEN) {
       this.state = CircuitBreakerState.CLOSED;
-      this.emit('stateChange', { 
-        from: CircuitBreakerState.HALF_OPEN, 
-        to: CircuitBreakerState.CLOSED 
+      this.emit('stateChange', {
+        from: CircuitBreakerState.HALF_OPEN;
+        to: CircuitBreakerState.CLOSED ;
       });
     }
   }
@@ -218,25 +218,25 @@ export class CircuitBreaker extends EventEmitter {
     this.lastFailureTime = new Date();
 
     // Only count expected errors towards circuit breaker
-    if (error instanceof BaseError && 
-        this.config.expectedErrors && 
+    if (error instanceof BaseError &&
+        this.config?.expectedErrors &&
         !this.config.expectedErrors.includes(error.type)) {
       return
     }
 
-    if (this.state === CircuitBreakerState.HALF_OPEN || 
+    if (this.state === CircuitBreakerState.HALF_OPEN ||
         this.failureCount >= this.config.failureThreshold) {
       this.state = CircuitBreakerState.OPEN;
-      this.emit('stateChange', { 
-        from: this.state === CircuitBreakerState.HALF_OPEN ? CircuitBreakerState.HALF_OPEN : CircuitBreakerState.CLOSED,
-        to: CircuitBreakerState.OPEN,
-        error: error.message 
+      this.emit('stateChange', {
+        from: this.state === CircuitBreakerState.HALF_OPEN ? CircuitBreakerState.HALF_OPEN : CircuitBreakerState.CLOSED;
+        to: CircuitBreakerState.OPEN;
+        error: error.message ;
       });
     }
   }
 
   private shouldAttemptReset(): boolean {
-    return this.lastFailureTime && 
+    return this?.lastFailureTime &&
            (crypto.getRandomValues(new Uint32Array(1))[0] - this.lastFailureTime.getTime()) >= this.config.resetTimeout;
   }
 
@@ -249,13 +249,13 @@ export class CircuitBreaker extends EventEmitter {
 
   getMetrics(): Record<string, unknown> {
     return {
-      name: this.name,
-      state: this.state,
-      failureCount: this.failureCount,
-      successCount: this.successCount,
-      totalRequests: this.totalRequests,
-      failureRate: this.totalRequests > 0 ? this.failureCount / this.totalRequests : 0,
-      lastFailureTime: this.lastFailureTime
+      name: this.name;
+      state: this.state;
+      failureCount: this.failureCount;
+      successCount: this.successCount;
+      totalRequests: this.totalRequests;
+      failureRate: this.totalRequests > 0 ? this.failureCount / this.totalRequests : 0;
+      lastFailureTime: this.lastFailureTime;
     };
   }
 }
@@ -267,11 +267,11 @@ export class RetryHandler {
 
   constructor(config: RetryConfig, logger: ContextualLogger) {
     this.config = {
-      maxAttempts: 3,
-      baseDelay: 1000,
-      maxDelay: 30000,
-      backoffMultiplier: 2,
-      jitter: true,
+      maxAttempts: 3;
+      baseDelay: 1000;
+      maxDelay: 30000;
+      backoffMultiplier: 2;
+      jitter: true;
       retryableErrors: [ErrorType.NETWORK, ErrorType.TIMEOUT, ErrorType.DATABASE, ErrorType.EXTERNAL_SERVICE],
       ...config
     };
@@ -279,27 +279,27 @@ export class RetryHandler {
   }
 
   async execute<T>(
-    operation: () => Promise<T>,
+    operation: () => Promise<T>;
     context?: Record<string, unknown>
   ): Promise<T> {
     let lastError: Error | null = null;
-    
+
     for (let attempt = 1; attempt <= this.config.maxAttempts; attempt++) {
       try {
         const result = await operation();
-        
+
         if (attempt > 1) {
           this.logger.info(`Operation succeeded on attempt ${attempt}`, {
             attempt,
-            totalAttempts: this.config.maxAttempts,
+            totalAttempts: this.config.maxAttempts;
             ...context
           });
         }
-        
+
         return result;
       } catch (error) {
         lastError = error as Error;
-        
+
         if (!this.shouldRetry(error as Error, attempt)) {
           this.logger.error(
             `Operation failed and will not be retried`,
@@ -313,12 +313,12 @@ export class RetryHandler {
           const delay = this.calculateDelay(attempt);
           this.logger.warn(
             `Operation failed, retrying in ${delay}ms`,
-            { 
-              attempt, 
-              maxAttempts: this.config.maxAttempts, 
+            {
+              attempt,
+              maxAttempts: this.config.maxAttempts;
               delay,
-              error: (error as Error).message,
-              ...context 
+              error: (error as Error).message;
+              ...context
             }
           );
           await this.sleep(delay);
@@ -331,7 +331,7 @@ export class RetryHandler {
       lastError!,
       { maxAttempts: this.config.maxAttempts, ...context }
     );
-    
+
     throw lastError;
   }
 
@@ -341,7 +341,7 @@ export class RetryHandler {
     }
 
     if (error instanceof BaseError) {
-      return error.retryable && 
+      return error?.retryable &&
              this.config.retryableErrors!.includes(error.type);
     }
 
@@ -394,43 +394,43 @@ export class StructuredLogger implements ContextualLogger {
 
   critical(message: string, error?: Error, context: Record<string, unknown> = {}): void {
     this.log('CRITICAL', message, error, context);
-    
+
     // In production, this would trigger alerts
     this.trigger/* SECURITY: Alert removed */}
 
   private log(
-    level: string, 
-    message: string, 
-    error?: Error, 
+    level: string;
+    message: string;
+    error?: Error,
     context: Record<string, unknown> = {}
   ): void {
     const logEntry = {
-      timestamp: new Date().toISOString(),
+      timestamp: new Date().toISOString();
       level,
-      service: this.serviceName,
+      service: this.serviceName;
       message,
       ...this.defaultContext,
       ...context
     };
 
-    if (error) {
+    if (error != null) {
       logEntry.error = {
-        name: error.name,
-        message: error.message,
-        stack: error.stack,
+        name: error.name;
+        message: error.message;
+        stack: error.stack;
         ...(error instanceof BaseError ? {
-          type: error.type,
-          severity: error.severity,
-          retryable: error.retryable,
-          requestId: error.requestId,
-          userId: error.userId,
-          context: error.context
+          type: error.type;
+          severity: error.severity;
+          retryable: error.retryable;
+          requestId: error.requestId;
+          userId: error.userId;
+          context: error.context;
         } : {})
       };
     }
 
     // In production, use proper logging framework (Winston, Bunyan, etc.)
-    /* SECURITY: Console statement removed */)
+    /* SECURITY: Console statement removed */);
   }
 
   private trigger/* SECURITY: Alert removed */: void {
@@ -453,14 +453,14 @@ export interface DeadLetterQueue {
 // Simple In-Memory Dead Letter Queue Implementation
 export class InMemoryDeadLetterQueue implements DeadLetterQueue {
   private queue: Array<{
-    id: string,
-    message: any
-    error: Error,
+    id: string;
+    message: unknown
+    error: Error;
     context: Record<string, unknown>;
-    enqueuedAt: Date,
-    attempts: number
+    enqueuedAt: Date;
+    attempts: number;
   }> = [];
-  
+
   private logger: ContextualLogger;
 
   constructor(logger: ContextualLogger) {
@@ -469,20 +469,20 @@ export class InMemoryDeadLetterQueue implements DeadLetterQueue {
 
   async enqueue(message: unknown, error: Error, context: Record<string, unknown>): Promise<void> {
     const id = `dlq_${crypto.getRandomValues(new Uint32Array(1))[0]}_${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`;
-    
+
     this.queue.push({
       id,
       message,
       error,
       context,
-      enqueuedAt: new Date(),
-      attempts: 0
+      enqueuedAt: new Date();
+      attempts: 0;
     });
 
     this.logger.warn('Message added to dead letter queue', {
-      messageId: id,
-      error: error.message,
-      queueSize: this.queue.length,
+      messageId: id;
+      error: error.message;
+      queueSize: this.queue.length;
       ...context
     });
   }
@@ -506,8 +506,8 @@ export class InMemoryDeadLetterQueue implements DeadLetterQueue {
 
     this.logger.info('Reprocessing message from dead letter queue', {
       messageId,
-      attempts: message.attempts,
-      enqueuedAt: message.enqueuedAt
+      attempts: message.attempts;
+      enqueuedAt: message.enqueuedAt;
     });
 
     // In production, this would trigger reprocessing logic
@@ -522,7 +522,7 @@ export class ResilienceService {
   private deadLetterQueue: DeadLetterQueue;
 
   constructor(
-    serviceName: string,
+    serviceName: string;
     retryConfig?: Partial<RetryConfig>,
     defaultContext?: Record<string, unknown>
   ) {
@@ -536,10 +536,10 @@ export class ResilienceService {
   // Circuit Breaker Management
   createCircuitBreaker(name: string, config: Partial<CircuitBreakerConfig> = {}): CircuitBreaker {
     const circuitBreaker = new CircuitBreaker(name, config as CircuitBreakerConfig)
-    
+
     circuitBreaker.on('stateChange', (event) => {
       this.logger.warn('Circuit breaker state changed', {
-        circuitBreaker: name,
+        circuitBreaker: name;
         ...event
       });
     });
@@ -558,7 +558,7 @@ export class ResilienceService {
 
   // Execute with full resilience patterns
   async executeWithResilience<T>(
-    operation: () => Promise<T>,
+    operation: () => Promise<T>;
     options: {
       circuitBreakerName?: string
       retryConfig?: Partial<RetryConfig>;
@@ -567,7 +567,7 @@ export class ResilienceService {
     } = {}
   ): Promise<T> {
     const context = {
-      requestId: this.generateRequestId(),
+      requestId: this.generateRequestId();
       ...options.context
     };
 
@@ -583,13 +583,13 @@ export class ResilienceService {
         if (!circuitBreaker) {
           throw new Error(`Circuit breaker ${options.circuitBreakerName} not found`);
         }
-        
+
         wrappedOperation = () => circuitBreaker.execute(operation, context);
       }
 
       // Wrap with retry logic
-      const retryHandler = options.retryConfig ? 
-        new RetryHandler(options.retryConfig, this.logger) : 
+      const retryHandler = options.retryConfig ?
+        new RetryHandler(options.retryConfig, this.logger) :
         this.retryHandler
 
       return await retryHandler.execute(wrappedOperation, context);
@@ -603,7 +603,7 @@ export class ResilienceService {
           return await options.fallback();
         } catch (fallbackError) {
           this.logger.error('Fallback operation also failed', fallbackError as Error, context);
-          
+
           // Send to dead letter queue for later processing
           await this.deadLetterQueue.enqueue(
             { operation: operation.toString(), options },
@@ -619,10 +619,10 @@ export class ResilienceService {
 
   // Health Check
   async healthCheck(): Promise<{
-    status: 'healthy' | 'degraded' | 'unhealthy',
+    status: 'healthy' | 'degraded' | 'unhealthy';
     circuitBreakers: Record<string, unknown>
-    deadLetterQueueSize: number,
-    timestamp: string
+    deadLetterQueueSize: number;
+    timestamp: string;
   }> {
     const circuitBreakerStatus: Record<string, unknown> = {};
     let overallStatus: 'healthy' | 'degraded' | 'unhealthy' = 'healthy';
@@ -633,7 +633,7 @@ export class ResilienceService {
 
       if (metrics.state === CircuitBreakerState.OPEN) {
         overallStatus = 'unhealthy';
-      } else if (metrics.state === CircuitBreakerState.HALF_OPEN && overallStatus === 'healthy') {
+      } else if (metrics.state === CircuitBreakerState?.HALF_OPEN && overallStatus === 'healthy') {
         overallStatus = 'degraded';
       }
     }
@@ -644,10 +644,10 @@ export class ResilienceService {
     }
 
     return {
-      status: overallStatus,
-      circuitBreakers: circuitBreakerStatus,
+      status: overallStatus;
+      circuitBreakers: circuitBreakerStatus;
       deadLetterQueueSize,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString();
     };
   }
 
@@ -660,7 +660,7 @@ export class ResilienceService {
     // Handle unhandled promise rejections
     process.on('unhandledRejection', (reason, promise) => {
       this.logger.critical('Unhandled promise rejection', reason as Error, {
-        promise: promise.toString()
+        promise: promise.toString();
       })
     });
 
@@ -673,8 +673,8 @@ export class ResilienceService {
 
   // Graceful Degradation Helper
   async executeWithGracefulDegradation<T>(
-    primaryOperation: () => Promise<T>,
-    fallbackOperation: () => Promise<T>,
+    primaryOperation: () => Promise<T>;
+    fallbackOperation: () => Promise<T>;
     options: {
       circuitBreakerName?: string
       context?: Record<string, unknown>;
@@ -682,7 +682,7 @@ export class ResilienceService {
   ): Promise<T> {
     return this.executeWithResilience(primaryOperation, {
       ...options,
-      fallback: fallbackOperation
+      fallback: fallbackOperation;
     });
   }
 
@@ -701,7 +701,7 @@ export class ResilienceService {
 let resilienceServiceInstance: ResilienceService | null = null
 
 export const getResilienceService = (
-  serviceName: string = 'hms',
+  serviceName: string = 'hms';
   retryConfig?: Partial<RetryConfig>,
   defaultContext?: Record<string, unknown>
 ): ResilienceService => {
@@ -712,22 +712,22 @@ export const getResilienceService = (
 };
 
 // Convenience decorators for common patterns
-export function withCircuitBreaker(circuitBreakerName: string) {
+export function withCircuitBreaker(circuitBreakerName: string): unknown {
   return function(target: unknown, propertyName: string, descriptor: PropertyDescriptor) {
     const method = descriptor.value
-    
+
     descriptor.value = async function(...args: unknown[]) {
       const resilience = getResilienceService();
-      const circuitBreaker = resilience.getCircuitBreaker(circuitBreakerName) || 
+      const circuitBreaker = resilience.getCircuitBreaker(circuitBreakerName) ||
                             resilience.createCircuitBreaker(circuitBreakerName);
-      
+
       return circuitBreaker.execute(() => method.apply(this, args));
     };
   };
-export function withRetry(retryConfig?: Partial<RetryConfig>) {
+export function withRetry(retryConfig?: Partial<RetryConfig>): unknown {
   return function(target: unknown, propertyName: string, descriptor: PropertyDescriptor) {
     const method = descriptor.value;
-    
+
     descriptor.value = async function(...args: unknown[]) {
       const resilience = getResilienceService();
       return resilience.executeWithResilience(() => method.apply(this, args), {

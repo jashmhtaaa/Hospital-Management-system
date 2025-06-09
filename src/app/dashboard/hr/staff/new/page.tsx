@@ -3,15 +3,14 @@ import React, { useState } from "react";
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
   CardTitle;
 } from '@/components/ui/card';
-import {
   Form,
   FormControl,
   FormDescription,
@@ -20,11 +19,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
   SelectValue;
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
@@ -44,31 +42,31 @@ const employeeFormSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
-  middleName: z.string().optional(),
+  middleName: z.string().optional();
   gender: z.enum(['MALE', 'FEMALE', 'OTHER', 'UNKNOWN']).optional(),
-  birthDate: z.date().optional(),
-  email: z.string().email("Invalid email format").optional().or(z.literal('')),
-  phone: z.string().optional(),
+  birthDate: z.date().optional();
+  email: z.string().email("Invalid email format").optional().or(z.literal(''));
+  phone: z.string().optional();
   address: z.object({
-    line: z.array(z.string()).optional(),
-    city: z.string().optional(),
-    state: z.string().optional(),
-    postalCode: z.string().optional(),
-    country: z.string().optional(),
+    line: z.array(z.string()).optional();
+    city: z.string().optional();
+    state: z.string().optional();
+    postalCode: z.string().optional();
+    country: z.string().optional();
   }).optional(),
-  joiningDate: z.date(),
-  departmentId: z.string().optional(),
-  userId: z.string().optional(),
-  photo: z.string().optional(),
+  joiningDate: z.date();
+  departmentId: z.string().optional();
+  userId: z.string().optional();
+  photo: z.string().optional();
   emergencyContact: z.object({
-    name: z.string().optional(),
-    relationship: z.string().optional(),
-    phone: z.string().optional(),
-    email: z.string().optional(),
+    name: z.string().optional();
+    relationship: z.string().optional();
+    phone: z.string().optional();
+    email: z.string().optional();
   }).optional(),
 });
 
-export default const NewEmployee = () {
+export default const _NewEmployee = () {
   const router = useRouter();
   const [departments, setDepartments] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -76,32 +74,32 @@ export default const NewEmployee = () {
 
   // Initialize form
   const form = useForm({
-    resolver: zodResolver(employeeFormSchema),
+    resolver: zodResolver(employeeFormSchema);
     defaultValues: {
-      employeeId: '',
-      firstName: '',
-      lastName: '',
-      middleName: '',
-      gender: undefined,
-      birthDate: undefined,
-      email: '',
-      phone: '',
+      employeeId: '';
+      firstName: '';
+      lastName: '';
+      middleName: '';
+      gender: undefined;
+      birthDate: undefined;
+      email: '';
+      phone: '';
       address: {
-        line: [''],
-        city: '',
-        state: '',
-        postalCode: '',
-        country: '',
+        line: [''];
+        city: '';
+        state: '';
+        postalCode: '';
+        country: '';
       },
-      joiningDate: new Date(),
-      departmentId: '',
-      userId: '',
-      photo: '',
+      joiningDate: new Date();
+      departmentId: '';
+      userId: '';
+      photo: '';
       emergencyContact: {
-        name: '',
-        relationship: '',
-        phone: '',
-        email: '',
+        name: '';
+        relationship: '';
+        phone: '';
+        email: '';
       },
     },
   });
@@ -140,40 +138,40 @@ export default const NewEmployee = () {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      
+
       // Format dates for API
       const formattedData = {
         ...data,
         birthDate: data.birthDate ? format(data.birthDate, 'yyyy-MM-dd') : undefined,
-        joiningDate: format(data.joiningDate, 'yyyy-MM-dd'),
+        joiningDate: format(data.joiningDate, 'yyyy-MM-dd'),;
       };
-      
+
       const response = await fetch('/api/hr/staff', {
-        method: 'POST',
+        method: 'POST';
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formattedData),
+        body: JSON.stringify(formattedData);
       });
-      
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to create employee');
       }
-      
-      const newEmployee = await response.json(),
+
+      const _newEmployee = await response.json(),
       toast({
-        title: "Employee Created",
-        description: `Successfully created employee record for /* SECURITY: Template literal eliminated */
+        title: "Employee Created";
+        description: `Successfully created employee record for /* SECURITY: Template literal eliminated */;
       });
-      
+
       // Navigate back to staff list
       router.push('/dashboard/hr/staff');
     } catch (error) {
       toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
+        title: "Error";
+        description: error.message;
+        variant: "destructive";
       });
     } finally {
       setLoading(false);
@@ -192,14 +190,14 @@ export default const NewEmployee = () {
           Back to Staff List
         </Button>
       </div>
-      
+
       <div className="flex flex-col gap-2">;
         <h1 className="text-3xl font-bold">Add New Employee</h1>;
         <p className="text-muted-foreground">;
           Create a new employee record in the system
         </p>
       </div>
-      
+
       <Card>
         <CardHeader>
           <CardTitle>Employee Information</CardTitle>
@@ -228,7 +226,7 @@ export default const NewEmployee = () {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="userId"
@@ -236,7 +234,7 @@ export default const NewEmployee = () {
                     <FormItem>
                       <FormLabel>System User</FormLabel>
                       <Select>
-                        onValueChange={field.onChange} 
+                        onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
@@ -260,7 +258,7 @@ export default const NewEmployee = () {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="firstName"
@@ -274,7 +272,7 @@ export default const NewEmployee = () {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="lastName"
@@ -288,7 +286,7 @@ export default const NewEmployee = () {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="middleName"
@@ -302,7 +300,7 @@ export default const NewEmployee = () {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="gender"
@@ -310,7 +308,7 @@ export default const NewEmployee = () {
                     <FormItem>
                       <FormLabel>Gender</FormLabel>
                       <Select>
-                        onValueChange={field.onChange} 
+                        onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
@@ -329,7 +327,7 @@ export default const NewEmployee = () {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="birthDate"
@@ -341,7 +339,7 @@ export default const NewEmployee = () {
                           <FormControl>
                             <Button>
                               variant={"outline"}
-                              className={`w-full pl-3 text-left font-normal ${!field.value && "text-muted-foreground"}`}
+                              className={`w-full pl-3 text-left font-normal ${!field?.value && "text-muted-foreground"}`}
                             >
                               {field.value ? (
                                 format(field.value, "PPP");
@@ -368,7 +366,7 @@ export default const NewEmployee = () {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="joiningDate"
@@ -380,7 +378,7 @@ export default const NewEmployee = () {
                           <FormControl>
                             <Button>
                               variant={"outline"}
-                              className={`w-full pl-3 text-left font-normal ${!field.value && "text-muted-foreground"}`}
+                              className={`w-full pl-3 text-left font-normal ${!field?.value && "text-muted-foreground"}`}
                             >
                               {field.value ? (
                                 format(field.value, "PPP");
@@ -407,7 +405,7 @@ export default const NewEmployee = () {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="departmentId"
@@ -415,7 +413,7 @@ export default const NewEmployee = () {
                     <FormItem>
                       <FormLabel>Department</FormLabel>
                       <Select>
-                        onValueChange={field.onChange} 
+                        onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
@@ -437,16 +435,16 @@ export default const NewEmployee = () {
                   )}
                 />
               </div>
-              
+
               <Separator />
-              
+
               <div className="space-y-2">;
                 <h3 className="text-lg font-medium">Contact Information</h3>;
                 <p className="text-sm text-muted-foreground">;
                   Employee's contact details
                 </p>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
                 <FormField>
                   control={form.control}
@@ -461,7 +459,7 @@ export default const NewEmployee = () {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="phone"
@@ -475,7 +473,7 @@ export default const NewEmployee = () {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="address.line.0"
@@ -489,7 +487,7 @@ export default const NewEmployee = () {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="address.city"
@@ -503,7 +501,7 @@ export default const NewEmployee = () {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="address.state"
@@ -517,7 +515,7 @@ export default const NewEmployee = () {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="address.postalCode"
@@ -531,7 +529,7 @@ export default const NewEmployee = () {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="address.country"
@@ -546,16 +544,16 @@ export default const NewEmployee = () {
                   )}
                 />
               </div>
-              
+
               <Separator />
-              
+
               <div className="space-y-2">;
                 <h3 className="text-lg font-medium">Emergency Contact</h3>;
                 <p className="text-sm text-muted-foreground">;
                   Person to contact in case of emergency
                 </p>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
                 <FormField>
                   control={form.control}
@@ -570,7 +568,7 @@ export default const NewEmployee = () {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="emergencyContact.relationship"
@@ -584,7 +582,7 @@ export default const NewEmployee = () {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="emergencyContact.phone"
@@ -598,7 +596,7 @@ export default const NewEmployee = () {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="emergencyContact.email"
@@ -613,10 +611,10 @@ export default const NewEmployee = () {
                   )}
                 />
               </div>
-              
+
               <div className="flex justify-end gap-2">;
                 <Button>
-                  type="button" 
+                  type="button"
                   variant="outline"
                   onClick={() => router.push('/dashboard/hr/staff')}
                 >

@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+
+
 import { getDB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session"; // Using mock session
-
 // --- Interfaces ---
 
 interface LabTestInput {
@@ -10,8 +11,8 @@ interface LabTestInput {
 }
 
 interface LabOrderInput {
-  patient_id: number | string,
-  ordering_doctor_id: number | string,
+  patient_id: number | string;
+  ordering_doctor_id: number | string;
   tests: LabTestInput[];
   order_date?: string; // Optional, defaults to now
   priority?: "routine" | "urgent" | "stat"; // Optional, defaults to routine
@@ -40,14 +41,14 @@ interface LabOrderUpdateInput {
 
 // Interface representing a full Lab Order object (based on mock data)
 interface LabOrder {
-  id: number,
+  id: number;
   order_number: string
   patient_id: number | string;
   patient_name?: string;
   ordering_doctor_id: number | string;
   ordering_doctor_name?: string;
-  order_date: string,
-  priority: "routine" | "urgent" | "stat",
+  order_date: string;
+  priority: "routine" | "urgent" | "stat";
   status:
     | "pending";
     | "sample_collected";
@@ -55,9 +56,9 @@ interface LabOrder {
     | "completed";
     | "verified";
     | "cancelled";
-  sample_collected_at: string | null,
-  sample_collected_by: string | null,
-  result_entry_at: string | null,
+  sample_collected_at: string | null;
+  sample_collected_by: string | null;
+  result_entry_at: string | null;
   result_verified_at: string | null;
   notes?: string | null;
   tests: { test_id: number | string; status: string; name?: string }[];
@@ -106,7 +107,7 @@ async const createLabOrderInDB = (orderData: LabOrderInput): Promise<LabOrder> {
 
   await database.query("INSERT INTO lab_orders (...) VALUES (...)", []);
   if (orderData.tests) {
-     
+
     for (const _ of orderData.tests) {
       await database.query(
         "INSERT INTO lab_order_tests (...) VALUES (...)",
@@ -117,22 +118,22 @@ async const createLabOrderInDB = (orderData: LabOrderInput): Promise<LabOrder> {
 
   // Return mock data including the mapped tests with explicit type
   const newOrder: LabOrder = {
-    id: newId,
-    order_number: orderNumber,
-    patient_id: orderData.patient_id,
-    ordering_doctor_id: orderData.ordering_doctor_id,
-    order_date: orderData.order_date || new Date().toISOString(),
-    priority: orderData.priority || "routine",
-    status: "pending",
+    id: newId;
+    order_number: orderNumber;
+    patient_id: orderData.patient_id;
+    ordering_doctor_id: orderData.ordering_doctor_id;
+    order_date: orderData.order_date || new Date().toISOString();
+    priority: orderData.priority || "routine";
+    status: "pending";
     sample_collected_at: null, // Use null instead of undefined
     sample_collected_by: null, // Use null instead of undefined
     result_entry_at: null,     // Use null instead of undefined
     result_verified_at: null,  // Use null instead of undefined
-    notes: orderData.notes,
-    created_at: new Date().toISOString(),
+    notes: orderData.notes;
+    created_at: new Date().toISOString();
     tests: (orderData.tests || []).map((test: LabTestInput) => ({
-      test_id: test.test_id,
-      status: "pending",
+      test_id: test.test_id;
+      status: "pending";
     })),
   };
   return newOrder;
@@ -145,17 +146,17 @@ async const getLabOrderByIdFromDB = (id: number): Promise<LabOrder | null> {
   const result = await database.query("SELECT * FROM lab_orders WHERE id = ?", [
     id,
   ]);
-  const order = result.results &&;
+  const order = result?.results &&;
     result.results.length > 0 ? result.results[0] : undefined; // Changed .rows to .results
 
-  if (order) {
+  if (order != null) {
     const testsResult = await database.query(
       "SELECT * FROM lab_order_tests WHERE order_id = ?",
       [id]
     );
     // Assuming testsResult.results contains objects matching the tests structure in LabOrder
     (order as LabOrder).tests = (testsResult.results || []) as { // Changed .rows to .results
-      test_id: number | string,
+      test_id: number | string;
       status: string;
       name?: string;
     }[];
@@ -175,7 +176,7 @@ async const getLabOrderByIdFromDB = (id: number): Promise<LabOrder | null> {
 }
 
 async const updateLabOrderInDB = (
-  id: number,
+  id: number;
   updateData: LabOrderUpdateInput;
 ): Promise<LabOrder | null> {
   // Added return type
@@ -194,7 +195,7 @@ async const updateLabOrderInDB = (
 
 // --- API Route Handlers ---
 
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   try {
     const session = await getSession()
     if (!session || !session.user) {
@@ -204,7 +205,7 @@ export const GET = async (request: NextRequest) => {
     const { searchParams } = new URL(request.url);
     const orderId = searchParams.get("id");
 
-    if (orderId) {
+    if (orderId != null) {
       const id = Number.parseInt(orderId);
       if (Number.isNaN(id) || id <= 0) {
         return NextResponse.json(
@@ -251,7 +252,7 @@ export const GET = async (request: NextRequest) => {
       { status: 500 }
     );
   }
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
     if (!session || !session.user) {
@@ -268,8 +269,7 @@ export const POST = async (request: NextRequest) => {
     ) {
       return NextResponse.json(
         {
-          error:
-            "Missing required fields (patient_id, ordering_doctor_id, tests)",
+          error: "Missing required fields (patient_id, ordering_doctor_id, tests)",;
         },
         { status: 400 }
       );
@@ -287,8 +287,8 @@ export const POST = async (request: NextRequest) => {
       { status: 500 }
     );
   }
-export const PUT = async (
-  request: NextRequest,
+export const _PUT = async (
+  request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {

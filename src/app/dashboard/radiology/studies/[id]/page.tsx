@@ -1,10 +1,11 @@
+import React from "react";
+
+
+import RadiologyStudyDetail from "@/components/radiology/radiology-study-detail";
 }
 
 "use client";
 export const dynamic = 'force-dynamic';
 
-import React from "react";
-import RadiologyStudyDetail from "@/components/radiology/radiology-study-detail";
-
-export default const StudyDetailPage = () {
+export default const _StudyDetailPage = () {
   return <RadiologyStudyDetail />

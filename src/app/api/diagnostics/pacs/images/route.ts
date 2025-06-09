@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from '@/lib/session';
+
+
+import { CacheInvalidation } from '@/lib/cache/invalidation';
 import { DB } from '@/lib/database';
 import { RedisCache } from '@/lib/cache/redis';
-import { CacheInvalidation } from '@/lib/cache/invalidation';
 import { auditLog } from '@/lib/audit';
-
+import { getSession } from '@/lib/session';
 /**
  * GET /api/diagnostics/pacs/images;
  * Get PACS images with optional filtering;
@@ -45,8 +46,8 @@ export const GET = async (request: NextRequest) => {
       async () => {
         // Build query
         let query = `;
-          SELECT i.*, 
-                 p.patient_id as patient_identifier, p.first_name, p.last_name, 
+          SELECT i.*,
+                 p.patient_id as patient_identifier, p.first_name, p.last_name,
                  ro.order_number, ro.procedure_name;
           FROM pacs_images i;
           JOIN patients p ON i.patient_id = p.id;
@@ -56,37 +57,37 @@ export const GET = async (request: NextRequest) => {
         const params: unknown[] = [];
 
         // Add filters
-        if (patientId) {
+        if (patientId != null) {
           query += ' AND i.patient_id = ?';
           params.push(patientId);
         }
 
-        if (studyInstanceUid) {
+        if (studyInstanceUid != null) {
           query += ' AND i.study_instance_uid = ?';
           params.push(studyInstanceUid);
         }
 
-        if (seriesInstanceUid) {
+        if (seriesInstanceUid != null) {
           query += ' AND i.series_instance_uid = ?';
           params.push(seriesInstanceUid);
         }
 
-        if (modality) {
+        if (modality != null) {
           query += ' AND i.modality = ?';
           params.push(modality);
         }
 
-        if (accessionNumber) {
+        if (accessionNumber != null) {
           query += ' AND i.accession_number = ?';
           params.push(accessionNumber);
         }
 
-        if (fromDate) {
+        if (fromDate != null) {
           query += ' AND i.study_date >= ?';
           params.push(fromDate);
         }
 
-        if (toDate) {
+        if (toDate != null) {
           query += ' AND i.study_date <= ?';
           params.push(toDate);
         }
@@ -107,7 +108,7 @@ export const GET = async (request: NextRequest) => {
           LEFT JOIN radiology_orders ro ON i.order_id = ro.id;
           WHERE 1=1;
           /* SECURITY: Template literal eliminated */
-        
+
         const countParams = params.slice(0, -2);
         const countResult = await DB.query(countQuery, countParams);
 
@@ -116,14 +117,14 @@ export const GET = async (request: NextRequest) => {
 
         // Log access
         await auditLog({
-          userId: session.user.id,
-          action: 'read',
-          resource: 'pacs_images',
+          userId: session.user.id;
+          action: 'read';
+          resource: 'pacs_images';
           details: { patientId, studyInstanceUid, modality, page, pageSize }
         });
 
         return {
-          images: result.results,
+          images: result.results;
           pagination: {
             page,
             pageSize,
@@ -139,8 +140,8 @@ export const GET = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch PACS images',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to fetch PACS images';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }
@@ -149,7 +150,7 @@ export const GET = async (request: NextRequest) => {
  * GET /api/diagnostics/pacs/images/:id;
  * Get a specific PACS image by ID;
  */
-export const GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();
@@ -171,8 +172,8 @@ export const GET_BY_ID = async (request: NextRequest, { params }: { params: { id
       async () => {
         // Get image
         const query = `;
-          SELECT i.*, 
-                 p.patient_id as patient_identifier, p.first_name, p.last_name, 
+          SELECT i.*,
+                 p.patient_id as patient_identifier, p.first_name, p.last_name,
                  ro.order_number, ro.procedure_name;
           FROM pacs_images i;
           JOIN patients p ON i.patient_id = p.id;
@@ -188,10 +189,10 @@ export const GET_BY_ID = async (request: NextRequest, { params }: { params: { id
 
         // Log access
         await auditLog({
-          userId: session.user.id,
-          action: 'read',
-          resource: 'pacs_images',
-          resourceId: id,
+          userId: session.user.id;
+          action: 'read';
+          resource: 'pacs_images';
+          resourceId: id;
           details: { id }
         });
 
@@ -204,8 +205,8 @@ export const GET_BY_ID = async (request: NextRequest, { params }: { params: { id
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch PACS image',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to fetch PACS image';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }
@@ -214,7 +215,7 @@ export const GET_BY_ID = async (request: NextRequest, { params }: { params: { id
  * POST /api/diagnostics/pacs/images/retrieve;
  * Retrieve images from PACS server;
  */
-export const POST_RETRIEVE = async (request: NextRequest) => {
+export const _POST_RETRIEVE = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -229,9 +230,9 @@ export const POST_RETRIEVE = async (request: NextRequest) => {
 
     // Parse request body
     const body = await request.json();
-    const { 
-      patientId, 
-      accessionNumber, 
+    const {
+      patientId,
+      accessionNumber,
       studyInstanceUid,
       studyDate,
       modality;
@@ -239,7 +240,7 @@ export const POST_RETRIEVE = async (request: NextRequest) => {
 
     // Validate required fields
     if (!patientId && !accessionNumber && !studyInstanceUid) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         error: 'At least one of patientId, accessionNumber, or studyInstanceUid is required';
       }, { status: 400 });
     }
@@ -250,45 +251,45 @@ export const POST_RETRIEVE = async (request: NextRequest) => {
       WHERE active = true;
       LIMIT 1;
     `;
-    
+
     const pacsConfigResult = await DB.query(pacsConfigQuery);
-    
+
     if (pacsConfigResult.results.length === 0) {
       return NextResponse.json({
-        error: 'PACS not configured'
+        error: 'PACS not configured';
       }, { status: 400 });
     }
 
     // In a real implementation, this would use a DICOM library to query the PACS server
     // For this example, we'll simulate a successful retrieval
-    
+
     // Simulate retrieval delay
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     // Simulate retrieved images
     const retrievedImages = [];
-    
+
     // If we have a study instance UID, simulate retrieving that specific study
-    if (studyInstanceUid) {
+    if (studyInstanceUid != null) {
       // Generate a random number of series (1-5)
       const seriesCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 5) + 1
-      
+
       for (let i = 0; i < seriesCount; i++) {
         // Generate a random number of instances (5-20)
         const instanceCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 16) + 5
-        
+
         const seriesInstanceUid = `1.2.840.10008.5.1.4.1.1.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}`;
-        
+
         for (let j = 0; j < instanceCount; j++) {
           retrievedImages.push({
             studyInstanceUid,
             seriesInstanceUid,
             sopInstanceUid: `1.2.840.10008.5.1.4.1.1.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${j + 1}`,
-            instanceNumber: j + 1,
-            modality: modality || 'CT',
-            studyDate: studyDate || new Date().toISOString().split('T')[0],
-            studyTime: new Date().toISOString().split('T')[1].split('.')[0],
-            seriesNumber: i + 1,
+            instanceNumber: j + 1;
+            modality: modality || 'CT';
+            studyDate: studyDate || new Date().toISOString().split('T')[0];
+            studyTime: new Date().toISOString().split('T')[1].split('.')[0];
+            seriesNumber: i + 1;
             seriesDescription: `Series ${i + 1}`,
             patientId,
             accessionNumber: accessionNumber || `ACC${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000)}`;
@@ -298,27 +299,27 @@ export const POST_RETRIEVE = async (request: NextRequest) => {
     } else {
       // Simulate retrieving multiple studies
       const studyCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 3) + 1;
-      
+
       for (let s = 0; s < studyCount; s++) {
         const studyInstanceUid = `1.2.840.10008.5.1.4.1.1.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}`;
         const seriesCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 3) + 1;
-        
+
         for (let i = 0; i < seriesCount; i++) {
           const instanceCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10) + 5;
-          
+
           const seriesInstanceUid = `1.2.840.10008.5.1.4.1.1.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}`;
-          
+
           for (let j = 0; j < instanceCount; j++) {
             retrievedImages.push({
               studyInstanceUid,
               seriesInstanceUid,
               sopInstanceUid: `1.2.840.10008.5.1.4.1.1.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${j + 1}`,
-              instanceNumber: j + 1,
+              instanceNumber: j + 1;
               modality: modality || ['CT', 'MR', 'XR'][Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 3)],
               studyDate: studyDate ||
                 new Date(crypto.getRandomValues(new Uint32Array(1))[0] - Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 30) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-              studyTime: new Date().toISOString().split('T')[1].split('.')[0],
-              seriesNumber: i + 1,
+              studyTime: new Date().toISOString().split('T')[1].split('.')[0];
+              seriesNumber: i + 1;
               seriesDescription: `Series ${i + 1}`,
               patientId,
               accessionNumber: accessionNumber || `ACC${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000)}`;
@@ -327,36 +328,36 @@ export const POST_RETRIEVE = async (request: NextRequest) => {
         }
       }
     }
-    
+
     // In a real implementation, we would store these images in the database
     // For this example, we'll just return the simulated results
-    
+
     // Log retrieval
     await auditLog({
-      userId: session.user.id,
-      action: 'retrieve',
-      resource: 'pacs_images',
+      userId: session.user.id;
+      action: 'retrieve';
+      resource: 'pacs_images';
       details: {
         patientId,
         accessionNumber,
         studyInstanceUid,
-        imagesRetrieved: retrievedImages.length
+        imagesRetrieved: retrievedImages.length;
       }
     });
-    
+
     return NextResponse.json({
-      success: true,
+      success: true;
       message: `Successfully retrieved ${retrievedImages.length} images`,
       retrievedImages: retrievedImages.slice(0, 10), // Return only first 10 for brevity
-      totalImages: retrievedImages.length,
-      uniqueStudies: new Set(retrievedImages.map(img => img.studyInstanceUid)).size,
-      uniqueSeries: new Set(retrievedImages.map(img => img.seriesInstanceUid)).size
+      totalImages: retrievedImages.length;
+      uniqueStudies: new Set(retrievedImages.map(img => img.studyInstanceUid)).size;
+      uniqueSeries: new Set(retrievedImages.map(img => img.seriesInstanceUid)).size;
     });
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to retrieve images from PACS',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to retrieve images from PACS';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }
@@ -365,7 +366,7 @@ export const POST_RETRIEVE = async (request: NextRequest) => {
  * POST /api/diagnostics/pacs/images/store;
  * Store images to PACS server;
  */
-export const POST_STORE = async (request: NextRequest) => {
+export const _POST_STORE = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -380,10 +381,10 @@ export const POST_STORE = async (request: NextRequest) => {
 
     // Parse request body
     const body = await request.json();
-    const { 
-      patientId, 
+    const {
+      patientId,
       orderId,
-      accessionNumber, 
+      accessionNumber,
       modality,
       studyInstanceUid,
       seriesInstanceUid,
@@ -393,7 +394,7 @@ export const POST_STORE = async (request: NextRequest) => {
 
     // Validate required fields
     if (!patientId || !modality || !studyInstanceUid || !seriesInstanceUid || !sopInstanceUid || !imageData) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         error: 'Patient ID, modality, study instance UID, series instance UID, SOP instance UID, and image data are required';
       }, { status: 400 });
     }
@@ -404,12 +405,12 @@ export const POST_STORE = async (request: NextRequest) => {
       WHERE active = true;
       LIMIT 1;
     `;
-    
+
     const pacsConfigResult = await DB.query(pacsConfigQuery);
-    
+
     if (pacsConfigResult.results.length === 0) {
       return NextResponse.json({
-        error: 'PACS not configured'
+        error: 'PACS not configured';
       }, { status: 400 });
     }
 
@@ -420,7 +421,7 @@ export const POST_STORE = async (request: NextRequest) => {
     }
 
     // Check if order exists if provided
-    if (orderId) {
+    if (orderId != null) {
       const orderCheck = await DB.query('SELECT id FROM radiology_orders WHERE id = ?', [orderId]);
       if (orderCheck.results.length === 0) {
         return NextResponse.json({ error: 'Order not found' }, { status: 404 });
@@ -429,10 +430,10 @@ export const POST_STORE = async (request: NextRequest) => {
 
     // In a real implementation, this would use a DICOM library to store the image to the PACS server
     // For this example, we'll simulate a successful storage
-    
+
     // Simulate storage delay
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     // Insert image record
     const query = `;
       INSERT INTO pacs_images (
@@ -463,10 +464,10 @@ export const POST_STORE = async (request: NextRequest) => {
 
     // Log storage
     await auditLog({
-      userId: session.user.id,
-      action: 'store',
-      resource: 'pacs_images',
-      resourceId: result.insertId,
+      userId: session.user.id;
+      action: 'store';
+      resource: 'pacs_images';
+      resourceId: result.insertId;
       details: {
         patientId,
         orderId,
@@ -480,9 +481,9 @@ export const POST_STORE = async (request: NextRequest) => {
     await CacheInvalidation.invalidatePattern('diagnostic:pacs:images:*');
 
     return NextResponse.json({
-      success: true,
-      message: 'Image successfully stored to PACS',
-      imageId: result.insertId,
+      success: true;
+      message: 'Image successfully stored to PACS';
+      imageId: result.insertId;
       studyInstanceUid,
       seriesInstanceUid,
       sopInstanceUid;
@@ -490,8 +491,8 @@ export const POST_STORE = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to store image to PACS',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to store image to PACS';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }
@@ -500,7 +501,7 @@ export const POST_STORE = async (request: NextRequest) => {
  * POST /api/diagnostics/pacs/images/:id/annotations;
  * Add annotations to a PACS image;
  */
-export const POST_ANNOTATIONS = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _POST_ANNOTATIONS = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();
@@ -520,9 +521,9 @@ export const POST_ANNOTATIONS = async (request: NextRequest, { params }: { param
 
     // Parse request body
     const body = await request.json();
-    const { 
-      annotationType, 
-      coordinates, 
+    const {
+      annotationType,
+      coordinates,
       measurements,
       text,
       color,
@@ -531,8 +532,8 @@ export const POST_ANNOTATIONS = async (request: NextRequest, { params }: { param
 
     // Validate required fields
     if (!annotationType || !coordinates) {
-      return NextResponse.json({ 
-        error: 'Annotation type and coordinates are required'
+      return NextResponse.json({
+        error: 'Annotation type and coordinates are required';
       }, { status: 400 });
     }
 
@@ -566,15 +567,15 @@ export const POST_ANNOTATIONS = async (request: NextRequest, { params }: { param
 
     // Log annotation
     await auditLog({
-      userId: session.user.id,
-      action: 'create',
-      resource: 'pacs_image_annotations',
-      resourceId: result.insertId,
+      userId: session.user.id;
+      action: 'create';
+      resource: 'pacs_image_annotations';
+      resourceId: result.insertId;
       details: {
-        imageId: id,
+        imageId: id;
         annotationType,
-        hasText: !!text,
-        hasMeasurements: !!measurements
+        hasText: !!text;
+        hasMeasurements: !!measurements;
       }
     });
 
@@ -587,8 +588,8 @@ export const POST_ANNOTATIONS = async (request: NextRequest, { params }: { param
     // Parse JSON fields
     const annotation = {
       ...createdAnnotation.results[0],
-      coordinates: JSON.parse(createdAnnotation.results[0].coordinates),
-      measurements: createdAnnotation.results[0].measurements ? 
+      coordinates: JSON.parse(createdAnnotation.results[0].coordinates);
+      measurements: createdAnnotation.results[0].measurements ?
         JSON.parse(createdAnnotation.results[0].measurements) : null
     };
 
@@ -596,8 +597,8 @@ export const POST_ANNOTATIONS = async (request: NextRequest, { params }: { param
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to add annotation',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to add annotation';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }
@@ -606,7 +607,7 @@ export const POST_ANNOTATIONS = async (request: NextRequest, { params }: { param
  * GET /api/diagnostics/pacs/images/:id/annotations;
  * Get annotations for a PACS image;
  */
-export const GET_ANNOTATIONS = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_ANNOTATIONS = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();
@@ -646,15 +647,15 @@ export const GET_ANNOTATIONS = async (request: NextRequest, { params }: { params
         // Parse JSON fields
         const annotations = result.results.map(annotation => ({
           ...annotation,
-          coordinates: JSON.parse(annotation.coordinates),
-          measurements: annotation.measurements ? JSON.parse(annotation.measurements) : null
+          coordinates: JSON.parse(annotation.coordinates);
+          measurements: annotation.measurements ? JSON.parse(annotation.measurements) : null;
         }));
 
         // Log access
         await auditLog({
-          userId: session.user.id,
-          action: 'read',
-          resource: 'pacs_image_annotations',
+          userId: session.user.id;
+          action: 'read';
+          resource: 'pacs_image_annotations';
           details: { imageId: id }
         });
 
@@ -667,7 +668,7 @@ export const GET_ANNOTATIONS = async (request: NextRequest, { params }: { params
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch annotations',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to fetch annotations';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }

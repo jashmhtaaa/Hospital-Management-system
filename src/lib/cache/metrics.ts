@@ -1,10 +1,10 @@
-import { RedisCache } from './redis.ts';
 
+import { RedisCache } from './redis.ts';
 export class CacheMetrics {
   private static hits = 0;
   private static misses = 0;
   private static totalRequests = 0;
-  
+
   /**
    * Record a cache hit;
    */
@@ -12,7 +12,7 @@ export class CacheMetrics {
     this.hits++;
     this.totalRequests++;
   }
-  
+
   /**
    * Record a cache miss;
    */
@@ -20,7 +20,7 @@ export class CacheMetrics {
     this.misses++;
     this.totalRequests++;
   }
-  
+
   /**
    * Get cache hit rate;
    */
@@ -30,24 +30,24 @@ export class CacheMetrics {
     }
     return this.hits / this.totalRequests;
   }
-  
+
   /**
    * Get cache metrics;
    */
   static getMetrics(): {
-    hits: number,
-    misses: number,
-    totalRequests: number,
-    hitRate: number
+    hits: number;
+    misses: number;
+    totalRequests: number;
+    hitRate: number;
   } {
     return {
-      hits: this.hits,
-      misses: this.misses,
-      totalRequests: this.totalRequests,
-      hitRate: this.getHitRate(),
+      hits: this.hits;
+      misses: this.misses;
+      totalRequests: this.totalRequests;
+      hitRate: this.getHitRate();
     };
   }
-  
+
   /**
    * Reset metrics;
    */
@@ -62,7 +62,7 @@ export class CacheMetrics {
 const originalGet = RedisCache.get;
 RedisCache.get = async function<T>(key: string): Promise<T | null> {
   const result = await originalGet<T>(key);
-  if (result) {
+  if (result != null) {
     CacheMetrics.recordHit();
   } else {
     CacheMetrics.recordMiss();

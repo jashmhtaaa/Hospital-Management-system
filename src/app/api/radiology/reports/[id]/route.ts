@@ -1,8 +1,9 @@
+import { IronSession } from "iron-session"; // Import IronSession
 import { NextRequest, NextResponse } from "next/server";
+
+
 import { getDB } from "@/lib/database"; // Import getDB function
 import { getSession, IronSessionData } from "@/lib/session"; // Import IronSessionData
-import { IronSession } from "iron-session"; // Import IronSession
-
 // Define generic SingleQueryResult type for .first()
 interface SingleQueryResult<T> {
   result?: T | null
@@ -11,13 +12,13 @@ interface SingleQueryResult<T> {
 
 // Define interfaces
 interface RadiologyReport {
-  id: string,
+  id: string;
   study_id: string;
   report_text?: string | null;
   findings?: string | null;
   impression?: string | null;
   recommendations?: string | null;
-  status: "preliminary" | "final" | "addendum" | "retracted",
+  status: "preliminary" | "final" | "addendum" | "retracted";
   radiologist_id: string; // Assuming this is the User ID (number)
   verified_by_id?: string | null; // Assuming this is the User ID (number)
   report_datetime: string; // ISO date string
@@ -48,7 +49,7 @@ interface RadiologyReportPutData {
 // Removed custom Session and SessionUser interfaces
 
 // GET a specific Radiology Report by ID
-export const GET = async (
+export const _GET = async (
   _request: NextRequest, // Renamed to _request as it's unused
   { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+)
 ): Promise<NextResponse> {
@@ -119,8 +120,8 @@ export const GET = async (
 }
 
 // PUT (update/verify) a specific Radiology Report
-export const PUT = async (
-  request: NextRequest,
+export const _PUT = async (
+  request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+)
 ): Promise<NextResponse> {
   try {
@@ -153,7 +154,7 @@ export const PUT = async (
       .bind(reportId);
       .first()) as SingleQueryResult<{
       radiologist_id: string; // Assuming this is User ID (number)
-      status: string
+      status: string;
     }>;
 
     // Check result property
@@ -218,7 +219,7 @@ export const PUT = async (
     }
     if (data.verified_by_id !== undefined) {
       // Optional: Check if the verifier is a valid user
-      // const verifierExists = await db.prepare("SELECT id FROM Users WHERE id = ? AND \'Radiologist\' = ANY(roles)").bind(data.verified_by_id).first()
+      // const _verifierExists = await db.prepare("SELECT id FROM Users WHERE id = ? AND \'Radiologist\' = ANY(roles)").bind(data.verified_by_id).first()
       // if (!verifierExists) return NextResponse.json({ error: "Invalid verifier ID or verifier is not a Radiologist" }, { status: 400 })
 
       fieldsToUpdate.verified_by_id = data.verified_by_id;
@@ -307,8 +308,8 @@ export const PUT = async (
 
     return NextResponse.json(
       updatedReport || {
-        id: reportId,
-        message: "Radiology report update processed",
+        id: reportId;
+        message: "Radiology report update processed";
       }
     ); // Return updated report or confirmation
   } catch (error: unknown) {
@@ -323,7 +324,7 @@ export const PUT = async (
 }
 
 // DELETE a specific Radiology Report (Admin only - consider status update instead)
-export const DELETE = async (
+export const _DELETE = async (
   _request: NextRequest, // Renamed to _request as it's unused
   { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+)
 ): Promise<NextResponse> {
@@ -378,8 +379,8 @@ export const DELETE = async (
     }
 
     return NextResponse.json({
-      id: reportId,
-      status: "Radiology report retracted",
+      id: reportId;
+      status: "Radiology report retracted";
     });
   } catch (error: unknown) {
     const message =;

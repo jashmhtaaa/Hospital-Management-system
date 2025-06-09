@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
 import {
+import { NextRequest, NextResponse } from "next/server";
   getAdmissionsFromDB,
   getAdmissionByIdFromDB,
   createAdmissionInDB,
   updateAdmissionInDB,
   AdmissionFilters, // Import AdmissionFilters from lib
   CreateAdmissionData, // FIX: Import CreateAdmissionData
-  UpdateAdmissionData, // FIX: Import UpdateAdmissionData
+  UpdateAdmissionData, // FIX: Import UpdateAdmissionData;
 } from "@/lib/ipd"; // Assuming these functions exist and handle DB interaction
 
 // FIX: Remove local definitions of AdmissionInput and AdmissionUpdateInput
@@ -59,7 +59,7 @@ export const GET = async (request: NextRequest) => {
     }
 
     // If an ID is provided, attempt to fetch a single admission
-    if (admissionId) {
+    if (admissionId != null) {
       const id = Number.parseInt(admissionId);
       if (Number.isNaN(id) || id <= 0) {
         return NextResponse.json(
@@ -134,7 +134,7 @@ export const POST = async (request: NextRequest) => {
 /**
  * PUT /api/ipd/admissions/[id]
  * Updates an existing admission.
- * Note: This route structure assumes the ID is part of the path,
+ * Note: This route structure assumes the ID is part of the path;
  * but the current implementation reads it from the path manually.
  * A better approach is to use dynamic route segments like /api/ipd/admissions/[id]/route.ts;
  */

@@ -1,12 +1,13 @@
+import { describe, test, beforeAll } from '@jest/globals';
+
+
+import { FHIRIntegrationUtils } from '../fhir-integration';
 }
 
 /**
  * FHIR Integration Tests;
  * Comprehensive tests for FHIR R4 implementation;
  */
-
-import { describe, test, beforeAll } from '@jest/globals';
-import { FHIRIntegrationUtils } from '../fhir-integration';
 
 describe('FHIR R4 Integration Tests', () => {
   beforeAll(async () => {

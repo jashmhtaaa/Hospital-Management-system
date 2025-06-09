@@ -1,24 +1,25 @@
+import CredentialsProvider from "next-auth/providers/credentials";
 import { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { prisma } from "@/lib/prisma";
-import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
 
+
+import { prisma } from "@/lib/prisma";
 /**
  * Authentication integration for HR & Asset Management module;
  * This connects the HR module with the central HMS authentication system;
  */
-export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+export const _authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma);
   session: {
-    strategy: "jwt",
+    strategy: "jwt";
   },
   pages: {
-    signIn: "/login",
+    signIn: "/login";
   },
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: "Credentials";
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" }
@@ -30,11 +31,11 @@ export const authOptions: NextAuthOptions = {
 
         const user = await prisma.user.findUnique({
           where: {
-            email: credentials.email
+            email: credentials.email;
           },
           include: {
-            employee: true,
-            roles: true
+            employee: true;
+            roles: true;
           }
         });
 
@@ -49,18 +50,18 @@ export const authOptions: NextAuthOptions = {
         }
 
         return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          employeeId: user.employee?.id,
-          roles: user.roles.map(role => role.name)
+          id: user.id;
+          email: user.email;
+          name: user.name;
+          employeeId: user.employee?.id;
+          roles: user.roles.map(role => role.name);
         };
       }
     });
   ],
   callbacks: {
     async session({ session, token }) {
-      if (token) {
+      if (token != null) {
         session.user.id = token.id;
         session.user.name = token.name;
         session.user.email = token.email;
@@ -70,7 +71,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async jwt({ token, user }) {
-      if (user) {
+      if (user != null) {
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;

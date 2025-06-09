@@ -1,68 +1,68 @@
+
+import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 }
 
 "use client";
 
-import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
-
 // Define interfaces for data structures
 interface Patient {
-  id: string,
-  first_name: string,
-  last_name: string,
-  gender: string,
-  age: number,
-  phone: string
+  id: string;
+  first_name: string;
+  last_name: string;
+  gender: string;
+  age: number;
+  phone: string;
 }
 
 interface Medication {
-  id: string,
-  generic_name: string,
-  brand_name: string,
-  strength: string,
-  dosage_form: string
+  id: string;
+  generic_name: string;
+  brand_name: string;
+  strength: string;
+  dosage_form: string;
 }
 
 interface PrescriptionItemInput {
-  medication_id: string,
-  dosage: string,
-  frequency: string,
-  duration: string,
+  medication_id: string;
+  dosage: string;
+  frequency: string;
+  duration: string;
   quantity: number | string; // Allow string for input, parse later
-  instructions: string
+  instructions: string;
 }
 
 interface SelectedMedication extends Medication {
-  dosage: string,
-  frequency: string,
-  duration: string,
+  dosage: string;
+  frequency: string;
+  duration: string;
   quantity: string; // Keep as string for input state
-  instructions: string
+  instructions: string;
 }
 
 interface PrescriptionItemDisplay {
-  medication: string,
-  dosage: string,
-  frequency: string,
-  duration: string
+  medication: string;
+  dosage: string;
+  frequency: string;
+  duration: string;
 }
 
 interface Prescription {
-  id: string,
-  date: string,
-  status: "pending" | "dispensed" | "cancelled",
-  items: PrescriptionItemDisplay[]
+  id: string;
+  date: string;
+  status: "pending" | "dispensed" | "cancelled";
+  items: PrescriptionItemDisplay[];
 }
 
 interface PrescriptionFormData {
-  patient_id: string,
-  doctor_id: string,
-  notes: string,
-  items: PrescriptionItemInput[]
+  patient_id: string;
+  doctor_id: string;
+  notes: string;
+  items: PrescriptionItemInput[];
 }
 
 // Component to integrate Pharmacy with OPD module
 const OPDPharmacyIntegration: React.FC = () => {
-  // const router = useRouter(); // Removed unused variable (and missing import)
+  // const _router = useRouter(); // Removed unused variable (and missing import)
   const [loading, setLoading] = useState<boolean>(true)
   const [activePatient, setActivePatient] = useState<Patient | null>();
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
@@ -72,9 +72,9 @@ const OPDPharmacyIntegration: React.FC = () => {
   >([]);
   const [formData, setFormData] = useState<Omit<PrescriptionFormData, "items">>(
     {
-      patient_id: "",
+      patient_id: "";
       doctor_id: "", // This should ideally come from auth context
-      notes: "",
+      notes: "";
     }
   );
 
@@ -84,18 +84,18 @@ const OPDPharmacyIntegration: React.FC = () => {
       try {
         // Simulate fetching active patient
         const simulatedPatient: Patient = {
-          id: "pat_12345",
-          first_name: "John",
-          last_name: "Smith",
-          gender: "Male",
-          age: 45,
-          phone: "555-1234",
+          id: "pat_12345";
+          first_name: "John";
+          last_name: "Smith";
+          gender: "Male";
+          age: 45;
+          phone: "555-1234";
         };
         setActivePatient(simulatedPatient),
         setFormData((previous) => ({
           ...previous,
-          patient_id: simulatedPatient.id,
-          doctor_id: "doc_67890", // Simulate logged-in doctor ID
+          patient_id: simulatedPatient.id;
+          doctor_id: "doc_67890", // Simulate logged-in doctor ID;
         }));
       } catch (error) {
 
@@ -109,39 +109,39 @@ const OPDPharmacyIntegration: React.FC = () => {
         // Simulate fetching medications
         const simulatedMedications: Medication[] = [
           {
-            id: "med_001",
-            generic_name: "Paracetamol",
-            brand_name: "Calpol",
-            strength: "500mg",
-            dosage_form: "Tablet",
+            id: "med_001";
+            generic_name: "Paracetamol";
+            brand_name: "Calpol";
+            strength: "500mg";
+            dosage_form: "Tablet";
           },
           {
-            id: "med_002",
-            generic_name: "Amoxicillin",
-            brand_name: "Amoxil",
-            strength: "250mg",
-            dosage_form: "Capsule",
+            id: "med_002";
+            generic_name: "Amoxicillin";
+            brand_name: "Amoxil";
+            strength: "250mg";
+            dosage_form: "Capsule";
           },
           {
-            id: "med_003",
-            generic_name: "Cetirizine",
-            brand_name: "Zyrtec",
-            strength: "10mg",
-            dosage_form: "Tablet",
+            id: "med_003";
+            generic_name: "Cetirizine";
+            brand_name: "Zyrtec";
+            strength: "10mg";
+            dosage_form: "Tablet";
           },
           {
-            id: "med_004",
-            generic_name: "Ibuprofen",
-            brand_name: "Brufen",
-            strength: "400mg",
-            dosage_form: "Tablet",
+            id: "med_004";
+            generic_name: "Ibuprofen";
+            brand_name: "Brufen";
+            strength: "400mg";
+            dosage_form: "Tablet";
           },
           {
-            id: "med_005",
-            generic_name: "Omeprazole",
-            brand_name: "Prilosec",
-            strength: "20mg",
-            dosage_form: "Capsule",
+            id: "med_005";
+            generic_name: "Omeprazole";
+            brand_name: "Prilosec";
+            strength: "20mg";
+            dosage_form: "Capsule";
           },
         ];
         setMedications(simulatedMedications);
@@ -161,41 +161,41 @@ const OPDPharmacyIntegration: React.FC = () => {
       }
       try {
         // Simulate fetching prescriptions for the active patient
-        // const response = await fetch(`/api/pharmacy/prescriptions?patientId=${activePatient.id}`)
+        // const _response = await fetch(`/api/pharmacy/prescriptions?patientId=${activePatient.id}`)
         // if (!response.ok) throw new Error('Failed to fetch prescriptions')
         // const data = await response.json()
         // setPrescriptions(data.prescriptions || [])
 
         const simulatedPrescriptions: Prescription[] = [
           {
-            id: "presc_001",
-            date: "2025-04-20",
-            status: "dispensed",
+            id: "presc_001";
+            date: "2025-04-20";
+            status: "dispensed";
             items: [
               {
-                medication: "Paracetamol 500mg",
-                dosage: "1 tablet",
-                frequency: "TID",
-                duration: "5 days",
+                medication: "Paracetamol 500mg";
+                dosage: "1 tablet";
+                frequency: "TID";
+                duration: "5 days";
               },
               {
-                medication: "Cetirizine 10mg",
-                dosage: "1 tablet",
-                frequency: "OD",
-                duration: "7 days",
+                medication: "Cetirizine 10mg";
+                dosage: "1 tablet";
+                frequency: "OD";
+                duration: "7 days";
               },
             ],
           },
           {
-            id: "presc_002",
-            date: "2025-04-25",
-            status: "pending",
+            id: "presc_002";
+            date: "2025-04-25";
+            status: "pending";
             items: [
               {
-                medication: "Amoxicillin 250mg",
-                dosage: "1 capsule",
-                frequency: "BID",
-                duration: "7 days",
+                medication: "Amoxicillin 250mg";
+                dosage: "1 capsule";
+                frequency: "BID";
+                duration: "7 days";
               },
             ],
           },
@@ -212,7 +212,7 @@ const OPDPharmacyIntegration: React.FC = () => {
     fetchActivePatient(),
     fetchMedications();
     // Fetch prescriptions depends on activePatient being set first
-    if (activePatient) {
+    if (activePatient != null) {
       fetchPrescriptions();
     } else {
       // If activePatient is fetched async, fetchPrescriptions might need to be called in its .then() or based on state change
@@ -226,11 +226,11 @@ const OPDPharmacyIntegration: React.FC = () => {
     if (!selectedMedications.some((med) => med.id === medication.id)) {
       const newMed: SelectedMedication = {
         ...medication,
-        dosage: "",
-        frequency: "",
-        duration: "",
-        quantity: "",
-        instructions: "",
+        dosage: "";
+        frequency: "";
+        duration: "";
+        quantity: "";
+        instructions: "";
       };
       setSelectedMedications([...selectedMedications, newMed]);
     }
@@ -243,8 +243,8 @@ const OPDPharmacyIntegration: React.FC = () => {
   };
 
   const handleMedicationChange = (
-    index: number,
-    field: keyof SelectedMedication,
+    index: number;
+    field: keyof SelectedMedication;
     value: string;
   ): void => {
     const updatedMeds = [...selectedMedications];
@@ -275,32 +275,32 @@ const OPDPharmacyIntegration: React.FC = () => {
           );
         }
         return {
-          medication_id: med.id,
-          dosage: med.dosage,
-          frequency: med.frequency,
-          duration: med.duration,
-          quantity: quantity,
-          instructions: med.instructions,
+          medication_id: med.id;
+          dosage: med.dosage;
+          frequency: med.frequency;
+          duration: med.duration;
+          quantity: quantity;
+          instructions: med.instructions;
         };
       });
 
-      const prescriptionData: PrescriptionFormData = {
+      const _prescriptionData: PrescriptionFormData = {
         ...formData,
         items,
         // source: 'opd', // Add if API expects it
-        // source_id: 'opd_visit_12345' // Add actual OPD visit ID if API expects it
+        // source_id: 'opd_visit_12345' // Add actual OPD visit ID if API expects it;
       }
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
       // Simulate API call
-      // const response = await fetch('/api/pharmacy/prescriptions', {
-      //   method: 'POST',
+      // const _response = await fetch('/api/pharmacy/prescriptions', {
+      //   method: 'POST';
       //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(prescriptionData),
+      //   body: JSON.stringify(prescriptionData);
       // })
       // if (!response.ok) {
-      //   const errorData = await response.json().catch(() => ({}))
+      //   const _errorData = await response.json().catch(() => ({}))
       //   throw new Error(errorData.error || 'Failed to create prescription')
       // }
 
@@ -312,13 +312,13 @@ const OPDPharmacyIntegration: React.FC = () => {
       // Add the new prescription to the local state for display
       const newPrescription: Prescription = {
         id: `presc_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-        date: new Date().toISOString().split("T")[0],
-        status: "pending",
+        date: new Date().toISOString().split("T")[0];
+        status: "pending";
         items: selectedMedications.map((med) => ({
           medication: `/* SECURITY: Template literal eliminated */
-          dosage: med.dosage,
-          frequency: med.frequency,
-          duration: med.duration,
+          dosage: med.dosage;
+          frequency: med.frequency;
+          duration: med.duration;
         })),
       };
       setPrescriptions([newPrescription, ...prescriptions]);
@@ -327,13 +327,13 @@ const OPDPharmacyIntegration: React.FC = () => {
       setSelectedMedications([]),
       setFormData((previous) => ({
         ...previous,
-        notes: "", // Reset notes field
+        notes: "", // Reset notes field;
       }));
     } catch (error) {
 
-        const message =;
-          error instanceof Error ? error.message : "An unknown error occurred.";
-        /* SECURITY: Console statement removed */
+        const _message =;
+          error instanceof Error ? error._message : "An unknown error occurred.";
+        /* SECURITY: Console statement removed */;
     } finally {
       setLoading(false);
     }
@@ -559,7 +559,7 @@ const OPDPharmacyIntegration: React.FC = () => {
               onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
                 setFormData((previous) => ({
                   ...previous,
-                  notes: event.target.value,
+                  notes: event.target.value;
                 }));
               }
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"

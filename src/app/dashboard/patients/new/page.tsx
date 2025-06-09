@@ -1,20 +1,21 @@
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { z } from "zod";
+
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 }
 
 // src/app/dashboard/patients/new/page.tsx
 "use client";
 export const dynamic = 'force-dynamic';
-
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
-import { z } from "zod";
 
 // Re-use or import the schema if defined elsewhere
 const PatientRegistrationSchema = z.object({
@@ -24,26 +25,26 @@ const PatientRegistrationSchema = z.object({
   gender: z.enum(["Male", "Female", "Other", "Prefer not to say"]),
   phone_number: z.string().min(1, "Phone number is required"),
   email: z.string().email("Invalid email address").optional().or(z.literal("")), // Optional but must be valid email if provided
-  address_line1: z.string().optional(),
-  address_line2: z.string().optional(),
-  city: z.string().optional(),
-  state: z.string().optional(),
-  postal_code: z.string().optional(),
-  country: z.string().optional(),
-  emergency_contact_name: z.string().optional(),
-  emergency_contact_relation: z.string().optional(),
-  emergency_contact_phone: z.string().optional(),
-  blood_group: z.string().optional(),
-  allergies: z.string().optional(),
-  past_medical_history: z.string().optional(),
-  current_medications: z.string().optional(),
-  insurance_provider: z.string().optional(),
-  insurance_policy_number: z.string().optional(),
+  address_line1: z.string().optional();
+  address_line2: z.string().optional();
+  city: z.string().optional();
+  state: z.string().optional();
+  postal_code: z.string().optional();
+  country: z.string().optional();
+  emergency_contact_name: z.string().optional();
+  emergency_contact_relation: z.string().optional();
+  emergency_contact_phone: z.string().optional();
+  blood_group: z.string().optional();
+  allergies: z.string().optional();
+  past_medical_history: z.string().optional();
+  current_medications: z.string().optional();
+  insurance_provider: z.string().optional();
+  insurance_policy_number: z.string().optional();
 });
 
 type FormData = z.infer<typeof PatientRegistrationSchema>;
 
-export default const AddPatientPage = () {
+export default const _AddPatientPage = () {
   const router = useRouter();
   const { toast } = useToast();
   const [formData, setFormData] = useState<Partial<FormData>>({});
@@ -70,20 +71,20 @@ export default const AddPatientPage = () {
       setErrors(validation.error.errors),
       setIsLoading(false);
       toast({
-        title: "Validation Error",
-        description: "Please check the form for errors.",
-        variant: "destructive",
+        title: "Validation Error";
+        description: "Please check the form for errors.";
+        variant: "destructive";
       });
       return;
     }
 
     try {
       const response = await fetch("/api/patients/register", {
-        method: "POST",
+        method: "POST";
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(validation.data),
+        body: JSON.stringify(validation.data);
       });
 
       const result: { error?: string } = await response.json();
@@ -93,8 +94,8 @@ export default const AddPatientPage = () {
       }
 
       toast({
-        title: "Patient Registered",
-        description: `/* SECURITY: Template literal eliminated */
+        title: "Patient Registered";
+        description: `/* SECURITY: Template literal eliminated */;
       });
 
       router.push("/dashboard/patients"); // Redirect to patient list
@@ -103,9 +104,9 @@ export default const AddPatientPage = () {
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
       setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
       toast({
-        title: "Registration Failed",
-        description: message,
-        variant: "destructive",
+        title: "Registration Failed";
+        description: message;
+        variant: "destructive";
       });
     } finally {
       setIsLoading(false);

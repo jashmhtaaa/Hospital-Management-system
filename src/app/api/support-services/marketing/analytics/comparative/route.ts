@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
-import { AnalyticsService } from '@/lib/services/support-services/marketing';
-import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 
+
+import { AnalyticsService } from '@/lib/services/support-services/marketing';
+import { authOptions } from '@/lib/auth';
+import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 const analyticsService = new AnalyticsService();
 
 /**
@@ -14,19 +15,19 @@ export const GET = async (request: NextRequest) => {
   return withErrorHandling(
     request,
     async (req: NextRequest) => {
-      const session = await getServerSession(authOptions);
+      const _session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
-      
+
       // Parse query parameters
       const campaignIds = searchParams.get('campaignIds')?.split(',') || [];
-      
+
       if (campaignIds.length === 0) {
         return NextResponse.json(
           { error: 'At least one campaign ID is required' },
           { status: 400 }
         );
       }
-      
+
       const filters = {
         startDate: searchParams.has('startDate');
           ? new Date(searchParams.get('startDate') as string);
@@ -38,16 +39,16 @@ export const GET = async (request: NextRequest) => {
           ? (searchParams.get('metrics') as string).split(',');
           : undefined,
       };
-      
+
       const result = await analyticsService.getComparativeAnalytics(
         campaignIds,
         filters;
       );
-      
+
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'marketing.analytics.read',
-      auditAction: 'CAMPAIGN_ANALYTICS_COMPARATIVE',
+      requiredPermission: 'marketing.analytics.read';
+      auditAction: 'CAMPAIGN_ANALYTICS_COMPARATIVE';
     }
   );

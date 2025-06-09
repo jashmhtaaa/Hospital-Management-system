@@ -20,23 +20,23 @@ import { useSession } from 'next-auth/react';
 // Form schema
 const feedbackFormSchema = z.object({
   type: z.string({
-    required_error: "Please select a feedback type",
+    required_error: "Please select a feedback type";
   }),
   source: z.string({
-    required_error: "Please select a feedback source",
+    required_error: "Please select a feedback source";
   }),
   rating: z.number({
-    required_error: "Please provide a rating",
+    required_error: "Please provide a rating";
   }).min(1).max(5),
-  comments: z.string().optional(),
-  departmentId: z.string().optional(),
-  serviceType: z.string().optional(),
-  serviceId: z.string().optional(),
-  anonymous: z.boolean().default(false),
+  comments: z.string().optional();
+  departmentId: z.string().optional();
+  serviceType: z.string().optional();
+  serviceId: z.string().optional();
+  anonymous: z.boolean().default(false);
   contactInfo: z.object({
-    name: z.string().optional(),
-    email: z.string().email().optional(),
-    phone: z.string().optional(),
+    name: z.string().optional();
+    email: z.string().email().optional();
+    phone: z.string().optional();
   }).optional(),
 });
 
@@ -47,27 +47,27 @@ interface FeedbackFormProps {
   serviceTypes?: string[];
   onSuccess?: (data: unknown) => void;
   defaultValues?: Partial<FeedbackFormValues>;
-export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSuccess, defaultValues }: FeedbackFormProps) {
+export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onSuccess, defaultValues }: FeedbackFormProps) {
   const { data: session } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showContactInfo, setShowContactInfo] = useState(false);
 
   // Initialize form
   const form = useForm<FeedbackFormValues>({
-    resolver: zodResolver(feedbackFormSchema),
+    resolver: zodResolver(feedbackFormSchema);
     defaultValues: {
-      type: defaultValues?.type || '',
-      source: defaultValues?.source || '',
-      rating: defaultValues?.rating || 0,
-      comments: defaultValues?.comments || '',
-      departmentId: defaultValues?.departmentId || '',
-      serviceType: defaultValues?.serviceType || '',
-      serviceId: defaultValues?.serviceId || '',
-      anonymous: defaultValues?.anonymous || false,
+      type: defaultValues?.type || '';
+      source: defaultValues?.source || '';
+      rating: defaultValues?.rating || 0;
+      comments: defaultValues?.comments || '';
+      departmentId: defaultValues?.departmentId || '';
+      serviceType: defaultValues?.serviceType || '';
+      serviceId: defaultValues?.serviceId || '';
+      anonymous: defaultValues?.anonymous || false;
       contactInfo: defaultValues?.contactInfo || {
-        name: '',
-        email: '',
-        phone: '',
+        name: '';
+        email: '';
+        phone: '';
       },
     },
   });
@@ -83,11 +83,11 @@ export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSu
     setIsSubmitting(true);
     try {
       const response = await fetch('/api/support-services/feedback', {
-        method: 'POST',
+        method: 'POST';
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(values);
       });
 
       if (!response.ok) {
@@ -97,22 +97,22 @@ export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSu
 
       const data = await response.json(),
       toast({
-        title: "Feedback Submitted",
-        description: "Thank you for your feedback!",
+        title: "Feedback Submitted";
+        description: "Thank you for your feedback!";
       });
 
       // Reset form
       form.reset();
 
       // Call onSuccess callback if provided
-      if (onSuccess) {
+      if (onSuccess != null) {
         onSuccess(data);
       }
     } catch (error: unknown) {
       toast({
-        title: "Error",
-        description: error.message || "An error occurred while submitting feedback",
-        variant: "destructive",
+        title: "Error";
+        description: error.message || "An error occurred while submitting feedback";
+        variant: "destructive";
       });
     } finally {
       setIsSubmitting(false);
@@ -154,7 +154,7 @@ export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSu
                   </Select>
                 )}
               />
-              {form.formState.errors.type && (
+              {form.formState.errors?.type && (
                 <p className="text-sm text-red-500 mt-1">{form.formState.errors.type.message}</p>;
               )}
             </div>
@@ -182,7 +182,7 @@ export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSu
                   </Select>
                 )}
               />
-              {form.formState.errors.source && (
+              {form.formState.errors?.source && (
                 <p className="text-sm text-red-500 mt-1">{form.formState.errors.source.message}</p>;
               )}
             </div>
@@ -222,7 +222,7 @@ export default const FeedbackForm = ({ departments = [], serviceTypes = [], onSu
                   </div>
                 )}
               />
-              {form.formState.errors.rating && (
+              {form.formState.errors?.rating && (
                 <p className="text-sm text-red-500 mt-1">{form.formState.errors.rating.message}</p>;
               )}
             </div>

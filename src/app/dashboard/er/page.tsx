@@ -1,12 +1,13 @@
+import React, { useState, useEffect } from "react";
+import {
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 }
 
 // src/app/dashboard/er/page.tsx
 "use client";
 export const dynamic = 'force-dynamic';
 
-import React, { useState, useEffect } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
   Card,
   CardContent,
   CardDescription,
@@ -20,7 +21,7 @@ import ERCriticalAlerts from "@/components/er/er-critical-alerts";
 import ERRegistrationModal from "@/components/er/er-registration-modal";
 import { Button } from "@/components/ui/button";
 
-export default const ERDashboardPage = () {
+export default const _ERDashboardPage = () {
   const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
 
   return (

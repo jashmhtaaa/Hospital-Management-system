@@ -1,8 +1,9 @@
-// app/api/prescriptions/[prescriptionId]/items/route.ts
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { sessionOptions, IronSessionData } from "@/lib/session"; // Import IronSessionData
-import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { getIronSession } from "iron-session";
+
+import { sessionOptions, IronSessionData } from "@/lib/session"; // Import IronSessionData
+// app/api/prescriptions/[prescriptionId]/items/route.ts
 // import { PrescriptionItem } from "@/types/opd"; // Removed unused import
 import { z } from "zod";
 
@@ -24,13 +25,13 @@ const AddPrescriptionItemSchema = z.object({
     dosage: z.string().min(1, "Dosage is required"),
     frequency: z.string().min(1, "Frequency is required"),
     duration: z.string().min(1, "Duration is required"),
-    route: z.string().optional().nullable(),
-    instructions: z.string().optional().nullable(),
-    quantity_prescribed: z.number().int().positive().optional().nullable(),
+    route: z.string().optional().nullable();
+    instructions: z.string().optional().nullable();
+    quantity_prescribed: z.number().int().positive().optional().nullable();
 });
 type AddPrescriptionItemType = z.infer<typeof AddPrescriptionItemSchema>;
 
-export const POST = async (request: Request) => {
+export const _POST = async (request: Request) => {
     const session = await getIronSession<IronSessionData>(await cookies(), sessionOptions); // Added await for cookies()
     const url = new URL(request.url)
     const prescriptionId = getPrescriptionId(url.pathname);
@@ -98,7 +99,7 @@ export const POST = async (request: Request) => {
               "Unknown Item"; // Fallback, should not happen due to check above
             return DB.prepare(
                 `INSERT INTO PrescriptionItems (
-                    prescription_id, inventory_item_id, drug_name, dosage, frequency, 
+                    prescription_id, inventory_item_id, drug_name, dosage, frequency,
                     duration, route, instructions, quantity_prescribed;
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
             ).bind(
@@ -115,7 +116,7 @@ export const POST = async (request: Request) => {
         });
 
         // 6. Execute the batch insert
-        const insertResults = await DB.batch(batchActions);
+        const _insertResults = await DB.batch(batchActions);
 
         // Basic check for success (D1 batch doesn't guarantee rollback)
         // A more robust approach might check each result in insertResults
@@ -132,7 +133,7 @@ export const POST = async (request: Request) => {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500,
+            status: 500;
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -140,4 +141,4 @@ export const POST = async (request: Request) => {
 
 // DELETE handler for removing an item from a prescription (if allowed before dispensing)
 // Requires prescriptionItemId in the URL: /api/prescriptions/[prescriptionId]/items/[itemId]
-// export async function DELETE(request: Request) { ... 
+// export async function DELETE(request: Request): unknown { ...

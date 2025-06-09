@@ -1,16 +1,17 @@
-// src/middleware/rbac.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { AuthService } from '@/lib/auth/auth-service';
 import { UserRole } from '@prisma/client';
-import { logger } from '@/lib/logger';
 
+
+import { AuthService } from '@/lib/auth/auth-service';
+import { logger } from '@/lib/logger';
+// src/middleware/rbac.ts
 export interface RoutePermission {
   roles?: UserRole[];
   permissions?: string[];
   requireAll?: boolean; // If true, user must have ALL permissions
 }
 
-export function createRBACMiddleware(routePermission: RoutePermission) {
+export function createRBACMiddleware(routePermission: RoutePermission): unknown {
   return async (request: NextRequest) => {
     try {
       // Extract token from Authorization header
@@ -33,13 +34,13 @@ export function createRBACMiddleware(routePermission: RoutePermission) {
       }
 
       // Check role-based access
-      if (routePermission.roles && !routePermission.roles.includes(user.role)) {
+      if (routePermission?.roles && !routePermission.roles.includes(user.role)) {
         logger.warn('Access denied - insufficient role', {
-          userId: user.id,
-          userRole: user.role,
-          requiredRoles: routePermission.roles
+          userId: user.id;
+          userRole: user.role;
+          requiredRoles: routePermission.roles;
         });
-        
+
         return NextResponse.json(
           { error: 'Forbidden - Insufficient role' },
           { status: 403 }
@@ -47,18 +48,18 @@ export function createRBACMiddleware(routePermission: RoutePermission) {
       }
 
       // Check permission-based access
-      if (routePermission.permissions && routePermission.permissions.length > 0) {
+      if (routePermission?.permissions && routePermission.permissions.length > 0) {
         const hasPermissions = routePermission.requireAll
           ? routePermission.permissions.every(perm => user.permissions.includes(perm))
           : routePermission.permissions.some(perm => user.permissions.includes(perm));
 
         if (!hasPermissions) {
           logger.warn('Access denied - insufficient permissions', {
-            userId: user.id,
-            userPermissions: user.permissions,
-            requiredPermissions: routePermission.permissions
+            userId: user.id;
+            userPermissions: user.permissions;
+            requiredPermissions: routePermission.permissions;
           });
-          
+
           return NextResponse.json(
             { error: 'Forbidden - Insufficient permissions' },
             { status: 403 }
@@ -74,7 +75,7 @@ export function createRBACMiddleware(routePermission: RoutePermission) {
 
       return NextResponse.next({
         request: {
-          headers: requestHeaders
+          headers: requestHeaders;
         }
       });
 
@@ -89,18 +90,18 @@ export function createRBACMiddleware(routePermission: RoutePermission) {
 }
 
 // Predefined permission checkers
-export const requireAdmin = createRBACMiddleware({
-  roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN]
+export const _requireAdmin = createRBACMiddleware({
+  roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN];
 });
 
-export const requireDoctor = createRBACMiddleware({
-  roles: [UserRole.DOCTOR, UserRole.ADMIN, UserRole.SUPER_ADMIN]
+export const _requireDoctor = createRBACMiddleware({
+  roles: [UserRole.DOCTOR, UserRole.ADMIN, UserRole.SUPER_ADMIN];
 });
 
-export const requireMedicalStaff = createRBACMiddleware({
-  roles: [UserRole.DOCTOR, UserRole.NURSE, UserRole.ADMIN, UserRole.SUPER_ADMIN]
+export const _requireMedicalStaff = createRBACMiddleware({
+  roles: [UserRole.DOCTOR, UserRole.NURSE, UserRole.ADMIN, UserRole.SUPER_ADMIN];
 });
 
-export const requirePatientAccess = createRBACMiddleware({
-  permissions: ['patient:read']
+export const _requirePatientAccess = createRBACMiddleware({
+  permissions: ['patient:read'];
 });

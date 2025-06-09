@@ -1,32 +1,33 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+
+import { FHIRMapper } from '../../models/fhir-mappers';
+import { PharmacyDomain } from '../../models/domain-models';
+import { auditLog } from '../../../../lib/audit';
+import { encryptionService } from '../../../../lib/security.service';
+import { errorHandler } from '../../../../lib/error-handler';
+import { validateInventoryRequest } from '../../../../lib/validation/pharmacy-validation';
 }
 
 /**
  * Inventory API Routes;
- * 
+ *
  * This file implements the FHIR-compliant API endpoints for pharmacy inventory management;
  * following enterprise-grade requirements for security, validation, and error handling.
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { validateInventoryRequest } from '../../../../lib/validation/pharmacy-validation';
-import { auditLog } from '../../../../lib/audit';
-import { errorHandler } from '../../../../lib/error-handler';
-import { encryptionService } from '../../../../lib/security.service';
-import { PharmacyDomain } from '../../models/domain-models';
-import { FHIRMapper } from '../../models/fhir-mappers';
-
 // Initialize repositories (in production, use dependency injection)
 const inventoryRepository = {
-  findById: (id: string) => Promise.resolve(null),
-  findByLocationId: (locationId: string) => Promise.resolve([]),
-  findByMedicationId: (medicationId: string) => Promise.resolve([]),
-  findAll: () => Promise.resolve([]),
-  findExpiring: (daysThreshold: number) => Promise.resolve([]),
-  save: (item: unknown) => Promise.resolve(item.id || 'new-id'),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true),
-  adjustStock: () => Promise.resolve(true),
-  transferStock: () => Promise.resolve(true)
+  findById: (id: string) => Promise.resolve(null);
+  findByLocationId: (locationId: string) => Promise.resolve([]);
+  findByMedicationId: (medicationId: string) => Promise.resolve([]);
+  findAll: () => Promise.resolve([]);
+  findExpiring: (daysThreshold: number) => Promise.resolve([]);
+  save: (item: unknown) => Promise.resolve(item.id || 'new-id');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
+  adjustStock: () => Promise.resolve(true);
+  transferStock: () => Promise.resolve(true);
 }
 
 /**
@@ -55,9 +56,9 @@ export const GET = async (req: NextRequest) => {
 
     // Build filter criteria
     const filter: unknown = {};
-    if (locationId) filter.locationId = locationId;
-    if (medicationId) filter.medicationId = medicationId;
-    if (belowReorderLevel) filter.belowReorderLevel = true;
+    if (locationId != null) filter.locationId = locationId;
+    if (medicationId != null) filter.medicationId = medicationId;
+    if (belowReorderLevel != null) filter.belowReorderLevel = true;
     if (!includeZeroStock) filter.quantityOnHand = { gt: 0 };
 
     // Get inventory items (mock implementation)
@@ -72,25 +73,25 @@ export const GET = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('INVENTORY', {
-      action: 'LIST',
-      resourceType: 'Inventory',
-      userId: userId,
+      action: 'LIST';
+      resourceType: 'Inventory';
+      userId: userId;
       details: {
         filter,
         page,
         limit,
-        resultCount: paginatedItems.length
+        resultCount: paginatedItems.length;
       }
     });
 
     // Return response
-    return NextResponse.json({ 
-      items: fhirInventoryItems,
+    return NextResponse.json({
+      items: fhirInventoryItems;
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit);
       }
     }, { status: 200 });
   } catch (error) {
@@ -142,9 +143,9 @@ export const POST = async (req: NextRequest) => {
       // Encrypt controlled substance data
       inventoryItem.controlledSubstanceData = await encryptionService.encrypt(
         JSON.stringify({
-          scheduleClass: data.scheduleClass,
-          lockboxNumber: data.lockboxNumber,
-          lastAuditDate: data.lastAuditDate
+          scheduleClass: data.scheduleClass;
+          lockboxNumber: data.lockboxNumber;
+          lastAuditDate: data.lastAuditDate;
         });
       );
     }
@@ -154,24 +155,24 @@ export const POST = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('INVENTORY', {
-      action: 'CREATE',
-      resourceType: 'Inventory',
-      resourceId: inventoryItemId,
-      userId: userId,
+      action: 'CREATE';
+      resourceType: 'Inventory';
+      resourceId: inventoryItemId;
+      userId: userId;
       details: {
-        medicationId: data.medicationId,
-        locationId: data.locationId,
-        quantity: data.quantityOnHand,
-        isControlled: data.isControlled || false
+        medicationId: data.medicationId;
+        locationId: data.locationId;
+        quantity: data.quantityOnHand;
+        isControlled: data.isControlled || false;
       }
     });
 
     // Return response
     return NextResponse.json(
-      { 
-        id: inventoryItemId,
-        message: 'Inventory item created successfully'
-      }, 
+      {
+        id: inventoryItemId;
+        message: 'Inventory item created successfully';
+      },
       { status: 201 }
     );
   } catch (error) {

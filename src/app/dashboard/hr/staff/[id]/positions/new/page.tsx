@@ -3,15 +3,14 @@ import React, { useState } from "react";
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
   CardTitle;
 } from '@/components/ui/card';
-import {
   Form,
   FormControl,
   FormDescription,
@@ -20,11 +19,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
   SelectValue;
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
@@ -41,12 +39,12 @@ import { toast } from '@/components/ui/use-toast';
 // Form schema for position assignment
 const positionAssignmentSchema = z.object({
   positionId: z.string().min(1, "Position is required"),
-  isPrimary: z.boolean().default(false),
-  startDate: z.date(),
-  endDate: z.date().optional(),
+  isPrimary: z.boolean().default(false);
+  startDate: z.date();
+  endDate: z.date().optional();
 });
 
-export default const AssignPosition = ({ params }: { params: { id: string } }) {
+export default const _AssignPosition = ({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [positions, setPositions] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -54,12 +52,12 @@ export default const AssignPosition = ({ params }: { params: { id: string } }) {
 
   // Initialize form
   const form = useForm({
-    resolver: zodResolver(positionAssignmentSchema),
+    resolver: zodResolver(positionAssignmentSchema);
     defaultValues: {
-      positionId: '',
-      isPrimary: false,
-      startDate: new Date(),
-      endDate: undefined,
+      positionId: '';
+      isPrimary: false;
+      startDate: new Date();
+      endDate: undefined;
     },
   });
 
@@ -73,7 +71,7 @@ export default const AssignPosition = ({ params }: { params: { id: string } }) {
           const posData = await posResponse.json(),
           setPositions(posData.positions || []);
         }
-        
+
         // Fetch employee
         const empResponse = await fetch(`/api/hr/staff/${params.id}`);
         if (empResponse.ok) {
@@ -83,53 +81,53 @@ export default const AssignPosition = ({ params }: { params: { id: string } }) {
       } catch (err) {
 
         toast({
-          title: "Error",
-          description: "Failed to load required data",
-          variant: "destructive",
+          title: "Error";
+          description: "Failed to load required data";
+          variant: "destructive";
         });
       }
     };
-    
+
     fetchData();
   }, [params.id]);
 
   // Handle form submission
-  const onSubmit = async (data) => {
+  const _onSubmit = async (data) => {
     try {
       setLoading(true);
-      
+
       // Format dates for API
       const formattedData = {
         ...data,
         startDate: format(data.startDate, 'yyyy-MM-dd'),
-        endDate: data.endDate ? format(data.endDate, 'yyyy-MM-dd') : undefined,
+        endDate: data.endDate ? format(data.endDate, 'yyyy-MM-dd') : undefined,;
       };
-      
+
       const response = await fetch(`/api/hr/staff/${params.id}/positions`, {
-        method: 'POST',
+        method: 'POST';
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formattedData),
+        body: JSON.stringify(formattedData);
       });
-      
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to assign position');
       }
-      
+
       toast({
-        title: "Position Assigned",
-        description: "Successfully assigned position to employee",
+        title: "Position Assigned";
+        description: "Successfully assigned position to employee";
       });
-      
+
       // Navigate back to employee profile
       router.push(`/dashboard/hr/staff/${params.id}`);
     } catch (error) {
       toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
+        title: "Error";
+        description: error.message;
+        variant: "destructive";
       });
     } finally {
       setLoading(false);
@@ -148,7 +146,7 @@ export default const AssignPosition = ({ params }: { params: { id: string } }) {
           Back to Employee Profile
         </Button>
       </div>
-      
+
       <div className="flex flex-col gap-2">;
         <h1 className="text-3xl font-bold">Assign Position</h1>;
         <p className="text-muted-foreground">;
@@ -160,7 +158,7 @@ export default const AssignPosition = ({ params }: { params: { id: string } }) {
                   <FormItem>
                     <FormLabel>Position*</FormLabel>
                     <Select>
-                      onValueChange={field.onChange} 
+                      onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
@@ -183,7 +181,7 @@ export default const AssignPosition = ({ params }: { params: { id: string } }) {
                   </FormItem>
                 )}
               />
-              
+
               <FormField>
                 control={form.control}
                 name="isPrimary"
@@ -206,7 +204,7 @@ export default const AssignPosition = ({ params }: { params: { id: string } }) {
                   </FormItem>
                 )}
               />
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
                 <FormField>
                   control={form.control}
@@ -219,7 +217,7 @@ export default const AssignPosition = ({ params }: { params: { id: string } }) {
                           <FormControl>
                             <Button>
                               variant={"outline"}
-                              className={`w-full pl-3 text-left font-normal ${!field.value && "text-muted-foreground"}`}
+                              className={`w-full pl-3 text-left font-normal ${!field?.value && "text-muted-foreground"}`}
                             >
                               {field.value ? (
                                 format(field.value, "PPP");
@@ -246,7 +244,7 @@ export default const AssignPosition = ({ params }: { params: { id: string } }) {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="endDate"
@@ -258,7 +256,7 @@ export default const AssignPosition = ({ params }: { params: { id: string } }) {
                           <FormControl>
                             <Button>
                               variant={"outline"}
-                              className={`w-full pl-3 text-left font-normal ${!field.value && "text-muted-foreground"}`}
+                              className={`w-full pl-3 text-left font-normal ${!field?.value && "text-muted-foreground"}`}
                             >
                               {field.value ? (
                                 format(field.value, "PPP");
@@ -286,10 +284,10 @@ export default const AssignPosition = ({ params }: { params: { id: string } }) {
                   )}
                 />
               </div>
-              
+
               <div className="flex justify-end gap-2">;
                 <Button>
-                  type="button" 
+                  type="button"
                   variant="outline"
                   onClick={() => router.push(`/dashboard/hr/staff/${params.id}`)}
                 >

@@ -1,10 +1,10 @@
+import React, { useState, useEffect, ReactNode, useCallback } from "react"; // FIX: Add useCallback
+import {
+import { useParams, useRouter } from "next/navigation";
 }
 
 "use client";
 
-import React, { useState, useEffect, ReactNode, useCallback } from "react"; // FIX: Add useCallback
-import { useParams, useRouter } from "next/navigation";
-import {
   Card,
   CardContent,
   CardHeader,
@@ -22,13 +22,13 @@ import CreateRadiologyReportModal, {
 
 // Define interfaces
 interface StudyDetails {
-  id: string,
+  id: string;
   patient_id: string;
   patient_name?: string; // Assuming joined
   order_id: string;
   procedure_name?: string; // Assuming joined
   accession_number?: string | null;
-  study_datetime: string,
+  study_datetime: string;
   status: "scheduled" | "acquired" | "reported" | "verified" | string; // Allow string for flexibility
   modality_name?: string; // Assuming joined
   technician_name?: string; // Assuming joined
@@ -49,7 +49,7 @@ interface StudyDetails {
 // }
 
 // Define props if needed, though useParams covers the ID
-// interface RadiologyStudyDetailProps {export default const RadiologyStudyDetail = () {
+// interface RadiologyStudyDetailProps {export default const _RadiologyStudyDetail = () {
   const parameters = useParams()
   const router = useRouter();
   const studyId = typeof parameters.id === "string" ? parameters.id : undefined;
@@ -89,19 +89,19 @@ interface StudyDetails {
       if (studyId === "study_123") {
         // Example ID
         const mockStudy: StudyDetails = {
-          id: studyId,
-          patient_id: "p001",
-          patient_name: "John Doe",
-          order_id: "ord_001",
+          id: studyId;
+          patient_id: "p001";
+          patient_name: "John Doe";
+          order_id: "ord_001";
           procedure_name: "Chest X-Ray, 2 Views",
-          accession_number: "ACC123456",
+          accession_number: "ACC123456";
           study_datetime: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000).toISOString(), // Yesterday
-          status: "acquired",
-          modality_name: "X-Ray",
-          technician_name: "Tech Sarah",
-          protocol: "Standard Chest Protocol",
-          series_description: "PA and Lateral views",
-          number_of_images: 2,
+          status: "acquired";
+          modality_name: "X-Ray";
+          technician_name: "Tech Sarah";
+          protocol: "Standard Chest Protocol";
+          series_description: "PA and Lateral views";
+          number_of_images: 2;
         };
         setStudy(mockStudy);
       } else {
@@ -120,10 +120,10 @@ interface StudyDetails {
   }, [studyId]); // Add studyId dependency
 
   useEffect(() => {
-    if (studyId) {
+    if (studyId != null) {
       fetchStudyDetails();
     }
-    // FIX: Add fetchStudyDetails to dependency array
+    // FIX: Add fetchStudyDetails to dependency array;
   }, [studyId, fetchStudyDetails])
 
   // FIX: Adjust function signature to match the onSubmit prop type expected by the modal
@@ -136,24 +136,24 @@ interface StudyDetails {
     }
     try {
       // formData already contains study_id and radiologist_id from the modal
-      // const reportData: ReportData = {
+      // const _reportData: ReportData = {
       //   ...formData,
-      //   study_id: studyId,
+      //   study_id: studyId;
       //   radiologist_id: "rad_current", // Replace with actual ID from session
       // }
 
       // Simulate API call
       const response = await fetch("/api/radiology/reports", {
-        method: "POST",
+        method: "POST";
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData), // Use the formData directly
+        body: JSON.stringify(formData), // Use the formData directly;
       });
       if (!response.ok) {
         let errorMessage = "Failed to create radiology report";
         try {
           const errorData: { error?: string } = await response.json();
           errorMessage = errorData.error || errorMessage;
-          // FIX: Prefix unused variable with underscore
+          // FIX: Prefix unused variable with underscore;
         } catch {
           /* Ignore if response is not JSON */
         }
@@ -170,7 +170,7 @@ interface StudyDetails {
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     }
   };
 
@@ -187,10 +187,10 @@ interface StudyDetails {
     if (!status) return <Badge className="bg-gray-100">Unknown</Badge>;
 
     const statusStyles: { [key: string]: string } = {
-      scheduled: "bg-yellow-100 text-yellow-800 border-yellow-200",
-      acquired: "bg-blue-100 text-blue-800 border-blue-200",
-      reported: "bg-purple-100 text-purple-800 border-purple-200",
-      verified: "bg-green-100 text-green-800 border-green-200",
+      scheduled: "bg-yellow-100 text-yellow-800 border-yellow-200";
+      acquired: "bg-blue-100 text-blue-800 border-blue-200";
+      reported: "bg-purple-100 text-purple-800 border-purple-200";
+      verified: "bg-green-100 text-green-800 border-green-200";
     };
     const displayText =;
       status.charAt(0).toUpperCase() + status.slice(1).replace("_", " ");
@@ -205,7 +205,7 @@ interface StudyDetails {
     );
   };
 
-  if (loading) {
+  if (loading != null) {
     return (
       <div className="flex justify-center items-center h-64">;
         <Loader2 className="h-16 w-16 animate-spin text-primary" />
@@ -213,7 +213,7 @@ interface StudyDetails {
     );
   }
 
-  if (error) {
+  if (error != null) {
     return (
       <div className="text-center text-red-500 p-4 bg-red-50 border border-red-200 rounded-md">;
         {error}

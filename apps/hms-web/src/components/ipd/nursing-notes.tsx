@@ -1,34 +1,35 @@
 import React from 'react';
+
+
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-
 interface NursingNote {
-  id: string,
-  date: string,
-  time: string,
-  nurse: string,
-  note: string,
-  category: 'assessment' | 'medication' | 'intervention' | 'observation'
+  id: string;
+  date: string;
+  time: string;
+  nurse: string;
+  note: string;
+  category: 'assessment' | 'medication' | 'intervention' | 'observation';
 }
 
 interface NursingNotesProps {
-  patientId: string,
-  patientName: string,
-  notes: NursingNote[]
+  patientId: string;
+  patientName: string;
+  notes: NursingNote[];
 }
 
 /**
  * IPD Nursing Notes component;
  */
-export const NursingNotes = ({ patientId, patientName, notes }: NursingNotesProps) => {
+export const _NursingNotes = ({ patientId, patientName, notes }: NursingNotesProps) => {
   const getCategoryLabel = (category: string) => {
     switch(category) {
       case 'assessment': return 'Assessment';
       case 'medication': return 'Medication';
       case 'intervention': return 'Intervention';
       case 'observation': return 'Observation';
-      default: return 'Other'
+      default: return 'Other';
     }
   };
 
@@ -42,7 +43,7 @@ export const NursingNotes = ({ patientId, patientName, notes }: NursingNotesProp
           <div className="flex justify-end">;
             <Button>Add Nursing Note</Button>
           </div>
-          
+
           <Table>
             <TableHeader>
               <TableRow>

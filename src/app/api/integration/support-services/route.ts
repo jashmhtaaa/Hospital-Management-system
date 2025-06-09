@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
+
+
 import { HMSIntegrationService } from '@/lib/services/integration/hms-integration.service';
 import { errorHandlingMiddleware } from '@/lib/middleware/error-handling.middleware';
-
 /**
  * Integration API for Support Services;
- * 
+ *
  * This API provides endpoints for integrating support services with core HMS systems.
  */
 
@@ -13,24 +14,24 @@ import { errorHandlingMiddleware } from '@/lib/middleware/error-handling.middlew
  * Retrieves patient information for support services;
  */
 export const GET = async (
-  request: NextRequest,
+  request: NextRequest;
   { params }: { params: { patientId: string } }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
     const userId = req.userId || 'anonymous';
     const userRoles = req.userRoles || [];
-    
+
     // Get patient information
     const patientInfo = await HMSIntegrationService.getPatientInfo(
       params.patientId,
       userId,
       userRoles;
     );
-    
+
     return NextResponse.json({
-      success: true,
-      data: patientInfo
+      success: true;
+      data: patientInfo;
     });
   });
 }
@@ -40,24 +41,24 @@ export const GET = async (
  * Retrieves location information for support services;
  */
 export const GET = async (
-  request: NextRequest,
+  request: NextRequest;
   { params }: { params: { locationId: string } }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
     const userId = req.userId || 'anonymous';
     const userRoles = req.userRoles || [];
-    
+
     // Get location information
     const locationInfo = await HMSIntegrationService.getLocationInfo(
       params.locationId,
       userId,
       userRoles;
     );
-    
+
     return NextResponse.json({
-      success: true,
-      data: locationInfo
+      success: true;
+      data: locationInfo;
     });
   });
 }
@@ -71,28 +72,28 @@ export const POST = async (request: NextRequest) => {
     // Extract user information from request context
     const userId = req.userId || 'anonymous';
     const userRoles = req.userRoles || [];
-    
+
     // Parse request body
     const body = await request.json();
     const { recipientId, type, title, message, metadata } = body;
-    
+
     // Validate required fields
     if (!recipientId || !type || !title || !message) {
       return NextResponse.json(
         {
-          success: false,
+          success: false;
           error: {
-            code: 'VALIDATION_ERROR',
-            message: 'Missing required fields',
+            code: 'VALIDATION_ERROR';
+            message: 'Missing required fields';
             details: {
-              required: ['recipientId', 'type', 'title', 'message']
+              required: ['recipientId', 'type', 'title', 'message'];
             }
           }
         },
         { status: 400 }
       );
     }
-    
+
     // Send notification
     const notification = await HMSIntegrationService.sendNotification(
       recipientId,
@@ -103,10 +104,10 @@ export const POST = async (request: NextRequest) => {
       userId,
       userRoles;
     );
-    
+
     return NextResponse.json({
-      success: true,
-      data: notification
+      success: true;
+      data: notification;
     });
   });
 }
@@ -120,28 +121,28 @@ export const POST = async (request: NextRequest) => {
     // Extract user information from request context
     const userId = req.userId || 'anonymous';
     const userRoles = req.userRoles || [];
-    
+
     // Parse request body
     const body = await request.json();
     const { reportType, reportData } = body;
-    
+
     // Validate required fields
     if (!reportType || !reportData) {
       return NextResponse.json(
         {
-          success: false,
+          success: false;
           error: {
-            code: 'VALIDATION_ERROR',
-            message: 'Missing required fields',
+            code: 'VALIDATION_ERROR';
+            message: 'Missing required fields';
             details: {
-              required: ['reportType', 'reportData']
+              required: ['reportType', 'reportData'];
             }
           }
         },
         { status: 400 }
       );
     }
-    
+
     // Submit report data
     const report = await HMSIntegrationService.submitReportData(
       reportType,
@@ -149,10 +150,10 @@ export const POST = async (request: NextRequest) => {
       userId,
       userRoles;
     );
-    
+
     return NextResponse.json({
-      success: true,
-      data: report
+      success: true;
+      data: report;
     });
   });
 }
@@ -162,46 +163,46 @@ export const POST = async (request: NextRequest) => {
  * Links a support service request to a patient record;
  */
 export const POST = async (
-  request: NextRequest,
+  request: NextRequest;
   { params }: { params: { serviceType: string; requestId: string } }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
     const userId = req.userId || 'anonymous';
     const userRoles = req.userRoles || [];
-    
+
     // Parse request body
     const body = await request.json();
     const { patientId } = body;
-    
+
     // Validate required fields
     if (!patientId) {
       return NextResponse.json(
         {
-          success: false,
+          success: false;
           error: {
-            code: 'VALIDATION_ERROR',
-            message: 'Missing required fields',
+            code: 'VALIDATION_ERROR';
+            message: 'Missing required fields';
             details: {
-              required: ['patientId']
+              required: ['patientId'];
             }
           }
         },
         { status: 400 }
       );
     }
-    
+
     // Validate service type
     const validServiceTypes = ['HOUSEKEEPING', 'MAINTENANCE', 'DIETARY', 'AMBULANCE', 'FEEDBACK'];
     const serviceType = params.serviceType.toUpperCase();
-    
+
     if (!validServiceTypes.includes(serviceType)) {
       return NextResponse.json(
         {
-          success: false,
+          success: false;
           error: {
-            code: 'VALIDATION_ERROR',
-            message: 'Invalid service type',
+            code: 'VALIDATION_ERROR';
+            message: 'Invalid service type';
             details: {
               validServiceTypes
             }
@@ -210,7 +211,7 @@ export const POST = async (
         { status: 400 }
       );
     }
-    
+
     // Link request to patient
     const request = await HMSIntegrationService.linkRequestToPatient(
       serviceType as any,
@@ -219,10 +220,10 @@ export const POST = async (
       userId,
       userRoles;
     );
-    
+
     return NextResponse.json({
-      success: true,
-      data: request
+      success: true;
+      data: request;
     });
   });
 }
@@ -232,46 +233,46 @@ export const POST = async (
  * Links a support service request to a location;
  */
 export const POST = async (
-  request: NextRequest,
+  request: NextRequest;
   { params }: { params: { serviceType: string; requestId: string } }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
     const userId = req.userId || 'anonymous';
     const userRoles = req.userRoles || [];
-    
+
     // Parse request body
     const body = await request.json();
     const { locationId } = body;
-    
+
     // Validate required fields
     if (!locationId) {
       return NextResponse.json(
         {
-          success: false,
+          success: false;
           error: {
-            code: 'VALIDATION_ERROR',
-            message: 'Missing required fields',
+            code: 'VALIDATION_ERROR';
+            message: 'Missing required fields';
             details: {
-              required: ['locationId']
+              required: ['locationId'];
             }
           }
         },
         { status: 400 }
       );
     }
-    
+
     // Validate service type
     const validServiceTypes = ['HOUSEKEEPING', 'MAINTENANCE', 'DIETARY', 'AMBULANCE'];
     const serviceType = params.serviceType.toUpperCase();
-    
+
     if (!validServiceTypes.includes(serviceType)) {
       return NextResponse.json(
         {
-          success: false,
+          success: false;
           error: {
-            code: 'VALIDATION_ERROR',
-            message: 'Invalid service type',
+            code: 'VALIDATION_ERROR';
+            message: 'Invalid service type';
             details: {
               validServiceTypes
             }
@@ -280,7 +281,7 @@ export const POST = async (
         { status: 400 }
       );
     }
-    
+
     // Link request to location
     const request = await HMSIntegrationService.linkRequestToLocation(
       serviceType as any,
@@ -289,9 +290,9 @@ export const POST = async (
       userId,
       userRoles;
     );
-    
+
     return NextResponse.json({
-      success: true,
-      data: request
+      success: true;
+      data: request;
     });
   });

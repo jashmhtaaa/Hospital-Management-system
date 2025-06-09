@@ -1,10 +1,10 @@
+
+import React, { useState } from "react"; // Added useState
+import { useRouter } from "next/navigation"; // Added useRouter
 }
 
 "use client";
 export const dynamic = 'force-dynamic';
-
-import React, { useState } from "react"; // Added useState
-import { useRouter } from "next/navigation"; // Added useRouter
 
 // Removed unused Image import
 // import Image from 'next/image'
@@ -13,23 +13,23 @@ import { useRouter } from "next/navigation"; // Added useRouter
 // Removed unused StatCardProperties interface
 
 interface RecentPrescription {
-  id: string,
-  number: string,
-  patient: string,
-  date: string,
+  id: string;
+  number: string;
+  patient: string;
+  date: string;
   status: "pending" | "dispensed" | "partially_dispensed" | string; // Allow other statuses
 }
 
 interface ExpiringMedication {
-  id: string,
-  medication: string,
-  batch: string,
-  expiry: string,
-  stock: number
+  id: string;
+  medication: string;
+  batch: string;
+  expiry: string;
+  stock: number;
 }
 
 // Main Pharmacy Dashboard Page
-export default const PharmacyPage = () {
+export default const _PharmacyPage = () {
   const router = useRouter(); // Initialize router
   const [activeTab, setActiveTab] = useState("dashboard"); // Initialize activeTab state
   const [loading, /*setLoading*/] = useState(false); // Initialize loading state - RE-ADDED
@@ -40,7 +40,7 @@ export default const PharmacyPage = () {
       case "dashboard":
         return <div>Pharmacy Dashboard Content</div>; // Placeholder content
       // Add cases for other tabs if needed
-      default: return <div>Select a tab</div>
+      default: return <div>Select a tab</div>;
     }
   };
 
@@ -73,7 +73,7 @@ export default const PharmacyPage = () {
             className={`px-4 py-3 text-sm font-medium ${
               activeTab === "dashboard";
                 ? "bg-blue-50 text-blue-600 border-b-2 border-blue-500"
-                : "text-gray-600 hover: text-gray-800"
+                : "text-gray-600 hover: text-gray-800";
             }`}
             onClick={() => setActiveTab("dashboard")}
           >
@@ -149,25 +149,25 @@ const RecentPrescriptionsList = () {
   // Mock data for recent prescriptions - Typed
   const recentPrescriptions: RecentPrescription[] = [
     {
-      id: "presc_1",
-      number: "PRSC-20250428-1234",
-      patient: "John Smith",
-      date: "2025-04-28",
-      status: "pending",
+      id: "presc_1";
+      number: "PRSC-20250428-1234";
+      patient: "John Smith";
+      date: "2025-04-28";
+      status: "pending";
     },
     {
-      id: "presc_2",
-      number: "PRSC-20250427-5678",
-      patient: "Jane Doe",
-      date: "2025-04-27",
-      status: "dispensed",
+      id: "presc_2";
+      number: "PRSC-20250427-5678";
+      patient: "Jane Doe";
+      date: "2025-04-27";
+      status: "dispensed";
     },
     {
-      id: "presc_3",
-      number: "PRSC-20250426-9012",
-      patient: "Robert Johnson",
-      date: "2025-04-26",
-      status: "partially_dispensed",
+      id: "presc_3";
+      number: "PRSC-20250426-9012";
+      patient: "Robert Johnson";
+      date: "2025-04-26";
+      status: "partially_dispensed";
     },
   ];
 
@@ -238,7 +238,7 @@ const RecentPrescriptionsList = () {
               key={prescription.id}
               className="hover:bg-gray-50 cursor-pointer"
               onClick={() => {
-                /* TODO: Navigate to prescription detail */
+                /* TODO: Navigate to prescription detail */;
               }}
             >
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">;
@@ -266,25 +266,25 @@ const ExpiringMedicationsList = () {
   // Mock data for expiring medications - Typed
   const expiringMedications: ExpiringMedication[] = [
     {
-      id: "batch_1",
-      medication: "Amoxicillin 500mg",
-      batch: "AMX2023001",
-      expiry: "2025-05-15",
-      stock: 120,
+      id: "batch_1";
+      medication: "Amoxicillin 500mg";
+      batch: "AMX2023001";
+      expiry: "2025-05-15";
+      stock: 120;
     },
     {
-      id: "batch_2",
-      medication: "Paracetamol 500mg",
-      batch: "PCM2023001",
-      expiry: "2025-05-20",
-      stock: 85,
+      id: "batch_2";
+      medication: "Paracetamol 500mg";
+      batch: "PCM2023001";
+      expiry: "2025-05-20";
+      stock: 85;
     },
     {
-      id: "batch_3",
-      medication: "Cetirizine 10mg",
-      batch: "CET2023001",
-      expiry: "2025-05-30",
-      stock: 42,
+      id: "batch_3";
+      medication: "Cetirizine 10mg";
+      batch: "CET2023001";
+      expiry: "2025-05-30";
+      stock: 42;
     },
   ];
 
@@ -318,7 +318,7 @@ const ExpiringMedicationsList = () {
               key={item.id}
               className="hover:bg-gray-50 cursor-pointer"
               onClick={() => {
-                /* TODO: Navigate to inventory detail */
+                /* TODO: Navigate to inventory detail */;
               }}
             >
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">;

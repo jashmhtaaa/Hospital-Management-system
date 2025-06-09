@@ -1,24 +1,25 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+
+import { auditLog } from '../../../../../lib/audit';
+import { errorHandler } from '../../../../../lib/error-handler';
+import { validateInteractionOverrideRequest } from '../../../../../lib/validation/pharmacy-validation';
 }
 
 /**
  * Interaction Override API Routes;
- * 
+ *
  * This file implements the API endpoints for overriding interaction alerts;
  * with documentation of reason and authorization.
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { validateInteractionOverrideRequest } from '../../../../../lib/validation/pharmacy-validation';
-import { auditLog } from '../../../../../lib/audit';
-import { errorHandler } from '../../../../../lib/error-handler';
-
 // Initialize interaction override repository (in production, use dependency injection)
 const interactionOverrideRepository = {
-  findById: (id: string) => Promise.resolve(null),
-  findByInteractionId: (interactionId: string) => Promise.resolve([]),
-  save: (override: unknown) => Promise.resolve(override.id || 'new-id'),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: (id: string) => Promise.resolve(null);
+  findByInteractionId: (interactionId: string) => Promise.resolve([]);
+  save: (override: unknown) => Promise.resolve(override.id || 'new-id');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 }
 
 /**
@@ -26,7 +27,7 @@ const interactionOverrideRepository = {
  * Override an interaction alert with documented reason;
  */
 export const POST = async (
-  req: NextRequest,
+  req: NextRequest;
   { params }: { params: { id: string } }
 ) => {
   try {
@@ -57,14 +58,14 @@ export const POST = async (
 
     // Create override record
     const override = {
-      id: crypto.randomUUID(),
-      interactionId: id,
-      overrideReason: data.reason,
-      overrideNotes: data.notes,
-      overriddenBy: userId,
-      overriddenAt: new Date(),
-      patientId: data.patientId,
-      prescriptionId: data.prescriptionId
+      id: crypto.randomUUID();
+      interactionId: id;
+      overrideReason: data.reason;
+      overrideNotes: data.notes;
+      overriddenBy: userId;
+      overriddenAt: new Date();
+      patientId: data.patientId;
+      prescriptionId: data.prescriptionId;
     };
 
     // Save override record
@@ -72,24 +73,24 @@ export const POST = async (
 
     // Audit logging (critical for controlled substances and high-risk medications)
     await auditLog('DRUG_INTERACTION', {
-      action: 'OVERRIDE',
-      resourceType: 'DrugInteraction',
-      resourceId: id,
-      userId: userId,
-      patientId: data.patientId,
+      action: 'OVERRIDE';
+      resourceType: 'DrugInteraction';
+      resourceId: id;
+      userId: userId;
+      patientId: data.patientId;
       details: {
         overrideId,
-        reason: data.reason,
-        prescriptionId: data.prescriptionId
+        reason: data.reason;
+        prescriptionId: data.prescriptionId;
       }
     })
 
     // Return response
     return NextResponse.json(
-      { 
-        id: overrideId,
-        message: 'Interaction override recorded successfully'
-      }, 
+      {
+        id: overrideId;
+        message: 'Interaction override recorded successfully';
+      },
       { status: 201 }
     );
   } catch (error) {
@@ -124,15 +125,15 @@ export const GET = async (req: NextRequest) => {
 
     // Build filter criteria
     const filter: unknown = {};
-    if (patientId) filter.patientId = patientId;
-    if (prescriptionId) filter.prescriptionId = prescriptionId;
-    if (interactionId) filter.interactionId = interactionId;
-    
+    if (patientId != null) filter.patientId = patientId;
+    if (prescriptionId != null) filter.prescriptionId = prescriptionId;
+    if (interactionId != null) filter.interactionId = interactionId;
+
     // Add date range if provided
     if (startDate || endDate) {
       filter.overriddenAt = {};
-      if (startDate) filter.overriddenAt.gte = new Date(startDate);
-      if (endDate) filter.overriddenAt.lte = new Date(endDate);
+      if (startDate != null) filter.overriddenAt.gte = new Date(startDate);
+      if (endDate != null) filter.overriddenAt.lte = new Date(endDate);
     }
 
     // Get overrides (mock implementation)
@@ -141,25 +142,25 @@ export const GET = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
-      action: 'LIST_OVERRIDES',
-      resourceType: 'DrugInteraction',
-      userId: userId,
+      action: 'LIST_OVERRIDES';
+      resourceType: 'DrugInteraction';
+      userId: userId;
       details: {
         filter,
         page,
         limit,
-        resultCount: overrides.length
+        resultCount: overrides.length;
       }
     });
 
     // Return response
-    return NextResponse.json({ 
+    return NextResponse.json({
       overrides,
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit);
       }
     }, { status: 200 });
   } catch (error) {

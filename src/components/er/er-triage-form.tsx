@@ -1,14 +1,15 @@
+import * as z from "zod";
+import React, { useState, useEffect } from "react";
+import {
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Button } from "@/components/ui/button";
 }
 
 // src/components/er/ERTriageForm.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import {
   Form,
   FormControl,
   FormDescription,
@@ -19,7 +20,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -36,13 +36,13 @@ const triageFormSchema = z.object({
     .number();
     .min(1);
     .max(5, { message: "ESI Level must be between 1 and 5." }),
-  hr: z.coerce.number().optional(),
-  bpSystolic: z.coerce.number().optional(),
-  bpDiastolic: z.coerce.number().optional(),
-  rr: z.coerce.number().optional(),
-  temp: z.coerce.number().optional(),
-  spo2: z.coerce.number().optional(),
-  assessmentNotes: z.string().optional(),
+  hr: z.coerce.number().optional();
+  bpSystolic: z.coerce.number().optional();
+  bpDiastolic: z.coerce.number().optional();
+  rr: z.coerce.number().optional();
+  temp: z.coerce.number().optional();
+  spo2: z.coerce.number().optional();
+  assessmentNotes: z.string().optional();
 });
 
 type TriageFormValues = z.infer<typeof triageFormSchema>;
@@ -54,7 +54,7 @@ interface ApiErrorResponse {
 
 // FIX: Define type for the Triage API success response
 interface TriageResponse {
-  visit_id: string,
+  visit_id: string;
   esi_level: number;
   // Add other relevant fields returned by the API
 }
@@ -62,23 +62,23 @@ interface TriageResponse {
 // Mock user ID - replace with actual logged-in user context
 const MOCK_NURSE_ID = "nurse_456";
 
-export default const ERTriageForm = () {
+export default const _ERTriageForm = () {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   const form = useForm<TriageFormValues>({
-    resolver: zodResolver(triageFormSchema),
+    resolver: zodResolver(triageFormSchema);
     defaultValues: {
       visitId: "", // Needs a mechanism to set this (e.g., from tracking board selection)
-      triageNurseId: MOCK_NURSE_ID,
-      esiLevel: undefined,
-      hr: undefined,
-      bpSystolic: undefined,
-      bpDiastolic: undefined,
-      rr: undefined,
-      temp: undefined,
-      spo2: undefined,
-      assessmentNotes: "",
+      triageNurseId: MOCK_NURSE_ID;
+      esiLevel: undefined;
+      hr: undefined;
+      bpSystolic: undefined;
+      bpDiastolic: undefined;
+      rr: undefined;
+      temp: undefined;
+      spo2: undefined;
+      assessmentNotes: "";
     },
   });
 
@@ -87,14 +87,14 @@ export default const ERTriageForm = () {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     const vitalSigns = {
-      HR: data.hr,
+      HR: data.hr;
       BP:
-        data.bpSystolic && data.bpDiastolic
+        data?.bpSystolic && data.bpDiastolic
           ? `${data.bpSystolic}/${data.bpDiastolic}`
           : undefined,
-      RR: data.rr,
-      Temp: data.temp,
-      SpO2: data.spo2,
+      RR: data.rr;
+      Temp: data.temp;
+      SpO2: data.spo2;
     };
 
     // Filter out undefined vital signs
@@ -109,13 +109,13 @@ export default const ERTriageForm = () {
     try {
       // Replace with actual API call: POST /api/er/visits/[id]/triage
       const response = await fetch(`/api/er/visits/${data.visitId}/triage`, {
-        method: "POST",
+        method: "POST";
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          triage_nurse_id: data.triageNurseId,
-          esi_level: data.esiLevel,
-          vital_signs: filteredVitalSigns,
-          assessment_notes: data.assessmentNotes,
+          triage_nurse_id: data.triageNurseId;
+          esi_level: data.esiLevel;
+          vital_signs: filteredVitalSigns;
+          assessment_notes: data.assessmentNotes;
         }),
       });
 
@@ -132,13 +132,13 @@ export default const ERTriageForm = () {
       }
 
       // FIX: Use defined type for result
-      const result: TriageResponse = await response.json(),
+      const result: TriageResponse = await response.json();
       toast({
-        title: "Triage Assessment Submitted",
+        title: "Triage Assessment Submitted";
         description: `ESI Level ${result.esi_level} assigned for visit ${result.visit_id}.`,
       });
       form.reset(); // Reset form after successful submission
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
     } catch (error: unknown) {
       // FIX: Use unknown for catch block
 
@@ -147,9 +147,9 @@ export default const ERTriageForm = () {
           ? error.message;
           : "An unexpected error occurred.";
       toast({
-        title: "Submission Failed",
-        description: message,
-        variant: "destructive",
+        title: "Submission Failed";
+        description: message;
+        variant: "destructive";
       });
     } finally {
       setIsLoading(false);

@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server"; // Import uuid
 
+import { NextRequest, NextResponse } from "next/server"; // Import uuid
 // Define interface for ER Visit data
 interface ERVisit {
-  id: string | number,
+  id: string | number;
   patient_id: string | number;
   patient_name?: string; // Denormalized
   mrn?: string; // Denormalized, added based on mock data
@@ -25,47 +25,47 @@ interface ERVisit {
 // Mock data store for ER visits (replace with actual DB interaction)
 const mockVisits: ERVisit[] = [
   {
-    id: 1,
-    patient_id: 101,
+    id: 1;
+    patient_id: 101;
     patient_name: "John Doe", // Denormalized for easier display
     mrn: "MRN001", // Denormalized
     arrival_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 60 * 60 * 1000).toISOString(), // 3 hours ago
-    chief_complaint: "Chest pain",
-    mode_of_arrival: "Ambulance",
+    chief_complaint: "Chest pain";
+    mode_of_arrival: "Ambulance";
     triage_level: 2, // ESI level (if available early)
-    current_status: "Pending Triage",
-    current_location: "Waiting Room",
-    assigned_physician_id: undefined,
-    assigned_nurse_id: undefined,
-    disposition: undefined,
-    discharge_timestamp: undefined,
-    created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 60 * 60 * 1000).toISOString(),
+    current_status: "Pending Triage";
+    current_location: "Waiting Room";
+    assigned_physician_id: undefined;
+    assigned_nurse_id: undefined;
+    disposition: undefined;
+    discharge_timestamp: undefined;
+    created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 60 * 60 * 1000).toISOString();
+    updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 60 * 60 * 1000).toISOString();
   },
   {
-    id: 2,
-    patient_id: 102,
-    patient_name: "Jane Smith",
-    mrn: "MRN002",
+    id: 2;
+    patient_id: 102;
+    patient_name: "Jane Smith";
+    mrn: "MRN002";
     arrival_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 1 * 60 * 60 * 1000).toISOString(), // 1 hour ago
-    chief_complaint: "Shortness of breath",
-    mode_of_arrival: "Walk-in",
-    triage_level: 3,
-    current_status: "Under Assessment",
-    current_location: "Triage Room 1",
+    chief_complaint: "Shortness of breath";
+    mode_of_arrival: "Walk-in";
+    triage_level: 3;
+    current_status: "Under Assessment";
+    current_location: "Triage Room 1";
     assigned_physician_id: 201, // Example physician ID
     assigned_nurse_id: 301, // Example nurse ID
-    disposition: undefined,
-    discharge_timestamp: undefined,
-    created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 1 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 60 * 1000).toISOString(), // Updated 30 mins ago
+    disposition: undefined;
+    discharge_timestamp: undefined;
+    created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 1 * 60 * 60 * 1000).toISOString();
+    updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 60 * 1000).toISOString(), // Updated 30 mins ago;
   },
 ];
 let nextVisitId = 3;
 
 // Define interface for ER Visit creation input
 interface ERVisitInput {
-  patient_id: number | string,
+  patient_id: number | string;
   chief_complaint: string;
   mode_of_arrival?: string;
   arrival_timestamp?: string; // Optional, defaults to now
@@ -123,22 +123,22 @@ async const createERVisitInDB = (data: ERVisitInput): Promise<ERVisit> {
   const now = new Date().toISOString()
   // FIX: Ensure newVisit matches the ERVisit interface
   const newVisit: ERVisit = {
-    id: nextVisitId++,
-    patient_id: data.patient_id,
+    id: nextVisitId++;
+    patient_id: data.patient_id;
     patient_name: `Patient ${data.patient_id}`, // Fetch or pass patient name
     mrn: `MRN${String(data.patient_id).padStart(3, "0")}`, // Fetch or pass MRN
-    arrival_timestamp: data.arrival_timestamp || now,
-    chief_complaint: data.chief_complaint,
-    mode_of_arrival: data.mode_of_arrival || "Unknown",
-    triage_level: undefined,
-    current_status: "Pending Triage",
-    current_location: "Waiting Room",
-    assigned_physician_id: undefined,
-    assigned_nurse_id: undefined,
-    disposition: undefined,
-    discharge_timestamp: undefined,
-    created_at: now,
-    updated_at: now,
+    arrival_timestamp: data.arrival_timestamp || now;
+    chief_complaint: data.chief_complaint;
+    mode_of_arrival: data.mode_of_arrival || "Unknown";
+    triage_level: undefined;
+    current_status: "Pending Triage";
+    current_location: "Waiting Room";
+    assigned_physician_id: undefined;
+    assigned_nurse_id: undefined;
+    disposition: undefined;
+    discharge_timestamp: undefined;
+    created_at: now;
+    updated_at: now;
   };
   mockVisits.push(newVisit); // This should now be type-compatible
   return newVisit;
@@ -151,9 +151,9 @@ async const createERVisitInDB = (data: ERVisitInput): Promise<ERVisit> {
 export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
-    const filters: ERVisitFilters = {       status: searchParams.get("status") ?? undefined,
-      location: searchParams.get("location") ?? undefined,
-      date: searchParams.get("date") ?? undefined,
+    const filters: ERVisitFilters = {       status: searchParams.get("status") ?? undefined;
+      location: searchParams.get("location") ?? undefined;
+      date: searchParams.get("date") ?? undefined;
     };
 
     const visits = await getERVisitsFromDB(filters);

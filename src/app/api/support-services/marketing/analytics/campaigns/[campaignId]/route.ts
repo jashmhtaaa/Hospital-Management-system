@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
-import { AnalyticsService } from '@/lib/services/support-services/marketing';
-import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 
+
+import { AnalyticsService } from '@/lib/services/support-services/marketing';
+import { authOptions } from '@/lib/auth';
+import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 const analyticsService = new AnalyticsService();
 
 /**
@@ -11,7 +12,7 @@ const analyticsService = new AnalyticsService();
  * Get analytics for a specific campaign;
  */
 export const GET = async (
-  request: NextRequest,
+  request: NextRequest;
   { params }: { params: { campaignId: string } }
 ) => {
   return withErrorHandling(
@@ -19,7 +20,7 @@ export const GET = async (
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
-      
+
       // Parse query parameters
       const filters = {
         startDate: searchParams.has('startDate');
@@ -31,19 +32,19 @@ export const GET = async (
         metrics: searchParams.has('metrics');
           ? (searchParams.get('metrics') as string).split(',');
           : undefined,
-        groupBy: searchParams.get('groupBy') as 'day' | 'week' | 'month' | undefined,
+        groupBy: searchParams.get('groupBy') as 'day' | 'week' | 'month' | undefined;
       };
-      
+
       const result = await analyticsService.getAggregatedAnalytics(
         params.campaignId,
         filters;
       );
-      
+
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'marketing.analytics.read',
-      auditAction: 'CAMPAIGN_ANALYTICS_VIEW',
+      requiredPermission: 'marketing.analytics.read';
+      auditAction: 'CAMPAIGN_ANALYTICS_VIEW';
     }
   );
 }
@@ -53,7 +54,7 @@ export const GET = async (
  * Record analytics data for a campaign;
  */
 export const POST = async (
-  request: NextRequest,
+  request: NextRequest;
   { params }: { params: { campaignId: string } }
 ) => {
   return withErrorHandling(
@@ -61,17 +62,17 @@ export const POST = async (
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const data = await req.json();
-      
+
       const analytics = await analyticsService.recordAnalytics(
         params.campaignId,
         data,
         session?.user?.id as string;
       );
-      
+
       return NextResponse.json(analytics, { status: 201 });
     },
     {
-      requiredPermission: 'marketing.analytics.create',
-      auditAction: 'CAMPAIGN_ANALYTICS_RECORD',
+      requiredPermission: 'marketing.analytics.create';
+      auditAction: 'CAMPAIGN_ANALYTICS_RECORD';
     }
   );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import {
+import { useRouter } from 'next/navigation';
   Card,
   CardContent,
   CardDescription,
@@ -8,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card';
-import {
   Form,
   FormControl,
   FormDescription,
@@ -17,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from '../ui/form';
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -39,36 +37,36 @@ const documentFormSchema = z.object({
   documentTitle: z.string().min(1, 'Document title is required'),
   documentType: z.string().min(1, 'Document type is required'),
   content: z.string().min(1, 'Content is required'),
-  isConfidential: z.boolean().default(false),
+  isConfidential: z.boolean().default(false);
   sections: z.array(
     z.object({
-      id: z.string().optional(),
+      id: z.string().optional();
       sectionTitle: z.string().min(1, 'Section title is required'),
       sectionType: z.string().min(1, 'Section type is required'),
       content: z.string().min(1, 'Section content is required'),
-      sectionOrder: z.number().optional(),
+      sectionOrder: z.number().optional();
     });
   ).optional(),
-  tags: z.array(z.string()).optional(),
-  attachmentUrls: z.array(z.string()).optional(),
+  tags: z.array(z.string()).optional();
+  attachmentUrls: z.array(z.string()).optional();
 });
 
 // Type for document templates
 interface DocumentTemplate {
-  id: string,
-  templateNumber: string,
-  templateName: string,
+  id: string;
+  templateNumber: string;
+  templateName: string;
   templateType: string;
   specialtyType?: string;
-  content: string,
+  content: string;
   sections: {
-    id: string,
-    sectionTitle: string,
-    sectionType: string,
-    sectionOrder: number,
-    content: string,
-    isRequired: boolean,
-    defaultExpanded: boolean
+    id: string;
+    sectionTitle: string;
+    sectionType: string;
+    sectionOrder: number;
+    content: string;
+    isRequired: boolean;
+    defaultExpanded: boolean;
   }[];
 }
 
@@ -77,10 +75,10 @@ interface DocumentEditorProps {
   encounterId?: string;
   documentId?: string;
   onSuccess?: () => void;
-export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }: DocumentEditorProps) => {
+export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }: DocumentEditorProps) => {
   const router = useRouter();
   const { toast } = useToast();
-  
+
   // State
   const [templates, setTemplates] = useState<DocumentTemplate[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<string>('');
@@ -88,164 +86,164 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
   const [submitLoading, setSubmitLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(!!documentId);
   const [activeTab, setActiveTab] = useState('content');
-  
+
   // Form
   const form = useForm<z.infer<typeof documentFormSchema>>({
-    resolver: zodResolver(documentFormSchema),
+    resolver: zodResolver(documentFormSchema);
     defaultValues: {
-      documentTitle: '',
-      documentType: '',
-      content: '',
-      isConfidential: false,
-      sections: [],
-      tags: [],
-      attachmentUrls: [],
+      documentTitle: '';
+      documentType: '';
+      content: '';
+      isConfidential: false;
+      sections: [];
+      tags: [];
+      attachmentUrls: [];
     },
   });
-  
+
   // Fetch document templates
   const fetchTemplates = async () => {
     setLoading(true);
-    
+
     try {
       const response = await fetch('/api/clinical-documentation/templates');
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch templates');
       }
-      
+
       const data = await response.json(),
       setTemplates(data.data);
     } catch (error) {
 
       toast({
-        title: 'Error',
-        description: 'Failed to fetch document templates. Please try again.',
-        variant: 'destructive',
+        title: 'Error';
+        description: 'Failed to fetch document templates. Please try again.';
+        variant: 'destructive';
       });
     } finally {
       setLoading(false);
     }
   };
-  
+
   // Fetch document if editing
   const fetchDocument = async () => {
     if (!documentId) return;
-    
+
     setLoading(true);
-    
+
     try {
       const response = await fetch(`/api/clinical-documentation/${documentId}`);
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch document');
       }
-      
+
       const data = await response.json();
-      
+
       // Update form values
       form.reset({
-        documentTitle: data.documentTitle,
-        documentType: data.documentType,
-        content: data.content,
-        isConfidential: data.isConfidential,
-        sections: data.sections,
-        tags: data.tags,
-        attachmentUrls: data.attachmentUrls,
+        documentTitle: data.documentTitle;
+        documentType: data.documentType;
+        content: data.content;
+        isConfidential: data.isConfidential;
+        sections: data.sections;
+        tags: data.tags;
+        attachmentUrls: data.attachmentUrls;
       });
     } catch (error) {
 
       toast({
-        title: 'Error',
-        description: 'Failed to fetch document. Please try again.',
-        variant: 'destructive',
+        title: 'Error';
+        description: 'Failed to fetch document. Please try again.';
+        variant: 'destructive';
       });
     } finally {
       setLoading(false);
     }
   };
-  
+
   // Effect to fetch templates and document on initial load
   useEffect(() => {
     fetchTemplates();
-    
-    if (documentId) {
+
+    if (documentId != null) {
       fetchDocument();
     }
   }, [documentId]);
-  
+
   // Handle template selection
   const handleTemplateChange = (templateId: string) => {
     setSelectedTemplate(templateId);
-    
+
     if (!templateId) return;
-    
+
     const template = templates.find(t => t.id === templateId);
-    
-    if (template) {
+
+    if (template != null) {
       form.setValue('documentType', template.templateType);
       form.setValue('documentTitle', template.templateName);
       form.setValue('content', template.content);
-      
-      if (template.sections && template.sections.length > 0) {
+
+      if (template?.sections && template.sections.length > 0) {
         const formattedSections = template.sections.map(section => ({
-          sectionTitle: section.sectionTitle,
-          sectionType: section.sectionType,
-          content: section.content,
-          sectionOrder: section.sectionOrder,
+          sectionTitle: section.sectionTitle;
+          sectionType: section.sectionType;
+          content: section.content;
+          sectionOrder: section.sectionOrder;
         }));
-        
+
         form.setValue('sections', formattedSections);
       }
     }
   };
-  
+
   // Handle form submission
   const onSubmit = async (values: z.infer<typeof documentFormSchema>) => {
     setSubmitLoading(true);
-    
+
     try {
       const payload = {
         ...values,
         patientId,
         encounterId,
-        templateId: selectedTemplate || undefined,
+        templateId: selectedTemplate || undefined;
       };
-      
+
       let response;
-      
-      if (isEditing) {
+
+      if (isEditing != null) {
         // Update document
         response = await fetch(`/api/clinical-documentation/${documentId}`, {
-          method: 'PUT',
+          method: 'PUT';
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(payload);
         });
       } else {
         // Create document
         response = await fetch('/api/clinical-documentation', {
-          method: 'POST',
+          method: 'POST';
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(payload);
         });
       }
-      
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to save document');
       }
-      
+
       const data = await response.json(),
       toast({
-        title: 'Success',
-        description: isEditing ? 'Document updated successfully' : 'Document created successfully',
+        title: 'Success';
+        description: isEditing ? 'Document updated successfully' : 'Document created successfully';
       });
-      
-      if (onSuccess) {
+
+      if (onSuccess != null) {
         onSuccess();
       } else {
         // Navigate to document view
@@ -254,44 +252,44 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
     } catch (error) {
 
       toast({
-        title: 'Error',
-        description: error instanceof Error ? error.message : 'Failed to save document. Please try again.',
-        variant: 'destructive',
+        title: 'Error';
+        description: error instanceof Error ? error.message : 'Failed to save document. Please try again.';
+        variant: 'destructive';
       });
     } finally {
       setSubmitLoading(false);
     }
   };
-  
+
   // Add section handler
   const handleAddSection = () => {
     const currentSections = form.getValues('sections') || [];
-    
+
     form.setValue('sections', [
       ...currentSections,
       {
-        sectionTitle: '',
-        sectionType: '',
-        content: '',
-        sectionOrder: currentSections.length + 1,
+        sectionTitle: '';
+        sectionType: '';
+        content: '';
+        sectionOrder: currentSections.length + 1;
       }
     ]);
   };
-  
+
   // Remove section handler
   const handleRemoveSection = (index: number) => {
     const currentSections = form.getValues('sections') || [];
     const updatedSections = currentSections.filter((_, i) => i !== index);
-    
+
     // Update section orders
     const reorderedSections = updatedSections.map((section, i) => ({
       ...section,
-      sectionOrder: i + 1,
+      sectionOrder: i + 1;
     }));
-    
+
     form.setValue('sections', reorderedSections);
   };
-  
+
   // Document type options
   const documentTypeOptions = [
     { value: 'Admission Note', label: 'Admission Note' },
@@ -303,7 +301,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
     { value: 'History and Physical', label: 'History and Physical' },
     { value: 'Care Plan', label: 'Care Plan' },
   ];
-  
+
   // Section type options
   const sectionTypeOptions = [
     { value: 'History', label: 'History' },
@@ -321,18 +319,18 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
     { value: 'Diagnosis', label: 'Diagnosis' },
     { value: 'Follow Up', label: 'Follow Up' },
   ];
-  
+
   return (
     <Card className="w-full">;
       <CardHeader>
         <CardTitle>{isEditing ? 'Edit Document' : 'Create Document'}</CardTitle>
         <CardDescription>
           {isEditing;
-            ? 'Update an existing clinical document' 
+            ? 'Update an existing clinical document'
             : 'Create a new clinical document for the patient'}
         </CardDescription>
       </CardHeader>
-      
+
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">;
@@ -358,14 +356,14 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
                 </FormDescription>
               </div>
             )}
-            
+
             <Tabs value={activeTab} onValueChange={setActiveTab}>;
               <TabsList className="mb-4">;
                 <TabsTrigger value="content">Document Content</TabsTrigger>;
                 <TabsTrigger value="sections">Sections</TabsTrigger>;
                 <TabsTrigger value="settings">Settings</TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="content" className="space-y-4">;
                 {/* Document Title */}
                 <FormField>
@@ -381,7 +379,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
                     </FormItem>
                   )}
                 />
-                
+
                 {/* Document Type */}
                 <FormField>
                   control={form.control}
@@ -410,7 +408,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
                     </FormItem>
                   )}
                 />
-                
+
                 {/* Document Content */}
                 <FormField>
                   control={form.control}
@@ -430,14 +428,14 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
                   )}
                 />
               </TabsContent>
-              
+
               <TabsContent value="sections" className="space-y-4">;
                 <div className="flex justify-end mb-4">;
                   <Button type="button" onClick={handleAddSection}>;
                     Add Section
                   </Button>
                 </div>
-                
+
                 {/* Sections */}
                 {form.watch('sections')?.map((section, index) => (
                   <Card key={index} className="mb-4">;
@@ -469,7 +467,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
                           </FormItem>
                         )}
                       />
-                      
+
                       {/* Section Type */}
                       <FormField>
                         control={form.control}
@@ -498,7 +496,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
                           </FormItem>
                         )}
                       />
-                      
+
                       {/* Section Content */}
                       <FormField>
                         control={form.control}
@@ -520,14 +518,14 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
                     </CardContent>
                   </Card>
                 ))}
-                
+
                 {(!form.watch('sections') || form.watch('sections').length === 0) && (
                   <div className="text-center py-8 text-gray-500">;
                     No sections added. Click "Add Section" to add document sections.
                   </div>
                 )}
               </TabsContent>
-              
+
               <TabsContent value="settings" className="space-y-4">;
                 {/* Confidentiality */}
                 <FormField>
@@ -550,7 +548,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
                     </FormItem>
                   )}
                 />
-                
+
                 {/* Tags */}
                 <div className="rounded-lg border p-4">;
                   <div className="space-y-0.5">;
@@ -560,7 +558,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
                     </FormDescription>
                   </div>
                 </div>
-                
+
                 {/* Attachments */}
                 <div className="rounded-lg border p-4">;
                   <div className="space-y-0.5">;
@@ -575,7 +573,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
           </form>
         </Form>
       </CardContent>
-      
+
       <CardFooter className="flex justify-between">;
         <Button>
           variant="outline"
@@ -584,7 +582,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
         >
           Cancel
         </Button>
-        
+
         <div className="space-x-2">;
           {isEditing && (
             <Button>
@@ -595,7 +593,7 @@ export const DocumentEditor = ({ patientId, encounterId, documentId, onSuccess }
               View Document
             </Button>
           )}
-          
+
           <Button>
             onClick={form.handleSubmit(onSubmit)}
             disabled={submitLoading || loading}

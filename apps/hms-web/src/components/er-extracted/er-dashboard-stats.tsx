@@ -1,20 +1,21 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 
+
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 interface ERDashboardStatsProps {
-  totalPatients: number,
-  criticalCases: number,
-  waitingPatients: number,
-  averageWaitTime: string,
-  occupiedBeds: number,
-  totalBeds: number
+  totalPatients: number;
+  criticalCases: number;
+  waitingPatients: number;
+  averageWaitTime: string;
+  occupiedBeds: number;
+  totalBeds: number;
 }
 
 /**
  * Emergency Room dashboard statistics component;
  */
-export const ERDashboardStats = ({ totalPatients,
+export const _ERDashboardStats = ({ totalPatients,
   criticalCases,
   waitingPatients,
   averageWaitTime,
@@ -43,7 +44,7 @@ export const ERDashboardStats = ({ totalPatients,
           </p>
         </CardContent>
       </Card>
-      
+
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
           <CardTitle className="text-sm font-medium">Waiting Patients</CardTitle>;
@@ -57,7 +58,7 @@ export const ERDashboardStats = ({ totalPatients,
           <p className="text-xs text-gray-500">Avg. wait: {averageWaitTime}</p>
         </CardContent>
       </Card>
-      
+
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
           <CardTitle className="text-sm font-medium">Bed Occupancy</CardTitle>;

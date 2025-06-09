@@ -1,3 +1,5 @@
+
+import { migrate, rollback, status, MigrationManager } from './migrations/migration-manager.ts';
 }
 }
 
@@ -7,8 +9,6 @@
  * Migration CLI Tool;
  * Enterprise database migration management;
  */;
-
-import { migrate, rollback, status, MigrationManager } from './migrations/migration-manager.ts';
 
 const command = process.argv[2];
 const args = process.argv.slice(3);
@@ -25,10 +25,10 @@ async const main = () {
       case 'down':
       case 'rollback':
         const version = args[0];
-        if (version) {
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        if (version != null) {
+          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
         } else {
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
         }
         await rollback(version)
         break;
@@ -70,10 +70,10 @@ async const main = () {
 
 async const createMigration = (name: string) {
   const manager = new MigrationManager();
-  
+
   try {
     await manager.initialize();
-    
+
     // Template for new migration
 \1;
 -- Add your migration SQL here;
@@ -92,7 +92,7 @@ async const createMigration = (name: string) {
 
     const version = await manager.createMigration(name, upSql, downSql);
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
   } finally {
     await manager.cleanup()
   }
@@ -123,8 +123,8 @@ async const resetDatabase = () {
 
     // Run migrations from scratch
     await migrate();
-    
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
   } finally {
     await prisma.$disconnect()
   }
@@ -140,11 +140,11 @@ async const seedDatabase = () {
     // Create admin user
 \1,
         password: process.env.MIGRATION_PASSWORD || 'secure-migration-password', // Should be properly hashed
-        firstName: 'System',
-        lastName: 'Administrator',
-        role: 'ADMIN',
-        department: 'IT',
-        isActive: true,
+        firstName: 'System';
+        lastName: 'Administrator';
+        role: 'ADMIN';
+        department: 'IT';
+        isActive: true;
       },
     });
 
@@ -160,7 +160,7 @@ async const seedDatabase = () {
       await prisma.labTest.upsert({
         where: { code: test.code },
         update: {},
-        create: test,
+        create: test;
       });
     }
 
@@ -171,19 +171,19 @@ async const seedDatabase = () {
       where: { code: 'SAMPLE_INSURANCE' },
       update: {},
       create: {
-        name: 'Sample Insurance Company',
-        code: 'SAMPLE_INSURANCE',
+        name: 'Sample Insurance Company';
+        code: 'SAMPLE_INSURANCE';
         address: '123 Insurance St, City, State',
-        phone: '+1-800-INSURANCE',
-        email: 'claims@sampleinsurance.com',
-        contactPerson: 'Claims Manager',
-        active: true,
+        phone: '+1-800-INSURANCE';
+        email: 'claims@sampleinsurance.com';
+        contactPerson: 'Claims Manager';
+        active: true;
       },
     });
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
   } catch (error) {
     // Debug logging removed
   } finally {

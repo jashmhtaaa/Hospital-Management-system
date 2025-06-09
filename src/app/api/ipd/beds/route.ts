@@ -1,20 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
+
+
 import { getDB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session";
-
 // Define interface for POST request body
 interface BedInput {
-  bed_number: string,
-  room_number: string,
-  ward: string,
-  category: string,
+  bed_number: string;
+  room_number: string;
+  ward: string;
+  category: string;
   price_per_day: number;
   status?: "available" | "occupied" | "maintenance"; // Optional, defaults to 'available'
   features?: string | null
 }
 
 // GET /api/ipd/beds - Get all beds with optional filtering
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   try {
     const session = await getSession(); // Removed request argument
 
@@ -33,17 +34,17 @@ export const GET = async (request: NextRequest) => {
     let query = "SELECT * FROM beds WHERE 1=1";
     const parameters: string[] = [];
 
-    if (ward) {
+    if (ward != null) {
       query += " AND ward = ?";
       parameters.push(ward);
     }
 
-    if (category) {
+    if (category != null) {
       query += " AND category = ?";
       parameters.push(category);
     }
 
-    if (status) {
+    if (status != null) {
       query += " AND status = ?";
       parameters.push(status);
     }
@@ -66,7 +67,7 @@ export const GET = async (request: NextRequest) => {
 }
 
 // POST /api/ipd/beds - Create a new bed
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     const session = await getSession(); // Removed request argument
 
@@ -123,11 +124,11 @@ export const POST = async (request: NextRequest) => {
       [data.bed_number, data.room_number, data.ward]
     );
     const existingBed =;
-      existingBedResult.results && existingBedResult.results.length > 0 // Changed .rows to .results
+      existingBedResult?.results && existingBedResult.results.length > 0 // Changed .rows to .results
         ? existingBedResult.results[0] // Changed .rows to .results
         : undefined;
 
-    if (existingBed) {
+    if (existingBed != null) {
       return NextResponse.json(
         { error: "Bed number already exists in this room and ward" },
         { status: 409 }

@@ -1,12 +1,12 @@
+import React, { useState, useEffect, useCallback } from "react";
+import {
+import { useRouter } from "next/navigation";
 }
 
 "use client";
 
-// export const dynamic = 'force-dynamic'; // Removed this line
+// export const _dynamic = 'force-dynamic'; // Removed this line
 
-import React, { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
-import {
   Card,
   CardContent,
   CardHeader,
@@ -16,7 +16,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
   Table,
   TableBody,
   TableCell,
@@ -30,7 +29,6 @@ import {} from // Select,
 // SelectTrigger,
 // SelectValue,
 "@/components/ui/select"
-import {
   Command,
   CommandInput,
   CommandList,
@@ -38,7 +36,6 @@ import {
   CommandGroup,
   CommandItem,
 } from "@/components/ui/command";
-import {
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -49,7 +46,7 @@ import { cn } from "@/lib/utils"; // Assuming you have this utility
 
 // --- INTERFACES ---
 interface Patient {
-  id: number,
+  id: number;
   name: string; // Combined first/last or display name
   mrn: string;
   first_name?: string; // Optional if 'name' is primary display
@@ -57,16 +54,16 @@ interface Patient {
 }
 
 interface ServiceItem {
-  id: number,
-  item_code: string,
-  item_name: string,
-  category: string,
-  unit_price: number
+  id: number;
+  item_code: string;
+  item_name: string;
+  category: string;
+  unit_price: number;
 }
 
 interface InvoiceItem extends ServiceItem {
-  quantity: number,
-  subtotal: number
+  quantity: number;
+  subtotal: number;
 }
 
 // --- API Response Interfaces ---
@@ -87,7 +84,7 @@ interface ErrorResponse {
 }
 
 // --- COMPONENT ---
-export default const CreateInvoicePage = () {
+export default const _CreateInvoicePage = () {
   const router = useRouter()
   const [patients, setPatients] = useState<Patient[]>([]);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>();
@@ -220,8 +217,8 @@ export default const CreateInvoicePage = () {
         const newQuantity = Math.max(1, quantity); // Ensure quantity is at least 1
         return {
           ...item,
-          quantity: newQuantity,
-          subtotal: newQuantity * item.unit_price,
+          quantity: newQuantity;
+          subtotal: newQuantity * item.unit_price;
         };
       }
       return item;
@@ -252,23 +249,23 @@ export default const CreateInvoicePage = () {
 
     try {
       const invoiceData = {
-        patient_id: selectedPatient.id,
+        patient_id: selectedPatient.id;
         items: invoiceItems.map((item) => ({
-          service_item_id: item.id,
+          service_item_id: item.id;
           item_name: item.item_name, // Consider if description should be different
           description: item.item_name, // Using item_name as description for now
-          quantity: item.quantity,
-          unit_price: item.unit_price,
-          subtotal: item.subtotal,
+          quantity: item.quantity;
+          unit_price: item.unit_price;
+          subtotal: item.subtotal;
         })),
-        total_amount: invoiceTotal,
-        status: "pending", // Assuming a default status
+        total_amount: invoiceTotal;
+        status: "pending", // Assuming a default status;
       };
 
       const response = await fetch("/api/billing/invoices", {
-        method: "POST",
+        method: "POST";
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(invoiceData),
+        body: JSON.stringify(invoiceData);
       });
 
       if (!response.ok) {
@@ -287,7 +284,7 @@ export default const CreateInvoicePage = () {
         throw new Error(errorMessage);
       }
 
-      const result = await response.json(); // Assuming success response has data, define interface if needed
+      const _result = await response.json(); // Assuming success response has data, define interface if needed
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       // Consider showing a success toast message here
       router.push("/dashboard/billing/invoices"); // Redirect to invoices list

@@ -1,21 +1,22 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Select } from '@/components/ui/select';
 
+
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 interface ERRegistrationModalProps {
-  isOpen: boolean,
-  onClose: () => void,
-  onSubmit: (data: unknown) => void
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (data: unknown) => void;
 }
 
 /**
  * Emergency Room patient registration modal component;
  */
-export const ERRegistrationModal = ({ isOpen, onClose, onSubmit }: ERRegistrationModalProps) => {
+export const _ERRegistrationModal = ({ isOpen, onClose, onSubmit }: ERRegistrationModalProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // In a real implementation, we would collect form data here
@@ -40,7 +41,7 @@ export const ERRegistrationModal = ({ isOpen, onClose, onSubmit }: ERRegistratio
                 <Input id="lastName" placeholder="Last name" required />
               </div>
             </div>
-            
+
             <div className="grid grid-cols-2 gap-4">;
               <div className="space-y-2">;
                 <Label htmlFor="dob">Date of Birth</Label>;
@@ -57,12 +58,12 @@ export const ERRegistrationModal = ({ isOpen, onClose, onSubmit }: ERRegistratio
                 </Select>
               </div>
             </div>
-            
+
             <div className="space-y-2">;
               <Label htmlFor="chiefComplaint">Chief Complaint</Label>;
               <Textarea id="chiefComplaint" placeholder="Reason for emergency visit" required />
             </div>
-            
+
             <div className="grid grid-cols-2 gap-4">;
               <div className="space-y-2">;
                 <Label htmlFor="contactPhone">Contact Phone</Label>;
@@ -73,7 +74,7 @@ export const ERRegistrationModal = ({ isOpen, onClose, onSubmit }: ERRegistratio
                 <Input id="emergencyContact" placeholder="Emergency contact" />
               </div>
             </div>
-            
+
             <div className="space-y-2">;
               <Label htmlFor="allergies">Allergies</Label>;
               <Input id="allergies" placeholder="Known allergies" />

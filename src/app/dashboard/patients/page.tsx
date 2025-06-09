@@ -1,13 +1,14 @@
+import React, { useState, useEffect } from "react";
+import {
+
+import { Button } from "@/components/ui/button";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 }
 
 // src/app/dashboard/patients/page.tsx
 "use client";
 export const dynamic = 'force-dynamic';
 
-import React, { useState, useEffect } from "react";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { Button } from "@/components/ui/button";
-import {
   Table,
   TableBody,
   TableCell,
@@ -25,7 +26,7 @@ import Link from "next/link";
 interface ErrorResponse {
   error?: string;
   message?: string;
-export default const PatientsPage = () {
+export default const _PatientsPage = () {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -42,15 +43,15 @@ export default const PatientsPage = () {
           const errorData = (await response.json()) as ErrorResponse;
           throw new Error(errorData?.error || errorData?.message || "Failed to fetch patients");
         }
-        const data: Patient[] = await response.json(),
+        const data: Patient[] = await response.json();
         setPatients(data);
       } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setError(message),
         toast({
-          title: "Error Fetching Patients",
-          description: message,
-          variant: "destructive",
+          title: "Error Fetching Patients";
+          description: message;
+          variant: "destructive";
         });
       } finally {
         setIsLoading(false);
@@ -65,7 +66,7 @@ export default const PatientsPage = () {
       .toLowerCase();
       .includes(searchTerm.toLowerCase()) ||
     patient.phone_number.includes(searchTerm) ||
-    (patient.email && patient.email.toLowerCase().includes(searchTerm.toLowerCase()));
+    (patient?.email && patient.email.toLowerCase().includes(searchTerm.toLowerCase()));
   );
 
   return (

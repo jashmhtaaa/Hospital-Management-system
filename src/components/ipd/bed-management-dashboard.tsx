@@ -1,10 +1,11 @@
+import React, { useState, useEffect } from "react";
+import {
+
+import { Card, CardContent } from "@/components/ui/card"; // Assuming Card and CardContent are correctly imported
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Card, CardContent } from "@/components/ui/card"; // Assuming Card and CardContent are correctly imported
-import {
   Table,
   TableHeader,
   TableRow,
@@ -14,7 +15,6 @@ import {
 } from "@/components/ui/table"; // Assuming Table components are correctly imported
 import { Badge, BadgeProps } from "@/components/ui/badge"; // FIX: Import BadgeProps
 import { Button } from "@/components/ui/button"; // Assuming Button is correctly imported
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -24,12 +24,12 @@ import {
 
 // Define interfaces
 interface Bed {
-  id: string,
+  id: string;
   bed_number: string;
   room_number?: string | null;
-  ward: string,
-  category: "general" | "semi-private" | "private" | "icu",
-  status: "available" | "occupied" | "reserved" | "maintenance",
+  ward: string;
+  category: "general" | "semi-private" | "private" | "icu";
+  status: "available" | "occupied" | "reserved" | "maintenance";
   price_per_day: number;
   features?: string | null; // Comma-separated string
   // Add other bed properties if any
@@ -89,9 +89,9 @@ const BedManagementDashboard: React.FC = () => {
 
         const parameters = new URLSearchParams();
         // FIX: Rely on falsiness of "" for "All" filter
-        if (filterWard) parameters.append("ward", filterWard);
-        if (filterCategory) parameters.append("category", filterCategory);
-        if (filterStatus) parameters.append("status", filterStatus);
+        if (filterWard != null) parameters.append("ward", filterWard);
+        if (filterCategory != null) parameters.append("category", filterCategory);
+        if (filterStatus != null) parameters.append("status", filterStatus);
 
         const response = await fetch(`/api/ipd/beds?${parameters.toString()}`);
 
@@ -108,7 +108,7 @@ const BedManagementDashboard: React.FC = () => {
         }
 
         // FIX: Use defined type for success response
-        const data: BedsApiResponse = await response.json(),
+        const data: BedsApiResponse = await response.json();
         setBeds(Array.isArray(data) ? data : []); // Ensure beds is always an array
       } catch (error_: unknown) {
         // FIX: Use unknown for catch block
@@ -151,7 +151,7 @@ const BedManagementDashboard: React.FC = () => {
   };
 
   const handleFilterChange = (
-    value: string,
+    value: string;
     filterType: "ward" | "category" | "status";
   ) => {
     const actualValue = value === "All" ? "" : value;

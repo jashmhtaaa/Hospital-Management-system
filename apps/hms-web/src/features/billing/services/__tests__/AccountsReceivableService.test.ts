@@ -16,7 +16,7 @@ describe("AccountsReceivableService", () => {
       // Mock repository/services to return data representing outstanding invoices
 
       // Act
-      // const arService = new AccountsReceivableService(/* pass mocks */)
+      // const _arService = new AccountsReceivableService(/* pass mocks */)
       // const balances = await arService.getOutstandingBalances()
 
       // Assert
@@ -36,8 +36,8 @@ describe("AccountsReceivableService", () => {
       // Mock repository/services to provide data for aging (e.g., invoice dates, amounts)
 
       // Act
-      // const arService = new AccountsReceivableService(/* pass mocks */)
-      // const agingReport = await arService.getAgingReport()
+      // const _arService = new AccountsReceivableService(/* pass mocks */)
+      // const _agingReport = await arService.getAgingReport()
 
       // Assert
       // expect(agingReport).toBeDefined()
@@ -52,12 +52,12 @@ describe("AccountsReceivableService", () => {
   describe("followUpOnDelinquentAccount", () => {
     it("should initiate a follow-up process for a delinquent account", async () => {
       // Arrange
-      const patientId = "patient-delinquent-789";
+      const _patientId = "patient-delinquent-789";
       // Mock services to confirm delinquency and mock notification/communication service
 
       // Act
-      // const arService = new AccountsReceivableService(/* pass mocks */)
-      // const followUpResult = await arService.followUpOnDelinquentAccount(patientId)
+      // const _arService = new AccountsReceivableService(/* pass mocks */)
+      // const _followUpResult = await arService.followUpOnDelinquentAccount(patientId)
 
       // Assert
       // expect(followUpResult).toBeDefined()

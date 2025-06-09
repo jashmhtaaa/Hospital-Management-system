@@ -1,22 +1,23 @@
+import Image from "next/image";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
 }
 
 // src/app/select-role/page.tsx
 "use client";
 export const dynamic = 'force-dynamic';
 
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import Image from "next/image";
-import { useToast } from "@/hooks/use-toast";
 // import { useSession } from "@/hooks/useSession"; // Hypothetical hook to get session data
 
 // Mock user roles for now - replace with actual data from session/API
 const MOCK_USER_ROLES = ["Admin", "Doctor", "Receptionist"];
 
-export default const SelectRolePage = () {
+export default const _SelectRolePage = () {
   const router = useRouter();
   const { toast } = useToast();
   // const { user, updateSessionRole } = useSession(); // Hypothetical session hook
@@ -37,9 +38,9 @@ export default const SelectRolePage = () {
   const handleContinue = async () => {
     if (!selectedRole) {
       toast({
-        title: "Selection Required",
-        description: "Please select a role to continue.",
-        variant: "destructive",
+        title: "Selection Required";
+        description: "Please select a role to continue.";
+        variant: "destructive";
       });
       return;
     }
@@ -52,7 +53,7 @@ export default const SelectRolePage = () {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
       toast({
-        title: "Role Selected",
+        title: "Role Selected";
         description: `Proceeding as ${selectedRole}.`,
       })
 
@@ -62,9 +63,9 @@ export default const SelectRolePage = () {
     } catch (error: unknown) { // Use unknown
       const message = error instanceof Error ? error.message : "Failed to set role.";
       toast({
-        title: "Error",
-        description: message,
-        variant: "destructive",
+        title: "Error";
+        description: message;
+        variant: "destructive";
       });
     } finally {
       setIsLoading(false);

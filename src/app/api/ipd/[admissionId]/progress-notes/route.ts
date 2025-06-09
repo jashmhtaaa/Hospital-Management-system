@@ -1,21 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+
+
+import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
-import { z } from "zod";
-import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database
-
 // Zod schema for creating a progress note
 const progressNoteCreateSchema = z.object({
     note_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid note datetime format",
+        message: "Invalid note datetime format";
     }),
     notes: z.string().min(1, "Progress note content cannot be empty"),
     // Assuming doctor_id is derived from the session
 });
 
 // GET /api/ipd/[admissionId]/progress-notes - Fetch progress notes for an admission
-export const GET = async (
-    request: NextRequest,
+export const _GET = async (
+    request: NextRequest;
     { params }: { params: Promise<{ admissionId: string }> }
 ) => {
     const session = await getSession();
@@ -41,8 +42,8 @@ export const GET = async (
 
         const validSortColumns = ["note_datetime", "created_at"];
         const validSortOrders = ["asc", "desc"];
-        const finalSortBy = validSortColumns.includes(sortBy) ? sortBy : "note_datetime";
-        const finalSortOrder = validSortOrders.includes(sortOrder) ? sortOrder.toUpperCase() : "DESC";
+        const _finalSortBy = validSortColumns.includes(sortBy) ? sortBy : "note_datetime";
+        const _finalSortOrder = validSortOrders.includes(sortOrder) ? sortOrder.toUpperCase() : "DESC";
 
         const admissionCheck = await (DB as D1Database).prepare(
             "SELECT id FROM IPDAdmissions WHERE id = ?";
@@ -75,12 +76,12 @@ export const GET = async (
         const total = countResult?.total || 0;
 
         return NextResponse.json({
-            data: results,
+            data: results;
             pagination: {
                 page,
                 limit,
                 total,
-                totalPages: Math.ceil(total / limit),
+                totalPages: Math.ceil(total / limit);
             },
         });
 
@@ -98,8 +99,8 @@ export const GET = async (
 }
 
 // POST /api/ipd/[admissionId]/progress-notes - Create a new progress note
-export const POST = async (
-    request: NextRequest,
+export const _POST = async (
+    request: NextRequest;
     { params }: { params: Promise<{ admissionId: string }> }
 ) => {
     const session = await getSession();

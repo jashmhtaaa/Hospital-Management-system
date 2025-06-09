@@ -3,51 +3,47 @@ import React, { useState } from "react";
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
   CardTitle;
 } from '@/components/ui/card';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
   TableRow;
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
   SelectValue;
 } from '@/components/ui/select';
-import { 
-  Pagination, 
-  PaginationContent, 
-  PaginationItem, 
-  PaginationLink, 
-  PaginationNext, 
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
   PaginationPrevious;
 } from '@/components/ui/pagination';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Search, 
-  Plus, 
-  Building2, 
+  Search,
+  Plus,
+  Building2,
   ArrowLeft,
   CalendarRange,
   Users;
 } from 'lucide-react';
 import { format } from 'date-fns';
 
-export default const StaffScheduling = () {
+export default const _StaffScheduling = () {
   const router = useRouter();
   const [employees, setEmployees] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,9 +52,9 @@ export default const StaffScheduling = () {
   const [departmentFilter, setDepartmentFilter] = useState('');
   const [departments, setDepartments] = useState<any[]>([]);
   const [pagination, setPagination] = useState({
-    skip: 0,
-    take: 10,
-    total: 0
+    skip: 0;
+    take: 10;
+    total: 0;
   });
   const [scheduleView, setScheduleView] = useState('week');
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -70,24 +66,24 @@ export default const StaffScheduling = () {
       try {
         setLoading(true);
         const queryParams = new URLSearchParams({
-          skip: pagination.skip.toString(),
-          take: pagination.take.toString()
+          skip: pagination.skip.toString();
+          take: pagination.take.toString();
         });
-        
-        if (search) queryParams.append('search', search);
-        if (departmentFilter) queryParams.append('departmentId', departmentFilter);
-        
+
+        if (search != null) queryParams.append('search', search);
+        if (departmentFilter != null) queryParams.append('departmentId', departmentFilter);
+
         const response = await fetch(`/api/hr/staff?${queryParams.toString()}`);
-        
+
         if (!response.ok) {
           throw new Error('Failed to fetch employees');
         }
-        
+
         const data = await response.json(),
         setEmployees(data.employees);
         setPagination(prev => ({
           ...prev,
-          total: data.total
+          total: data.total;
         }));
       } catch (err) {
         setError(err.message);
@@ -95,7 +91,7 @@ export default const StaffScheduling = () {
         setLoading(false);
       }
     };
-    
+
     fetchEmployees();
   }, [search, departmentFilter, pagination.skip, pagination.take]);
 
@@ -113,7 +109,7 @@ export default const StaffScheduling = () {
 
       }
     };
-    
+
     fetchDepartments();
   }, []);
 
@@ -123,28 +119,28 @@ export default const StaffScheduling = () {
       const mockSchedules = [];
       const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
       const shifts = ['Morning (7AM-3PM)', 'Evening (3PM-11PM)', 'Night (11PM-7AM)', 'Off'];
-      
+
       employees.forEach(employee => {
         const employeeSchedule = {
-          employeeId: employee.id,
+          employeeId: employee.id;
           employeeName: `/* SECURITY: Template literal eliminated */
-          department: employee.department?.name || 'Unassigned',
-          position: employee.positions?.length > 0 
+          department: employee.department?.name || 'Unassigned';
+          position: employee.positions?.length > 0
             ? (employee.positions.find(p => p.isPrimary)?.position.title || employee.positions[0].position.title);
             : 'Unassigned',
           schedule: {}
         };
-        
+
         days.forEach(day => {
           // Randomly assign shifts, with higher probability for "Off" on weekends
           const isWeekend = day === 'Saturday' || day === 'Sunday';
           const shiftIndex = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * (isWeekend ? 10 : shifts.length));
           employeeSchedule.schedule[day] = shiftIndex >= shifts.length ? 'Off' : shifts[shiftIndex];
         });
-        
+
         mockSchedules.push(employeeSchedule);
       });
-      
+
       setSchedules(mockSchedules);
     }
   }, [employees]);
@@ -154,7 +150,7 @@ export default const StaffScheduling = () {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take
+        skip: prev.skip - prev.take;
       }));
     }
   };
@@ -163,7 +159,7 @@ export default const StaffScheduling = () {
     if (pagination.skip + pagination.take < pagination.total) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take
+        skip: prev.skip + prev.take;
       }));
     }
   };
@@ -174,7 +170,7 @@ export default const StaffScheduling = () {
     // Reset pagination when searching
     setPagination(prev => ({
       ...prev,
-      skip: 0
+      skip: 0;
     }));
   };
 
@@ -185,16 +181,16 @@ export default const StaffScheduling = () {
     const day = startOfWeek.getDay();
     const diff = startOfWeek.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
     startOfWeek.setDate(diff);
-    
+
     for (let i = 0; i < 7; i++) {
       const date = new Date(startOfWeek);
       date.setDate(date.getDate() + i);
       days.push({
         name: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][i],
-        date: date
+        date: date;
       });
     }
-    
+
     return days;
   };
 
@@ -229,14 +225,14 @@ export default const StaffScheduling = () {
           Back to Staff Management
         </Button>
       </div>
-      
+
       <div className="flex flex-col gap-2">;
         <h1 className="text-3xl font-bold">Staff Scheduling</h1>;
         <p className="text-muted-foreground">;
           Manage employee work schedules and shifts
         </p>
       </div>
-      
+
       <div className="flex flex-col md:flex-row gap-4 justify-between">;
         <div className="flex flex-col md:flex-row gap-2 md:items-center">;
           <form onSubmit={handleSearch} className="flex gap-2">;
@@ -255,7 +251,7 @@ export default const StaffScheduling = () {
             </Button>
           </form>
         </div>
-        
+
         <div className="flex flex-col md:flex-row gap-2">;
           <Select value={departmentFilter} onValueChange={setDepartmentFilter}>;
             <SelectTrigger className="w-full md:w-[200px]">;
@@ -270,14 +266,14 @@ export default const StaffScheduling = () {
               ))}
             </SelectContent>
           </Select>
-          
+
           <Button onClick={() => router.push('/dashboard/hr/staff/schedule/new')}>
             <CalendarRange className="mr-2 h-4 w-4" />
             Create Schedule
           </Button>
         </div>
       </div>
-      
+
       <Card>
         <CardHeader className="pb-2">;
           <div className="flex justify-between items-center">;
@@ -310,7 +306,7 @@ export default const StaffScheduling = () {
               Next Week
             </Button>
           </div>
-          
+
           {error ? (
             <div className="text-center py-4 text-red-500">;
               Error: {error}

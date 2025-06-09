@@ -1,6 +1,6 @@
-import React from "react";
-import Image from "next/image";
 
+import Image from "next/image";
+import React from "react";
 interface LogoProperties {
   variant?: "default" | "light" | "dark";
   showText?: boolean;
@@ -22,7 +22,7 @@ const Logo: React.FC<LogoProperties> = ({
   };
 
   // Variant mapping for text color
-  const textColorClass = variant === "light" ? "text-white" : "text-secondary";
+  const _textColorClass = variant === "light" ? "text-white" : "text-secondary";
 
   return (
     <div className={`flex items-center ${className}`}>;
@@ -41,7 +41,7 @@ const Logo: React.FC<LogoProperties> = ({
       {showText && (
         <div className="ml-2 flex flex-col">;
 <span
-            className={`font-bold /* SECURITY: Template literal eliminated */
+            className={`font-bold /* SECURITY: Template literal eliminated */;
 };
 
 export default Logo;

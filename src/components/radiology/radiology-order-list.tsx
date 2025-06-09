@@ -1,11 +1,12 @@
+import React, { useState, useEffect } from "react";
+import {
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import {
   Table,
   TableBody,
   TableCell,
@@ -30,7 +31,7 @@ interface RadiologyOrder {
   priority: "routine" | "stat"; // Use specific types
   status: "pending" | "scheduled" | "in_progress" | "completed" | "cancelled"; // Use specific types
   // Add other fields returned by the API as needed
-export default const RadiologyOrderList = () {
+export default const _RadiologyOrderList = () {
   const [orders, setOrders] = useState<RadiologyOrder[]>([]); // Correctly typed state
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(); // Correctly typed state
@@ -63,9 +64,9 @@ export default const RadiologyOrderList = () {
         `Failed to load radiology orders: ${message}. Please try again later.`;
       ),
       toast({
-        title: "Error Loading Orders",
-        description: message,
-        variant: "destructive",
+        title: "Error Loading Orders";
+        description: message;
+        variant: "destructive";
       });
     } finally {
       setLoading(false);
@@ -81,11 +82,11 @@ export default const RadiologyOrderList = () {
   const handleCreateOrder = async (orderData: OrderPayload) => {
     try {
       const response = await fetch("/api/radiology/orders", {
-        method: "POST",
+        method: "POST";
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(orderData),
+        body: JSON.stringify(orderData);
       });
 
       if (!response.ok) {
@@ -103,8 +104,8 @@ export default const RadiologyOrderList = () {
       }
 
       toast({
-        title: "Success",
-        description: "Radiology order created successfully.",
+        title: "Success";
+        description: "Radiology order created successfully.";
       }),
       setShowCreateModal(false);
       fetchOrders(); // Refresh the list
@@ -113,9 +114,9 @@ export default const RadiologyOrderList = () {
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
       toast({
-        title: "Error Creating Order",
-        description: message,
-        variant: "destructive",
+        title: "Error Creating Order";
+        description: message;
+        variant: "destructive";
       });
       // Keep the modal open on error so the user can retry or correct input
     }
@@ -125,11 +126,11 @@ export default const RadiologyOrderList = () {
   const getStatusBadge = (status: RadiologyOrder["status"]) => {
     // Define styles for specific statuses
     const statusStyles: { [key in RadiologyOrder["status"]]: string } = {
-      pending: "bg-yellow-100 text-yellow-800 border-yellow-200",
-      scheduled: "bg-blue-100 text-blue-800 border-blue-200",
-      in_progress: "bg-purple-100 text-purple-800 border-purple-200",
-      completed: "bg-green-100 text-green-800 border-green-200",
-      cancelled: "bg-red-100 text-red-800 border-red-200",
+      pending: "bg-yellow-100 text-yellow-800 border-yellow-200";
+      scheduled: "bg-blue-100 text-blue-800 border-blue-200";
+      in_progress: "bg-purple-100 text-purple-800 border-purple-200";
+      completed: "bg-green-100 text-green-800 border-green-200";
+      cancelled: "bg-red-100 text-red-800 border-red-200";
     };
 
     // Format status text (capitalize first letter, replace underscores)

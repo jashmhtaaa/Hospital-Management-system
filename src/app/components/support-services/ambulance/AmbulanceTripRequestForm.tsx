@@ -15,7 +15,7 @@ import { CalendarIcon } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 
-export default const AmbulanceTripRequestForm = () {
+export default const _AmbulanceTripRequestForm = () {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -25,28 +25,28 @@ export default const AmbulanceTripRequestForm = () {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState('');
   const [formData, setFormData] = useState({
-    tripType: 'NON_EMERGENCY',
-    priority: 'MEDIUM',
-    ambulanceId: '',
-    patientId: '',
-    pickupLocationId: '',
-    dropLocationId: '',
-    notes: '',
+    tripType: 'NON_EMERGENCY';
+    priority: 'MEDIUM';
+    ambulanceId: '';
+    patientId: '';
+    pickupLocationId: '';
+    dropLocationId: '';
+    notes: '';
     medicalDetails: {}
   });
   const [medicalDetails, setMedicalDetails] = useState({
-    chiefComplaint: '',
+    chiefComplaint: '';
     vitalSigns: {
-      bloodPressure: '',
-      heartRate: '',
-      respiratoryRate: '',
-      temperature: '',
-      oxygenSaturation: ''
+      bloodPressure: '';
+      heartRate: '';
+      respiratoryRate: '';
+      temperature: '';
+      oxygenSaturation: '';
     },
-    requiresOxygen: false,
-    requiresIV: false,
-    requiresMonitoring: false,
-    additionalNotes: ''
+    requiresOxygen: false;
+    requiresIV: false;
+    requiresMonitoring: false;
+    additionalNotes: '';
   }),
   useEffect(() => {
     fetchAmbulances(),
@@ -59,22 +59,22 @@ export default const AmbulanceTripRequestForm = () {
     try {
       const response = await fetch('/api/support-services/ambulance?status=AVAILABLE&status=ON_DUTY&page=1&limit=50');
       const data = await response.json();
-      
+
       if (data.success) {
         setAmbulances(data.data);
       } else {
         toast({
-          title: "Error",
-          description: data.message || "Failed to fetch ambulances",
-          variant: "destructive"
+          title: "Error";
+          description: data.message || "Failed to fetch ambulances";
+          variant: "destructive";
         });
       }
     } catch (error) {
 
       toast({
-        title: "Error",
-        description: "Failed to fetch ambulances",
-        variant: "destructive"
+        title: "Error";
+        description: "Failed to fetch ambulances";
+        variant: "destructive";
       });
     } finally {
       setLoading(false);
@@ -85,22 +85,22 @@ export default const AmbulanceTripRequestForm = () {
     try {
       const response = await fetch('/api/locations?page=1&limit=100');
       const data = await response.json();
-      
+
       if (data.success) {
         setLocations(data.data);
       } else {
         toast({
-          title: "Error",
-          description: data.message || "Failed to fetch locations",
-          variant: "destructive"
+          title: "Error";
+          description: data.message || "Failed to fetch locations";
+          variant: "destructive";
         });
       }
     } catch (error) {
 
       toast({
-        title: "Error",
-        description: "Failed to fetch locations",
-        variant: "destructive"
+        title: "Error";
+        description: "Failed to fetch locations";
+        variant: "destructive";
       });
     }
   };
@@ -109,22 +109,22 @@ export default const AmbulanceTripRequestForm = () {
     try {
       const response = await fetch('/api/patients?page=1&limit=100');
       const data = await response.json();
-      
+
       if (data.success) {
         setPatients(data.data);
       } else {
         toast({
-          title: "Error",
-          description: data.message || "Failed to fetch patients",
-          variant: "destructive"
+          title: "Error";
+          description: data.message || "Failed to fetch patients";
+          variant: "destructive";
         });
       }
     } catch (error) {
 
       toast({
-        title: "Error",
-        description: "Failed to fetch patients",
-        variant: "destructive"
+        title: "Error";
+        description: "Failed to fetch patients";
+        variant: "destructive";
       });
     }
   };
@@ -139,7 +139,7 @@ export default const AmbulanceTripRequestForm = () {
 
   const handleMedicalDetailsChange = (e: unknown) => {
     const { name, value, type, checked } = e.target;
-    
+
     if (name.includes('.')) {
       const [parent, child] = name.split('.'),
       setMedicalDetails({
@@ -159,86 +159,86 @@ export default const AmbulanceTripRequestForm = () {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.ambulanceId) {
       toast({
-        title: "Error",
-        description: "Please select an ambulance",
-        variant: "destructive"
+        title: "Error";
+        description: "Please select an ambulance";
+        variant: "destructive";
       });
       return;
     }
-    
+
     if (!formData.pickupLocationId) {
       toast({
-        title: "Error",
-        description: "Please select a pickup location",
-        variant: "destructive"
+        title: "Error";
+        description: "Please select a pickup location";
+        variant: "destructive";
       });
       return;
     }
-    
+
     if (!formData.dropLocationId) {
       toast({
-        title: "Error",
-        description: "Please select a destination location",
-        variant: "destructive"
+        title: "Error";
+        description: "Please select a destination location";
+        variant: "destructive";
       });
       return;
     }
-    
+
     if (!selectedTime) {
       toast({
-        title: "Error",
-        description: "Please select a time",
-        variant: "destructive"
+        title: "Error";
+        description: "Please select a time";
+        variant: "destructive";
       });
       return;
     }
-    
+
     setSubmitting(true);
-    
+
     try {
       // Combine date and time
       const [hours, minutes] = selectedTime.split(':');
       const scheduledTime = new Date(selectedDate);
       scheduledTime.setHours(parseInt(hours, 10), parseInt(minutes, 10));
-      
+
       const payload = {
         ...formData,
         scheduledTime,
         medicalDetails: formData.tripType === 'EMERGENCY' || formData.tripType === 'NON_EMERGENCY' ? medicalDetails : {}
       };
-      
+
       const response = await fetch('/api/support-services/ambulance/trips', {
-        method: 'POST',
+        method: 'POST';
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(payload);
       });
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         toast({
-          title: "Success",
-          description: "Ambulance trip scheduled successfully",
+          title: "Success";
+          description: "Ambulance trip scheduled successfully";
         });
         router.push('/support-services/ambulance');
       } else {
         toast({
-          title: "Error",
-          description: data.message || "Failed to schedule ambulance trip",
-          variant: "destructive"
+          title: "Error";
+          description: data.message || "Failed to schedule ambulance trip";
+          variant: "destructive";
         });
       }
     } catch (error) {
 
       toast({
-        title: "Error",
-        description: "Failed to schedule ambulance trip",
-        variant: "destructive"
+        title: "Error";
+        description: "Failed to schedule ambulance trip";
+        variant: "destructive";
       });
     } finally {
       setSubmitting(false);
@@ -248,52 +248,52 @@ export default const AmbulanceTripRequestForm = () {
   const handleFindAvailableAmbulances = async () => {
     if (!selectedDate || !selectedTime || !formData.tripType || !formData.pickupLocationId) {
       toast({
-        title: "Error",
+        title: "Error";
         description: "Please select date, time, trip type, and pickup location",
-        variant: "destructive"
+        variant: "destructive";
       });
       return;
     }
-    
+
     setLoading(true);
-    
+
     try {
       // Combine date and time
       const [hours, minutes] = selectedTime.split(':');
       const scheduledTime = new Date(selectedDate);
       scheduledTime.setHours(parseInt(hours, 10), parseInt(minutes, 10));
-      
+
       const response = await fetch(`/api/support-services/ambulance/available?tripType=${formData.tripType}&scheduledTime=${scheduledTime.toISOString()}&pickupLocationId=${formData.pickupLocationId}`);
       const data = await response.json();
-      
+
       if (data.success) {
         setAmbulances(data.data);
-        
+
         if (data.data.length === 0) {
           toast({
-            title: "No Ambulances Available",
-            description: "No suitable ambulances are available for the selected time and trip type",
-            variant: "destructive"
+            title: "No Ambulances Available";
+            description: "No suitable ambulances are available for the selected time and trip type";
+            variant: "destructive";
           });
         } else {
           toast({
-            title: "Success",
+            title: "Success";
             description: `Found ${data.data.length} available ambulance(s)`,
           });
         }
       } else {
         toast({
-          title: "Error",
-          description: data.message || "Failed to find available ambulances",
-          variant: "destructive"
+          title: "Error";
+          description: data.message || "Failed to find available ambulances";
+          variant: "destructive";
         });
       }
     } catch (error) {
 
       toast({
-        title: "Error",
-        description: "Failed to find available ambulances",
-        variant: "destructive"
+        title: "Error";
+        description: "Failed to find available ambulances";
+        variant: "destructive";
       });
     } finally {
       setLoading(false);
@@ -308,7 +308,7 @@ export default const AmbulanceTripRequestForm = () {
           Back to Dashboard
         </Button>
       </div>
-      
+
       <form onSubmit={handleSubmit}>;
         <Card>
           <CardHeader>
@@ -320,7 +320,7 @@ export default const AmbulanceTripRequestForm = () {
                 <Label htmlFor="tripType">Trip Type</Label>;
                 <Select>
                   name="tripType"
-                  value={formData.tripType} 
+                  value={formData.tripType}
                   onValueChange={(value) => setFormData({...formData, tripType: value})}
                 >
                   <SelectTrigger>
@@ -334,12 +334,12 @@ export default const AmbulanceTripRequestForm = () {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">;
                 <Label htmlFor="priority">Priority</Label>;
                 <Select>
                   name="priority"
-                  value={formData.priority} 
+                  value={formData.priority}
                   onValueChange={(value) => setFormData({...formData, priority: value})}
                 >
                   <SelectTrigger>
@@ -352,7 +352,7 @@ export default const AmbulanceTripRequestForm = () {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">;
                 <Label htmlFor="date">Date</Label>;
                 <Popover>
@@ -376,7 +376,7 @@ export default const AmbulanceTripRequestForm = () {
                   </PopoverContent>
                 </Popover>
               </div>
-              
+
               <div className="space-y-2">;
                 <Label htmlFor="time">Time</Label>;
                 <Input>
@@ -386,12 +386,12 @@ export default const AmbulanceTripRequestForm = () {
                   className="w-full"
                 />
               </div>
-              
+
               <div className="space-y-2">;
                 <Label htmlFor="pickupLocationId">Pickup Location</Label>;
                 <Select>
                   name="pickupLocationId"
-                  value={formData.pickupLocationId} 
+                  value={formData.pickupLocationId}
                   onValueChange={(value) => setFormData({...formData, pickupLocationId: value})}
                 >
                   <SelectTrigger>
@@ -406,12 +406,12 @@ export default const AmbulanceTripRequestForm = () {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">;
                 <Label htmlFor="dropLocationId">Destination</Label>;
                 <Select>
                   name="dropLocationId"
-                  value={formData.dropLocationId} 
+                  value={formData.dropLocationId}
                   onValueChange={(value) => setFormData({...formData, dropLocationId: value})}
                 >
                   <SelectTrigger>
@@ -426,12 +426,12 @@ export default const AmbulanceTripRequestForm = () {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">;
                 <Label htmlFor="patientId">Patient (Optional)</Label>;
                 <Select>
                   name="patientId"
-                  value={formData.patientId} 
+                  value={formData.patientId}
                   onValueChange={(value) => setFormData({...formData, patientId: value})}
                 >
                   <SelectTrigger>
@@ -447,10 +447,10 @@ export default const AmbulanceTripRequestForm = () {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="md:col-span-2">;
                 <Button>
-                  type="button" 
+                  type="button"
                   variant="outline"
                   onClick={handleFindAvailableAmbulances}
                   disabled={loading}
@@ -459,12 +459,12 @@ export default const AmbulanceTripRequestForm = () {
                   {loading ? "Finding Available Ambulances..." : "Find Available Ambulances"}
                 </Button>
               </div>
-              
+
               <div className="space-y-2 md:col-span-2">;
                 <Label htmlFor="ambulanceId">Ambulance</Label>;
                 <Select>
                   name="ambulanceId"
-                  value={formData.ambulanceId} 
+                  value={formData.ambulanceId}
                   onValueChange={(value) => setFormData({...formData, ambulanceId: value})}
                 >
                   <SelectTrigger>
@@ -474,13 +474,13 @@ export default const AmbulanceTripRequestForm = () {
                     {ambulances.map(ambulance => (
                       <SelectItem key={ambulance.id} value={ambulance.id}>;
                         {ambulance.registrationNumber} - {ambulance.vehicleType.replace(/_/g, ' ')}
-                        {ambulance.eta && ` (ETA: ${Math.round(ambulance.eta.minutes)} min)`}
+                        {ambulance?.eta && ` (ETA: ${Math.round(ambulance.eta.minutes)} min)`}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="md:col-span-2">;
                 <Label htmlFor="notes">Notes</Label>;
                 <Textarea>
@@ -494,7 +494,7 @@ export default const AmbulanceTripRequestForm = () {
             </div>
           </CardContent>
         </Card>
-        
+
         {(formData.tripType === 'EMERGENCY' || formData.tripType === 'NON_EMERGENCY') && (
           <Card className="mt-6">;
             <CardHeader>
@@ -511,7 +511,7 @@ export default const AmbulanceTripRequestForm = () {
                     placeholder="Enter chief complaint"
                   />
                 </div>
-                
+
                 <div className="space-y-2">;
                   <Label>Vital Signs</Label>
                   <div className="grid grid-cols-2 gap-2">;
@@ -562,7 +562,7 @@ export default const AmbulanceTripRequestForm = () {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">;
                   <Label>Required Support</Label>
                   <div className="space-y-2">;
@@ -601,7 +601,7 @@ export default const AmbulanceTripRequestForm = () {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="md:col-span-2">;
                   <Label htmlFor="additionalNotes">Additional Medical Notes</Label>;
                   <Textarea>
@@ -616,17 +616,17 @@ export default const AmbulanceTripRequestForm = () {
             </CardContent>
           </Card>
         )}
-        
+
         <div className="mt-6 flex justify-end space-x-2">;
           <Button>
             variant="outline"
-            type="button" 
+            type="button"
             onClick={() => router.push('/support-services/ambulance')}
           >
             Cancel
           </Button>
           <Button>
-            type="submit" 
+            type="submit"
             disabled={submitting}
           >
             {submitting ? "Scheduling..." : "Schedule Trip"}

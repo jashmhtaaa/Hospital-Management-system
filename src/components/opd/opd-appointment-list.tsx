@@ -1,10 +1,10 @@
+import React, { useState, useEffect } from "react";
+import {
+import { useRouter } from "next/navigation";
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import {
   Table,
   TableBody,
   TableCell,
@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/table"; // Assuming these will be created
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge"; // Assuming this exists or will be created
-import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -24,20 +23,20 @@ import {
 // Removed direct import: import { hasPermission } from "@/lib/session"
 
 interface Appointment {
-  id: number,
-  patientId: number,
-  patientName: string,
-  doctorId: number,
-  doctorName: string,
-  appointmentTime: string,
+  id: number;
+  patientId: number;
+  patientName: string;
+  doctorId: number;
+  doctorName: string;
+  appointmentTime: string;
   status:
     | "scheduled";
     | "checked-in";
     | "in-progress";
     | "completed";
     | "cancelled";
-  appointmentType: string,
-  reason: string
+  appointmentType: string;
+  reason: string;
 }
 
 // FIX: Define API response types
@@ -55,7 +54,7 @@ interface ApiErrorResponse {
 
 interface OPDAppointmentListProperties {
   date: Date
-export default const OPDAppointmentList = ({
+export default const _OPDAppointmentList = ({
   date,
 }: OPDAppointmentListProperties) {
   const router = useRouter();
@@ -84,7 +83,7 @@ export default const OPDAppointmentList = ({
 
         // FIX: Type the response data
         const checkInData: PermissionApiResponse = await checkInResponse.json();
-        const cancelData: PermissionApiResponse = await cancelResponse.json(),
+        const cancelData: PermissionApiResponse = await cancelResponse.json();
         setCanCheckIn(checkInData.hasPermission || false);
         setCanCancel(cancelData.hasPermission || false);
       } catch (err) { // Declare error variable for the catch block
@@ -143,7 +142,7 @@ export default const OPDAppointmentList = ({
     };
 
     fetchAppointments();
-     
+
   }, [date]);
 
   const handleCheckIn = async (appointmentId: number) => {
@@ -151,7 +150,7 @@ export default const OPDAppointmentList = ({
       const response = await fetch(
         `/api/appointments/${appointmentId}/check-in`,
         {
-          method: "POST",
+          method: "POST";
         }
       );
 
@@ -180,7 +179,7 @@ export default const OPDAppointmentList = ({
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      /* SECURITY: Console statement removed */ // Placeholder alert
+      /* SECURITY: Console statement removed */ // Placeholder alert;
     }
   };
 
@@ -189,7 +188,7 @@ export default const OPDAppointmentList = ({
       const response = await fetch(
         `/api/appointments/${appointmentId}/cancel`,
         {
-          method: "POST",
+          method: "POST";
         }
       );
 
@@ -218,7 +217,7 @@ export default const OPDAppointmentList = ({
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      /* SECURITY: Console statement removed */ // Placeholder alert
+      /* SECURITY: Console statement removed */ // Placeholder alert;
     }
   };
 
@@ -261,7 +260,7 @@ export default const OPDAppointmentList = ({
     return <div className="flex justify-center p-4">Loading...</div>;
   }
 
-  if (error) {
+  if (error != null) {
     return <div className="text-red-500 p-4">Error: {error}</div>;
   }
 
@@ -291,8 +290,8 @@ export default const OPDAppointmentList = ({
             <TableRow key={appointment.id}>;
               <TableCell>
                 {new Date(appointment.appointmentTime).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
+                  hour: "2-digit";
+                  minute: "2-digit";
                 })}
               </TableCell>
               <TableCell>{appointment.patientName}</TableCell>

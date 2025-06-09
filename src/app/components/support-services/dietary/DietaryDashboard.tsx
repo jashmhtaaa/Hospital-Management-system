@@ -12,21 +12,20 @@ import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useToast } from '@/components/ui/use-toast';
 import { format } from 'date-fns';
-import { 
-  CalendarIcon, 
-  ChevronLeft, 
-  ChevronRight, 
-  ClipboardList, 
-  Clock, 
-  Edit, 
-  FileText, 
-  Filter, 
-  Plus, 
-  RefreshCw, 
-  Search, 
+import {
+  CalendarIcon,
+  ChevronLeft,
+  ChevronRight,
+  ClipboardList,
+  Clock,
+  Edit,
+  FileText,
+  Filter,
+  Plus,
+  RefreshCw,
+  Search,
   User;
 } from 'lucide-react';
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -36,7 +35,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { 
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -45,13 +43,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Skeleton } from '@/components/ui/skeleton';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogDescription, 
-  DialogFooter, 
-  DialogHeader, 
-  DialogTitle, 
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
   DialogTrigger;
 } from '@/components/ui/dialog';
 
@@ -72,7 +69,7 @@ const requestTypeColors: Record<string, string> = {
   'NUTRITIONAL_CONSULTATION': 'bg-teal-100 text-teal-800',
 };
 
-export const DietaryDashboard = () => {
+export const _DietaryDashboard = () => {
   const [activeTab, setActiveTab] = useState('requests');
   const [requests, setRequests] = useState<any[]>([]);
   const [mealPlans, setMealPlans] = useState<any[]>([]);
@@ -82,19 +79,19 @@ export const DietaryDashboard = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [filters, setFilters] = useState({
-    status: '',
-    requestType: '',
-    patientId: '',
-    startDate: null as Date | null,
-    endDate: null as Date | null,
+    status: '';
+    requestType: '';
+    patientId: '';
+    startDate: null as Date | null;
+    endDate: null as Date | null;
   });
   const [selectedRequest, setSelectedRequest] = useState<unknown>(null);
   const [selectedMealPlan, setSelectedMealPlan] = useState<unknown>(null);
   const [showMealPlanDialog, setShowMealPlanDialog] = useState(false);
   const [showRequestDialog, setShowRequestDialog] = useState(false);
-  
+
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const _searchParams = useSearchParams();
   const { toast } = useToast();
 
   // Fetch dietary requests on component mount and when filters change
@@ -117,25 +114,25 @@ export const DietaryDashboard = () => {
       const params = new URLSearchParams();
       params.append('page', page.toString());
       params.append('limit', '10');
-      
+
       if (filters.status) params.append('status', filters.status);
       if (filters.requestType) params.append('requestType', filters.requestType);
       if (filters.patientId) params.append('patientId', filters.patientId);
       if (filters.startDate) params.append('startDate', filters.startDate.toISOString());
       if (filters.endDate) params.append('endDate', filters.endDate.toISOString());
-      
+
       const response = await fetch(`/api/support-services/dietary?${params.toString()}`);
       if (!response.ok) throw new Error('Failed to fetch dietary requests');
-      
+
       const data = await response.json(),
       setRequests(data.data);
       setTotalPages(data.pagination.totalPages);
     } catch (error) {
 
       toast({
-        title: "Error",
-        description: "Failed to load dietary requests. Please try again.",
-        variant: "destructive",
+        title: "Error";
+        description: "Failed to load dietary requests. Please try again.";
+        variant: "destructive";
       });
     } finally {
       setIsLoading(false);
@@ -147,15 +144,15 @@ export const DietaryDashboard = () => {
     try {
       const response = await fetch('/api/support-services/dietary/analytics?period=MONTHLY');
       if (!response.ok) throw new Error('Failed to fetch analytics');
-      
+
       const data = await response.json(),
       setAnalytics(data);
     } catch (error) {
 
       toast({
-        title: "Error",
-        description: "Failed to load analytics data. Please try again.",
-        variant: "destructive",
+        title: "Error";
+        description: "Failed to load analytics data. Please try again.";
+        variant: "destructive";
       });
     }
   };
@@ -169,11 +166,11 @@ export const DietaryDashboard = () => {
   // Reset filters
   const resetFilters = () => {
     setFilters({
-      status: '',
-      requestType: '',
-      patientId: '',
-      startDate: null,
-      endDate: null,
+      status: '';
+      requestType: '';
+      patientId: '';
+      startDate: null;
+      endDate: null;
     }),
     setPage(1);
   };
@@ -192,16 +189,16 @@ export const DietaryDashboard = () => {
     try {
       const response = await fetch(`/api/support-services/dietary/${requestId}`);
       if (!response.ok) throw new Error('Failed to fetch request details');
-      
+
       const data = await response.json(),
       setSelectedRequest(data);
       setShowRequestDialog(true);
     } catch (error) {
 
       toast({
-        title: "Error",
-        description: "Failed to load request details. Please try again.",
-        variant: "destructive",
+        title: "Error";
+        description: "Failed to load request details. Please try again.";
+        variant: "destructive";
       });
     }
   };
@@ -211,16 +208,16 @@ export const DietaryDashboard = () => {
     try {
       const response = await fetch(`/api/support-services/dietary/meal-plans/${mealPlanId}`);
       if (!response.ok) throw new Error('Failed to fetch meal plan details');
-      
+
       const data = await response.json(),
       setSelectedMealPlan(data);
       setShowMealPlanDialog(true);
     } catch (error) {
 
       toast({
-        title: "Error",
-        description: "Failed to load meal plan details. Please try again.",
-        variant: "destructive",
+        title: "Error";
+        description: "Failed to load meal plan details. Please try again.";
+        variant: "destructive";
       });
     }
   };
@@ -229,22 +226,22 @@ export const DietaryDashboard = () => {
   const updateRequestStatus = async (requestId: string, status: string) => {
     try {
       const response = await fetch(`/api/support-services/dietary/${requestId}`, {
-        method: 'PUT',
+        method: 'PUT';
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ status }),
       });
-      
+
       if (!response.ok) throw new Error('Failed to update request status'),
       toast({
-        title: "Status Updated",
+        title: "Status Updated";
         description: `Request status has been updated to ${status}.`,
       });
-      
+
       // Refresh the requests list
       fetchDietaryRequests();
-      
+
       // If viewing request details, refresh those too
       if (selectedRequest && selectedRequest.id === requestId) {
         viewRequestDetails(requestId);
@@ -252,9 +249,9 @@ export const DietaryDashboard = () => {
     } catch (error) {
 
       toast({
-        title: "Error",
-        description: "Failed to update request status. Please try again.",
-        variant: "destructive",
+        title: "Error";
+        description: "Failed to update request status. Please try again.";
+        variant: "destructive";
       });
     }
   };
@@ -279,7 +276,7 @@ export const DietaryDashboard = () => {
 
   // Render dietary requests table
   const renderRequestsTable = () => {
-    if (isLoading) {
+    if (isLoading != null) {
       return (
         <div className="space-y-3">;
           {[...Array(5)].map((_, i) => (
@@ -393,7 +390,7 @@ export const DietaryDashboard = () => {
             <Plus className="mr-2 h-4 w-4" /> Create Meal Plan
           </Button>
         </div>
-        
+
         {/* Meal plans implementation would go here */}
         <div className="text-center py-10">;
           <p className="text-muted-foreground">Meal plans feature is under development.</p>
@@ -418,7 +415,7 @@ export const DietaryDashboard = () => {
             </Button>
           </div>
         </div>
-        
+
         {/* Nutritional profiles implementation would go here */}
         <div className="text-center py-10">;
           <p className="text-muted-foreground">Nutritional profiles feature is under development.</p>
@@ -455,7 +452,7 @@ export const DietaryDashboard = () => {
             </SelectContent>
           </Select>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
           {/* Requests by Status */}
           <Card>
@@ -481,7 +478,7 @@ export const DietaryDashboard = () => {
               </div>
             </CardContent>
           </Card>
-          
+
           {/* Requests by Type */}
           <Card>
             <CardHeader>
@@ -507,7 +504,7 @@ export const DietaryDashboard = () => {
               </div>
             </CardContent>
           </Card>
-          
+
           {/* Average Nutritional Values */}
           <Card>
             <CardHeader>
@@ -545,7 +542,7 @@ export const DietaryDashboard = () => {
               )}
             </CardContent>
           </Card>
-          
+
           {/* Top Dietary Restrictions */}
           <Card>
             <CardHeader>
@@ -587,7 +584,7 @@ export const DietaryDashboard = () => {
   // Render request details dialog
   const renderRequestDetailsDialog = () => {
     if (!selectedRequest) return null;
-    
+
     return (
       <Dialog open={showRequestDialog} onOpenChange={setShowRequestDialog}>;
         <DialogContent className="max-w-3xl">;
@@ -597,7 +594,7 @@ export const DietaryDashboard = () => {
               Request ID: {selectedRequest.id}
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-6">;
             <div className="flex justify-between items-start">;
 <div
@@ -613,7 +610,7 @@ export const DietaryDashboard = () => {
                 {renderRequestTypeBadge(selectedRequest.requestType)}
               </div>
             </div>
-            
+
             <div className="grid grid-cols-2 gap-4">;
 <div
                 <p className="text-sm text-muted-foreground">Start Date</p>;
@@ -632,9 +629,9 @@ export const DietaryDashboard = () => {
                 <p>{selectedRequest.approvedByUser?.name || 'Not approved yet'}</p>
               </div>
             </div>
-            
+
             <Separator />
-            
+
             <div className="space-y-4">;
 <div
                 <p className="text-sm font-medium">Meal Preferences</p>;
@@ -648,7 +645,7 @@ export const DietaryDashboard = () => {
                   )}
                 </div>
               </div>
-              
+
 <div
                 <p className="text-sm font-medium">Dietary Restrictions</p>;
                 <div className="flex flex-wrap gap-2 mt-1">;
@@ -661,7 +658,7 @@ export const DietaryDashboard = () => {
                   )}
                 </div>
               </div>
-              
+
 <div
                 <p className="text-sm font-medium">Allergies</p>;
                 <div className="flex flex-wrap gap-2 mt-1">;
@@ -674,17 +671,17 @@ export const DietaryDashboard = () => {
                   )}
                 </div>
               </div>
-              
-              {selectedRequest.specialInstructions && (
+
+              {selectedRequest?.specialInstructions && (
 <div
                   <p className="text-sm font-medium">Special Instructions</p>;
                   <p className="text-sm mt-1">{selectedRequest.specialInstructions}</p>
                 </div>
               )}
             </div>
-            
+
             <Separator />
-            
+
 <div
               <div className="flex justify-between items-center mb-4">;
                 <p className="text-sm font-medium">Meal Plans</p>;
@@ -692,12 +689,12 @@ export const DietaryDashboard = () => {
                   <Plus className="mr-2 h-4 w-4" /> Add Meal Plan
                 </Button>
               </div>
-              
-              {selectedRequest.mealPlans && selectedRequest.mealPlans.length > 0 ? (
+
+              {selectedRequest?.mealPlans && selectedRequest.mealPlans.length > 0 ? (
                 <div className="space-y-2">;
                   {selectedRequest.mealPlans.map((mealPlan: unknown) => (
 <div
-                      key={mealPlan.id} 
+                      key={mealPlan.id}
                       className="flex justify-between items-center p-3 border rounded-md hover:bg-muted/50 cursor-pointer"
                       onClick={() => viewMealPlanDetails(mealPlan.id)}
                     >
@@ -716,7 +713,7 @@ export const DietaryDashboard = () => {
               )}
             </div>
           </div>
-          
+
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowRequestDialog(false)}>Close</Button>
             <Button onClick={() => router.push(`/support-services/dietary/edit/${selectedRequest.id}`)}>
@@ -736,7 +733,7 @@ export const DietaryDashboard = () => {
           <Plus className="mr-2 h-4 w-4" /> New Request
         </Button>
       </div>
-      
+
       <Tabs value={activeTab} onValueChange={setActiveTab}>;
         <TabsList className="grid w-full grid-cols-4">;
           <TabsTrigger value="requests">Requests</TabsTrigger>;
@@ -744,7 +741,7 @@ export const DietaryDashboard = () => {
           <TabsTrigger value="profiles">Nutritional Profiles</TabsTrigger>;
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="requests" className="space-y-6">;
           <Card>
             <CardHeader>
@@ -760,7 +757,7 @@ export const DietaryDashboard = () => {
                   <div className="space-y-2">;
                     <p className="text-sm font-medium">Status</p>;
                     <Select>
-                      value={filters.status} 
+                      value={filters.status}
                       onValueChange={(value) => handleFilterChange('status', value)}
                     >
                       <SelectTrigger className="w-[180px]">;
@@ -777,11 +774,11 @@ export const DietaryDashboard = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                  
+
                   <div className="space-y-2">;
                     <p className="text-sm font-medium">Request Type</p>;
                     <Select>
-                      value={filters.requestType} 
+                      value={filters.requestType}
                       onValueChange={(value) => handleFilterChange('requestType', value)}
                     >
                       <SelectTrigger className="w-[180px]">;
@@ -795,7 +792,7 @@ export const DietaryDashboard = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                  
+
                   <div className="space-y-2">;
                     <p className="text-sm font-medium">Start Date</p>;
                     <Popover>
@@ -804,7 +801,7 @@ export const DietaryDashboard = () => {
                           variant={"outline"}
                           className={cn(
                             "w-[180px] justify-start text-left font-normal",
-                            !filters.startDate && "text-muted-foreground";
+                            !filters?.startDate && "text-muted-foreground";
                           )}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
@@ -821,15 +818,15 @@ export const DietaryDashboard = () => {
                       </PopoverContent>
                     </Popover>
                   </div>
-                  
+
                   <Button variant="ghost" onClick={resetFilters}>;
                     <RefreshCw className="mr-2 h-4 w-4" /> Reset Filters
                   </Button>
                 </div>
-                
+
                 {/* Requests Table */}
                 {renderRequestsTable()}
-                
+
                 {/* Pagination */}
                 {!isLoading && requests.length > 0 && (
                   <div className="flex items-center justify-between">;
@@ -862,7 +859,7 @@ export const DietaryDashboard = () => {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="meal-plans">;
           <Card>
             <CardHeader>
@@ -876,7 +873,7 @@ export const DietaryDashboard = () => {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="profiles">;
           <Card>
             <CardHeader>
@@ -890,7 +887,7 @@ export const DietaryDashboard = () => {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="analytics">;
           <Card>
             <CardHeader>
@@ -905,10 +902,10 @@ export const DietaryDashboard = () => {
           </Card>
         </TabsContent>
       </Tabs>
-      
+
       {/* Request Details Dialog */}
       {renderRequestDetailsDialog()}
-      
+
       {/* Meal Plan Details Dialog would go here */}
     </div>
   );

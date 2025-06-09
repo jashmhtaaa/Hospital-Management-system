@@ -1,9 +1,9 @@
+
+import { Doctor } from './doctor.ts';
+import { Patient } from './patient.ts';
 }
 
 // types/appointment.ts
-import { Patient } from './patient.ts';
-import { Doctor } from './doctor.ts';
-
 export enum AppointmentStatus {
     Scheduled = "Scheduled",
     Confirmed = "Confirmed",
@@ -13,8 +13,8 @@ export enum AppointmentStatus {
     Cancelled = "Cancelled",
     NoShow = "NoShow",
 export interface Appointment {
-    appointment_id: number,
-    patient_id: number,
+    appointment_id: number;
+    patient_id: number;
     doctor_id: number;
     schedule_id?: number | null;
     appointment_datetime: string; // ISO string or Date object
@@ -33,7 +33,7 @@ export interface Appointment {
 
 // Need User type if not already globally available
 interface User {
-    userId: number,
+    userId: number;
     username: string;
     fullName?: string | null;
     email: string

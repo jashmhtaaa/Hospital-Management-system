@@ -1,58 +1,59 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+
+import { PharmacyDomain } from '../../../models/domain-models';
+import { auditLog } from '../../../../../lib/audit';
+import { errorHandler } from '../../../../../lib/error-handler';
+import { getMedicationById } from '../../../../../lib/services/pharmacy/pharmacy.service';
+import { validateReorderRequest } from '../../../../../lib/validation/pharmacy-validation';
 }
 
 /**
  * Automated Reordering API Routes;
- * 
+ *
  * This file implements the API endpoints for automated inventory reordering;
  * with threshold-based triggers and approval workflows.
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { validateReorderRequest } from '../../../../../lib/validation/pharmacy-validation';
-import { auditLog } from '../../../../../lib/audit';
-import { errorHandler } from '../../../../../lib/error-handler';
-import { PharmacyDomain } from '../../../models/domain-models';
-import { getMedicationById } from '../../../../../lib/services/pharmacy/pharmacy.service';
-
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
-  findAll: () => Promise.resolve([]),
-  search: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: getMedicationById;
+  findAll: () => Promise.resolve([]);
+  search: () => Promise.resolve([]);
+  save: () => Promise.resolve('');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 }
 
 const inventoryRepository = {
-  findById: (id: string) => Promise.resolve(null),
-  findByLocationId: (locationId: string) => Promise.resolve([]),
-  findByMedicationId: (medicationId: string) => Promise.resolve([]),
-  findBelowReorderLevel: () => Promise.resolve([]),
-  findAll: () => Promise.resolve([]),
-  save: (item: unknown) => Promise.resolve(item.id || 'new-id'),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: (id: string) => Promise.resolve(null);
+  findByLocationId: (locationId: string) => Promise.resolve([]);
+  findByMedicationId: (medicationId: string) => Promise.resolve([]);
+  findBelowReorderLevel: () => Promise.resolve([]);
+  findAll: () => Promise.resolve([]);
+  save: (item: unknown) => Promise.resolve(item.id || 'new-id');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 };
 
 const reorderRepository = {
-  findById: (id: string) => Promise.resolve(null),
-  findByStatus: (status: string) => Promise.resolve([]),
-  findByMedicationId: (medicationId: string) => Promise.resolve([]),
-  findByLocationId: (locationId: string) => Promise.resolve([]),
-  findAll: () => Promise.resolve([]),
-  save: (reorder: unknown) => Promise.resolve(reorder.id || 'new-id'),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: (id: string) => Promise.resolve(null);
+  findByStatus: (status: string) => Promise.resolve([]);
+  findByMedicationId: (medicationId: string) => Promise.resolve([]);
+  findByLocationId: (locationId: string) => Promise.resolve([]);
+  findAll: () => Promise.resolve([]);
+  save: (reorder: unknown) => Promise.resolve(reorder.id || 'new-id');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 };
 
 const supplierRepository = {
-  findById: (id: string) => Promise.resolve(null),
-  findByMedicationId: (medicationId: string) => Promise.resolve([]),
-  findAll: () => Promise.resolve([]),
-  save: (supplier: unknown) => Promise.resolve(supplier.id || 'new-id'),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: (id: string) => Promise.resolve(null);
+  findByMedicationId: (medicationId: string) => Promise.resolve([]);
+  findAll: () => Promise.resolve([]);
+  save: (supplier: unknown) => Promise.resolve(supplier.id || 'new-id');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 };
 
 /**
@@ -80,102 +81,102 @@ export const GET = async (req: NextRequest) => {
 
     // Get inventory items below reorder level
     const itemsBelowReorderLevel = await inventoryRepository.findBelowReorderLevel();
-    
+
     // Apply filters
     let filteredItems = itemsBelowReorderLevel;
-    if (locationId) {
+    if (locationId != null) {
       filteredItems = filteredItems.filter(item => item.locationId === locationId);
     }
-    
+
     // Get existing reorders
     const existingReorders = await reorderRepository.findByStatus('pending');
     const medicationsOnOrder = existingReorders.map(reorder => reorder.medicationId);
-    
+
     // Filter out items already on order if not including them
     if (!includeOnOrder) {
       filteredItems = filteredItems.filter(item => !medicationsOnOrder.includes(item.medicationId));
     }
-    
+
     // Filter for critical items only if requested
-    if (criticalOnly) {
+    if (criticalOnly != null) {
       filteredItems = filteredItems.filter(item => {
         const stockRatio = item.quantityOnHand / item.reorderLevel;
         return stockRatio < 0.5; // Consider critical if less than 50% of reorder level
       });
     }
-    
+
     // Enrich with medication details and calculate reorder quantities
     const reorderItems = await Promise.all(filteredItems.map(async item => {
       const medication = await medicationRepository.findById(item.medicationId);
       const suppliers = await supplierRepository.findByMedicationId(item.medicationId);
       const preferredSupplier = suppliers.length > 0 ? suppliers[0] : null;
-      
+
       // Calculate suggested reorder quantity based on usage patterns
       // In a real implementation, this would use historical usage data
       const suggestedQuantity = Math.max(
         item.reorderLevel * 2 - item.quantityOnHand,
         item.reorderLevel;
       );
-      
+
       return {
-        inventoryId: item.id,
-        medicationId: item.medicationId,
-        medicationName: medication ? medication.name : 'Unknown',
-        locationId: item.locationId,
-        currentStock: item.quantityOnHand,
-        reorderLevel: item.reorderLevel,
+        inventoryId: item.id;
+        medicationId: item.medicationId;
+        medicationName: medication ? medication.name : 'Unknown';
+        locationId: item.locationId;
+        currentStock: item.quantityOnHand;
+        reorderLevel: item.reorderLevel;
         suggestedQuantity,
-        estimatedCost: suggestedQuantity * (item.unitCost || 0),
-        isControlled: medication ? medication.isControlled : false,
-        isHighAlert: medication ? medication.isHighAlert : false,
-        preferredSupplierId: preferredSupplier ? preferredSupplier.id : null,
-        preferredSupplierName: preferredSupplier ? preferredSupplier.name : null,
-        isOnOrder: medicationsOnOrder.includes(item.medicationId),
+        estimatedCost: suggestedQuantity * (item.unitCost || 0);
+        isControlled: medication ? medication.isControlled : false;
+        isHighAlert: medication ? medication.isHighAlert : false;
+        preferredSupplierId: preferredSupplier ? preferredSupplier.id : null;
+        preferredSupplierName: preferredSupplier ? preferredSupplier.name : null;
+        isOnOrder: medicationsOnOrder.includes(item.medicationId);
         stockStatus: getStockStatus(item.quantityOnHand, item.reorderLevel);
       };
     }));
-    
+
     // Sort by stock status (critical first)
     reorderItems.sort((a, b) => {
       const statusOrder = { critical: 0, low: 1, normal: 2 }
       return statusOrder[a.stockStatus] - statusOrder[b.stockStatus];
     });
-    
+
     const total = reorderItems.length;
-    
+
     // Apply pagination
     const paginatedItems = reorderItems.slice((page - 1) * limit, page * limit);
 
     // Group by status for reporting
     const statusCounts = {
-      critical: reorderItems.filter(item => item.stockStatus === 'critical').length,
-      low: reorderItems.filter(item => item.stockStatus === 'low').length,
-      normal: reorderItems.filter(item => item.stockStatus === 'normal').length
+      critical: reorderItems.filter(item => item.stockStatus === 'critical').length;
+      low: reorderItems.filter(item => item.stockStatus === 'low').length;
+      normal: reorderItems.filter(item => item.stockStatus === 'normal').length;
     };
 
     // Audit logging
     await auditLog('INVENTORY', {
-      action: 'LIST_REORDER',
-      resourceType: 'Inventory',
-      userId: userId,
+      action: 'LIST_REORDER';
+      resourceType: 'Inventory';
+      userId: userId;
       details: {
         locationId,
         includeOnOrder,
         criticalOnly,
-        resultCount: paginatedItems.length,
+        resultCount: paginatedItems.length;
         statusCounts;
       }
     });
 
     // Return response
-    return NextResponse.json({ 
-      reorderItems: paginatedItems,
+    return NextResponse.json({
+      reorderItems: paginatedItems;
       statusCounts,
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit);
       }
     }, { status: 200 });
   } catch (error) {
@@ -217,12 +218,12 @@ export const POST = async (req: NextRequest) => {
     // Check for existing pending reorder for this medication
     const existingReorders = await reorderRepository.findByMedicationId(data.medicationId);
     const pendingReorder = existingReorders.find(r => r.status === 'pending');
-    
+
     if (pendingReorder && !data.force) {
       return NextResponse.json(
-        { 
-          error: 'Pending reorder already exists for this medication',
-          existingReorderId: pendingReorder.id
+        {
+          error: 'Pending reorder already exists for this medication';
+          existingReorderId: pendingReorder.id;
         },
         { status: 409 }
       );
@@ -230,37 +231,37 @@ export const POST = async (req: NextRequest) => {
 
     // Create reorder record
     const reorder = {
-      id: data.id || crypto.randomUUID(),
-      medicationId: data.medicationId,
-      locationId: data.locationId,
-      quantity: data.quantity,
-      supplierId: data.supplierId,
-      unitCost: data.unitCost,
-      totalCost: data.quantity * (data.unitCost || 0),
-      requestedBy: userId,
-      requestedAt: new Date(),
-      status: 'pending',
-      notes: data.notes || '',
-      priority: data.priority || 'normal',
-      expectedDeliveryDate: data.expectedDeliveryDate ? new Date(data.expectedDeliveryDate) : null,
-      purchaseOrderNumber: generatePurchaseOrderNumber()
+      id: data.id || crypto.randomUUID();
+      medicationId: data.medicationId;
+      locationId: data.locationId;
+      quantity: data.quantity;
+      supplierId: data.supplierId;
+      unitCost: data.unitCost;
+      totalCost: data.quantity * (data.unitCost || 0);
+      requestedBy: userId;
+      requestedAt: new Date();
+      status: 'pending';
+      notes: data.notes || '';
+      priority: data.priority || 'normal';
+      expectedDeliveryDate: data.expectedDeliveryDate ? new Date(data.expectedDeliveryDate) : null;
+      purchaseOrderNumber: generatePurchaseOrderNumber();
     };
 
     // Special handling for controlled substances
     if (medication.isControlled) {
       reorder.requiresApproval = true;
       reorder.approvalStatus = 'pending';
-      
+
       // Additional logging for controlled substances
       await auditLog('CONTROLLED_SUBSTANCE', {
-        action: 'REORDER_REQUEST',
-        resourceType: 'Inventory',
-        userId: userId,
+        action: 'REORDER_REQUEST';
+        resourceType: 'Inventory';
+        userId: userId;
         details: {
-          medicationId: data.medicationId,
-          quantity: data.quantity,
-          supplierId: data.supplierId,
-          purchaseOrderNumber: reorder.purchaseOrderNumber
+          medicationId: data.medicationId;
+          quantity: data.quantity;
+          supplierId: data.supplierId;
+          purchaseOrderNumber: reorder.purchaseOrderNumber;
         }
       });
     }
@@ -270,26 +271,26 @@ export const POST = async (req: NextRequest) => {
 
     // Regular audit logging
     await auditLog('INVENTORY', {
-      action: 'CREATE_REORDER',
-      resourceType: 'Inventory',
-      resourceId: reorderId,
-      userId: userId,
+      action: 'CREATE_REORDER';
+      resourceType: 'Inventory';
+      resourceId: reorderId;
+      userId: userId;
       details: {
-        medicationId: data.medicationId,
-        quantity: data.quantity,
-        supplierId: data.supplierId,
-        purchaseOrderNumber: reorder.purchaseOrderNumber
+        medicationId: data.medicationId;
+        quantity: data.quantity;
+        supplierId: data.supplierId;
+        purchaseOrderNumber: reorder.purchaseOrderNumber;
       }
     });
 
     // Return response
     return NextResponse.json(
-      { 
-        id: reorderId,
-        purchaseOrderNumber: reorder.purchaseOrderNumber,
-        requiresApproval: reorder.requiresApproval,
-        message: 'Reorder request created successfully'
-      }, 
+      {
+        id: reorderId;
+        purchaseOrderNumber: reorder.purchaseOrderNumber;
+        requiresApproval: reorder.requiresApproval;
+        message: 'Reorder request created successfully';
+      },
       { status: 201 }
     );
   } catch (error) {
@@ -302,7 +303,7 @@ export const POST = async (req: NextRequest) => {
  */
 const getStockStatus = (quantity: number, reorderLevel: number): 'critical' | 'low' | 'normal' {
   const ratio = quantity / reorderLevel;
-  
+
   if (ratio <= 0.25) {
     return 'critical';
   } else if (ratio <= 0.75) {

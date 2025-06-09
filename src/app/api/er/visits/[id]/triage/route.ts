@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Define interface for triage input data
 interface TriageInput {
-  triage_nurse_id: string | number,
+  triage_nurse_id: string | number;
   esi_level: number; // Emergency Severity Index (1-5)
   vital_signs: Record<string, unknown>; // e.g., { temp: 37.0, hr: 80, rr: 16, bp: "120/80", spo2: 98 }
   assessment_notes?: string | null; // FIX: Allow null
@@ -12,12 +12,12 @@ interface TriageInput {
 
 // Define interface for triage data (including generated fields)
 interface Triage {
-  id: string,
+  id: string;
   visit_id: string
-  triage_nurse_id: string | number,
-  esi_level: number,
+  triage_nurse_id: string | number;
+  esi_level: number;
   vital_signs: Record<string, unknown>; // Should be an object
-  assessment_notes?: string | null; // FIX: Allow null,
+  assessment_notes?: string | null; // FIX: Allow null;
   triage_timestamp: string; // ISO 8601 date string
 }
 
@@ -25,7 +25,7 @@ interface Triage {
 const mockTriageAssessments: Triage[] = []
 
 // GET /api/er/visits/[id]/triage - Get triage assessment(s) for a specific ER visit
-export const GET = async (
+export const _GET = async (
   _request: NextRequest, // FIX: Prefixed as unused, changed Request to NextRequest
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -63,7 +63,7 @@ export const GET = async (
 }
 
 // POST /api/er/visits/[id]/triage - Create a new triage assessment for an ER visit
-export const POST = async (
+export const _POST = async (
   request: NextRequest, // Use NextRequest for json() => { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -83,8 +83,7 @@ export const POST = async (
     ) {
       return NextResponse.json(
         {
-          error:
-            "Missing required fields (triage_nurse_id, esi_level, vital_signs)",
+          error: "Missing required fields (triage_nurse_id, esi_level, vital_signs)",;
         },
         { status: 400 }
       );
@@ -121,13 +120,13 @@ export const POST = async (
 
     // FIX: Ensure newTriage matches the Triage interface (vital_signs should be object)
     const newTriage: Triage = {
-      id: triageId,
-      visit_id: visitId,
-      triage_nurse_id: triageData.triage_nurse_id,
-      esi_level: triageData.esi_level,
+      id: triageId;
+      visit_id: visitId;
+      triage_nurse_id: triageData.triage_nurse_id;
+      esi_level: triageData.esi_level;
       vital_signs: triageData.vital_signs, // Assign the object directly
       assessment_notes: triageData.assessment_notes ?? undefined, // Use nullish coalescing
-      triage_timestamp: triageData.triage_timestamp || new Date().toISOString(),
+      triage_timestamp: triageData.triage_timestamp || new Date().toISOString();
     };
 
     // Mock implementation

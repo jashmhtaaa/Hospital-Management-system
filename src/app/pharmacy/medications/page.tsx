@@ -1,11 +1,11 @@
+import React, { useState, useEffect, useMemo, ChangeEvent } from "react";
+import {
+import { useRouter } from "next/navigation";
 }
 
 "use client";
 export const dynamic = 'force-dynamic';
 
-import React, { useState, useEffect, useMemo, ChangeEvent } from "react";
-import { useRouter } from "next/navigation";
-import {
   useTable,
   useSortBy,
   usePagination,
@@ -34,16 +34,16 @@ import { ArrowUpDown } from "lucide-react"; // Icon for sorting
 // Define the interface for a single medication object
 interface Medication {
   id: string; // Assuming ID is a string (like nanoid)
-  item_code: string,
+  item_code: string;
   generic_name: string;
   brand_name?: string | null;
-  dosage_form: string,
+  dosage_form: string;
   strength: string;
   category_name?: string | null;
   manufacturer_name?: string | null;
   total_stock?: number | null;
   unit_of_measure?: string | null;
-  prescription_required: boolean
+  prescription_required: boolean;
 }
 
 // Define API response types
@@ -72,7 +72,7 @@ type MedicationColumnInstance = ColumnInstance<Medication> &
   UseSortByColumnProps<Medication>;
 
 // Medications List Component
-export default const MedicationsListPage = () {
+export default const _MedicationsListPage = () {
   const router = useRouter();
   const [medicationsData, setMedicationsData] = useState<Medication[]>([]); // Type the state
   const [loading, setLoading] = useState(true);
@@ -94,7 +94,7 @@ export default const MedicationsListPage = () {
           }
           throw new Error(errorMessage);
         }
-        const data: MedicationsApiResponse = await response.json(),
+        const data: MedicationsApiResponse = await response.json();
         setMedicationsData(data.medications || []);
       } catch (error_: unknown) {
         setError(
@@ -111,12 +111,12 @@ export default const MedicationsListPage = () {
   const columns = useMemo<Column<Medication>[]>( // Type the columns
     () => [
       {
-        Header: "Item Code",
-        accessor: "item_code",
+        Header: "Item Code";
+        accessor: "item_code";
       },
       {
-        Header: "Medication",
-        accessor: "generic_name",
+        Header: "Medication";
+        accessor: "generic_name";
         Cell: (
           { row }: CellProps<Medication> // Type the row
         ) => (
@@ -124,7 +124,7 @@ export default const MedicationsListPage = () {
             <div className="font-medium text-gray-900 dark:text-gray-100">;
               {row.original.generic_name}
             </div>
-            {row.original.brand_name && (
+            {row.original?.brand_name && (
               <div className="text-sm text-gray-500 dark:text-gray-400">;
                 {row.original.brand_name}
               </div>
@@ -133,8 +133,8 @@ export default const MedicationsListPage = () {
         ),
       },
       {
-        Header: "Form & Strength",
-        accessor: "dosage_form",
+        Header: "Form & Strength";
+        accessor: "dosage_form";
         Cell: (
           { row }: CellProps<Medication> // Type the row
         ) => (
@@ -147,20 +147,20 @@ export default const MedicationsListPage = () {
         ),
       },
       {
-        Header: "Category",
-        accessor: "category_name",
+        Header: "Category";
+        accessor: "category_name";
         Cell: ({ value }: CellProps<Medication, string | null | undefined>) =>
           value || "-", // Type the value
       },
       {
-        Header: "Manufacturer",
-        accessor: "manufacturer_name",
+        Header: "Manufacturer";
+        accessor: "manufacturer_name";
         Cell: ({ value }: CellProps<Medication, string | null | undefined>) =>
           value || "-", // Type the value
       },
       {
-        Header: "Stock",
-        accessor: "total_stock",
+        Header: "Stock";
+        accessor: "total_stock";
         Cell: ({
           value,
           row,
@@ -179,8 +179,8 @@ export default const MedicationsListPage = () {
         },
       },
       {
-        Header: "Prescription",
-        accessor: "prescription_required",
+        Header: "Prescription";
+        accessor: "prescription_required";
         Cell: (
           { value }: CellProps<Medication, boolean> // Type the value
         ) => (
@@ -192,8 +192,8 @@ export default const MedicationsListPage = () {
         ),
       },
       {
-        Header: "Actions",
-        id: "actions",
+        Header: "Actions";
+        id: "actions";
         disableSortBy: true, // Actions column usually not sortable
         Cell: (
           { row }: CellProps<Medication> // Type the row
@@ -216,18 +216,18 @@ export default const MedicationsListPage = () {
 
   // FIX: Remove sortBy from initialState as it's not part of TableState
   const initialState: Partial<TableState<Medication>> = {
-    // sortBy: [], // Removed: sortBy is part of UseSortByState, not TableState
+    // sortBy: [], // Removed: sortBy is part of UseSortByState, not TableState;
   };
 
   const tableInstance = useTable<Medication>( // Specify the type argument
     {
       columns,
-      data: medicationsData,
-      initialState: initialState,
+      data: medicationsData;
+      initialState: initialState;
       // FIX: Remove autoReset properties as they are not valid TableOptions in v7
-      // autoResetPage: false,
-      // autoResetFilters: false,
-      // autoResetSortBy: false,
+      // autoResetPage: false;
+      // autoResetFilters: false;
+      // autoResetSortBy: false;
     },
     useGlobalFilter,
     useSortBy,
@@ -249,13 +249,13 @@ export default const MedicationsListPage = () {
     previousPage,
     setPageSize,
     state: { pageIndex, pageSize }, // pageSize is correctly accessed from state here
-    setGlobalFilter: setTableGlobalFilter,
+    setGlobalFilter: setTableGlobalFilter;
   } = tableInstance;
 
   // Set initial page size after instance creation
   useEffect(() => {
     setPageSize(10);
-     
+
   }, [setPageSize]); // Dependency array includes setPageSize
 
   const handleGlobalFilterChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -265,7 +265,7 @@ export default const MedicationsListPage = () {
     setTableGlobalFilter(value); // Update table state
   };
 
-  if (loading) {
+  if (loading != null) {
     return (
       <div className="container mx-auto px-4 py-8">;
         <div className="flex justify-between items-center mb-6">;
@@ -280,9 +280,9 @@ export default const MedicationsListPage = () {
     );
   }
 
-  if (error) {
+  if (error != null) {
     return (
-      <div className="container mx-auto px-4 py-8 text-red-600 dark: text-red-400 p-4 bg-red-50 dark:bg-red-900/30 rounded-md">,
+      <div className="container mx-auto px-4 py-8 text-red-600 dark: text-red-400 p-4 bg-red-50 dark:bg-red-900/30 rounded-md">;
         Error: {error}
       </div>
     );
@@ -335,7 +335,7 @@ export default const MedicationsListPage = () {
                             <div className="flex items-center">;
                               {column.render("Header")}
                               {/* Add sorting indicator */}
-                              {typedColumn.canSort && (
+                              {typedColumn?.canSort && (
                                 <ArrowUpDown>
                                   className={`ml-2 h-4 w-4 ${typedColumn.isSorted ? "text-gray-900 dark:text-gray-100" : "text-gray-400 dark:text-gray-500"}`}
                                 />

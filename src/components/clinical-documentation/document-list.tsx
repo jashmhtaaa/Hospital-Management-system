@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import {
+import { useRouter } from 'next/navigation';
   Table,
   TableHeader,
   TableBody,
@@ -8,14 +8,12 @@ import {
   TableCell,
   TableHead;
 } from '../ui/table';
-import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
-import {
   Card,
   CardContent,
   CardDescription,
@@ -31,123 +29,123 @@ import { format } from 'date-fns';
 import { useToast } from '../../hooks/use-toast';
 
 interface Document {
-  id: string,
-  documentNumber: string,
-  documentType: string,
-  documentTitle: string,
-  authoredDate: string,
-  authorId: string,
-  status: string,
-  patientId: string,
-  isConfidential: boolean
+  id: string;
+  documentNumber: string;
+  documentType: string;
+  documentTitle: string;
+  authoredDate: string;
+  authorId: string;
+  status: string;
+  patientId: string;
+  isConfidential: boolean;
 }
 
 interface PaginationInfo {
-  total: number,
-  page: number,
-  pageSize: number,
-  totalPages: number
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
 }
 
 interface DocumentListProps {
   patientId: string
-export const DocumentList = ({ patientId }: DocumentListProps) => {
+export const _DocumentList = ({ patientId }: DocumentListProps) => {
   const router = useRouter();
   const { toast } = useToast();
-  
+
   // State
   const [documents, setDocuments] = useState<Document[]>([]);
   const [pagination, setPagination] = useState<PaginationInfo>({
-    total: 0,
-    page: 1,
-    pageSize: 10,
-    totalPages: 0,
+    total: 0;
+    page: 1;
+    pageSize: 10;
+    totalPages: 0;
   });
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({
-    documentType: '',
-    status: '',
-    dateFrom: null as Date | null,
-    dateTo: null as Date | null,
+    documentType: '';
+    status: '';
+    dateFrom: null as Date | null;
+    dateTo: null as Date | null;
   });
-  
+
   // Fetch documents
   const fetchDocuments = async () => {
     if (!patientId) return;
-    
+
     setLoading(true);
-    
+
     try {
       // Build query parameters
       const params = new URLSearchParams();
       params.append('patientId', patientId);
       params.append('page', pagination.page.toString());
       params.append('pageSize', pagination.pageSize.toString());
-      
+
       if (filters.documentType) {
         params.append('documentType', filters.documentType);
       }
-      
+
       if (filters.status) {
         params.append('status', filters.status);
       }
-      
+
       if (filters.dateFrom) {
         params.append('dateFrom', filters.dateFrom.toISOString());
       }
-      
+
       if (filters.dateTo) {
         params.append('dateTo', filters.dateTo.toISOString());
       }
-      
+
       // Fetch documents
       const response = await fetch(`/api/clinical-documentation?${params.toString()}`);
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch documents');
       }
-      
+
       const data = await response.json(),
       setDocuments(data.data);
       setPagination(data.pagination);
     } catch (error) {
 
       toast({
-        title: 'Error',
-        description: 'Failed to fetch documents. Please try again.',
-        variant: 'destructive',
+        title: 'Error';
+        description: 'Failed to fetch documents. Please try again.';
+        variant: 'destructive';
       });
     } finally {
       setLoading(false);
     }
   };
-  
+
   // Effect to fetch documents on initial load and when filters or pagination change
   useEffect(() => {
     fetchDocuments();
   }, [patientId, pagination.page, pagination.pageSize, filters]);
-  
+
   // Handle filter changes
   const handleFilterChange = (name: string, value: unknown) => {
     setFilters(prev => ({ ...prev, [name]: value }));
     setPagination(prev => ({ ...prev, page: 1 })); // Reset to first page
   };
-  
+
   // Handle page change
   const handlePageChange = (page: number) => {
     setPagination(prev => ({ ...prev, page }));
   };
-  
+
   // Handle document click
   const handleDocumentClick = (documentId: string) => {
     router.push(`/clinical-documentation/${documentId}`);
   };
-  
+
   // Handle create document
   const handleCreateDocument = () => {
     router.push(`/clinical-documentation/create?patientId=${patientId}`);
   };
-  
+
   // Get status badge variant
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
@@ -161,17 +159,17 @@ export const DocumentList = ({ patientId }: DocumentListProps) => {
         return 'info';
       case 'Canceled':
         return 'destructive';
-      default: return 'default'
+      default: return 'default';
     }
   };
-  
+
   return (
     <Card className="w-full">;
       <CardHeader>
         <CardTitle>Clinical Documents</CardTitle>
         <CardDescription>Manage patient clinical documentation</CardDescription>
       </CardHeader>
-      
+
       <CardContent>
         {/* Filters */}
         <div className="flex flex-wrap gap-4 mb-6">;
@@ -195,7 +193,7 @@ export const DocumentList = ({ patientId }: DocumentListProps) => {
               </SelectContent>
             </Select>
           </div>
-          
+
           <div className="w-full md:w-auto">;
             <Select>
               value={filters.status}
@@ -214,7 +212,7 @@ export const DocumentList = ({ patientId }: DocumentListProps) => {
               </SelectContent>
             </Select>
           </div>
-          
+
           <div className="w-full md:w-auto">;
             <DatePicker>
               placeholder="From Date"
@@ -222,7 +220,7 @@ export const DocumentList = ({ patientId }: DocumentListProps) => {
               onSelect={(date) => handleFilterChange('dateFrom', date)}
             />
           </div>
-          
+
           <div className="w-full md:w-auto">;
             <DatePicker>
               placeholder="To Date"
@@ -231,7 +229,7 @@ export const DocumentList = ({ patientId }: DocumentListProps) => {
             />
           </div>
         </div>
-        
+
         {/* Documents Table */}
         <div className="rounded-md border">;
           <Table>
@@ -252,7 +250,7 @@ export const DocumentList = ({ patientId }: DocumentListProps) => {
                   </TableCell>
                 </TableRow>
               )}
-              
+
               {!loading && documents.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={5} className="text-center py-6">;
@@ -260,7 +258,7 @@ export const DocumentList = ({ patientId }: DocumentListProps) => {
                   </TableCell>
                 </TableRow>
               )}
-              
+
               {!loading && documents.map((document) => (
                 <TableRow>
                   key={document.id}
@@ -287,7 +285,7 @@ export const DocumentList = ({ patientId }: DocumentListProps) => {
             </TableBody>
           </Table>
         </div>
-        
+
         {/* Pagination */}
         {pagination.totalPages > 1 && (
           <div className="flex justify-center mt-4">;
@@ -299,7 +297,7 @@ export const DocumentList = ({ patientId }: DocumentListProps) => {
           </div>
         )}
       </CardContent>
-      
+
       <CardFooter className="flex justify-end">;
         <Button onClick={handleCreateDocument}>;
           Create Document

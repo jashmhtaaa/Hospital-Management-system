@@ -1,6 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import {
+
   View,
   Text,
   StyleSheet,
@@ -66,7 +66,7 @@ const VoicePrescriptionScreen = ({ route, navigation }) => {
     }
   };
 
-  const stopRecording = async () => {
+  const _stopRecording = async () => {
     try {
       await Voice.stop();
     } catch (error) {
@@ -86,7 +86,7 @@ const VoicePrescriptionScreen = ({ route, navigation }) => {
     // In production, this would use advanced NLP
     const medications = [];
     const words = text.toLowerCase().split(' ');
-    
+
     // Basic drug name recognition
     const commonDrugs = ['aspirin', 'ibuprofen', 'acetaminophen', 'metformin', 'lisinopril'];
     words.forEach((word, index) => {
@@ -144,13 +144,13 @@ const VoicePrescriptionScreen = ({ route, navigation }) => {
       <View style={styles.voiceSection}>
         <TouchableOpacity
           style={[styles.recordButton, isRecording && styles.recordingButton]}
-          onPress={isRecording ? stopRecording : startRecording}
+          onPress={isRecording ? _stopRecording : startRecording}
         >
           <Text style={styles.recordButtonText}>
             {isRecording ? 'Stop Recording' : 'Start Voice Prescription'}
           </Text>
         </TouchableOpacity>
-        
+
         {transcription ? (
           <View style={styles.transcriptionBox}>
             <Text style={styles.transcriptionLabel}>Transcription:</Text>
@@ -161,7 +161,7 @@ const VoicePrescriptionScreen = ({ route, navigation }) => {
 
       <View style={styles.prescriptionSection}>
         <Text style={styles.sectionTitle}>Processed Prescription</Text>
-        
+
         {prescription.medications.map((med, index) => (
           <View key={index} style={styles.medicationCard}>
             <Text style={styles.medicationName}>{med.name}</Text>

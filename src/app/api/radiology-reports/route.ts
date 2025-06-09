@@ -1,12 +1,13 @@
+import { IronSession } from "iron-session"; // Import IronSession
 import { NextRequest, NextResponse } from "next/server";
 import { nanoid } from "nanoid";
-import { getSession, IronSessionData } from "@/lib/session"; // Import IronSessionData
-import { IronSession } from "iron-session"; // Import IronSession
-import { getDB } from "@/lib/database"; // Import getDB
 
+
+import { getDB } from "@/lib/database"; // Import getDB
+import { getSession, IronSessionData } from "@/lib/session"; // Import IronSessionData
 // Interface for POST request body
 interface RadiologyReportPostData {
-  study_id: string,
+  study_id: string;
   radiologist_id: string;
   findings?: string | null;
   impression: string;
@@ -16,9 +17,9 @@ interface RadiologyReportPostData {
 
 // Interface for GET response items (adjust based on actual query results)
 interface RadiologyReportListItem {
-  id: string,
+  id: string;
   study_id: string
-  report_datetime: string,
+  report_datetime: string;
   status: string;
   accession_number?: string;
   radiologist_name?: string;
@@ -31,7 +32,7 @@ interface RadiologyReportListItem {
 // Removed custom Session and SessionUser interfaces
 
 // GET all Radiology Reports (filtered by study_id, patient_id, radiologist_id, status)
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   try {
     // Use IronSession<IronSessionData>
     const session: IronSession<IronSessionData> = await getSession()
@@ -71,19 +72,19 @@ export const GET = async (request: NextRequest) => {
     const parameters: string[] = [];
     const conditions: string[] = [];
 
-    if (studyId) {
+    if (studyId != null) {
       conditions.push("rr.study_id = ?");
       parameters.push(studyId);
     }
-    if (patientId) {
+    if (patientId != null) {
       conditions.push("ro.patient_id = ?");
       parameters.push(patientId);
     }
-    if (radiologistId) {
+    if (radiologistId != null) {
       conditions.push("rr.radiologist_id = ?");
       parameters.push(radiologistId);
     }
-    if (status) {
+    if (status != null) {
       conditions.push("rr.status = ?");
       parameters.push(status);
     }
@@ -112,7 +113,7 @@ export const GET = async (request: NextRequest) => {
 }
 
 // POST a new Radiology Report (Radiologist or Admin)
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     // Use IronSession<IronSessionData>
     const session: IronSession<IronSessionData> = await getSession()
@@ -147,8 +148,7 @@ export const POST = async (request: NextRequest) => {
     if (!study_id || !radiologist_id || !impression) {
       return NextResponse.json(
         {
-          error:
-            "Missing required fields (study_id, radiologist_id, impression)",
+          error: "Missing required fields (study_id, radiologist_id, impression)",;
         },
         { status: 400 }
       );
@@ -168,8 +168,8 @@ export const POST = async (request: NextRequest) => {
     }
 
     // Check if a report already exists for this study (optional, depends on workflow - allow addendums?)
-    // const existingReport = await db.prepare("SELECT id FROM RadiologyReports WHERE study_id = ? AND status != 'addendum'").bind(study_id).first()
-    // if (existingReport) {
+    // const _existingReport = await db.prepare("SELECT id FROM RadiologyReports WHERE study_id = ? AND status != 'addendum'").bind(study_id).first()
+    // if (existingReport != null) {
     //     return NextResponse.json({ error: "A report already exists for this study. Create an addendum instead?" }, { status: 409 })
     // }
 
@@ -240,9 +240,8 @@ export const POST = async (request: NextRequest) => {
     ) {
       return NextResponse.json(
         {
-          error:
-            "Failed to create radiology report: A report for this study might already exist.",
-          details: message,
+          error: "Failed to create radiology report: A report for this study might already exist.";
+          details: message;
         },
         { status: 409 }
       );
@@ -257,16 +256,16 @@ export const POST = async (request: NextRequest) => {
 // Define the expected structure for the query result row
 interface CreatedRadiologyReportQueryResultRow {
   id: number | string; // Assuming ID can be number or string
-  order_id: number | string,
-  study_id: number | string,
-  report_number: string,
-  report_content: string | null,
-  findings: string | null,
-  impression: string | null,
+  order_id: number | string;
+  study_id: number | string;
+  report_number: string;
+  report_content: string | null;
+  findings: string | null;
+  impression: string | null;
   status: string; // e.g., 'preliminary', 'final', 'amended'
-  generated_by: number | string | null,
-  verified_by: number | string | null,
-  generated_at: string | null,
-  verified_at: string | null,
-  created_at: string,
+  generated_by: number | string | null;
+  verified_by: number | string | null;
+  generated_at: string | null;
+  verified_at: string | null;
+  created_at: string;
   updated_at: string

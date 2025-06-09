@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import {
+import { useRouter } from 'next/navigation';
   Card,
   CardContent,
   CardDescription,
@@ -8,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card';
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -17,13 +16,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
-import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '../ui/accordion';
-import {
   Tabs,
   TabsContent,
   TabsList,
@@ -39,81 +36,81 @@ import { useToast } from '../../hooks/use-toast';
 import { format } from 'date-fns';
 
 interface DocumentSection {
-  id: string,
-  documentId: string,
-  sectionTitle: string,
-  sectionType: string,
-  sectionOrder: number,
-  content: string,
-  authorId: string,
+  id: string;
+  documentId: string;
+  sectionTitle: string;
+  sectionType: string;
+  sectionOrder: number;
+  content: string;
+  authorId: string;
   authoredDate: string;
   updatedById?: string;
   updatedDate?: string;
-  createdAt: string,
-  updatedAt: string
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface DocumentSignature {
-  id: string,
-  documentId: string,
-  signerId: string,
-  signerRole: string,
-  signatureDate: string,
+  id: string;
+  documentId: string;
+  signerId: string;
+  signerRole: string;
+  signatureDate: string;
   signatureType: string;
   attestation?: string;
   ipAddress?: string;
   deviceInfo?: string;
   notes?: string;
-  createdAt: string
+  createdAt: string;
 }
 
 interface DocumentAmendment {
-  id: string,
-  documentId: string,
-  amendmentNumber: string,
-  amendmentType: string,
-  amendmentReason: string,
-  content: string,
-  authorId: string,
-  authoredDate: string,
+  id: string;
+  documentId: string;
+  amendmentNumber: string;
+  amendmentType: string;
+  amendmentReason: string;
+  content: string;
+  authorId: string;
+  authoredDate: string;
   status: string;
   finalizedDate?: string;
   finalizedById?: string;
-  createdAt: string,
-  updatedAt: string
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface Document {
-  id: string,
-  documentNumber: string,
+  id: string;
+  documentNumber: string;
   patientId: string;
   encounterId?: string;
-  documentType: string,
-  documentTitle: string,
-  authorId: string,
-  authoredDate: string,
+  documentType: string;
+  documentTitle: string;
+  authorId: string;
+  authoredDate: string;
   status: string;
   finalizedDate?: string;
   finalizedById?: string;
-  version: number,
+  version: number;
   content: string;
   templateId?: string;
-  isConfidential: boolean,
-  attachmentUrls: string[],
-  tags: string[],
-  createdAt: string,
-  updatedAt: string,
-  sections: DocumentSection[],
-  signatures: DocumentSignature[],
-  amendments: DocumentAmendment[]
+  isConfidential: boolean;
+  attachmentUrls: string[];
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+  sections: DocumentSection[];
+  signatures: DocumentSignature[];
+  amendments: DocumentAmendment[];
 }
 
 interface DocumentViewerProps {
   documentId: string
-export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
+export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
   const router = useRouter();
   const { toast } = useToast();
-  
+
   // State
   const [document, setDocument] = useState<Document | null>(null);
   const [loading, setLoading] = useState(true);
@@ -121,143 +118,143 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
   const [signatureDialogOpen, setSignatureDialogOpen] = useState(false);
   const [amendmentDialogOpen, setAmendmentDialogOpen] = useState(false);
   const [signatureData, setSignatureData] = useState({
-    signerRole: '',
-    signatureType: 'Electronic',
-    attestation: '',
-    notes: '',
-    finalize: false,
+    signerRole: '';
+    signatureType: 'Electronic';
+    attestation: '';
+    notes: '';
+    finalize: false;
   });
   const [amendmentData, setAmendmentData] = useState({
-    amendmentType: 'Addendum',
-    amendmentReason: '',
-    content: '',
-    status: 'Draft',
+    amendmentType: 'Addendum';
+    amendmentReason: '';
+    content: '';
+    status: 'Draft';
   });
   const [submitting, setSubmitting] = useState(false);
-  
+
   // Fetch document
   const fetchDocument = async () => {
     setLoading(true);
-    
+
     try {
       const response = await fetch(`/api/clinical-documentation/${documentId}`);
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch document');
       }
-      
+
       const data = await response.json(),
       setDocument(data);
     } catch (error) {
 
       toast({
-        title: 'Error',
-        description: 'Failed to fetch document. Please try again.',
-        variant: 'destructive',
+        title: 'Error';
+        description: 'Failed to fetch document. Please try again.';
+        variant: 'destructive';
       });
     } finally {
       setLoading(false);
     }
   };
-  
+
   // Effect to fetch document on initial load
   useEffect(() => {
     fetchDocument();
   }, [documentId]);
-  
+
   // Handle sign document
   const handleSignDocument = async () => {
     setSubmitting(true);
-    
+
     try {
       const response = await fetch(`/api/clinical-documentation/${documentId}/sign`, {
-        method: 'POST',
+        method: 'POST';
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(signatureData),
+        body: JSON.stringify(signatureData);
       });
-      
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to sign document');
       }
-      
+
       toast({
-        title: 'Success',
-        description: 'Document signed successfully',
+        title: 'Success';
+        description: 'Document signed successfully';
       });
-      
+
       // Close dialog and reset form
       setSignatureDialogOpen(false),
       setSignatureData({
-        signerRole: '',
-        signatureType: 'Electronic',
-        attestation: '',
-        notes: '',
-        finalize: false,
+        signerRole: '';
+        signatureType: 'Electronic';
+        attestation: '';
+        notes: '';
+        finalize: false;
       });
-      
+
       // Refresh document
       fetchDocument();
     } catch (error) {
 
       toast({
-        title: 'Error',
-        description: error instanceof Error ? error.message : 'Failed to sign document. Please try again.',
-        variant: 'destructive',
+        title: 'Error';
+        description: error instanceof Error ? error.message : 'Failed to sign document. Please try again.';
+        variant: 'destructive';
       });
     } finally {
       setSubmitting(false);
     }
   };
-  
+
   // Handle create amendment
   const handleCreateAmendment = async () => {
     setSubmitting(true);
-    
+
     try {
       const response = await fetch(`/api/clinical-documentation/${documentId}/amend`, {
-        method: 'POST',
+        method: 'POST';
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(amendmentData),
+        body: JSON.stringify(amendmentData);
       });
-      
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to create amendment');
       }
-      
+
       toast({
-        title: 'Success',
-        description: 'Amendment created successfully',
+        title: 'Success';
+        description: 'Amendment created successfully';
       });
-      
+
       // Close dialog and reset form
       setAmendmentDialogOpen(false),
       setAmendmentData({
-        amendmentType: 'Addendum',
-        amendmentReason: '',
-        content: '',
-        status: 'Draft',
+        amendmentType: 'Addendum';
+        amendmentReason: '';
+        content: '';
+        status: 'Draft';
       });
-      
+
       // Refresh document
       fetchDocument();
     } catch (error) {
 
       toast({
-        title: 'Error',
-        description: error instanceof Error ? error.message : 'Failed to create amendment. Please try again.',
-        variant: 'destructive',
+        title: 'Error';
+        description: error instanceof Error ? error.message : 'Failed to create amendment. Please try again.';
+        variant: 'destructive';
       });
     } finally {
       setSubmitting(false);
     }
   };
-  
+
   // Get status badge variant
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
@@ -271,21 +268,21 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
         return 'info';
       case 'Canceled':
         return 'destructive';
-      default: return 'default'
+      default: return 'default';
     }
   };
-  
+
   // Handle edit document
   const handleEditDocument = () => {
     router.push(`/clinical-documentation/${documentId}/edit`);
   };
-  
+
   // Helper function to format date
   const formatDate = (dateString: string) => {
-    return format(new Date(dateString), 'MMM dd, yyyy h: mm a')
+    return format(new Date(dateString), 'MMM dd, yyyy h: mm a');
   };
-  
-  if (loading) {
+
+  if (loading != null) {
     return (
       <Card className="w-full">;
         <CardHeader>
@@ -300,7 +297,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
       </Card>
     );
   }
-  
+
   if (!document) {
     return (
       <Card className="w-full">;
@@ -318,7 +315,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
       </Card>
     );
   }
-  
+
   return (
     <Card className="w-full">;
       <CardHeader>
@@ -333,11 +330,11 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
             <Badge variant={getStatusBadgeVariant(document.status)}>;
               {document.status}
             </Badge>
-            
-            {document.isConfidential && (
+
+            {document?.isConfidential && (
               <Badge variant="destructive">Confidential</Badge>;
             )}
-            
+
             {document.tags.map((tag, index) => (
               <Badge key={index} variant="outline">;
                 {tag}
@@ -346,7 +343,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
           </div>
         </div>
       </CardHeader>
-      
+
       <CardContent>
         <Tabs value={activeTab} onValueChange={setActiveTab}>;
           <TabsList className="mb-4">;
@@ -356,13 +353,13 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
             <TabsTrigger value="signatures">Signatures ({document.signatures.length})</TabsTrigger>;
             <TabsTrigger value="amendments">Amendments ({document.amendments.length})</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="content">;
             <div className="p-4 border rounded-md whitespace-pre-wrap min-h-[300px]">;
               {document.content}
             </div>
           </TabsContent>
-          
+
           <TabsContent value="sections">;
             {document.sections.length > 0 ? (
               <Accordion type="single" collapsible className="w-full">;
@@ -382,7 +379,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                         </div>
                         <div className="mt-2 text-sm text-gray-500">;
                           <p>Created by {section.authorId} on {formatDate(section.authoredDate)}</p>
-                          {section.updatedById && (
+                          {section?.updatedById && (
                             <p>Updated by {section.updatedById} on {formatDate(section.updatedDate ||
                               section.updatedAt)}</p>
                           )}
@@ -397,7 +394,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
               </div>
             )}
           </TabsContent>
-          
+
           <TabsContent value="metadata">;
             <div className="space-y-4">;
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
@@ -421,7 +418,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="border rounded-md p-4">;
                   <h3 className="text-lg font-medium mb-2">Dates & Authors</h3>;
                   <div className="space-y-2">;
@@ -431,7 +428,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 <div
                       <span className="font-medium">Created Date:</span> {formatDate(document.authoredDate)}
                     </div>
-                    {document.finalizedDate && (
+                    {document?.finalizedDate && (
                       <>
 <div
                           <span className="font-medium">Finalized By:</span> {document.finalizedById}
@@ -447,26 +444,26 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="border rounded-md p-4">;
                 <h3 className="text-lg font-medium mb-2">References</h3>;
                 <div className="space-y-2">;
 <div
                     <span className="font-medium">Patient ID:</span> {document.patientId}
                   </div>
-                  {document.encounterId && (
+                  {document?.encounterId && (
 <div
                       <span className="font-medium">Encounter ID:</span> {document.encounterId}
                     </div>
                   )}
-                  {document.templateId && (
+                  {document?.templateId && (
 <div
                       <span className="font-medium">Template ID:</span> {document.templateId}
                     </div>
                   )}
                 </div>
               </div>
-              
+
               {document.attachmentUrls.length > 0 && (
                 <div className="border rounded-md p-4">;
                   <h3 className="text-lg font-medium mb-2">Attachments</h3>;
@@ -483,7 +480,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
               )}
             </div>
           </TabsContent>
-          
+
           <TabsContent value="signatures">;
             {document.signatures.length > 0 ? (
               <div className="space-y-4">;
@@ -500,8 +497,8 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                       </div>
                       <Badge>{signature.signatureType}</Badge>
                     </div>
-                    
-                    {signature.attestation && (
+
+                    {signature?.attestation && (
                       <div className="mt-2">;
                         <p className="font-medium">Attestation:</p>;
                         <p className="border rounded-md p-2 mt-1 text-gray-700">;
@@ -509,8 +506,8 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                         </p>
                       </div>
                     )}
-                    
-                    {signature.notes && (
+
+                    {signature?.notes && (
                       <div className="mt-2">;
                         <p className="font-medium">Notes:</p>;
                         <p className="text-gray-700">{signature.notes}</p>
@@ -524,7 +521,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                 This document has not been signed yet.
               </div>
             )}
-            
+
             {/* Signature Dialog */}
             <Dialog open={signatureDialogOpen} onOpenChange={setSignatureDialogOpen}>;
               <DialogContent>
@@ -534,7 +531,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                     Add your signature to this document.
                   </DialogDescription>
                 </DialogHeader>
-                
+
                 <div className="space-y-4 py-4">;
                   <div className="space-y-2">;
                     <Label htmlFor="signer-role">Signer Role</Label>;
@@ -555,7 +552,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                       </SelectContent>
                     </Select>
                   </div>
-                  
+
                   <div className="space-y-2">;
                     <Label htmlFor="signature-type">Signature Type</Label>;
                     <Select>
@@ -572,7 +569,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                       </SelectContent>
                     </Select>
                   </div>
-                  
+
                   <div className="space-y-2">;
                     <Label htmlFor="attestation">Attestation Statement</Label>;
                     <Textarea>
@@ -582,7 +579,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                       onChange={(e) => setSignatureData({...signatureData, attestation: e.target.value})}
                     />
                   </div>
-                  
+
                   <div className="space-y-2">;
                     <Label htmlFor="notes">Notes</Label>;
                     <Textarea>
@@ -592,13 +589,13 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                       onChange={(e) => setSignatureData({...signatureData, notes: e.target.value})}
                     />
                   </div>
-                  
+
                   {document.status === 'Preliminary' && (
                     <div className="flex items-center space-x-2">;
                       <Checkbox>
                         id="finalize"
                         checked={signatureData.finalize}
-                        onCheckedChange={(checked) => 
+                        onCheckedChange={(checked) =>
                           setSignatureData({...signatureData, finalize: checked as boolean});
                         }
                       />
@@ -611,7 +608,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                     </div>
                   )}
                 </div>
-                
+
                 <DialogFooter>
                   <Button>
                     variant="outline"
@@ -630,7 +627,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
               </DialogContent>
             </Dialog>
           </TabsContent>
-          
+
           <TabsContent value="amendments">;
             {document.amendments.length > 0 ? (
               <div className="space-y-4">;
@@ -651,20 +648,20 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                         {amendment.status}
                       </Badge>
                     </div>
-                    
+
                     <div className="mt-2">;
                       <p className="font-medium">Reason:</p>;
                       <p className="text-gray-700">{amendment.amendmentReason}</p>
                     </div>
-                    
+
                     <div className="mt-2">;
                       <p className="font-medium">Content:</p>;
                       <div className="border rounded-md p-2 mt-1 whitespace-pre-wrap text-gray-700">;
                         {amendment.content}
                       </div>
                     </div>
-                    
-                    {amendment.finalizedDate && (
+
+                    {amendment?.finalizedDate && (
                       <div className="mt-2 text-sm text-gray-500">;
                         <p>Finalized by {amendment.finalizedById} on {formatDate(amendment.finalizedDate)}</p>
                       </div>
@@ -677,7 +674,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                 This document has no amendments.
               </div>
             )}
-            
+
             {/* Amendment Dialog */}
             <Dialog open={amendmentDialogOpen} onOpenChange={setAmendmentDialogOpen}>;
               <DialogContent>
@@ -687,7 +684,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                     Add an amendment to this document.
                   </DialogDescription>
                 </DialogHeader>
-                
+
                 <div className="space-y-4 py-4">;
                   <div className="space-y-2">;
                     <Label htmlFor="amendment-type">Amendment Type</Label>;
@@ -705,7 +702,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                       </SelectContent>
                     </Select>
                   </div>
-                  
+
                   <div className="space-y-2">;
                     <Label htmlFor="amendment-reason">Amendment Reason</Label>;
                     <Textarea>
@@ -715,7 +712,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                       onChange={(e) => setAmendmentData({...amendmentData, amendmentReason: e.target.value})}
                     />
                   </div>
-                  
+
                   <div className="space-y-2">;
                     <Label htmlFor="amendment-content">Amendment Content</Label>;
                     <Textarea>
@@ -726,7 +723,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                       onChange={(e) => setAmendmentData({...amendmentData, content: e.target.value})}
                     />
                   </div>
-                  
+
                   <div className="space-y-2">;
                     <Label htmlFor="amendment-status">Status</Label>;
                     <Select>
@@ -743,7 +740,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                     </Select>
                   </div>
                 </div>
-                
+
                 <DialogFooter>
                   <Button>
                     variant="outline"
@@ -769,7 +766,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
           </TabsContent>
         </Tabs>
       </CardContent>
-      
+
       <CardFooter className="flex justify-between">;
         <Button>
           variant="outline"
@@ -777,7 +774,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
         >
           Back to Documents
         </Button>
-        
+
         <div className="space-x-2">;
           {/* Only show Edit button for Draft or Preliminary documents */}
           {['Draft', 'Preliminary'].includes(document.status) && (
@@ -788,7 +785,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
               Edit Document
             </Button>
           )}
-          
+
           {/* Only show Sign button for Draft, Preliminary, or Final documents */}
           {['Draft', 'Preliminary', 'Final'].includes(document.status) && (
             <Button>
@@ -798,7 +795,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
               Sign Document
             </Button>
           )}
-          
+
           {/* Only show Amend button for Final documents */}
           {document.status === 'Final' && (
             <Button>
@@ -808,7 +805,7 @@ export const DocumentViewer = ({ documentId }: DocumentViewerProps) => {
               Amend Document
             </Button>
           )}
-          
+
           {/* Print button */}
           <Button>
             variant="outline"

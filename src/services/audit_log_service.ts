@@ -1,9 +1,9 @@
+
+import { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"; // Or a dedicated logging sink
 }
 
 // SEC-3: Implement Comprehensive Audit Logging (Initial Service & Integration)
 // Research notes: research_notes_audit_logging.md
-
-import { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"; // Or a dedicated logging sink
 
 /**
  * @interface IAuditLogService;
@@ -20,11 +20,11 @@ export interface IAuditLogService {
    * @param details An optional object containing additional event-specific details.
    */
   logEvent(
-    userId: string,
-    eventType: string,
-    entityType: string,
-    entityId: string | null,
-    status: string,
+    userId: string;
+    eventType: string;
+    entityType: string;
+    entityId: string | null;
+    status: string;
     details?: object;
   ): Promise<void>;
 }
@@ -46,20 +46,20 @@ export class AuditLogService implements IAuditLogService {
   }
 
   async logEvent(
-    userId: string,
-    eventType: string,
-    entityType: string,
-    entityId: string | null,
-    status: string,
+    userId: string;
+    eventType: string;
+    entityType: string;
+    entityId: string | null;
+    status: string;
     details?: object;
   ): Promise<void> {
     const timestamp = new Date().toISOString();
-    const auditEntry = {
+    const _auditEntry = {
       timestamp,
       userId,
       eventType,
       entityType,
-      entityId: entityId || "N/A",
+      entityId: entityId || "N/A";
       status,
       details: details || {},
     };

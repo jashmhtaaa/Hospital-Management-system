@@ -1,48 +1,49 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+
+import { PharmacyDomain } from '../../../../models/domain-models';
+import { auditLog } from '../../../../../../lib/audit';
+import { errorHandler } from '../../../../../../lib/error-handler';
+import { getMedicationById, getPrescriptionById } from '../../../../../../lib/services/pharmacy/pharmacy.service';
 }
 
 /**
  * Patient Medication Schedule API;
- * 
+ *
  * This file implements the API endpoint for retrieving a patient's medication;
  * administration schedule with comprehensive timing and status information.
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { auditLog } from '../../../../../../lib/audit';
-import { errorHandler } from '../../../../../../lib/error-handler';
-import { getMedicationById, getPrescriptionById } from '../../../../../../lib/services/pharmacy/pharmacy.service';
-import { PharmacyDomain } from '../../../../models/domain-models';
-
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
-  findAll: () => Promise.resolve([]),
-  search: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: getMedicationById;
+  findAll: () => Promise.resolve([]);
+  search: () => Promise.resolve([]);
+  save: () => Promise.resolve('');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 }
 
 const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
-  findById: getPrescriptionById,
-  findByPatientId: () => Promise.resolve([]),
-  findByPrescriberId: () => Promise.resolve([]),
-  findByMedicationId: () => Promise.resolve([]),
-  findByStatus: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: getPrescriptionById;
+  findByPatientId: () => Promise.resolve([]);
+  findByPrescriberId: () => Promise.resolve([]);
+  findByMedicationId: () => Promise.resolve([]);
+  findByStatus: () => Promise.resolve([]);
+  save: () => Promise.resolve('');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 };
 
 const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
-  findById: () => Promise.resolve(null),
-  findByPatientId: () => Promise.resolve([]),
-  findByPrescriptionId: () => Promise.resolve([]),
-  findByMedicationId: () => Promise.resolve([]),
-  findByStatus: () => Promise.resolve([]),
-  save: (administration) => Promise.resolve(administration.id || 'new-id'),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: () => Promise.resolve(null);
+  findByPatientId: () => Promise.resolve([]);
+  findByPrescriptionId: () => Promise.resolve([]);
+  findByMedicationId: () => Promise.resolve([]);
+  findByStatus: () => Promise.resolve([]);
+  save: (administration) => Promise.resolve(administration.id || 'new-id');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 };
 
 /**
@@ -50,7 +51,7 @@ const administrationRepository: PharmacyDomain.MedicationAdministrationRepositor
  * Get medication administration schedule for a patient;
  */
 export const GET = async (
-  req: NextRequest,
+  req: NextRequest;
   { params }: { params: { patientId: string } }
 ) => {
   try {
@@ -85,7 +86,7 @@ export const GET = async (
 
     // Generate schedule
     const schedule = [];
-    
+
     for (const prescription of activePrescriptions) {
       const medication = await medicationRepository.findById(prescription.medicationId);
       if (!medication) continue;
@@ -117,25 +118,25 @@ export const GET = async (
 
         // Determine status
         let status = 'scheduled';
-        if (matchingAdministration) {
+        if (matchingAdministration != null) {
           status = matchingAdministration.status;
         } else if (scheduleTime < new Date()) {
           status = 'overdue';
         }
 
         schedule.push({
-          prescriptionId: prescription.id,
-          medicationId: medication.id,
-          medicationName: medication.name,
-          dose: prescription.dosage.value,
-          unit: prescription.dosage.unit,
-          route: prescription.dosage.route,
-          scheduledTime: scheduleTime,
+          prescriptionId: prescription.id;
+          medicationId: medication.id;
+          medicationName: medication.name;
+          dose: prescription.dosage.value;
+          unit: prescription.dosage.unit;
+          route: prescription.dosage.route;
+          scheduledTime: scheduleTime;
           status,
-          administrationId: matchingAdministration?.id,
-          administeredAt: matchingAdministration?.administeredAt,
-          administeredBy: matchingAdministration?.administeredBy,
-          notes: matchingAdministration?.notes
+          administrationId: matchingAdministration?.id;
+          administeredAt: matchingAdministration?.administeredAt;
+          administeredBy: matchingAdministration?.administeredBy;
+          notes: matchingAdministration?.notes;
         });
       }
     }
@@ -145,14 +146,14 @@ export const GET = async (
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
-      action: 'SCHEDULE_VIEW',
-      resourceType: 'MedicationAdministration',
-      userId: userId,
-      patientId: patientId,
+      action: 'SCHEDULE_VIEW';
+      resourceType: 'MedicationAdministration';
+      userId: userId;
+      patientId: patientId;
       details: {
-        count: schedule.length,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString()
+        count: schedule.length;
+        startDate: startDate.toISOString();
+        endDate: endDate.toISOString();
       }
     });
 
@@ -168,7 +169,7 @@ export const GET = async (
  */
 const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[] {
   const times: Date[] = [];
-  
+
   // Parse frequency
   if (frequency.includes('daily')) {
     // Once daily - default to 9 AM
@@ -184,7 +185,7 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
     if (morning > start && morning < end) {
       times.push(morning);
     }
-    
+
     const evening = new Date(start);
     evening.setHours(17, 0, 0, 0);
     if (evening > start && evening < end) {
@@ -197,13 +198,13 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
     if (morning > start && morning < end) {
       times.push(morning);
     }
-    
+
     const afternoon = new Date(start);
     afternoon.setHours(13, 0, 0, 0);
     if (afternoon > start && afternoon < end) {
       times.push(afternoon);
     }
-    
+
     const evening = new Date(start);
     evening.setHours(21, 0, 0, 0);
     if (evening > start && evening < end) {
@@ -216,19 +217,19 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
     if (morning > start && morning < end) {
       times.push(morning);
     }
-    
+
     const noon = new Date(start);
     noon.setHours(13, 0, 0, 0);
     if (noon > start && noon < end) {
       times.push(noon);
     }
-    
+
     const afternoon = new Date(start);
     afternoon.setHours(17, 0, 0, 0);
     if (afternoon > start && afternoon < end) {
       times.push(afternoon);
     }
-    
+
     const evening = new Date(start);
     evening.setHours(21, 0, 0, 0);
     if (evening > start && evening < end) {
@@ -242,7 +243,7 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
       const time = new Date(start);
       time.setMinutes(0, 0, 0);
       time.setHours(Math.ceil(time.getHours() / hours) * hours);
-      
+
       while (time < end) {
         if (time > start) {
           times.push(new Date(time));
@@ -260,5 +261,5 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
       times.push(time);
     }
   }
-  
+
   return times;

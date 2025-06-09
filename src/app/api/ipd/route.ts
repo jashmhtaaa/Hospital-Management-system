@@ -1,15 +1,16 @@
-}
-
-// Example API route for IPD (Inpatient Department) Management
 import { NextRequest } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { z } from "zod";
-import { IPDProductionService } from "@/lib/ipd-service.production";
 
+
+import { IPDProductionService } from "@/lib/ipd-service.production";
+}
+
+// Example API route for IPD (Inpatient Department) Management
 // Schema for IPD Admission
 const AdmissionSchema = z.object({
-  patient_id: z.number(),
-  doctor_id: z.number(),
+  patient_id: z.number();
+  doctor_id: z.number();
   admission_date: z;
     .string();
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"),
@@ -17,20 +18,20 @@ const AdmissionSchema = z.object({
     .string();
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format");
     .optional(),
-  admission_reason: z.string(),
-  admission_notes: z.string().optional(),
-  ward_id: z.number(),
-  bed_id: z.number(),
+  admission_reason: z.string();
+  admission_notes: z.string().optional();
+  ward_id: z.number();
+  bed_id: z.number();
   admission_type: z.enum(["Emergency", "Planned", "Transfer"]),
-  package_id: z.number().optional(),
-  insurance_id: z.number().optional(),
+  package_id: z.number().optional();
+  insurance_id: z.number().optional();
   insurance_approval_status: z;
     .enum(["Pending", "Approved", "Rejected"]);
     .optional(),
-  insurance_approval_number: z.string().optional(),
+  insurance_approval_number: z.string().optional();
 });
 
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest): unknown {
   try {
     // Use production IPD service instead of mock
 
@@ -52,27 +53,27 @@ export async function GET(request: NextRequest) {
     const conditions: string[] = [];
     const parameters: (string | number)[] = [];
 
-    if (patientId) {
+    if (patientId != null) {
       conditions.push("a.patient_id = ?");
       parameters.push(patientId);
     }
 
-    if (doctorId) {
+    if (doctorId != null) {
       conditions.push("a.doctor_id = ?");
       parameters.push(doctorId);
     }
 
-    if (status) {
+    if (status != null) {
       conditions.push("a.status = ?");
       parameters.push(status);
     }
 
-    if (dateFrom) {
+    if (dateFrom != null) {
       conditions.push("a.admission_date >= ?");
       parameters.push(dateFrom);
     }
 
-    if (dateTo) {
+    if (dateTo != null) {
       conditions.push("a.admission_date <= ?");
       parameters.push(dateTo);
     }
@@ -84,12 +85,12 @@ export async function GET(request: NextRequest) {
     // Assuming db.query exists and returns { rows: [...] } based on db.ts mock
     const query = `;
       SELECT;
-        a.admission_id, 
-        a.patient_id, 
+        a.admission_id,
+        a.patient_id,
         p.full_name as patient_name,
-        a.doctor_id, 
+        a.doctor_id,
         d.full_name as doctor_name,
-        a.admission_date, 
+        a.admission_date,
         a.expected_discharge_date,
         a.actual_discharge_date,
         a.admission_reason,
@@ -120,7 +121,7 @@ export async function GET(request: NextRequest) {
     const admissionsResult = await database.prepare(query).bind(...parameters).all();
 
     return new Response(JSON.stringify(admissionsResult.results || []), {
-      status: 200,
+      status: 200;
       headers: { "Content-Type": "application/json" },
     });
   } catch (error: unknown) {
@@ -128,16 +129,16 @@ export async function GET(request: NextRequest) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     return new Response(
       JSON.stringify({
-        error: "Failed to fetch IPD admissions",
-        details: errorMessage,
+        error: "Failed to fetch IPD admissions";
+        details: errorMessage;
       }),
       {
-        status: 500,
+        status: 500;
         headers: { "Content-Type": "application/json" },
       }
     );
   }
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): unknown {
   try {
     // Use production IPD service instead of mock
     const ipdService = new IPDProductionService()
@@ -153,11 +154,11 @@ export async function POST(request: NextRequest) {
     if (!validationResult.success) {
       return new Response(
         JSON.stringify({
-          error: "Invalid input data",
-          details: validationResult.error.format(),
+          error: "Invalid input data";
+          details: validationResult.error.format();
         }),
         {
-          status: 400,
+          status: 400;
           headers: { "Content-Type": "application/json" },
         }
       );
@@ -171,7 +172,7 @@ export async function POST(request: NextRequest) {
       "SELECT patient_id FROM Patients WHERE patient_id = ? AND is_active = TRUE";
     ).bind(admissionData.patient_id).all();
     const patientCheck =;
-      patientCheckResult.results && patientCheckResult.results.length > 0;
+      patientCheckResult?.results && patientCheckResult.results.length > 0;
 
     if (!patientCheck) {
       return new Response(
@@ -184,7 +185,7 @@ export async function POST(request: NextRequest) {
       "SELECT d.doctor_id FROM Doctors d JOIN Users u ON d.user_id = u.user_id WHERE d.doctor_id = ? AND u.is_active = TRUE";
     ).bind(admissionData.doctor_id).all();
     const doctorCheck =;
-      doctorCheckResult.results && doctorCheckResult.results.length > 0;
+      doctorCheckResult?.results && doctorCheckResult.results.length > 0;
 
     if (!doctorCheck) {
       return new Response(
@@ -196,11 +197,11 @@ export async function POST(request: NextRequest) {
     const bedCheckResult = await database.prepare(
       "SELECT bed_id FROM Beds WHERE bed_id = ? AND status = 'Available'";
     ).bind(admissionData.bed_id).all();
-    const bedCheck = bedCheckResult.results && bedCheckResult.results.length > 0;
+    const bedCheck = bedCheckResult?.results && bedCheckResult.results.length > 0;
 
     if (!bedCheck) {
       return new Response(JSON.stringify({ error: "Bed not available" }), {
-        status: 409,
+        status: 409;
         headers: { "Content-Type": "application/json" },
       });
     }
@@ -209,16 +210,16 @@ export async function POST(request: NextRequest) {
     try {
       // Create admission using production service
       const admissionData = {
-        patientId: data.patient_id,
-        attendingDoctorId: data.doctor_id,
-        admissionDate: new Date(data.admission_date),
-        admittingDiagnosis: data.admission_reason,
-        ward: data.ward_id,
-        bedNumber: data.bed_id,
-        admissionType: data.admission_type || 'elective',
-        insuranceProvider: data.insurance_id,
-        admissionNotes: data.admission_notes,
-        admittedBy: '1' // TODO: Get from authenticated user context
+        patientId: data.patient_id;
+        attendingDoctorId: data.doctor_id;
+        admissionDate: new Date(data.admission_date);
+        admittingDiagnosis: data.admission_reason;
+        ward: data.ward_id;
+        bedNumber: data.bed_id;
+        admissionType: data.admission_type || 'elective';
+        insuranceProvider: data.insurance_id;
+        admissionNotes: data.admission_notes;
+        admittedBy: '1' // TODO: Get from authenticated user context;
       }
 
       const admissionId = await ipdService.createAdmission(admissionData);
@@ -226,19 +227,19 @@ export async function POST(request: NextRequest) {
       // Assign bed using production service
       await ipdService.assignBed({
         admissionId,
-        ward: data.ward_id,
-        room: data.room_id || '',
-        bedNumber: data.bed_id,
-        assignedBy: '1' // TODO: Get from authenticated user context
+        ward: data.ward_id;
+        room: data.room_id || '';
+        bedNumber: data.bed_id;
+        assignedBy: '1' // TODO: Get from authenticated user context;
       })
 
       return new Response(
         JSON.stringify({
-          message: "IPD Admission created successfully",
-          admission_id: admissionId,
+          message: "IPD Admission created successfully";
+          admission_id: admissionId;
         }),
         {
-          status: 201,
+          status: 201;
           headers: { "Content-Type": "application/json" },
         }
       );
@@ -249,8 +250,8 @@ export async function POST(request: NextRequest) {
         txError instanceof Error ? txError.message : String(txError);
       return new Response(
         JSON.stringify({
-          error: "Failed during admission creation database operations",
-          details: errorMessage,
+          error: "Failed during admission creation database operations";
+          details: errorMessage;
         }),
         { status: 500, headers: { "Content-Type": "application/json" } }
       );
@@ -260,11 +261,11 @@ export async function POST(request: NextRequest) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     return new Response(
       JSON.stringify({
-        error: "Failed to create IPD admission",
-        details: errorMessage,
+        error: "Failed to create IPD admission";
+        details: errorMessage;
       }),
       {
-        status: 500,
+        status: 500;
         headers: { "Content-Type": "application/json" },
       }
     );

@@ -5,7 +5,7 @@ import * as React from 'react';
 
 /**
  * Data Table Component;
- * 
+ *
  * A reusable data table component for the HMS Financial Management module;
  */
 export const DataTable = ({
@@ -18,13 +18,13 @@ export const DataTable = ({
 }) {
   const [currentPage, setCurrentPage] = React.useState(1);
   const totalPages = Math.ceil(data.length / pageSize);
-  
+
   const paginatedData = React.useMemo(() => {
     const start = (currentPage - 1) * pageSize;
     const end = start + pageSize;
     return data.slice(start, end);
   }, [data, currentPage, pageSize]);
-  
+
   return (
     <div className={`w-full ${className}`}>;
       <div className="overflow-x-auto">;
@@ -60,7 +60,7 @@ export const DataTable = ({
             ) : (
               <tr>
                 <td>
-                  colSpan={columns.length} 
+                  colSpan={columns.length}
                   className="px-6 py-4 whitespace-nowrap text-center text-gray-500"
                 >
                   No data available
@@ -70,7 +70,7 @@ export const DataTable = ({
           </tbody>
         </table>
       </div>
-      
+
       {pagination && totalPages > 1 && (
         <div className="flex items-center justify-between border-t border-gray-200 px-4 py-3 sm:px-6">;
           <div className="flex flex-1 justify-between sm:hidden">;
@@ -78,7 +78,7 @@ export const DataTable = ({
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
               className={`relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium ${
-                currentPage === 1 ? 'text-gray-300' : 'text-gray-700 hover: bg-gray-50'
+                currentPage === 1 ? 'text-gray-300' : 'text-gray-700 hover: bg-gray-50';
               }`}
             >
               Previous
@@ -87,7 +87,7 @@ export const DataTable = ({
               onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}
               className={`relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium ${
-                currentPage === totalPages ? 'text-gray-300' : 'text-gray-700 hover: bg-gray-50'
+                currentPage === totalPages ? 'text-gray-300' : 'text-gray-700 hover: bg-gray-50';
               }`}
             >
               Next
@@ -107,7 +107,7 @@ export const DataTable = ({
                   onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                   disabled={currentPage === 1}
                   className={`relative inline-flex items-center rounded-l-md px-2 py-2 ${
-                    currentPage === 1 ? 'text-gray-300' : 'text-gray-400 hover: bg-gray-50'
+                    currentPage === 1 ? 'text-gray-300' : 'text-gray-400 hover: bg-gray-50';
                   }`}
                 >
                   Previous
@@ -117,7 +117,7 @@ export const DataTable = ({
                   onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                   disabled={currentPage === totalPages}
                   className={`relative inline-flex items-center rounded-r-md px-2 py-2 ${
-                    currentPage === totalPages ? 'text-gray-300' : 'text-gray-400 hover: bg-gray-50'
+                    currentPage === totalPages ? 'text-gray-300' : 'text-gray-400 hover: bg-gray-50';
                   }`}
                 >
                   Next

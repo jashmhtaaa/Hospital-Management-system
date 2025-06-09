@@ -1,22 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { biomedicalService } from '@/lib/hr/biomedical-service';
 import { z } from 'zod';
 
+
+import { biomedicalService } from '@/lib/hr/biomedical-service';
 // GET handler for retrieving a specific biomedical equipment
-export const GET = async (
-  request: NextRequest,
+export const _GET = async (
+  request: NextRequest;
   { params }: { params: { id: string } }
 ) => {
   try {
     const equipment = await biomedicalService.getBiomedicalEquipment(params.id);
-    
+
     if (!equipment) {
       return NextResponse.json(
         { error: "Biomedical equipment not found" },
         { status: 404 }
       );
     }
-    
+
     return NextResponse.json(equipment);
   } catch (error) {
 
@@ -33,26 +34,26 @@ const biomedicalUpdateSchema = z.object({
   equipmentType: z.enum(['DIAGNOSTIC', 'THERAPEUTIC', 'MONITORING', 'LABORATORY', 'SURGICAL', 'LIFE_SUPPORT', 'OTHER'], {
     errorMap: () => ({ message: "Invalid equipment type" });
   }).optional(),
-  serialNumber: z.string().optional(),
-  manufacturer: z.string().optional(),
-  model: z.string().optional(),
+  serialNumber: z.string().optional();
+  manufacturer: z.string().optional();
+  model: z.string().optional();
   purchaseDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format"
+    message: "Invalid date format";
   }),
-  purchasePrice: z.number().optional(),
+  purchasePrice: z.number().optional();
   warrantyExpiryDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format"
+    message: "Invalid date format";
   }),
-  location: z.string().optional(),
-  departmentId: z.string().optional().nullable(),
-  assignedToId: z.string().optional().nullable(),
+  location: z.string().optional();
+  departmentId: z.string().optional().nullable();
+  assignedToId: z.string().optional().nullable();
   status: z.enum(['AVAILABLE', 'IN_USE', 'UNDER_MAINTENANCE', 'DISPOSED', 'LOST'], {
     errorMap: () => ({ message: "Invalid status" });
   }).optional(),
-  notes: z.string().optional(),
-  tags: z.array(z.string()).optional(),
+  notes: z.string().optional();
+  tags: z.array(z.string()).optional();
   // Biomedical specific fields
-  deviceIdentifier: z.string().optional(),
+  deviceIdentifier: z.string().optional();
   regulatoryClass: z.enum(['CLASS_I', 'CLASS_II', 'CLASS_III'], {
     errorMap: () => ({ message: "Invalid regulatory class" });
   }).optional(),
@@ -60,29 +61,29 @@ const biomedicalUpdateSchema = z.object({
     errorMap: () => ({ message: "Invalid risk level" });
   }).optional(),
   lastCalibrationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format"
+    message: "Invalid date format";
   }),
   nextCalibrationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format"
+    message: "Invalid date format";
   }),
-  calibrationFrequency: z.number().optional(),
-  certifications: z.array(z.string()).optional(),
-  isReusable: z.boolean().optional(),
-  sterilizationRequired: z.boolean().optional(),
+  calibrationFrequency: z.number().optional();
+  certifications: z.array(z.string()).optional();
+  isReusable: z.boolean().optional();
+  sterilizationRequired: z.boolean().optional();
   lastSterilizationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format"
+    message: "Invalid date format";
   }),
 });
 
 // PUT handler for updating biomedical equipment
-export const PUT = async (
-  request: NextRequest,
+export const _PUT = async (
+  request: NextRequest;
   { params }: { params: { id: string } }
 ) => {
   try {
     // Parse request body
     const body = await request.json();
-    
+
     // Validate request data
     const validationResult = biomedicalUpdateSchema.safeParse(body);
     if (!validationResult.success) {
@@ -91,22 +92,22 @@ export const PUT = async (
         { status: 400 }
       );
     }
-    
+
     const data = validationResult.data;
-    
+
     // Convert date strings to Date objects
     const biomedicalData = {
       ...data,
-      purchaseDate: data.purchaseDate ? new Date(data.purchaseDate) : undefined,
-      warrantyExpiryDate: data.warrantyExpiryDate ? new Date(data.warrantyExpiryDate) : undefined,
-      lastCalibrationDate: data.lastCalibrationDate ? new Date(data.lastCalibrationDate) : undefined,
-      nextCalibrationDate: data.nextCalibrationDate ? new Date(data.nextCalibrationDate) : undefined,
-      lastSterilizationDate: data.lastSterilizationDate ? new Date(data.lastSterilizationDate) : undefined,
+      purchaseDate: data.purchaseDate ? new Date(data.purchaseDate) : undefined;
+      warrantyExpiryDate: data.warrantyExpiryDate ? new Date(data.warrantyExpiryDate) : undefined;
+      lastCalibrationDate: data.lastCalibrationDate ? new Date(data.lastCalibrationDate) : undefined;
+      nextCalibrationDate: data.nextCalibrationDate ? new Date(data.nextCalibrationDate) : undefined;
+      lastSterilizationDate: data.lastSterilizationDate ? new Date(data.lastSterilizationDate) : undefined;
     };
-    
+
     // Update biomedical equipment
     const equipment = await biomedicalService.updateBiomedicalEquipment(params.id, biomedicalData);
-    
+
     return NextResponse.json(equipment);
   } catch (error) {
 
@@ -118,13 +119,13 @@ export const PUT = async (
 }
 
 // DELETE handler for deleting biomedical equipment
-export const DELETE = async (
-  request: NextRequest,
+export const _DELETE = async (
+  request: NextRequest;
   { params }: { params: { id: string } }
 ) => {
   try {
     await biomedicalService.deleteBiomedicalEquipment(params.id);
-    
+
     return NextResponse.json({ success: true });
   } catch (error) {
 

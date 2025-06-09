@@ -1,50 +1,51 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+
+import { BarcodeAdministrationService } from '../../../services/barcode-administration-service';
+import { PharmacyDomain } from '../../../models/domain-models';
+import { auditLog } from '../../../../../lib/audit';
+import { errorHandler } from '../../../../../lib/error-handler';
+import { getMedicationById, getPrescriptionById } from '../../../../../lib/services/pharmacy/pharmacy.service';
+import { validateBarcodeVerificationRequest } from '../../../../../lib/validation/pharmacy-validation';
 }
 
 /**
  * Barcode Verification API for Medication Administration;
- * 
+ *
  * This file implements the API endpoint for verifying medication administration;
  * using barcode scanning, following the "Five Rights" verification process.
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { BarcodeAdministrationService } from '../../../services/barcode-administration-service';
-import { validateBarcodeVerificationRequest } from '../../../../../lib/validation/pharmacy-validation';
-import { auditLog } from '../../../../../lib/audit';
-import { errorHandler } from '../../../../../lib/error-handler';
-import { getMedicationById, getPrescriptionById } from '../../../../../lib/services/pharmacy/pharmacy.service';
-import { PharmacyDomain } from '../../../models/domain-models';
-
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
-  findAll: () => Promise.resolve([]),
-  search: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: getMedicationById;
+  findAll: () => Promise.resolve([]);
+  search: () => Promise.resolve([]);
+  save: () => Promise.resolve('');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 }
 
 const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
-  findById: getPrescriptionById,
-  findByPatientId: () => Promise.resolve([]),
-  findByPrescriberId: () => Promise.resolve([]),
-  findByMedicationId: () => Promise.resolve([]),
-  findByStatus: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: getPrescriptionById;
+  findByPatientId: () => Promise.resolve([]);
+  findByPrescriberId: () => Promise.resolve([]);
+  findByMedicationId: () => Promise.resolve([]);
+  findByStatus: () => Promise.resolve([]);
+  save: () => Promise.resolve('');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 };
 
 const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
-  findById: () => Promise.resolve(null),
-  findByPatientId: () => Promise.resolve([]),
-  findByPrescriptionId: () => Promise.resolve([]),
-  findByMedicationId: () => Promise.resolve([]),
-  findByStatus: () => Promise.resolve([]),
-  save: (administration) => Promise.resolve(administration.id || 'new-id'),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: () => Promise.resolve(null);
+  findByPatientId: () => Promise.resolve([]);
+  findByPrescriptionId: () => Promise.resolve([]);
+  findByMedicationId: () => Promise.resolve([]);
+  findByStatus: () => Promise.resolve([]);
+  save: (administration) => Promise.resolve(administration.id || 'new-id');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 };
 
 // Initialize services
@@ -91,36 +92,36 @@ export const POST = async (req: NextRequest) => {
     // If verification failed, return error
     if (!verificationResult.success) {
       return NextResponse.json(
-        { 
-          error: 'Verification failed', 
-          details: verificationResult.errors,
+        {
+          error: 'Verification failed';
+          details: verificationResult.errors;
           verificationResult;
-        }, 
+        },
         { status: 400 }
       );
     }
 
     // If verification succeeded but with warnings, include them in response
-    const response: unknown = { 
-      success: true,
+    const response: unknown = {
+      success: true;
       verificationResult;
     };
 
-    if (verificationResult.warnings && verificationResult.warnings.length > 0) {
+    if (verificationResult?.warnings && verificationResult.warnings.length > 0) {
       response.warnings = verificationResult.warnings;
     }
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
-      action: 'VERIFY',
-      resourceType: 'MedicationAdministration',
-      userId: userId,
-      patientId: verificationResult.patientId,
+      action: 'VERIFY';
+      resourceType: 'MedicationAdministration';
+      userId: userId;
+      patientId: verificationResult.patientId;
       details: {
-        medicationId: verificationResult.medicationId,
-        prescriptionId: data.prescriptionId,
-        success: verificationResult.success,
-        warningCount: verificationResult.warnings?.length || 0
+        medicationId: verificationResult.medicationId;
+        prescriptionId: data.prescriptionId;
+        success: verificationResult.success;
+        warningCount: verificationResult.warnings?.length || 0;
       }
     });
 

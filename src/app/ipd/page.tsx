@@ -1,10 +1,10 @@
+import React, { useState } from "react";
+import {
 }
 
 "use client";
 export const dynamic = 'force-dynamic';
 
-import React, { useState } from "react";
-import {
   Card,
   CardHeader,
   CardTitle,
@@ -34,8 +34,8 @@ interface IPDPatientDetailsProperties {
 
 // FIX: Define type for selected admission state
 interface SelectedAdmission {
-  admissionId: number,
-  patientId: number
+  admissionId: number;
+  patientId: number;
 }
 
 // --- COMPONENTS ---
@@ -49,7 +49,7 @@ const IPDPatientDetails: React.FC<IPDPatientDetailsProperties> = ({
 
   // FIX: Convert number IDs to strings for child components if they expect strings
   const admissionIdString = admissionId.toString();
-  // const patientIdStr = patientId.toString(); // If needed by children
+  // const _patientIdStr = patientId.toString(); // If needed by children
 
   return (
     // FIX: Provide value and onValueChange to control the Tabs component

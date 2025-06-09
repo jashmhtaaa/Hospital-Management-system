@@ -1,7 +1,8 @@
-}
 import React from 'react';
-import { cn } from '@/lib/utils';
 
+
+import { cn } from '@/lib/utils';
+}
 interface TableProps extends React.HTMLAttributes<HTMLTableElement> {}
 
 const Table = React.forwardRef<HTMLTableElement, TableProps>(
@@ -59,7 +60,7 @@ const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
     <tr>
       ref={ref}
       className={cn(
-        "border-b transition-colors hover:bg-gray-50 data-[state=selected]:bg-gray-100",
+        "border-b transition-colors hover: bg-gray-50 data-[state=selected]:bg-gray-100";
         className;
       )}
       {...props}

@@ -1,5 +1,5 @@
-import { MaintenanceRequest, MaintenanceWorkOrder, Asset } from '@prisma/client';
 
+import { MaintenanceRequest, MaintenanceWorkOrder, Asset } from '@prisma/client';
 // FHIR-compliant interfaces for Maintenance Management
 
 /**
@@ -7,25 +7,25 @@ import { MaintenanceRequest, MaintenanceWorkOrder, Asset } from '@prisma/client'
  * Maps to FHIR ServiceRequest resource;
  */
 export interface FHIRMaintenanceRequest {
-  resourceType: 'ServiceRequest',
-  id: string,
-  status: 'draft' | 'active' | 'on-hold' | 'revoked' | 'completed' | 'entered-in-error' | 'unknown',
-  intent: 'proposal' | 'plan' | 'directive' | 'order' | 'original-order' | 'reflex-order' | 'filler-order' | 'instance-order' | 'option',
-  priority: 'routine' | 'urgent' | 'asap' | 'stat',
+  resourceType: 'ServiceRequest';
+  id: string;
+  status: 'draft' | 'active' | 'on-hold' | 'revoked' | 'completed' | 'entered-in-error' | 'unknown';
+  intent: 'proposal' | 'plan' | 'directive' | 'order' | 'original-order' | 'reflex-order' | 'filler-order' | 'instance-order' | 'option';
+  priority: 'routine' | 'urgent' | 'asap' | 'stat';
   category: {
     coding: {
-      system: string,
-      code: string,
-      display: string
+      system: string;
+      code: string;
+      display: string;
     }[];
   }[];
   code: {
     coding: {
-      system: string,
-      code: string,
-      display: string
+      system: string;
+      code: string;
+      display: string;
     }[];
-    text: string
+    text: string;
   };
   subject: {
     reference: string;
@@ -46,7 +46,7 @@ export interface FHIRMaintenanceRequest {
   occurrenceDateTime?: string;
   authoredOn: string;
   note?: {
-    text: string
+    text: string;
   }[];
 }
 
@@ -55,23 +55,23 @@ export interface FHIRMaintenanceRequest {
  * Maps to FHIR Task resource;
  */
 export interface FHIRMaintenanceWorkOrder {
-  resourceType: 'Task',
-  id: string,
+  resourceType: 'Task';
+  id: string;
   basedOn: {
-    reference: string
+    reference: string;
   }[];
-  status: 'draft' | 'requested' | 'received' | 'accepted' | 'rejected' | 'ready' | 'cancelled' | 'in-progress' | 'on-hold' | 'failed' | 'completed' | 'entered-in-error',
-  intent: 'unknown' | 'proposal' | 'plan' | 'order' | 'original-order' | 'reflex-order' | 'filler-order' | 'instance-order' | 'option',
-  priority: 'routine' | 'urgent' | 'asap' | 'stat',
-  description: string,
+  status: 'draft' | 'requested' | 'received' | 'accepted' | 'rejected' | 'ready' | 'cancelled' | 'in-progress' | 'on-hold' | 'failed' | 'completed' | 'entered-in-error';
+  intent: 'unknown' | 'proposal' | 'plan' | 'order' | 'original-order' | 'reflex-order' | 'filler-order' | 'instance-order' | 'option';
+  priority: 'routine' | 'urgent' | 'asap' | 'stat';
+  description: string;
   focus: {
-    reference: string
+    reference: string;
   };
   for: {
-    reference: string
+    reference: string;
   };
-  authoredOn: string,
-  lastModified: string,
+  authoredOn: string;
+  lastModified: string;
   requester: {
     reference: string;
     display?: string;
@@ -81,7 +81,7 @@ export interface FHIRMaintenanceWorkOrder {
     display?: string;
   };
   note?: {
-    text: string
+    text: string;
   }[];
   executionPeriod?: {
     start?: string;
@@ -94,11 +94,11 @@ export interface FHIRMaintenanceWorkOrder {
  * Maps to FHIR Device resource;
  */
 export interface FHIRAsset {
-  resourceType: 'Device',
-  id: string,
+  resourceType: 'Device';
+  id: string;
   identifier: {
-    system: string,
-    value: string
+    system: string;
+    value: string;
   }[];
   status: 'active' | 'inactive' | 'entered-in-error' | 'unknown';
   manufacturer?: string;
@@ -106,18 +106,18 @@ export interface FHIRAsset {
   serialNumber?: string;
   type: {
     coding: {
-      system: string,
-      code: string,
-      display: string
+      system: string;
+      code: string;
+      display: string;
     }[];
-    text: string
+    text: string;
   };
   location?: {
     reference: string;
     display?: string;
   };
   note?: {
-    text: string
+    text: string;
   }[];
   manufactureDate?: string;
   expirationDate?: string;
@@ -126,7 +126,7 @@ export interface FHIRAsset {
 /**
  * Convert database MaintenanceRequest to FHIR ServiceRequest;
  */
-export const toFHIRMaintenanceRequest = (request: MaintenanceRequest & {
+export const _toFHIRMaintenanceRequest = (request: MaintenanceRequest & {
   location: unknown;
   asset?: unknown;
   requestedByUser: unknown;
@@ -159,47 +159,47 @@ export const toFHIRMaintenanceRequest = (request: MaintenanceRequest & {
   };
 
   return {
-    resourceType: 'ServiceRequest',
-    id: request.id,
-    status: statusMap[request.status] || 'unknown',
-    intent: 'order',
-    priority: priorityMap[request.priority] || 'routine',
+    resourceType: 'ServiceRequest';
+    id: request.id;
+    status: statusMap[request.status] || 'unknown';
+    intent: 'order';
+    priority: priorityMap[request.priority] || 'routine';
     category: [{
       coding: [{
-        system: 'https://terminology.hl7.org/CodeSystem/service-category',
-        code: 'maintenance',
-        display: 'Maintenance'
+        system: 'https://terminology.hl7.org/CodeSystem/service-category';
+        code: 'maintenance';
+        display: 'Maintenance';
       }]
     }],
     code: {
       coding: [{
-        system: 'https://hms.local/fhir/CodeSystem/maintenance-request-type',
-        code: requestTypeMap[request.requestType]?.code || request.requestType.toLowerCase(),
-        display: requestTypeMap[request.requestType]?.display || request.requestType
+        system: 'https://hms.local/fhir/CodeSystem/maintenance-request-type';
+        code: requestTypeMap[request.requestType]?.code || request.requestType.toLowerCase();
+        display: requestTypeMap[request.requestType]?.display || request.requestType;
       }],
-      text: request.description
+      text: request.description;
     },
     subject: request.assetId ? {
       reference: `Device/${request.assetId}`,
-      display: request.asset?.name || 'Unknown Asset'
+      display: request.asset?.name || 'Unknown Asset';
     } : {
       reference: `Location/${request.locationId}`,
-      display: request.location?.name || 'Unknown Location'
+      display: request.location?.name || 'Unknown Location';
     },
     requester: {
       reference: `User/${request.requestedById}`,
-      display: request.requestedByUser?.name || 'Unknown User'
+      display: request.requestedByUser?.name || 'Unknown User';
     },
     performer: request.workOrders?.filter(wo => wo.assignedToId)?.map(wo => ({
       reference: `User/${wo.assignedToId}`,
-      display: wo.assignedToUser?.name || 'Unknown User'
+      display: wo.assignedToUser?.name || 'Unknown User';
     })) || [],
     locationReference: [{
       reference: `Location/${request.locationId}`,
-      display: request.location?.name || 'Unknown Location'
+      display: request.location?.name || 'Unknown Location';
     }],
-    occurrenceDateTime: request.scheduledDate?.toISOString(),
-    authoredOn: request.createdAt.toISOString(),
+    occurrenceDateTime: request.scheduledDate?.toISOString();
+    authoredOn: request.createdAt.toISOString();
     note: request.notes ? [{ text: request.notes }] : []
   }
 }
@@ -207,10 +207,10 @@ export const toFHIRMaintenanceRequest = (request: MaintenanceRequest & {
 /**
  * Convert database MaintenanceWorkOrder to FHIR Task;
  */
-export const toFHIRMaintenanceWorkOrder = (workOrder: MaintenanceWorkOrder & {
+export const _toFHIRMaintenanceWorkOrder = (workOrder: MaintenanceWorkOrder & {
   request: MaintenanceRequest;
   assignedToUser?: unknown;
-  createdByUser: unknown
+  createdByUser: unknown;
 }): FHIRMaintenanceWorkOrder {
   // Map status from internal to FHIR status
   const statusMap: Record<string, 'draft' | 'requested' | 'received' | 'accepted' | 'rejected' | 'ready' | 'cancelled' | 'in-progress' | 'on-hold' | 'failed' | 'completed' | 'entered-in-error'> = {
@@ -230,37 +230,37 @@ export const toFHIRMaintenanceWorkOrder = (workOrder: MaintenanceWorkOrder & {
   };
 
   return {
-    resourceType: 'Task',
-    id: workOrder.id,
+    resourceType: 'Task';
+    id: workOrder.id;
     basedOn: [{
       reference: `ServiceRequest/${workOrder.requestId}`;
     }],
-    status: statusMap[workOrder.status] || 'requested',
-    intent: 'order',
-    priority: priorityMap[workOrder.request?.priority] || 'routine',
-    description: workOrder.description,
+    status: statusMap[workOrder.status] || 'requested';
+    intent: 'order';
+    priority: priorityMap[workOrder.request?.priority] || 'routine';
+    description: workOrder.description;
     focus: {
       reference: `ServiceRequest/${workOrder.requestId}`;
     },
     for: {
-      reference: workOrder.request?.assetId 
-        ? `Device/${workOrder.request.assetId}` 
+      reference: workOrder.request?.assetId
+        ? `Device/${workOrder.request.assetId}`
         : `Location/${workOrder.request?.locationId}`
     },
-    authoredOn: workOrder.createdAt.toISOString(),
-    lastModified: workOrder.updatedAt.toISOString(),
+    authoredOn: workOrder.createdAt.toISOString();
+    lastModified: workOrder.updatedAt.toISOString();
     requester: {
       reference: `User/${workOrder.createdById}`,
-      display: workOrder.createdByUser?.name || 'Unknown User'
+      display: workOrder.createdByUser?.name || 'Unknown User';
     },
     owner: workOrder.assignedToId ? {
       reference: `User/${workOrder.assignedToId}`,
-      display: workOrder.assignedToUser?.name || 'Unknown User'
+      display: workOrder.assignedToUser?.name || 'Unknown User';
     } : undefined,
     note: workOrder.notes ? [{ text: workOrder.notes }] : [],
     executionPeriod: {
-      start: workOrder.startTime?.toISOString(),
-      end: workOrder.endTime?.toISOString()
+      start: workOrder.startTime?.toISOString();
+      end: workOrder.endTime?.toISOString();
     }
   };
 }
@@ -268,8 +268,8 @@ export const toFHIRMaintenanceWorkOrder = (workOrder: MaintenanceWorkOrder & {
 /**
  * Convert database Asset to FHIR Device;
  */
-export const toFHIRAsset = (asset: Asset & {
-  location: unknown
+export const _toFHIRAsset = (asset: Asset & {
+  location: unknown;
 }): FHIRAsset {
   // Map status from internal to FHIR status
   const statusMap: Record<string, 'active' | 'inactive' | 'entered-in-error' | 'unknown'> = {
@@ -288,35 +288,35 @@ export const toFHIRAsset = (asset: Asset & {
   };
 
   return {
-    resourceType: 'Device',
-    id: asset.id,
+    resourceType: 'Device';
+    id: asset.id;
     identifier: [
       {
-        system: 'https://hms.local/identifier/asset',
-        value: asset.id
+        system: 'https://hms.local/identifier/asset';
+        value: asset.id;
       },
       ...(asset.serialNumber ? [{
-        system: 'https://hms.local/identifier/serial-number',
-        value: asset.serialNumber
+        system: 'https://hms.local/identifier/serial-number';
+        value: asset.serialNumber;
       }] : [])
     ],
-    status: statusMap[asset.status] || 'unknown',
-    manufacturer: asset.manufacturer,
-    model: asset.model,
-    serialNumber: asset.serialNumber,
+    status: statusMap[asset.status] || 'unknown';
+    manufacturer: asset.manufacturer;
+    model: asset.model;
+    serialNumber: asset.serialNumber;
     type: {
       coding: [{
-        system: 'https://hms.local/fhir/CodeSystem/asset-type',
-        code: assetTypeMap[asset.assetType]?.code || asset.assetType.toLowerCase(),
-        display: assetTypeMap[asset.assetType]?.display || asset.assetType
+        system: 'https://hms.local/fhir/CodeSystem/asset-type';
+        code: assetTypeMap[asset.assetType]?.code || asset.assetType.toLowerCase();
+        display: assetTypeMap[asset.assetType]?.display || asset.assetType;
       }],
-      text: asset.name
+      text: asset.name;
     },
     location: {
       reference: `Location/${asset.locationId}`,
-      display: asset.location?.name || 'Unknown Location'
+      display: asset.location?.name || 'Unknown Location';
     },
-    note: [],
-    manufactureDate: asset.purchaseDate?.toISOString(),
-    expirationDate: asset.warrantyExpiry?.toISOString()
+    note: [];
+    manufactureDate: asset.purchaseDate?.toISOString();
+    expirationDate: asset.warrantyExpiry?.toISOString();
   }

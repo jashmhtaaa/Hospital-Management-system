@@ -1,29 +1,30 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { Toaster } from "@/components/ui/sonner"; // Added Toaster for notifications
-import { ThemeProvider } from "@/components/theme-provider"; // Added ThemeProvider
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+
+import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider"; // Added ThemeProvider
+import { Toaster } from "@/components/ui/sonner"; // Added Toaster for notifications
+const _geistSans = Geist({
+  variable: "--font-geist-sans";
+  subsets: ["latin"];
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const _geistMono = Geist_Mono({
+  variable: "--font-geist-mono";
+  subsets: ["latin"];
 });
 
 // Use metadata from HEAD
-export const metadata: Metadata = {
-  title: "Hospital Management System",
-  description: "Comprehensive HMS",
+export const _metadata: Metadata = {
+  title: "Hospital Management System";
+  description: "Comprehensive HMS";
 };
 
-export default const RootLayout = ({
+export default const _RootLayout = ({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     // Keep lang="en" and dark class from origin/master

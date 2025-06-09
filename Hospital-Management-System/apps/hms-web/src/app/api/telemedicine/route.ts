@@ -1,13 +1,14 @@
-
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+
+
 import { authService } from '@/lib/auth/auth-service';
+import { prisma } from '@/lib/prisma';
 
 // POST /api/telemedicine/sessions
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     const { patientId, doctorId, scheduledTime, type } = await request.json();
-    
+
     const { user } = await authService.verifyToken(request);
     if (!user || !['Doctor', 'Nurse', 'Receptionist'].includes(user.role)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
@@ -18,12 +19,12 @@ export const POST = async (request: NextRequest) => {
       data: {
         patientId,
         doctorId,
-        scheduledTime: new Date(scheduledTime),
+        scheduledTime: new Date(scheduledTime);
         type, // 'VIDEO_CALL', 'AUDIO_CALL', 'CHAT'
-        status: 'SCHEDULED',
-        sessionToken: generateSessionToken(),
-        recordingEnabled: true,
-        maxDuration: 60 // minutes
+        status: 'SCHEDULED';
+        sessionToken: generateSessionToken();
+        recordingEnabled: true;
+        maxDuration: 60 // minutes;
       }
     });
 
@@ -38,10 +39,10 @@ export const POST = async (request: NextRequest) => {
 };
 
 // GET /api/telemedicine/sessions/[sessionId]
-export const GET = async (request: NextRequest, { params }: { params: { sessionId: string } }) => {
+export const _GET = async (request: NextRequest, { params }: { params: { sessionId: string } }) => {
   try {
     const { sessionId } = params;
-    
+
     const { user } = await authService.verifyToken(request);
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
@@ -52,20 +53,20 @@ export const GET = async (request: NextRequest, { params }: { params: { sessionI
       include: {
         patient: {
           select: {
-            id: true,
-            full_name: true,
-            mrn: true,
-            dateOfBirth: true
+            id: true;
+            full_name: true;
+            mrn: true;
+            dateOfBirth: true;
           }
         },
         doctor: {
           select: {
-            id: true,
-            full_name: true,
-            specialization: true
+            id: true;
+            full_name: true;
+            specialization: true;
           }
         },
-        consultationNotes: true,
+        consultationNotes: true;
         prescriptions: {
           include: { items: true }
         }
@@ -77,8 +78,8 @@ export const GET = async (request: NextRequest, { params }: { params: { sessionI
     }
 
     // Check if user is authorized to access this session
-    const isAuthorized = session.patientId === user.id || 
-                        session.doctorId === user.id || 
+    const isAuthorized = session.patientId === user.id ||
+                        session.doctorId === user.id ||
                         ['Admin', 'Nurse'].includes(user.role);
 
     if (!isAuthorized) {
@@ -93,10 +94,10 @@ export const GET = async (request: NextRequest, { params }: { params: { sessionI
 };
 
 // PUT /api/telemedicine/sessions/[sessionId]/start
-export const PUT = async (request: NextRequest, { params }: { params: { sessionId: string } }) => {
+export const _PUT = async (request: NextRequest, { params }: { params: { sessionId: string } }) => {
   try {
     const { sessionId } = params;
-    
+
     const { user } = await authService.verifyToken(request);
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
@@ -105,22 +106,22 @@ export const PUT = async (request: NextRequest, { params }: { params: { sessionI
     const session = await prisma.telemedicineSession.update({
       where: { id: sessionId },
       data: {
-        status: 'IN_PROGRESS',
-        actualStartTime: new Date(),
-        participantCount: 2
+        status: 'IN_PROGRESS';
+        actualStartTime: new Date();
+        participantCount: 2;
       }
     });
 
     // Log session start for audit
     await prisma.auditLog.create({
       data: {
-        action: 'TELEMEDICINE_SESSION_START',
-        userId: user.id,
-        resourceType: 'TELEMEDICINE_SESSION',
-        resourceId: sessionId,
+        action: 'TELEMEDICINE_SESSION_START';
+        userId: user.id;
+        resourceType: 'TELEMEDICINE_SESSION';
+        resourceId: sessionId;
         details: {
-          sessionType: session.type,
-          startTime: new Date().toISOString()
+          sessionType: session.type;
+          startTime: new Date().toISOString();
         }
       }
     });
@@ -142,8 +143,8 @@ async function generateSessionToken(): Promise<string> {
   return result;
 }
 
-async function sendTelemedicineNotifications(session: any) {
+async function sendTelemedicineNotifications(session: unknown): unknown {
   // Send email/SMS notifications to patient and doctor
   // This would integrate with your notification service
-  /* SECURITY: Console statement removed */
+  /* SECURITY: Console statement removed */;
 }

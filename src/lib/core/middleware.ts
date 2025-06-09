@@ -1,14 +1,15 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
+
+import { AppError, ValidationError } from './errors.ts';
+import { logger } from './logging.ts';
 }
 
 /**
  * Core middleware implementation for the Financial Management module;
  * Provides standardized request handling, validation, and error handling;
  */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { AppError, ValidationError } from './errors.ts';
-import { logger } from './logging.ts';
 
 /**
  * Middleware for validating request body against a Zod schema;
@@ -39,11 +40,11 @@ export function validateQueryParams<T>(schema: z.ZodType<T>) {
     try {
       const url = new URL(req.url);
       const queryParams: Record<string, string> = {};
-      
+
       url.searchParams.forEach((value, key) => {
         queryParams[key] = value;
       });
-      
+
       return schema.parse(queryParams);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -59,37 +60,37 @@ export function validateQueryParams<T>(schema: z.ZodType<T>) {
  * @param handler API route handler;
  * @returns Wrapped handler with error handling;
  */
-export const withErrorHandling = (
+export const _withErrorHandling = (
   handler: (req: NextRequest, ...args: unknown[]) => Promise<NextResponse>;
 ) {
   return async (req: NextRequest, ...args: unknown[]) => {
     try {
       return await handler(req, ...args);
     } catch (error) {
-      logger.error('API error', { 
-        path: req.nextUrl.pathname,
-        method: req.method,
+      logger.error('API error', {
+        path: req.nextUrl.pathname;
+        method: req.method;
         error;
       });
-      
+
       if (error instanceof AppError) {
         return NextResponse.json(
-          { 
-            error: error.message,
-            code: error.code,
-            details: error.details
+          {
+            error: error.message;
+            code: error.code;
+            details: error.details;
           },
           { status: error.statusCode }
         );
       }
-      
+
       // For unexpected errors, don't expose details in production
       const isProd = process.env.NODE_ENV === 'production';
       return NextResponse.json(
-        { 
-          error: 'Internal server error',
-          code: 'INTERNAL_ERROR',
-          details: isProd ? undefined : String(error)
+        {
+          error: 'Internal server error';
+          code: 'INTERNAL_ERROR';
+          details: isProd ? undefined : String(error);
         },
         { status: 500 }
       );
@@ -102,21 +103,21 @@ export const withErrorHandling = (
  * @param handler API route handler;
  * @returns Wrapped handler with authentication check;
  */
-export const withAuth = (
+export const _withAuth = (
   handler: (req: NextRequest, ...args: unknown[]) => Promise<NextResponse>;
 ) {
   return async (req: NextRequest, ...args: unknown[]) => {
     // In a real implementation, this would check session/token
     // For now, we'll assume authentication is handled by Next.js middleware
     const session = req.headers.get('x-session');
-    
+
     if (!session) {
       return NextResponse.json(
         { error: 'Unauthorized', code: 'UNAUTHORIZED' },
         { status: 401 }
       );
     }
-    
+
     return handler(req, ...args);
   };
 }
@@ -127,21 +128,21 @@ export const withAuth = (
  * @param handler API route handler;
  * @returns Wrapped handler with permission check;
  */
-export const withPermissions = (
-  permissions: string[],
+export const _withPermissions = (
+  permissions: string[];
   handler: (req: NextRequest, ...args: unknown[]) => Promise<NextResponse>;
 ) {
   return async (req: NextRequest, ...args: unknown[]) => {
     // In a real implementation, this would check user permissions
     // For now, we'll assume a simple role-based check
     const userRole = req.headers.get('x-user-role');
-    
+
     if (!userRole || (userRole !== 'admin' && !permissions.includes(userRole))) {
       return NextResponse.json(
         { error: 'Forbidden', code: 'FORBIDDEN' },
         { status: 403 }
       );
     }
-    
+
     return handler(req, ...args);
   };

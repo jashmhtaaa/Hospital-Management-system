@@ -1,30 +1,31 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+
+import { auditLog } from '../../../../../lib/audit';
+import { errorHandler } from '../../../../../lib/error-handler';
 }
 
 /**
  * Administration Reports API Routes;
- * 
+ *
  * This file implements the API endpoints for generating medication administration reports;
  * with comprehensive filtering, analytics, and export capabilities.
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { auditLog } from '../../../../../lib/audit';
-import { errorHandler } from '../../../../../lib/error-handler';
-
 // Initialize repositories (in production, use dependency injection)
 const administrationRepository = {
-  findById: (id: string) => Promise.resolve(null),
-  findByPatientId: (patientId: string) => Promise.resolve([]),
-  findByPrescriptionId: (prescriptionId: string) => Promise.resolve([]),
-  findByMedicationId: (medicationId: string) => Promise.resolve([]),
-  findByStatus: (status: string) => Promise.resolve([]),
-  findByDateRange: (startDate: Date, endDate: Date) => Promise.resolve([]),
-  findByLocationId: (locationId: string) => Promise.resolve([]),
-  findByAdministeredBy: (userId: string) => Promise.resolve([]),
+  findById: (id: string) => Promise.resolve(null);
+  findByPatientId: (patientId: string) => Promise.resolve([]);
+  findByPrescriptionId: (prescriptionId: string) => Promise.resolve([]);
+  findByMedicationId: (medicationId: string) => Promise.resolve([]);
+  findByStatus: (status: string) => Promise.resolve([]);
+  findByDateRange: (startDate: Date, endDate: Date) => Promise.resolve([]);
+  findByLocationId: (locationId: string) => Promise.resolve([]);
+  findByAdministeredBy: (userId: string) => Promise.resolve([]);
   generateReport: (criteria: unknown) => Promise.resolve({ data: [], summary: {} }),
-  save: (administration: unknown) => Promise.resolve(administration.id || 'new-id'),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  save: (administration: unknown) => Promise.resolve(administration.id || 'new-id');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 }
 
 /**
@@ -68,23 +69,23 @@ export const GET = async (req: NextRequest) => {
     // Build report criteria
     const criteria: unknown = {
       reportType,
-      startDate: new Date(startDate),
-      endDate: new Date(endDate),
+      startDate: new Date(startDate);
+      endDate: new Date(endDate);
       groupBy;
     };
 
-    if (locationId) criteria.locationId = locationId;
-    if (unitId) criteria.unitId = unitId;
-    if (patientId) criteria.patientId = patientId;
-    if (medicationId) criteria.medicationId = medicationId;
-    if (administeredBy) criteria.administeredBy = administeredBy;
-    if (status) criteria.status = status;
+    if (locationId != null) criteria.locationId = locationId;
+    if (unitId != null) criteria.unitId = unitId;
+    if (patientId != null) criteria.patientId = patientId;
+    if (medicationId != null) criteria.medicationId = medicationId;
+    if (administeredBy != null) criteria.administeredBy = administeredBy;
+    if (status != null) criteria.status = status;
 
     // Generate report
     const report = await administrationRepository.generateReport(criteria);
 
     // Add metrics if requested
-    if (includeMetrics) {
+    if (includeMetrics != null) {
       // Calculate metrics based on report data
       const metrics = calculateMetrics(report.data, criteria);
       report.metrics = metrics;
@@ -94,23 +95,23 @@ export const GET = async (req: NextRequest) => {
     let formattedReport;
     if (format === 'csv') {
       formattedReport = convertToCSV(report.data);
-      
+
       // Audit logging
       await auditLog('MEDICATION_ADMINISTRATION', {
-        action: 'EXPORT_REPORT',
-        resourceType: 'MedicationAdministration',
-        userId: userId,
+        action: 'EXPORT_REPORT';
+        resourceType: 'MedicationAdministration';
+        userId: userId;
         details: {
           reportType,
           format,
           criteria,
-          recordCount: report.data.length
+          recordCount: report.data.length;
         }
       });
-      
+
       // Return CSV response
       return new NextResponse(formattedReport, {
-        status: 200,
+        status: 200;
         headers: {
           'Content-Type': 'text/csv',
           'Content-Disposition': `attachment; filename="med_admin_report_${startDate}_to_${endDate}.csv"`;
@@ -118,20 +119,20 @@ export const GET = async (req: NextRequest) => {
       });
     } else {
       formattedReport = report;
-      
+
       // Audit logging
       await auditLog('MEDICATION_ADMINISTRATION', {
-        action: 'GENERATE_REPORT',
-        resourceType: 'MedicationAdministration',
-        userId: userId,
+        action: 'GENERATE_REPORT';
+        resourceType: 'MedicationAdministration';
+        userId: userId;
         details: {
           reportType,
           format,
           criteria,
-          recordCount: report.data.length
+          recordCount: report.data.length;
         }
       });
-      
+
       // Return JSON response
       return NextResponse.json(formattedReport, { status: 200 });
     }
@@ -146,17 +147,17 @@ export const GET = async (req: NextRequest) => {
 const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
   // Calculate various metrics based on the report data
   const metrics = {
-    totalAdministrations: data.length,
-    onTimeAdministrations: 0,
-    lateAdministrations: 0,
-    missedAdministrations: 0,
-    documentedAdministrations: 0,
-    highAlertMedications: 0,
-    controlledSubstances: 0,
+    totalAdministrations: data.length;
+    onTimeAdministrations: 0;
+    lateAdministrations: 0;
+    missedAdministrations: 0;
+    documentedAdministrations: 0;
+    highAlertMedications: 0;
+    controlledSubstances: 0;
     administrationsByShift: {
-      morning: 0,
-      afternoon: 0,
-      night: 0
+      morning: 0;
+      afternoon: 0;
+      night: 0;
     },
     administrationsByRoute: {}
   };
@@ -166,7 +167,7 @@ const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
     // Count on-time, late, and missed administrations
     if (item.status === 'completed') {
       metrics.documentedAdministrations++;
-      
+
       if (item.timeliness === 'on-time') {
         metrics.onTimeAdministrations++;
       } else if (item.timeliness === 'late') {
@@ -175,17 +176,17 @@ const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
     } else if (item.status === 'missed') {
       metrics.missedAdministrations++;
     }
-    
+
     // Count high-alert medications
     if (item.isHighAlert) {
       metrics.highAlertMedications++;
     }
-    
+
     // Count controlled substances
     if (item.isControlled) {
       metrics.controlledSubstances++;
     }
-    
+
     // Count by shift
     const adminHour = new Date(item.administeredAt).getHours();
     if (adminHour >= 7 && adminHour < 15) {
@@ -195,12 +196,12 @@ const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
     } else {
       metrics.administrationsByShift.night++;
     }
-    
+
     // Count by route
     const route = item.route || 'unknown';
     metrics.administrationsByRoute[route] = (metrics.administrationsByRoute[route] || 0) + 1;
   });
-  
+
   // Calculate percentages
   if (metrics.totalAdministrations > 0) {
     metrics.onTimePercentage = (metrics.onTimeAdministrations / metrics.totalAdministrations) * 100;
@@ -208,7 +209,7 @@ const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
     metrics.missedPercentage = (metrics.missedAdministrations / metrics.totalAdministrations) * 100;
     metrics.documentationRate = (metrics.documentedAdministrations / metrics.totalAdministrations) * 100;
   }
-  
+
   return metrics;
 }
 
@@ -219,18 +220,18 @@ const convertToCSV = (data: unknown[]): string {
   if (data.length === 0) {
     return ''
   }
-  
+
   // Get headers from first item
   const headers = Object.keys(data[0]);
-  
+
   // Create CSV header row
   let csv = headers.join(',') + '\n';
-  
+
   // Add data rows
   data.forEach(item => {
     const row = headers.map(header => {
       const value = item[header];
-      
+
       // Handle different value types
       if (value === null || value === undefined) {
         return '';
@@ -246,8 +247,8 @@ const convertToCSV = (data: unknown[]): string {
         return value;
       }
     }).join(',');
-    
+
     csv += row + '\n';
   });
-  
+
   return csv;

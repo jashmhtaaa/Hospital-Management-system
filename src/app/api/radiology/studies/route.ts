@@ -10,23 +10,23 @@ import { getDB } from "@/lib/database"; // Import getDB
 interface PreparedStatement {
   bind(...parameters: (string | number | null)[]): {
     run(): Promise<{
-      success: boolean,
+      success: boolean;
       meta: { duration: number; changes?: number };
     }>;
     all<T = unknown>(): Promise<{
-      results: T[],
-      success: boolean,
+      results: T[];
+      success: boolean;
       meta: { duration: number };
     }>;
     first<T = unknown>(colName?: string): Promise<T | null>;
   };
   run(): Promise<{
-    success: boolean,
+    success: boolean;
     meta: { duration: number; changes?: number };
   }>;
   all<T = unknown>(): Promise<{
-    results: T[],
-    success: boolean,
+    results: T[];
+    success: boolean;
     meta: { duration: number };
   }>;
   first<T = unknown>(colName?: string): Promise<T | null>;
@@ -58,9 +58,9 @@ interface RadiologyStudyPostData {
 
 // Interface for GET response items (adjust based on actual query results)
 interface RadiologyStudyListItem {
-  id: string,
+  id: string;
   order_id: string
-  study_datetime: string,
+  study_datetime: string;
   status: string;
   accession_number?: string | null;
   patient_id?: string;
@@ -70,7 +70,7 @@ interface RadiologyStudyListItem {
 }
 
 // GET all Radiology Studies (filtered by orderId, patientId, status)
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   try {
     const session = await getSession(); // Call without request
     // Check session and user existence first
@@ -103,15 +103,15 @@ export const GET = async (request: NextRequest) => {
     const parameters: string[] = [];
     const conditions: string[] = [];
 
-    if (orderId) {
+    if (orderId != null) {
       conditions.push("rs.order_id = ?");
       parameters.push(orderId);
     }
-    if (patientId) {
+    if (patientId != null) {
       conditions.push("ro.patient_id = ?");
       parameters.push(patientId);
     }
-    if (status) {
+    if (status != null) {
       conditions.push("rs.status = ?");
       parameters.push(status);
     }
@@ -139,7 +139,7 @@ export const GET = async (request: NextRequest) => {
 }
 
 // POST a new Radiology Study (Technician or Admin)
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     const session = await getSession(); // Call without request
     // Check session and user existence first
@@ -174,8 +174,7 @@ export const POST = async (request: NextRequest) => {
     if (!order_id || !study_datetime || !technician_id) {
       return NextResponse.json(
         {
-          error:
-            "Missing required fields (order_id, study_datetime, technician_id)",
+          error: "Missing required fields (order_id, study_datetime, technician_id)",;
         },
         { status: 400 }
       );

@@ -1,7 +1,8 @@
-}
 import { PrismaClient } from "@prisma/client"; // Assuming Prisma is used
-import { Claim, Patient, TPA, ClaimStatusResponse } from "../types.ts"; // Adjust path as per actual structure
 
+
+import { Claim, Patient, TPA, ClaimStatusResponse } from "../types.ts"; // Adjust path as per actual structure
+}
 const prisma = new PrismaClient();
 
 /**
@@ -35,16 +36,16 @@ export class ClaimProcessingService {
             id: `claim_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
             patientId,
             policyId,
-            submissionDate: new Date(),
-            serviceCodes: claimDetails.serviceCodes || [],
-            diagnosisCodes: claimDetails.diagnosisCodes || [],
-            totalAmount: claimDetails.totalAmount || 0,
-            notes: claimDetails.notes,
-            status: "SUBMITTED", // Initial status
+            submissionDate: new Date();
+            serviceCodes: claimDetails.serviceCodes || [];
+            diagnosisCodes: claimDetails.diagnosisCodes || [];
+            totalAmount: claimDetails.totalAmount || 0;
+            notes: claimDetails.notes;
+            status: "SUBMITTED", // Initial status;
         };
 
         // Simulate saving to a database
-        // const savedClaim = await prisma.claim.create({ data: newClaim })
+        // const _savedClaim = await prisma.claim.create({ data: newClaim })
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         return newClaim; // Return the mock claim
     }
@@ -67,18 +68,18 @@ export class ClaimProcessingService {
         // Mock statuses
         const statuses = ["PENDING", "APPROVED", "PARTIALLY_APPROVED", "REJECTED", "PAID"];
         const randomStatus = statuses[Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * statuses.length)];
-        const mockAmountApproved = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000; // Example amount
+        const _mockAmountApproved = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000; // Example amount
 
         const statusResponse: ClaimStatusResponse = {
             claimId,
             status: randomStatus as ClaimStatusResponse['status'], // Cast to the expected type
-            lastUpdated: new Date(),
+            lastUpdated: new Date();
             details: `Claim is currently ${randomStatus}.`,
             amountApproved: randomStatus === "APPROVED" ||;
               randomStatus === "PARTIALLY_APPROVED" ||;
-              randomStatus === "PAID" ? mockAmountApproved : 0,
-            amountPaid: randomStatus === "PAID" ? mockAmountApproved : 0,
-            rejectionReason: randomStatus === "REJECTED" ? "Documentation insufficient." : undefined,
+              randomStatus === "PAID" ? _mockAmountApproved : 0,
+            amountPaid: randomStatus === "PAID" ? _mockAmountApproved : 0;
+            rejectionReason: randomStatus === "REJECTED" ? "Documentation insufficient." : undefined;
         };
 
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -99,10 +100,10 @@ export class ClaimProcessingService {
         //     throw new Error(`Claim with ID ${claimId} not found.`)
         // }
 
-        // const updatedClaim = await prisma.claim.update({
+        // const _updatedClaim = await prisma.claim.update({
         //     where: { id: claimId },
         //     data: {
-        //         status: newStatus,
+        //         status: newStatus;
         //         notes: statusDetails ? `${claim.notes}\nUpdate: ${statusDetails}` : claim.notes,
         //     },
         // })
@@ -110,18 +111,18 @@ export class ClaimProcessingService {
 
         // Mock implementation
         const mockClaim: Claim = {
-            id: claimId,
-            patientId: "mock_patient",
-            policyId: "mock_policy",
-            submissionDate: new Date(),
-            serviceCodes: ["S123"],
-            diagnosisCodes: ["D456"],
-            totalAmount: 500,
-            status: "SUBMITTED",
+            id: claimId;
+            patientId: "mock_patient";
+            policyId: "mock_policy";
+            submissionDate: new Date();
+            serviceCodes: ["S123"];
+            diagnosisCodes: ["D456"];
+            totalAmount: 500;
+            status: "SUBMITTED";
         };
 
         mockClaim.status = newStatus;
-        if (statusDetails) {
+        if (statusDetails != null) {
             mockClaim.notes = `${mockClaim.notes || ''}\nUpdate: ${statusDetails}`;
         }
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -130,8 +131,8 @@ export class ClaimProcessingService {
 }
 
 // Example Usage (conceptual)
-// const claimService = new ClaimProcessingService()
-// const newClaimData = { serviceCodes: ['SVC101'], diagnosisCodes: ['ICD001'], totalAmount: 250.00, notes: 'Routine checkup' }
+// const _claimService = new ClaimProcessingService()
+// const _newClaimData = { serviceCodes: ['SVC101'], diagnosisCodes: ['ICD001'], totalAmount: 250.00, notes: 'Routine checkup' }
 // claimService.submitClaim('patient789', 'policyXYZ', newClaimData)
 //  .then(claim => // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 //  .catch(error => // Debug logging removed)

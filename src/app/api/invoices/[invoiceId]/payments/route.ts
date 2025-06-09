@@ -1,10 +1,11 @@
-// app/api/invoices/[invoiceId]/payments/route.ts
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { sessionOptions, IronSessionData } from "@/lib/session"; // FIX: Import IronSessionData
-import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { getIronSession } from "iron-session";
 import { z } from "zod";
 
+
+import { sessionOptions, IronSessionData } from "@/lib/session"; // FIX: Import IronSessionData
+// app/api/invoices/[invoiceId]/payments/route.ts
 // Define roles allowed to manage payments (adjust as needed)
 const ALLOWED_ROLES_MANAGE = ["Admin", "Receptionist", "Billing Staff"]
 
@@ -19,14 +20,14 @@ const getInvoiceId = (pathname: string): number | null {
 
 // POST handler for recording a payment for an invoice
 const AddPaymentSchema = z.object({
-    amount_paid: z.number().positive("Amount paid must be positive"),
-    payment_method: z.nativeEnum(PaymentMethod),
+    amount_paid: z.number().positive("Amount paid must be positive");
+    payment_method: z.nativeEnum(PaymentMethod);
     payment_date: z.string().datetime().optional(), // Default is CURRENT_TIMESTAMP
-    transaction_reference: z.string().optional().nullable(),
-    notes: z.string().optional().nullable(),
+    transaction_reference: z.string().optional().nullable();
+    notes: z.string().optional().nullable();
 });
 
-export const POST = async (request: Request) => {
+export const _POST = async (request: Request) => {
     const cookieStore = await cookies(); // FIX: Add await
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);
@@ -35,14 +36,14 @@ export const POST = async (request: Request) => {
     // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_MANAGE.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401,
+            status: 401;
             headers: { "Content-Type": "application/json" },
         });
     }
 
     if (invoiceId === null) {
         return new Response(JSON.stringify({ error: "Invalid Invoice ID" }), {
-            status: 400,
+            status: 400;
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -53,7 +54,7 @@ export const POST = async (request: Request) => {
 
         if (!validation.success) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
-                status: 400,
+                status: 400;
                 headers: { "Content-Type": "application/json" },
             });
         }
@@ -114,7 +115,7 @@ export const POST = async (request: Request) => {
         ).bind(newPaidAmount, newStatus, invoiceId));
 
         // 4. Execute the batch transaction
-        // const transactionResults = await DB.batch(batchActions); // Commented out: Unused variable
+        // const _transactionResults = await DB.batch(batchActions); // Commented out: Unused variable
 
         // Basic check for success (D1 batch doesn't guarantee rollback)
         // A more robust approach might involve checking affected rows or re-querying.
@@ -129,7 +130,7 @@ export const POST = async (request: Request) => {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500,
+            status: 500;
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -137,4 +138,4 @@ export const POST = async (request: Request) => {
 
 // GET handler (Optional - could list payments for an invoice)
 // Already included in GET /api/invoices/[invoiceId]
-// export async function GET(request: Request) { ... 
+// export async function GET(request: Request): unknown { ...

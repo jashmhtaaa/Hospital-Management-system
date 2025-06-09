@@ -1,59 +1,60 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+
+import { FHIRMapper } from '../../models/fhir-mappers';
+import { PharmacyDomain } from '../../models/domain-models';
+import { auditLog } from '../../../../lib/audit';
+import { encryptionService } from '../../../../lib/security.service';
+import { errorHandler } from '../../../../lib/error-handler';
+import { getMedicationById, getPrescriptionById } from '../../../../lib/services/pharmacy/pharmacy.service';
+import { getPatientById } from '../../../../lib/services/patient/patient.service';
+import { validateDispensingRequest } from '../../../../lib/validation/pharmacy-validation';
 }
 
 /**
  * Dispensing API Routes;
- * 
+ *
  * This file implements the FHIR-compliant API endpoints for medication dispensing;
  * following enterprise-grade requirements for security, validation, and error handling.
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { validateDispensingRequest } from '../../../../lib/validation/pharmacy-validation';
-import { auditLog } from '../../../../lib/audit';
-import { errorHandler } from '../../../../lib/error-handler';
-import { encryptionService } from '../../../../lib/security.service';
-import { PharmacyDomain } from '../../models/domain-models';
-import { FHIRMapper } from '../../models/fhir-mappers';
-import { getMedicationById, getPrescriptionById } from '../../../../lib/services/pharmacy/pharmacy.service';
-import { getPatientById } from '../../../../lib/services/patient/patient.service';
-
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
-  findAll: () => Promise.resolve([]),
-  search: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: getMedicationById;
+  findAll: () => Promise.resolve([]);
+  search: () => Promise.resolve([]);
+  save: () => Promise.resolve('');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 }
 
 const prescriptionRepository = {
-  findById: getPrescriptionById,
-  findByPatientId: () => Promise.resolve([]),
-  findByPrescriberId: () => Promise.resolve([]),
-  findByMedicationId: () => Promise.resolve([]),
-  findByStatus: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: getPrescriptionById;
+  findByPatientId: () => Promise.resolve([]);
+  findByPrescriberId: () => Promise.resolve([]);
+  findByMedicationId: () => Promise.resolve([]);
+  findByStatus: () => Promise.resolve([]);
+  save: () => Promise.resolve('');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 };
 
 const dispensingRepository = {
-  findById: (id: string) => Promise.resolve(null),
-  findByPrescriptionId: (prescriptionId: string) => Promise.resolve([]),
-  findByPatientId: (patientId: string) => Promise.resolve([]),
-  findByStatus: (status: string) => Promise.resolve([]),
-  findAll: () => Promise.resolve([]),
-  save: (dispensing: unknown) => Promise.resolve(dispensing.id || 'new-id'),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: (id: string) => Promise.resolve(null);
+  findByPrescriptionId: (prescriptionId: string) => Promise.resolve([]);
+  findByPatientId: (patientId: string) => Promise.resolve([]);
+  findByStatus: (status: string) => Promise.resolve([]);
+  findAll: () => Promise.resolve([]);
+  save: (dispensing: unknown) => Promise.resolve(dispensing.id || 'new-id');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 };
 
 const inventoryRepository = {
-  findById: (id: string) => Promise.resolve(null),
-  findByLocationId: (locationId: string) => Promise.resolve([]),
-  findByMedicationId: (medicationId: string) => Promise.resolve([]),
-  adjustStock: (inventoryId: string, newQuantity: number) => Promise.resolve(true)
+  findById: (id: string) => Promise.resolve(null);
+  findByLocationId: (locationId: string) => Promise.resolve([]);
+  findByMedicationId: (medicationId: string) => Promise.resolve([]);
+  adjustStock: (inventoryId: string, newQuantity: number) => Promise.resolve(true);
 };
 
 /**
@@ -83,32 +84,32 @@ export const GET = async (req: NextRequest) => {
 
     // Build filter criteria
     const filter: unknown = {};
-    if (patientId) filter.patientId = patientId;
-    if (prescriptionId) filter.prescriptionId = prescriptionId;
-    if (status) filter.status = status;
-    
+    if (patientId != null) filter.patientId = patientId;
+    if (prescriptionId != null) filter.prescriptionId = prescriptionId;
+    if (status != null) filter.status = status;
+
     // Add date range if provided
     if (startDate || endDate) {
       filter.dispensedAt = {};
-      if (startDate) filter.dispensedAt.gte = new Date(startDate);
-      if (endDate) filter.dispensedAt.lte = new Date(endDate);
+      if (startDate != null) filter.dispensedAt.gte = new Date(startDate);
+      if (endDate != null) filter.dispensedAt.lte = new Date(endDate);
     }
 
     // Get dispensing records (mock implementation)
     const dispensingRecords = await dispensingRepository.findAll()
-    
+
     // Apply filters
     let filteredRecords = dispensingRecords;
-    if (patientId) {
+    if (patientId != null) {
       filteredRecords = filteredRecords.filter(d => d.patientId === patientId);
     }
-    if (prescriptionId) {
+    if (prescriptionId != null) {
       filteredRecords = filteredRecords.filter(d => d.prescriptionId === prescriptionId);
     }
-    if (status) {
+    if (status != null) {
       filteredRecords = filteredRecords.filter(d => d.status === status);
     }
-    
+
     const total = filteredRecords.length;
 
     // Apply pagination
@@ -119,25 +120,25 @@ export const GET = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('DISPENSING', {
-      action: 'LIST',
-      resourceType: 'MedicationDispense',
-      userId: userId,
+      action: 'LIST';
+      resourceType: 'MedicationDispense';
+      userId: userId;
       details: {
         filter,
         page,
         limit,
-        resultCount: paginatedRecords.length
+        resultCount: paginatedRecords.length;
       }
     });
 
     // Return response
-    return NextResponse.json({ 
-      dispensingRecords: fhirDispensingRecords,
+    return NextResponse.json({
+      dispensingRecords: fhirDispensingRecords;
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit);
       }
     }, { status: 200 });
   } catch (error) {
@@ -190,8 +191,8 @@ export const POST = async (req: NextRequest) => {
 
     // Check inventory availability
     const inventoryItems = await inventoryRepository.findByMedicationId(prescription.medicationId);
-    const availableInventory = inventoryItems.find(item => 
-      item.quantityOnHand >= data.quantityDispensed &&;
+    const availableInventory = inventoryItems.find(item =>
+      item.quantityOnHand >= data?.quantityDispensed &&;
       (!item.expiryDate || new Date(item.expiryDate) > new Date());
     );
 
@@ -204,19 +205,19 @@ export const POST = async (req: NextRequest) => {
 
     // Create dispensing record
     const dispensing = {
-      id: data.id || crypto.randomUUID(),
-      prescriptionId: data.prescriptionId,
-      patientId: prescription.patientId,
-      medicationId: prescription.medicationId,
-      inventoryId: availableInventory.id,
-      quantityDispensed: data.quantityDispensed,
-      daysSupply: data.daysSupply,
-      dispensedBy: userId,
-      dispensedAt: new Date(),
-      status: data.status || 'completed',
-      notes: data.notes || '',
-      location: data.location || 'main-pharmacy',
-      dispensingType: data.dispensingType || 'outpatient'
+      id: data.id || crypto.randomUUID();
+      prescriptionId: data.prescriptionId;
+      patientId: prescription.patientId;
+      medicationId: prescription.medicationId;
+      inventoryId: availableInventory.id;
+      quantityDispensed: data.quantityDispensed;
+      daysSupply: data.daysSupply;
+      dispensedBy: userId;
+      dispensedAt: new Date();
+      status: data.status || 'completed';
+      notes: data.notes || '';
+      location: data.location || 'main-pharmacy';
+      dispensingType: data.dispensingType || 'outpatient';
     };
 
     // Special handling for controlled substances
@@ -224,23 +225,23 @@ export const POST = async (req: NextRequest) => {
       // Encrypt controlled substance data
       dispensing.controlledSubstanceData = await encryptionService.encrypt(
         JSON.stringify({
-          witnessId: data.witnessId,
-          lockboxNumber: data.lockboxNumber,
-          wastage: data.wastage || 0
+          witnessId: data.witnessId;
+          lockboxNumber: data.lockboxNumber;
+          wastage: data.wastage || 0;
         });
       );
 
       // Additional logging for controlled substances
       await auditLog('CONTROLLED_SUBSTANCE', {
-        action: 'DISPENSE',
-        resourceType: 'MedicationDispense',
-        userId: userId,
-        patientId: prescription.patientId,
+        action: 'DISPENSE';
+        resourceType: 'MedicationDispense';
+        userId: userId;
+        patientId: prescription.patientId;
         details: {
-          medicationId: prescription.medicationId,
-          prescriptionId: data.prescriptionId,
-          quantity: data.quantityDispensed,
-          witnessId: data.witnessId
+          medicationId: prescription.medicationId;
+          prescriptionId: data.prescriptionId;
+          quantity: data.quantityDispensed;
+          witnessId: data.witnessId;
         }
       });
     }
@@ -256,25 +257,25 @@ export const POST = async (req: NextRequest) => {
 
     // Regular audit logging
     await auditLog('DISPENSING', {
-      action: 'CREATE',
-      resourceType: 'MedicationDispense',
-      resourceId: dispensingId,
-      userId: userId,
-      patientId: prescription.patientId,
+      action: 'CREATE';
+      resourceType: 'MedicationDispense';
+      resourceId: dispensingId;
+      userId: userId;
+      patientId: prescription.patientId;
       details: {
-        medicationId: prescription.medicationId,
-        prescriptionId: data.prescriptionId,
-        quantity: data.quantityDispensed,
-        location: data.location
+        medicationId: prescription.medicationId;
+        prescriptionId: data.prescriptionId;
+        quantity: data.quantityDispensed;
+        location: data.location;
       }
     });
 
     // Return response
     return NextResponse.json(
-      { 
-        id: dispensingId,
-        message: 'Medication dispensed successfully'
-      }, 
+      {
+        id: dispensingId;
+        message: 'Medication dispensed successfully';
+      },
       { status: 201 }
     );
   } catch (error) {

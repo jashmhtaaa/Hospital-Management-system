@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
+
+
 import { getDB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session"; // Using mock session
-
 // --- Interfaces ---
 
 interface SampleInput {
   id?: number; // For updates
-  order_id: number,
+  order_id: number;
   sample_type: string;
   barcode?: string; // Optional for creation, required for update?
   status?: "collected" | "received" | "processing" | "rejected"
@@ -15,18 +16,18 @@ interface SampleInput {
 }
 
 interface LabSample {
-  id: number,
-  order_id: number,
-  barcode: string,
-  sample_type: string,
-  collected_by: number | null,
-  collected_at: string | null,
-  received_by: number | null,
-  received_at: string | null,
-  status: "collected" | "received" | "processing" | "rejected",
-  rejection_reason: string | null,
-  notes: string | null,
-  created_at: string,
+  id: number;
+  order_id: number;
+  barcode: string;
+  sample_type: string;
+  collected_by: number | null;
+  collected_at: string | null;
+  received_by: number | null;
+  received_at: string | null;
+  status: "collected" | "received" | "processing" | "rejected";
+  rejection_reason: string | null;
+  notes: string | null;
+  created_at: string;
   updated_at: string;
   // Joined fields
   patient_id?: number;
@@ -38,7 +39,7 @@ interface LabSample {
 // --- API Route Handlers ---
 
 // GET /api/laboratory/samples - Get laboratory samples
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   try {
     const session = await getSession();
     if (!session || !session.user) {
@@ -52,7 +53,7 @@ export const GET = async (request: NextRequest) => {
 
     const database = await getDB();
     let query = `;
-      SELECT s.*, 
+      SELECT s.*,
         o.patient_id,
         p.first_name || ' ' || p.last_name as patient_name,
         c.first_name || ' ' || c.last_name as collector_name,
@@ -68,15 +69,15 @@ export const GET = async (request: NextRequest) => {
     const parameters: (string | number)[] = [];
     const conditions: string[] = [];
 
-    if (orderId) {
+    if (orderId != null) {
       conditions.push("s.order_id = ?");
       parameters.push(orderId);
     }
-    if (barcode) {
+    if (barcode != null) {
       conditions.push("s.barcode = ?");
       parameters.push(barcode);
     }
-    if (status) {
+    if (status != null) {
       conditions.push("s.status = ?");
       parameters.push(status);
     }
@@ -101,7 +102,7 @@ export const GET = async (request: NextRequest) => {
 }
 
 // POST /api/laboratory/samples - Create or update a laboratory sample
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
     if (!session || !session.user) {
@@ -129,7 +130,7 @@ export const POST = async (request: NextRequest) => {
         [body.id]
       )
       const existingSample = (
-        sampleResult.results && sampleResult.results.length > 0 // Changed .rows to .results (twice)
+        sampleResult?.results && sampleResult.results.length > 0 // Changed .rows to .results (twice)
           ? sampleResult.results[0] // Changed .rows to .results
           : undefined;
       ) as LabSample | null;
@@ -200,7 +201,7 @@ export const POST = async (request: NextRequest) => {
         [body.id]
       );
       const updatedSample =;
-        updatedSampleResult.results && updatedSampleResult.results.length > 0 // Changed .rows to .results (twice)
+        updatedSampleResult?.results && updatedSampleResult.results.length > 0 // Changed .rows to .results (twice)
           ? updatedSampleResult.results[0] // Changed .rows to .results
           : undefined;
 
@@ -217,8 +218,8 @@ export const POST = async (request: NextRequest) => {
         }
       }
 
-      const timestamp = crypto.getRandomValues(new Uint32Array(1))[0];
-      const random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000);
+      const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0];
+      const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000);
       const barcode = body.barcode || `LAB/* SECURITY: Template literal eliminated */
 
       // Fixed: Use db.query for insert (mock DB doesn't return last_row_id)
@@ -243,7 +244,7 @@ export const POST = async (request: NextRequest) => {
         [barcode]
       )
       const newSample =;
-        newSampleResult.results && newSampleResult.results.length > 0 // Changed .rows to .results (twice)
+        newSampleResult?.results && newSampleResult.results.length > 0 // Changed .rows to .results (twice)
           ? newSampleResult.results[0] // Changed .rows to .results
           : undefined;
 
@@ -252,7 +253,7 @@ export const POST = async (request: NextRequest) => {
         return NextResponse.json(
           {
             message: "Sample created (mock), but could not fetch immediately.",
-            barcode: barcode,
+            barcode: barcode;
           },
           { status: 201 }
         );

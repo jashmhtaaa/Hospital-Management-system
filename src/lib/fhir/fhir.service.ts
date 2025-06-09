@@ -1,3 +1,12 @@
+import { PrismaClient } from '@prisma/client';
+
+
+import { FHIRAppointment, FHIRAppointmentSearchParams, FHIRAppointmentUtils } from './appointment.ts';
+import { FHIRBundle, FHIRBase } from './types.ts';
+import { FHIRDatabaseAdapter } from '@/lib/database/fhir-adapter';
+import { FHIREncounter, FHIREncounterSearchParams, FHIREncounterUtils } from './encounter.ts';
+import { FHIRMedicationRequest, FHIRMedicationUtils } from './medication.ts';
+import { FHIRPatient, FHIRPatientSearchParams, FHIRPatientUtils } from './patient.ts';
 }
 
 /**
@@ -5,14 +14,6 @@
  * Comprehensive FHIR operations service for HMS;
  * Integrates with existing HMS infrastructure while providing FHIR compliance;
  */
-
-import { FHIRBundle, FHIRBase } from './types.ts';
-import { FHIRPatient, FHIRPatientSearchParams, FHIRPatientUtils } from './patient.ts';
-import { FHIRAppointment, FHIRAppointmentSearchParams, FHIRAppointmentUtils } from './appointment.ts';
-import { FHIREncounter, FHIREncounterSearchParams, FHIREncounterUtils } from './encounter.ts';
-import { FHIRMedicationRequest, FHIRMedicationUtils } from './medication.ts';
-import { FHIRDatabaseAdapter } from '@/lib/database/fhir-adapter';
-import { PrismaClient } from '@prisma/client';
 
 /**
  * FHIR Search Parameters interface;
@@ -40,10 +41,10 @@ export interface FHIROperationResult<T = any> {
  * FHIR OperationOutcome for error reporting;
  */
 export interface FHIROperationOutcome extends FHIRBase {
-  resourceType: 'OperationOutcome',
+  resourceType: 'OperationOutcome';
   issue: FHIROperationOutcomeIssue[]
 export interface FHIROperationOutcomeIssue {
-  severity: 'fatal' | 'error' | 'warning' | 'information',
+  severity: 'fatal' | 'error' | 'warning' | 'information';
   code: string;
   details?: unknown;
   diagnostics?: string;
@@ -57,7 +58,7 @@ export interface FHIROperationOutcomeIssue {
 export class FHIRService {
   private baseUrl: string;
   private dbAdapter: FHIRDatabaseAdapter;
-  
+
   constructor(baseUrl = '/fhir/r4', prisma?: PrismaClient) {
     this.baseUrl = baseUrl;
     this.dbAdapter = new FHIRDatabaseAdapter(prisma || new PrismaClient());
@@ -72,8 +73,8 @@ export class FHIRService {
       const validation = this.validateResource(resource);
       if (!validation.valid) {
         return {
-          success: false,
-          error: 'Validation failed',
+          success: false;
+          error: 'Validation failed';
           issues: this.createOperationOutcome('error', validation.errors);
         };
       }
@@ -86,21 +87,21 @@ export class FHIRService {
       // Set meta information
       resource.meta = {
         ...resource.meta,
-        lastUpdated: new Date().toISOString(),
-        versionId: '1'
+        lastUpdated: new Date().toISOString();
+        versionId: '1';
       };
 
       // Store resource in database
       await this.dbAdapter.storeResource(resource);
 
       return {
-        success: true,
-        data: resource
+        success: true;
+        data: resource;
       };
     } catch (error) {
       return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        success: false;
+        error: error instanceof Error ? error.message : 'Unknown error';
         issues: this.createOperationOutcome('error', ['Internal server error']);
       };
     }
@@ -110,28 +111,28 @@ export class FHIRService {
    * Read a FHIR resource by ID;
    */
   async readResource<T extends FHIRBase>(
-    resourceType: string,
+    resourceType: string;
     id: string;
   ): Promise<FHIROperationResult<T>> {
     try {
       const resource = await this.dbAdapter.retrieveResource<T>(resourceType, id);
-      
+
       if (!resource) {
         return {
-          success: false,
-          error: 'Resource not found',
+          success: false;
+          error: 'Resource not found';
           issues: this.createOperationOutcome('error', [`${resourceType}/${id} not found`]);
         };
       }
 
       return {
-        success: true,
-        data: resource
+        success: true;
+        data: resource;
       };
     } catch (error) {
       return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        success: false;
+        error: error instanceof Error ? error.message : 'Unknown error';
         issues: this.createOperationOutcome('error', ['Internal server error']);
       };
     }
@@ -141,8 +142,8 @@ export class FHIRService {
    * Update a FHIR resource;
    */
   async updateResource<T extends FHIRBase>(
-    resourceType: string,
-    id: string,
+    resourceType: string;
+    id: string;
     resource: T;
   ): Promise<FHIROperationResult<T>> {
     try {
@@ -150,8 +151,8 @@ export class FHIRService {
       const existingResource = await this.dbAdapter.retrieveResource<T>(resourceType, id);
       if (!existingResource) {
         return {
-          success: false,
-          error: 'Resource not found',
+          success: false;
+          error: 'Resource not found';
           issues: this.createOperationOutcome('error', [`${resourceType}/${id} not found`]);
         };
       }
@@ -160,8 +161,8 @@ export class FHIRService {
       const validation = this.validateResource(resource);
       if (!validation.valid) {
         return {
-          success: false,
-          error: 'Validation failed',
+          success: false;
+          error: 'Validation failed';
           issues: this.createOperationOutcome('error', validation.errors);
         };
       }
@@ -171,21 +172,21 @@ export class FHIRService {
       resource.id = id;
       resource.meta = {
         ...resource.meta,
-        lastUpdated: new Date().toISOString(),
-        versionId: (currentVersion + 1).toString()
+        lastUpdated: new Date().toISOString();
+        versionId: (currentVersion + 1).toString();
       };
 
       // Update resource
       await this.dbAdapter.updateResource(resourceType, id, resource);
 
       return {
-        success: true,
-        data: resource
+        success: true;
+        data: resource;
       };
     } catch (error) {
       return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        success: false;
+        error: error instanceof Error ? error.message : 'Unknown error';
         issues: this.createOperationOutcome('error', ['Internal server error']);
       };
     }
@@ -197,22 +198,22 @@ export class FHIRService {
   async deleteResource(resourceType: string, id: string): Promise<FHIROperationResult<void>> {
     try {
       const deleted = await this.dbAdapter.deleteResource(resourceType, id);
-      
+
       if (!deleted) {
         return {
-          success: false,
-          error: 'Resource not found',
+          success: false;
+          error: 'Resource not found';
           issues: this.createOperationOutcome('error', [`${resourceType}/${id} not found`]);
         };
       }
 
       return {
-        success: true
+        success: true;
       };
     } catch (error) {
       return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        success: false;
+        error: error instanceof Error ? error.message : 'Unknown error';
         issues: this.createOperationOutcome('error', ['Internal server error']);
       };
     }
@@ -222,17 +223,17 @@ export class FHIRService {
    * Search FHIR resources;
    */
   async searchResources<T extends FHIRBase>(
-    resourceType: string,
+    resourceType: string;
     searchParams: FHIRSearchParams;
   ): Promise<FHIROperationResult<FHIRBundle<T>>> {
     try {
       const results = await this.dbAdapter.searchResources<T>(resourceType, searchParams);
-      
+
       const bundle: FHIRBundle<T> = {
-        resourceType: 'Bundle',
-        id: uuidv4(),
-        type: 'searchset',
-        total: results.total,
+        resourceType: 'Bundle';
+        id: uuidv4();
+        type: 'searchset';
+        total: results.total;
         entry: results.resources.map(resource => ({
           fullUrl: `${this.baseUrl}/${resourceType}/${resource.id}`,
           resource;
@@ -240,13 +241,13 @@ export class FHIRService {
       };
 
       return {
-        success: true,
-        data: bundle
+        success: true;
+        data: bundle;
       };
     } catch (error) {
       return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        success: false;
+        error: error instanceof Error ? error.message : 'Unknown error';
         issues: this.createOperationOutcome('error', ['Search failed']);
       };
     }
@@ -327,19 +328,19 @@ export class FHIRService {
     try {
       if (bundle.type !== 'batch' && bundle.type !== 'transaction') {
         return {
-          success: false,
-          error: 'Bundle type must be batch or transaction',
+          success: false;
+          error: 'Bundle type must be batch or transaction';
           issues: this.createOperationOutcome('error', ['Invalid bundle type']);
         };
       }
 
       const responseEntries = [];
-      
+
       for (const entry of bundle.entry || []) {
         if (!entry.request) {
           responseEntries.push({
             response: {
-              status: '400 Bad Request',
+              status: '400 Bad Request';
               outcome: this.createOperationOutcome('error', ['Missing request in bundle entry']);
             }
           });
@@ -367,36 +368,36 @@ export class FHIRService {
             break;
           default:
             result = {
-              success: false,
-              error: 'Unsupported method',
+              success: false;
+              error: 'Unsupported method';
               issues: this.createOperationOutcome('error', [`Method ${method} not supported`]);
             };
         }
 
         responseEntries.push({
           response: {
-            status: result.success ? '200 OK' : '400 Bad Request',
-            ...(result.data && { resource: result.data }),
-            ...(result.issues && { outcome: result.issues });
+            status: result.success ? '200 OK' : '400 Bad Request';
+            ...(result?.data && { resource: result.data }),
+            ...(result?.issues && { outcome: result.issues });
           }
         });
       }
 
       const responseBundle: FHIRBundle = {
-        resourceType: 'Bundle',
-        id: uuidv4(),
-        type: bundle.type === 'batch' ? 'batch-response' : 'transaction-response',
-        entry: responseEntries
+        resourceType: 'Bundle';
+        id: uuidv4();
+        type: bundle.type === 'batch' ? 'batch-response' : 'transaction-response';
+        entry: responseEntries;
       };
 
       return {
-        success: true,
-        data: responseBundle
+        success: true;
+        data: responseBundle;
       };
     } catch (error) {
       return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        success: false;
+        error: error instanceof Error ? error.message : 'Unknown error';
         issues: this.createOperationOutcome('error', ['Batch processing failed']);
       };
     }
@@ -409,25 +410,25 @@ export class FHIRService {
     try {
       // This would retrieve the HMS patient and convert to FHIR
       const hmsPatient = await this.getHMSPatient(hmsPatientId);
-      
+
       if (!hmsPatient) {
         return {
-          success: false,
-          error: 'HMS Patient not found',
+          success: false;
+          error: 'HMS Patient not found';
           issues: this.createOperationOutcome('error', [`Patient ${hmsPatientId} not found`]);
         };
       }
 
       const fhirPatient = FHIRPatientUtils.fromHMSPatient(hmsPatient);
-      
+
       return {
-        success: true,
-        data: fhirPatient
+        success: true;
+        data: fhirPatient;
       };
     } catch (error) {
       return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        success: false;
+        error: error instanceof Error ? error.message : 'Unknown error';
         issues: this.createOperationOutcome('error', ['Conversion failed']);
       };
     }
@@ -438,15 +439,15 @@ export class FHIRService {
       // This would convert FHIR patient to HMS format and update HMS database
       const hmsPatient = this.convertFHIRPatientToHMS(fhirPatient);
       await this.updateHMSPatient(hmsPatient);
-      
+
       return {
-        success: true,
-        data: hmsPatient
+        success: true;
+        data: hmsPatient;
       };
     } catch (error) {
       return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        success: false;
+        error: error instanceof Error ? error.message : 'Unknown error';
         issues: this.createOperationOutcome('error', ['Sync failed']);
       };
     }
@@ -483,18 +484,18 @@ export class FHIRService {
     }
 
     return {
-      valid: errors.length === 0,
+      valid: errors.length === 0;
       errors;
     };
   }
 
   private createOperationOutcome(severity: 'fatal' | 'error' | 'warning' | 'information', diagnostics: string[]): FHIROperationOutcome {
     return {
-      resourceType: 'OperationOutcome',
+      resourceType: 'OperationOutcome';
       issue: diagnostics.map(diagnostic => ({
         severity,
-        code: 'processing',
-        diagnostics: diagnostic
+        code: 'processing';
+        diagnostics: diagnostic;
       }));
     };
   }
@@ -520,7 +521,7 @@ export class FHIRService {
     try {
       await prisma.patient.update({
         where: { id: patient.id },
-        data: patient
+        data: patient;
       });
     } finally {
       await prisma.$disconnect();
@@ -531,16 +532,16 @@ export class FHIRService {
     const officialName = fhirPatient.name?.find(n => n.use === 'official') || fhirPatient.name?.[0];
     const phone = FHIRPatientUtils.getPrimaryPhone(fhirPatient);
     const email = FHIRPatientUtils.getPrimaryEmail(fhirPatient);
-    
+
     return {
-      id: fhirPatient.id,
-      mrn: FHIRPatientUtils.getMRN(fhirPatient),
-      firstName: officialName?.given?.[0] || '',
-      lastName: officialName?.family || '',
-      dateOfBirth: fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date(),
-      gender: fhirPatient.gender || 'unknown',
-      phone: phone || '',
-      email: email || ''
+      id: fhirPatient.id;
+      mrn: FHIRPatientUtils.getMRN(fhirPatient);
+      firstName: officialName?.given?.[0] || '';
+      lastName: officialName?.family || '';
+      dateOfBirth: fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date();
+      gender: fhirPatient.gender || 'unknown';
+      phone: phone || '';
+      email: email || '';
     };
   }
 }
@@ -548,4 +549,4 @@ export class FHIRService {
 /**
  * Singleton FHIR Service instance;
  */
-export const fhirService = new FHIRService();
+export const _fhirService = new FHIRService();

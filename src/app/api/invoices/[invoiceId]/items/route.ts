@@ -1,8 +1,9 @@
-// app/api/invoices/[invoiceId]/items/route.ts
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { sessionOptions, IronSessionData } from "@/lib/session"; // FIX: Import IronSessionData
-import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { getIronSession } from "iron-session";
+
+import { sessionOptions, IronSessionData } from "@/lib/session"; // FIX: Import IronSessionData
+// app/api/invoices/[invoiceId]/items/route.ts
 // import { InvoiceItem } from "@/types/billing"
 import { z } from "zod";
 
@@ -20,16 +21,16 @@ const getInvoiceId = (pathname: string): number | null {
 
 // POST handler for adding an item to an invoice
 const AddInvoiceItemSchema = z.object({
-    billable_item_id: z.number().int().positive(),
+    billable_item_id: z.number().int().positive();
     batch_id: z.number().int().positive().optional().nullable(), // Optional, e.g., for pharmacy items
-    quantity: z.number().int().positive("Quantity must be positive"),
+    quantity: z.number().int().positive("Quantity must be positive");
     unit_price: z.number().nonnegative().optional(), // Optional: If not provided, fetch from BillableItems
-    discount_amount: z.number().nonnegative().optional().default(0),
+    discount_amount: z.number().nonnegative().optional().default(0);
     tax_amount: z.number().nonnegative().optional().default(0), // Could be calculated based on item/rules
-    description: z.string().optional(), // Optional override
+    description: z.string().optional(), // Optional override;
 });
 
-export const POST = async (request: Request) => {
+export const _POST = async (request: Request) => {
     const cookieStore = await cookies(); // FIX: Add await
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);
@@ -38,14 +39,14 @@ export const POST = async (request: Request) => {
     // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_MANAGE.includes(session.user.roleName)) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401,
+            status: 401;
             headers: { "Content-Type": "application/json" },
         });
     }
 
     if (invoiceId === null) {
         return new Response(JSON.stringify({ error: "Invalid Invoice ID" }), {
-            status: 400,
+            status: 400;
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -56,7 +57,7 @@ export const POST = async (request: Request) => {
 
         if (!validation.success) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
-                status: 400,
+                status: 400;
                 headers: { "Content-Type": "application/json" },
             });
         }
@@ -141,14 +142,14 @@ export const POST = async (request: Request) => {
         batchActions.push(DB.prepare(
             `UPDATE Invoices
              SET;
-                total_amount = (SELECT SUM(total_amount) FROM InvoiceItems WHERE invoice_id = ?), 
-                tax_amount = (SELECT SUM(tax_amount) FROM InvoiceItems WHERE invoice_id = ?), 
+                total_amount = (SELECT SUM(total_amount) FROM InvoiceItems WHERE invoice_id = ?),
+                tax_amount = (SELECT SUM(tax_amount) FROM InvoiceItems WHERE invoice_id = ?),
                 discount_amount = (SELECT SUM(discount_amount) FROM InvoiceItems WHERE invoice_id = ?);
              WHERE invoice_id = ?`;
         ).bind(invoiceId, invoiceId, invoiceId, invoiceId));
 
         // Execute the batch transaction
-        // const transactionResults = await DB.batch(batchActions); // Commented out: Unused variable
+        // const _transactionResults = await DB.batch(batchActions); // Commented out: Unused variable
 
         // Check if all operations in the transaction succeeded
         // Note: D1 batch doesn't automatically roll back on failure, need careful checking or separate calls.
@@ -168,7 +169,7 @@ export const POST = async (request: Request) => {
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500,
+            status: 500;
             headers: { "Content-Type": "application/json" },
         })
     }

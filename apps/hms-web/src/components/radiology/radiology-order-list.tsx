@@ -1,36 +1,37 @@
-}
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+}
 interface RadiologyOrder {
-  id: string,
-  patientName: string,
-  patientId: string,
-  orderDate: string,
-  studyType: string,
-  priority: 'routine' | 'urgent' | 'stat',
-  status: 'ordered' | 'scheduled' | 'in-progress' | 'completed' | 'reported',
-  requestedBy: string
+  id: string;
+  patientName: string;
+  patientId: string;
+  orderDate: string;
+  studyType: string;
+  priority: 'routine' | 'urgent' | 'stat';
+  status: 'ordered' | 'scheduled' | 'in-progress' | 'completed' | 'reported';
+  requestedBy: string;
 }
 
 interface RadiologyOrderListProps {
-  orders: RadiologyOrder[],
-  onViewOrder: (orderId: string) => void
+  orders: RadiologyOrder[];
+  onViewOrder: (orderId: string) => void;
 }
 
 /**
  * Radiology order list component;
  */
-export const RadiologyOrderList = ({ orders, onViewOrder }: RadiologyOrderListProps) => {
+export const _RadiologyOrderList = ({ orders, onViewOrder }: RadiologyOrderListProps) => {
   const getPriorityBadge = (priority: string) => {
     switch(priority) {
       case 'routine': return <Badge variant="secondary">Routine</Badge>;
       case 'urgent': return <Badge variant="warning">Urgent</Badge>;
       case 'stat': return <Badge variant="danger">STAT</Badge>;
-      default: return <Badge>Unknown</Badge>
+      default: return <Badge>Unknown</Badge>;
     }
   };
 
@@ -41,7 +42,7 @@ export const RadiologyOrderList = ({ orders, onViewOrder }: RadiologyOrderListPr
       case 'in-progress': return <Badge variant="warning">In Progress</Badge>;
       case 'completed': return <Badge variant="success">Completed</Badge>;
       case 'reported': return <Badge variant="success">Reported</Badge>;
-      default: return <Badge>Unknown</Badge>
+      default: return <Badge>Unknown</Badge>;
     }
   };
 

@@ -1,8 +1,9 @@
-}
 import { NextApiRequest, NextApiResponse } from "next";
-import { InsurancePolicyService } from "../../../../features/insurance/services/InsurancePolicyService.ts"; // Adjust path as per actual structure
-import { InsurancePolicy } from "../../../../features/insurance/types.ts"; // Adjust path
 
+
+import { InsurancePolicy } from "../../../../features/insurance/types.ts"; // Adjust path
+import { InsurancePolicyService } from "../../../../features/insurance/services/InsurancePolicyService.ts"; // Adjust path as per actual structure
+}
 const policyService = new InsurancePolicyService();
 
 /**
@@ -135,7 +136,7 @@ const policyService = new InsurancePolicyService();
  *       500:
  *         description: Server error.
  */
-export default async const handler = (req: NextApiRequest, res: NextApiResponse) {
+export default async const _handler = (req: NextApiRequest, res: NextApiResponse) {
     const { method } = req;
     const { patientId, policyId: queryPolicyId } = req.query;
 

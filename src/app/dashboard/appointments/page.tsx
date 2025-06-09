@@ -1,13 +1,14 @@
+import React, { useState, useEffect } from "react";
+import {
+
+import { Button } from "@/components/ui/button";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 }
 
 "use client";
 
-// export const dynamic = 'force-dynamic'
+// export const _dynamic = 'force-dynamic'
 
-import React, { useState, useEffect } from "react";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { Button } from "@/components/ui/button";
-import {
   Table,
   TableBody,
   TableCell,
@@ -22,7 +23,7 @@ import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 import { format } from "date-fns"; // For date formatting
 
-export default const AppointmentsPage = () {
+export default const _AppointmentsPage = () {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -36,7 +37,7 @@ export default const AppointmentsPage = () {
       try {
         // Build query params for filtering
         const params = new URLSearchParams();
-        if (dateFilter) {
+        if (dateFilter != null) {
             params.append("startDate", dateFilter);
             params.append("endDate", dateFilter); // Filter for a single day for now
         }
@@ -47,15 +48,15 @@ export default const AppointmentsPage = () {
           const errorData: { error?: string } = await response.json(); // Add type annotation
           throw new Error(errorData.error || "Failed to fetch appointments");
         }
-        const data: Appointment[] = await response.json(),
+        const data: Appointment[] = await response.json();
         setAppointments(data);
       } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setError(message),
         toast({
-          title: "Error Fetching Appointments",
-          description: message,
-          variant: "destructive",
+          title: "Error Fetching Appointments";
+          description: message;
+          variant: "destructive";
         });
       } finally {
         setIsLoading(false);
@@ -136,7 +137,7 @@ export default const AppointmentsPage = () {
                       <TableCell>{appt.doctor?.specialty}</TableCell>
                       <TableCell>{appt.reason || "N/A"}</TableCell>
                       <TableCell>
-                        {/* TODO: Add badge component for status */} 
+                        {/* TODO: Add badge component for status */}
                         {appt.status}
                       </TableCell>
                       <TableCell>

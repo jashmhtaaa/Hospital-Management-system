@@ -1,10 +1,10 @@
+import React, { useState, useEffect } from "react";
+import {
 }
 
 // src/components/er/ERPatientTrackingBoard.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
-import {
   Table,
   TableBody,
   TableCell,
@@ -14,14 +14,12 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
   AlertCircle, // For Critical Alerts
   FlaskConical, // For Lab Pending/Ready
   Radiation, // For Radiology Pending/Ready
@@ -31,7 +29,6 @@ import {
   Biohazard, // For Isolation
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton for loading state
-import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -41,17 +38,17 @@ import {
 // Interface for API data
 interface ERPatient {
   id: string; // visit_id
-  patient_id: string,
-  patient_name: string,
-  mrn: string,
-  age: number,
-  sex: string,
-  chief_complaint: string,
-  arrival_time: string,
-  location: string,
-  esi: number,
-  assigned_physician: string | null,
-  assigned_nurse: string | null,
+  patient_id: string;
+  patient_name: string;
+  mrn: string;
+  age: number;
+  sex: string;
+  chief_complaint: string;
+  arrival_time: string;
+  location: string;
+  esi: number;
+  assigned_physician: string | null;
+  assigned_nurse: string | null;
   status: string; // Triage, Assessment, Treatment, Awaiting Disposition, Discharged, Admitted
   indicators: {
     lab_pending?: boolean;
@@ -112,7 +109,7 @@ const getEsiBadgeVariant = (
   }
 };
 
-export default const ERPatientTrackingBoard = () {
+export default const _ERPatientTrackingBoard = () {
   const [patients, setPatients] = useState<ERPatient[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>();
@@ -131,97 +128,97 @@ export default const ERPatientTrackingBoard = () {
         await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
         const mockData: ERPatient[] = [
           {
-            id: "visit_1",
-            patient_id: "p1",
-            patient_name: "John Doe",
-            mrn: "MRN001",
-            age: 45,
-            sex: "M",
-            chief_complaint: "Chest Pain",
-            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 125 * 60 * 1000).toISOString(),
-            location: "Room 3",
-            esi: 2,
-            assigned_physician: "Dr. Smith",
-            assigned_nurse: "Nurse Joy",
-            status: "Treatment",
+            id: "visit_1";
+            patient_id: "p1";
+            patient_name: "John Doe";
+            mrn: "MRN001";
+            age: 45;
+            sex: "M";
+            chief_complaint: "Chest Pain";
+            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 125 * 60 * 1000).toISOString();
+            location: "Room 3";
+            esi: 2;
+            assigned_physician: "Dr. Smith";
+            assigned_nurse: "Nurse Joy";
+            status: "Treatment";
             indicators: {
-              lab_pending: true,
-              rad_pending: true,
-              critical_alert: "STEMI",
+              lab_pending: true;
+              rad_pending: true;
+              critical_alert: "STEMI";
             },
           },
           {
-            id: "visit_2",
-            patient_id: "p2",
-            patient_name: "Jane Smith",
-            mrn: "MRN002",
-            age: 68,
-            sex: "F",
-            chief_complaint: "Shortness of Breath",
-            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 60 * 1000).toISOString(),
-            location: "Room 5",
-            esi: 3,
-            assigned_physician: "Dr. Jones",
-            assigned_nurse: "Nurse Kim",
-            status: "Assessment",
+            id: "visit_2";
+            patient_id: "p2";
+            patient_name: "Jane Smith";
+            mrn: "MRN002";
+            age: 68;
+            sex: "F";
+            chief_complaint: "Shortness of Breath";
+            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 60 * 1000).toISOString();
+            location: "Room 5";
+            esi: 3;
+            assigned_physician: "Dr. Jones";
+            assigned_nurse: "Nurse Kim";
+            status: "Assessment";
             indicators: { lab_ready: true, fall_risk: true },
           },
           {
-            id: "visit_3",
-            patient_id: "p3",
-            patient_name: "Peter Pan",
-            mrn: "MRN003",
-            age: 32,
-            sex: "M",
-            chief_complaint: "Abdominal Pain",
-            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 65 * 60 * 1000).toISOString(),
-            location: "Hallway Bed 1",
-            esi: 4,
-            assigned_physician: null,
-            assigned_nurse: "Nurse Lee",
-            status: "Awaiting Disposition",
+            id: "visit_3";
+            patient_id: "p3";
+            patient_name: "Peter Pan";
+            mrn: "MRN003";
+            age: 32;
+            sex: "M";
+            chief_complaint: "Abdominal Pain";
+            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 65 * 60 * 1000).toISOString();
+            location: "Hallway Bed 1";
+            esi: 4;
+            assigned_physician: null;
+            assigned_nurse: "Nurse Lee";
+            status: "Awaiting Disposition";
             indicators: { rad_ready: true, consult_pending: true },
           },
           {
-            id: "visit_4",
-            patient_id: "p4",
-            patient_name: "Alice Wonderland",
-            mrn: "MRN004",
-            age: 75,
-            sex: "F",
-            chief_complaint: "Weakness",
-            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 15 * 60 * 1000).toISOString(),
-            location: "Triage Room 2",
-            esi: 2,
-            assigned_physician: null,
-            assigned_nurse: null,
-            status: "Triage",
+            id: "visit_4";
+            patient_id: "p4";
+            patient_name: "Alice Wonderland";
+            mrn: "MRN004";
+            age: 75;
+            sex: "F";
+            chief_complaint: "Weakness";
+            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 15 * 60 * 1000).toISOString();
+            location: "Triage Room 2";
+            esi: 2;
+            assigned_physician: null;
+            assigned_nurse: null;
+            status: "Triage";
             indicators: { critical_alert: "Stroke" },
           },
           {
-            id: "visit_5",
-            patient_id: "p5",
-            patient_name: "Bob Builder",
-            mrn: "MRN005",
-            age: 50,
-            sex: "M",
-            chief_complaint: "Laceration",
-            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 200 * 60 * 1000).toISOString(),
-            location: "Room 1",
-            esi: 5,
-            assigned_physician: "Dr. Smith",
-            assigned_nurse: "Nurse Joy",
-            status: "Discharged",
+            id: "visit_5";
+            patient_id: "p5";
+            patient_name: "Bob Builder";
+            mrn: "MRN005";
+            age: 50;
+            sex: "M";
+            chief_complaint: "Laceration";
+            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 200 * 60 * 1000).toISOString();
+            location: "Room 1";
+            esi: 5;
+            assigned_physician: "Dr. Smith";
+            assigned_nurse: "Nurse Joy";
+            status: "Discharged";
             indicators: {},
           }, // Example discharged patient (might be filtered out by API)
         ];
         // Filter out discharged patients for the active board view
         setPatients(mockData.filter((p) => p.status !== "Discharged"));
-        // const response = await fetch("/api/er/visits?status=active")
+        // const _response = await fetch("/api/er/visits?status=active")
         // if (!response.ok) {
         //   throw new Error(`HTTP error! status: ${response.status}`)
         // }
-        // const data: ERPatient[] = await response.json()
+        // const _data: ERPatient[] = await response.json()
         // setPatients(data)
       } catch (error_) {
 
@@ -236,7 +233,7 @@ export default const ERPatientTrackingBoard = () {
     fetchData();
 
     // Optional: Set up polling or WebSocket for real-time updates
-    // const intervalId = setInterval(fetchData, 30000); // Poll every 30 seconds
+    // const _intervalId = setInterval(fetchData, 30000); // Poll every 30 seconds
     // return () => clearInterval(intervalId)
   }, []);
 
@@ -296,7 +293,7 @@ export default const ERPatientTrackingBoard = () {
 
         {error && (
           <div className="text-red-600 dark:text-red-400 border border-red-600 dark:border-red-400 p-3 rounded-md bg-red-50 dark:bg-red-900/30">;
-            Error fetching data: {error}
+            Error fetching _data: {error}
           </div>
         )}
 
@@ -399,10 +396,10 @@ export default const ERPatientTrackingBoard = () {
                       {calculateTimeDiff(patient.arrival_time)}
                     </TableCell>
                     <TableCell>
-                      <div className="text-sm text-gray-700 dark: text-gray-300">,
+                      <div className="text-sm text-gray-700 dark: text-gray-300">;
                         MD: {patient.assigned_physician || "N/A"}
                       </div>
-                      <div className="text-sm text-gray-700 dark: text-gray-300">,
+                      <div className="text-sm text-gray-700 dark: text-gray-300">;
                         RN: {patient.assigned_nurse || "N/A"}
                       </div>
                     </TableCell>
@@ -412,7 +409,7 @@ export default const ERPatientTrackingBoard = () {
                     <TableCell>
                       <div className="flex space-x-1.5">;
                         {/* FIX: Remove title prop, wrap with Tooltip */}
-                        {patient.indicators.critical_alert && (
+                        {patient.indicators?.critical_alert && (
                           <Tooltip>
                             <TooltipTrigger>
                               <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
@@ -422,7 +419,7 @@ export default const ERPatientTrackingBoard = () {
                             </TooltipContent>
                           </Tooltip>
                         )}
-                        {patient.indicators.lab_pending && (
+                        {patient.indicators?.lab_pending && (
                           <Tooltip>
                             <TooltipTrigger>
                               <FlaskConical className="h-4 w-4 text-blue-500 dark:text-blue-400" />
@@ -430,7 +427,7 @@ export default const ERPatientTrackingBoard = () {
                             <TooltipContent>Lab Pending</TooltipContent>
                           </Tooltip>
                         )}
-                        {patient.indicators.lab_ready && (
+                        {patient.indicators?.lab_ready && (
                           <Tooltip>
                             <TooltipTrigger>
                               <FlaskConical className="h-4 w-4 text-green-500 dark:text-green-400" />
@@ -438,7 +435,7 @@ export default const ERPatientTrackingBoard = () {
                             <TooltipContent>Lab Ready</TooltipContent>
                           </Tooltip>
                         )}
-                        {patient.indicators.rad_pending && (
+                        {patient.indicators?.rad_pending && (
                           <Tooltip>
                             <TooltipTrigger>
                               <Radiation className="h-4 w-4 text-blue-500 dark:text-blue-400" />
@@ -446,7 +443,7 @@ export default const ERPatientTrackingBoard = () {
                             <TooltipContent>Radiology Pending</TooltipContent>
                           </Tooltip>
                         )}
-                        {patient.indicators.rad_ready && (
+                        {patient.indicators?.rad_ready && (
                           <Tooltip>
                             <TooltipTrigger>
                               <Radiation className="h-4 w-4 text-green-500 dark:text-green-400" />
@@ -454,7 +451,7 @@ export default const ERPatientTrackingBoard = () {
                             <TooltipContent>Radiology Ready</TooltipContent>
                           </Tooltip>
                         )}
-                        {patient.indicators.meds_pending && (
+                        {patient.indicators?.meds_pending && (
                           <Tooltip>
                             <TooltipTrigger>
                               <Pill className="h-4 w-4 text-orange-500 dark:text-orange-400" />
@@ -462,7 +459,7 @@ export default const ERPatientTrackingBoard = () {
                             <TooltipContent>Meds Pending</TooltipContent>
                           </Tooltip>
                         )}
-                        {patient.indicators.consult_pending && (
+                        {patient.indicators?.consult_pending && (
                           <Tooltip>
                             <TooltipTrigger>
                               <UserCheck className="h-4 w-4 text-purple-500 dark:text-purple-400" />
@@ -470,7 +467,7 @@ export default const ERPatientTrackingBoard = () {
                             <TooltipContent>Consult Pending</TooltipContent>
                           </Tooltip>
                         )}
-                        {patient.indicators.isolation && (
+                        {patient.indicators?.isolation && (
                           <Tooltip>
                             <TooltipTrigger>
                               <Biohazard className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
@@ -480,7 +477,7 @@ export default const ERPatientTrackingBoard = () {
                             </TooltipContent>
                           </Tooltip>
                         )}
-                        {patient.indicators.fall_risk && (
+                        {patient.indicators?.fall_risk && (
                           <Tooltip>
                             <TooltipTrigger>
                               <TriangleAlert className="h-4 w-4 text-orange-600 dark:text-orange-400" />

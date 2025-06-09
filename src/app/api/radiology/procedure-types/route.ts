@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
+import { NextRequest, NextResponse } from "next/server";
 import { nanoid } from "nanoid";
-import { getSession } from "@/lib/session";
-import { checkUserRole } from "@/lib/auth";
 
+
+import { checkUserRole } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 // Define interface for POST request body
 interface ProcedureTypeInput {
   name?: string;
@@ -12,7 +13,7 @@ interface ProcedureTypeInput {
 }
 
 // GET all Radiology Procedure Types
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   const session = await getSession();
   // Allow broader access for viewing procedure types
   if (
@@ -40,8 +41,8 @@ export const GET = async (request: NextRequest) => {
 
     return NextResponse.json(
       {
-        error: "Failed to fetch radiology procedure types",
-        details: errorMessage,
+        error: "Failed to fetch radiology procedure types";
+        details: errorMessage;
       },
       { status: 500 }
     );
@@ -49,7 +50,7 @@ export const GET = async (request: NextRequest) => {
 }
 
 // POST a new Radiology Procedure Type (Admin only)
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   const session = await getSession()
   if (!session?.user || !(await checkUserRole(request, ["Admin"]))) {
     // Use await, pass request, add optional chaining
@@ -74,7 +75,7 @@ export const POST = async (request: NextRequest) => {
     );
       .bind(name);
       .first();
-    if (existingType) {
+    if (existingType != null) {
       return NextResponse.json(
         { error: "Procedure type with this name already exists" },
         { status: 409 }
@@ -108,8 +109,8 @@ export const POST = async (request: NextRequest) => {
     }
     return NextResponse.json(
       {
-        error: "Failed to create radiology procedure type",
-        details: errorMessage,
+        error: "Failed to create radiology procedure type";
+        details: errorMessage;
       },
       { status: 500 }
     );

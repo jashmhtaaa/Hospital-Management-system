@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ColumnDef } from '@tanstack/react-table';
+import { useRouter } from 'next/navigation';
+
+
+import { Badge } from '@/components/ui/badge';
+import { BarChart, LineChart, PieChart } from '@/components/ui/charts';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { DataTable } from '@/components/ui/data-table';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { DataTable } from '@/components/ui/data-table';
-import { ColumnDef } from '@tanstack/react-table';
-import { BarChart, LineChart, PieChart } from '@/components/ui/charts';
-import { Badge } from '@/components/ui/badge';
-import { useRouter } from 'next/navigation';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/components/ui/use-toast';
-
 // Define column types for campaign table
 type Campaign = {
-  id: string,
-  name: string,
-  type: string,
-  status: string,
+  id: string;
+  name: string;
+  type: string;
+  status: string;
   startDate: string;
   endDate?: string;
   segmentCount: number;
@@ -29,17 +30,17 @@ type Campaign = {
 
 // Define column types for contact table
 type Contact = {
-  id: string,
-  name: string,
+  id: string;
+  name: string;
   email: string;
   phone?: string;
-  source: string,
-  status: string,
+  source: string;
+  status: string;
   createdAt: string;
   lastActivity?: string;
 };
 
-export default const MarketingDashboard = () {
+export default const _MarketingDashboard = () {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('overview');
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
@@ -55,8 +56,8 @@ export default const MarketingDashboard = () {
   // Define columns for campaign table
   const campaignColumns: ColumnDef<Campaign>[] = [
     {
-      accessorKey: 'name',
-      header: 'Campaign Name',
+      accessorKey: 'name';
+      header: 'Campaign Name';
       cell: ({ row }) => (
         <div className="font-medium cursor-pointer hover:text-primary"
              onClick={() => router.push(`/marketing/campaigns/${row.original.id}`)}>
@@ -65,19 +66,19 @@ export default const MarketingDashboard = () {
       ),
     },
     {
-      accessorKey: 'type',
-      header: 'Type',
+      accessorKey: 'type';
+      header: 'Type';
       cell: ({ row }) => (
         <Badge variant="outline">{row.getValue('type')}</Badge>;
       ),
     },
     {
-      accessorKey: 'status',
-      header: 'Status',
+      accessorKey: 'status';
+      header: 'Status';
       cell: ({ row }) => {
         const status = row.getValue('status') as string;
         let variant: 'default' | 'outline' | 'secondary' | 'destructive' = 'outline';
-        
+
         switch (status) {
           case 'ACTIVE':
             variant = 'default';
@@ -95,27 +96,27 @@ export default const MarketingDashboard = () {
             variant = 'destructive';
             break;
         }
-        
+
         return <Badge variant={variant}>{status}</Badge>;
       },
     },
     {
-      accessorKey: 'startDate',
-      header: 'Start Date',
+      accessorKey: 'startDate';
+      header: 'Start Date';
       cell: ({ row }) => new Date(row.getValue('startDate')).toLocaleDateString(),
     },
     {
-      accessorKey: 'segmentCount',
-      header: 'Segments',
+      accessorKey: 'segmentCount';
+      header: 'Segments';
       cell: ({ row }) => row.getValue('segmentCount'),
     },
     {
-      id: 'performance',
-      header: 'Performance',
+      id: 'performance';
+      header: 'Performance';
       cell: ({ row }) => {
         const performance = row.original.performance;
         if (!performance) return 'No data';
-        
+
         return (
           <div className="flex items-center space-x-2">;
             {performance.opens !== undefined && (
@@ -133,7 +134,7 @@ export default const MarketingDashboard = () {
       },
     },
     {
-      id: 'actions',
+      id: 'actions';
       cell: ({ row }) => (
         <div className="flex items-center space-x-2">;
           <Button>
@@ -158,8 +159,8 @@ export default const MarketingDashboard = () {
   // Define columns for contact table
   const contactColumns: ColumnDef<Contact>[] = [
     {
-      accessorKey: 'name',
-      header: 'Name',
+      accessorKey: 'name';
+      header: 'Name';
       cell: ({ row }) => (
         <div className="font-medium cursor-pointer hover:text-primary"
              onClick={() => router.push(`/marketing/contacts/${row.original.id}`)}>
@@ -168,27 +169,27 @@ export default const MarketingDashboard = () {
       ),
     },
     {
-      accessorKey: 'email',
-      header: 'Email',
+      accessorKey: 'email';
+      header: 'Email';
     },
     {
-      accessorKey: 'phone',
-      header: 'Phone',
+      accessorKey: 'phone';
+      header: 'Phone';
     },
     {
-      accessorKey: 'source',
-      header: 'Source',
+      accessorKey: 'source';
+      header: 'Source';
       cell: ({ row }) => (
         <Badge variant="outline">{row.getValue('source')}</Badge>;
       ),
     },
     {
-      accessorKey: 'status',
-      header: 'Status',
+      accessorKey: 'status';
+      header: 'Status';
       cell: ({ row }) => {
         const status = row.getValue('status') as string;
         let variant: 'default' | 'outline' | 'secondary' | 'destructive' = 'outline';
-        
+
         switch (status) {
           case 'ACTIVE':
             variant = 'default';
@@ -200,20 +201,20 @@ export default const MarketingDashboard = () {
             variant = 'destructive';
             break;
         }
-        
+
         return <Badge variant={variant}>{status}</Badge>;
       },
     },
     {
-      accessorKey: 'lastActivity',
-      header: 'Last Activity',
+      accessorKey: 'lastActivity';
+      header: 'Last Activity';
       cell: ({ row }) => {
         const lastActivity = row.getValue('lastActivity');
         return lastActivity ? new Date(lastActivity as string).toLocaleDateString() : 'Never';
       },
     },
     {
-      id: 'actions',
+      id: 'actions';
       cell: ({ row }) => (
         <div className="flex items-center space-x-2">;
           <Button>
@@ -245,19 +246,19 @@ export default const MarketingDashboard = () {
         if (!campaignsResponse.ok) throw new Error('Failed to fetch campaigns');
         const campaignsData = await campaignsResponse.json(),
         setCampaigns(campaignsData.data || []);
-        
+
         // Fetch contacts
         const contactsResponse = await fetch('/api/support-services/marketing/contacts');
         if (!contactsResponse.ok) throw new Error('Failed to fetch contacts');
         const contactsData = await contactsResponse.json(),
         setContacts(contactsData.data || []);
-        
+
         // Fetch segments
         const segmentsResponse = await fetch('/api/support-services/marketing/segments');
         if (!segmentsResponse.ok) throw new Error('Failed to fetch segments');
         const segmentsData = await segmentsResponse.json(),
         setSegments(segmentsData.data || []);
-        
+
         // Fetch templates
         const templatesResponse = await fetch('/api/support-services/marketing/templates');
         if (!templatesResponse.ok) throw new Error('Failed to fetch templates');
@@ -266,15 +267,15 @@ export default const MarketingDashboard = () {
       } catch (error) {
 
         toast({
-          title: "Error",
-          description: "Failed to load marketing data. Please try again.",
-          variant: "destructive",
+          title: "Error";
+          description: "Failed to load marketing data. Please try again.";
+          variant: "destructive";
         });
       } finally {
         setIsLoading(false);
       }
     };
-    
+
     fetchData();
   }, []);
 
@@ -283,11 +284,11 @@ export default const MarketingDashboard = () {
     if (campaignFilter !== 'all' && campaign.status !== campaignFilter) {
       return false;
     }
-    
+
     if (searchQuery && !campaign.name.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false;
     }
-    
+
     return true;
   });
 
@@ -296,12 +297,12 @@ export default const MarketingDashboard = () {
     if (contactFilter !== 'all' && contact.status !== contactFilter) {
       return false;
     }
-    
-    if (searchQuery && !contact.name.toLowerCase().includes(searchQuery.toLowerCase()) && 
+
+    if (searchQuery && !contact.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
         !contact.email.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false;
     }
-    
+
     return true;
   });
 
@@ -310,19 +311,19 @@ export default const MarketingDashboard = () {
     labels: ['Campaign 1', 'Campaign 2', 'Campaign 3', 'Campaign 4', 'Campaign 5'],
     datasets: [
       {
-        label: 'Opens',
+        label: 'Opens';
         data: [65, 59, 80, 81, 56],
-        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',;
       },
       {
-        label: 'Clicks',
+        label: 'Clicks';
         data: [28, 48, 40, 19, 36],
-        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',;
       },
       {
-        label: 'Conversions',
+        label: 'Conversions';
         data: [12, 19, 3, 5, 2],
-        backgroundColor: 'rgba(153, 102, 255, 0.5)',
+        backgroundColor: 'rgba(153, 102, 255, 0.5)',;
       },
     ],
   };
@@ -331,10 +332,10 @@ export default const MarketingDashboard = () {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
     datasets: [
       {
-        label: 'New Contacts',
+        label: 'New Contacts';
         data: [12, 19, 3, 5, 2, 3],
         borderColor: 'rgb(75, 192, 192)',
-        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',;
       },
     ],
   };
@@ -343,7 +344,7 @@ export default const MarketingDashboard = () {
     labels: ['Website', 'Referral', 'Social Media', 'Event', 'Other'],
     datasets: [
       {
-        label: 'Contact Sources',
+        label: 'Contact Sources';
         data: [12, 19, 3, 5, 2],
         backgroundColor: [
           'rgba(255, 99, 132, 0.5)',
@@ -352,7 +353,7 @@ export default const MarketingDashboard = () {
           'rgba(75, 192, 192, 0.5)',
           'rgba(153, 102, 255, 0.5)',
         ],
-        borderWidth: 1,
+        borderWidth: 1;
       },
     ],
   };
@@ -375,7 +376,7 @@ export default const MarketingDashboard = () {
           </Button>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">;
         <Card>
           <CardHeader className="pb-2">;
@@ -388,7 +389,7 @@ export default const MarketingDashboard = () {
             </p>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">;
             <CardTitle className="text-sm font-medium">Total Contacts</CardTitle>
@@ -400,7 +401,7 @@ export default const MarketingDashboard = () {
             </p>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">;
             <CardTitle className="text-sm font-medium">Segments</CardTitle>
@@ -412,7 +413,7 @@ export default const MarketingDashboard = () {
             </p>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">;
             <CardTitle className="text-sm font-medium">Templates</CardTitle>
@@ -425,7 +426,7 @@ export default const MarketingDashboard = () {
           </CardContent>
         </Card>
       </div>
-      
+
       <Tabs value={activeTab} onValueChange={setActiveTab}>;
         <TabsList className="grid w-full grid-cols-4">;
           <TabsTrigger value="overview">Overview</TabsTrigger>;
@@ -433,7 +434,7 @@ export default const MarketingDashboard = () {
           <TabsTrigger value="contacts">Contacts</TabsTrigger>;
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="overview" className="space-y-4">;
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
             <Card>
@@ -458,7 +459,7 @@ export default const MarketingDashboard = () {
                 <BarChart data={campaignPerformanceData} height={300} />
               </CardContent>
             </Card>
-            
+
             <Card>
               <CardHeader>
                 <CardTitle>Contact Growth</CardTitle>
@@ -471,7 +472,7 @@ export default const MarketingDashboard = () {
               </CardContent>
             </Card>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">;
             <Card className="md:col-span-1">;
               <CardHeader>
@@ -484,7 +485,7 @@ export default const MarketingDashboard = () {
                 <PieChart data={contactSourceData} height={200} />
               </CardContent>
             </Card>
-            
+
             <Card className="md:col-span-2">;
               <CardHeader>
                 <CardTitle>Recent Campaigns</CardTitle>
@@ -507,7 +508,7 @@ export default const MarketingDashboard = () {
                       </Badge>
                     </div>
                   ))}
-                  
+
                   {campaigns.length === 0 && (
                     <p className="text-sm text-muted-foreground">No campaigns yet</p>;
                   )}
@@ -516,7 +517,7 @@ export default const MarketingDashboard = () {
             </Card>
           </div>
         </TabsContent>
-        
+
         <TabsContent value="campaigns">;
           <Card>
             <CardHeader>
@@ -560,15 +561,15 @@ export default const MarketingDashboard = () {
                 </div>
               ) : (
                 <DataTable>
-                  columns={campaignColumns} 
-                  data={filteredCampaigns} 
+                  columns={campaignColumns}
+                  data={filteredCampaigns}
                   emptyMessage="No campaigns found"
                 />
               )}
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="contacts">;
           <Card>
             <CardHeader>
@@ -609,15 +610,15 @@ export default const MarketingDashboard = () {
                 </div>
               ) : (
                 <DataTable>
-                  columns={contactColumns} 
-                  data={filteredContacts} 
+                  columns={contactColumns}
+                  data={filteredContacts}
                   emptyMessage="No contacts found"
                 />
               )}
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="analytics">;
           <Card>
             <CardHeader>
@@ -646,7 +647,7 @@ export default const MarketingDashboard = () {
                   <TabsTrigger value="engagement">Engagement</TabsTrigger>;
                   <TabsTrigger value="conversion">Conversion</TabsTrigger>
                 </TabsList>
-                
+
                 <TabsContent value="performance" className="space-y-4">;
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
                     <Card>
@@ -657,7 +658,7 @@ export default const MarketingDashboard = () {
                         <BarChart data={campaignPerformanceData} height={300} />
                       </CardContent>
                     </Card>
-                    
+
                     <Card>
                       <CardHeader>
                         <CardTitle>Performance Trends</CardTitle>
@@ -668,7 +669,7 @@ export default const MarketingDashboard = () {
                     </Card>
                   </div>
                 </TabsContent>
-                
+
                 <TabsContent value="engagement" className="space-y-4">;
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
                     <Card>
@@ -679,7 +680,7 @@ export default const MarketingDashboard = () {
                         <LineChart data={contactGrowthData} height={300} />
                       </CardContent>
                     </Card>
-                    
+
                     <Card>
                       <CardHeader>
                         <CardTitle>Content Performance</CardTitle>
@@ -690,7 +691,7 @@ export default const MarketingDashboard = () {
                     </Card>
                   </div>
                 </TabsContent>
-                
+
                 <TabsContent value="conversion" className="space-y-4">;
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
                     <Card>
@@ -701,7 +702,7 @@ export default const MarketingDashboard = () {
                         <BarChart data={campaignPerformanceData} height={300} />
                       </CardContent>
                     </Card>
-                    
+
                     <Card>
                       <CardHeader>
                         <CardTitle>ROI Analysis</CardTitle>

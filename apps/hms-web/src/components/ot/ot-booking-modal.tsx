@@ -1,22 +1,23 @@
-}
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+
+
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-
+}
 interface OTBookingModalProps {
-  isOpen: boolean,
-  onClose: () => void,
-  onSubmit: (data: unknown) => void
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (data: unknown) => void;
 }
 
 /**
  * Operation Theatre booking modal component;
  */
-export const OTBookingModal = ({ isOpen, onClose, onSubmit }: OTBookingModalProps) => {
+export const _OTBookingModal = ({ isOpen, onClose, onSubmit }: OTBookingModalProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // In a real implementation, we would collect form data here
@@ -40,7 +41,7 @@ export const OTBookingModal = ({ isOpen, onClose, onSubmit }: OTBookingModalProp
                 ]}
               />
             </div>
-            
+
             <div className="space-y-2">;
               <Label htmlFor="surgeryType">Surgery Type</Label>;
               <Select>
@@ -50,7 +51,7 @@ export const OTBookingModal = ({ isOpen, onClose, onSubmit }: OTBookingModalProp
                 ]}
               />
             </div>
-            
+
             <div className="space-y-2">;
               <Label htmlFor="surgeon">Surgeon</Label>;
               <Select>
@@ -60,7 +61,7 @@ export const OTBookingModal = ({ isOpen, onClose, onSubmit }: OTBookingModalProp
                 ]}
               />
             </div>
-            
+
             <div className="space-y-2">;
               <Label htmlFor="theatre">Theatre</Label>;
               <Select>
@@ -70,7 +71,7 @@ export const OTBookingModal = ({ isOpen, onClose, onSubmit }: OTBookingModalProp
                 ]}
               />
             </div>
-            
+
             <div className="grid grid-cols-2 gap-4">;
               <div className="space-y-2">;
                 <Label htmlFor="date">Date</Label>;
@@ -81,12 +82,12 @@ export const OTBookingModal = ({ isOpen, onClose, onSubmit }: OTBookingModalProp
                 <Input id="time" type="time" />
               </div>
             </div>
-            
+
             <div className="space-y-2">;
               <Label htmlFor="duration">Estimated Duration</Label>;
               <Input id="duration" placeholder="e.g., 2 hours" />
             </div>
-            
+
             <div className="space-y-2">;
               <Label htmlFor="notes">Notes</Label>;
               <Textarea id="notes" placeholder="Additional information" />

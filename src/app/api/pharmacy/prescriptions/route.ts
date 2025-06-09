@@ -1,43 +1,44 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+
+import { DrugInteractionService } from '../../services/drug-interaction-service';
+import { FHIRMapper } from '../../models/fhir-mappers';
+import { PharmacyDomain } from '../../models/domain-models';
+import { auditLog } from '../../../../lib/audit';
+import { encryptionService } from '../../../../lib/security.service';
+import { errorHandler } from '../../../../lib/error-handler';
+import { getMedicationById } from '../../../../lib/services/pharmacy/pharmacy.service';
+import { getPatientById, getPatientAllergies } from '../../../../lib/services/patient/patient.service';
+import { validatePrescriptionRequest } from '../../../../lib/validation/pharmacy-validation';
 }
 
 /**
  * Prescription Management API Routes;
- * 
+ *
  * This file implements the FHIR-compliant API endpoints for prescription management;
  * following enterprise-grade requirements for security, validation, and error handling.
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { validatePrescriptionRequest } from '../../../../lib/validation/pharmacy-validation';
-import { auditLog } from '../../../../lib/audit';
-import { errorHandler } from '../../../../lib/error-handler';
-import { encryptionService } from '../../../../lib/security.service';
-import { PharmacyDomain } from '../../models/domain-models';
-import { FHIRMapper } from '../../models/fhir-mappers';
-import { DrugInteractionService } from '../../services/drug-interaction-service';
-import { getMedicationById } from '../../../../lib/services/pharmacy/pharmacy.service';
-import { getPatientById, getPatientAllergies } from '../../../../lib/services/patient/patient.service';
-
 // Initialize repositories (in production, use dependency injection)
 const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
-  findAll: () => Promise.resolve([]),
-  search: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: getMedicationById;
+  findAll: () => Promise.resolve([]);
+  search: () => Promise.resolve([]);
+  save: () => Promise.resolve('');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 }
 
 const prescriptionRepository = {
-  findById: (id: string) => Promise.resolve(null),
-  findByPatientId: (patientId: string) => Promise.resolve([]),
-  findByPrescriberId: (prescriberId: string) => Promise.resolve([]),
-  findByMedicationId: (medicationId: string) => Promise.resolve([]),
-  findByStatus: (status: string) => Promise.resolve([]),
-  findAll: () => Promise.resolve([]),
-  save: (prescription: unknown) => Promise.resolve(prescription.id || 'new-id'),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  findById: (id: string) => Promise.resolve(null);
+  findByPatientId: (patientId: string) => Promise.resolve([]);
+  findByPrescriberId: (prescriberId: string) => Promise.resolve([]);
+  findByMedicationId: (medicationId: string) => Promise.resolve([]);
+  findByStatus: (status: string) => Promise.resolve([]);
+  findAll: () => Promise.resolve([]);
+  save: (prescription: unknown) => Promise.resolve(prescription.id || 'new-id');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
 };
 
 // Initialize services
@@ -74,36 +75,36 @@ export const GET = async (req: NextRequest) => {
 
     // Build filter criteria
     const filter: unknown = {};
-    if (patientId) filter.patientId = patientId;
-    if (prescriberId) filter.prescriberId = prescriberId;
-    if (medicationId) filter.medicationId = medicationId;
-    if (status) filter.status = status;
-    
+    if (patientId != null) filter.patientId = patientId;
+    if (prescriberId != null) filter.prescriberId = prescriberId;
+    if (medicationId != null) filter.medicationId = medicationId;
+    if (status != null) filter.status = status;
+
     // Add date range if provided
     if (startDate || endDate) {
       filter.createdAt = {};
-      if (startDate) filter.createdAt.gte = new Date(startDate);
-      if (endDate) filter.createdAt.lte = new Date(endDate);
+      if (startDate != null) filter.createdAt.gte = new Date(startDate);
+      if (endDate != null) filter.createdAt.lte = new Date(endDate);
     }
 
     // Get prescriptions (mock implementation)
     const prescriptions = await prescriptionRepository.findAll()
-    
+
     // Apply filters
     let filteredPrescriptions = prescriptions;
-    if (patientId) {
+    if (patientId != null) {
       filteredPrescriptions = filteredPrescriptions.filter(p => p.patientId === patientId);
     }
-    if (prescriberId) {
+    if (prescriberId != null) {
       filteredPrescriptions = filteredPrescriptions.filter(p => p.prescriberId === prescriberId);
     }
-    if (medicationId) {
+    if (medicationId != null) {
       filteredPrescriptions = filteredPrescriptions.filter(p => p.medicationId === medicationId);
     }
-    if (status) {
+    if (status != null) {
       filteredPrescriptions = filteredPrescriptions.filter(p => p.status === status);
     }
-    
+
     const total = filteredPrescriptions.length;
 
     // Apply pagination
@@ -114,25 +115,25 @@ export const GET = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('PRESCRIPTION', {
-      action: 'LIST',
-      resourceType: 'MedicationRequest',
-      userId: userId,
+      action: 'LIST';
+      resourceType: 'MedicationRequest';
+      userId: userId;
       details: {
         filter,
         page,
         limit,
-        resultCount: paginatedPrescriptions.length
+        resultCount: paginatedPrescriptions.length;
       }
     });
 
     // Return response
-    return NextResponse.json({ 
-      prescriptions: fhirPrescriptions,
+    return NextResponse.json({
+      prescriptions: fhirPrescriptions;
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit);
       }
     }, { status: 200 });
   } catch (error) {
@@ -182,16 +183,16 @@ export const POST = async (req: NextRequest) => {
     const activeMedicationIds = patientPrescriptions;
       .filter(p => p.isActive());
       .map(p => p.medicationId);
-    
+
     // Add the new medication to the list
     activeMedicationIds.push(data.medicationId);
-    
+
     // Check for drug-drug interactions
     const drugInteractions = await interactionService.checkDrugDrugInteractions(
       activeMedicationIds,
       false;
     );
-    
+
     // Check for drug-allergy interactions
     const patientAllergies = await getPatientAllergies(data.patientId);
     const allergens = patientAllergies.map(a => a.allergen);
@@ -199,22 +200,22 @@ export const POST = async (req: NextRequest) => {
       [data.medicationId],
       allergens;
     );
-    
+
     // Combine all interactions
     const allInteractions = [...drugInteractions, ...allergyInteractions];
-    
+
     // Check for severe interactions that should block the prescription
-    const severeInteractions = allInteractions.filter(i => 
+    const severeInteractions = allInteractions.filter(i =>
       i.severity === 'contraindicated' || i.severity === 'severe';
     );
-    
+
     // If there are severe interactions and no override provided, return error
     if (severeInteractions.length > 0 && !data.interactionOverride) {
       return NextResponse.json(
-        { 
-          error: 'Severe drug interactions detected', 
-          interactions: severeInteractions,
-          requiresOverride: true
+        {
+          error: 'Severe drug interactions detected';
+          interactions: severeInteractions;
+          requiresOverride: true;
         },
         { status: 409 }
       );
@@ -248,9 +249,9 @@ export const POST = async (req: NextRequest) => {
       // Encrypt controlled substance data
       prescription.controlledSubstanceData = await encryptionService.encrypt(
         JSON.stringify({
-          dea: data.dea,
-          refills: data.refills || 0,
-          writtenDate: new Date()
+          dea: data.dea;
+          refills: data.refills || 0;
+          writtenDate: new Date();
         });
       );
     }
@@ -259,33 +260,33 @@ export const POST = async (req: NextRequest) => {
     const prescriptionId = await prescriptionRepository.save(prescription);
 
     // If interaction override was provided, save it
-    if (data.interactionOverride && severeInteractions.length > 0) {
+    if (data?.interactionOverride && severeInteractions.length > 0) {
       // In a real implementation, save override record
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
     }
 
     // Audit logging
     await auditLog('PRESCRIPTION', {
-      action: 'CREATE',
-      resourceType: 'MedicationRequest',
-      resourceId: prescriptionId,
-      userId: userId,
-      patientId: data.patientId,
+      action: 'CREATE';
+      resourceType: 'MedicationRequest';
+      resourceId: prescriptionId;
+      userId: userId;
+      patientId: data.patientId;
       details: {
-        medicationId: data.medicationId,
-        interactionCount: allInteractions.length,
-        severeInteractionCount: severeInteractions.length,
-        overrideProvided: !!data.interactionOverride
+        medicationId: data.medicationId;
+        interactionCount: allInteractions.length;
+        severeInteractionCount: severeInteractions.length;
+        overrideProvided: !!data.interactionOverride;
       }
     });
 
     // Return response
     return NextResponse.json(
-      { 
-        id: prescriptionId,
-        message: 'Prescription created successfully',
-        interactions: allInteractions.length > 0 ? allInteractions : undefined
-      }, 
+      {
+        id: prescriptionId;
+        message: 'Prescription created successfully';
+        interactions: allInteractions.length > 0 ? allInteractions : undefined;
+      },
       { status: 201 }
     );
   } catch (error) {

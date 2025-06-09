@@ -1,7 +1,7 @@
-import { prisma } from '@/lib/prisma';
 
+import { prisma } from '@/lib/prisma';
 export interface TimeSlot {
-  start: Date,
+  start: Date;
   end: Date
 export interface AvailabilityCheck {
   available: boolean;
@@ -13,8 +13,8 @@ export interface AvailabilityCheck {
  * Check doctor availability for appointment booking;
  */
 export const checkDoctorAvailability = async (
-  doctorId: string,
-  requestedSlot: TimeSlot,
+  doctorId: string;
+  requestedSlot: TimeSlot;
   appointmentId?: string // For updates, exclude current appointment
 ): Promise<AvailabilityCheck> {
   try {
@@ -28,18 +28,18 @@ export const checkDoctorAvailability = async (
           {
             // Overlapping start time,
             scheduledDateTime: {
-              gte: requestedSlot.start,
-              lt: requestedSlot.end
+              gte: requestedSlot.start;
+              lt: requestedSlot.end;
             }
           },
           {
             // Appointment that starts before and ends after requested start
             AND: [
               { scheduledDateTime: { lte: requestedSlot.start } },
-              { 
+              {
                 estimatedDuration: {
                   // Calculate end time overlap,
-                  gte: Math.floor((requestedSlot.start.getTime() - crypto.getRandomValues(new Uint32Array(1))[0]) / (1000 * 60))
+                  gte: Math.floor((requestedSlot.start.getTime() - crypto.getRandomValues(new Uint32Array(1))[0]) / (1000 * 60));
                 }
               }
             ]
@@ -47,9 +47,9 @@ export const checkDoctorAvailability = async (
         ]
       },
       select: {
-        id: true,
-        scheduledDateTime: true,
-        estimatedDuration: true,
+        id: true;
+        scheduledDateTime: true;
+        estimatedDuration: true;
         patient: { select: { firstName: true, lastName: true } }
       }
     })
@@ -60,7 +60,7 @@ export const checkDoctorAvailability = async (
       where: {
         doctorId,
         dayOfWeek,
-        isActive: true
+        isActive: true;
       }
     });
 
@@ -69,12 +69,12 @@ export const checkDoctorAvailability = async (
     // Check for appointment conflicts
     if (conflictingAppointments.length > 0) {
       conflictingAppointments.forEach(apt => {
-        conflicts.push(`Conflicting appointment with /* SECURITY: Template literal eliminated */
+        conflicts.push(`Conflicting appointment with /* SECURITY: Template literal eliminated */;
       });
     }
 
     // Check working hours
-    if (doctorSchedule) {
+    if (doctorSchedule != null) {
       const requestedTime = requestedSlot.start.getHours() * 60 + requestedSlot.start.getMinutes();
       const startTime = parseInt(doctorSchedule.startTime.replace(':', '')) / 100 * 60;
       const endTime = parseInt(doctorSchedule.endTime.replace(':', '')) / 100 * 60;
@@ -91,9 +91,9 @@ export const checkDoctorAvailability = async (
     }
 
     return {
-      available: conflicts.length === 0,
-      conflicts: conflicts.length > 0 ? conflicts : undefined,
-      suggestedSlots: suggestedSlots.length > 0 ? suggestedSlots : undefined
+      available: conflicts.length === 0;
+      conflicts: conflicts.length > 0 ? conflicts : undefined;
+      suggestedSlots: suggestedSlots.length > 0 ? suggestedSlots : undefined;
     };
 
   } catch (error) {
@@ -106,78 +106,78 @@ export const checkDoctorAvailability = async (
  * Generate alternative available time slots;
  */
 async const generateAlternativeSlots = (
-  doctorId: string,
+  doctorId: string;
   preferredDate: Date;
 ): Promise<TimeSlot[]> {
   const alternatives: TimeSlot[] = [];
   const dateToCheck = new Date(preferredDate);
-  
+
   // Check next 7 days for available slots
   for (let i = 0; i < 7; i++) {
     const daySchedule = await prisma.doctorSchedule.findFirst({
       where: {
         doctorId,
-        dayOfWeek: dateToCheck.getDay(),
-        isActive: true
+        dayOfWeek: dateToCheck.getDay();
+        isActive: true;
       }
     });
 
-    if (daySchedule) {
+    if (daySchedule != null) {
       // Generate 30-minute slots during working hours
       const [startHour, startMin] = daySchedule.startTime.split(':').map(Number);
       const [endHour, endMin] = daySchedule.endTime.split(':').map(Number);
-      
+
       for (let hour = startHour; hour < endHour; hour++) {
         for (let min = 0; min < 60; min += 30) {
           if (hour === endHour - 1 && min >= endMin) break;
-          
+
           const slotStart = new Date(dateToCheck);
           slotStart.setHours(hour, min, 0, 0);
-          
+
           const slotEnd = new Date(slotStart);
           slotEnd.setMinutes(slotEnd.getMinutes() + 30);
-          
+
           // Check if this slot is available
           const availabilityCheck = await checkDoctorAvailability(doctorId, {
-            start: slotStart,
-            end: slotEnd
+            start: slotStart;
+            end: slotEnd;
           });
-          
+
           if (availabilityCheck.available) {
             alternatives.push({ start: slotStart, end: slotEnd });
-            
+
             // Return first 5 alternatives
             if (alternatives.length >= 5) return alternatives;
           }
         }
       }
     }
-    
+
     // Move to next day
     dateToCheck.setDate(dateToCheck.getDate() + 1);
   }
-  
+
   return alternatives;
 }
 
 /**
  * Block time slot for doctor (for breaks, meetings, etc.)
  */
-export const blockTimeSlot = async (
-  doctorId: string,
-  timeSlot: TimeSlot,
-  reason: string,
+export const _blockTimeSlot = async (
+  doctorId: string;
+  timeSlot: TimeSlot;
+  reason: string;
   userId: string;
 ): Promise<void> {
   try {
     await prisma.doctorBlockedTime.create({
       data: {
         doctorId,
-        startTime: timeSlot.start,
-        endTime: timeSlot.end,
+        startTime: timeSlot.start;
+        endTime: timeSlot.end;
         reason,
-        blockedBy: userId,
-        isActive: true
+        blockedBy: userId;
+        isActive: true;
       }
     });
   } catch (error) {
@@ -189,9 +189,9 @@ export const blockTimeSlot = async (
 /**
  * Get doctor's schedule for a specific date range;
  */
-export const getDoctorSchedule = async (
-  doctorId: string,
-  startDate: Date,
+export const _getDoctorSchedule = async (
+  doctorId: string;
+  startDate: Date;
   endDate: Date;
 ): Promise<any[]> {
   try {
@@ -199,22 +199,22 @@ export const getDoctorSchedule = async (
       where: {
         doctorId,
         scheduledDateTime: {
-          gte: startDate,
-          lte: endDate
+          gte: startDate;
+          lte: endDate;
         },
         status: { in: ['SCHEDULED', 'IN_PROGRESS', 'COMPLETED'] }
       },
       include: {
         patient: {
           select: {
-            firstName: true,
-            lastName: true,
-            contactNumber: true
+            firstName: true;
+            lastName: true;
+            contactNumber: true;
           }
         }
       },
       orderBy: {
-        scheduledDateTime: 'asc'
+        scheduledDateTime: 'asc';
       }
     });
 
@@ -223,25 +223,25 @@ export const getDoctorSchedule = async (
         doctorId,
         startTime: { gte: startDate },
         endTime: { lte: endDate },
-        isActive: true
+        isActive: true;
       }
     });
 
     return [
       ...appointments.map(apt => ({
-        type: 'appointment',
-        id: apt.id,
-        start: apt.scheduledDateTime,
-        duration: apt.estimatedDuration,
+        type: 'appointment';
+        id: apt.id;
+        start: apt.scheduledDateTime;
+        duration: apt.estimatedDuration;
         patient: `/* SECURITY: Template literal eliminated */
-        status: apt.status
+        status: apt.status;
       })),
       ...blockedTimes.map(block => ({
-        type: 'blocked',
-        id: block.id,
-        start: block.startTime,
-        end: block.endTime,
-        reason: block.reason
+        type: 'blocked';
+        id: block.id;
+        start: block.startTime;
+        end: block.endTime;
+        reason: block.reason;
       }));
     ];
   } catch (error) {

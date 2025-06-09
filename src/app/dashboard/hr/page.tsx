@@ -5,16 +5,16 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Users, 
-  ClipboardCheck, 
-  DollarSign, 
-  Boxes, 
+import {
+  Users,
+  ClipboardCheck,
+  DollarSign,
+  Boxes,
   Stethoscope,
   BarChart;
 } from 'lucide-react';
 
-export default const HRDashboard = () {
+export default const _HRDashboard = () {
   const [activeTab, setActiveTab] = useState('overview');
 
   return (
@@ -35,7 +35,7 @@ export default const HRDashboard = () {
           <TabsTrigger value="assets">Assets</TabsTrigger>;
           <TabsTrigger value="biomedical">Biomedical</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="overview" className="space-y-4 mt-4">;
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">;
             <Link href="/dashboard/hr/staff">;
@@ -50,7 +50,7 @@ export default const HRDashboard = () {
                 </CardContent>
               </Card>
             </Link>
-            
+
             <Link href="/dashboard/hr/attendance">;
               <Card className="hover:bg-muted/50 transition-colors cursor-pointer">;
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
@@ -63,7 +63,7 @@ export default const HRDashboard = () {
                 </CardContent>
               </Card>
             </Link>
-            
+
             <Link href="/dashboard/hr/payroll">;
               <Card className="hover:bg-muted/50 transition-colors cursor-pointer">;
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
@@ -76,7 +76,7 @@ export default const HRDashboard = () {
                 </CardContent>
               </Card>
             </Link>
-            
+
             <Link href="/dashboard/hr/assets">;
               <Card className="hover:bg-muted/50 transition-colors cursor-pointer">;
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
@@ -89,7 +89,7 @@ export default const HRDashboard = () {
                 </CardContent>
               </Card>
             </Link>
-            
+
             <Link href="/dashboard/hr/biomedical">;
               <Card className="hover:bg-muted/50 transition-colors cursor-pointer">;
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
@@ -102,7 +102,7 @@ export default const HRDashboard = () {
                 </CardContent>
               </Card>
             </Link>
-            
+
             <Card className="hover:bg-muted/50 transition-colors cursor-pointer">;
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
                 <CardTitle className="text-sm font-medium">Analytics</CardTitle>;
@@ -114,7 +114,7 @@ export default const HRDashboard = () {
               </CardContent>
             </Card>
           </div>
-          
+
           <div className="grid gap-4 md:grid-cols-2">;
             <Card>
               <CardHeader>
@@ -125,7 +125,7 @@ export default const HRDashboard = () {
                 <p className="text-sm text-muted-foreground">Activity feed will appear here</p>
               </CardContent>
             </Card>
-            
+
             <Card>
               <CardHeader>
                 <CardTitle>Upcoming Events</CardTitle>
@@ -137,7 +137,7 @@ export default const HRDashboard = () {
             </Card>
           </div>
         </TabsContent>
-        
+
         <TabsContent value="staff" className="space-y-4 mt-4">;
           <Card>
             <CardHeader>
@@ -149,7 +149,7 @@ export default const HRDashboard = () {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="attendance" className="space-y-4 mt-4">;
           <Card>
             <CardHeader>
@@ -161,7 +161,7 @@ export default const HRDashboard = () {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="payroll" className="space-y-4 mt-4">;
           <Card>
             <CardHeader>
@@ -173,7 +173,7 @@ export default const HRDashboard = () {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="assets" className="space-y-4 mt-4">;
           <Card>
             <CardHeader>
@@ -185,7 +185,7 @@ export default const HRDashboard = () {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="biomedical" className="space-y-4 mt-4">;
           <Card>
             <CardHeader>

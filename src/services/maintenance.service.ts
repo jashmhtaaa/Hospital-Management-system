@@ -1,5 +1,5 @@
-import { z } from 'zod';
 
+import { z } from 'zod';
 // Create enums to match Prisma schema
 export enum MaintenanceRequestStatus {
   PENDING = 'PENDING',
@@ -15,19 +15,19 @@ export enum MaintenanceRequestPriority {
 
 // Validation schemas
 export const createMaintenanceRequestSchema = z.object({
-  equipmentId: z.string().optional(),
+  equipmentId: z.string().optional();
   description: z.string().min(1, 'Description is required'),
   reportedBy: z.string().min(1, 'Reporter ID is required'),
-  assignedToId: z.string().optional().nullable(),
-  status: z.nativeEnum(MaintenanceRequestStatus).default(MaintenanceRequestStatus.PENDING),
-  priority: z.nativeEnum(MaintenanceRequestPriority).default(MaintenanceRequestPriority.MEDIUM),
-  requestedAt: z.date().default(() => new Date()),
-  completedAt: z.date().optional().nullable(),
-  notes: z.string().optional(),
+  assignedToId: z.string().optional().nullable();
+  status: z.nativeEnum(MaintenanceRequestStatus).default(MaintenanceRequestStatus.PENDING);
+  priority: z.nativeEnum(MaintenanceRequestPriority).default(MaintenanceRequestPriority.MEDIUM);
+  requestedAt: z.date().default(() => new Date());
+  completedAt: z.date().optional().nullable();
+  notes: z.string().optional();
 });
 
 export const updateMaintenanceRequestSchema = createMaintenanceRequestSchema.partial().extend({
-  id: z.string(),
+  id: z.string();
 });
 
 export type CreateMaintenanceRequestInput = z.infer<typeof createMaintenanceRequestSchema>;
@@ -49,12 +49,12 @@ export class MaintenanceService {
     try {
       // Validate input data
       const validatedData = createMaintenanceRequestSchema.parse(data);
-      
+
       // Create the request
       const request = await prisma.maintenanceRequest.create({
-        data: validatedData,
+        data: validatedData;
       });
-      
+
       return request;
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -78,8 +78,8 @@ export class MaintenanceService {
   }) {
     try {
       const where: unknown = {};
-      
-      if (filters) {
+
+      if (filters != null) {
         if (filters.status) {
           where.status = filters.status;
         }
@@ -96,7 +96,7 @@ export class MaintenanceService {
           where.assignedToId = filters.assignedToId;
         }
       }
-      
+
       const requests = await prisma.maintenanceRequest.findMany({
         where,
         orderBy: [
@@ -106,13 +106,13 @@ export class MaintenanceService {
         include: {
           assignedTo: {
             select: {
-              id: true,
-              name: true,
+              id: true;
+              name: true;
             },
           },
         },
       });
-      
+
       return requests;
     } catch (error) {
       throw error;
@@ -131,13 +131,13 @@ export class MaintenanceService {
         include: {
           assignedTo: {
             select: {
-              id: true,
-              name: true,
+              id: true;
+              name: true;
             },
           },
         },
       });
-      
+
       return request;
     } catch (error) {
       throw error;
@@ -154,24 +154,24 @@ export class MaintenanceService {
     try {
       // Validate input data
       const validatedData = updateMaintenanceRequestSchema.parse({ ...data, id });
-      
+
       // Remove id from the data to be updated
       const { id: _, ...updateData } = validatedData;
-      
+
       // Update the request
       const request = await prisma.maintenanceRequest.update({
         where: { id },
-        data: updateData,
+        data: updateData;
         include: {
           assignedTo: {
             select: {
-              id: true,
-              name: true,
+              id: true;
+              name: true;
             },
           },
         },
       });
-      
+
       return request;
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -191,7 +191,7 @@ export class MaintenanceService {
       const request = await prisma.maintenanceRequest.delete({
         where: { id },
       });
-      
+
       return request;
     } catch (error) {
       throw error;
@@ -209,19 +209,19 @@ export class MaintenanceService {
       const request = await prisma.maintenanceRequest.update({
         where: { id: requestId },
         data: {
-          assignedToId: userId,
-          status: MaintenanceRequestStatus.IN_PROGRESS,
+          assignedToId: userId;
+          status: MaintenanceRequestStatus.IN_PROGRESS;
         },
         include: {
           assignedTo: {
             select: {
-              id: true,
-              name: true,
+              id: true;
+              name: true;
             },
           },
         },
       });
-      
+
       return request;
     } catch (error) {
       throw error;
@@ -238,19 +238,19 @@ export class MaintenanceService {
       const request = await prisma.maintenanceRequest.update({
         where: { id: requestId },
         data: {
-          status: MaintenanceRequestStatus.COMPLETED,
-          completedAt: new Date(),
+          status: MaintenanceRequestStatus.COMPLETED;
+          completedAt: new Date();
         },
         include: {
           assignedTo: {
             select: {
-              id: true,
-              name: true,
+              id: true;
+              name: true;
             },
           },
         },
       });
-      
+
       return request;
     } catch (error) {
       throw error;
@@ -267,18 +267,18 @@ export class MaintenanceService {
       const request = await prisma.maintenanceRequest.update({
         where: { id: requestId },
         data: {
-          status: MaintenanceRequestStatus.CANCELLED,
+          status: MaintenanceRequestStatus.CANCELLED;
         },
         include: {
           assignedTo: {
             select: {
-              id: true,
-              name: true,
+              id: true;
+              name: true;
             },
           },
         },
       });
-      
+
       return request;
     } catch (error) {
       throw error;
@@ -287,4 +287,4 @@ export class MaintenanceService {
 }
 
 // Export a singleton instance
-export const maintenanceService = new MaintenanceService();
+export const _maintenanceService = new MaintenanceService();

@@ -1,15 +1,16 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Select } from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
 
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 /**
  * IPD Admission Form component;
  */
-export const AdmissionForm = () => {
+export const _AdmissionForm = () => {
   return (
     <Card>
       <CardHeader>
@@ -26,7 +27,7 @@ export const AdmissionForm = () => {
                 ]}
               </Select>
             </div>
-            
+
             <div className="space-y-2">;
               <Label htmlFor="admissionType">Admission Type</Label>;
               <Select>id="admissionType"
@@ -38,24 +39,24 @@ export const AdmissionForm = () => {
               </Select>
             </div>
           </div>
-          
+
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">;
             <div className="space-y-2">;
               <Label htmlFor="admissionDate">Admission Date</Label>;
               <Input id="admissionDate" type="date" />
             </div>
-            
+
             <div className="space-y-2">;
               <Label htmlFor="admissionTime">Admission Time</Label>;
               <Input id="admissionTime" type="time" />
             </div>
           </div>
-          
+
           <div className="space-y-2">;
             <Label htmlFor="diagnosis">Provisional Diagnosis</Label>;
             <Textarea id="diagnosis" placeholder="Enter provisional diagnosis" />
           </div>
-          
+
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">;
             <div className="space-y-2">;
               <Label htmlFor="attendingDoctor">Attending Doctor</Label>;
@@ -65,7 +66,7 @@ export const AdmissionForm = () => {
                 ]}
               </Select>
             </div>
-            
+
             <div className="space-y-2">;
               <Label htmlFor="department">Department</Label>;
               <Select>id="department"
@@ -80,7 +81,7 @@ export const AdmissionForm = () => {
               </Select>
             </div>
           </div>
-          
+
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">;
             <div className="space-y-2">;
               <Label htmlFor="ward">Ward</Label>;
@@ -90,7 +91,7 @@ export const AdmissionForm = () => {
                 ]}
               </Select>
             </div>
-            
+
             <div className="space-y-2">;
               <Label htmlFor="bed">Bed</Label>;
               <Select>id="bed"
@@ -100,12 +101,12 @@ export const AdmissionForm = () => {
               </Select>
             </div>
           </div>
-          
+
           <div className="space-y-2">;
             <Label htmlFor="notes">Additional Notes</Label>;
             <Textarea id="notes" placeholder="Enter any additional notes" />
           </div>
-          
+
           <div className="flex justify-end space-x-2">;
             <Button variant="outline">Cancel</Button>;
             <Button>Admit Patient</Button>

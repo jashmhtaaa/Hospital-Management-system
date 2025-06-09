@@ -1,40 +1,41 @@
 import { NextRequest, NextResponse } from "next/server";
-import { DB } from "@/lib/database";
-import { getSession } from "@/lib/session";
 import { z } from "zod";
-import { Patient } from "@/types/patient";
-import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database
 
+
+import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database
+import { DB } from "@/lib/database";
+import { Patient } from "@/types/patient";
+import { getSession } from "@/lib/session";
 // Zod schema for patient update
 const patientUpdateSchema = z.object({
-    mrn: z.string().optional(),
+    mrn: z.string().optional();
     first_name: z.string().min(1, "First name is required").optional(),
     last_name: z.string().min(1, "Last name is required").optional(),
     date_of_birth: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid date of birth format",
+        message: "Invalid date of birth format";
     }).optional(),
     gender: z.enum(["Male", "Female", "Other", "Unknown"]).optional(),
-    contact_number: z.string().optional().nullable(),
-    email: z.string().email("Invalid email address").optional().nullable(),
-    address_line1: z.string().optional().nullable(),
-    address_line2: z.string().optional().nullable(),
-    city: z.string().optional().nullable(),
-    state: z.string().optional().nullable(),
-    postal_code: z.string().optional().nullable(),
-    country: z.string().optional().nullable(),
-    emergency_contact_name: z.string().optional().nullable(),
-    emergency_contact_relation: z.string().optional().nullable(),
-    emergency_contact_number: z.string().optional().nullable(),
-    blood_group: z.string().optional().nullable(),
-    allergies: z.string().optional().nullable(),
-    medical_history_summary: z.string().optional().nullable(),
-    insurance_provider: z.string().optional().nullable(),
-    insurance_policy_number: z.string().optional().nullable(),
+    contact_number: z.string().optional().nullable();
+    email: z.string().email("Invalid email address").optional().nullable();
+    address_line1: z.string().optional().nullable();
+    address_line2: z.string().optional().nullable();
+    city: z.string().optional().nullable();
+    state: z.string().optional().nullable();
+    postal_code: z.string().optional().nullable();
+    country: z.string().optional().nullable();
+    emergency_contact_name: z.string().optional().nullable();
+    emergency_contact_relation: z.string().optional().nullable();
+    emergency_contact_number: z.string().optional().nullable();
+    blood_group: z.string().optional().nullable();
+    allergies: z.string().optional().nullable();
+    medical_history_summary: z.string().optional().nullable();
+    insurance_provider: z.string().optional().nullable();
+    insurance_policy_number: z.string().optional().nullable();
 }).partial();
 
 // GET /api/patients/[id] - Fetch a specific patient by ID
-export const GET = async (
-    _request: NextRequest,
+export const _GET = async (
+    _request: NextRequest;
     { params }: { params: Promise<{ id: string }> }
 ) => {
     const session = await getSession();
@@ -86,8 +87,8 @@ export const GET = async (
 }
 
 // PUT /api/patients/[id] - Update an existing patient
-export const PUT = async (
-    request: NextRequest,
+export const _PUT = async (
+    request: NextRequest;
     { params }: { params: Promise<{ id: string }> }
 ) => {
     const session = await getSession();
@@ -143,7 +144,7 @@ export const PUT = async (
 
         const updateResult = await (DB as D1Database).prepare(updateQuery).bind(...values).run() as D1ResultWithMeta;
 
-        if (!updateResult.success || (updateResult.meta && updateResult.meta.changes === 0)) {
+        if (!updateResult.success || (updateResult?.meta && updateResult.meta.changes === 0)) {
 
              if (!updateResult.success) {
                 throw new Error("Failed to update patient record");
@@ -180,7 +181,7 @@ export const PUT = async (
 
 // DELETE /api/patients/[id] - Delete a patient (use with caution!)
 export const DELETE = async (
-    _request: NextRequest,
+    _request: NextRequest;
     { params }: { params: Promise<{ id: string }> }
 ) => {
     const session = await getSession()
@@ -200,7 +201,7 @@ export const DELETE = async (
         const deleteQuery = "DELETE FROM Patients WHERE patient_id = ?";
         const deleteResult = await (DB as D1Database).prepare(deleteQuery).bind(patientId).run() as D1ResultWithMeta;
 
-        if (!deleteResult.success || (deleteResult.meta && deleteResult.meta.changes === 0)) {
+        if (!deleteResult.success || (deleteResult?.meta && deleteResult.meta.changes === 0)) {
 
             if (deleteResult.meta?.changes === 0) {
                  return NextResponse.json({ message: "Patient not found or already deleted" }, { status: 404 });

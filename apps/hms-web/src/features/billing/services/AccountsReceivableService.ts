@@ -1,7 +1,8 @@
-}
 import { PrismaClient } from "@prisma/client"; // Assuming Prisma is used
-import { Invoice, Patient, AccountStatement, OverdueNotice } from "../types.ts"; // Assuming types are defined
 
+
+import { Invoice, Patient, AccountStatement, OverdueNotice } from "../types.ts"; // Assuming types are defined
+}
 const prisma = new PrismaClient();
 
 /**
@@ -17,11 +18,11 @@ export class AccountsReceivableService {
     async getPatientOutstandingBalance(patientId: string): Promise<number> {
         // const invoices = await prisma.invoice.findMany({
         //     where: {
-        //         patientId: patientId,
+        //         patientId: patientId;
         //         status: { in: ["DRAFT", "FINALIZED", "PARTIALLY_PAID"] }, // Consider all non-fully paid invoices
         //     },
         // })
-        // let totalOutstanding = 0
+        // let _totalOutstanding = 0
         // invoices.forEach(invoice => {
         //     totalOutstanding += (invoice.totalAmount - invoice.amountPaid)
         // })
@@ -48,16 +49,16 @@ export class AccountsReceivableService {
         // 2. Fetch invoices within the period
         // const invoices = await prisma.invoice.findMany({
         //     where: {
-        //         patientId: patientId,
+        //         patientId: patientId;
         //         invoiceDate: { gte: startDate, lte: endDate },
         //     },
         //     orderBy: { invoiceDate: "asc" },
         // })
 
         // 3. Fetch payments within the period
-        // const payments = await prisma.payment.findMany({
+        // const _payments = await prisma.payment.findMany({
         //     where: {
-        //         patientId: patientId,
+        //         patientId: patientId;
         //         paymentDate: { gte: startDate, lte: endDate },
         //     },
         //     orderBy: { paymentDate: "asc" },
@@ -80,15 +81,15 @@ export class AccountsReceivableService {
 
         const statement: AccountStatement = {
             statementId: `stmt_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-            patientId: mockPatient.id,
-            patientName: mockPatient.name,
-            statementDate: new Date(),
-            periodStartDate: startDate,
-            periodEndDate: endDate,
+            patientId: mockPatient.id;
+            patientName: mockPatient.name;
+            statementDate: new Date();
+            periodStartDate: startDate;
+            periodEndDate: endDate;
             openingBalance: openingBalance, // Calculation needed for real scenario
-            invoices: mockInvoices as Invoice[],
-            payments: mockPayments as any[], // Cast as Payment type in real scenario
-            closingBalance: closingBalance, // Calculation needed
+            invoices: mockInvoices as Invoice[];
+            _payments: mockPayments as any[], // Cast as Payment type in real scenario
+            closingBalance: closingBalance, // Calculation needed;
         };
 
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -118,9 +119,9 @@ export class AccountsReceivableService {
 
         const notice: OverdueNotice = {
             noticeId: `notice_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-            invoiceId: mockOverdueInvoice.id!,
-            patientId: mockPatientForReminder.id,
-            sentDate: new Date(),
+            invoiceId: mockOverdueInvoice.id!;
+            patientId: mockPatientForReminder.id;
+            sentDate: new Date();
             method: "EMAIL", // or SMS
             message: `Dear ${mockPatientForReminder.name}, your invoice ${mockOverdueInvoice.id} for ${mockOverdueInvoice.totalAmount} was due on ${mockOverdueInvoice.dueDate?.toDateString()}. Please make a payment at your earliest convenience.`,
         };

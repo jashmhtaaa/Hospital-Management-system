@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from '@/lib/session';
+
+
+import { CacheInvalidation } from '@/lib/cache/invalidation';
 import { DB } from '@/lib/database';
 import { RedisCache } from '@/lib/cache/redis';
-import { CacheInvalidation } from '@/lib/cache/invalidation';
 import { auditLog } from '@/lib/audit';
-
+import { getSession } from '@/lib/session';
 /**
  * GET /api/diagnostics/lab/results/delta-checks;
  * Get delta check configurations;
@@ -40,7 +41,7 @@ export const GET = async (request: NextRequest) => {
         const params: unknown[] = [];
 
         // Add test filter if provided
-        if (testId) {
+        if (testId != null) {
           query += ' AND dc.test_id = ?';
           params.push(testId);
         }
@@ -68,14 +69,14 @@ export const GET = async (request: NextRequest) => {
 
         // Log access
         await auditLog({
-          userId: session.user.id,
-          action: 'read',
-          resource: 'laboratory_delta_checks',
+          userId: session.user.id;
+          action: 'read';
+          resource: 'laboratory_delta_checks';
           details: { testId, page, pageSize }
         });
 
         return {
-          deltaChecks: result.results,
+          deltaChecks: result.results;
           pagination: {
             page,
             pageSize,
@@ -91,8 +92,8 @@ export const GET = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch delta checks',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to fetch delta checks';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }
@@ -116,21 +117,21 @@ export const POST = async (request: NextRequest) => {
 
     // Parse request body
     const body = await request.json();
-    const { 
-      testId, 
-      absoluteDelta, 
-      percentDelta, 
-      timeWindow, 
-      gender, 
-      minAge, 
-      maxAge, 
-      severity, 
+    const {
+      testId,
+      absoluteDelta,
+      percentDelta,
+      timeWindow,
+      gender,
+      minAge,
+      maxAge,
+      severity,
       action;
     } = body;
 
     // Validate required fields
     if (!testId || (!absoluteDelta && !percentDelta) || !timeWindow) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         error: 'Test ID, delta threshold (absolute or percent), and time window are required';
       }, { status: 400 });
     }
@@ -153,16 +154,16 @@ export const POST = async (request: NextRequest) => {
     );
 
     if (duplicateCheck.results.length > 0) {
-      return NextResponse.json({ 
-        error: 'A delta check configuration with these parameters already exists'
+      return NextResponse.json({
+        error: 'A delta check configuration with these parameters already exists';
       }, { status: 409 });
     }
 
     // Insert delta check
     const query = `;
       INSERT INTO laboratory_delta_checks (
-        test_id, absolute_delta, percent_delta, time_window, 
-        gender, min_age, max_age, severity, action, 
+        test_id, absolute_delta, percent_delta, time_window,
+        gender, min_age, max_age, severity, action,
         created_by, updated_by;
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
@@ -185,11 +186,11 @@ export const POST = async (request: NextRequest) => {
 
     // Log creation
     await auditLog({
-      userId: session.user.id,
-      action: 'create',
-      resource: 'laboratory_delta_checks',
-      resourceId: result.insertId,
-      details: body
+      userId: session.user.id;
+      action: 'create';
+      resource: 'laboratory_delta_checks';
+      resourceId: result.insertId;
+      details: body;
     });
 
     // Invalidate cache
@@ -208,8 +209,8 @@ export const POST = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to create delta check',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to create delta check';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }
@@ -238,14 +239,14 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
     // Parse request body
     const body = await request.json();
-    const { 
-      absoluteDelta, 
-      percentDelta, 
-      timeWindow, 
-      gender, 
-      minAge, 
-      maxAge, 
-      severity, 
+    const {
+      absoluteDelta,
+      percentDelta,
+      timeWindow,
+      gender,
+      minAge,
+      maxAge,
+      severity,
       action;
     } = body;
 
@@ -314,15 +315,15 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
       // Log update
       await auditLog({
-        userId: session.user.id,
-        action: 'update',
-        resource: 'laboratory_delta_checks',
-        resourceId: id,
-        details: body
+        userId: session.user.id;
+        action: 'update';
+        resource: 'laboratory_delta_checks';
+        resourceId: id;
+        details: body;
       });
 
       // Invalidate cache
-      await CacheInvalidation.invalidatePattern('diagnostic: lab:delta-checks:*')
+      await CacheInvalidation.invalidatePattern('diagnostic: lab: delta-checks:*');
     }
 
     // Get the updated delta check
@@ -338,8 +339,8 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to update delta check',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to update delta check';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }
@@ -377,10 +378,10 @@ export const DELETE = async (request: NextRequest, { params }: { params: { id: s
 
     // Log deletion
     await auditLog({
-      userId: session.user.id,
-      action: 'delete',
-      resource: 'laboratory_delta_checks',
-      resourceId: id,
+      userId: session.user.id;
+      action: 'delete';
+      resource: 'laboratory_delta_checks';
+      resourceId: id;
       details: { id }
     });
 
@@ -391,8 +392,8 @@ export const DELETE = async (request: NextRequest, { params }: { params: { id: s
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to delete delta check',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to delete delta check';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }
@@ -401,7 +402,7 @@ export const DELETE = async (request: NextRequest, { params }: { params: { id: s
  * POST /api/diagnostics/lab/results/delta-checks/evaluate;
  * Evaluate a result against delta check rules;
  */
-export const POST_EVALUATE = async (request: NextRequest) => {
+export const _POST_EVALUATE = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -411,11 +412,11 @@ export const POST_EVALUATE = async (request: NextRequest) => {
 
     // Parse request body
     const body = await request.json();
-    const { 
-      testId, 
-      patientId, 
-      resultValue, 
-      resultUnits, 
+    const {
+      testId,
+      patientId,
+      resultValue,
+      resultUnits,
       resultDate,
       gender,
       age;
@@ -423,7 +424,7 @@ export const POST_EVALUATE = async (request: NextRequest) => {
 
     // Validate required fields
     if (!testId || !patientId || resultValue === undefined || !resultUnits) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         error: 'Test ID, patient ID, result value, and result units are required';
       }, { status: 400 });
     }
@@ -444,9 +445,9 @@ export const POST_EVALUATE = async (request: NextRequest) => {
     if (deltaRules.length === 0) {
       // No applicable delta check rules
       return NextResponse.json({
-        passed: true,
-        message: 'No applicable delta check rules found',
-        details: null
+        passed: true;
+        message: 'No applicable delta check rules found';
+        details: null;
       });
     }
 
@@ -463,8 +464,8 @@ export const POST_EVALUATE = async (request: NextRequest) => {
     `;
 
     const previousResultsResult = await DB.query(previousResultsQuery, [
-      testId, 
-      patientId, 
+      testId,
+      patientId,
       resultDate || new Date().toISOString()
     ]);
     const previousResults = previousResultsResult.results;
@@ -472,9 +473,9 @@ export const POST_EVALUATE = async (request: NextRequest) => {
     if (previousResults.length === 0) {
       // No previous results to compare against
       return NextResponse.json({
-        passed: true,
-        message: 'No previous results found for comparison',
-        details: null
+        passed: true;
+        message: 'No previous results found for comparison';
+        details: null;
       });
     }
 
@@ -499,7 +500,7 @@ export const POST_EVALUATE = async (request: NextRequest) => {
 
       // Compare with the most recent result in the time window
       const previousResult = applicableResults[0];
-      
+
       // Skip if units don't match and we can't convert
       if (previousResult.units !== resultUnits) {
         // In a real system, we would attempt unit conversion here
@@ -509,32 +510,32 @@ export const POST_EVALUATE = async (request: NextRequest) => {
       // Calculate absolute and percent delta
       const currentValue = parseFloat(resultValue);
       const previousValue = parseFloat(previousResult.result_value);
-      
+
       const absoluteDelta = Math.abs(currentValue - previousValue);
       const percentDelta = previousValue !== 0 ?;
-        Math.abs((currentValue - previousValue) / previousValue * 100) : 
+        Math.abs((currentValue - previousValue) / previousValue * 100) :
         100; // If previous value was 0, consider it a 100% change
-      
+
       // Check if delta exceeds thresholds
       let violated = false;
-      
+
       if (rule.absolute_delta !== null && absoluteDelta > rule.absolute_delta) {
         violated = true;
       }
-      
+
       if (rule.percent_delta !== null && percentDelta > rule.percent_delta) {
         violated = true;
       }
-      
-      if (violated) {
+
+      if (violated != null) {
         violations.push({
-          rule: rule,
-          previousResult: previousResult,
+          rule: rule;
+          previousResult: previousResult;
           absoluteDelta,
           percentDelta,
-          timeWindowHours: timeWindowHours
+          timeWindowHours: timeWindowHours;
         });
-        
+
         // If action is 'block', stop checking further rules
         if (rule.action === 'block') {
           break;
@@ -544,23 +545,23 @@ export const POST_EVALUATE = async (request: NextRequest) => {
 
     // Log evaluation
     await auditLog({
-      userId: session.user.id,
-      action: 'evaluate',
-      resource: 'laboratory_delta_checks',
+      userId: session.user.id;
+      action: 'evaluate';
+      resource: 'laboratory_delta_checks';
       details: {
         testId,
         patientId,
         resultValue,
         resultUnits,
-        violations: violations.length
+        violations: violations.length;
       }
     });
 
     if (violations.length === 0) {
       return NextResponse.json({
-        passed: true,
-        message: 'All delta checks passed',
-        details: null
+        passed: true;
+        message: 'All delta checks passed';
+        details: null;
       });
     } else {
       // Return the most severe violation
@@ -568,27 +569,27 @@ export const POST_EVALUATE = async (request: NextRequest) => {
         const severityOrder = { critical: 3, high: 2, warning: 1 };
         return severityOrder[b.rule.severity] - severityOrder[a.rule.severity];
       });
-      
+
       const worstViolation = sortedViolations[0];
-      
+
       return NextResponse.json({
-        passed: false,
+        passed: false;
         message: `Delta check violation: ${worstViolation.rule.severity} severity`,
         details: {
-          rule: worstViolation.rule,
-          previousResult: worstViolation.previousResult,
-          absoluteDelta: worstViolation.absoluteDelta,
-          percentDelta: worstViolation.percentDelta,
-          timeWindowHours: worstViolation.timeWindowHours,
-          action: worstViolation.rule.action,
-          allViolations: violations
+          rule: worstViolation.rule;
+          previousResult: worstViolation.previousResult;
+          absoluteDelta: worstViolation.absoluteDelta;
+          percentDelta: worstViolation.percentDelta;
+          timeWindowHours: worstViolation.timeWindowHours;
+          action: worstViolation.rule.action;
+          allViolations: violations;
         }
       });
     }
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to evaluate delta checks',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to evaluate delta checks';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }

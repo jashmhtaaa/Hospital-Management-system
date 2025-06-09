@@ -1,23 +1,21 @@
+import React, { useState, useEffect } from 'react';
+import {
 }
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  CardTitle, 
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
   CardDescription;
 } from '@/components/ui/card';
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
+  Tabs,
+  TabsContent,
+  TabsList,
   TabsTrigger;
 } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { 
   Dialog,
   DialogContent,
   DialogDescription,
@@ -28,11 +26,10 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
   SelectValue;
 } from '@/components/ui/select';
 import { DatePicker } from '@/components/ui/date-picker';
@@ -42,7 +39,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { formatCurrency, formatDate } from '@/lib/formatters';
 
-export default const BillingDashboard = () {
+export default const _BillingDashboard = () {
   const [activeTab, setActiveTab] = useState('invoices');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -56,14 +53,14 @@ export default const BillingDashboard = () {
   const fetchBillingData = async () => {
     setLoading(true),
     setError(null);
-    
+
     try {
       // In a real implementation, this would fetch data from the API
       // For now, we'll simulate the data
-      
+
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Generate simulated data based on active tab
       let data;
       switch (activeTab) {
@@ -82,9 +79,9 @@ export default const BillingDashboard = () {
         case 'discounts':
           data = generateDiscountsData();
           break;
-        default: data = generateInvoicesData()
+        default: data = generateInvoicesData();
       }
-      
+
       setBillingData(data);
     } catch (err) {
       setError('Failed to load billing data. Please try again.');
@@ -189,24 +186,24 @@ export default const BillingDashboard = () {
   // Filter functions
   const filterInvoices = () => {
     if (!billingData || !billingData.invoices) return [];
-    
+
     return billingData.invoices.filter((invoice: unknown) => {
       // Filter by search query
       const matchesSearch = searchQuery === '' ||;
         invoice.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
         invoice.patientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         invoice.patientId.toLowerCase().includes(searchQuery.toLowerCase());
-      
+
       // Filter by status
       const matchesStatus = filterStatus === 'all' || invoice.status === filterStatus;
-      
+
       return matchesSearch && matchesStatus;
     });
   };
 
   const filterPayments = () => {
     if (!billingData || !billingData.payments) return [];
-    
+
     return billingData.payments.filter((payment: unknown) => {
       // Filter by search query
       const matchesSearch = searchQuery === '' ||;
@@ -214,73 +211,73 @@ export default const BillingDashboard = () {
         payment.invoiceId.toLowerCase().includes(searchQuery.toLowerCase()) ||
         payment.patientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         payment.patientId.toLowerCase().includes(searchQuery.toLowerCase());
-      
+
       // Filter by status
       const matchesStatus = filterStatus === 'all' || payment.status === filterStatus;
-      
+
       return matchesSearch && matchesStatus;
     });
   };
 
   const filterServiceItems = () => {
     if (!billingData || !billingData.serviceItems) return [];
-    
+
     return billingData.serviceItems.filter((item: unknown) => {
       // Filter by search query
       const matchesSearch = searchQuery === '' ||;
         item.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.category.toLowerCase().includes(searchQuery.toLowerCase());
-      
+
       // Filter by active status
       const matchesStatus = filterStatus === 'all' ||;
         (filterStatus === 'active' && item.active) ||;
         (filterStatus === 'inactive' && !item.active);
-      
+
       return matchesSearch && matchesStatus;
     });
   };
 
   const filterPackages = () => {
     if (!billingData || !billingData.packages) return [];
-    
+
     return billingData.packages.filter((pkg: unknown) => {
       // Filter by search query
       const matchesSearch = searchQuery === '' ||;
         pkg.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
         pkg.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (pkg.description && pkg.description.toLowerCase().includes(searchQuery.toLowerCase()));
-      
+        (pkg?.description && pkg.description.toLowerCase().includes(searchQuery.toLowerCase()));
+
       // Filter by active status
       const matchesStatus = filterStatus === 'all' ||;
         (filterStatus === 'active' && pkg.active) ||;
         (filterStatus === 'inactive' && !pkg.active);
-      
+
       return matchesSearch && matchesStatus;
     });
   };
 
   const filterDiscounts = () => {
     if (!billingData || !billingData.discounts) return [];
-    
+
     return billingData.discounts.filter((discount: unknown) => {
       // Filter by search query
       const matchesSearch = searchQuery === '' ||;
         discount.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
         discount.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (discount.description && discount.description.toLowerCase().includes(searchQuery.toLowerCase()));
-      
+        (discount?.description && discount.description.toLowerCase().includes(searchQuery.toLowerCase()));
+
       // Filter by active status
       const matchesStatus = filterStatus === 'all' ||;
         (filterStatus === 'active' && discount.active) ||;
         (filterStatus === 'inactive' && !discount.active);
-      
+
       return matchesSearch && matchesStatus;
     });
   };
 
   // Render loading state
-  if (loading) {
+  if (loading != null) {
     return (
       <div className="flex items-center justify-center h-screen">;
         <Spinner size="lg" />
@@ -290,7 +287,7 @@ export default const BillingDashboard = () {
   }
 
   // Render error state
-  if (error) {
+  if (error != null) {
     return (
       <div className="p-4">;
         <Alert variant="destructive">;
@@ -561,42 +558,42 @@ export default const BillingDashboard = () {
                     { header: 'Patient ID', accessorKey: 'patientId' },
                     { header: 'Patient Name', accessorKey: 'patientName' },
                     { header: 'Visit Type', accessorKey: 'visitType' },
-                    { 
-                      header: 'Bill Date', 
-                      accessorKey: 'billDate',
+                    {
+                      header: 'Bill Date';
+                      accessorKey: 'billDate';
                       cell: ({ row }) => formatDate(row.original.billDate);
                     },
-                    { 
-                      header: 'Total Amount', 
-                      accessorKey: 'totalAmount',
+                    {
+                      header: 'Total Amount';
+                      accessorKey: 'totalAmount';
                       cell: ({ row }) => formatCurrency(row.original.totalAmount);
                     },
-                    { 
-                      header: 'Paid Amount', 
-                      accessorKey: 'paidAmount',
+                    {
+                      header: 'Paid Amount';
+                      accessorKey: 'paidAmount';
                       cell: ({ row }) => formatCurrency(row.original.paidAmount);
                     },
-                    { 
-                      header: 'Outstanding', 
-                      accessorKey: 'outstandingAmount',
+                    {
+                      header: 'Outstanding';
+                      accessorKey: 'outstandingAmount';
                       cell: ({ row }) => formatCurrency(row.original.outstandingAmount);
                     },
-                    { 
-                      header: 'Status', 
-                      accessorKey: 'status',
+                    {
+                      header: 'Status';
+                      accessorKey: 'status';
                       cell: ({ row }) => {
                         const status = row.original.status;
                         const statusColors: Record<string, string> = {
-                          draft: 'bg-gray-100 text-gray-800',
-                          pending: 'bg-yellow-100 text-yellow-800',
-                          verified: 'bg-blue-100 text-blue-800',
-                          approved: 'bg-purple-100 text-purple-800',
-                          sent: 'bg-pink-100 text-pink-800',
-                          partial: 'bg-sky-100 text-sky-800',
-                          paid: 'bg-green-100 text-green-800',
-                          overdue: 'bg-red-100 text-red-800'
+                          draft: 'bg-gray-100 text-gray-800';
+                          pending: 'bg-yellow-100 text-yellow-800';
+                          verified: 'bg-blue-100 text-blue-800';
+                          approved: 'bg-purple-100 text-purple-800';
+                          sent: 'bg-pink-100 text-pink-800';
+                          partial: 'bg-sky-100 text-sky-800';
+                          paid: 'bg-green-100 text-green-800';
+                          overdue: 'bg-red-100 text-red-800';
                         };
-                        
+
                         return (
                           <Badge className={statusColors[status]}>;
                             {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -605,7 +602,7 @@ export default const BillingDashboard = () {
                       }
                     },
                     {
-                      header: 'Actions',
+                      header: 'Actions';
                       cell: ({ row }) => (
                         <div className="flex space-x-2">;
                           <Button variant="outline" size="sm">View</Button>;
@@ -636,33 +633,33 @@ export default const BillingDashboard = () {
                     { header: 'Invoice ID', accessorKey: 'invoiceId' },
                     { header: 'Patient ID', accessorKey: 'patientId' },
                     { header: 'Patient Name', accessorKey: 'patientName' },
-                    { 
-                      header: 'Payment Date', 
-                      accessorKey: 'paymentDate',
+                    {
+                      header: 'Payment Date';
+                      accessorKey: 'paymentDate';
                       cell: ({ row }) => formatDate(row.original.paymentDate);
                     },
-                    { 
-                      header: 'Amount', 
-                      accessorKey: 'amount',
+                    {
+                      header: 'Amount';
+                      accessorKey: 'amount';
                       cell: ({ row }) => formatCurrency(row.original.amount);
                     },
                     { header: 'Method', accessorKey: 'paymentMethod' },
                     { header: 'Reference', accessorKey: 'referenceNumber' },
-                    { 
-                      header: 'Status', 
-                      accessorKey: 'status',
+                    {
+                      header: 'Status';
+                      accessorKey: 'status';
                       cell: ({ row }) => {
                         const status = row.original.status;
                         const statusColors: Record<string, string> = {
-                          pending: 'bg-yellow-100 text-yellow-800',
-                          processing: 'bg-blue-100 text-blue-800',
-                          completed: 'bg-green-100 text-green-800',
-                          failed: 'bg-red-100 text-red-800',
-                          refunded: 'bg-purple-100 text-purple-800',
-                          partially_refunded: 'bg-pink-100 text-pink-800',
-                          cancelled: 'bg-gray-100 text-gray-800'
+                          pending: 'bg-yellow-100 text-yellow-800';
+                          processing: 'bg-blue-100 text-blue-800';
+                          completed: 'bg-green-100 text-green-800';
+                          failed: 'bg-red-100 text-red-800';
+                          refunded: 'bg-purple-100 text-purple-800';
+                          partially_refunded: 'bg-pink-100 text-pink-800';
+                          cancelled: 'bg-gray-100 text-gray-800';
                         };
-                        
+
                         return (
                           <Badge className={statusColors[status]}>;
                             {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -671,7 +668,7 @@ export default const BillingDashboard = () {
                       }
                     },
                     {
-                      header: 'Actions',
+                      header: 'Actions';
                       cell: ({ row }) => (
                         <div className="flex space-x-2">;
                           <Button variant="outline" size="sm">View</Button>;
@@ -703,19 +700,19 @@ export default const BillingDashboard = () {
                     { header: 'Code', accessorKey: 'code' },
                     { header: 'Name', accessorKey: 'name' },
                     { header: 'Category', accessorKey: 'category' },
-                    { 
-                      header: 'Unit Price', 
-                      accessorKey: 'unitPrice',
+                    {
+                      header: 'Unit Price';
+                      accessorKey: 'unitPrice';
                       cell: ({ row }) => formatCurrency(row.original.unitPrice);
                     },
-                    { 
-                      header: 'Tax Rate', 
-                      accessorKey: 'taxRate',
+                    {
+                      header: 'Tax Rate';
+                      accessorKey: 'taxRate';
                       cell: ({ row }) => `${row.original.taxRate}%`;
                     },
-                    { 
-                      header: 'Status', 
-                      accessorKey: 'active',
+                    {
+                      header: 'Status';
+                      accessorKey: 'active';
                       cell: ({ row }) => (
                         <Badge className={row.original.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>;
                           {row.original.active ? 'Active' : 'Inactive'}
@@ -723,7 +720,7 @@ export default const BillingDashboard = () {
                       );
                     },
                     {
-                      header: 'Actions',
+                      header: 'Actions';
                       cell: ({ row }) => (
                         <div className="flex space-x-2">;
                           <Button variant="outline" size="sm">Edit</Button>;
@@ -754,27 +751,27 @@ export default const BillingDashboard = () {
                     { header: 'Code', accessorKey: 'code' },
                     { header: 'Name', accessorKey: 'name' },
                     { header: 'Description', accessorKey: 'description' },
-                    { 
-                      header: 'Total Price', 
-                      accessorKey: 'totalPrice',
+                    {
+                      header: 'Total Price';
+                      accessorKey: 'totalPrice';
                       cell: ({ row }) => formatCurrency(row.original.totalPrice);
                     },
-                    { 
-                      header: 'Discount', 
-                      accessorKey: 'discountPercentage',
+                    {
+                      header: 'Discount';
+                      accessorKey: 'discountPercentage';
                       cell: ({ row }) => `${row.original.discountPercentage}%`;
                     },
-                    { 
-                      header: 'Final Price', 
-                      accessorKey: 'finalPrice',
+                    {
+                      header: 'Final Price';
+                      accessorKey: 'finalPrice';
                       cell: ({ row }) => {
                         const finalPrice = row.original.totalPrice * (1 - row.original.discountPercentage / 100);
                         return formatCurrency(finalPrice);
                       }
                     },
-                    { 
-                      header: 'Status', 
-                      accessorKey: 'active',
+                    {
+                      header: 'Status';
+                      accessorKey: 'active';
                       cell: ({ row }) => (
                         <Badge className={row.original.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>;
                           {row.original.active ? 'Active' : 'Inactive'}
@@ -782,7 +779,7 @@ export default const BillingDashboard = () {
                       );
                     },
                     {
-                      header: 'Actions',
+                      header: 'Actions';
                       cell: ({ row }) => (
                         <div className="flex space-x-2">;
                           <Button variant="outline" size="sm">View</Button>;
@@ -814,31 +811,31 @@ export default const BillingDashboard = () {
                     { header: 'Code', accessorKey: 'code' },
                     { header: 'Name', accessorKey: 'name' },
                     { header: 'Description', accessorKey: 'description' },
-                    { 
-                      header: 'Type', 
-                      accessorKey: 'discountType',
+                    {
+                      header: 'Type';
+                      accessorKey: 'discountType';
                       cell: ({ row }) => row.original.discountType === 'percentage' ? 'Percentage' : 'Fixed Amount'
                     },
-                    { 
-                      header: 'Value', 
-                      accessorKey: 'discountValue',
-                      cell: ({ row }) => row.original.discountType === 'percentage' ? 
-                        `${row.original.discountValue}%` : 
+                    {
+                      header: 'Value';
+                      accessorKey: 'discountValue';
+                      cell: ({ row }) => row.original.discountType === 'percentage' ?
+                        `${row.original.discountValue}%` :
                         formatCurrency(row.original.discountValue);
                     },
-                    { 
-                      header: 'Min Bill Amount', 
-                      accessorKey: 'minBillAmount',
+                    {
+                      header: 'Min Bill Amount';
+                      accessorKey: 'minBillAmount';
                       cell: ({ row }) => row.original.minBillAmount ? formatCurrency(row.original.minBillAmount) : 'None'
                     },
-                    { 
-                      header: 'Max Discount', 
-                      accessorKey: 'maxDiscountAmount',
+                    {
+                      header: 'Max Discount';
+                      accessorKey: 'maxDiscountAmount';
                       cell: ({ row }) => row.original.maxDiscountAmount ? formatCurrency(row.original.maxDiscountAmount) : 'None'
                     },
-                    { 
-                      header: 'Status', 
-                      accessorKey: 'active',
+                    {
+                      header: 'Status';
+                      accessorKey: 'active';
                       cell: ({ row }) => (
                         <Badge className={row.original.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>;
                           {row.original.active ? 'Active' : 'Inactive'}
@@ -846,7 +843,7 @@ export default const BillingDashboard = () {
                       );
                     },
                     {
-                      header: 'Actions',
+                      header: 'Actions';
                       cell: ({ row }) => (
                         <div className="flex space-x-2">;
                           <Button variant="outline" size="sm">Edit</Button>;

@@ -1,11 +1,11 @@
-// src/app/api/ot/bookings/[id]/route.ts
 import { NextRequest, NextResponse } from "next/server"; // FIX: Import NextRequest
+// src/app/api/ot/bookings/[id]/route.ts
 // import { getRequestContext } from "@cloudflare/next-on-pages"
 
-export const runtime = "edge";
+export const _runtime = "edge";
 
 // GET /api/ot/bookings/[id] - Get a specific OT booking by ID
-export const GET = async (
+export const _GET = async (
   _request: NextRequest, // FIX: Use NextRequest
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -24,16 +24,16 @@ export const GET = async (
 
     // Mock data for development
     const booking = {
-      id: bookingId,
-      patient_id: "patient_123",
-      surgeon_id: "doctor_456",
-      procedure_id: "proc_789",
-      scheduled_date: new Date().toISOString(),
-      duration_minutes: 120,
-      status: "scheduled",
-      notes: "Patient has allergies to latex",
-      created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7 * 24 * 60 * 60 * 1000).toISOString(),
-      updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 24 * 60 * 60 * 1000).toISOString(),
+      id: bookingId;
+      patient_id: "patient_123";
+      surgeon_id: "doctor_456";
+      procedure_id: "proc_789";
+      scheduled_date: new Date().toISOString();
+      duration_minutes: 120;
+      status: "scheduled";
+      notes: "Patient has allergies to latex";
+      created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7 * 24 * 60 * 60 * 1000).toISOString();
+      updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 24 * 60 * 60 * 1000).toISOString();
     };
 
     if (!booking) {
@@ -57,7 +57,7 @@ export const GET = async (
 }
 
 // PUT /api/ot/bookings/[id] - Update a specific OT booking
-export const PUT = async (
+export const _PUT = async (
   _request: NextRequest, // FIX: Use NextRequest
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -77,7 +77,7 @@ export const PUT = async (
 
     // Placeholder for database update
     /*
-    const info = await DB;
+    const _info = await DB;
       .prepare(`;
         UPDATE OTBookings;
         SET;
@@ -105,9 +105,9 @@ export const PUT = async (
 
     // Mock update for development
     const updatedBooking = {
-      id: bookingId,
+      id: bookingId;
       ...updateData,
-      updated_at: new Date().toISOString(),
+      updated_at: new Date().toISOString();
     };
 
     return NextResponse.json(updatedBooking);
@@ -124,7 +124,7 @@ export const PUT = async (
 }
 
 // DELETE /api/ot/bookings/[id] - Cancel a specific OT booking
-export const DELETE = async (
+export const _DELETE = async (
   _request: NextRequest, // FIX: Use NextRequest
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -132,10 +132,10 @@ export const DELETE = async (
     // const { env } = getRequestContext()
     // const DB = env.DB
     const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    // const now = new Date().toISOString(); // Unused variable
+    // const _now = new Date().toISOString(); // Unused variable
 
     // Option 1: Hard delete (if allowed)
-    // const info = await DB.prepare("DELETE FROM OTBookings WHERE id = ?").bind(bookingId).run()
+    // const _info = await DB.prepare("DELETE FROM OTBookings WHERE id = ?").bind(bookingId).run()
 
     // Option 2: Soft delete (update status to \'cancelled\')
     // Mock implementation for development

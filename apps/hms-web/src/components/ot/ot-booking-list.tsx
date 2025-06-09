@@ -1,37 +1,38 @@
-}
 import React from 'react';
+
+
+import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-
+}
 interface Booking {
-  id: string,
-  patientName: string,
-  patientId: string,
-  surgeryType: string,
-  surgeon: string,
-  theatre: string,
-  scheduledDate: string,
-  scheduledTime: string,
-  duration: string,
-  status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled'
+  id: string;
+  patientName: string;
+  patientId: string;
+  surgeryType: string;
+  surgeon: string;
+  theatre: string;
+  scheduledDate: string;
+  scheduledTime: string;
+  duration: string;
+  status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled';
 }
 
 interface OTBookingListProps {
-  bookings: Booking[]
+  bookings: Booking[];
 }
 
 /**
  * Operation Theatre booking list component;
  */
-export const OTBookingList = ({ bookings }: OTBookingListProps) => {
+export const _OTBookingList = ({ bookings }: OTBookingListProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'scheduled': return <Badge variant="secondary">Scheduled</Badge>;
       case 'in-progress': return <Badge variant="warning">In Progress</Badge>;
       case 'completed': return <Badge variant="success">Completed</Badge>;
       case 'cancelled': return <Badge variant="danger">Cancelled</Badge>;
-      default: return <Badge>Unknown</Badge>
+      default: return <Badge>Unknown</Badge>;
     }
   };
 

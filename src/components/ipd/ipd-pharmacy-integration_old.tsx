@@ -1,35 +1,35 @@
+import React, { useState, useEffect } from "react";
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react";
 // import { useRouter } from "next/navigation"; // FIX: Removed unused import
 import { Loader2 } from "lucide-react";
 
 // Define interfaces for data structures
 interface PrescriptionItem {
-  id: string,
-  medication_id: string,
-  medication_name: string,
-  dosage: string,
-  frequency: string,
-  duration: string,
-  dispensed_quantity: number,
-  quantity: number
+  id: string;
+  medication_id: string;
+  medication_name: string;
+  dosage: string;
+  frequency: string;
+  duration: string;
+  dispensed_quantity: number;
+  quantity: number;
 }
 
 interface Prescription {
-  id: string,
-  date: string,
+  id: string;
+  date: string;
   status: string; // e.g., 'active', 'partially_dispensed', 'completed'
-  items: PrescriptionItem[]
+  items: PrescriptionItem[];
 }
 
 interface MedicationScheduleItem {
-  id: string,
-  prescription_item_id: string,
-  medication_name: string,
-  scheduled_time: string,
+  id: string;
+  prescription_item_id: string;
+  medication_name: string;
+  scheduled_time: string;
   status: "pending" | "administered" | "skipped" | "held";
   condition?: string;
 }
@@ -38,22 +38,22 @@ interface AdministrationRecord {
   id: string;
   schedule_id?: string; // Link to schedule if applicable
   prescription_item_id?: string; // Link to prescription item
-  medication_name: string,
-  administered_at: string,
+  medication_name: string;
+  administered_at: string;
   administered_by: string; // Name or ID of the nurse
   notes?: string;
 }
 
 interface IPDPharmacyIntegrationProperties {
-  admissionId: string | null,
-  patientId: string | null
+  admissionId: string | null;
+  patientId: string | null;
 }
 
 const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   admissionId,
   patientId,
 }) => {
-  // const router = useRouter(); // FIX: Removed unused router
+  // const _router = useRouter(); // FIX: Removed unused router
   const [loading, setLoading] = useState<boolean>(true);
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
   const [medicationSchedule, setMedicationSchedule] = useState<;
@@ -88,9 +88,9 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         // if (!scheduleRes.ok) throw new Error("Failed to fetch medication schedule")
         // if (!recordsRes.ok) throw new Error("Failed to fetch administration records")
 
-        // const prescriptionsData = await prescriptionsRes.json()
-        // const scheduleData = await scheduleRes.json()
-        // const recordsData = await recordsRes.json()
+        // const _prescriptionsData = await prescriptionsRes.json()
+        // const _scheduleData = await scheduleRes.json()
+        // const _recordsData = await recordsRes.json()
 
         // setPrescriptions(prescriptionsData.prescriptions || [])
         // setMedicationSchedule(scheduleData.schedule || [])
@@ -100,66 +100,66 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         await new Promise((resolve) => setTimeout(resolve, 700));
         const mockPrescriptions: Prescription[] = [
           {
-            id: "presc_002",
-            date: "2025-04-25",
-            status: "partially_dispensed",
+            id: "presc_002";
+            date: "2025-04-25";
+            status: "partially_dispensed";
             items: [
               {
-                id: "item_003",
-                medication_id: "med_002",
-                medication_name: "Amoxicillin 250mg",
-                dosage: "1 capsule",
-                frequency: "BID",
-                duration: "7 days",
-                dispensed_quantity: 10,
-                quantity: 14,
+                id: "item_003";
+                medication_id: "med_002";
+                medication_name: "Amoxicillin 250mg";
+                dosage: "1 capsule";
+                frequency: "BID";
+                duration: "7 days";
+                dispensed_quantity: 10;
+                quantity: 14;
               },
               {
-                id: "item_004",
-                medication_id: "med_001",
-                medication_name: "Paracetamol 500mg",
-                dosage: "1 tablet",
-                frequency: "PRN",
-                duration: "N/A",
-                dispensed_quantity: 5,
-                quantity: 10,
+                id: "item_004";
+                medication_id: "med_001";
+                medication_name: "Paracetamol 500mg";
+                dosage: "1 tablet";
+                frequency: "PRN";
+                duration: "N/A";
+                dispensed_quantity: 5;
+                quantity: 10;
               },
             ],
           },
         ];
         const mockSchedule: MedicationScheduleItem[] = [
           {
-            id: "sched_001",
-            prescription_item_id: "item_003",
-            medication_name: "Amoxicillin 250mg",
-            scheduled_time: "08:00",
-            status: "pending",
+            id: "sched_001";
+            prescription_item_id: "item_003";
+            medication_name: "Amoxicillin 250mg";
+            scheduled_time: "08:00";
+            status: "pending";
           },
           {
-            id: "sched_002",
-            prescription_item_id: "item_003",
-            medication_name: "Amoxicillin 250mg",
-            scheduled_time: "20:00",
-            status: "pending",
+            id: "sched_002";
+            prescription_item_id: "item_003";
+            medication_name: "Amoxicillin 250mg";
+            scheduled_time: "20:00";
+            status: "pending";
           },
           {
-            id: "sched_003",
-            prescription_item_id: "item_004",
-            medication_name: "Paracetamol 500mg",
-            scheduled_time: "12:00",
-            status: "pending",
-            condition: "If fever > 101F",
+            id: "sched_003";
+            prescription_item_id: "item_004";
+            medication_name: "Paracetamol 500mg";
+            scheduled_time: "12:00";
+            status: "pending";
+            condition: "If fever > 101F";
           },
         ];
         const mockRecords: AdministrationRecord[] = [
           {
-            id: "admin_001",
-            schedule_id: "sched_001",
-            prescription_item_id: "item_003",
-            medication_name: "Amoxicillin 250mg",
-            administered_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7_200_000).toISOString(),
-            administered_by: "Nurse Jane",
-            notes: "Patient took medication without issues.",
+            id: "admin_001";
+            schedule_id: "sched_001";
+            prescription_item_id: "item_003";
+            medication_name: "Amoxicillin 250mg";
+            administered_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7_200_000).toISOString();
+            administered_by: "Nurse Jane";
+            notes: "Patient took medication without issues.";
           },
         ];
 
@@ -191,20 +191,20 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
     setLoading(true); // Use a specific loading state for this action if needed
     try {
       // Simulate API call
-      // const response = await fetch(`/api/ipd/admissions/${admissionId}/medication-administration`, {
-      //   method: "POST",
+      // const _response = await fetch(`/api/ipd/admissions/${admissionId}/medication-administration`, {
+      //   method: "POST";
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify({
-      //     schedule_id: scheduleItem.id,
-      //     prescription_item_id: scheduleItem.prescription_item_id,
-      //     medication_name: scheduleItem.medication_name,
-      //     administered_time: new Date().toISOString(),
+      //     schedule_id: scheduleItem.id;
+      //     prescription_item_id: scheduleItem.prescription_item_id;
+      //     medication_name: scheduleItem.medication_name;
+      //     administered_time: new Date().toISOString();
       //     // administered_by_id: Get current user ID from session
-      //     notes: "Administered as scheduled.",
+      //     notes: "Administered as scheduled.";
       //   }),
       // })
       // if (!response.ok) {
-      //   const errorData = await response.json().catch(() => ({}))
+      //   const _errorData = await response.json().catch(() => ({}))
       //   throw new Error(errorData.error || "Failed to record administration")
       // }
       // const newRecord: AdministrationRecord = await response.json()
@@ -213,12 +213,12 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       await new Promise((resolve) => setTimeout(resolve, 500));
       const newRecord: AdministrationRecord = {
         id: `admin_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-        schedule_id: scheduleItem.id,
-        prescription_item_id: scheduleItem.prescription_item_id,
-        medication_name: scheduleItem.medication_name,
-        administered_at: new Date().toISOString(),
+        schedule_id: scheduleItem.id;
+        prescription_item_id: scheduleItem.prescription_item_id;
+        medication_name: scheduleItem.medication_name;
+        administered_at: new Date().toISOString();
         administered_by: "Current Nurse", // Replace with actual user data
-        notes: "Administered as scheduled.",
+        notes: "Administered as scheduled.";
       };
 
       setAdministrationRecords((previousRecords) => [
@@ -235,12 +235,12 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         );
       );
 
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     } catch (error_) {
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     } finally {
       setLoading(false);
     }
@@ -251,7 +251,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       const item = prescription.items.find(
         (pItem) => pItem.id === prescriptionItemId;
       );
-      if (item) {
+      if (item != null) {
         return item.dosage;
       }
     }
@@ -262,12 +262,12 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   const formatDate = (dateString: string): string => {
     try {
       const options: Intl.DateTimeFormatOptions = {
-        // year: "numeric",
-        // month: "short",
-        // day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
+        // year: "numeric";
+        // month: "short";
+        // day: "numeric";
+        hour: "2-digit";
+        minute: "2-digit";
+        hour12: true;
       }
       return new Intl.DateTimeFormat(undefined, options).format(
         new Date(dateString);
@@ -277,7 +277,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
     }
   };
 
-  if (loading) {
+  if (loading != null) {
     return (
       <div className="flex justify-center items-center h-64">;
         <Loader2 className="h-8 w-8 animate-spin text-primary" /> Loading;
@@ -286,7 +286,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
     );
   }
 
-  if (error) {
+  if (error != null) {
     return (
       <div className="text-center text-red-500 p-4" role="alert">;
         {error}

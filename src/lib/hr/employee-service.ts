@@ -1,7 +1,8 @@
 import { PrismaClient } from '@prisma/client';
+
+
 import { Practitioner, PractitionerRole } from '@/lib/hr/types';
 import { cache } from '@/lib/cache';
-
 const prisma = new PrismaClient();
 
 /**
@@ -17,8 +18,8 @@ export class EmployeeService {
    * Create a new employee record;
    */
   async createEmployee(data: {
-    employeeId: string,
-    firstName: string,
+    employeeId: string;
+    firstName: string;
     lastName: string;
     middleName?: string;
     gender?: 'MALE' | 'FEMALE' | 'OTHER' | 'UNKNOWN';
@@ -32,7 +33,7 @@ export class EmployeeService {
     photo?: string;
     emergencyContact?: unknown;
     qualifications?: {
-      code: string,
+      code: string;
       name: string;
       issuer?: string;
       identifier?: string;
@@ -41,8 +42,8 @@ export class EmployeeService {
       attachment?: string;
     }[];
     positions?: {
-      positionId: string,
-      isPrimary: boolean,
+      positionId: string;
+      isPrimary: boolean;
       startDate: Date;
       endDate?: Date;
     }[];
@@ -51,37 +52,37 @@ export class EmployeeService {
       // Create the employee record
       const employee = await tx.employee.create({
         data: {
-          employeeId: data.employeeId,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          middleName: data.middleName,
-          gender: data.gender,
-          birthDate: data.birthDate,
-          email: data.email,
-          phone: data.phone,
-          address: data.address,
-          joiningDate: data.joiningDate,
-          departmentId: data.departmentId,
-          userId: data.userId,
-          photo: data.photo,
-          emergencyContact: data.emergencyContact,
+          employeeId: data.employeeId;
+          firstName: data.firstName;
+          lastName: data.lastName;
+          middleName: data.middleName;
+          gender: data.gender;
+          birthDate: data.birthDate;
+          email: data.email;
+          phone: data.phone;
+          address: data.address;
+          joiningDate: data.joiningDate;
+          departmentId: data.departmentId;
+          userId: data.userId;
+          photo: data.photo;
+          emergencyContact: data.emergencyContact;
         },
       });
 
       // Add qualifications if provided
-      if (data.qualifications && data.qualifications.length > 0) {
+      if (data?.qualifications && data.qualifications.length > 0) {
         await Promise.all(
           data.qualifications.map((qual) =>
             tx.qualification.create({
               data: {
-                employeeId: employee.id,
-                code: qual.code,
-                name: qual.name,
-                issuer: qual.issuer,
-                identifier: qual.identifier,
-                startDate: qual.startDate,
-                endDate: qual.endDate,
-                attachment: qual.attachment,
+                employeeId: employee.id;
+                code: qual.code;
+                name: qual.name;
+                issuer: qual.issuer;
+                identifier: qual.identifier;
+                startDate: qual.startDate;
+                endDate: qual.endDate;
+                attachment: qual.attachment;
               },
             });
           );
@@ -89,16 +90,16 @@ export class EmployeeService {
       }
 
       // Add positions if provided
-      if (data.positions && data.positions.length > 0) {
+      if (data?.positions && data.positions.length > 0) {
         await Promise.all(
           data.positions.map((pos) =>
             tx.employeePosition.create({
               data: {
-                employeeId: employee.id,
-                positionId: pos.positionId,
-                isPrimary: pos.isPrimary,
-                startDate: pos.startDate,
-                endDate: pos.endDate,
+                employeeId: employee.id;
+                positionId: pos.positionId;
+                isPrimary: pos.isPrimary;
+                startDate: pos.startDate;
+                endDate: pos.endDate;
               },
             });
           );
@@ -110,7 +111,7 @@ export class EmployeeService {
 
     // Invalidate relevant caches
     await this.invalidateEmployeeCache();
-    
+
     return result;
   }
 
@@ -120,41 +121,41 @@ export class EmployeeService {
    */
   async getEmployeeById(id: string) {
     const cacheKey = `${this.CACHE_PREFIX}id:${id}`;
-    
+
     // Try to get from cache first
     const cachedEmployee = await cache.get(cacheKey);
-    if (cachedEmployee) {
+    if (cachedEmployee != null) {
       return JSON.parse(cachedEmployee);
     }
-    
+
     // If not in cache, fetch from database
     const employee = await prisma.employee.findUnique({
       where: { id },
       include: {
-        department: true,
+        department: true;
         positions: {
           include: {
-            position: true,
+            position: true;
           },
         },
-        qualifications: true,
+        qualifications: true;
         user: {
           select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true,
-            role: true,
+            id: true;
+            name: true;
+            email: true;
+            image: true;
+            role: true;
           },
         },
       },
     });
-    
+
     // Store in cache if found
-    if (employee) {
+    if (employee != null) {
       await cache.set(cacheKey, JSON.stringify(employee), this.CACHE_TTL);
     }
-    
+
     return employee;
   }
 
@@ -164,41 +165,41 @@ export class EmployeeService {
    */
   async getEmployeeByEmployeeId(employeeId: string) {
     const cacheKey = `${this.CACHE_PREFIX}employeeId:${employeeId}`;
-    
+
     // Try to get from cache first
     const cachedEmployee = await cache.get(cacheKey);
-    if (cachedEmployee) {
+    if (cachedEmployee != null) {
       return JSON.parse(cachedEmployee);
     }
-    
+
     // If not in cache, fetch from database
     const employee = await prisma.employee.findUnique({
       where: { employeeId },
       include: {
-        department: true,
+        department: true;
         positions: {
           include: {
-            position: true,
+            position: true;
           },
         },
-        qualifications: true,
+        qualifications: true;
         user: {
           select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true,
-            role: true,
+            id: true;
+            name: true;
+            email: true;
+            image: true;
+            role: true;
           },
         },
       },
     });
-    
+
     // Store in cache if found
-    if (employee) {
+    if (employee != null) {
       await cache.set(cacheKey, JSON.stringify(employee), this.CACHE_TTL);
     }
-    
+
     return employee;
   }
 
@@ -206,7 +207,7 @@ export class EmployeeService {
    * Update an employee record;
    */
   async updateEmployee(
-    id: string,
+    id: string;
     data: {
       firstName?: string;
       lastName?: string;
@@ -227,19 +228,19 @@ export class EmployeeService {
       where: { id },
       data,
       include: {
-        department: true,
+        department: true;
         positions: {
           include: {
-            position: true,
+            position: true;
           },
         },
-        qualifications: true,
+        qualifications: true;
       },
     });
-    
+
     // Invalidate relevant caches
     await this.invalidateEmployeeCache(id);
-    
+
     return result;
   }
 
@@ -268,20 +269,20 @@ export class EmployeeService {
   }) {
     const where: unknown = { active };
 
-    if (departmentId) {
+    if (departmentId != null) {
       where.departmentId = departmentId;
     }
 
-    if (positionId) {
+    if (positionId != null) {
       where.positions = {
         some: {
           positionId,
-          endDate: null, // Only current positions
+          endDate: null, // Only current positions;
         },
       };
     }
 
-    if (search) {
+    if (search != null) {
       where.OR = [
         { firstName: { contains: search, mode: 'insensitive' } },
         { lastName: { contains: search, mode: 'insensitive' } },
@@ -294,28 +295,28 @@ export class EmployeeService {
     const cacheKey = `${this.CACHE_PREFIX}list:${JSON.stringify({
       skip, take, cursor, departmentId, positionId, search, active, includeDetails;
     })}`;
-    
+
     // Try to get from cache first
     const cachedResult = await cache.get(cacheKey);
-    if (cachedResult) {
+    if (cachedResult != null) {
       return JSON.parse(cachedResult);
     }
 
     // Determine what to include based on the detail level requested
     const include: unknown = {
-      department: true,
+      department: true;
     };
-    
-    if (includeDetails) {
+
+    if (includeDetails != null) {
       include.positions = {
         include: {
-          position: true,
+          position: true;
         },
         where: {
-          endDate: null, // Only current positions
+          endDate: null, // Only current positions;
         },
       };
-      
+
       include.qualifications = {
         where: {
           OR: [
@@ -328,13 +329,13 @@ export class EmployeeService {
       // For list views, just include primary position
       include.positions = {
         include: {
-          position: true,
+          position: true;
         },
         where: {
-          isPrimary: true,
-          endDate: null, // Only current positions
+          isPrimary: true;
+          endDate: null, // Only current positions;
         },
-        take: 1,
+        take: 1;
       };
     }
 
@@ -346,7 +347,7 @@ export class EmployeeService {
         where,
         skip,
         take,
-        cursor: cursorObj,
+        cursor: cursorObj;
         orderBy: { lastName: 'asc' },
         include,
       }),
@@ -358,12 +359,12 @@ export class EmployeeService {
       total,
       skip,
       take,
-      nextCursor: employees.length === take ? employees[employees.length - 1].id : null,
+      nextCursor: employees.length === take ? employees[employees.length - 1].id : null;
     };
-    
+
     // Store in cache
     await cache.set(cacheKey, JSON.stringify(result), 300); // 5 minutes TTL for lists
-    
+
     return result;
   }
 
@@ -371,9 +372,9 @@ export class EmployeeService {
    * Add a qualification to an employee;
    */
   async addQualification(
-    employeeId: string,
+    employeeId: string;
     data: {
-      code: string,
+      code: string;
       name: string;
       issuer?: string;
       identifier?: string;
@@ -388,10 +389,10 @@ export class EmployeeService {
         ...data,
       },
     });
-    
+
     // Invalidate relevant caches
     await this.invalidateEmployeeCache(employeeId);
-    
+
     return result;
   }
 
@@ -399,7 +400,7 @@ export class EmployeeService {
    * Update a qualification;
    */
   async updateQualification(
-    id: string,
+    id: string;
     data: {
       code?: string;
       name?: string;
@@ -415,17 +416,17 @@ export class EmployeeService {
       where: { id },
       select: { employeeId: true },
     });
-    
+
     const result = await prisma.qualification.update({
       where: { id },
       data,
     });
-    
+
     // Invalidate relevant caches
-    if (qualification) {
+    if (qualification != null) {
       await this.invalidateEmployeeCache(qualification.employeeId);
     }
-    
+
     return result;
   }
 
@@ -438,16 +439,16 @@ export class EmployeeService {
       where: { id },
       select: { employeeId: true },
     });
-    
+
     const result = await prisma.qualification.delete({
       where: { id },
     });
-    
+
     // Invalidate relevant caches
-    if (qualification) {
+    if (qualification != null) {
       await this.invalidateEmployeeCache(qualification.employeeId);
     }
-    
+
     return result;
   }
 
@@ -455,10 +456,10 @@ export class EmployeeService {
    * Assign a position to an employee;
    */
   async assignPosition(
-    employeeId: string,
+    employeeId: string;
     data: {
-      positionId: string,
-      isPrimary: boolean,
+      positionId: string;
+      isPrimary: boolean;
       startDate: Date;
       endDate?: Date;
     }
@@ -468,11 +469,11 @@ export class EmployeeService {
       await prisma.employeePosition.updateMany({
         where: {
           employeeId,
-          isPrimary: true,
-          endDate: null, // Only current positions
+          isPrimary: true;
+          endDate: null, // Only current positions;
         },
         data: {
-          isPrimary: false,
+          isPrimary: false;
         },
       });
     }
@@ -483,13 +484,13 @@ export class EmployeeService {
         ...data,
       },
       include: {
-        position: true,
+        position: true;
       },
     });
-    
+
     // Invalidate relevant caches
     await this.invalidateEmployeeCache(employeeId);
-    
+
     return result;
   }
 
@@ -497,7 +498,7 @@ export class EmployeeService {
    * Update a position assignment;
    */
   async updatePositionAssignment(
-    id: string,
+    id: string;
     data: {
       isPrimary?: boolean;
       endDate?: Date;
@@ -512,13 +513,13 @@ export class EmployeeService {
     if (data.isPrimary) {
       await prisma.employeePosition.updateMany({
         where: {
-          employeeId: positionAssignment?.employeeId,
-          isPrimary: true,
+          employeeId: positionAssignment?.employeeId;
+          isPrimary: true;
           id: { not: id },
-          endDate: null, // Only current positions
+          endDate: null, // Only current positions;
         },
         data: {
-          isPrimary: false,
+          isPrimary: false;
         },
       });
     }
@@ -527,15 +528,15 @@ export class EmployeeService {
       where: { id },
       data,
       include: {
-        position: true,
+        position: true;
       },
     });
-    
+
     // Invalidate relevant caches
-    if (positionAssignment) {
+    if (positionAssignment != null) {
       await this.invalidateEmployeeCache(positionAssignment.employeeId);
     }
-    
+
     return result;
   }
 
@@ -547,20 +548,20 @@ export class EmployeeService {
       where: { id },
       select: { employeeId: true },
     });
-    
+
     const result = await prisma.employeePosition.update({
       where: { id },
       data: {
         endDate,
-        isPrimary: false, // No longer primary if ended
+        isPrimary: false, // No longer primary if ended;
       },
     });
-    
+
     // Invalidate relevant caches
-    if (positionAssignment) {
+    if (positionAssignment != null) {
       await this.invalidateEmployeeCache(positionAssignment.employeeId);
     }
-    
+
     return result;
   }
 
@@ -572,61 +573,61 @@ export class EmployeeService {
     // Create the FHIR Practitioner resource
     const practitioner: Practitioner = {
       resourceType: "Practitioner", // Added for FHIR R5 compliance
-      id: employee.id,
+      id: employee.id;
       meta: {
-        profile: ["https://hl7.org/fhir/r5/StructureDefinition/Practitioner"]
+        profile: ["https://hl7.org/fhir/r5/StructureDefinition/Practitioner"];
       },
       identifier: [
         {
-          use: 'official',
-          system: 'https://hospital.example.org/employees',
-          value: employee.employeeId,
+          use: 'official';
+          system: 'https://hospital.example.org/employees';
+          value: employee.employeeId;
         },
       ],
-      active: employee.active,
+      active: employee.active;
       name: [
         {
-          use: 'official',
-          family: employee.lastName,
-          given: [employee.firstName],
-          prefix: employee.middleName ? [employee.middleName] : undefined,
+          use: 'official';
+          family: employee.lastName;
+          given: [employee.firstName];
+          prefix: employee.middleName ? [employee.middleName] : undefined;
         },
       ],
-      telecom: [],
-      address: [],
-      gender: employee.gender?.toLowerCase() as any,
-      birthDate: employee.birthDate?.toISOString().split('T')[0],
-      qualification: [],
+      telecom: [];
+      address: [];
+      gender: employee.gender?.toLowerCase() as any;
+      birthDate: employee.birthDate?.toISOString().split('T')[0];
+      qualification: [];
     }
 
     // Add contact information
     if (employee.email) {
       practitioner.telecom.push({
-        system: 'email',
-        value: employee.email,
-        use: 'work',
+        system: 'email';
+        value: employee.email;
+        use: 'work';
       });
     }
 
     if (employee.phone) {
       practitioner.telecom.push({
-        system: 'phone',
-        value: employee.phone,
-        use: 'work',
+        system: 'phone';
+        value: employee.phone;
+        use: 'work';
       });
     }
 
     // Add address if available
     if (employee.address) {
       practitioner.address.push({
-        use: 'work',
-        type: 'both',
-        text: employee.address.text,
-        line: employee.address.line,
-        city: employee.address.city,
-        state: employee.address.state,
-        postalCode: employee.address.postalCode,
-        country: employee.address.country,
+        use: 'work';
+        type: 'both';
+        text: employee.address.text;
+        line: employee.address.line;
+        city: employee.address.city;
+        state: employee.address.state;
+        postalCode: employee.address.postalCode;
+        country: employee.address.country;
       });
     }
 
@@ -634,40 +635,40 @@ export class EmployeeService {
     if (employee.photo) {
       practitioner.photo = [
         {
-          url: employee.photo,
-          contentType: this.getContentType(employee.photo),
+          url: employee.photo;
+          contentType: this.getContentType(employee.photo);
         },
       ];
     }
 
     // Add qualifications
-    if (employee.qualifications && employee.qualifications.length > 0) {
+    if (employee?.qualifications && employee.qualifications.length > 0) {
       practitioner.qualification = employee.qualifications.map((qual: unknown) => ({
         identifier: qual.identifier;
           ? [
               {
-                system: 'https://hospital.example.org/qualifications',
-                value: qual.identifier,
+                system: 'https://hospital.example.org/qualifications';
+                value: qual.identifier;
               },
             ]
           : undefined,
         code: {
           coding: [
             {
-              system: 'https://hospital.example.org/qualification-codes',
-              code: qual.code,
-              display: qual.name,
+              system: 'https://hospital.example.org/qualification-codes';
+              code: qual.code;
+              display: qual.name;
             },
           ],
-          text: qual.name,
+          text: qual.name;
         },
         period: {
-          start: qual.startDate.toISOString(),
-          end: qual.endDate?.toISOString(),
+          start: qual.startDate.toISOString();
+          end: qual.endDate?.toISOString();
         },
         issuer: qual.issuer
           ? {
-              display: qual.issuer,
+              display: qual.issuer;
             }
           : undefined,
       }));
@@ -684,47 +685,47 @@ export class EmployeeService {
     // Create the FHIR PractitionerRole resource
     const practitionerRole: PractitionerRole = {
       resourceType: "PractitionerRole", // Added for FHIR R5 compliance
-      id: position.id,
+      id: position.id;
       meta: {
-        profile: ["https://hl7.org/fhir/r5/StructureDefinition/PractitionerRole"]
+        profile: ["https://hl7.org/fhir/r5/StructureDefinition/PractitionerRole"];
       },
       identifier: [
         {
-          system: 'https://hospital.example.org/positions',
+          system: 'https://hospital.example.org/positions';
           value: `${employee.employeeId}-${position.position.code}`,
         },
       ],
-      active: position.endDate === null,
+      active: position.endDate === null;
       period: {
-        start: position.startDate.toISOString(),
-        end: position.endDate?.toISOString(),
+        start: position.startDate.toISOString();
+        end: position.endDate?.toISOString();
       },
       practitioner: {
         reference: `Practitioner/${employee.id}`,
-        display: `/* SECURITY: Template literal eliminated */
+        display: `/* SECURITY: Template literal eliminated */;
       },
       organization: {
-        reference: 'Organization/hospital',
-        display: 'Example Hospital',
+        reference: 'Organization/hospital';
+        display: 'Example Hospital';
       },
       code: [
         {
           coding: [
             {
-              system: 'https://hospital.example.org/position-codes',
-              code: position.position.code,
-              display: position.position.title,
+              system: 'https://hospital.example.org/position-codes';
+              code: position.position.code;
+              display: position.position.title;
             },
           ],
-          text: position.position.title,
+          text: position.position.title;
         },
       ],
-      specialty: [],
-      location: [],
-      healthcareService: [],
-      telecom: [],
+      specialty: [];
+      location: [];
+      healthcareService: [];
+      telecom: [];
       availableTime: [], // Added for FHIR R5 scheduling support
-      notAvailable: [], // Added for FHIR R5 scheduling support
+      notAvailable: [], // Added for FHIR R5 scheduling support;
     };
 
     // Add department as specialty if available
@@ -733,12 +734,12 @@ export class EmployeeService {
         {
           coding: [
             {
-              system: 'https://hospital.example.org/department-codes',
-              code: employee.department.code,
-              display: employee.department.name,
+              system: 'https://hospital.example.org/department-codes';
+              code: employee.department.code;
+              display: employee.department.name;
             },
           ],
-          text: employee.department.name,
+          text: employee.department.name;
         },
       ]
     }
@@ -746,23 +747,23 @@ export class EmployeeService {
     // Add contact information
     if (employee.email) {
       practitionerRole.telecom.push({
-        system: 'email',
-        value: employee.email,
-        use: 'work',
+        system: 'email';
+        value: employee.email;
+        use: 'work';
       });
     }
 
     if (employee.phone) {
       practitionerRole.telecom.push({
-        system: 'phone',
-        value: employee.phone,
-        use: 'work',
+        system: 'phone';
+        value: employee.phone;
+        use: 'work';
       });
     }
 
     return practitionerRole;
   }
-  
+
   /**
    * Get content type from file URL;
    * Helper method for FHIR R5 compliance;
@@ -779,23 +780,23 @@ export class EmployeeService {
         return 'image/gif';
       case 'pdf':
         return 'application/pdf';
-      default: return 'application/octet-stream'
+      default: return 'application/octet-stream';
     }
   }
-  
+
   /**
    * Invalidate employee-related caches;
    * @param employeeId Optional specific employee ID to invalidate;
    */
   private async invalidateEmployeeCache(employeeId?: string) {
-    if (employeeId) {
+    if (employeeId != null) {
       // Get the employee to find all IDs
       const employee = await prisma.employee.findFirst({
         where: { id: employeeId },
         select: { id: true, employeeId: true }
       });
-      
-      if (employee) {
+
+      if (employee != null) {
         // Invalidate specific employee caches
         await Promise.all([
           cache.del(`${this.CACHE_PREFIX}id:${employee.id}`),
@@ -803,11 +804,11 @@ export class EmployeeService {
         ]);
       }
     }
-    
+
     // Invalidate list caches with pattern matching
     await cache.delPattern(`${this.CACHE_PREFIX}list: *`)
   }
-  
+
   /**
    * Get employees with expiring qualifications;
    * New method to support predictive alerts;
@@ -815,27 +816,27 @@ export class EmployeeService {
   async getEmployeesWithExpiringQualifications(daysThreshold: number = 30) {
     const thresholdDate = new Date();
     thresholdDate.setDate(thresholdDate.getDate() + daysThreshold);
-    
+
     return prisma.qualification.findMany({
       where: {
         endDate: {
-          gte: new Date(),
-          lte: thresholdDate
+          gte: new Date();
+          lte: thresholdDate;
         }
       },
       include: {
         employee: {
           include: {
-            department: true
+            department: true;
           }
         }
       },
       orderBy: {
-        endDate: 'asc'
+        endDate: 'asc';
       }
     });
   }
-  
+
   /**
    * Predict staffing needs based on historical data;
    * New method to support AI-driven workforce planning;
@@ -843,10 +844,10 @@ export class EmployeeService {
   async predictStaffingNeeds(departmentId: string, date: Date) {
     // This would integrate with an ML model in production
     // For now, we'll implement a simple algorithm based on historical patterns
-    
+
     const dayOfWeek = date.getDay();
-    const month = date.getMonth();
-    
+    const _month = date.getMonth();
+
     // Get historical attendance data for this department on similar days
     const historicalData = await prisma.attendance.findMany({
       where: {
@@ -854,7 +855,7 @@ export class EmployeeService {
           departmentId
         },
         checkInTime: {
-          gte: new Date(date.getFullYear() - 1, 0, 1) // Last year's data
+          gte: new Date(date.getFullYear() - 1, 0, 1) // Last year's data;
         }
       },
       include: {
@@ -862,101 +863,101 @@ export class EmployeeService {
           include: {
             positions: {
               include: {
-                position: true
+                position: true;
               },
               where: {
-                isPrimary: true
+                isPrimary: true;
               }
             }
           }
         }
       }
     });
-    
+
     // Group by position and day of week
     const positionDayStats: Record<string, Record<number, number>> = {};
-    
+
     historicalData.forEach(record => {
       const recordDayOfWeek = new Date(record.checkInTime).getDay();
-      const recordMonth = new Date(record.checkInTime).getMonth();
+      const _recordMonth = new Date(record.checkInTime).getMonth();
       const position = record.employee.positions[0]?.position.code || 'unknown';
-      
+
       if (!positionDayStats[position]) {
         positionDayStats[position] = {};
       }
-      
+
       if (!positionDayStats[position][recordDayOfWeek]) {
         positionDayStats[position][recordDayOfWeek] = 0;
       }
-      
+
       positionDayStats[position][recordDayOfWeek]++;
     });
-    
+
     // Calculate average staffing needs by position
     const staffingPrediction: Record<string, number> = {};
-    
+
     Object.entries(positionDayStats).forEach(([position, dayStats]) => {
       const totalForDay = dayStats[dayOfWeek] || 0;
       const daysWithData = Object.values(dayStats).filter(count => count > 0).length;
-      
+
       if (daysWithData > 0) {
         staffingPrediction[position] = Math.ceil(totalForDay / daysWithData);
       } else {
         staffingPrediction[position] = 0;
       }
     });
-    
+
     // Get current staffing levels
     const currentStaffing = await prisma.employee.findMany({
       where: {
         departmentId,
-        active: true,
+        active: true;
         positions: {
           some: {
-            endDate: null
+            endDate: null;
           }
         }
       },
       include: {
         positions: {
           include: {
-            position: true
+            position: true;
           },
           where: {
-            isPrimary: true
+            isPrimary: true;
           }
         }
       }
     });
-    
+
     // Calculate current staffing by position
     const currentStaffingByPosition: Record<string, number> = {};
-    
+
     currentStaffing.forEach(employee => {
       const position = employee.positions[0]?.position.code || 'unknown';
-      
+
       if (!currentStaffingByPosition[position]) {
         currentStaffingByPosition[position] = 0;
       }
-      
+
       currentStaffingByPosition[position]++;
     });
-    
+
     // Calculate staffing gaps
     const staffingGaps: Record<string, number> = {};
-    
+
     Object.keys({...staffingPrediction, ...currentStaffingByPosition}).forEach(position => {
       const predicted = staffingPrediction[position] || 0;
       const current = currentStaffingByPosition[position] || 0;
       staffingGaps[position] = predicted - current;
     });
-    
+
     return {
-      date: date.toISOString(),
+      date: date.toISOString();
       departmentId,
-      predicted: staffingPrediction,
-      current: currentStaffingByPosition,
-      gaps: staffingGaps
+      predicted: staffingPrediction;
+      current: currentStaffingByPosition;
+      gaps: staffingGaps;
     };
   }
-export const employeeService = new EmployeeService();
+export const _employeeService = new EmployeeService();

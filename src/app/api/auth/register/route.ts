@@ -1,7 +1,8 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { hashPassword } from "@/lib/authUtils";
 import { z } from "zod";
 
+
+import { hashPassword } from "@/lib/authUtils";
 // Cloudflare Environment Types
 interface CloudflareEnv {
   DB: D1Database;
@@ -10,21 +11,21 @@ interface CloudflareEnv {
 // Input validation schema
 const RegisterSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters long"),
-  email: z.string().email("Invalid email address"),
+  email: z.string().email("Invalid email address");
   password: z.string().min(8, "Password must be at least 8 characters long"),
-  full_name: z.string().optional(),
-  phone_number: z.string().optional(),
-  role_name: z.enum(["Admin", "Doctor", "Nurse", "Receptionist", "Lab Technician", "Pharmacist", "Patient"]).default("Patient"),
+  full_name: z.string().optional();
+  phone_number: z.string().optional();
+  role_name: z.enum(["Admin", "Doctor", "Nurse", "Receptionist", "Lab Technician", "Pharmacist", "Patient"]).default("Patient"),;
 });
 
-export const POST = async (request: Request) => {
+export const _POST = async (request: Request) => {
   try {
     const body = await request.json();
     const validation = RegisterSchema.safeParse(body);
 
     if (!validation.success) {
       return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
-        status: 400,
+        status: 400;
         headers: { "Content-Type": "application/json" },
       });
     }
@@ -42,7 +43,7 @@ export const POST = async (request: Request) => {
     const roleResult = await DB.prepare("SELECT role_id FROM Roles WHERE role_name = ?").bind(role_name).first<{ role_id: number }>();
     if (!roleResult) {
         return new Response(JSON.stringify({ error: "Invalid role specified" }), {
-            status: 400,
+            status: 400;
             headers: { "Content-Type": "application/json" },
         });
     }
@@ -53,7 +54,7 @@ export const POST = async (request: Request) => {
                                .bind(username, email)
                                .first();
 
-    if (existingUser) {
+    if (existingUser != null) {
       return new Response(JSON.stringify({ error: "Username or email already exists" }), {
         status: 409, // Conflict
         headers: { "Content-Type": "application/json" },
@@ -80,7 +81,7 @@ export const POST = async (request: Request) => {
     const newUserId = meta.last_row_id;
     if (newUserId === undefined || newUserId === null) {
         // Optionally handle this case, maybe return success without ID or throw
-        /* SECURITY: Console statement removed */
+        /* SECURITY: Console statement removed */;
     }
     return new Response(JSON.stringify({ message: "User registered successfully", userId: newUserId }), {
       status: 201, // Created
@@ -90,7 +91,7 @@ export const POST = async (request: Request) => {
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
     return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-      status: 500,
+      status: 500;
       headers: { "Content-Type": "application/json" },
     });
   }

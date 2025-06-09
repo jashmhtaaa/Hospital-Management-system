@@ -1,7 +1,8 @@
-
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+
+
 import { authService } from '@/lib/auth/auth-service';
+import { prisma } from '@/lib/prisma';
 
 // Payment Gateway Integration
 class PaymentGateway {
@@ -14,10 +15,10 @@ class PaymentGateway {
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount * 100), // Convert to cents
-      currency: currency.toLowerCase(),
+      currency: currency.toLowerCase();
       metadata: {
         billId,
-        source: 'HMS'
+        source: 'HMS';
       }
     });
 
@@ -27,33 +28,33 @@ class PaymentGateway {
         billId,
         amount,
         currency,
-        paymentIntentId: paymentIntent.id,
-        status: 'PENDING',
-        gateway: 'STRIPE'
+        paymentIntentId: paymentIntent.id;
+        status: 'PENDING';
+        gateway: 'STRIPE';
       }
     });
 
     return {
-      clientSecret: paymentIntent.client_secret,
-      paymentIntentId: paymentIntent.id
+      clientSecret: paymentIntent.client_secret;
+      paymentIntentId: paymentIntent.id;
     };
   }
 
   static async createRazorpayOrder(amount: number, currency: string = 'INR', billId: string) {
     const Razorpay = require('razorpay');
-    
+
     const razorpay = new Razorpay({
-      key_id: this.razorpayKeyId,
-      key_secret: this.razorpayKeySecret
+      key_id: this.razorpayKeyId;
+      key_secret: this.razorpayKeySecret;
     });
 
     const order = await razorpay.orders.create({
       amount: Math.round(amount * 100), // Convert to paise
-      currency: currency.toUpperCase(),
+      currency: currency.toUpperCase();
       receipt: `bill_${billId}`,
       notes: {
         billId,
-        source: 'HMS'
+        source: 'HMS';
       }
     });
 
@@ -63,16 +64,16 @@ class PaymentGateway {
         billId,
         amount,
         currency,
-        razorpayOrderId: order.id,
-        status: 'PENDING',
-        gateway: 'RAZORPAY'
+        razorpayOrderId: order.id;
+        status: 'PENDING';
+        gateway: 'RAZORPAY';
       }
     });
 
     return {
-      orderId: order.id,
-      amount: order.amount,
-      currency: order.currency
+      orderId: order.id;
+      amount: order.amount;
+      currency: order.currency;
     };
   }
 
@@ -85,8 +86,8 @@ class PaymentGateway {
     await prisma.payment.updateMany({
       where: { paymentIntentId },
       data: {
-        status: paymentIntent.status === 'succeeded' ? 'COMPLETED' : 'FAILED',
-        confirmedAt: new Date(),
+        status: paymentIntent.status === 'succeeded' ? 'COMPLETED' : 'FAILED';
+        confirmedAt: new Date();
         paymentMethodId
       }
     });
@@ -96,22 +97,22 @@ class PaymentGateway {
 
   static async verifyRazorpayPayment(razorpayOrderId: string, razorpayPaymentId: string, razorpaySignature: string) {
     const crypto = require('crypto');
-    
-    const generated_signature = crypto
+
+    const _generated_signature = crypto
       .createHmac('sha256', this.razorpayKeySecret)
       .update(razorpayOrderId + '|' + razorpayPaymentId)
       .digest('hex');
 
-    const isValid = generated_signature === razorpaySignature;
+    const isValid = _generated_signature === razorpaySignature;
 
-    if (isValid) {
+    if (isValid != null) {
       // Update payment status
       await prisma.payment.updateMany({
         where: { razorpayOrderId },
         data: {
-          status: 'COMPLETED',
+          status: 'COMPLETED';
           razorpayPaymentId,
-          confirmedAt: new Date()
+          confirmedAt: new Date();
         }
       });
 
@@ -120,7 +121,7 @@ class PaymentGateway {
         where: { razorpayOrderId }
       });
 
-      if (payment) {
+      if (payment != null) {
         await prisma.bill.update({
           where: { id: payment.billId },
           data: { status: 'PAID', paidAt: new Date() }
@@ -141,37 +142,37 @@ class PaymentGateway {
     }
 
     let refund;
-    
+
     if (payment.gateway === 'STRIPE' && payment.paymentIntentId) {
       const stripe = require('stripe')(this.stripeSecretKey);
       refund = await stripe.refunds.create({
-        payment_intent: payment.paymentIntentId,
-        amount: amount ? Math.round(amount * 100) : undefined,
-        reason: reason || 'requested_by_customer'
+        payment_intent: payment.paymentIntentId;
+        amount: amount ? Math.round(amount * 100) : undefined;
+        reason: reason || 'requested_by_customer';
       });
     } else if (payment.gateway === 'RAZORPAY' && payment.razorpayPaymentId) {
       const Razorpay = require('razorpay');
       const razorpay = new Razorpay({
-        key_id: this.razorpayKeyId,
-        key_secret: this.razorpayKeySecret
+        key_id: this.razorpayKeyId;
+        key_secret: this.razorpayKeySecret;
       });
 
       refund = await razorpay.payments.refund(payment.razorpayPaymentId, {
-        amount: amount ? Math.round(amount * 100) : undefined,
+        amount: amount ? Math.round(amount * 100) : undefined;
         notes: { reason: reason || 'Hospital refund' }
       });
     }
 
     // Record refund in database
-    if (refund) {
+    if (refund != null) {
       await prisma.refund.create({
         data: {
-          paymentId: payment.id,
-          amount: refund.amount / 100,
-          currency: payment.currency,
-          refundId: refund.id,
-          status: refund.status,
-          reason: reason || 'Hospital refund'
+          paymentId: payment.id;
+          amount: refund.amount / 100;
+          currency: payment.currency;
+          refundId: refund.id;
+          status: refund.status;
+          reason: reason || 'Hospital refund';
         }
       });
     }
@@ -182,10 +183,10 @@ class PaymentGateway {
   static async getPaymentMethods(customerId?: string) {
     const stripe = require('stripe')(this.stripeSecretKey);
 
-    if (customerId) {
+    if (customerId != null) {
       const paymentMethods = await stripe.paymentMethods.list({
-        customer: customerId,
-        type: 'card'
+        customer: customerId;
+        type: 'card';
       });
       return paymentMethods.data;
     }
@@ -197,7 +198,7 @@ class PaymentGateway {
     const stripe = require('stripe')(this.stripeSecretKey);
 
     const paymentMethod = await stripe.paymentMethods.attach(paymentMethodId, {
-      customer: customerId
+      customer: customerId;
     });
 
     return paymentMethod;
@@ -205,10 +206,10 @@ class PaymentGateway {
 }
 
 // POST /api/payments/create-intent
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     const { billId, gateway = 'STRIPE', currency = 'USD' } = await request.json();
-    
+
     const { user } = await authService.verifyToken(request);
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
@@ -228,7 +229,7 @@ export const POST = async (request: NextRequest) => {
     }
 
     let result;
-    
+
     if (gateway === 'STRIPE') {
       result = await PaymentGateway.createPaymentIntent(bill.totalAmount, currency, billId);
     } else if (gateway === 'RAZORPAY') {
@@ -243,17 +244,17 @@ export const POST = async (request: NextRequest) => {
 };
 
 // POST /api/payments/confirm
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     const { paymentIntentId, paymentMethodId, gateway = 'STRIPE' } = await request.json();
-    
+
     const { user } = await authService.verifyToken(request);
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
     let result;
-    
+
     if (gateway === 'STRIPE') {
       result = await PaymentGateway.confirmPayment(paymentIntentId, paymentMethodId);
     }
@@ -266,10 +267,10 @@ export const POST = async (request: NextRequest) => {
 };
 
 // POST /api/payments/verify-razorpay
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = await request.json();
-    
+
     const result = await PaymentGateway.verifyRazorpayPayment(
       razorpay_order_id,
       razorpay_payment_id,

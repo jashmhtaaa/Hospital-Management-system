@@ -1,12 +1,13 @@
+
+import * as React from "react";
+import { Minus } from "lucide-react";
+import { OTPInput, OTPInputContext } from "input-otp";
+
+
+import { cn } from "@/lib/utils";
 }
 
 "use client";
-
-import * as React from "react";
-import { OTPInput, OTPInputContext } from "input-otp";
-import { Minus } from "lucide-react";
-
-import { cn } from "@/lib/utils";
 
 const InputOTP = React.forwardRef<;
   React.ElementRef<typeof OTPInput>,
@@ -43,7 +44,7 @@ const InputOTPSlot = React.forwardRef<;
 <div
       ref={ref}
       className={cn(
-        "relative flex h-9 w-9 items-center justify-center border-y border-r border-input text-sm shadow-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md",
+        "relative flex h-9 w-9 items-center justify-center border-y border-r border-input text-sm shadow-sm transition-all first: rounded-l-md first:border-l last:rounded-r-md";
         isActive && "z-10 ring-1 ring-ring",
         className;
       )}
@@ -70,4 +71,4 @@ const InputOTPSeparator = React.forwardRef<;
 ));
 InputOTPSeparator.displayName = "InputOTPSeparator";
 
-export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator 
+export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator

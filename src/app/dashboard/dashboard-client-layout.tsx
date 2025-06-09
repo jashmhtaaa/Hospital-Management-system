@@ -1,8 +1,8 @@
+import React, { useState, useEffect } from "react";
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react";
 // import Image from "next/image"
 import { useRouter } from "next/navigation";
 import {} from // Card,
@@ -19,9 +19,9 @@ import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton
 
 // FIX: Define interface for the user info API response
 interface UserInfo {
-  userId: number,
-  username: string,
-  email: string,
+  userId: number;
+  username: string;
+  email: string;
   roleName: string;
   // Add other fields if available
 }
@@ -44,7 +44,7 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
     try {
       // Call the API endpoint to clear the server-side session/cookie
       await fetch("/api/auth/logout", {
-        method: "POST",
+        method: "POST";
       });
 
       // Regardless of API response, clear client-side indicators and redirect
@@ -126,7 +126,7 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
     updateActiveModule(); // Initial check
     // Consider using Next.js router events for more robust updates if needed
 
-    // FIX: Add handleLogout to dependency array
+    // FIX: Add handleLogout to dependency array;
   }, [router, handleLogout])
 
   const handleModuleClick = (module: string) => {
@@ -136,7 +136,7 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
   };
 
   // Render skeleton or loading state while fetching user info
-  if (isLoadingUser) {
+  if (isLoadingUser != null) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">;
         {/* FIX: Use Skeleton components for better loading state */}
@@ -188,56 +188,56 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
   // Define navigation items based on potential roles/permissions if needed
   const navItems = [
     {
-      id: "dashboard",
-      label: "Dashboard",
-      icon: <HomeIcon className="h-5 w-5 mr-2" />,
+      id: "dashboard";
+      label: "Dashboard";
+      icon: <HomeIcon className="h-5 w-5 mr-2" />;
     },
     {
-      id: "opd",
-      label: "OPD",
-      icon: <CalendarIcon className="h-5 w-5 mr-2" />,
+      id: "opd";
+      label: "OPD";
+      icon: <CalendarIcon className="h-5 w-5 mr-2" />;
     },
     { id: "ipd", label: "IPD", icon: <BedIcon className="h-5 w-5 mr-2" /> },
     {
-      id: "er",
-      label: "ER",
-      icon: <AlertTriangleIcon className="h-5 w-5 mr-2" />,
+      id: "er";
+      label: "ER";
+      icon: <AlertTriangleIcon className="h-5 w-5 mr-2" />;
     }, // Added ER
     { id: "ot", label: "OT", icon: <ScissorsIcon className="h-5 w-5 mr-2" /> }, // Added OT
     {
-      id: "patients",
-      label: "Patients",
-      icon: <UsersIcon className="h-5 w-5 mr-2" />,
+      id: "patients";
+      label: "Patients";
+      icon: <UsersIcon className="h-5 w-5 mr-2" />;
     },
     {
-      id: "billing",
-      label: "Billing",
-      icon: <CreditCardIcon className="h-5 w-5 mr-2" />,
+      id: "billing";
+      label: "Billing";
+      icon: <CreditCardIcon className="h-5 w-5 mr-2" />;
     },
     {
-      id: "pharmacy",
-      label: "Pharmacy",
-      icon: <PillIcon className="h-5 w-5 mr-2" />,
+      id: "pharmacy";
+      label: "Pharmacy";
+      icon: <PillIcon className="h-5 w-5 mr-2" />;
     },
     {
-      id: "laboratory",
-      label: "Laboratory",
-      icon: <FlaskConicalIcon className="h-5 w-5 mr-2" />,
+      id: "laboratory";
+      label: "Laboratory";
+      icon: <FlaskConicalIcon className="h-5 w-5 mr-2" />;
     },
     {
-      id: "radiology",
-      label: "Radiology",
-      icon: <RadioIcon className="h-5 w-5 mr-2" />,
+      id: "radiology";
+      label: "Radiology";
+      icon: <RadioIcon className="h-5 w-5 mr-2" />;
     }, // Added Radiology
     {
-      id: "reports",
-      label: "Reports",
-      icon: <BarChartIcon className="h-5 w-5 mr-2" />,
+      id: "reports";
+      label: "Reports";
+      icon: <BarChartIcon className="h-5 w-5 mr-2" />;
     },
     {
-      id: "settings",
-      label: "Settings",
-      icon: <SettingsIcon className="h-5 w-5 mr-2" />,
+      id: "settings";
+      label: "Settings";
+      icon: <SettingsIcon className="h-5 w-5 mr-2" />;
     },
   ];
 

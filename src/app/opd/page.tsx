@@ -1,20 +1,21 @@
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+import OPDAppointmentList from "@/components/opd/opd-appointment-list";
+import OPDConsultationForm from "@/components/opd/opd-consultation-form";
+import OPDPatientQueue from "@/components/opd/opd-patient-queue";
+import OPDStatistics from "@/components/opd/opd-statistics";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton for loading states
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 }
 
 // OPD Dashboard Page
 "use client";
 export const dynamic = 'force-dynamic';
 
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import OPDAppointmentList from "@/components/opd/opd-appointment-list";
-import OPDPatientQueue from "@/components/opd/opd-patient-queue";
-import OPDConsultationForm from "@/components/opd/opd-consultation-form";
-import OPDStatistics from "@/components/opd/opd-statistics";
-import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton for loading states
 // import { hasPermission } from "@/lib/session"; // Direct permission check might be better done server-side or via dedicated hook
 
 // --- INTERFACES ---
@@ -22,15 +23,15 @@ import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton for load
 interface PermissionCheckResponse {
   hasPermission: boolean;
   // Add other potential properties if the API returns more
-export default const OPDDashboard = () {
+export default const _OPDDashboard = () {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("appointments");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     new Date();
   ); // Allow undefined for calendar
   const [permissions, setPermissions] = useState({
-    canCreateAppointment: false,
-    canViewStatistics: false,
+    canCreateAppointment: false;
+    canViewStatistics: false;
   });
   const [loadingPermissions, setLoadingPermissions] = useState(true);
   const [permissionError, setPermissionError] = useState<string | null>();
@@ -60,8 +61,8 @@ export default const OPDDashboard = () {
 
         // FIX: Safely access hasPermission property
         setPermissions({
-          canCreateAppointment: createData?.hasPermission ?? false,
-          canViewStatistics: statsData?.hasPermission ?? false,
+          canCreateAppointment: createData?.hasPermission ?? false;
+          canViewStatistics: statsData?.hasPermission ?? false;
         });
       } catch (error) {
 
@@ -70,8 +71,8 @@ export default const OPDDashboard = () {
         );
         // Set permissions to false on error
         setPermissions({
-          canCreateAppointment: false,
-          canViewStatistics: false,
+          canCreateAppointment: false;
+          canViewStatistics: false;
         });
       } finally {
         setLoadingPermissions(false);

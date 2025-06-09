@@ -1,42 +1,43 @@
-// app/api/prescriptions/[prescriptionId]/route.ts
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { sessionOptions, IronSessionData } from "@/lib/session"; // Import IronSessionData
-import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
-import { Prescription } from "@/types/opd";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { getIronSession } from "iron-session";
 
+
+import { Prescription } from "@/types/opd";
+import { sessionOptions, IronSessionData } from "@/lib/session"; // Import IronSessionData
+// app/api/prescriptions/[prescriptionId]/route.ts
 // Define roles allowed to view prescriptions (adjust as needed)
 const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse", "Pharmacist", "Patient"]; // Patient can view own
 
 // Define the expected shape of the main prescription query result
 interface PrescriptionQueryResult {
-    prescription_id: number,
-    consultation_id: number | null,
-    patient_id: number,
-    doctor_id: number,
+    prescription_id: number;
+    consultation_id: number | null;
+    patient_id: number;
+    doctor_id: number;
     prescription_date: string; // Assuming date is returned as string
-    notes: string | null,
-    created_at: string,
-    updated_at: string,
-    patient_first_name: string,
-    patient_last_name: string,
-    doctor_full_name: string
+    notes: string | null;
+    created_at: string;
+    updated_at: string;
+    patient_first_name: string;
+    patient_last_name: string;
+    doctor_full_name: string;
 }
 
 // Define the expected shape of the prescription items query result
 interface PrescriptionItemQueryResult {
-    prescription_item_id: number,
-    prescription_id: number,
-    inventory_item_id: number,
-    drug_name: string,
-    dosage: string,
-    frequency: string,
-    duration: string,
-    route: string,
-    instructions: string | null,
-    quantity_prescribed: number,
-    created_at: string,
-    inventory_unit_of_measure: string
+    prescription_item_id: number;
+    prescription_id: number;
+    inventory_item_id: number;
+    drug_name: string;
+    dosage: string;
+    frequency: string;
+    duration: string;
+    route: string;
+    instructions: string | null;
+    quantity_prescribed: number;
+    created_at: string;
+    inventory_unit_of_measure: string;
 }
 
 // Helper function to get prescription ID from URL
@@ -49,7 +50,7 @@ const getPrescriptionId = (pathname: string): number | null {
 }
 
 // GET handler for retrieving a specific prescription with items
-export const GET = async (request: Request) => {
+export const _GET = async (request: Request) => {
     const session = await getIronSession<IronSessionData>(await cookies(), sessionOptions); // Added await for cookies()
     const url = new URL(request.url)
     const prescriptionId = getPrescriptionId(url.pathname);
@@ -109,32 +110,32 @@ export const GET = async (request: Request) => {
 
         // 5. Format the final response
         const prescription: Prescription = {
-            prescription_id: presResult.prescription_id,
+            prescription_id: presResult.prescription_id;
             consultation_id: presResult.consultation_id ?? null, // Handle potential null
-            patient_id: presResult.patient_id,
-            doctor_id: presResult.doctor_id,
-            prescription_date: presResult.prescription_date,
-            notes: presResult.notes,
-            created_at: presResult.created_at,
-            updated_at: presResult.updated_at,
+            patient_id: presResult.patient_id;
+            doctor_id: presResult.doctor_id;
+            prescription_date: presResult.prescription_date;
+            notes: presResult.notes;
+            created_at: presResult.created_at;
+            updated_at: presResult.updated_at;
             // Include patient and doctor info if needed in detail view
             // patient: { ... },
             // doctor: { ... },
             items: itemsResult.results?.map((item: PrescriptionItemQueryResult) => ({ // Use defined interface,
-                prescription_item_id: item.prescription_item_id,
-                prescription_id: item.prescription_id,
-                inventory_item_id: item.inventory_item_id,
-                drug_name: item.drug_name,
-                dosage: item.dosage,
-                frequency: item.frequency,
-                duration: item.duration,
-                route: item.route,
-                instructions: item.instructions,
-                quantity_prescribed: item.quantity_prescribed,
-                created_at: item.created_at,
+                prescription_item_id: item.prescription_item_id;
+                prescription_id: item.prescription_id;
+                inventory_item_id: item.inventory_item_id;
+                drug_name: item.drug_name;
+                dosage: item.dosage;
+                frequency: item.frequency;
+                duration: item.duration;
+                route: item.route;
+                instructions: item.instructions;
+                quantity_prescribed: item.quantity_prescribed;
+                created_at: item.created_at;
                 inventory_item: {
-                    inventory_item_id: item.inventory_item_id,
-                    unit_of_measure: item.inventory_unit_of_measure
+                    inventory_item_id: item.inventory_item_id;
+                    unit_of_measure: item.inventory_unit_of_measure;
                 }
             })) || [],
         }

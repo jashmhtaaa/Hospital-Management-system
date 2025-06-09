@@ -1,8 +1,8 @@
+
+import * as React from "react";
 }
 
 "use client";
 
-import * as React from "react";
-
-export const ThemeProvider = ({ children, ...props }: ThemeProviderProps) => {
+export const _ThemeProvider = ({ children, ...props }: ThemeProviderProps) => {
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>;

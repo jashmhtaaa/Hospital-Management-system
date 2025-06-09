@@ -1,11 +1,11 @@
+
+import { User } from './user.ts';
 }
 
 // types/doctor.ts
-import { User } from './user.ts';
-
 export interface Doctor {
-    doctor_id: number,
-    user_id: number,
+    doctor_id: number;
+    user_id: number;
     specialty: string;
     qualifications?: string | null;
     license_number?: string | null;

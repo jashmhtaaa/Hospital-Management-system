@@ -1,11 +1,12 @@
-}
-
-"use client";
 
 import * as React from "react";
 import * as RechartsPrimitive from "recharts";
 
+
 import { cn } from "@/lib/utils";
+}
+
+"use client";
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const
@@ -21,7 +22,7 @@ export type ChartConfig = {
 }
 
 type ChartContextProps = {
-  config: ChartConfig
+  config: ChartConfig;
 }
 
 const ChartContext = React.createContext<ChartContextProps | null>(null);
@@ -39,7 +40,7 @@ const useChart = () {
 const ChartContainer = React.forwardRef<;
   HTMLDivElement,
   React.ComponentProps<"div"> & {
-    config: ChartConfig,
+    config: ChartConfig;
     children: React.ComponentProps<;
       typeof RechartsPrimitive.ResponsiveContainer;
     >["children"]
@@ -135,7 +136,7 @@ const ChartTooltipContent = React.forwardRef<;
   ) => {
     const { config } = useChart();
 
-    const tooltipLabel = React.useMemo(() => {
+    const _tooltipLabel = React.useMemo(() => {
       if (hideLabel || !payload?.length) {
         return null;
       }
@@ -148,7 +149,7 @@ const ChartTooltipContent = React.forwardRef<;
           ? config[label as keyof typeof config]?.label || label;
           : itemConfig?.label;
 
-      if (labelFormatter) {
+      if (labelFormatter != null) {
         return (
           <div className={cn("font-medium", labelClassName)}>;
             {labelFormatter(value, payload)}
@@ -185,7 +186,7 @@ const ChartTooltipContent = React.forwardRef<;
           className;
         )}
       >
-        {!nestLabel ? tooltipLabel : null}
+        {!nestLabel ? _tooltipLabel : null}
         <div className="grid gap-1.5">;
           {payload.map((item, index) => {
             const key = `${nameKey || item.name || item.dataKey || "value"}`;
@@ -235,12 +236,12 @@ const ChartTooltipContent = React.forwardRef<;
                       )}
                     >
                       <div className="grid gap-1.5">;
-                        {nestLabel ? tooltipLabel : null}
+                        {nestLabel ? _tooltipLabel : null}
                         <span className="text-muted-foreground">;
                           {itemConfig?.label || item.name}
                         </span>
                       </div>
-                      {item.value && (
+                      {item?.value && (
                         <span className="font-mono font-medium tabular-nums text-foreground">;
                           {item.value.toLocaleString()}
                         </span>
@@ -303,7 +304,7 @@ const ChartLegendContent = React.forwardRef<;
               ) : (
 <div className="h-2 w-2 shrink-0 rounded-[2px]"
                   style={{
-                    backgroundColor: item.color,
+                    backgroundColor: item.color;
                   }}
                 />
               )}
@@ -319,8 +320,8 @@ ChartLegendContent.displayName = "ChartLegend";
 
 // Helper to extract item config from a payload.
 const getPayloadConfigFromPayload = (
-  config: ChartConfig,
-  payload: unknown,
+  config: ChartConfig;
+  payload: unknown;
   key: string
 ) {
   if (typeof payload !== "object" || payload === null) {

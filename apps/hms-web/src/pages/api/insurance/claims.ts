@@ -1,7 +1,8 @@
-}
 import { NextApiRequest, NextApiResponse } from "next";
-import { ClaimProcessingService } from "../../../../features/insurance/services/ClaimProcessingService.ts"; // Adjust path
 
+
+import { ClaimProcessingService } from "../../../../features/insurance/services/ClaimProcessingService.ts"; // Adjust path
+}
 const claimService = new ClaimProcessingService();
 
 /**
@@ -76,14 +77,14 @@ const claimService = new ClaimProcessingService();
  *         description: Server error.
  */
 
-export default async const handler = (req: NextApiRequest, res: NextApiResponse) {
+export default async const _handler = (req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "POST") {
         try {
             const { patientId, policyId, serviceCodes, diagnosisCodes, totalAmount, notes } = req.body as {
-                patientId: string,
-                policyId: string,
-                serviceCodes: string[],
-                diagnosisCodes: string[],
+                patientId: string;
+                policyId: string;
+                serviceCodes: string[];
+                diagnosisCodes: string[];
                 totalAmount: number;
                 notes?: string;
             };

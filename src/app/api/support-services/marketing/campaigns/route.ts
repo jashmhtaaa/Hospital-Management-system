@@ -1,54 +1,55 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { MarketingCampaignService } from '@/lib/services/support-services/marketing/marketing.service';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
-import { validatePermission } from '@/lib/permissions';
 import { z } from 'zod';
 
+
+import { MarketingCampaignService } from '@/lib/services/support-services/marketing/marketing.service';
+import { authOptions } from '@/lib/auth';
+import { validatePermission } from '@/lib/permissions';
 const campaignService = new MarketingCampaignService();
 
 // Campaign filter schema
 const campaignFilterSchema = z.object({
-  type: z.string().optional(),
-  status: z.string().optional(),
-  startDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined),
-  startDateTo: z.string().optional().transform(val => val ? new Date(val) : undefined),
-  endDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined),
-  endDateTo: z.string().optional().transform(val => val ? new Date(val) : undefined),
-  page: z.string().default('1').transform(Number),
-  limit: z.string().default('10').transform(Number)
+  type: z.string().optional();
+  status: z.string().optional();
+  startDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined);
+  startDateTo: z.string().optional().transform(val => val ? new Date(val) : undefined);
+  endDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined);
+  endDateTo: z.string().optional().transform(val => val ? new Date(val) : undefined);
+  page: z.string().default('1').transform(Number);
+  limit: z.string().default('10').transform(Number);
 });
 
 // Create campaign schema
 const createCampaignSchema = z.object({
   name: z.string().min(3, "Campaign name must be at least 3 characters"),
-  description: z.string().optional(),
-  type: z.string(),
-  status: z.string().default('DRAFT'),
-  startDate: z.string().transform(val => new Date(val)),
-  endDate: z.string().optional().transform(val => val ? new Date(val) : undefined),
-  budget: z.number().optional(),
-  targetAudience: z.any().optional(),
-  goals: z.array(z.string()).optional(),
-  kpis: z.any().optional()
+  description: z.string().optional();
+  type: z.string();
+  status: z.string().default('DRAFT');
+  startDate: z.string().transform(val => new Date(val));
+  endDate: z.string().optional().transform(val => val ? new Date(val) : undefined);
+  budget: z.number().optional();
+  targetAudience: z.any().optional();
+  goals: z.array(z.string()).optional();
+  kpis: z.any().optional();
 });
 
 // Update campaign schema
 const updateCampaignSchema = z.object({
   name: z.string().min(3, "Campaign name must be at least 3 characters").optional(),
-  description: z.string().optional(),
-  type: z.string().optional(),
-  status: z.string().optional(),
-  startDate: z.string().transform(val => new Date(val)).optional(),
-  endDate: z.string().transform(val => val ? new Date(val) : undefined).optional(),
-  budget: z.number().optional(),
-  targetAudience: z.any().optional(),
-  goals: z.array(z.string()).optional(),
-  kpis: z.any().optional()
+  description: z.string().optional();
+  type: z.string().optional();
+  status: z.string().optional();
+  startDate: z.string().transform(val => new Date(val)).optional();
+  endDate: z.string().transform(val => val ? new Date(val) : undefined).optional();
+  budget: z.number().optional();
+  targetAudience: z.any().optional();
+  goals: z.array(z.string()).optional();
+  kpis: z.any().optional();
 });
 
 // GET /api/support-services/marketing/campaigns
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -65,13 +66,13 @@ export const GET = async (request: NextRequest) => {
     // Parse query parameters
     const searchParams = request.nextUrl.searchParams;
     const params = Object.fromEntries(searchParams.entries());
-    
+
     // Validate and transform parameters
     const validatedParams = campaignFilterSchema.parse(params);
-    
+
     // Get campaigns with filters
     const result = await campaignService.getCampaigns(validatedParams);
-    
+
     return NextResponse.json(result);
   } catch (error: unknown) {
 
@@ -83,7 +84,7 @@ export const GET = async (request: NextRequest) => {
 }
 
 // POST /api/support-services/marketing/campaigns
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -96,19 +97,19 @@ export const POST = async (request: NextRequest) => {
     if (!hasPermission) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
-    
+
     // Parse request body
     const body = await request.json();
-    
+
     // Validate request body
     const validatedData = createCampaignSchema.parse(body);
-    
+
     // Create campaign
     const campaign = await campaignService.createCampaign(
       validatedData,
       session.user.id;
     );
-    
+
     return NextResponse.json(campaign, { status: 201 });
   } catch (error: unknown) {
 
@@ -120,7 +121,7 @@ export const POST = async (request: NextRequest) => {
 }
 
 // GET /api/support-services/marketing/campaigns/:id
-export const GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -137,7 +138,7 @@ export const GET_BY_ID = async (request: NextRequest, { params }: { params: { id
     // Get campaign by ID
     const includeFHIR = request.nextUrl.searchParams.get('fhir') === 'true';
     const campaign = await campaignService.getCampaignById(params.id, includeFHIR);
-    
+
     return NextResponse.json(campaign);
   } catch (error: unknown) {
 
@@ -149,7 +150,7 @@ export const GET_BY_ID = async (request: NextRequest, { params }: { params: { id
 }
 
 // PATCH /api/support-services/marketing/campaigns/:id
-export const PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -165,17 +166,17 @@ export const PATCH = async (request: NextRequest, { params }: { params: { id: st
 
     // Parse request body
     const body = await request.json();
-    
+
     // Validate request body
     const validatedData = updateCampaignSchema.parse(body);
-    
+
     // Update campaign
     const campaign = await campaignService.updateCampaign(
       params.id,
       validatedData,
       session.user.id;
     );
-    
+
     return NextResponse.json(campaign);
   } catch (error: unknown) {
 
@@ -187,7 +188,7 @@ export const PATCH = async (request: NextRequest, { params }: { params: { id: st
 }
 
 // DELETE /api/support-services/marketing/campaigns/:id
-export const DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -203,7 +204,7 @@ export const DELETE = async (request: NextRequest, { params }: { params: { id: s
 
     // Delete campaign
     await campaignService.deleteCampaign(params.id, session.user.id);
-    
+
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
 
@@ -215,7 +216,7 @@ export const DELETE = async (request: NextRequest, { params }: { params: { id: s
 }
 
 // GET /api/support-services/marketing/campaigns/:id/analytics
-export const GET_ANALYTICS = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_ANALYTICS = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -231,7 +232,7 @@ export const GET_ANALYTICS = async (request: NextRequest, { params }: { params: 
 
     // Get campaign analytics
     const analytics = await campaignService.getCampaignAnalytics(params.id);
-    
+
     return NextResponse.json(analytics);
   } catch (error: unknown) {
 
@@ -243,7 +244,7 @@ export const GET_ANALYTICS = async (request: NextRequest, { params }: { params: 
 }
 
 // POST /api/support-services/marketing/campaigns/:id/channels
-export const POST_CHANNEL = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _POST_CHANNEL = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -259,14 +260,14 @@ export const POST_CHANNEL = async (request: NextRequest, { params }: { params: {
 
     // Parse request body
     const body = await request.json();
-    
+
     // Add channel to campaign
     const channel = await campaignService.addCampaignChannel(
       params.id,
       body,
       session.user.id;
     );
-    
+
     return NextResponse.json(channel, { status: 201 });
   } catch (error: unknown) {
 
@@ -278,7 +279,7 @@ export const POST_CHANNEL = async (request: NextRequest, { params }: { params: {
 }
 
 // POST /api/support-services/marketing/campaigns/:id/segments/:segmentId
-export const POST_SEGMENT = async (request: NextRequest, { params }: { params: { id: string; segmentId: string } }) => {
+export const _POST_SEGMENT = async (request: NextRequest, { params }: { params: { id: string; segmentId: string } }) => {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -298,7 +299,7 @@ export const POST_SEGMENT = async (request: NextRequest, { params }: { params: {
       params.segmentId,
       session.user.id;
     );
-    
+
     return NextResponse.json(result, { status: 201 });
   } catch (error: unknown) {
 

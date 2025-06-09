@@ -7,10 +7,10 @@ import { Plus } from 'lucide-react';
 import { useEffect, useOptimistic, useState, useTransition } from 'react';
 import { getStats, incrementAndLog } from './counter.ts';
 
-export default const Home = () {
+export default const _Home = () {
   const [stats, setStats] = useState<{ count: number; recentAccess: { accessed_at: string }[] }>({
-    count: 0,
-    recentAccess: []
+    count: 0;
+    recentAccess: [];
   });
   const [optimisticStats, setOptimisticStats] = useOptimistic(stats);
   const [, startTransition] = useTransition(),
@@ -21,7 +21,7 @@ export default const Home = () {
   const handleClick = async () => {
     startTransition(async () => {
       setOptimisticStats({
-        count: optimisticStats.count + 1,
+        count: optimisticStats.count + 1;
         recentAccess: [{ accessed_at: new Date().toISOString() }, ...optimisticStats.recentAccess.slice(0, 4)]
       });
       const newStats = await incrementAndLog(),

@@ -1,10 +1,14 @@
+
+import fetch from 'node-fetch';
+import { describe, test, expect, beforeAll, afterAll, beforeEach, afterEach } from '@jest/globals';
+import { performance } from 'perf_hooks';
 /**
  * IPD (Inpatient Department) API Tests - Enterprise TypeScript Version
  * Hospital Management System
- * 
+ *
  * Comprehensive test suite for IPD-related APIs with healthcare-specific validations,
  * performance benchmarks, security checks, and HIPAA compliance verification.
- * 
+ *
  * Test Coverage:
  * - Bed Management APIs
  * - Admission/Discharge workflows
@@ -16,15 +20,11 @@
  * - Dashboard Statistics
  * - FHIR Encounter Resources
  * - Security and Authorization
- * 
+ *
  * @version 2.0.0
  * @author HMS Development Team
  * @compliance HIPAA, HL7 FHIR R4, Joint Commission Standards
  */
-
-import { describe, test, expect, beforeAll, afterAll, beforeEach, afterEach } from '@jest/globals';
-import fetch from 'node-fetch';
-import { performance } from 'perf_hooks';
 
 // Type definitions for IPD domain objects
 interface Bed {
@@ -39,7 +39,7 @@ interface Bed {
   readonly equipment: readonly string[];
   readonly last_cleaned?: string;
   readonly created_at: string;
-  readonly updated_at: string
+  readonly updated_at: string;
 }
 
 interface Patient {
@@ -58,7 +58,7 @@ interface Patient {
 interface EmergencyContact {
   readonly name: string;
   readonly relationship: string;
-  readonly phone: string
+  readonly phone: string;
 }
 
 interface InsuranceInfo {
@@ -84,7 +84,7 @@ interface Admission {
   readonly admission_notes?: string;
   readonly discharge_summary?: string;
   readonly created_at: string;
-  readonly updated_at: string
+  readonly updated_at: string;
 }
 
 interface ProgressNote {
@@ -98,7 +98,7 @@ interface ProgressNote {
   readonly content: string;
   readonly assessment?: string;
   readonly plan?: string;
-  readonly created_at: string
+  readonly created_at: string;
 }
 
 interface VitalSigns {
@@ -128,7 +128,7 @@ interface MedicationOrder {
   readonly end_date?: string;
   readonly prescribing_doctor: string;
   readonly special_instructions?: string;
-  readonly status: 'active' | 'completed' | 'discontinued' | 'on_hold'
+  readonly status: 'active' | 'completed' | 'discontinued' | 'on_hold';
 }
 
 interface IPDStatistics {
@@ -164,53 +164,53 @@ interface TestConfig {
     readonly listBedsMaxTime: number;
     readonly createAdmissionMaxTime: number;
     readonly updateRecordMaxTime: number;
-    readonly searchMaxTime: number
+    readonly searchMaxTime: number;
   };
   readonly testData: {
     readonly mockPatient: Partial<Patient>;
     readonly mockAdmission: Partial<Admission>;
-    readonly mockBed: Partial<Bed>
+    readonly mockBed: Partial<Bed>;
   };
 }
 
 // Test configuration with healthcare-specific settings
 const TEST_CONFIG: TestConfig = {
-  baseUrl: process.env.HMS_TEST_BASE_URL || 'http://localhost:3000',
+  baseUrl: process.env.HMS_TEST_BASE_URL || 'http://localhost:3000';
   timeout: 30000, // 30 seconds for healthcare operations
-  retries: 3,
+  retries: 3;
   performanceThresholds: {
     listBedsMaxTime: 2000, // 2 seconds to list beds
     createAdmissionMaxTime: 5000, // 5 seconds to create admission
     updateRecordMaxTime: 3000, // 3 seconds to update records
-    searchMaxTime: 1500 // 1.5 seconds for search operations
+    searchMaxTime: 1500 // 1.5 seconds for search operations;
   },
   testData: {
     mockPatient: {
-      mrn: 'TEST-MRN-001',
-      first_name: 'John',
-      last_name: 'Doe',
-      date_of_birth: '1990-01-15',
-      gender: 'M',
-      phone: '555-123-4567',
+      mrn: 'TEST-MRN-001';
+      first_name: 'John';
+      last_name: 'Doe';
+      date_of_birth: '1990-01-15';
+      gender: 'M';
+      phone: '555-123-4567';
       emergency_contact: {
-        name: 'Jane Doe',
-        relationship: 'Spouse',
-        phone: '555-987-6543'
+        name: 'Jane Doe';
+        relationship: 'Spouse';
+        phone: '555-987-6543';
       }
     },
     mockAdmission: {
-      admission_type: 'emergency',
-      chief_complaint: 'Chest pain',
-      diagnosis: 'Acute myocardial infarction',
-      admission_notes: 'Patient presented with severe chest pain radiating to left arm'
+      admission_type: 'emergency';
+      chief_complaint: 'Chest pain';
+      diagnosis: 'Acute myocardial infarction';
+      admission_notes: 'Patient presented with severe chest pain radiating to left arm';
     },
     mockBed: {
-      bed_number: 'TEST-BED-001',
-      room_number: 'TEST-ROOM-001',
-      ward: 'Test Ward',
-      floor: 1,
-      bed_type: 'general',
-      equipment: ['cardiac_monitor', 'oxygen_outlet']
+      bed_number: 'TEST-BED-001';
+      room_number: 'TEST-ROOM-001';
+      ward: 'Test Ward';
+      floor: 1;
+      bed_type: 'general';
+      equipment: ['cardiac_monitor', 'oxygen_outlet'];
     }
   }
 } as const
@@ -224,11 +224,11 @@ class IPDTestHelper {
     if (this.authToken) return this.authToken;
 
     const response = await fetch(`${TEST_CONFIG.baseUrl}/api/auth/login`, {
-      method: 'POST',
+      method: 'POST';
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        username: process.env.TEST_USERNAME || 'test_user',
-        password: process.env.TEST_PASSWORD || 'test_password'
+        username: process.env.TEST_USERNAME || 'test_user';
+        password: process.env.TEST_PASSWORD || 'test_password';
       })
     });
 
@@ -242,7 +242,7 @@ class IPDTestHelper {
   }
 
   static async makeAuthenticatedRequest<T>(
-    endpoint: string,
+    endpoint: string;
     options: RequestInit = {}
   ): Promise<APIResponse<T>> {
     const token = await this.authenticate();
@@ -265,8 +265,8 @@ class IPDTestHelper {
 
   static async createTestPatient(): Promise<Patient> {
     const response = await this.makeAuthenticatedRequest<Patient>('/api/patients', {
-      method: 'POST',
-      body: JSON.stringify(TEST_CONFIG.testData.mockPatient)
+      method: 'POST';
+      body: JSON.stringify(TEST_CONFIG.testData.mockPatient);
     });
 
     if (!response.success || !response.data) {
@@ -279,8 +279,8 @@ class IPDTestHelper {
 
   static async createTestBed(): Promise<Bed> {
     const response = await this.makeAuthenticatedRequest<Bed>('/api/ipd/beds', {
-      method: 'POST',
-      body: JSON.stringify(TEST_CONFIG.testData.mockBed)
+      method: 'POST';
+      body: JSON.stringify(TEST_CONFIG.testData.mockBed);
     });
 
     if (!response.success || !response.data) {
@@ -314,7 +314,7 @@ class IPDTestHelper {
   }
 
   static validateRequiredFields<T extends Record<string, unknown>>(
-    object: T,
+    object: T;
     requiredFields: readonly (keyof T)[]
   ): void {
     const missingFields = requiredFields.filter(field => !(field in object));
@@ -324,8 +324,8 @@ class IPDTestHelper {
   }
 
   static async measurePerformance<T>(
-    operation: () => Promise<T>,
-    maxTime: number,
+    operation: () => Promise<T>;
+    maxTime: number;
     operationName: string
   ): Promise<T> {
     const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
@@ -341,14 +341,14 @@ class IPDTestHelper {
 
 // Test suite setup and teardown
 beforeAll(async () => {
-  console.log('🏥 Starting IPD API Test Suite...')
+  // console.log removed for production
   await IPDTestHelper.authenticate();
 });
 
 afterAll(async () => {
-  console.log('🧹 Cleaning up test resources...');
+  // console.log removed for production
   await IPDTestHelper.cleanupResources();
-  console.log('✅ IPD API Test Suite completed');
+  // console.log removed for production
 });
 
 beforeEach(() => {
@@ -392,7 +392,7 @@ describe('IPD Bed Management API', () => {
       );
 
       expect(availableResponse.success).toBe(true);
-      
+
       if (availableResponse.data?.beds) {
         availableResponse.data.beds.forEach(bed => {
           expect(bed.status).toBe('available');
@@ -406,7 +406,7 @@ describe('IPD Bed Management API', () => {
       );
 
       expect(wardResponse.success).toBe(true);
-      
+
       if (wardResponse.data?.beds) {
         wardResponse.data.beds.forEach(bed => {
           expect(bed.ward).toContain('ICU');
@@ -420,7 +420,7 @@ describe('IPD Bed Management API', () => {
       );
 
       expect(icuResponse.success).toBe(true);
-      
+
       if (icuResponse.data?.beds) {
         icuResponse.data.beds.forEach(bed => {
           expect(bed.bed_type).toBe('icu');
@@ -436,7 +436,7 @@ describe('IPD Bed Management API', () => {
       expect(page1Response.success).toBe(true),
       expect(page1Response.page).toBe(1),
       expect(page1Response.limit).toBe(10);
-      
+
       if (page1Response.data?.beds) {
         expect(page1Response.data.beds.length).toBeLessThanOrEqual(10);
       }
@@ -452,19 +452,19 @@ describe('IPD Bed Management API', () => {
       };
 
       const response = await IPDTestHelper.makeAuthenticatedRequest<Bed>('/api/ipd/beds', {
-        method: 'POST',
-        body: JSON.stringify(newBed)
+        method: 'POST';
+        body: JSON.stringify(newBed);
       });
 
       expect(response.success).toBe(true),
       expect(response.data).toBeDefined();
-      
+
       if (response.data) {
         expect(response.data.bed_number).toBe(newBed.bed_number),
         expect(response.data.room_number).toBe(newBed.room_number),
         expect(response.data.ward).toBe(newBed.ward),
         expect(response.data.status).toBe('available'); // Default status
-        
+
         IPDTestHelper.createdResources.add(`bed:${response.data.id}`)
       }
     });
@@ -472,14 +472,14 @@ describe('IPD Bed Management API', () => {
     test('should reject invalid bed data', async () => {
       const invalidBed = {
         bed_number: '', // Invalid empty bed number
-        room_number: 'ROOM-001',
-        ward: 'Test Ward'
+        room_number: 'ROOM-001';
+        ward: 'Test Ward';
       }
 
       await expect(
         IPDTestHelper.makeAuthenticatedRequest('/api/ipd/beds', {
-          method: 'POST',
-          body: JSON.stringify(invalidBed)
+          method: 'POST';
+          body: JSON.stringify(invalidBed);
         })
       ).rejects.toThrow();
     });
@@ -493,7 +493,7 @@ describe('IPD Bed Management API', () => {
       const updateResponse = await IPDTestHelper.makeAuthenticatedRequest<Bed>(
         `/api/ipd/beds/${testBed.id}`,
         {
-          method: 'PUT',
+          method: 'PUT';
           body: JSON.stringify({ status: 'maintenance' })
         }
       );
@@ -526,7 +526,7 @@ describe('IPD Admissions API', () => {
       if (response.data?.admissions && response.data.admissions.length > 0) {
         const sampleAdmission = response.data.admissions[0];
         IPDTestHelper.validateRequiredFields(sampleAdmission, [
-          'id', 'admission_number', 'patient_id', 'bed_id', 
+          'id', 'admission_number', 'patient_id', 'bed_id',
           'admission_date', 'status', 'admission_type'
         ]),
         expect(sampleAdmission.status).toMatch(/^(active|discharged|transferred|deceased)$/);
@@ -540,7 +540,7 @@ describe('IPD Admissions API', () => {
       );
 
       expect(activeResponse.success).toBe(true);
-      
+
       if (activeResponse.data?.admissions) {
         activeResponse.data.admissions.forEach(admission => {
           expect(admission.status).toBe('active');
@@ -564,17 +564,17 @@ describe('IPD Admissions API', () => {
   describe('POST /api/ipd/admissions', () => {
     test('should create new admission with valid data', async () => {
       const newAdmission = {
-        patient_id: testPatient.id,
-        bed_id: testBed.id,
-        admission_date: new Date().toISOString(),
-        primary_doctor_id: 'DOC-001',
+        patient_id: testPatient.id;
+        bed_id: testBed.id;
+        admission_date: new Date().toISOString();
+        primary_doctor_id: 'DOC-001';
         ...TEST_CONFIG.testData.mockAdmission
       };
 
       const response = await IPDTestHelper.measurePerformance(
         () => IPDTestHelper.makeAuthenticatedRequest<Admission>('/api/ipd/admissions', {
-          method: 'POST',
-          body: JSON.stringify(newAdmission)
+          method: 'POST';
+          body: JSON.stringify(newAdmission);
         }),
         TEST_CONFIG.performanceThresholds.createAdmissionMaxTime,
         'Create admission'
@@ -582,30 +582,30 @@ describe('IPD Admissions API', () => {
 
       expect(response.success).toBe(true),
       expect(response.data).toBeDefined();
-      
+
       if (response.data) {
         expect(response.data.patient_id).toBe(newAdmission.patient_id),
         expect(response.data.bed_id).toBe(newAdmission.bed_id),
         expect(response.data.status).toBe('active'),
         expect(response.data.admission_number).toMatch(/^ADM-\d+/);
-        
+
         IPDTestHelper.createdResources.add(`admission:${response.data.id}`);
       }
     });
 
     test('should reject admission with invalid patient ID', async () => {
       const invalidAdmission = {
-        patient_id: 'INVALID-ID',
-        bed_id: testBed.id,
-        admission_date: new Date().toISOString(),
-        primary_doctor_id: 'DOC-001',
+        patient_id: 'INVALID-ID';
+        bed_id: testBed.id;
+        admission_date: new Date().toISOString();
+        primary_doctor_id: 'DOC-001';
         ...TEST_CONFIG.testData.mockAdmission
       };
 
       await expect(
         IPDTestHelper.makeAuthenticatedRequest('/api/ipd/admissions', {
-          method: 'POST',
-          body: JSON.stringify(invalidAdmission)
+          method: 'POST';
+          body: JSON.stringify(invalidAdmission);
         })
       ).rejects.toThrow();
     });
@@ -613,32 +613,32 @@ describe('IPD Admissions API', () => {
     test('should reject admission to occupied bed', async () => {
       // First, create an admission
       const firstAdmission = {
-        patient_id: testPatient.id,
-        bed_id: testBed.id,
-        admission_date: new Date().toISOString(),
-        primary_doctor_id: 'DOC-001',
+        patient_id: testPatient.id;
+        bed_id: testBed.id;
+        admission_date: new Date().toISOString();
+        primary_doctor_id: 'DOC-001';
         ...TEST_CONFIG.testData.mockAdmission
       }
 
       await IPDTestHelper.makeAuthenticatedRequest('/api/ipd/admissions', {
-        method: 'POST',
-        body: JSON.stringify(firstAdmission)
+        method: 'POST';
+        body: JSON.stringify(firstAdmission);
       });
 
       // Try to admit another patient to the same bed
       const secondPatient = await IPDTestHelper.createTestPatient()
       const secondAdmission = {
-        patient_id: secondPatient.id,
+        patient_id: secondPatient.id;
         bed_id: testBed.id, // Same bed
-        admission_date: new Date().toISOString(),
-        primary_doctor_id: 'DOC-002',
+        admission_date: new Date().toISOString();
+        primary_doctor_id: 'DOC-002';
         ...TEST_CONFIG.testData.mockAdmission
       }
 
       await expect(
         IPDTestHelper.makeAuthenticatedRequest('/api/ipd/admissions', {
-          method: 'POST',
-          body: JSON.stringify(secondAdmission)
+          method: 'POST';
+          body: JSON.stringify(secondAdmission);
         })
       ).rejects.toThrow();
     });
@@ -648,23 +648,23 @@ describe('IPD Admissions API', () => {
     test('should return specific admission with full details', async () => {
       // Create an admission first
       const newAdmission = {
-        patient_id: testPatient.id,
-        bed_id: testBed.id,
-        admission_date: new Date().toISOString(),
-        primary_doctor_id: 'DOC-001',
+        patient_id: testPatient.id;
+        bed_id: testBed.id;
+        admission_date: new Date().toISOString();
+        primary_doctor_id: 'DOC-001';
         ...TEST_CONFIG.testData.mockAdmission
       }
 
       const createResponse = await IPDTestHelper.makeAuthenticatedRequest<Admission>(
         '/api/ipd/admissions',
         {
-          method: 'POST',
-          body: JSON.stringify(newAdmission)
+          method: 'POST';
+          body: JSON.stringify(newAdmission);
         }
       );
 
       expect(createResponse.data).toBeDefined();
-      
+
       if (createResponse.data) {
         const getResponse = await IPDTestHelper.makeAuthenticatedRequest<Admission>(
           `/api/ipd/admissions/${createResponse.data.id}`
@@ -685,20 +685,20 @@ describe('IPD Progress Notes API', () => {
   beforeEach(async () => {
     const testPatient = await IPDTestHelper.createTestPatient();
     const testBed = await IPDTestHelper.createTestBed();
-    
+
     const admissionData = {
-      patient_id: testPatient.id,
-      bed_id: testBed.id,
-      admission_date: new Date().toISOString(),
-      primary_doctor_id: 'DOC-001',
+      patient_id: testPatient.id;
+      bed_id: testBed.id;
+      admission_date: new Date().toISOString();
+      primary_doctor_id: 'DOC-001';
       ...TEST_CONFIG.testData.mockAdmission
     };
 
     const response = await IPDTestHelper.makeAuthenticatedRequest<Admission>(
       '/api/ipd/admissions',
       {
-        method: 'POST',
-        body: JSON.stringify(admissionData)
+        method: 'POST';
+        body: JSON.stringify(admissionData);
       }
     );
 
@@ -723,24 +723,24 @@ describe('IPD Progress Notes API', () => {
   describe('POST /api/ipd/admissions/:id/progress-notes', () => {
     test('should create new progress note', async () => {
       const newNote = {
-        note_type: 'physician' as const,
-        subject: 'Daily Progress Note',
-        content: 'Patient is stable and responding well to treatment.',
-        assessment: 'Condition improving',
-        plan: 'Continue current medication regimen'
+        note_type: 'physician' as const;
+        subject: 'Daily Progress Note';
+        content: 'Patient is stable and responding well to treatment.';
+        assessment: 'Condition improving';
+        plan: 'Continue current medication regimen';
       };
 
       const response = await IPDTestHelper.makeAuthenticatedRequest<ProgressNote>(
         `/api/ipd/admissions/${testAdmission.id}/progress-notes`,
         {
-          method: 'POST',
-          body: JSON.stringify(newNote)
+          method: 'POST';
+          body: JSON.stringify(newNote);
         }
       );
 
       expect(response.success).toBe(true),
       expect(response.data).toBeDefined();
-      
+
       if (response.data) {
         expect(response.data.admission_id).toBe(testAdmission.id),
         expect(response.data.note_type).toBe(newNote.note_type),
@@ -756,20 +756,20 @@ describe('IPD Vital Signs API', () => {
   beforeEach(async () => {
     const testPatient = await IPDTestHelper.createTestPatient();
     const testBed = await IPDTestHelper.createTestBed();
-    
+
     const admissionData = {
-      patient_id: testPatient.id,
-      bed_id: testBed.id,
-      admission_date: new Date().toISOString(),
-      primary_doctor_id: 'DOC-001',
+      patient_id: testPatient.id;
+      bed_id: testBed.id;
+      admission_date: new Date().toISOString();
+      primary_doctor_id: 'DOC-001';
       ...TEST_CONFIG.testData.mockAdmission
     };
 
     const response = await IPDTestHelper.makeAuthenticatedRequest<Admission>(
       '/api/ipd/admissions',
       {
-        method: 'POST',
-        body: JSON.stringify(admissionData)
+        method: 'POST';
+        body: JSON.stringify(admissionData);
       }
     );
 
@@ -783,21 +783,21 @@ describe('IPD Vital Signs API', () => {
   describe('POST /api/ipd/admissions/:id/vital-signs', () => {
     test('should record vital signs', async () => {
       const vitalSigns = {
-        temperature: 98.6,
-        blood_pressure_systolic: 120,
-        blood_pressure_diastolic: 80,
-        heart_rate: 72,
-        respiratory_rate: 16,
-        oxygen_saturation: 98,
-        pain_scale: 2
+        temperature: 98.6;
+        blood_pressure_systolic: 120;
+        blood_pressure_diastolic: 80;
+        heart_rate: 72;
+        respiratory_rate: 16;
+        oxygen_saturation: 98;
+        pain_scale: 2;
       };
 
       const response = await IPDTestHelper.measurePerformance(
         () => IPDTestHelper.makeAuthenticatedRequest<VitalSigns>(
           `/api/ipd/admissions/${testAdmission.id}/vital-signs`,
           {
-            method: 'POST',
-            body: JSON.stringify(vitalSigns)
+            method: 'POST';
+            body: JSON.stringify(vitalSigns);
           }
         ),
         TEST_CONFIG.performanceThresholds.updateRecordMaxTime,
@@ -806,7 +806,7 @@ describe('IPD Vital Signs API', () => {
 
       expect(response.success).toBe(true),
       expect(response.data).toBeDefined();
-      
+
       if (response.data) {
         expect(response.data.admission_id).toBe(testAdmission.id),
         expect(response.data.temperature).toBe(vitalSigns.temperature),
@@ -818,19 +818,19 @@ describe('IPD Vital Signs API', () => {
       const invalidVitalSigns = {
         temperature: 150, // Invalid temperature
         blood_pressure_systolic: 300, // Invalid BP
-        blood_pressure_diastolic: 200,
+        blood_pressure_diastolic: 200;
         heart_rate: -10, // Invalid heart rate
-        respiratory_rate: 16,
+        respiratory_rate: 16;
         oxygen_saturation: 150, // Invalid oxygen saturation
-        pain_scale: 15 // Invalid pain scale (should be 0-10)
+        pain_scale: 15 // Invalid pain scale (should be 0-10);
       }
 
       await expect(
         IPDTestHelper.makeAuthenticatedRequest(
           `/api/ipd/admissions/${testAdmission.id}/vital-signs`,
           {
-            method: 'POST',
-            body: JSON.stringify(invalidVitalSigns)
+            method: 'POST';
+            body: JSON.stringify(invalidVitalSigns);
           }
         )
       ).rejects.toThrow();
@@ -847,7 +847,7 @@ describe('IPD Dashboard Statistics API', () => {
 
       expect(response.success).toBe(true),
       expect(response.data).toBeDefined();
-      
+
       if (response.data) {
         IPDTestHelper.validateRequiredFields(response.data, [
           'activeAdmissions', 'availableBeds', 'occupancyRate', 'totalBeds'
@@ -864,7 +864,7 @@ describe('IPD Dashboard Statistics API', () => {
         // Validate recent admissions if present
         if (response.data.recentAdmissions) {
           expect(Array.isArray(response.data.recentAdmissions)).toBe(true)
-          
+
           if (response.data.recentAdmissions.length > 0) {
             const sampleAdmission = response.data.recentAdmissions[0];
             expect(sampleAdmission).toHaveProperty('id'),
@@ -881,10 +881,10 @@ describe('IPD Dashboard Statistics API', () => {
       );
 
       expect(response.success).toBe(true);
-      
+
       if (response.data?.wardOccupancy) {
         expect(typeof response.data.wardOccupancy).toBe('object');
-        
+
         // Each ward should have a numeric occupancy rate
         Object.values(response.data.wardOccupancy).forEach(occupancy => {
           expect(typeof occupancy).toBe('number'),
@@ -914,11 +914,11 @@ describe('IPD Security and Authorization', () => {
   test('should enforce role-based access control', async () => {
     // This test would require setting up different user roles
     // and testing access permissions for each role
-    
+
     // Example: Nurse should not be able to discharge patients
     // Example: Doctor should have full access
     // Example: Admin should have system-wide access
-    
+
     // For now, we just ensure the authorization header is required
     const response = await fetch(`${TEST_CONFIG.baseUrl}/api/ipd/beds`, {
       headers: {
@@ -933,32 +933,32 @@ describe('IPD FHIR Compliance', () => {
   test('should return FHIR-compliant Encounter resources', async () => {
     const testPatient = await IPDTestHelper.createTestPatient();
     const testBed = await IPDTestHelper.createTestBed();
-    
+
     const admissionData = {
-      patient_id: testPatient.id,
-      bed_id: testBed.id,
-      admission_date: new Date().toISOString(),
-      primary_doctor_id: 'DOC-001',
+      patient_id: testPatient.id;
+      bed_id: testBed.id;
+      admission_date: new Date().toISOString();
+      primary_doctor_id: 'DOC-001';
       ...TEST_CONFIG.testData.mockAdmission
     };
 
     const admissionResponse = await IPDTestHelper.makeAuthenticatedRequest<Admission>(
       '/api/ipd/admissions',
       {
-        method: 'POST',
-        body: JSON.stringify(admissionData)
+        method: 'POST';
+        body: JSON.stringify(admissionData);
       }
     );
 
     expect(admissionResponse.data).toBeDefined();
-    
+
     if (admissionResponse.data) {
       // Get FHIR Encounter resource
       const fhirResponse = await IPDTestHelper.makeAuthenticatedRequest(
         `/api/fhir/Encounter/${admissionResponse.data.id}`
       ),
       expect(fhirResponse.success).toBe(true)
-      
+
       if (fhirResponse.data) {
         // Validate FHIR Encounter structure
         expect(fhirResponse.data).toHaveProperty('resourceType'),
@@ -978,19 +978,19 @@ describe('IPD API Performance Benchmarks', () => {
   test('should meet performance requirements for critical operations', async () => {
     const operations = [
       {
-        name: 'List available beds',
-        operation: () => IPDTestHelper.makeAuthenticatedRequest('/api/ipd/beds?status=available'),
-        threshold: TEST_CONFIG.performanceThresholds.listBedsMaxTime
+        name: 'List available beds';
+        operation: () => IPDTestHelper.makeAuthenticatedRequest('/api/ipd/beds?status=available');
+        threshold: TEST_CONFIG.performanceThresholds.listBedsMaxTime;
       },
       {
-        name: 'Search admissions',
-        operation: () => IPDTestHelper.makeAuthenticatedRequest('/api/ipd/admissions?search=test'),
-        threshold: TEST_CONFIG.performanceThresholds.searchMaxTime
+        name: 'Search admissions';
+        operation: () => IPDTestHelper.makeAuthenticatedRequest('/api/ipd/admissions?search=test');
+        threshold: TEST_CONFIG.performanceThresholds.searchMaxTime;
       },
       {
-        name: 'Get IPD statistics',
-        operation: () => IPDTestHelper.makeAuthenticatedRequest('/api/dashboard/ipd-stats'),
-        threshold: TEST_CONFIG.performanceThresholds.listBedsMaxTime
+        name: 'Get IPD statistics';
+        operation: () => IPDTestHelper.makeAuthenticatedRequest('/api/dashboard/ipd-stats');
+        threshold: TEST_CONFIG.performanceThresholds.listBedsMaxTime;
       }
     ]
 
@@ -1016,10 +1016,10 @@ describe('IPD API Performance Benchmarks', () => {
 
     // Concurrent requests should not take significantly longer than single request
     expect(duration).toBeLessThan(TEST_CONFIG.performanceThresholds.listBedsMaxTime * 2)
-    
+
     console.log(`${concurrentRequests} concurrent requests completed in ${duration.toFixed(2)}ms`);
   });
 });
 
 // Export test helper for use in other test files
-export { IPDTestHelper, TEST_CONFIG 
+export { IPDTestHelper, TEST_CONFIG

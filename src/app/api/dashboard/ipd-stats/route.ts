@@ -1,9 +1,9 @@
+
+import { getDB } from "@/lib/database";
+import { getSession } from "@/lib/session";
 }
 
 // API route for IPD statistics
-import { getDB } from "@/lib/database";
-import { getSession } from "@/lib/session";
-
 // Define expected structure for query results where needed
 interface CountResult {
   count?: number | string; // DB might return count as string
@@ -16,21 +16,21 @@ interface OccupancyResult {
 
 // Define structure for recent admissions row
 interface RecentAdmission {
-  id: number | string,
-  admission_number: string,
+  id: number | string;
+  admission_number: string;
   admission_date: string; // Assuming ISO string or similar
-  status: string,
-  patient_first_name: string,
-  patient_last_name: string,
-  bed_number: string,
-  room_number: string,
-  ward: string,
-  doctor_first_name: string,
-  doctor_last_name: string
+  status: string;
+  patient_first_name: string;
+  patient_last_name: string;
+  bed_number: string;
+  room_number: string;
+  ward: string;
+  doctor_first_name: string;
+  doctor_last_name: string;
 }
 
 // FIX: Renamed request to _request as it's unused
-export const GET = async (/* _request: unknown */) => { // Removed unused parameter
+export const _GET = async (/* _request: unknown */) => { // Removed unused parameter
   try {
     const session = await getSession();
     // Check authentication
@@ -80,7 +80,7 @@ export const GET = async (/* _request: unknown */) => { // Removed unused parame
     const occupancyRow = bedOccupancyResult.results?.[0] as // Changed .rows to .results
       | OccupancyResult;
       | undefined;
-    if (occupancyRow) {
+    if (occupancyRow != null) {
       const occupied = Number.parseInt(String(occupancyRow.occupied ?? 0), 10);
       const total = Number.parseInt(String(occupancyRow.total ?? 0), 10);
       occupancyRate = total > 0 ? Math.round((occupied / total) * 100) : 0;
@@ -108,10 +108,10 @@ export const GET = async (/* _request: unknown */) => { // Removed unused parame
       (recentAdmissionsResult.results as RecentAdmission[] | undefined) ?? []; // Changed .rows to .results
 
     return NextResponse.json({
-      activeAdmissions: activeAdmissionsCount,
-      availableBeds: availableBedsCount,
-      occupancyRate: occupancyRate,
-      recentAdmissions: recentAdmissions, // Use the correctly typed variable
+      activeAdmissions: activeAdmissionsCount;
+      availableBeds: availableBedsCount;
+      occupancyRate: occupancyRate;
+      recentAdmissions: recentAdmissions, // Use the correctly typed variable;
     });
   } catch (error: unknown) {
 

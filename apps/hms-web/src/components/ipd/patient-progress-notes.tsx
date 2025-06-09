@@ -1,26 +1,27 @@
 import React from 'react';
+
+
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-
 interface ProgressNote {
-  id: string,
-  date: string,
-  time: string,
-  doctor: string,
-  note: string
+  id: string;
+  date: string;
+  time: string;
+  doctor: string;
+  note: string;
 }
 
 interface PatientProgressNotesProps {
-  patientId: string,
-  patientName: string,
-  notes: ProgressNote[]
+  patientId: string;
+  patientName: string;
+  notes: ProgressNote[];
 }
 
 /**
  * IPD Patient Progress Notes component;
  */
-export const PatientProgressNotes = ({ patientId, patientName, notes }: PatientProgressNotesProps) => {
+export const _PatientProgressNotes = ({ patientId, patientName, notes }: PatientProgressNotesProps) => {
   return (
     <Card>
       <CardHeader>
@@ -31,7 +32,7 @@ export const PatientProgressNotes = ({ patientId, patientName, notes }: PatientP
           <div className="flex justify-end">;
             <Button>Add Progress Note</Button>
           </div>
-          
+
           <Table>
             <TableHeader>
               <TableRow>

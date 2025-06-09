@@ -1,17 +1,17 @@
-import { NextRequest, NextResponse } from "next/server";
-import { D1Database } from "@cloudflare/workers-types";
 
-export const runtime = "edge";
+import { D1Database } from "@cloudflare/workers-types";
+import { NextRequest, NextResponse } from "next/server";
+export const _runtime = "edge";
 
 // Interface for the POST request body
 interface StaffAssignmentBody {
   user_id: string; // Assuming ID is string
-  role: string
+  role: string;
 }
 
 // GET /api/ot/bookings/[id]/staff - Get staff assigned to a specific OT booking
-export const GET = async (
-  _request: NextRequest,
+export const _GET = async (
+  _request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -50,8 +50,8 @@ export const GET = async (
 }
 
 // POST /api/ot/bookings/[id]/staff - Assign staff to an OT booking
-export const POST = async (
-  _request: NextRequest,
+export const _POST = async (
+  _request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -173,7 +173,7 @@ export const POST = async (
 
 // DELETE /api/ot/bookings/[id]/staff - Remove all staff from an OT booking
 export const DELETE = async (
-  _request: NextRequest,
+  _request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -192,9 +192,9 @@ export const DELETE = async (
 
     return NextResponse.json(
       {
-        message: "Staff assignments removed successfully",
+        message: "Staff assignments removed successfully";
         // D1 delete doesn\"t reliably return changes, so we might not have an accurate count
-        // count: info.meta.changes
+        // count: info.meta.changes;
       },
       { status: 200 }
     )

@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { D1Database } from "@cloudflare/workers-types";
 
-export const runtime = "edge";
+import { D1Database } from "@cloudflare/workers-types";
+import { NextRequest, NextResponse } from "next/server";
+export const _runtime = "edge";
 
 // Interface for the PUT request body
 interface TheatreUpdateBody {
@@ -13,8 +13,8 @@ interface TheatreUpdateBody {
 }
 
 // GET /api/ot/theatres/[id] - Get details of a specific operation theatre
-export const GET = async (
-  _request: NextRequest,
+export const _GET = async (
+  _request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -46,8 +46,8 @@ export const GET = async (
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
       {
-        message: "Error fetching operation theatre details",
-        details: errorMessage,
+        message: "Error fetching operation theatre details";
+        details: errorMessage;
       },
       { status: 500 }
     );
@@ -55,8 +55,8 @@ export const GET = async (
 }
 
 // PUT /api/ot/theatres/[id] - Update an existing operation theatre
-export const PUT = async (
-  _request: NextRequest,
+export const _PUT = async (
+  _request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -149,8 +149,8 @@ export const PUT = async (
       // FIX: Check errorMessage
       return NextResponse.json(
         {
-          message: "Operation theatre name must be unique",
-          details: errorMessage,
+          message: "Operation theatre name must be unique";
+          details: errorMessage;
         },
         { status: 409 }
       );
@@ -164,7 +164,7 @@ export const PUT = async (
 
 // DELETE /api/ot/theatres/[id] - Delete an operation theatre
 export const DELETE = async (
-  _request: NextRequest,
+  _request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -203,8 +203,8 @@ export const DELETE = async (
       // FIX: Check errorMessage
       return NextResponse.json(
         {
-          message: "Cannot delete theatre with existing bookings",
-          details: errorMessage,
+          message: "Cannot delete theatre with existing bookings";
+          details: errorMessage;
         },
         { status: 409 }
       );

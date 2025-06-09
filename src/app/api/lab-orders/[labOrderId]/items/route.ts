@@ -1,8 +1,9 @@
-// app/api/lab-orders/[labOrderId]/items/route.ts
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { sessionOptions, IronSessionData } from "@/lib/session";
-import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { getIronSession } from "iron-session";
+
+import { sessionOptions, IronSessionData } from "@/lib/session";
+// app/api/lab-orders/[labOrderId]/items/route.ts
 // import { LabOrderItem, LabOrderItemStatus } from "@/types/opd"
 import { z } from "zod";
 
@@ -21,12 +22,12 @@ const getLabOrderId = (pathname: string): number | null {
 // POST handler for adding an item (test) to a lab order
 const AddLabOrderItemSchema = z.object({
     billable_item_id: z.number().int().positive(), // Link to the specific test in BillableItems
-    test_name: z.string().min(1).optional(), // Optional: Can be fetched from BillableItems,
-    sample_type: z.string().optional().nullable(),
-    notes: z.string().optional().nullable(), // Specific notes for this test
+    test_name: z.string().min(1).optional(), // Optional: Can be fetched from BillableItems;
+    sample_type: z.string().optional().nullable();
+    notes: z.string().optional().nullable(), // Specific notes for this test;
 });
 
-export const POST = async (request: Request) => {
+export const _POST = async (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);
@@ -106,7 +107,7 @@ export const POST = async (request: Request) => {
         });
 
         // 6. Execute the batch insert
-        const insertResults = await DB.batch(batchActions);
+        const _insertResults = await DB.batch(batchActions);
 
         // Basic check for success (optional: check insertResults)
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -121,7 +122,7 @@ export const POST = async (request: Request) => {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500,
+            status: 500;
             headers: { "Content-Type": "application/json" },
         });
     }

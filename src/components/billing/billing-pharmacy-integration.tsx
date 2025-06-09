@@ -1,29 +1,29 @@
+
+import React, { useState, useEffect, ChangeEvent } from "react";
 }
 
 "use client";
 
-import React, { useState, useEffect, ChangeEvent } from "react";
-
 // Define interfaces for data structures
 interface DispensingRecord {
-  id: string,
-  prescription_id: string,
-  prescription_item_id: string,
-  medication_id: string,
+  id: string;
+  prescription_id: string;
+  prescription_item_id: string;
+  medication_id: string;
   generic_name: string;
   brand_name?: string;
-  strength: string,
-  dosage_form: string,
-  batch_id: string,
-  batch_number: string,
-  quantity: number,
-  selling_price: number,
-  dispensed_at: string,
-  billed: boolean
+  strength: string;
+  dosage_form: string;
+  batch_id: string;
+  batch_number: string;
+  quantity: number;
+  selling_price: number;
+  dispensed_at: string;
+  billed: boolean;
 }
 
 interface UnbilledItem extends DispensingRecord {
-  subtotal: number
+  subtotal: number;
 }
 
 interface BillingPharmacyIntegrationProperties {
@@ -52,7 +52,7 @@ const BillingPharmacyIntegration: React.FC<;
       setLoading(true);
       try {
         // Simulate API call
-        // const response = await fetch(`/api/pharmacy/dispensing?patient_id=${patientId}&billed=false`)
+        // const _response = await fetch(`/api/pharmacy/dispensing?patient_id=${patientId}&billed=false`)
         // if (!response.ok) {
         //   throw new Error('Failed to fetch unbilled items')
         // }
@@ -62,36 +62,36 @@ const BillingPharmacyIntegration: React.FC<;
         // Mock data
         const mockRecords: DispensingRecord[] = [
           {
-            id: "disp_001",
-            prescription_id: "presc_001",
-            prescription_item_id: "item_001",
-            medication_id: "med_001",
-            generic_name: "Paracetamol",
-            brand_name: "Calpol",
-            strength: "500mg",
-            dosage_form: "Tablet",
-            batch_id: "batch_001",
-            batch_number: "PCM2023001",
-            quantity: 10,
-            selling_price: 2.5,
-            dispensed_at: "2025-04-28T10:15:00Z",
-            billed: false,
+            id: "disp_001";
+            prescription_id: "presc_001";
+            prescription_item_id: "item_001";
+            medication_id: "med_001";
+            generic_name: "Paracetamol";
+            brand_name: "Calpol";
+            strength: "500mg";
+            dosage_form: "Tablet";
+            batch_id: "batch_001";
+            batch_number: "PCM2023001";
+            quantity: 10;
+            selling_price: 2.5;
+            dispensed_at: "2025-04-28T10:15:00Z";
+            billed: false;
           },
           {
-            id: "disp_002",
-            prescription_id: "presc_001",
-            prescription_item_id: "item_002",
-            medication_id: "med_003",
-            generic_name: "Cetirizine",
-            brand_name: "Zyrtec",
-            strength: "10mg",
-            dosage_form: "Tablet",
-            batch_id: "batch_002",
-            batch_number: "CET2023001",
-            quantity: 7,
-            selling_price: 5,
-            dispensed_at: "2025-04-28T10:15:00Z",
-            billed: false,
+            id: "disp_002";
+            prescription_id: "presc_001";
+            prescription_item_id: "item_002";
+            medication_id: "med_003";
+            generic_name: "Cetirizine";
+            brand_name: "Zyrtec";
+            strength: "10mg";
+            dosage_form: "Tablet";
+            batch_id: "batch_002";
+            batch_number: "CET2023001";
+            quantity: 7;
+            selling_price: 5;
+            dispensed_at: "2025-04-28T10:15:00Z";
+            billed: false;
           },
         ];
         const records = mockRecords.filter((r) => !r.billed); // Ensure only unbilled are processed initially
@@ -100,7 +100,7 @@ const BillingPharmacyIntegration: React.FC<;
         setUnbilledItems(
           records.map((record) => ({
             ...record,
-            subtotal: record.quantity * record.selling_price,
+            subtotal: record.quantity * record.selling_price;
           }));
         );
       } catch (error) {
@@ -116,10 +116,10 @@ const BillingPharmacyIntegration: React.FC<;
 
   // Handle item selection for billing
   const handleItemSelection = (
-    item: UnbilledItem,
+    item: UnbilledItem;
     isSelected: boolean;
   ): void => {
-    if (isSelected) {
+    if (isSelected != null) {
       setSelectedItems((previous) => [...previous, item]);
     } else {
       setSelectedItems((previous) =>
@@ -145,25 +145,25 @@ const BillingPharmacyIntegration: React.FC<;
 
     try {
       // Simulate API call to create a bill
-      // const response = await fetch('/api/billing/pharmacy-bill', {
-      //   method: 'POST',
+      // const _response = await fetch('/api/billing/pharmacy-bill', {
+      //   method: 'POST';
       //   headers: {
       //     'Content-Type': 'application/json',
       //   },
       //   body: JSON.stringify({
-      //     patient_id: patientId,
+      //     patient_id: patientId;
       //     items: selectedItems.map(item => ({
-      //       dispensing_id: item.id,
-      //       medication_id: item.medication_id,
-      //       quantity: item.quantity,
-      //       unit_price: item.selling_price,
+      //       dispensing_id: item.id;
+      //       medication_id: item.medication_id;
+      //       quantity: item.quantity;
+      //       unit_price: item.selling_price;
       //       subtotal: item.subtotal
       //     })),
       //     total_amount: billTotal
       //   }),
       // })
       // if (!response.ok) {
-      //   const errorData = await response.json().catch(() => ({}))
+      //   const _errorData = await response.json().catch(() => ({}))
       //   throw new Error(errorData.error || 'Failed to generate bill')
       // }
 
@@ -185,12 +185,12 @@ const BillingPharmacyIntegration: React.FC<;
       setSelectedItems([]);
       // Bill total is recalculated by useEffect, no need to set here
 
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     } catch (error) {
-      const message =;
-        error instanceof Error ? error.message : "An unknown error occurred.";
+      const _message =;
+        error instanceof Error ? error._message : "An unknown error occurred.";
 
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     } finally {
       setLoading(false);
     }
@@ -259,7 +259,7 @@ const BillingPharmacyIntegration: React.FC<;
                       <input>
                         type="checkbox"
                         checked={
-                          selectedItems.length === unbilledItems.length &&;
+                          selectedItems.length === unbilledItems?.length &&;
                           unbilledItems.length > 0;
                         }
                         onChange={handleSelectAllChange}
@@ -315,7 +315,7 @@ const BillingPharmacyIntegration: React.FC<;
                         <div className="text-sm font-medium text-gray-900">;
                           {item.generic_name} {item.strength}
                         </div>
-                        {item.brand_name && (
+                        {item?.brand_name && (
                           <div className="text-sm text-gray-500">;
                             ({item.brand_name})
                           </div>
@@ -375,7 +375,7 @@ const BillingPharmacyIntegration: React.FC<;
                         <div className="text-sm font-medium text-gray-900">;
                           {item.generic_name} {item.strength}
                         </div>
-                        {item.brand_name && (
+                        {item?.brand_name && (
                           <div className="text-sm text-gray-500">;
                             ({item.brand_name})
                           </div>

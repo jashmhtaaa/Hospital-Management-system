@@ -1,20 +1,21 @@
-}
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+}
 interface OTDashboardStatsProps {
-  totalSurgeries: number,
-  completedSurgeries: number,
-  scheduledSurgeries: number,
-  theatresInUse: number,
-  totalTheatres: number,
-  averageDuration: string
+  totalSurgeries: number;
+  completedSurgeries: number;
+  scheduledSurgeries: number;
+  theatresInUse: number;
+  totalTheatres: number;
+  averageDuration: string;
 }
 
 /**
  * Operation Theatre dashboard statistics component;
  */
-export const OTDashboardStats = ({ totalSurgeries,
+export const _OTDashboardStats = ({ totalSurgeries,
   completedSurgeries,
   scheduledSurgeries,
   theatresInUse,
@@ -39,7 +40,7 @@ export const OTDashboardStats = ({ totalSurgeries,
           </p>
         </CardContent>
       </Card>
-      
+
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
           <CardTitle className="text-sm font-medium">Theatre Utilization</CardTitle>;
@@ -55,7 +56,7 @@ export const OTDashboardStats = ({ totalSurgeries,
           </p>
         </CardContent>
       </Card>
-      
+
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
           <CardTitle className="text-sm font-medium">Average Duration</CardTitle>;

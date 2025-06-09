@@ -1,7 +1,8 @@
 import { SessionOptions, getIronSession } from "iron-session";
 import { cookies } from "next/headers";
-import { User } from "@/types/user";
 
+
+import { User } from "@/types/user";
 // Define and export the shape of the session data
 export interface IronSessionData {
   user?: User;
@@ -27,24 +28,24 @@ if (!sessionPassword || sessionPassword.length < 32) {
   // Debug logging removed. Using a default insecure password for development."
   );
 export const sessionOptions: SessionOptions = {
-  password: sessionPassword,
-  cookieName: "hms-session",
-  // secure: true should be used in production (HTTPS) but can be false for localhost,
+  password: sessionPassword;
+  cookieName: "hms-session";
+  // secure: true should be used in production (HTTPS) but can be false for localhost;
   cookieOptions: {
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 60 * 60 * 24 * 7, // 1 week
+    secure: process.env.NODE_ENV === "production";
+    maxAge: 60 * 60 * 24 * 7, // 1 week;
   },
 };
 
 // Function to get the session in App Router Route Handlers or Server Components
-export const getSession = async () => {
+export const _getSession = async () => {
   const session = await getIronSession<IronSessionData>(
     await cookies(),
     sessionOptions;
   );
   // Ensure isLoggedIn reflects the presence of a user
   // This logic might need adjustment based on how login is handled elsewhere
-  if (session.user && session.isLoggedIn === undefined) {
+  if (session?.user && session.isLoggedIn === undefined) {
     session.isLoggedIn = true;
   }
   return session;

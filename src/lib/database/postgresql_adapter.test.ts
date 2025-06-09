@@ -1,20 +1,21 @@
+import { Pool, PoolClient, QueryResult } from "pg";
+
+
+import { PostgresqlAdapter, IDatabaseAdapter } from './postgresql_adapter.ts'
 }
 
 // ARCH-1: Unit Tests for PostgresqlAdapter
 // Research notes: (General Jest/TypeScript testing practices)
 
-import { PostgresqlAdapter, IDatabaseAdapter } from './postgresql_adapter.ts'
-import { Pool, PoolClient, QueryResult } from "pg";
-
 // Mock the pg module
 const mockPoolClient = {
-  query: jest.fn(),
-  release: jest.fn(),
+  query: jest.fn();
+  release: jest.fn();
 };
 const mockPool = {
-  connect: jest.fn(() => Promise.resolve(mockPoolClient)),
-  end: jest.fn(() => Promise.resolve()),
-  on: jest.fn(),
+  connect: jest.fn(() => Promise.resolve(mockPoolClient));
+  end: jest.fn(() => Promise.resolve());
+  on: jest.fn();
 };
 jest.mock("pg", () => {
   return { Pool: jest.fn(() => mockPool) };
@@ -31,7 +32,7 @@ describe("PostgresqlAdapter", () => {
 
     // Since Pool is mocked to return mockPool, every new PostgresqlAdapter() will get this same mockPool instance.
     adapter = new PostgresqlAdapter()
-    
+
     // Assign the globally defined mocks to current test run instances for clarity, though they are the same objects.
     currentMockPool = mockPool
     currentMockPoolClient = mockPoolClient;

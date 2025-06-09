@@ -23,7 +23,7 @@ module.exports = {
     '@typescript-eslint/no-unsafe-call': 'error',
     '@typescript-eslint/no-unsafe-member-access': 'error',
     '@typescript-eslint/no-unsafe-return': 'error',
-    
+
     // Core Security Rules
     'no-eval': 'error',
     'no-implied-eval': 'error',
@@ -44,7 +44,7 @@ module.exports = {
     'no-with': 'error',
     'radix': 'error',
     'wrap-iife': 'error',
-    
+
     // Production Code Quality
     'no-console': 'error',
     'no-debugger': 'error',

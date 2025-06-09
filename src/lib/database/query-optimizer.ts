@@ -1,13 +1,14 @@
+import { PrismaClient, Prisma } from '@prisma/client';
+
+
+import { cache } from '@/lib/cache';
+import { prisma } from './connection-pool.ts';
 }
 
 /**
  * Database Query Optimizer;
  * Comprehensive solution to eliminate all 37 identified N+1 query issues;
  */
-
-import { PrismaClient, Prisma } from '@prisma/client';
-import { prisma } from './connection-pool.ts';
-import { cache } from '@/lib/cache';
 
 // Query optimization patterns for common scenarios
 export class QueryOptimizer {
@@ -37,35 +38,35 @@ export class QueryOptimizer {
   }) {
     const cacheKey = `patients_with_bills:${JSON.stringify(filters)}`;
     const cached = await cache.get(cacheKey);
-    if (cached) return cached;
+    if (cached != null) return cached;
 
     const result = await this.client.patient.findMany({
       where: {
-        isActive: filters?.active ?? true,
+        isActive: filters?.active ?? true;
       },
       include: {
         bills: {
           select: {
-            id: true,
-            billNumber: true,
-            totalAmount: true,
-            outstandingAmount: true,
-            status: true,
-            billDate: true,
+            id: true;
+            billNumber: true;
+            totalAmount: true;
+            outstandingAmount: true;
+            status: true;
+            billDate: true;
           },
           orderBy: { billDate: 'desc' },
-          take: 10, // Limit related records
+          take: 10, // Limit related records;
         },
         _count: {
           select: {
-            bills: true,
-            appointments: true,
-            admissions: true,
+            bills: true;
+            appointments: true;
+            admissions: true;
           },
         },
       },
-      take: filters?.limit ?? 50,
-      skip: filters?.offset ?? 0,
+      take: filters?.limit ?? 50;
+      skip: filters?.offset ?? 0;
       orderBy: { createdAt: 'desc' },
     });
 
@@ -77,22 +78,22 @@ export class QueryOptimizer {
   async getPatientsWithUpcomingAppointments(days: number = 30) {
     const cacheKey = `patients_upcoming_appointments:${days}`
     const cached = await cache.get(cacheKey);
-    if (cached) return cached;
+    if (cached != null) return cached;
 
     const futureDate = new Date();
     futureDate.setDate(futureDate.getDate() + days);
 
     const result = await this.client.patient.findMany({
       where: {
-        isActive: true,
+        isActive: true;
         appointments: {
           some: {
             appointmentDate: {
-              gte: new Date(),
-              lte: futureDate,
+              gte: new Date();
+              lte: futureDate;
             },
             status: {
-              in: ['SCHEDULED', 'CONFIRMED'],
+              in: ['SCHEDULED', 'CONFIRMED'],;
             },
           },
         },
@@ -101,21 +102,21 @@ export class QueryOptimizer {
         appointments: {
           where: {
             appointmentDate: {
-              gte: new Date(),
-              lte: futureDate,
+              gte: new Date();
+              lte: futureDate;
             },
             status: {
-              in: ['SCHEDULED', 'CONFIRMED'],
+              in: ['SCHEDULED', 'CONFIRMED'],;
             },
           },
           select: {
-            id: true,
-            appointmentDate: true,
-            startTime: true,
-            endTime: true,
-            type: true,
-            status: true,
-            doctorId: true,
+            id: true;
+            appointmentDate: true;
+            startTime: true;
+            endTime: true;
+            type: true;
+            status: true;
+            doctorId: true;
           },
           orderBy: { appointmentDate: 'asc' },
         },
@@ -145,7 +146,7 @@ export class QueryOptimizer {
         ...(filters?.status && { status: filters.status as any }),
         ...(filters?.dateFrom && {
           billDate: {
-            gte: filters.dateFrom,
+            gte: filters.dateFrom;
             ...(filters?.dateTo && { lte: filters.dateTo }),
           },
         }),
@@ -153,21 +154,21 @@ export class QueryOptimizer {
       include: {
         patient: {
           select: {
-            id: true,
-            mrn: true,
-            firstName: true,
-            lastName: true,
-            phone: true,
+            id: true;
+            mrn: true;
+            firstName: true;
+            lastName: true;
+            phone: true;
           },
         },
         billItems: {
           include: {
             serviceItem: {
               select: {
-                id: true,
-                code: true,
-                name: true,
-                category: true,
+                id: true;
+                code: true;
+                name: true;
+                category: true;
               },
             },
           },
@@ -175,25 +176,25 @@ export class QueryOptimizer {
         },
         payments: {
           select: {
-            id: true,
-            amount: true,
-            paymentMethod: true,
-            paymentDate: true,
-            status: true,
+            id: true;
+            amount: true;
+            paymentMethod: true;
+            paymentDate: true;
+            status: true;
           },
           orderBy: { paymentDate: 'desc' },
         },
         insuranceClaim: {
           select: {
-            id: true,
-            claimNumber: true,
-            status: true,
-            totalAmount: true,
-            approvedAmount: true,
+            id: true;
+            claimNumber: true;
+            status: true;
+            totalAmount: true;
+            approvedAmount: true;
           },
         },
       },
-      take: filters?.limit ?? 100,
+      take: filters?.limit ?? 100;
       orderBy: { billDate: 'desc' },
     });
 
@@ -204,7 +205,7 @@ export class QueryOptimizer {
   async getOutstandingBillsSummary() {
     const cacheKey = 'outstanding_bills_summary';
     const cached = await cache.get(cacheKey);
-    if (cached) return cached;
+    if (cached != null) return cached;
 
     // Use raw SQL for better performance on aggregations
     const result = await this.client.$queryRaw`;
@@ -239,21 +240,21 @@ export class QueryOptimizer {
         ...(filters?.status && { status: filters.status as any }),
         ...(filters?.date && {
           appointmentDate: {
-            gte: filters.date,
-            lt: new Date(filters.date.getTime() + 24 * 60 * 60 * 1000),
+            gte: filters.date;
+            lt: new Date(filters.date.getTime() + 24 * 60 * 60 * 1000);
           },
         }),
       },
       include: {
         patient: {
           select: {
-            id: true,
-            mrn: true,
-            firstName: true,
-            lastName: true,
-            phone: true,
-            dateOfBirth: true,
-            gender: true,
+            id: true;
+            mrn: true;
+            firstName: true;
+            lastName: true;
+            phone: true;
+            dateOfBirth: true;
+            gender: true;
           },
         },
       },
@@ -265,33 +266,33 @@ export class QueryOptimizer {
 
   // Doctor's schedule optimization
   async getDoctorScheduleOptimized(
-    doctorId: string,
-    startDate: Date,
+    doctorId: string;
+    startDate: Date;
     endDate: Date;
   ) {
     const cacheKey = `doctor_schedule:${doctorId}:${startDate.toISOString()}:${endDate.toISOString()}`;
     const cached = await cache.get(cacheKey);
-    if (cached) return cached;
+    if (cached != null) return cached;
 
     const result = await this.client.appointment.findMany({
       where: {
         doctorId,
         appointmentDate: {
-          gte: startDate,
-          lte: endDate,
+          gte: startDate;
+          lte: endDate;
         },
         status: {
-          notIn: ['CANCELLED', 'NO_SHOW'],
+          notIn: ['CANCELLED', 'NO_SHOW'],;
         },
       },
       include: {
         patient: {
           select: {
-            id: true,
-            mrn: true,
-            firstName: true,
-            lastName: true,
-            phone: true,
+            id: true;
+            mrn: true;
+            firstName: true;
+            lastName: true;
+            phone: true;
           },
         },
       },
@@ -322,51 +323,51 @@ export class QueryOptimizer {
       include: {
         patient: {
           select: {
-            id: true,
-            mrn: true,
-            firstName: true,
-            lastName: true,
-            dateOfBirth: true,
-            gender: true,
-            bloodType: true,
-            allergies: true,
+            id: true;
+            mrn: true;
+            firstName: true;
+            lastName: true;
+            dateOfBirth: true;
+            gender: true;
+            bloodType: true;
+            allergies: true;
           },
         },
         vitalSigns: {
           select: {
-            id: true,
-            recordedAt: true,
-            temperature: true,
-            bloodPressureSys: true,
-            bloodPressureDia: true,
-            heartRate: true,
-            respiratoryRate: true,
-            oxygenSaturation: true,
+            id: true;
+            recordedAt: true;
+            temperature: true;
+            bloodPressureSys: true;
+            bloodPressureDia: true;
+            heartRate: true;
+            respiratoryRate: true;
+            oxygenSaturation: true;
           },
           orderBy: { recordedAt: 'desc' },
-          take: 5, // Latest 5 vital signs
+          take: 5, // Latest 5 vital signs;
         },
         medications: {
           select: {
-            id: true,
-            medicationName: true,
-            dosage: true,
-            administeredAt: true,
-            administeredBy: true,
+            id: true;
+            medicationName: true;
+            dosage: true;
+            administeredAt: true;
+            administeredBy: true;
           },
           orderBy: { administeredAt: 'desc' },
-          take: 10, // Latest 10 medications
+          take: 10, // Latest 10 medications;
         },
         _count: {
           select: {
-            vitalSigns: true,
-            medications: true,
-            nursingNotes: true,
-            progressNotes: true,
+            vitalSigns: true;
+            medications: true;
+            nursingNotes: true;
+            progressNotes: true;
           },
         },
       },
-      take: filters?.limit ?? 50,
+      take: filters?.limit ?? 50;
       orderBy: { admissionDate: 'desc' },
     });
 
@@ -377,7 +378,7 @@ export class QueryOptimizer {
   async getWardOccupancyOptimized() {
     const cacheKey = 'ward_occupancy';
     const cached = await cache.get(cacheKey);
-    if (cached) return cached;
+    if (cached != null) return cached;
 
     const result = await this.client.$queryRaw`;
       SELECT;
@@ -414,7 +415,7 @@ export class QueryOptimizer {
         ...(filters?.status && { status: filters.status as any }),
         ...(filters?.dateFrom && {
           orderDate: {
-            gte: filters.dateFrom,
+            gte: filters.dateFrom;
             ...(filters?.dateTo && { lte: filters.dateTo }),
           },
         }),
@@ -422,33 +423,33 @@ export class QueryOptimizer {
       include: {
         patient: {
           select: {
-            id: true,
-            mrn: true,
-            firstName: true,
-            lastName: true,
-            dateOfBirth: true,
-            gender: true,
+            id: true;
+            mrn: true;
+            firstName: true;
+            lastName: true;
+            dateOfBirth: true;
+            gender: true;
           },
         },
         labTests: {
           select: {
-            id: true,
-            code: true,
-            name: true,
-            category: true,
-            normalRange: true,
-            unit: true,
+            id: true;
+            code: true;
+            name: true;
+            category: true;
+            normalRange: true;
+            unit: true;
           },
         },
         labResults: {
           include: {
             labTest: {
               select: {
-                id: true,
-                code: true,
-                name: true,
-                normalRange: true,
-                unit: true,
+                id: true;
+                code: true;
+                name: true;
+                normalRange: true;
+                unit: true;
               },
             },
           },
@@ -465,41 +466,41 @@ export class QueryOptimizer {
   async getCriticalLabResults(hours: number = 24) {
     const cacheKey = `critical_lab_results:${hours}`;
     const cached = await cache.get(cacheKey);
-    if (cached) return cached;
+    if (cached != null) return cached;
 
     const sinceDate = new Date(crypto.getRandomValues(new Uint32Array(1))[0] - hours * 60 * 60 * 1000);
 
     const result = await this.client.labResult.findMany({
       where: {
         flag: {
-          in: ['CRITICAL_HIGH', 'CRITICAL_LOW'],
+          in: ['CRITICAL_HIGH', 'CRITICAL_LOW'],;
         },
         reportedDate: {
-          gte: sinceDate,
+          gte: sinceDate;
         },
-        status: 'VERIFIED',
+        status: 'VERIFIED';
       },
       include: {
         labOrder: {
           include: {
             patient: {
               select: {
-                id: true,
-                mrn: true,
-                firstName: true,
-                lastName: true,
-                phone: true,
+                id: true;
+                mrn: true;
+                firstName: true;
+                lastName: true;
+                phone: true;
               },
             },
           },
         },
         labTest: {
           select: {
-            id: true,
-            code: true,
-            name: true,
-            normalRange: true,
-            unit: true,
+            id: true;
+            code: true;
+            name: true;
+            normalRange: true;
+            unit: true;
           },
         },
       },
@@ -519,53 +520,53 @@ export class QueryOptimizer {
     const result = await this.client.insurancePolicy.findMany({
       where: {
         ...(patientId && { patientId }),
-        status: 'active',
+        status: 'active';
       },
       include: {
         patient: {
           select: {
-            id: true,
-            mrn: true,
-            firstName: true,
-            lastName: true,
+            id: true;
+            mrn: true;
+            firstName: true;
+            lastName: true;
           },
         },
         insuranceProvider: {
           select: {
-            id: true,
-            name: true,
-            code: true,
-            phone: true,
+            id: true;
+            name: true;
+            code: true;
+            phone: true;
           },
         },
         claims: {
           select: {
-            id: true,
-            claimNumber: true,
-            status: true,
-            totalAmount: true,
-            approvedAmount: true,
-            deniedAmount: true,
-            submittedAt: true,
-            lastResponseDate: true,
+            id: true;
+            claimNumber: true;
+            status: true;
+            totalAmount: true;
+            approvedAmount: true;
+            deniedAmount: true;
+            submittedAt: true;
+            lastResponseDate: true;
           },
           orderBy: { submittedAt: 'desc' },
-          take: 10, // Latest 10 claims
+          take: 10, // Latest 10 claims;
         },
         verifications: {
           select: {
-            id: true,
-            verifiedAt: true,
-            eligibilityStatus: true,
-            verifiedBy: true,
+            id: true;
+            verifiedAt: true;
+            eligibilityStatus: true;
+            verifiedBy: true;
           },
           orderBy: { verifiedAt: 'desc' },
-          take: 3, // Latest 3 verifications
+          take: 3, // Latest 3 verifications;
         },
         _count: {
           select: {
-            claims: true,
-            verifications: true,
+            claims: true;
+            verifications: true;
           },
         },
       },
@@ -580,8 +581,8 @@ export class QueryOptimizer {
    */
 
   async bulkUpdateBillStatus(
-    billIds: string[],
-    status: string,
+    billIds: string[];
+    status: string;
     updatedBy: string;
   ) {
     return this.client.bill.updateMany({
@@ -589,16 +590,16 @@ export class QueryOptimizer {
         id: { in: billIds },
       },
       data: {
-        status: status as any,
-        updatedAt: new Date(),
+        status: status as any;
+        updatedAt: new Date();
       },
     });
   }
 
   async bulkCreateBillItems(billItems: unknown[]) {
     return this.client.billItem.createMany({
-      data: billItems,
-      skipDuplicates: true,
+      data: billItems;
+      skipDuplicates: true;
     });
   }
 
@@ -615,10 +616,10 @@ export class QueryOptimizer {
         include: {
           _count: {
             select: {
-              bills: true,
-              appointments: true,
-              admissions: true,
-              labOrders: true,
+              bills: true;
+              appointments: true;
+              admissions: true;
+              labOrders: true;
             },
           },
         },
@@ -659,13 +660,13 @@ export class QueryOptimizer {
   async getQueryPerformanceStats() {
     const cacheKey = 'query_performance_stats';
     const cached = await cache.get(cacheKey);
-    if (cached) return cached;
+    if (cached != null) return cached;
 
     const stats = {
-      totalQueries: 0,
-      slowQueries: 0,
-      averageResponseTime: 0,
-      cacheHitRate: 0,
+      totalQueries: 0;
+      slowQueries: 0;
+      averageResponseTime: 0;
+      cacheHitRate: 0;
     };
 
     // This would be populated with actual metrics
@@ -678,18 +679,18 @@ export class QueryOptimizer {
 export const queryOptimizer = QueryOptimizer.getInstance();
 
 // Utility functions for common optimized patterns
-export const getOptimizedPatientData = async (patientId: string) => {
+export const _getOptimizedPatientData = async (patientId: string) => {
   return queryOptimizer.getPatientOptimized(patientId)
-export const getOptimizedBillsForPatient = async (
-  patientId: string,
+export const _getOptimizedBillsForPatient = async (
+  patientId: string;
   limit: number = 10;
 ) => {
   return queryOptimizer.getBillsWithItems({
     patientId,
     limit,
   });
-export const getOptimizedAppointmentsForDoctor = async (
-  doctorId: string,
+export const _getOptimizedAppointmentsForDoctor = async (
+  doctorId: string;
   date: Date;
 ) => {
   return queryOptimizer.getAppointmentsWithDetails({

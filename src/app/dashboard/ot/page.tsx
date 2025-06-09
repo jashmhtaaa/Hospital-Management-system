@@ -1,10 +1,11 @@
+import React, { useState, /* useEffect, */ useCallback } from "react";
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 }
 
 "use client";
 export const dynamic = 'force-dynamic';
 
-import React, { useState, /* useEffect, */ useCallback } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 // import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
@@ -18,7 +19,7 @@ import OTTheatreModal from "@/components/ot/ot-theatre-modal";
 import OTSurgeryTypeModal from "@/components/ot/ot-surgery-type-modal";
 import OTChecklistTemplateModal from "@/components/ot/ot-checklist-template-modal";
 
-export default const OTDashboardPage = () {
+export default const _OTDashboardPage = () {
   const [activeTab, setActiveTab] = useState("dashboard");
   // State to trigger list refreshes after modal saves
   const [refreshKey, setRefreshKey] = useState(0);

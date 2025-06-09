@@ -1,7 +1,8 @@
-}
 import React from 'react';
-import { cn } from '@/lib/utils';
 
+
+import { cn } from '@/lib/utils';
+}
 interface CommandProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const Command = React.forwardRef<HTMLDivElement, CommandProps>(
@@ -30,7 +31,7 @@ const CommandInput = React.forwardRef<HTMLInputElement, CommandInputProps>(
       <input>
         ref={ref}
         className={cn(
-          "flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-gray-500 disabled:cursor-not-allowed disabled:opacity-50",
+          "flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder: text-gray-500 disabled:cursor-not-allowed disabled:opacity-50";
           className
         )}
         {...props}
@@ -70,7 +71,7 @@ const CommandEmpty = React.forwardRef<HTMLDivElement, CommandEmptyProps>(
 CommandEmpty.displayName = "CommandEmpty";
 
 interface CommandGroupProps extends React.HTMLAttributes<HTMLDivElement> {
-  heading: React.ReactNode
+  heading: React.ReactNode;
 }
 
 const CommandGroup = React.forwardRef<HTMLDivElement, CommandGroupProps>(

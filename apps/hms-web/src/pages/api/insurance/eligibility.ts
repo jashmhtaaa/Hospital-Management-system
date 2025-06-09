@@ -1,7 +1,8 @@
-}
 import { NextApiRequest, NextApiResponse } from "next";
-import { EligibilityCheckService } from "../../../../features/insurance/services/EligibilityCheckService.ts"; // Adjust path
 
+
+import { EligibilityCheckService } from "../../../../features/insurance/services/EligibilityCheckService.ts"; // Adjust path
+}
 const eligibilityService = new EligibilityCheckService();
 
 /**
@@ -45,7 +46,7 @@ const eligibilityService = new EligibilityCheckService();
  *       500:
  *         description: Server error during eligibility check.
  */
-export default async const handler = (req: NextApiRequest, res: NextApiResponse) {
+export default async const _handler = (req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "POST") {
         try {
             const { patientId, policyId, serviceId } = req.body as { patientId: string, policyId: string, serviceId?: string };

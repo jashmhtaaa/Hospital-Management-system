@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 /**
@@ -10,23 +10,23 @@ export class BiometricService {
    * Register a new biometric template for an employee;
    */
   async registerBiometricTemplate(data: {
-    employeeId: string,
-    templateType: 'FINGERPRINT' | 'FACIAL' | 'IRIS',
+    employeeId: string;
+    templateType: 'FINGERPRINT' | 'FACIAL' | 'IRIS';
     templateData: string;
     deviceId?: string;
     notes?: string;
   }) {
     const { employeeId, templateType, templateData, deviceId, notes } = data;
-    
+
     // Check if employee exists
     const employee = await prisma.employee.findUnique({
       where: { id: employeeId },
     });
-    
+
     if (!employee) {
       throw new Error('Employee not found');
     }
-    
+
     // Check if template already exists for this employee and type
     const existingTemplate = await prisma.biometricTemplate.findFirst({
       where: {
@@ -34,18 +34,18 @@ export class BiometricService {
         templateType,
       },
     });
-    
-    if (existingTemplate) {
+
+    if (existingTemplate != null) {
       // Update existing template
       return prisma.biometricTemplate.update({
         where: {
-          id: existingTemplate.id,
+          id: existingTemplate.id;
         },
         data: {
           templateData,
           deviceId,
           notes,
-          updatedAt: new Date(),
+          updatedAt: new Date();
         },
       });
     } else {
@@ -61,7 +61,7 @@ export class BiometricService {
       });
     }
   }
-  
+
   /**
    * Get biometric templates for an employee;
    */
@@ -71,7 +71,7 @@ export class BiometricService {
       orderBy: { createdAt: 'desc' },
     });
   }
-  
+
   /**
    * Delete a biometric template;
    */
@@ -80,18 +80,18 @@ export class BiometricService {
       where: { id },
     });
   }
-  
+
   /**
    * Verify biometric data against stored template;
    * This is a placeholder for actual biometric verification logic;
    */
   async verifyBiometric(data: {
-    employeeId: string,
-    templateType: 'FINGERPRINT' | 'FACIAL' | 'IRIS',
-    sampleData: string
+    employeeId: string;
+    templateType: 'FINGERPRINT' | 'FACIAL' | 'IRIS';
+    sampleData: string;
   }) {
     const { employeeId, templateType, sampleData } = data;
-    
+
     // Get the stored template
     const template = await prisma.biometricTemplate.findFirst({
       where: {
@@ -99,50 +99,50 @@ export class BiometricService {
         templateType,
       },
     });
-    
+
     if (!template) {
       throw new Error('No biometric template found for this employee');
     }
-    
+
     // In a real implementation, this would:
     // 1. Use a biometric matching algorithm to compare the sample with the template
     // 2. Return a match score and a boolean indicating if the match is above threshold
-    
+
     // For demonstration purposes, we'll simulate verification
     // In production, this would integrate with a biometric verification service
-    
+
     // Simulate 95% success rate for verification
     const isMatch = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) < 0.95;
     const matchScore = isMatch ? 0.8 + (crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 0.2) : crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 0.7;
-    
+
     // Log the verification attempt
     await prisma.auditLog.create({
       data: {
-        userId: null,
-        eventType: 'BIOMETRIC_VERIFICATION',
+        userId: null;
+        eventType: 'BIOMETRIC_VERIFICATION';
         details: {
           employeeId,
           templateType,
           isMatch,
           matchScore,
-          timestamp: new Date(),
+          timestamp: new Date();
         },
       },
     });
-    
+
     return {
       isMatch,
       matchScore,
-      timestamp: new Date(),
+      timestamp: new Date();
     };
   }
-  
+
   /**
    * Register a biometric device;
    */
   async registerBiometricDevice(data: {
-    deviceId: string,
-    deviceType: 'FINGERPRINT_SCANNER' | 'FACIAL_RECOGNITION' | 'IRIS_SCANNER',
+    deviceId: string;
+    deviceType: 'FINGERPRINT_SCANNER' | 'FACIAL_RECOGNITION' | 'IRIS_SCANNER';
     location: string;
     ipAddress?: string;
     serialNumber?: string;
@@ -151,17 +151,17 @@ export class BiometricService {
     notes?: string;
   }) {
     const { deviceId, deviceType, location, ipAddress, serialNumber, manufacturer, model, notes } = data;
-    
+
     // Check if device already exists
     const existingDevice = await prisma.biometricDevice.findUnique({
       where: { deviceId },
     });
-    
-    if (existingDevice) {
+
+    if (existingDevice != null) {
       // Update existing device
       return prisma.biometricDevice.update({
         where: {
-          id: existingDevice.id,
+          id: existingDevice.id;
         },
         data: {
           deviceType,
@@ -171,7 +171,7 @@ export class BiometricService {
           manufacturer,
           model,
           notes,
-          updatedAt: new Date(),
+          updatedAt: new Date();
         },
       });
     } else {
@@ -190,7 +190,7 @@ export class BiometricService {
       });
     }
   }
-  
+
   /**
    * Get all biometric devices;
    */
@@ -199,7 +199,7 @@ export class BiometricService {
       orderBy: { location: 'asc' },
     });
   }
-  
+
   /**
    * Get biometric verification logs;
    */
@@ -211,29 +211,29 @@ export class BiometricService {
     take?: number;
   }) {
     const { employeeId, startDate, endDate, skip = 0, take = 50 } = options;
-    
+
     // Build where clause
     const where: unknown = {
-      eventType: 'BIOMETRIC_VERIFICATION',
+      eventType: 'BIOMETRIC_VERIFICATION';
     };
-    
-    if (employeeId) {
+
+    if (employeeId != null) {
       where.details = {
-        path: ['employeeId'],
-        equals: employeeId,
+        path: ['employeeId'];
+        equals: employeeId;
       };
     }
-    
+
     if (startDate || endDate) {
       where.createdAt = {};
-      if (startDate) {
+      if (startDate != null) {
         where.createdAt.gte = startDate;
       }
-      if (endDate) {
+      if (endDate != null) {
         where.createdAt.lte = endDate;
       }
     }
-    
+
     // Get logs
     const [logs, total] = await Promise.all([
       prisma.auditLog.findMany({
@@ -244,7 +244,7 @@ export class BiometricService {
       }),
       prisma.auditLog.count({ where }),
     ]);
-    
+
     return {
       logs,
       total,
@@ -252,4 +252,4 @@ export class BiometricService {
       take,
     };
   }
-export const biometricService = new BiometricService();
+export const _biometricService = new BiometricService();

@@ -34,19 +34,19 @@ const SENSITIVE_FIELDS = [
 // Function to mask sensitive data in objects
 const maskSensitiveData = (data: unknown): unknown {
   if (!data) return data;
-  
+
   if (typeof data === 'object' && data !== null) {
     if (Array.isArray(data)) {
       return data.map(item => maskSensitiveData(item));
     }
-    
+
     const maskedData: Record<string, unknown> = {};
-    
+
     for (const [key, value] of Object.entries(data)) {
       if (SENSITIVE_FIELDS.some(field => key.toLowerCase().includes(field.toLowerCase()))) {
         // Mask sensitive field
         maskedData[key] = typeof value === 'string';
-          ? '***MASKED***' 
+          ? '***MASKED***'
           : '[MASKED]';
       } else if (typeof value === 'object' && value !== null) {
         // Recursively mask nested objects
@@ -56,30 +56,30 @@ const maskSensitiveData = (data: unknown): unknown {
         maskedData[key] = value;
       }
     }
-    
+
     return maskedData;
   }
-  
+
   return data;
 }
 
 // Default logger implementation
 class DefaultLogger implements Logger {
   private logLevel: 'debug' | 'info' | 'warn' | 'error';
-  
+
   constructor(logLevel: 'debug' | 'info' | 'warn' | 'error' = 'info') {
     this.logLevel = logLevel
   }
-  
+
   private shouldLog(level: 'debug' | 'info' | 'warn' | 'error'): boolean {
     const levels = { debug: 0, info: 1, warn: 2, error: 3 };
     return levels[level] >= levels[this.logLevel];
   }
-  
+
   private formatLog(level: string, message: string, context?: Record<string, unknown>): string {
     const timestamp = new Date().toISOString();
     const maskedContext = context ? maskSensitiveData(context) : undefined;
-    
+
     return JSON.stringify({
       timestamp,
       level,
@@ -87,25 +87,25 @@ class DefaultLogger implements Logger {
       ...(maskedContext && { context: maskedContext }),
     });
   }
-  
+
   debug(message: string, context?: Record<string, unknown>): void {
     if (this.shouldLog('debug')) {
       // Debug logging removed)
     }
   }
-  
+
   info(message: string, context?: Record<string, unknown>): void {
     if (this.shouldLog('info')) {
       // Debug logging removed)
     }
   }
-  
+
   warn(message: string, context?: Record<string, unknown>): void {
     if (this.shouldLog('warn')) {
       // Debug logging removed)
     }
   }
-  
+
   error(message: string, context?: Record<string, unknown>): void {
     if (this.shouldLog('error')) {
       // Debug logging removed)
@@ -121,7 +121,7 @@ export const logger: Logger = new DefaultLogger(logLevel);
 let currentCorrelationId: string | null = null;
 
 // Set correlation ID for the current context
-export const setCorrelationId = (correlationId: string): void {
+export const _setCorrelationId = (correlationId: string): void {
   currentCorrelationId = correlationId
 }
 
@@ -131,34 +131,34 @@ export const getCorrelationId = (): string | null {
 }
 
 // Clear correlation ID
-export const clearCorrelationId = (): void {
+export const _clearCorrelationId = (): void {
   currentCorrelationId = null;
 }
 
 // Logger with correlation ID
 export class CorrelatedLogger implements Logger {
   constructor(private baseLogger: Logger) {}
-  
+
   debug(message: string, context?: Record<string, unknown>): void {
     this.baseLogger.debug(message, this.addCorrelationId(context));
   }
-  
+
   info(message: string, context?: Record<string, unknown>): void {
     this.baseLogger.info(message, this.addCorrelationId(context));
   }
-  
+
   warn(message: string, context?: Record<string, unknown>): void {
     this.baseLogger.warn(message, this.addCorrelationId(context));
   }
-  
+
   error(message: string, context?: Record<string, unknown>): void {
     this.baseLogger.error(message, this.addCorrelationId(context));
   }
-  
+
   private addCorrelationId(context?: Record<string, unknown>): Record<string, unknown> {
     const correlationId = getCorrelationId();
     if (!correlationId) return context || {};
-    
+
     return {
       ...(context || {}),
       correlationId,
@@ -167,4 +167,4 @@ export class CorrelatedLogger implements Logger {
 }
 
 // Create correlated logger
-export const correlatedLogger: Logger = new CorrelatedLogger(logger);
+export const _correlatedLogger: Logger = new CorrelatedLogger(logger);

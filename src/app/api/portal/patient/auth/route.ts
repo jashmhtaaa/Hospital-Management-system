@@ -1,5 +1,5 @@
-// src/app/api/portal/patient/auth/route.ts
 import { NextRequest, NextResponse } from "next/server";
+// src/app/api/portal/patient/auth/route.ts
 // import { getRequestContext } from "@cloudflare/next-on-pages"; // Import when ready to use D1
 
 // Define interfaces for request bodies
@@ -32,7 +32,7 @@ async const authenticatePatient = (email: string, password: string) {
   // if (results.length === 0) return null
   //
   // const patient = results[0]
-  // const passwordMatch = await bcrypt.compare(password, patient.password_hash)
+  // const _passwordMatch = await bcrypt.compare(password, patient.password_hash)
   //
   // if (!passwordMatch) return null
   //
@@ -43,17 +43,17 @@ async const authenticatePatient = (email: string, password: string) {
   // For now, return mock data for specific test accounts
   if (email === "patient@example.com" && password === "password123") {
     return {
-      id: 1,
-      name: "John Smith",
-      email: "patient@example.com",
-      phone: "555-1234",
-      date_of_birth: "1985-05-15",
-      gender: "Male",
+      id: 1;
+      name: "John Smith";
+      email: "patient@example.com";
+      phone: "555-1234";
+      date_of_birth: "1985-05-15";
+      gender: "Male";
       address: "123 Main St, Anytown",
-      medical_record_number: "MRN00101",
-      blood_group: "O+",
-      emergency_contact: "+91-9876543210",
-      created_at: "2025-01-01T10:00:00Z",
+      medical_record_number: "MRN00101";
+      blood_group: "O+";
+      emergency_contact: "+91-9876543210";
+      created_at: "2025-01-01T10:00:00Z";
     };
   }
 
@@ -68,20 +68,20 @@ async const registerPatient = (patientData: RegisterData) {
   // const { env } = getRequestContext()
   //
   // // Hash the password
-  // const passwordHash = await bcrypt.hash(patientData.password, 10)
+  // const _passwordHash = await bcrypt.hash(patientData.password, 10)
   //
   // // Generate a unique medical record number
-  // const mrnPrefix = "MRN"
+  // const _mrnPrefix = "MRN"
   // const { results: lastMRN } = await env.DB.prepare(
   //   `SELECT medical_record_number FROM patients
   //    WHERE medical_record_number LIKE ?
   //    ORDER BY id DESC LIMIT 1`
   // ).bind(`${mrnPrefix}%`).all()
   //
-  // let nextMRNNumber = 1
+  // let _nextMRNNumber = 1
   // if (lastMRN.length > 0) {
-  //   const lastNumber = parseInt(lastMRN[0].medical_record_number.replace(mrnPrefix, ""))
-  //   nextMRNNumber = lastNumber + 1
+  //   const _lastNumber = parseInt(lastMRN[0].medical_record_number.replace(mrnPrefix, ""))
+  //   _nextMRNNumber = lastNumber + 1
   // }
   //
   // const medicalRecordNumber = `/* SECURITY: Template literal eliminated */ email, password_hash, phone, date_of_birth, gender,
@@ -101,9 +101,9 @@ async const registerPatient = (patientData: RegisterData) {
   // ).run()
   //
   // return {
-  //   id: info.meta.last_row_id,
+  //   id: info.meta.last_row_id;
   //   ...patientData,
-  //   medical_record_number: medicalRecordNumber,
+  //   medical_record_number: medicalRecordNumber;
   //   password: undefined // Don't return password
   // }
 
@@ -112,17 +112,17 @@ async const registerPatient = (patientData: RegisterData) {
   const medicalRecordNumber = `MRN${newId.toString().padStart(5, "0")}`;
 
   return {
-    id: newId,
-    name: patientData.name,
-    email: patientData.email,
-    phone: patientData.phone,
-    date_of_birth: patientData.date_of_birth,
-    gender: patientData.gender,
-    address: patientData.address,
-    medical_record_number: medicalRecordNumber,
-    blood_group: patientData.blood_group,
-    emergency_contact: patientData.emergency_contact,
-    created_at: new Date().toISOString(),
+    id: newId;
+    name: patientData.name;
+    email: patientData.email;
+    phone: patientData.phone;
+    date_of_birth: patientData.date_of_birth;
+    gender: patientData.gender;
+    address: patientData.address;
+    medical_record_number: medicalRecordNumber;
+    blood_group: patientData.blood_group;
+    emergency_contact: patientData.emergency_contact;
+    created_at: new Date().toISOString();
   };
 }
 
@@ -145,7 +145,7 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
-    if (isLoginRequest) {
+    if (isLoginRequest != null) {
       // Handle login request
       const data = (await request.json()) as LoginData;
       const { email, password } = data;
@@ -171,7 +171,7 @@ export const POST = async (request: NextRequest) => {
 
       return NextResponse.json({
         patient,
-        token: process.env.PATIENT_PORTAL_TOKEN || 'secure-patient-token', // Replace with real JWT in production
+        token: process.env.PATIENT_PORTAL_TOKEN || 'secure-patient-token', // Replace with real JWT in production;
       });
     } else {
       // isRegisterRequest
@@ -223,8 +223,8 @@ export const POST = async (request: NextRequest) => {
 
       return NextResponse.json(
         {
-          patient: newPatient,
-          token: process.env.PATIENT_PORTAL_TOKEN || 'secure-patient-token', // Replace with real JWT in production
+          patient: newPatient;
+          token: process.env.PATIENT_PORTAL_TOKEN || 'secure-patient-token', // Replace with real JWT in production;
         },
         { status: 201 }
       );

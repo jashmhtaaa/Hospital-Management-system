@@ -1,3 +1,8 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+
+import { FHIRBundle } from '@/lib/fhir/types';
+import { fhirService } from '@/lib/fhir/fhir.service';
 }
 
 /**
@@ -5,10 +10,6 @@
  * Handles FHIR Bundle processing for batch and transaction operations;
  * POST /fhir/r4 - Process FHIR Bundle;
  */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { fhirService } from '@/lib/fhir/fhir.service';
-import { FHIRBundle } from '@/lib/fhir/types';
 
 /**
  * POST /fhir/r4 - Process FHIR Bundle (batch or transaction)
@@ -21,15 +22,15 @@ export const POST = async (request: NextRequest) => {
     if (!bundle || bundle.resourceType !== 'Bundle') {
       return NextResponse.json(
         {
-          resourceType: 'OperationOutcome',
+          resourceType: 'OperationOutcome';
           issue: [{
-            severity: 'error',
-            code: 'invalid',
-            diagnostics: 'Request must be a FHIR Bundle resource'
+            severity: 'error';
+            code: 'invalid';
+            diagnostics: 'Request must be a FHIR Bundle resource';
           }]
         },
-        { 
-          status: 400,
+        {
+          status: 400;
           headers: { 'Content-Type': 'application/fhir+json' }
         }
       );
@@ -39,15 +40,15 @@ export const POST = async (request: NextRequest) => {
     if (!['batch', 'transaction'].includes(bundle.type)) {
       return NextResponse.json(
         {
-          resourceType: 'OperationOutcome',
+          resourceType: 'OperationOutcome';
           issue: [{
-            severity: 'error',
-            code: 'invalid',
-            diagnostics: 'Bundle type must be "batch" or "transaction"'
+            severity: 'error';
+            code: 'invalid';
+            diagnostics: 'Bundle type must be "batch" or "transaction"';
           }]
         },
-        { 
-          status: 400,
+        {
+          status: 400;
           headers: { 'Content-Type': 'application/fhir+json' }
         }
       );
@@ -59,8 +60,8 @@ export const POST = async (request: NextRequest) => {
     if (!result.success) {
       return NextResponse.json(
         result.issues || { error: result.error },
-        { 
-          status: 400,
+        {
+          status: 400;
           headers: { 'Content-Type': 'application/fhir+json' }
         }
       );
@@ -74,15 +75,15 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json(
       {
-        resourceType: 'OperationOutcome',
+        resourceType: 'OperationOutcome';
         issue: [{
-          severity: 'error',
-          code: 'exception',
-          diagnostics: error instanceof Error ? error.message : 'Internal server error'
+          severity: 'error';
+          code: 'exception';
+          diagnostics: error instanceof Error ? error.message : 'Internal server error';
         }]
       },
-      { 
-        status: 500,
+      {
+        status: 500;
         headers: { 'Content-Type': 'application/fhir+json' }
       }
     );
@@ -95,38 +96,38 @@ export const POST = async (request: NextRequest) => {
 export const GET = async () => {
   try {
     const capabilityStatement = {
-      resourceType: 'CapabilityStatement',
-      id: 'hms-fhir-server',
-      status: 'active',
-      date: new Date().toISOString(),
-      publisher: 'Hospital Management System',
-      kind: 'instance',
+      resourceType: 'CapabilityStatement';
+      id: 'hms-fhir-server';
+      status: 'active';
+      date: new Date().toISOString();
+      publisher: 'Hospital Management System';
+      kind: 'instance';
       software: {
-        name: 'HMS FHIR Server',
-        version: '1.0.0'
+        name: 'HMS FHIR Server';
+        version: '1.0.0';
       },
       implementation: {
-        description: 'Hospital Management System FHIR R4 Server',
-        url: '/fhir/r4'
+        description: 'Hospital Management System FHIR R4 Server';
+        url: '/fhir/r4';
       },
-      fhirVersion: '4.0.1',
+      fhirVersion: '4.0.1';
       format: ['application/fhir+json', 'application/json'],
       rest: [{
-        mode: 'server',
+        mode: 'server';
         security: {
-          cors: true,
+          cors: true;
           service: [{
             coding: [{
-              system: 'https://terminology.hl7.org/CodeSystem/restful-security-service',
-              code: 'OAuth',
-              display: 'OAuth'
+              system: 'https://terminology.hl7.org/CodeSystem/restful-security-service';
+              code: 'OAuth';
+              display: 'OAuth';
             }]
           }]
         },
         resource: [
           {
-            type: 'Patient',
-            profile: 'https://hl7.org/fhir/StructureDefinition/Patient',
+            type: 'Patient';
+            profile: 'https://hl7.org/fhir/StructureDefinition/Patient';
             interaction: [
               { code: 'read' },
               { code: 'create' },
@@ -147,8 +148,8 @@ export const GET = async () => {
             ]
           },
           {
-            type: 'Appointment',
-            profile: 'https://hl7.org/fhir/StructureDefinition/Appointment',
+            type: 'Appointment';
+            profile: 'https://hl7.org/fhir/StructureDefinition/Appointment';
             interaction: [
               { code: 'read' },
               { code: 'create' },
@@ -165,8 +166,8 @@ export const GET = async () => {
             ]
           },
           {
-            type: 'Encounter',
-            profile: 'https://hl7.org/fhir/StructureDefinition/Encounter',
+            type: 'Encounter';
+            profile: 'https://hl7.org/fhir/StructureDefinition/Encounter';
             interaction: [
               { code: 'read' },
               { code: 'create' },
@@ -183,8 +184,8 @@ export const GET = async () => {
             ]
           },
           {
-            type: 'MedicationRequest',
-            profile: 'https://hl7.org/fhir/StructureDefinition/MedicationRequest',
+            type: 'MedicationRequest';
+            profile: 'https://hl7.org/fhir/StructureDefinition/MedicationRequest';
             interaction: [
               { code: 'read' },
               { code: 'create' },
@@ -201,8 +202,8 @@ export const GET = async () => {
             ]
           },
           {
-            type: 'Observation',
-            profile: 'https://hl7.org/fhir/StructureDefinition/Observation',
+            type: 'Observation';
+            profile: 'https://hl7.org/fhir/StructureDefinition/Observation';
             interaction: [
               { code: 'read' },
               { code: 'create' },
@@ -219,8 +220,8 @@ export const GET = async () => {
             ]
           },
           {
-            type: 'DiagnosticReport',
-            profile: 'https://hl7.org/fhir/StructureDefinition/DiagnosticReport',
+            type: 'DiagnosticReport';
+            profile: 'https://hl7.org/fhir/StructureDefinition/DiagnosticReport';
             interaction: [
               { code: 'read' },
               { code: 'create' },
@@ -253,15 +254,15 @@ export const GET = async () => {
 
     return NextResponse.json(
       {
-        resourceType: 'OperationOutcome',
+        resourceType: 'OperationOutcome';
         issue: [{
-          severity: 'error',
-          code: 'exception',
-          diagnostics: error instanceof Error ? error.message : 'Internal server error'
+          severity: 'error';
+          code: 'exception';
+          diagnostics: error instanceof Error ? error.message : 'Internal server error';
         }]
       },
-      { 
-        status: 500,
+      {
+        status: 500;
         headers: { 'Content-Type': 'application/fhir+json' }
       }
     );
@@ -273,7 +274,7 @@ export const GET = async () => {
  */
 export const OPTIONS = async () => {
   return new NextResponse(null, {
-    status: 200,
+    status: 200;
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',

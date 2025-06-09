@@ -1,42 +1,43 @@
+import React, { useState, useEffect } from "react";
+import { format } from "date-fns";
+import { useRouter } from "next/navigation";
+import { z } from "zod";
+
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { Doctor } from "@/types/doctor";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Patient } from "@/types/patient";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 }
 
 "use client";
 
 export const dynamic = 'force-dynamic';
 
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
-import { z } from "zod";
-import { Patient } from "@/types/patient";
-import { Doctor } from "@/types/doctor";
-import { format } from "date-fns";
-
 // Schema for booking validation
 const BookAppointmentSchema = z.object({
   patient_id: z.string().min(1, "Patient selection is required"), // Use string initially from select
   doctor_id: z.string().min(1, "Doctor selection is required"),   // Use string initially from select
   appointment_date: z.string().min(1, "Date is required"), // YYYY-MM-DD
-  appointment_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Time must be in HH:MM format"),
-  duration_minutes: z.number().int().positive().optional().default(15),
-  reason: z.string().optional(),
+  appointment_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Time must be in HH: MM format");
+  duration_minutes: z.number().int().positive().optional().default(15);
+  reason: z.string().optional();
 });
 
 type FormData = z.infer<typeof BookAppointmentSchema>;
 
-export default const BookAppointmentPage = () {
+export default const _BookAppointmentPage = () {
   const router = useRouter();
   const { toast } = useToast();
   const [formData, setFormData] = useState<Partial<FormData>>({
       appointment_date: format(new Date(), "yyyy-MM-dd"), // Default to today
-      appointment_time: "09:00", // Default time
+      appointment_time: "09:00", // Default time;
   });
   const [patients, setPatients] = useState<Patient[]>([]);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
@@ -58,16 +59,16 @@ export default const BookAppointmentPage = () {
         if (!doctorsRes.ok) throw new Error("Failed to fetch doctors");
 
         const patientsData: Patient[] = await patientsRes.json();
-        const doctorsData: Doctor[] = await doctorsRes.json(),
+        const doctorsData: Doctor[] = await doctorsRes.json();
         setPatients(patientsData.filter(p => p.is_active)); // Only show active patients
         setDoctors(doctorsData); // Assuming API returns doctors linked to active users
 
       } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "Could not load patients or doctors.";
         toast({
-          title: "Error Fetching Data",
-          description: message,
-          variant: "destructive",
+          title: "Error Fetching Data";
+          description: message;
+          variant: "destructive";
         }),
         setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: "Could not load required data." }]);
       } finally {
@@ -97,9 +98,9 @@ export default const BookAppointmentPage = () {
       setErrors(validation.error.errors),
       setIsLoading(false);
       toast({
-        title: "Validation Error",
-        description: "Please check the form for errors.",
-        variant: "destructive",
+        title: "Validation Error";
+        description: "Please check the form for errors.";
+        variant: "destructive";
       });
       return;
     }
@@ -110,18 +111,18 @@ export default const BookAppointmentPage = () {
     const dataToSend = {
         patient_id: parseInt(validation.data.patient_id, 10),
         doctor_id: parseInt(validation.data.doctor_id, 10),
-        appointment_datetime: appointmentDateTimeISO,
-        duration_minutes: validation.data.duration_minutes,
-        reason: validation.data.reason,
+        appointment_datetime: appointmentDateTimeISO;
+        duration_minutes: validation.data.duration_minutes;
+        reason: validation.data.reason;
     };
 
     try {
       const response = await fetch("/api/appointments", {
-        method: "POST",
+        method: "POST";
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(dataToSend),
+        body: JSON.stringify(dataToSend);
       });
 
       const result: { error?: string } = await response.json(); // Add type annotation
@@ -131,8 +132,8 @@ export default const BookAppointmentPage = () {
       }
 
       toast({
-        title: "Appointment Booked",
-        description: `Appointment scheduled successfully.`,
+        title: "Appointment Booked";
+        description: `Appointment scheduled successfully.`;
       });
 
       router.push("/dashboard/appointments"); // Redirect to appointment list
@@ -141,9 +142,9 @@ export default const BookAppointmentPage = () {
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
       setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
       toast({
-        title: "Booking Failed",
-        description: message,
-        variant: "destructive",
+        title: "Booking Failed";
+        description: message;
+        variant: "destructive";
       });
     } finally {
       setIsLoading(false);

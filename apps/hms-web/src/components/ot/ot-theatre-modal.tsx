@@ -1,22 +1,23 @@
-}
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+
+
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-
+}
 interface OTTheatreModalProps {
-  isOpen: boolean,
-  onClose: () => void,
-  onSubmit: (data: unknown) => void
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (data: unknown) => void;
 }
 
 /**
  * Operation Theatre management modal component;
  */
-export const OTTheatreModal = ({ isOpen, onClose, onSubmit }: OTTheatreModalProps) => {
+export const _OTTheatreModal = ({ isOpen, onClose, onSubmit }: OTTheatreModalProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // In a real implementation, we would collect form data here
@@ -35,7 +36,7 @@ export const OTTheatreModal = ({ isOpen, onClose, onSubmit }: OTTheatreModalProp
               <Label htmlFor="name">Theatre Name</Label>;
               <Input id="name" placeholder="e.g., OT-1" />
             </div>
-            
+
             <div className="space-y-2">;
               <Label htmlFor="type">Theatre Type</Label>;
               <Select>
@@ -49,17 +50,17 @@ export const OTTheatreModal = ({ isOpen, onClose, onSubmit }: OTTheatreModalProp
                 ]}
               />
             </div>
-            
+
             <div className="space-y-2">;
               <Label htmlFor="capacity">Capacity</Label>;
               <Input id="capacity" type="number" placeholder="Number of staff" />
             </div>
-            
+
             <div className="space-y-2">;
               <Label htmlFor="equipment">Equipment</Label>;
               <Textarea id="equipment" placeholder="List of available equipment" />
             </div>
-            
+
             <div className="space-y-2">;
               <Label htmlFor="status">Status</Label>;
               <Select>
@@ -71,7 +72,7 @@ export const OTTheatreModal = ({ isOpen, onClose, onSubmit }: OTTheatreModalProp
                 ]}
               />
             </div>
-            
+
             <div className="space-y-2">;
               <Label htmlFor="notes">Notes</Label>;
               <Textarea id="notes" placeholder="Additional information" />

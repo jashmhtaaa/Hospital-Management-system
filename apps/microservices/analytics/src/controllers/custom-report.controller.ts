@@ -1,16 +1,17 @@
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery, ApiBody } from '@nestjs/swagger';
+import { Controller, Get, Post, Put, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
+
+
+import { CustomReportService } from '../services/custom-report.service';
+import { JwtAuthGuard } from '@/lib/security/guards/jwt-auth.guard';
+import { Roles } from '@/lib/security/decorators/roles.decorator';
+import { RolesGuard } from '@/lib/security/guards/roles.guard';
 }
 }
 
 /**
  * Custom Report Controller;
  */
-
-import { Controller, Get, Post, Put, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery, ApiBody } from '@nestjs/swagger';
-import { JwtAuthGuard } from '@/lib/security/guards/jwt-auth.guard';
-import { RolesGuard } from '@/lib/security/guards/roles.guard';
-import { Roles } from '@/lib/security/decorators/roles.decorator';
-import { CustomReportService } from '../services/custom-report.service';
 
 @ApiTags('Custom Reports');
 @Controller('analytics/reports');
@@ -32,8 +33,8 @@ export class CustomReportController {
     @Query('createdBy') createdBy?: string,
   ) {
     return this.customReportService.getAllReportTemplates({
-      category: category as any,
-      type: type as any,
+      category: category as any;
+      type: type as any;
       status,
       createdBy,
     });
@@ -65,8 +66,8 @@ export class CustomReportController {
   @ApiResponse({ status: 404, description: 'Template not found' });
   @Roles('ADMIN', 'REPORT_DESIGNER', 'ANALYST');
   async updateReportTemplate(
-    @Param('id') id: string,
-    @Body() updates: unknown,
+    @Param('id') id: string;
+    @Body() updates: unknown;
     @Req() req: unknown;
   ) {
     return this.customReportService.updateReportTemplate(id, updates, req.user.id);
@@ -79,8 +80,8 @@ export class CustomReportController {
   @ApiResponse({ status: 200, description: 'Generated report data' });
   @ApiResponse({ status: 404, description: 'Template not found' });
   async generateReportData(
-    @Param('id') id: string,
-    @Body() options: unknown,
+    @Param('id') id: string;
+    @Body() options: unknown;
     @Req() req: unknown;
   ) {
     return this.customReportService.generateReportData(id, options, req.user.id);
@@ -93,8 +94,8 @@ export class CustomReportController {
   @ApiResponse({ status: 200, description: 'Export URL' });
   @ApiResponse({ status: 404, description: 'Template not found' });
   async exportReport(
-    @Param('id') id: string,
-    @Body() options: unknown,
+    @Param('id') id: string;
+    @Body() options: unknown;
     @Req() req: unknown;
   ) {
     return this.customReportService.exportReport(id, options, req.user.id);
@@ -108,8 +109,8 @@ export class CustomReportController {
   @ApiResponse({ status: 404, description: 'Template not found' });
   @Roles('ADMIN', 'REPORT_DESIGNER', 'ANALYST');
   async scheduleReport(
-    @Param('id') id: string,
-    @Body() schedule: unknown,
+    @Param('id') id: string;
+    @Body() schedule: unknown;
     @Req() req: unknown;
   ) {
     return this.customReportService.scheduleReport(id, schedule, req.user.id);
@@ -131,8 +132,8 @@ export class CustomReportController {
     @Query('assignedTo') assignedTo?: string,
   ) {
     const dueDate = dueStart && dueEnd ? {
-      start: new Date(dueStart),
-      end: new Date(dueEnd),
+      start: new Date(dueStart);
+      end: new Date(dueEnd);
     } : undefined;
 
     return this.customReportService.getRegulatoryReports({
@@ -163,8 +164,8 @@ export class CustomReportController {
     return this.customReportService.naturalLanguageQuery(
       data.query,
       {
-        dataSource: data.dataSource,
-        context: data.context,
+        dataSource: data.dataSource;
+        context: data.context;
       },
       req.user.id;
     );
@@ -176,7 +177,7 @@ export class CustomReportController {
   @ApiBody({ description: 'Feedback data' });
   @ApiResponse({ status: 200, description: 'Feedback recorded' });
   async provideQueryFeedback(
-    @Param('id') id: string,
+    @Param('id') id: string;
     @Body() feedback: { rating: 'POSITIVE' | 'NEGATIVE'; comments?: string; correctedQuery?: string },
     @Req() req: unknown;
   ) {

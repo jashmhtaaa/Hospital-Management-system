@@ -1,3 +1,5 @@
+
+import { z } from 'zod';
 }
 
 /**
@@ -5,27 +7,25 @@
  * Provides standardized validation utilities using Zod;
  */
 
-import { z } from 'zod';
-
 // Common validation schemas
 export const idSchema = z.string().uuid();
 
 export const paginationSchema = z.object({
-  page: z.coerce.number().int().positive().optional().default(1),
-  pageSize: z.coerce.number().int().positive().max(100).optional().default(20),
+  page: z.coerce.number().int().positive().optional().default(1);
+  pageSize: z.coerce.number().int().positive().max(100).optional().default(20);
 });
 
-export const sortSchema = z.object({
-  field: z.string(),
-  direction: z.enum(['asc', 'desc']).default('asc'),
+export const _sortSchema = z.object({
+  field: z.string();
+  direction: z.enum(['asc', 'desc']).default('asc'),;
 });
 
 export const dateRangeSchema = z.object({
-  startDate: z.coerce.date(),
-  endDate: z.coerce.date(),
+  startDate: z.coerce.date();
+  endDate: z.coerce.date();
 }).refine(data => data.startDate <= data.endDate, {
-  message: "End date must be after start date",
-  path: ["endDate"],
+  message: "End date must be after start date";
+  path: ["endDate"];
 });
 
 // Financial validation schemas
@@ -33,19 +33,19 @@ export const moneySchema = z.coerce.number().multipleOf(0.01);
 
 export const percentageSchema = z.coerce.number().min(0).max(100);
 
-export const taxRateSchema = z.coerce.number().min(0).max(100);
+export const _taxRateSchema = z.coerce.number().min(0).max(100);
 
 // Healthcare-specific validation schemas
-export const icd10CodeSchema = z.string().regex(/^[A-Z][0-9][0-9AB]\.?[0-9A-Z]{0,4}$/);
+export const _icd10CodeSchema = z.string().regex(/^[A-Z][0-9][0-9AB]\.?[0-9A-Z]{0,4}$/);
 
-export const cptCodeSchema = z.string().regex(/^[0-9]{5}$/);
+export const _cptCodeSchema = z.string().regex(/^[0-9]{5}$/);
 
-export const hcpcsCodeSchema = z.string().regex(/^[A-Z][0-9]{4}$/);
+export const _hcpcsCodeSchema = z.string().regex(/^[A-Z][0-9]{4}$/);
 
-export const npiSchema = z.string().regex(/^[0-9]{10}$/);
+export const _npiSchema = z.string().regex(/^[0-9]{10}$/);
 
 // Billing validation schemas
-export const invoiceStatusSchema = z.enum([
+export const _invoiceStatusSchema = z.enum([
   'draft',
   'pending',
   'verified',
@@ -58,7 +58,7 @@ export const invoiceStatusSchema = z.enum([
   'refunded',
 ]);
 
-export const paymentMethodSchema = z.enum([
+export const _paymentMethodSchema = z.enum([
   'cash',
   'check',
   'credit_card',
@@ -69,7 +69,7 @@ export const paymentMethodSchema = z.enum([
   'mobile_payment',
 ]);
 
-export const paymentStatusSchema = z.enum([
+export const _paymentStatusSchema = z.enum([
   'pending',
   'processing',
   'completed',
@@ -80,7 +80,7 @@ export const paymentStatusSchema = z.enum([
 ]);
 
 // Insurance validation schemas
-export const insuranceVerificationStatusSchema = z.enum([
+export const _insuranceVerificationStatusSchema = z.enum([
   'pending',
   'verified',
   'inactive',
@@ -89,7 +89,7 @@ export const insuranceVerificationStatusSchema = z.enum([
   'error',
 ]);
 
-export const claimStatusSchema = z.enum([
+export const _claimStatusSchema = z.enum([
   'draft',
   'pending',
   'submitted',
@@ -103,27 +103,27 @@ export const claimStatusSchema = z.enum([
 ]);
 
 // Validation utility functions
-export const validateId = (id: string): string {
+export const _validateId = (id: string): string {
   return idSchema.parse(id)
-export const validatePagination = (query: Record<string, unknown>) {
+export const _validatePagination = (query: Record<string, unknown>) {
   return paginationSchema.parse({
-    page: query.page,
-    pageSize: query.pageSize,
+    page: query.page;
+    pageSize: query.pageSize;
   });
-export const validateDateRange = (startDate: string, endDate: string) {
+export const _validateDateRange = (startDate: string, endDate: string) {
   return dateRangeSchema.parse({
     startDate,
     endDate,
   });
-export const validateMoney = (amount: number | string): number {
+export const _validateMoney = (amount: number | string): number {
   return moneySchema.parse(amount)
-export const validatePercentage = (percentage: number | string): number {
+export const _validatePercentage = (percentage: number | string): number {
   return percentageSchema.parse(percentage)
 }
 
 // Validation error formatter
-export const formatZodError = (error: z.ZodError) {
+export const _formatZodError = (error: z.ZodError) {
   return error.errors.map(err => ({
-    path: err.path.join('.'),
-    message: err.message,
+    path: err.path.join('.');
+    message: err.message;
   }));

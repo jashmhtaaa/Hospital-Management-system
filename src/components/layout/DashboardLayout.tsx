@@ -1,14 +1,14 @@
-import React, { ReactNode } from 'react';
 
+import React, { ReactNode } from 'react';
 interface DashboardLayoutProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 /**
  * Dashboard layout component that provides consistent structure for dashboard pages;
  * @param children Content to be rendered within the dashboard layout;
  */
-export default const DashboardLayout = ({ children }: DashboardLayoutProps) {
+export default const _DashboardLayout = ({ children }: DashboardLayoutProps) {
   return (
     <div className="flex h-screen bg-gray-100">;
       {/* Sidebar */}
@@ -22,7 +22,7 @@ export default const DashboardLayout = ({ children }: DashboardLayoutProps) {
           </nav>
         </div>
       </div>
-      
+
       {/* Main content */}
       <div className="flex flex-col flex-1 overflow-hidden">;
         {/* Header */}
@@ -36,7 +36,7 @@ export default const DashboardLayout = ({ children }: DashboardLayoutProps) {
             </div>
           </div>
         </header>
-        
+
         {/* Page content */}
         <main className="flex-1 overflow-y-auto p-4">;
           {children}

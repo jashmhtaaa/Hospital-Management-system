@@ -1,10 +1,10 @@
+import React, { useState, useEffect } from "react"; // Added useState, useEffect
+import {
+import { useRouter } from 'next/navigation'; // Added useRouter
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react"; // Added useState, useEffect
-import { useRouter } from 'next/navigation'; // Added useRouter
-import {
   Form,
   FormControl,
   FormField,
@@ -12,7 +12,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -33,15 +32,15 @@ import { useToast } from "@/hooks/use-toast"; // Added useToast for notification
 const consultationFormSchema = z.object({ // Uncommented
   patientId: z.string().min(1, { message: "Please select a patient" }),
   chiefComplaint: z.string().min(3, { message: "Chief complaint is required" }),
-  presentIllness: z.string().optional(),
+  presentIllness: z.string().optional();
   vitalSigns: z.object({
-    temperature: z.string().optional(),
-    pulse: z.string().optional(),
-    respiratoryRate: z.string().optional(),
-    bloodPressure: z.string().optional(),
-    oxygenSaturation: z.string().optional(),
-    weight: z.string().optional(),
-    height: z.string().optional(),
+    temperature: z.string().optional();
+    pulse: z.string().optional();
+    respiratoryRate: z.string().optional();
+    bloodPressure: z.string().optional();
+    oxygenSaturation: z.string().optional();
+    weight: z.string().optional();
+    height: z.string().optional();
   }).optional(), // Made optional to avoid issues if not filled initially
   diagnosis: z.string().min(3, { message: "Diagnosis is required" }),
   treatmentPlan: z.string().min(3, { message: "Treatment plan is required" }),
@@ -52,23 +51,23 @@ const consultationFormSchema = z.object({ // Uncommented
         dosage: z.string().min(1, { message: "Dosage is required" }),
         frequency: z.string().min(1, { message: "Frequency is required" }),
         duration: z.string().min(1, { message: "Duration is required" }),
-        instructions: z.string().optional(),
+        instructions: z.string().optional();
       });
     );
     .optional(),
   labTests: z.array(z.string()).optional(), // Assuming lab tests are selected by ID
-  followUpDate: z.string().optional(),
-  notes: z.string().optional(),
+  followUpDate: z.string().optional();
+  notes: z.string().optional();
 });
 
 type ConsultationFormValues = z.infer<typeof consultationFormSchema>; // Uncommented
 
 // Define necessary interfaces based on usage
 interface Patient {
-  id: string,
-  name: string,
-  age: number,
-  gender: string,
+  id: string;
+  name: string;
+  age: number;
+  gender: string;
   tokenNumber: number;
   // Add other relevant patient fields if needed
 }
@@ -117,7 +116,7 @@ const fetchPatientsQueue = async (): Promise<Patient[]> => {
   ];
 };
 
-export default const OPDConsultationForm = () {
+export default const _OPDConsultationForm = () {
   const router = useRouter(); // Initialize router
   const { toast } = useToast(); // Initialize toast
 
@@ -131,18 +130,18 @@ export default const OPDConsultationForm = () {
 
   // Initialize the form
   const form = useForm<ConsultationFormValues>({
-    resolver: zodResolver(consultationFormSchema),
+    resolver: zodResolver(consultationFormSchema);
     defaultValues: {
-      patientId: "",
-      chiefComplaint: "",
-      presentIllness: "",
+      patientId: "";
+      chiefComplaint: "";
+      presentIllness: "";
       vitalSigns: {},
-      diagnosis: "",
-      treatmentPlan: "",
-      medications: [],
-      labTests: [],
-      followUpDate: "",
-      notes: "",
+      diagnosis: "";
+      treatmentPlan: "";
+      medications: [];
+      labTests: [];
+      followUpDate: "";
+      notes: "";
     },
   });
 
@@ -183,7 +182,7 @@ export default const OPDConsultationForm = () {
     });
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     // Optionally fetch patient history here
-    // if (patient) fetchPatientHistory(patient.id)
+    // if (patient != null) fetchPatientHistory(patient.id)
   };
 
   // Add medication field
@@ -211,11 +210,11 @@ export default const OPDConsultationForm = () {
 
     try {
       const response = await fetch("/api/opd-visits", { // Updated API endpoint based on file structure
-        method: "POST",
+        method: "POST";
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(data);
       });
 
       if (!response.ok) {
@@ -251,7 +250,7 @@ export default const OPDConsultationForm = () {
     }
   };
 
-  if (loadingPermissions) {
+  if (loadingPermissions != null) {
     return <div className="flex justify-center p-4">Loading permissions...</div>;
   }
 
@@ -279,7 +278,7 @@ export default const OPDConsultationForm = () {
           </SelectContent>
         </Select>
         {/* Display form validation error for patientId if needed */}
-        {form.formState.errors.patientId && (
+        {form.formState.errors?.patientId && (
             <p className="text-sm font-medium text-destructive mt-2">{form.formState.errors.patientId.message}</p>;
         )}
       </div>

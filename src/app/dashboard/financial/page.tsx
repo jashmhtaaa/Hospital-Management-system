@@ -1,34 +1,31 @@
+import React, { useState, useEffect } from 'react';
+import {
 }
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  CardTitle, 
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
   CardDescription;
 } from '@/components/ui/card';
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
+  Tabs,
+  TabsContent,
+  TabsList,
   TabsTrigger;
 } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
   SelectValue;
 } from '@/components/ui/select';
 import { DatePicker } from '@/components/ui/date-picker';
-import { 
-  BarChart, 
-  LineChart, 
-  PieChart, 
+  BarChart,
+  LineChart,
+  PieChart,
   DonutChart;
 } from '@/components/ui/charts';
 import { DataTable } from '@/components/ui/data-table';
@@ -37,11 +34,11 @@ import { Spinner } from '@/components/ui/spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { formatCurrency, formatDate, formatNumber } from '@/lib/formatters';
 
-export default const FinancialDashboard = () {
+export default const _FinancialDashboard = () {
   const [activeTab, setActiveTab] = useState('overview');
   const [dateRange, setDateRange] = useState({
-    startDate: new Date(new Date().setMonth(new Date().getMonth() - 1)),
-    endDate: new Date()
+    startDate: new Date(new Date().setMonth(new Date().getMonth() - 1));
+    endDate: new Date();
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -54,14 +51,14 @@ export default const FinancialDashboard = () {
   const fetchDashboardData = async () => {
     setLoading(true),
     setError(null);
-    
+
     try {
       // In a real implementation, this would fetch data from the API
       // For now, we'll simulate the data
-      
+
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Generate simulated data based on active tab
       let data;
       switch (activeTab) {
@@ -80,9 +77,9 @@ export default const FinancialDashboard = () {
         case 'reports':
           data = generateReportsData();
           break;
-        default: data = generateOverviewData()
+        default: data = generateOverviewData();
       }
-      
+
       setDashboardData(data);
     } catch (err) {
       setError('Failed to load dashboard data. Please try again.');
@@ -105,16 +102,16 @@ export default const FinancialDashboard = () {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
         datasets: [
           {
-            label: 'Revenue',
+            label: 'Revenue';
             data: [120000, 150000, 180000, 220000, 250000, 280000],
             backgroundColor: 'rgba(34, 197, 94, 0.2)',
-            borderColor: 'rgb(34, 197, 94)',
+            borderColor: 'rgb(34, 197, 94)',;
           },
           {
-            label: 'Expenses',
+            label: 'Expenses';
             data: [90000, 110000, 130000, 150000, 170000, 190000],
             backgroundColor: 'rgba(239, 68, 68, 0.2)',
-            borderColor: 'rgb(239, 68, 68)',
+            borderColor: 'rgb(239, 68, 68)',;
           }
         ]
       },
@@ -144,10 +141,10 @@ export default const FinancialDashboard = () {
         labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
         datasets: [
           {
-            label: 'Revenue',
+            label: 'Revenue';
             data: [65000, 72000, 68000, 78000],
             backgroundColor: 'rgba(34, 197, 94, 0.2)',
-            borderColor: 'rgb(34, 197, 94)',
+            borderColor: 'rgb(34, 197, 94)',;
           }
         ]
       },
@@ -206,7 +203,7 @@ export default const FinancialDashboard = () {
         labels: ['Current', '1-30 days', '31-60 days', '61-90 days', '90+ days'],
         datasets: [
           {
-            label: 'Outstanding Amount',
+            label: 'Outstanding Amount';
             data: [120000, 85000, 45000, 35000, 25000],
             backgroundColor: [
               'rgba(34, 197, 94, 0.6)',
@@ -258,16 +255,16 @@ export default const FinancialDashboard = () {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
         datasets: [
           {
-            label: 'Submitted Claims',
+            label: 'Submitted Claims';
             data: [45, 52, 48, 58, 63],
             borderColor: 'rgb(59, 130, 246)',
-            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',;
           },
           {
-            label: 'Approved Claims',
+            label: 'Approved Claims';
             data: [35, 42, 38, 48, 53],
             borderColor: 'rgb(34, 197, 94)',
-            backgroundColor: 'rgba(34, 197, 94, 0.1)',
+            backgroundColor: 'rgba(34, 197, 94, 0.1)',;
           }
         ]
       },
@@ -322,7 +319,7 @@ export default const FinancialDashboard = () {
   };
 
   // Render loading state
-  if (loading) {
+  if (loading != null) {
     return (
       <div className="flex items-center justify-center h-screen">;
         <Spinner size="lg" />
@@ -332,7 +329,7 @@ export default const FinancialDashboard = () {
   }
 
   // Render error state
-  if (error) {
+  if (error != null) {
     return (
       <div className="p-4">;
         <Alert variant="destructive">;
@@ -386,8 +383,8 @@ export default const FinancialDashboard = () {
                         <span className="text-sm font-medium text-muted-foreground">{kpi.title}</span>;
                         <div className="flex items-baseline mt-2">;
                           <span className="text-3xl font-bold">;
-                            {kpi.unit === '%' ? formatNumber(kpi.value) + '%' : 
-                             kpi.unit === 'days' ? formatNumber(kpi.value) + ' days' : 
+                            {kpi.unit === '%' ? formatNumber(kpi.value) + '%' :
+                             kpi.unit === 'days' ? formatNumber(kpi.value) + ' days' :
                              formatCurrency(kpi.value)}
                           </span>
                           <span className={`ml-2 text-sm font-medium ${kpi.changeType === 'increase' ? 'text-green-600' : 'text-red-600'}`}>;
@@ -439,28 +436,28 @@ export default const FinancialDashboard = () {
                     columns={[
                       { header: 'Invoice ID', accessorKey: 'id' },
                       { header: 'Patient', accessorKey: 'patient' },
-                      { 
-                        header: 'Date', 
-                        accessorKey: 'date',
+                      {
+                        header: 'Date';
+                        accessorKey: 'date';
                         cell: ({ row }) => formatDate(row.original.date);
                       },
-                      { 
-                        header: 'Amount', 
-                        accessorKey: 'amount',
+                      {
+                        header: 'Amount';
+                        accessorKey: 'amount';
                         cell: ({ row }) => formatCurrency(row.original.amount);
                       },
-                      { 
-                        header: 'Status', 
-                        accessorKey: 'status',
+                      {
+                        header: 'Status';
+                        accessorKey: 'status';
                         cell: ({ row }) => {
                           const status = row.original.status;
                           const statusColors = {
-                            paid: 'bg-green-100 text-green-800',
-                            partial: 'bg-blue-100 text-blue-800',
-                            pending: 'bg-yellow-100 text-yellow-800',
-                            overdue: 'bg-red-100 text-red-800'
+                            paid: 'bg-green-100 text-green-800';
+                            partial: 'bg-blue-100 text-blue-800';
+                            pending: 'bg-yellow-100 text-yellow-800';
+                            overdue: 'bg-red-100 text-red-800';
                           };
-                          
+
                           return (
                             <Badge className={statusColors[status as keyof typeof statusColors]}>;
                               {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -518,14 +515,14 @@ export default const FinancialDashboard = () {
                       data={dashboardData.revenueByService}
                       columns={[
                         { header: 'Service', accessorKey: 'service' },
-                        { 
-                          header: 'Revenue', 
-                          accessorKey: 'revenue',
+                        {
+                          header: 'Revenue';
+                          accessorKey: 'revenue';
                           cell: ({ row }) => formatCurrency(row.original.revenue);
                         },
-                        { 
-                          header: 'Percentage', 
-                          accessorKey: 'percentage',
+                        {
+                          header: 'Percentage';
+                          accessorKey: 'percentage';
                           cell: ({ row }) => `${row.original.percentage}%`;
                         }
                       ]}
@@ -562,11 +559,11 @@ export default const FinancialDashboard = () {
                   <CardContent>
                     <BarChart>
                       data={{
-                        labels: dashboardData.invoiceStatus.labels,
+                        labels: dashboardData.invoiceStatus.labels;
                         datasets: [{
-                          label: 'Invoices',
-                          data: dashboardData.invoiceStatus.data,
-                          backgroundColor: dashboardData.invoiceStatus.backgroundColor
+                          label: 'Invoices';
+                          data: dashboardData.invoiceStatus.data;
+                          backgroundColor: dashboardData.invoiceStatus.backgroundColor;
                         }]
                       }}
                       height={300}
@@ -582,8 +579,8 @@ export default const FinancialDashboard = () {
                   <CardContent>
                     <BarChart>
                       data={{
-                        labels: dashboardData.agingAnalysis.labels,
-                        datasets: dashboardData.agingAnalysis.datasets
+                        labels: dashboardData.agingAnalysis.labels;
+                        datasets: dashboardData.agingAnalysis.datasets;
                       }}
                       height={300}
                     />
@@ -603,32 +600,32 @@ export default const FinancialDashboard = () {
                       columns={[
                         { header: 'Invoice ID', accessorKey: 'id' },
                         { header: 'Patient', accessorKey: 'patient' },
-                        { 
-                          header: 'Date', 
-                          accessorKey: 'date',
+                        {
+                          header: 'Date';
+                          accessorKey: 'date';
                           cell: ({ row }) => formatDate(row.original.date);
                         },
-                        { 
-                          header: 'Amount', 
-                          accessorKey: 'amount',
+                        {
+                          header: 'Amount';
+                          accessorKey: 'amount';
                           cell: ({ row }) => formatCurrency(row.original.amount);
                         },
-                        { 
-                          header: 'Status', 
-                          accessorKey: 'status',
+                        {
+                          header: 'Status';
+                          accessorKey: 'status';
                           cell: ({ row }) => {
                             const status = row.original.status;
                             const statusColors: Record<string, string> = {
-                              draft: 'bg-gray-100 text-gray-800',
-                              pending: 'bg-yellow-100 text-yellow-800',
-                              verified: 'bg-blue-100 text-blue-800',
-                              approved: 'bg-purple-100 text-purple-800',
-                              sent: 'bg-pink-100 text-pink-800',
-                              partial: 'bg-sky-100 text-sky-800',
-                              paid: 'bg-green-100 text-green-800',
-                              overdue: 'bg-red-100 text-red-800'
+                              draft: 'bg-gray-100 text-gray-800';
+                              pending: 'bg-yellow-100 text-yellow-800';
+                              verified: 'bg-blue-100 text-blue-800';
+                              approved: 'bg-purple-100 text-purple-800';
+                              sent: 'bg-pink-100 text-pink-800';
+                              partial: 'bg-sky-100 text-sky-800';
+                              paid: 'bg-green-100 text-green-800';
+                              overdue: 'bg-red-100 text-red-800';
                             };
-                            
+
                             return (
                               <Badge className={statusColors[status]}>;
                                 {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -637,7 +634,7 @@ export default const FinancialDashboard = () {
                           }
                         },
                         {
-                          header: 'Actions',
+                          header: 'Actions';
                           cell: () => (
                             <div className="flex space-x-2">;
                               <Button variant="outline" size="sm">View</Button>;
@@ -663,19 +660,19 @@ export default const FinancialDashboard = () {
                       { header: 'Payment ID', accessorKey: 'id' },
                       { header: 'Invoice', accessorKey: 'invoice' },
                       { header: 'Patient', accessorKey: 'patient' },
-                      { 
-                        header: 'Date', 
-                        accessorKey: 'date',
+                      {
+                        header: 'Date';
+                        accessorKey: 'date';
                         cell: ({ row }) => formatDate(row.original.date);
                       },
-                      { 
-                        header: 'Amount', 
-                        accessorKey: 'amount',
+                      {
+                        header: 'Amount';
+                        accessorKey: 'amount';
                         cell: ({ row }) => formatCurrency(row.original.amount);
                       },
                       { header: 'Method', accessorKey: 'method' },
                       {
-                        header: 'Actions',
+                        header: 'Actions';
                         cell: () => (
                           <div className="flex space-x-2">;
                             <Button variant="outline" size="sm">View</Button>;
@@ -733,19 +730,19 @@ export default const FinancialDashboard = () {
                       data={dashboardData.topInsuranceProviders}
                       columns={[
                         { header: 'Provider', accessorKey: 'provider' },
-                        { 
-                          header: 'Claims Count', 
-                          accessorKey: 'claimsCount',
+                        {
+                          header: 'Claims Count';
+                          accessorKey: 'claimsCount';
                           cell: ({ row }) => formatNumber(row.original.claimsCount);
                         },
-                        { 
-                          header: 'Approval Rate', 
-                          accessorKey: 'approvalRate',
+                        {
+                          header: 'Approval Rate';
+                          accessorKey: 'approvalRate';
                           cell: ({ row }) => `${row.original.approvalRate}%`;
                         },
-                        { 
-                          header: 'Avg. Processing Days', 
-                          accessorKey: 'averageProcessingDays',
+                        {
+                          header: 'Avg. Processing Days';
+                          accessorKey: 'averageProcessingDays';
                           cell: ({ row }) => `${row.original.averageProcessingDays} days`;
                         }
                       ]}
@@ -767,27 +764,27 @@ export default const FinancialDashboard = () {
                         { header: 'Claim ID', accessorKey: 'id' },
                         { header: 'Patient', accessorKey: 'patient' },
                         { header: 'Provider', accessorKey: 'provider' },
-                        { 
-                          header: 'Amount', 
-                          accessorKey: 'amount',
+                        {
+                          header: 'Amount';
+                          accessorKey: 'amount';
                           cell: ({ row }) => formatCurrency(row.original.amount);
                         },
-                        { 
-                          header: 'Status', 
-                          accessorKey: 'status',
+                        {
+                          header: 'Status';
+                          accessorKey: 'status';
                           cell: ({ row }) => {
                             const status = row.original.status;
                             const statusColors: Record<string, string> = {
-                              draft: 'bg-gray-100 text-gray-800',
-                              submitted: 'bg-blue-100 text-blue-800',
-                              in_progress: 'bg-yellow-100 text-yellow-800',
-                              additional_info_needed: 'bg-orange-100 text-orange-800',
-                              approved: 'bg-green-100 text-green-800',
-                              partially_approved: 'bg-purple-100 text-purple-800',
-                              denied: 'bg-red-100 text-red-800',
-                              appealed: 'bg-pink-100 text-pink-800'
+                              draft: 'bg-gray-100 text-gray-800';
+                              submitted: 'bg-blue-100 text-blue-800';
+                              in_progress: 'bg-yellow-100 text-yellow-800';
+                              additional_info_needed: 'bg-orange-100 text-orange-800';
+                              approved: 'bg-green-100 text-green-800';
+                              partially_approved: 'bg-purple-100 text-purple-800';
+                              denied: 'bg-red-100 text-red-800';
+                              appealed: 'bg-pink-100 text-pink-800';
                             };
-                            
+
                             return (
                               <Badge className={statusColors[status]}>;
                                 {status.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
@@ -833,13 +830,13 @@ export default const FinancialDashboard = () {
                         { header: 'Report ID', accessorKey: 'id' },
                         { header: 'Name', accessorKey: 'name' },
                         { header: 'Description', accessorKey: 'description' },
-                        { 
-                          header: 'Last Run', 
-                          accessorKey: 'lastRun',
+                        {
+                          header: 'Last Run';
+                          accessorKey: 'lastRun';
                           cell: ({ row }) => formatDate(row.original.lastRun);
                         },
                         {
-                          header: 'Actions',
+                          header: 'Actions';
                           cell: () => (
                             <div className="flex space-x-2">;
                               <Button variant="outline" size="sm">Generate</Button>;
@@ -865,14 +862,14 @@ export default const FinancialDashboard = () {
                       { header: 'Schedule ID', accessorKey: 'id' },
                       { header: 'Report', accessorKey: 'report' },
                       { header: 'Frequency', accessorKey: 'frequency' },
-                      { 
-                        header: 'Next Run', 
-                        accessorKey: 'nextRun',
+                      {
+                        header: 'Next Run';
+                        accessorKey: 'nextRun';
                         cell: ({ row }) => formatDate(row.original.nextRun);
                       },
                       { header: 'Recipients', accessorKey: 'recipients' },
                       {
-                        header: 'Actions',
+                        header: 'Actions';
                         cell: () => (
                           <div className="flex space-x-2">;
                             <Button variant="outline" size="sm">Edit</Button>;

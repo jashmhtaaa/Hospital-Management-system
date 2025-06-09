@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { D1Database } from "@cloudflare/workers-types";
 
-export const runtime = "edge";
+import { D1Database } from "@cloudflare/workers-types";
+import { NextRequest, NextResponse } from "next/server";
+export const _runtime = "edge";
 
 // Interface for the POST request body
 interface TheatreCreateBody {
@@ -12,7 +12,7 @@ interface TheatreCreateBody {
 }
 
 // GET /api/ot/theatres - List all operation theatres
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
@@ -23,7 +23,7 @@ export const GET = async (request: NextRequest) => {
       "SELECT id, name, location, specialty, status, updated_at FROM OperationTheatres";
     const parameters: string[] = [];
 
-    if (status) {
+    if (status != null) {
       query += " WHERE status = ?";
       parameters.push(status);
     }
@@ -47,7 +47,7 @@ export const GET = async (request: NextRequest) => {
 }
 
 // POST /api/ot/theatres - Create a new operation theatre
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     const body = (await request.json()) as TheatreCreateBody;
     const { name, location, specialty, equipment } = body;
@@ -95,9 +95,9 @@ export const POST = async (request: NextRequest) => {
             location,
             specialty,
             equipment,
-            status: "available",
-            created_at: now,
-            updated_at: now,
+            status: "available";
+            created_at: now;
+            updated_at: now;
           },
           { status: 201 }
         );
@@ -109,8 +109,8 @@ export const POST = async (request: NextRequest) => {
       // FIX: Check errorMessage
       return NextResponse.json(
         {
-          message: "Operation theatre name must be unique",
-          details: errorMessage,
+          message: "Operation theatre name must be unique";
+          details: errorMessage;
         },
         { status: 409 }
       );

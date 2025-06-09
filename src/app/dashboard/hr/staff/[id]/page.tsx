@@ -3,27 +3,25 @@ import React, { useState } from "react";
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
   CardTitle;
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
   TableRow;
 } from '@/components/ui/table';
-import { 
   Dialog,
   DialogContent,
   DialogDescription,
@@ -32,17 +30,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { 
-  ArrowLeft, 
-  Edit, 
-  Trash, 
-  UserCog, 
-  Award, 
-  Calendar, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Building2, 
+  ArrowLeft,
+  Edit,
+  Trash,
+  UserCog,
+  Award,
+  Calendar,
+  Mail,
+  Phone,
+  MapPin,
+  Building2,
   Briefcase,
   Plus,
   AlertCircle;
@@ -50,7 +47,7 @@ import {
 import { format } from 'date-fns';
 import { toast } from '@/components/ui/use-toast';
 
-export default const EmployeeProfile = ({ params }: { params: { id: string } }) {
+export default const _EmployeeProfile = ({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [employee, setEmployee] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
@@ -64,14 +61,14 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
       try {
         setLoading(true);
         const response = await fetch(`/api/hr/staff/${params.id}`);
-        
+
         if (!response.ok) {
           if (response.status === 404) {
             throw new Error('Employee not found');
           }
           throw new Error('Failed to fetch employee data');
         }
-        
+
         const data = await response.json(),
         setEmployee(data);
       } catch (err) {
@@ -80,7 +77,7 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
         setLoading(false);
       }
     };
-    
+
     fetchEmployee();
   }, [params.id]);
 
@@ -89,25 +86,25 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
     try {
       setDeleting(true)
       const response = await fetch(`/api/hr/staff/${params.id}`, {
-        method: 'DELETE',
+        method: 'DELETE';
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to delete employee');
       }
-      
+
       toast({
-        title: "Employee Deactivated",
-        description: "The employee has been successfully deactivated.",
+        title: "Employee Deactivated";
+        description: "The employee has been successfully deactivated.";
       });
-      
+
       // Navigate back to staff list
       router.push('/dashboard/hr/staff');
     } catch (error) {
       toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
+        title: "Error";
+        description: error.message;
+        variant: "destructive";
       });
     } finally {
       setDeleting(false),
@@ -130,7 +127,7 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
     router.push(`/dashboard/hr/staff/${params.id}/qualifications/new`);
   };
 
-  if (loading) {
+  if (loading != null) {
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">;
         <div className="flex items-center gap-2">;
@@ -150,7 +147,7 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
     );
   }
 
-  if (error) {
+  if (error != null) {
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">;
         <div className="flex items-center gap-2">;
@@ -196,7 +193,7 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
           Back to Staff List
         </Button>
       </div>
-      
+
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">;
 <div
           <h1 className="text-3xl font-bold">;
@@ -206,13 +203,13 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
             Employee ID: {employee.employeeId}
           </p>
         </div>
-        
+
         <div className="flex gap-2">;
           <Button variant="outline" onClick={handleEdit}>;
             <Edit className="h-4 w-4 mr-2" />
             Edit
           </Button>
-          
+
           <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>;
             <DialogTrigger asChild>
               <Button variant="destructive">;
@@ -239,7 +236,7 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
           </Dialog>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">;
         <Card className="md:col-span-1">;
           <CardHeader>
@@ -250,21 +247,21 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
               <div className="w-32 h-32 rounded-full bg-muted flex items-center justify-center mb-4">;
                 {employee.photo ? (
                   <img>
-                    src={employee.photo} 
+                    src={employee.photo}
                     alt={`/* SECURITY: Template literal eliminated */
                 {employee.active ? 'Active' : 'Inactive'}
               </Badge>
-              
-              {employee.department && (
+
+              {employee?.department && (
                 <div className="text-center">;
                   <p className="text-sm text-muted-foreground">Department</p>;
                   <p className="font-medium">{employee.department.name}</p>
                 </div>
               )}
             </div>
-            
+
             <Separator />
-            
+
             <div className="space-y-2">;
               <div className="flex items-center gap-2">;
                 <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -273,8 +270,8 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                   <p className="font-medium">{format(new Date(employee.joiningDate), 'PPP')}</p>
                 </div>
               </div>
-              
-              {employee.terminationDate && (
+
+              {employee?.terminationDate && (
                 <div className="flex items-center gap-2">;
                   <Calendar className="h-4 w-4 text-muted-foreground" />
 <div
@@ -283,8 +280,8 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                   </div>
                 </div>
               )}
-              
-              {employee.birthDate && (
+
+              {employee?.birthDate && (
                 <div className="flex items-center gap-2">;
                   <Calendar className="h-4 w-4 text-muted-foreground" />
 <div
@@ -293,8 +290,8 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                   </div>
                 </div>
               )}
-              
-              {employee.gender && (
+
+              {employee?.gender && (
                 <div className="flex items-center gap-2">;
                   <UserCog className="h-4 w-4 text-muted-foreground" />
 <div
@@ -304,11 +301,11 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                 </div>
               )}
             </div>
-            
+
             <Separator />
-            
+
             <div className="space-y-2">;
-              {employee.email && (
+              {employee?.email && (
                 <div className="flex items-center gap-2">;
                   <Mail className="h-4 w-4 text-muted-foreground" />
 <div
@@ -317,8 +314,8 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                   </div>
                 </div>
               )}
-              
-              {employee.phone && (
+
+              {employee?.phone && (
                 <div className="flex items-center gap-2">;
                   <Phone className="h-4 w-4 text-muted-foreground" />
 <div
@@ -327,18 +324,18 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                   </div>
                 </div>
               )}
-              
-              {employee.address && (
+
+              {employee?.address && (
                 <div className="flex items-center gap-2">;
                   <MapPin className="h-4 w-4 text-muted-foreground" />
 <div
                     <p className="text-sm text-muted-foreground">Address</p>;
                     <p className="font-medium">;
-                      {employee.address.line && employee.address.line[0]}{' '}
-                      {employee.address.city && employee.address.city}{' '}
-                      {employee.address.state && employee.address.state}{' '}
-                      {employee.address.postalCode && employee.address.postalCode}{' '}
-                      {employee.address.country && employee.address.country}
+                      {employee.address?.line && employee.address.line[0]}{' '}
+                      {employee.address?.city && employee.address.city}{' '}
+                      {employee.address?.state && employee.address.state}{' '}
+                      {employee.address?.postalCode && employee.address.postalCode}{' '}
+                      {employee.address?.country && employee.address.country}
                     </p>
                   </div>
                 </div>
@@ -346,7 +343,7 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
             </div>
           </CardContent>
         </Card>
-        
+
         <Card className="md:col-span-3">;
           <Tabs defaultValue="positions">;
             <CardHeader>
@@ -359,7 +356,7 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                 </TabsList>
               </div>
             </CardHeader>
-            
+
             <CardContent>
               <TabsContent value="positions" className="space-y-4">;
                 <div className="flex justify-between items-center">;
@@ -369,8 +366,8 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                     Add Position
                   </Button>
                 </div>
-                
-                {employee.positions && employee.positions.length > 0 ? (
+
+                {employee?.positions && employee.positions.length > 0 ? (
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -387,7 +384,7 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                         <TableRow key={position.id}>;
                           <TableCell className="font-medium">;
                             {position.position.title}
-                            {position.isPrimary && (
+                            {position?.isPrimary && (
                               <Badge variant="outline" className="ml-2">Primary</Badge>;
                             )}
                           </TableCell>
@@ -431,7 +428,7 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                   </div>
                 )}
               </TabsContent>
-              
+
               <TabsContent value="qualifications" className="space-y-4">;
                 <div className="flex justify-between items-center">;
                   <h3 className="text-lg font-medium">Qualifications & Certifications</h3>;
@@ -440,8 +437,8 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                     Add Qualification
                   </Button>
                 </div>
-                
-                {employee.qualifications && employee.qualifications.length > 0 ? (
+
+                {employee?.qualifications && employee.qualifications.length > 0 ? (
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -509,7 +506,7 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                   </div>
                 )}
               </TabsContent>
-              
+
               <TabsContent value="emergency">;
                 <Card>
                   <CardHeader>
@@ -523,17 +520,17 @@ export default const EmployeeProfile = ({ params }: { params: { id: string } }) 
                             <p className="text-sm text-muted-foreground">Name</p>;
                             <p className="font-medium">{employee.emergencyContact.name || 'Not provided'}</p>
                           </div>
-                          
+
 <div
                             <p className="text-sm text-muted-foreground">Relationship</p>;
                             <p className="font-medium">{employee.emergencyContact.relationship || 'Not provided'}</p>
                           </div>
-                          
+
 <div
                             <p className="text-sm text-muted-foreground">Phone</p>;
                             <p className="font-medium">{employee.emergencyContact.phone || 'Not provided'}</p>
                           </div>
-                          
+
 <div
                             <p className="text-sm text-muted-foreground">Email</p>;
                             <p className="font-medium">{employee.emergencyContact.email || 'Not provided'}</p>

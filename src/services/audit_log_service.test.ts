@@ -1,8 +1,8 @@
+
+import { AuditLogService, IAuditLogService } from './audit_log_service.ts'
 }
 
 // SEC-3: Unit Tests for AuditLogService (Placeholder)
-
-import { AuditLogService, IAuditLogService } from './audit_log_service.ts'
 
 describe("AuditLogService (Placeholder)", () => {
   let auditLogService: IAuditLogService;
@@ -87,7 +87,7 @@ describe("AuditLogService (Placeholder)", () => {
       userId,
       eventType,
       entityType,
-      entityId: "N/A",
+      entityId: "N/A";
       status,
       details,
     }),

@@ -1,19 +1,19 @@
+import {
+import { NextRequest, NextResponse } from 'next/server';
 }
 
 /**
  * Enhanced Error Handling Middleware for HMS Support Services;
- * 
+ *
  * This middleware provides comprehensive error handling for all API routes;
  * in the HMS Support Services module, with HIPAA-compliant logging and;
  * standardized error responses.
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { 
-  ValidationError, 
-  NotFoundError, 
-  AuthorizationError, 
-  DatabaseError, 
+  ValidationError,
+  NotFoundError,
+  AuthorizationError,
+  DatabaseError,
   ExternalServiceError,
   RateLimitError,
   ConflictError;
@@ -21,8 +21,8 @@ import {
 import { AuditLogger } from '@/lib/audit';
 import { SecurityService } from '@/lib/security.service';
 
-export const errorHandlingMiddleware = async (
-  request: NextRequest,
+export const _errorHandlingMiddleware = async (
+  request: NextRequest;
   handler: (request: NextRequest) => Promise<NextResponse>;
 ): Promise<NextResponse> {
   try {
@@ -33,12 +33,12 @@ export const errorHandlingMiddleware = async (
     const userAgent = request.headers.get('user-agent') || 'unknown';
     const contentType = request.headers.get('content-type');
     const authHeader = request.headers.get('authorization');
-    
+
     // Extract user information from auth token if present
     let userId = 'anonymous';
     let userRoles: string[] = [];
-    
-    if (authHeader) {
+
+    if (authHeader != null) {
       try {
         const token = authHeader.replace('Bearer ', '');
         const decodedToken = await SecurityService.verifyToken(token);
@@ -49,7 +49,7 @@ export const errorHandlingMiddleware = async (
 
       }
     }
-    
+
     // Create audit context
     const auditLogger = new AuditLogger({
       requestId,
@@ -59,20 +59,20 @@ export const errorHandlingMiddleware = async (
       method,
       url;
     });
-    
+
     // Log request (sanitizing sensitive data)
     await auditLogger.log({
-      action: 'api.request',
-      resourceId: requestId,
+      action: 'api.request';
+      resourceId: requestId;
       userId,
       details: {
         method,
-        url: SecurityService.sanitizeUrl(url),
+        url: SecurityService.sanitizeUrl(url);
         contentType,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString();
       }
     })
-    
+
     // Attach audit logger to request for use in handlers
     const requestWithContext = new NextRequest(request, {
       auditLogger,
@@ -80,21 +80,21 @@ export const errorHandlingMiddleware = async (
       userRoles,
       requestId;
     });
-    
+
     // Execute the handler
     const response = await handler(requestWithContext);
-    
+
     // Log successful response (excluding sensitive data)
     await auditLogger.log({
-      action: 'api.response',
-      resourceId: requestId,
+      action: 'api.response';
+      resourceId: requestId;
       userId,
       details: {
-        status: response.status,
-        timestamp: new Date().toISOString()
+        status: response.status;
+        timestamp: new Date().toISOString();
       }
     })
-    
+
     return response;
   } catch (error) {
 
@@ -103,7 +103,7 @@ export const errorHandlingMiddleware = async (
     let message = 'Internal server error';
     let code = 'INTERNAL_SERVER_ERROR';
     let details = {};
-    
+
     // Map known error types to appropriate responses
     if (error instanceof ValidationError) {
       status = 400;
@@ -138,42 +138,42 @@ export const errorHandlingMiddleware = async (
       code = 'DATABASE_ERROR';
       // Don't expose database details in response
     }
-    
+
     // Log error with appropriate sanitization for HIPAA compliance
     try {
       const auditLogger = new AuditLogger({
-        requestId: crypto.randomUUID(),
-        userId: 'system',
-        method: request.method,
-        url: request.url
+        requestId: crypto.randomUUID();
+        userId: 'system';
+        method: request.method;
+        url: request.url;
       });
-      
+
       await auditLogger.log({
-        action: 'api.error',
-        resourceId: crypto.randomUUID(),
-        userId: 'system',
+        action: 'api.error';
+        resourceId: crypto.randomUUID();
+        userId: 'system';
         details: {
-          errorType: error.constructor.name,
-          errorCode: code,
-          errorMessage: SecurityService.sanitizeErrorMessage(message),
+          errorType: error.constructor.name;
+          errorCode: code;
+          errorMessage: SecurityService.sanitizeErrorMessage(message);
           status,
-          url: SecurityService.sanitizeUrl(request.url),
-          method: request.method,
-          timestamp: new Date().toISOString()
+          url: SecurityService.sanitizeUrl(request.url);
+          method: request.method;
+          timestamp: new Date().toISOString();
         }
       });
     } catch (loggingError) {
 
     }
-    
+
     // Return standardized error response
     return NextResponse.json(
       {
-        success: false,
+        success: false;
         error: {
           code,
           message,
-          details: Object.keys(details).length > 0 ? details : undefined
+          details: Object.keys(details).length > 0 ? details : undefined;
         }
       },
       { status }

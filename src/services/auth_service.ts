@@ -13,7 +13,7 @@ interface IUserRepository {
 // Placeholder for auth utilities (hashing, token generation)
 interface IAuthUtils {
   verifyPassword(password: string, hash: string): Promise<boolean>
-  generateToken(userId: string, username: string): Promise<string>
+  generateToken(userId: string, username: string): Promise<string>;
 }
 
 // Placeholder for AuditLogService
@@ -29,7 +29,7 @@ export class AuthService {
   async login(credentials: unknown): Promise<{ token: string; user: unknown } | null> {
     const { username, password } = credentials;
     let userIdForAudit = "unknown_user";
-    let loginStatus = "FAILURE";
+    let _loginStatus = "FAILURE";
 
     try {
       if (!username || !password) {
@@ -52,10 +52,10 @@ export class AuthService {
       }
 
       const token = await this.authUtils.generateToken(user.id, user.username);
-      loginStatus = "SUCCESS";
+      _loginStatus = "SUCCESS";
       // Log audit event for successful login
       await this.auditLogService.logEvent(userIdForAudit, "LOGIN_SUCCESS", "Auth", user.id, "SUCCESS");
-      
+
       // Return token and user information (excluding sensitive data like passwordHash)
       const { passwordHash, ...userWithoutPassword } = user
       return { token, user: userWithoutPassword };
@@ -63,14 +63,14 @@ export class AuthService {
     } catch (error: unknown) {
 
       // Log audit event for generic login failure if not already logged
-      if (loginStatus === "FAILURE" && userIdForAudit !== "unknown_user") {
+      if (_loginStatus === "FAILURE" && userIdForAudit !== "unknown_user") {
          // Avoid double logging if specific failure was already logged
       } else {
         await this.auditLogService.logEvent(userIdForAudit, "LOGIN_ATTEMPT", "Auth", null, "FAILURE", { reason: error.message ||
           "Unknown error" });
       }
       // Depending on requirements, might re-throw or return null/specific error structure
-      return null; 
+      return null;
     }
   }
 

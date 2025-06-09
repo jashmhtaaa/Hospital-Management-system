@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
-import { SegmentService } from '@/lib/services/support-services/marketing';
-import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 
+
+import { SegmentService } from '@/lib/services/support-services/marketing';
+import { authOptions } from '@/lib/auth';
+import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
 const segmentService = new SegmentService();
 
 /**
@@ -11,7 +12,7 @@ const segmentService = new SegmentService();
  * Get a specific segment by ID;
  */
 export const GET = async (
-  request: NextRequest,
+  request: NextRequest;
   { params }: { params: { id: string } }
 ) => {
   return withErrorHandling(
@@ -19,16 +20,16 @@ export const GET = async (
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
-      
+
       const includeMembers = searchParams.get('includeMembers') === 'true';
-      
+
       const segment = await segmentService.getSegmentById(params.id, includeMembers);
-      
+
       return NextResponse.json(segment);
     },
     {
-      requiredPermission: 'marketing.segments.read',
-      auditAction: 'SEGMENT_VIEW',
+      requiredPermission: 'marketing.segments.read';
+      auditAction: 'SEGMENT_VIEW';
     }
   );
 }
@@ -38,7 +39,7 @@ export const GET = async (
  * Update a specific segment;
  */
 export const PUT = async (
-  request: NextRequest,
+  request: NextRequest;
   { params }: { params: { id: string } }
 ) => {
   return withErrorHandling(
@@ -46,17 +47,17 @@ export const PUT = async (
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const data = await req.json();
-      
+
       const segment = await segmentService.updateSegment(
         params.id,
         data,
         session?.user?.id as string;
       );
-      
+
       return NextResponse.json(segment);
     },
     {
-      requiredPermission: 'marketing.segments.update',
-      auditAction: 'SEGMENT_UPDATE',
+      requiredPermission: 'marketing.segments.update';
+      auditAction: 'SEGMENT_UPDATE';
     }
   );

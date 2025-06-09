@@ -1,11 +1,11 @@
+import React, { useState, useEffect, useCallback } from "react";
+import {
 }
 
 "use client";
 
 export const dynamic = 'force-dynamic';
 
-import React, { useState, useEffect, useCallback } from "react";
-import {
   Table,
   TableBody,
   TableCell,
@@ -16,7 +16,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge"; // Import BadgeProps
-import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -25,7 +24,6 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -39,15 +37,15 @@ import { PlusCircle, Edit, Search } from "lucide-react";
 
 // --- INTERFACES ---
 interface ServiceItem {
-  id: number,
+  id: number;
   item_code: string
   item_name: string;
   description?: string;
-  category: string,
-  unit_price: number,
-  is_taxable: boolean,
-  is_discountable: boolean,
-  is_active: boolean
+  category: string;
+  unit_price: number;
+  is_taxable: boolean;
+  is_discountable: boolean;
+  is_active: boolean;
 }
 
 // FIX: Define interface for API response
@@ -77,33 +75,33 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
 }) => {
   const [formData, setFormData] = useState<Partial<ServiceItem>>(
     item || {
-      item_code: "",
-      item_name: "",
-      description: "",
-      category: "",
-      unit_price: 0,
-      is_taxable: true,
-      is_discountable: true,
-      is_active: true,
+      item_code: "";
+      item_name: "";
+      description: "";
+      category: "";
+      unit_price: 0;
+      is_taxable: true;
+      is_discountable: true;
+      is_active: true;
     }
   )
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Update form data based on item prop when it changes (for editing)
   useEffect(() => {
-    if (item) {
+    if (item != null) {
       setFormData(item)
     } else {
       // Reset form for creating new item
       setFormData({
-        item_code: "",
-        item_name: "",
-        description: "",
-        category: "",
-        unit_price: 0,
-        is_taxable: true,
-        is_discountable: true,
-        is_active: true,
+        item_code: "";
+        item_name: "";
+        description: "";
+        category: "";
+        unit_price: 0;
+        is_taxable: true;
+        is_discountable: true;
+        is_active: true;
       });
     }
   }, [item]);
@@ -272,7 +270,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
 };
 
 // --- Main Page Component ---
-export default const ServiceItemsPage = () {
+export default const _ServiceItemsPage = () {
   const [serviceItems, setServiceItems] = useState<ServiceItem[]>([])
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -318,9 +316,9 @@ export default const ServiceItemsPage = () {
 
     try {
       const response = await fetch(url, {
-        method: method,
+        method: method;
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData);
       });
 
       if (!response.ok) {

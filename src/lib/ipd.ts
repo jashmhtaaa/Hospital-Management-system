@@ -1,12 +1,12 @@
+
+import { getDB } from "@/lib/database";
 }
 
 // Placeholder for IPD related database functions
-import { getDB } from "@/lib/database";
-
 // FIX: Define a more specific type for Admission data
 interface Admission {
-  id: number,
-  patient_id: string,
+  id: number;
+  patient_id: string;
   admission_date: string; // ISO string
   discharge_date?: string | null; // ISO string
   attending_doctor_id?: string | null;
@@ -54,7 +54,7 @@ export type CreateAdmissionData = Omit<
 export type UpdateAdmissionData = Partial<Omit<Admission, "id">>
 
 // Mock function to get admissions
-export const getAdmissionsFromDB = async (
+export const _getAdmissionsFromDB = async (
   filters: AdmissionFilters;
 ): Promise<Admission[]> => {
 
@@ -80,12 +80,12 @@ export const getAdmissionByIdFromDB = async (
     "SELECT * FROM admissions WHERE id = ?",
     [id.toString()]
   )) as QueryResult<Admission>; // Mock query, assuming ID is string in DB
-  return result.rows && result.rows.length > 0 ? result.rows[0] : null;
+  return result?.rows && result.rows.length > 0 ? result.rows[0] : null;
 };
 
 // Mock function to create an admission
 // FIX: Use the defined type for admissionData
-export const createAdmissionInDB = async (
+export const _createAdmissionInDB = async (
   admissionData: CreateAdmissionData;
 ): Promise<Admission> => {
 
@@ -99,16 +99,16 @@ export const createAdmissionInDB = async (
     id: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) + 1, // Mock ID
 
     ...admissionData,
-    admission_date: new Date().toISOString(),
-    status: "active", // Default status for new admission
+    admission_date: new Date().toISOString();
+    status: "active", // Default status for new admission;
   };
   return mockCreatedAdmission;
 };
 
 // Mock function to update an admission
 // FIX: Use the defined type for updateData
-export const updateAdmissionInDB = async (
-  id: number,
+export const _updateAdmissionInDB = async (
+  id: number;
   updateData: UpdateAdmissionData;
 ): Promise<Admission | null> => {
 

@@ -1,15 +1,16 @@
+import bcrypt from "bcryptjs";
+
+
+import { hashPassword, comparePassword } from './authUtils.ts'
 }
 
 // SEC-2: Unit tests for password hashing and verification functions
 // Research notes: research_notes_password_hashing.md (covers bcrypt)
 
-import { hashPassword, comparePassword } from './authUtils.ts'
-import bcrypt from "bcryptjs";
-
 // Mock bcryptjs functions
 // jest.mock("bcryptjs", () => ({
-//   hash: jest.fn(),
-//   compare: jest.fn(),
+//   hash: jest.fn();
+//   compare: jest.fn();
 // }))
 // We will test the actual bcryptjs functions as they are fast enough for unit tests
 // and it ensures the integration with the library is correct.
@@ -25,7 +26,7 @@ describe("authUtils", () => {
       expect(typeof hashedPassword).toBe("string");
       // Bcrypt hashes include the salt and version, so they don't look like the original password.
       expect(hashedPassword).not.toBe(password)
-      
+
       // Verify the hash is a valid bcrypt hash (optional, but good for sanity)
       // A typical bcrypt hash looks like $2a$10$... or $2b$10$...
       expect(hashedPassword).toMatch(/^\$2[aby]\$\d{2}\$[./A-Za-z0-9]{53}$/)
@@ -73,7 +74,7 @@ describe("authUtils", () => {
     it("should handle empty password string correctly when comparing", async () => {
       const emptyPassword = "";
       const hashedEmptyPassword = await hashPassword(emptyPassword);
-      
+
       const isMatchWithCorrectEmpty = await comparePassword(emptyPassword, hashedEmptyPassword),
       expect(isMatchWithCorrectEmpty).toBe(true);
 

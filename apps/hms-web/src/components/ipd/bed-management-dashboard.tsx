@@ -1,43 +1,44 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 interface Bed {
-  id: string,
-  number: string,
-  ward: string,
-  type: string,
+  id: string;
+  number: string;
+  ward: string;
+  type: string;
   status: 'available' | 'occupied' | 'reserved' | 'maintenance';
   patient?: {
-    id: string,
-    name: string,
-    admissionDate: string
+    id: string;
+    name: string;
+    admissionDate: string;
   };
 }
 
 interface BedManagementDashboardProps {
-  beds: Bed[],
+  beds: Bed[];
   wardStats: {
-    totalBeds: number,
-    occupiedBeds: number,
-    availableBeds: number,
-    occupancyRate: number
+    totalBeds: number;
+    occupiedBeds: number;
+    availableBeds: number;
+    occupancyRate: number;
   };
 }
 
 /**
  * IPD Bed Management Dashboard component;
  */
-export const BedManagementDashboard = ({ beds, wardStats }: BedManagementDashboardProps) => {
+export const _BedManagementDashboard = ({ beds, wardStats }: BedManagementDashboardProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'available': return <Badge variant="success">Available</Badge>;
       case 'occupied': return <Badge variant="danger">Occupied</Badge>;
       case 'reserved': return <Badge variant="warning">Reserved</Badge>;
       case 'maintenance': return <Badge variant="secondary">Maintenance</Badge>;
-      default: return <Badge>Unknown</Badge>
+      default: return <Badge>Unknown</Badge>;
     }
   };
 
@@ -56,7 +57,7 @@ export const BedManagementDashboard = ({ beds, wardStats }: BedManagementDashboa
             <div className="text-2xl font-bold">{wardStats.totalBeds}</div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Occupied Beds</CardTitle>;
@@ -69,7 +70,7 @@ export const BedManagementDashboard = ({ beds, wardStats }: BedManagementDashboa
             <div className="text-2xl font-bold">{wardStats.occupiedBeds}</div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Available Beds</CardTitle>;
@@ -81,7 +82,7 @@ export const BedManagementDashboard = ({ beds, wardStats }: BedManagementDashboa
             <div className="text-2xl font-bold">{wardStats.availableBeds}</div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Occupancy Rate</CardTitle>;
@@ -94,7 +95,7 @@ export const BedManagementDashboard = ({ beds, wardStats }: BedManagementDashboa
           </CardContent>
         </Card>
       </div>
-      
+
       <Card>
         <CardHeader>
           <CardTitle>Bed Status</CardTitle>

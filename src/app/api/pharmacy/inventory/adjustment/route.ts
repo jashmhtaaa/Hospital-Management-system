@@ -1,36 +1,37 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+
+import { auditLog } from '../../../../../lib/audit';
+import { errorHandler } from '../../../../../lib/error-handler';
+import { validateInventoryAdjustmentRequest } from '../../../../../lib/validation/pharmacy-validation';
 }
 
 /**
  * Inventory Adjustment API Routes;
- * 
+ *
  * This file implements the API endpoints for adjusting inventory quantities;
  * with comprehensive tracking and audit logging.
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { validateInventoryAdjustmentRequest } from '../../../../../lib/validation/pharmacy-validation';
-import { auditLog } from '../../../../../lib/audit';
-import { errorHandler } from '../../../../../lib/error-handler';
-
 // Initialize repositories (in production, use dependency injection)
 const inventoryRepository = {
-  findById: (id: string) => Promise.resolve(null),
-  findByLocationId: (locationId: string) => Promise.resolve([]),
-  findByMedicationId: (medicationId: string) => Promise.resolve([]),
-  findAll: () => Promise.resolve([]),
-  save: (item: unknown) => Promise.resolve(item.id || 'new-id'),
-  update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true),
-  adjustStock: () => Promise.resolve(true)
+  findById: (id: string) => Promise.resolve(null);
+  findByLocationId: (locationId: string) => Promise.resolve([]);
+  findByMedicationId: (medicationId: string) => Promise.resolve([]);
+  findAll: () => Promise.resolve([]);
+  save: (item: unknown) => Promise.resolve(item.id || 'new-id');
+  update: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true);
+  adjustStock: () => Promise.resolve(true);
 }
 
 const adjustmentRepository = {
-  findById: (id: string) => Promise.resolve(null),
-  findByInventoryId: (inventoryId: string) => Promise.resolve([]),
-  findByLocationId: (locationId: string) => Promise.resolve([]),
-  findByMedicationId: (medicationId: string) => Promise.resolve([]),
-  findAll: () => Promise.resolve([]),
-  save: (adjustment: unknown) => Promise.resolve(adjustment.id || 'new-id')
+  findById: (id: string) => Promise.resolve(null);
+  findByInventoryId: (inventoryId: string) => Promise.resolve([]);
+  findByLocationId: (locationId: string) => Promise.resolve([]);
+  findByMedicationId: (medicationId: string) => Promise.resolve([]);
+  findAll: () => Promise.resolve([]);
+  save: (adjustment: unknown) => Promise.resolve(adjustment.id || 'new-id');
 };
 
 /**
@@ -69,17 +70,17 @@ export const POST = async (req: NextRequest) => {
 
     // Create adjustment record
     const adjustment = {
-      id: crypto.randomUUID(),
-      inventoryId: data.inventoryId,
-      locationId: inventory.locationId,
-      medicationId: inventory.medicationId,
-      previousQuantity: inventory.quantityOnHand,
-      newQuantity: data.newQuantity,
+      id: crypto.randomUUID();
+      inventoryId: data.inventoryId;
+      locationId: inventory.locationId;
+      medicationId: inventory.medicationId;
+      previousQuantity: inventory.quantityOnHand;
+      newQuantity: data.newQuantity;
       adjustmentQuantity,
-      reason: data.reason,
-      adjustedBy: userId,
-      adjustedAt: new Date(),
-      notes: data.notes || ''
+      reason: data.reason;
+      adjustedBy: userId;
+      adjustedAt: new Date();
+      notes: data.notes || '';
     };
 
     // Save adjustment record
@@ -92,43 +93,43 @@ export const POST = async (req: NextRequest) => {
     if (inventory.isControlled) {
       // Additional logging for controlled substances
       await auditLog('CONTROLLED_SUBSTANCE', {
-        action: 'ADJUST',
-        resourceType: 'Inventory',
-        resourceId: data.inventoryId,
-        userId: userId,
+        action: 'ADJUST';
+        resourceType: 'Inventory';
+        resourceId: data.inventoryId;
+        userId: userId;
         details: {
           adjustmentId,
-          medicationId: inventory.medicationId,
-          previousQuantity: inventory.quantityOnHand,
-          newQuantity: data.newQuantity,
+          medicationId: inventory.medicationId;
+          previousQuantity: inventory.quantityOnHand;
+          newQuantity: data.newQuantity;
           adjustmentQuantity,
-          reason: data.reason
+          reason: data.reason;
         }
       });
     }
 
     // Regular audit logging
     await auditLog('INVENTORY', {
-      action: 'ADJUST',
-      resourceType: 'Inventory',
-      resourceId: adjustmentId,
-      userId: userId,
+      action: 'ADJUST';
+      resourceType: 'Inventory';
+      resourceId: adjustmentId;
+      userId: userId;
       details: {
-        inventoryId: data.inventoryId,
-        medicationId: inventory.medicationId,
-        previousQuantity: inventory.quantityOnHand,
-        newQuantity: data.newQuantity,
+        inventoryId: data.inventoryId;
+        medicationId: inventory.medicationId;
+        previousQuantity: inventory.quantityOnHand;
+        newQuantity: data.newQuantity;
         adjustmentQuantity,
-        reason: data.reason
+        reason: data.reason;
       }
     });
 
     // Return response
     return NextResponse.json(
-      { 
-        id: adjustmentId,
-        message: 'Inventory adjusted successfully'
-      }, 
+      {
+        id: adjustmentId;
+        message: 'Inventory adjusted successfully';
+      },
       { status: 201 }
     );
   } catch (error) {
@@ -164,16 +165,16 @@ export const GET = async (req: NextRequest) => {
 
     // Build filter criteria
     const filter: unknown = {};
-    if (inventoryId) filter.inventoryId = inventoryId;
-    if (locationId) filter.locationId = locationId;
-    if (medicationId) filter.medicationId = medicationId;
-    if (reason) filter.reason = reason;
-    
+    if (inventoryId != null) filter.inventoryId = inventoryId;
+    if (locationId != null) filter.locationId = locationId;
+    if (medicationId != null) filter.medicationId = medicationId;
+    if (reason != null) filter.reason = reason;
+
     // Add date range if provided
     if (startDate || endDate) {
       filter.adjustedAt = {};
-      if (startDate) filter.adjustedAt.gte = new Date(startDate);
-      if (endDate) filter.adjustedAt.lte = new Date(endDate);
+      if (startDate != null) filter.adjustedAt.gte = new Date(startDate);
+      if (endDate != null) filter.adjustedAt.lte = new Date(endDate);
     }
 
     // Get adjustments (mock implementation)
@@ -182,25 +183,25 @@ export const GET = async (req: NextRequest) => {
 
     // Audit logging
     await auditLog('INVENTORY', {
-      action: 'LIST_ADJUSTMENTS',
-      resourceType: 'Inventory',
-      userId: userId,
+      action: 'LIST_ADJUSTMENTS';
+      resourceType: 'Inventory';
+      userId: userId;
       details: {
         filter,
         page,
         limit,
-        resultCount: adjustments.length
+        resultCount: adjustments.length;
       }
     });
 
     // Return response
-    return NextResponse.json({ 
+    return NextResponse.json({
       adjustments,
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit);
       }
     }, { status: 200 });
   } catch (error) {

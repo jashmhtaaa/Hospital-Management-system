@@ -1,19 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
+
+
 import { getDB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session";
-
 // Define interface for POST request body
 interface ProgressNoteInput {
   note_date?: string; // Optional, defaults to now
-  subjective: string,
-  objective: string,
-  assessment: string,
-  plan: string
+  subjective: string;
+  objective: string;
+  assessment: string;
+  plan: string;
 }
 
 // GET /api/ipd/admissions/[id]/progress-notes - Get all progress notes for an admission
-export const GET = async (
-  _request: NextRequest,
+export const _GET = async (
+  _request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -40,7 +41,7 @@ export const GET = async (
       [admissionId]
     );
     const admission =;
-      admissionResult.results && admissionResult.results.length > 0 // Changed .rows to .results
+      admissionResult?.results && admissionResult.results.length > 0 // Changed .rows to .results
         ? (admissionResult.results[0] as { id: string; primary_doctor_id: number }) // Changed .rows to .results
         : undefined;
 
@@ -65,7 +66,7 @@ export const GET = async (
     // Check if user is not the primary doctor and doesn-	 have view_all permission
     if (
       isDoctor &&
-      admission.primary_doctor_id !== session.user.userId &&;
+      admission.primary_doctor_id !== session.user?.userId &&;
       !canViewAll;
     ) {
       forbidden = true;
@@ -79,7 +80,7 @@ export const GET = async (
       forbidden = false;
     }
 
-    if (forbidden) {
+    if (forbidden != null) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -98,7 +99,7 @@ export const GET = async (
 
     return NextResponse.json({
       admission,
-      progress_notes: progressNotesResult.results || [], // Changed .rows to .results
+      progress_notes: progressNotesResult.results || [], // Changed .rows to .results;
     });
   } catch (error: unknown) {
 
@@ -111,8 +112,8 @@ export const GET = async (
 }
 
 // POST /api/ipd/admissions/[id]/progress-notes - Create a new progress note
-export const POST = async (
-  request: NextRequest,
+export const _POST = async (
+  request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -135,8 +136,7 @@ export const POST = async (
       // Must be doctor or have general create permission
       return NextResponse.json(
         {
-          error:
-            "Forbidden: Only doctors or users with create permission can add progress notes",
+          error: "Forbidden: Only doctors or users with create permission can add progress notes";
         },
         { status: 403 }
       );
@@ -171,11 +171,11 @@ export const POST = async (
       [admissionId]
     );
     const admission =;
-      admissionResult.results && admissionResult.results.length > 0 // Changed .rows to .results
+      admissionResult?.results && admissionResult.results.length > 0 // Changed .rows to .results
         ? (admissionResult.results[0] as { // Changed .rows to .results
-            id: string,
-            status: string,
-            primary_doctor_id: number
+            id: string;
+            status: string;
+            primary_doctor_id: number;
           });
         : undefined;
 
@@ -197,13 +197,12 @@ export const POST = async (
     // Ensure userId exists on session.user before comparison
     if (
       isDoctor &&
-      admission.primary_doctor_id !== session.user.userId &&;
+      admission.primary_doctor_id !== session.user?.userId &&;
       !canCreateAll;
     ) {
       return NextResponse.json(
         {
-          error:
-            "You are not authorized to add progress notes for this patient",
+          error: "You are not authorized to add progress notes for this patient";
         },
         { status: 403 }
       );

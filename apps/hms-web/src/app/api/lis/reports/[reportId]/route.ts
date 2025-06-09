@@ -1,22 +1,23 @@
-// app/api/lis/reports/[reportId]/route.ts
 import { NextRequest } from "next/server";
 import { PrismaClient, Prisma, LabReportStatus, LabOrderStatus } from "@prisma/client";
 import { z } from "zod";
-import { getCurrentUser, hasPermission } from "@/lib/authUtils";
-import { auditLogService } from "@/lib/auditLogUtils";
-import { sendErrorResponse, sendSuccessResponse } from "@/lib/apiResponseUtils";
 
+
+import { auditLogService } from "@/lib/auditLogUtils";
+import { getCurrentUser, hasPermission } from "@/lib/authUtils";
+import { sendErrorResponse, sendSuccessResponse } from "@/lib/apiResponseUtils";
+// app/api/lis/reports/[reportId]/route.ts
 const prisma = new PrismaClient();
 
 interface RouteContext {
   params: {
-    reportId: string
+    reportId: string;
   };
 }
 
 const labReportStatusValues = Object.values(LabReportStatus);
 
-export async const GET = (request: NextRequest, { params }: RouteContext) => {
+export async const _GET = (request: NextRequest, { params }: RouteContext) => {
   const start = crypto.getRandomValues(new Uint32Array(1))[0];
   let userId: string | undefined;
   const { reportId } = params;
@@ -58,15 +59,15 @@ export async const GET = (request: NextRequest, { params }: RouteContext) => {
       await auditLogService.logEvent(userId, "LIS_VIEW_SPECIFIC_REPORT_NOT_FOUND", { reportId });
       return sendErrorResponse("Lab report not found.", 404, { reportId });
     }
-    
+
     await auditLogService.logEvent(userId, "LIS_VIEW_SPECIFIC_REPORT_SUCCESS", { reportId, data: labReport });
-    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
+    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     return sendSuccessResponse(labReport)
   } catch (error: unknown) {
 
     await auditLogService.logEvent(userId, "LIS_VIEW_SPECIFIC_REPORT_FAILED", { reportId, path: request.nextUrl.pathname, error: String(error.message) })
-    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
+    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
 
     return sendErrorResponse("Internal Server Error", 500, String(error.message));
   }
@@ -81,14 +82,14 @@ const updateLabReportSchema = z.object({
       return { message: ctx.defaultError };
     },
   }).optional(),
-  observations: z.string().max(5000).optional().nullable(),
-  fileName: z.string().min(1).max(255).optional().nullable(),
-  fileType: z.string().min(1).max(100).optional().nullable(),
-  fileSize: z.number().int().positive().optional().nullable(),
-  storagePath: z.string().min(1).max(1024).optional().nullable(),
+  observations: z.string().max(5000).optional().nullable();
+  fileName: z.string().min(1).max(255).optional().nullable();
+  fileType: z.string().min(1).max(100).optional().nullable();
+  fileSize: z.number().int().positive().optional().nullable();
+  storagePath: z.string().min(1).max(1024).optional().nullable();
 });
 
-export async const PUT = (request: NextRequest, { params }: RouteContext) => {
+export async const _PUT = (request: NextRequest, { params }: RouteContext) => {
   const start = crypto.getRandomValues(new Uint32Array(1))[0];
   let userId: string | undefined;
   const { reportId } = params;
@@ -135,32 +136,32 @@ export async const PUT = (request: NextRequest, { params }: RouteContext) => {
       return sendErrorResponse("Lab report not found.", 404, { reportId });
     }
 
-    if (existingReport.status === LabReportStatus.FINALIZED &&
-      validation.data.status &&
+    if (existingReport.status === LabReportStatus?.FINALIZED &&
+      validation.data?.status &&
       validation.data.status !== LabReportStatus.FINALIZED) {
-        if (validation.data.status !== LabReportStatus.REVISED &&
+        if (validation.data.status !== LabReportStatus?.REVISED &&
           validation.data.status !== LabReportStatus.ADDENDUM_ADDED) {
             await auditLogService.logEvent(userId, "LIS_UPDATE_REPORT_METADATA_INVALID_STATUS_CHANGE_ON_FINALIZED", { reportId, currentStatus: existingReport.status, attemptedStatus: validation.data.status });
             return sendErrorResponse(`Cannot change status of a FINALIZED report to ${validation.data.status} directly. Consider REVISED or ADDENDUM_ADDED.`, 409);
         }
     }
-    
+
     const dataToUpdate: Prisma.LabReportUpdateInput = {
         ...validation.data,
-        updatedById: userId,
-        updatedAt: new Date(),
+        updatedById: userId;
+        updatedAt: new Date();
       };
 
     const updatedLabReport = await prisma.labReport.update({
       where: { id: reportId },
-      data: dataToUpdate,
+      data: dataToUpdate;
       include: {
         labOrder: { include: { patient: true, testItems: true } },
-        reportedBy: true,
+        reportedBy: true;
       },
     });
 
-    if (validation.data.status === LabReportStatus.FINALIZED &&
+    if (validation.data.status === LabReportStatus?.FINALIZED &&
       existingReport.labOrder.status !== LabOrderStatus.REPORT_AVAILABLE) {
         await prisma.labOrder.update({
             where: { id: existingReport.labOrderId },
@@ -171,7 +172,7 @@ export async const PUT = (request: NextRequest, { params }: RouteContext) => {
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     await auditLogService.logEvent(userId, "LIS_UPDATE_REPORT_METADATA_SUCCESS", { reportId, changes: validation.data, updatedData: updatedLabReport })
-    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
+    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     return sendSuccessResponse(updatedLabReport)
   } catch (error: unknown) {
@@ -181,19 +182,19 @@ export async const PUT = (request: NextRequest, { params }: RouteContext) => {
     let errDetails: string | undefined = error.message;
 
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      errDetails = error.message; 
-      if (error.code === "P2025") { 
+      errDetails = error.message;
+      if (error.code === "P2025") {
         errStatus = 404;
         errMessage = "Lab report not found.";
         errDetails = `Lab report with ID ${reportId} not found for update.`;
       }
     }
     await auditLogService.logEvent(userId, "LIS_UPDATE_REPORT_METADATA_FAILED", { reportId, path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) });
-    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
+    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
 
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }
-export async const DELETE = (request: NextRequest, { params }: RouteContext) => {
+export async const _DELETE = (request: NextRequest, { params }: RouteContext) => {
   const start = crypto.getRandomValues(new Uint32Array(1))[0];
   let userId: string | undefined;
   const { reportId } = params;
@@ -237,7 +238,7 @@ export async const DELETE = (request: NextRequest, { params }: RouteContext) => 
     });
 
     await auditLogService.logEvent(userId, "LIS_DELETE_REPORT_METADATA_SUCCESS", { reportId, deletedReportDetails: existingReport });
-    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
+    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     return sendSuccessResponse(null, 204)
 
@@ -248,15 +249,15 @@ export async const DELETE = (request: NextRequest, { params }: RouteContext) => 
     let errDetails: string | undefined = error.message;
 
      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        errDetails = error.message; 
-      if (error.code === "P2025") { 
+        errDetails = error.message;
+      if (error.code === "P2025") {
         errStatus = 404;
         errMessage = "Lab report not found.";
         errDetails = `Lab report with ID ${reportId} not found for deletion.`;
       }
     }
     await auditLogService.logEvent(userId, "LIS_DELETE_REPORT_METADATA_FAILED", { reportId, path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) });
-    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
+    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
 
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }

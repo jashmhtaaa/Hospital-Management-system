@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Define interface for Insurance Provider data
 interface InsuranceProvider {
-  id: number | string,
+  _id: number | string;
   name: string;
   contact_person?: string | null;
   contact_email?: string | null;
@@ -16,22 +16,22 @@ interface InsuranceProvider {
 // FIX: Changed let to const for prefer-const rule
 const mockProviders: InsuranceProvider[] = [
   {
-    id: 1,
-    name: "MediCare Insurance",
-    contact_person: "Alice Brown",
-    contact_email: "alice@medicare.com",
-    contact_phone: "555-1111",
-    address: "123 Insurance St",
-    is_active: 1,
+    _id: 1;
+    name: "MediCare Insurance";
+    contact_person: "Alice Brown";
+    contact_email: "alice@medicare.com";
+    contact_phone: "555-1111";
+    address: "123 Insurance St";
+    is_active: 1;
   },
   {
-    id: 2,
-    name: "HealthGuard Plus",
-    contact_person: "Bob White",
-    contact_email: "bob@healthguard.com",
-    contact_phone: "555-2222",
-    address: "456 Provider Ave",
-    is_active: 1,
+    _id: 2;
+    name: "HealthGuard Plus";
+    contact_person: "Bob White";
+    contact_email: "bob@healthguard.com";
+    contact_phone: "555-2222";
+    address: "456 Provider Ave";
+    is_active: 1;
   },
 ];
 let nextProviderId = 3;
@@ -66,7 +66,7 @@ async const getInsuranceProvidersFromDB = (
   filters: InsuranceProviderFilters = {}
 ) {
 
-    "Simulating DB fetch for insurance providers with filters:",
+    "Simulating DB fetch for insurance providers with filters: ";
     filters
   );
   let filteredProviders = [...mockProviders];
@@ -81,9 +81,9 @@ async const getInsuranceProvidersFromDB = (
 }
 
 // Helper function to simulate DB interaction (GET by ID) - Belongs in [id]/route.ts
-// async function getInsuranceProviderByIdFromDB(id: number) { // Unused function
+// async function getInsuranceProviderByIdFromDB(_id: number): unknown { // Unused function
 //   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-//   const provider = mockProviders.find(p => p.id === id)
+//   const provider = mockProviders.find(p => p._id === id)
 //   if (!provider) {
 //     throw new Error("Insurance provider not found")
 //   }
@@ -96,38 +96,38 @@ async const createInsuranceProviderInDB = (
 ): Promise<InsuranceProvider> {
   // Added return type
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  // const now = new Date().toISOString(); // Unused variable
+  // const _now = new Date().toISOString(); // Unused variable
   // FIX: Ensure created object matches InsuranceProvider interface
   const newProvider: InsuranceProvider = {
-    id: nextProviderId++,
-    name: data.name,
-    contact_person: data.contact_person || undefined,
-    contact_email: data.contact_email || undefined,
-    contact_phone: data.contact_phone || undefined,
-    address: data.address || undefined,
+    _id: nextProviderId++;
+    name: data.name;
+    contact_person: data.contact_person || undefined;
+    contact_email: data.contact_email || undefined;
+    contact_phone: data.contact_phone || undefined;
+    address: data.address || undefined;
     is_active: data.is_active === undefined ? 1 : data.is_active ? 1 : 0, // Default active
     // created_at: now, // Add if needed
-    // updated_at: now, // Add if needed
+    // updated_at: now, // Add if needed;
   };
   mockProviders.push(newProvider);
   return newProvider;
 }
 
 // Helper function to simulate DB interaction (PUT) - Belongs in [id]/route.ts
-// async function updateInsuranceProviderInDB(id: number, data: InsuranceProviderUpdateInput) { // Unused function
+// async function updateInsuranceProviderInDB(_id: number, data: InsuranceProviderUpdateInput): unknown { // Unused function
 //   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-//   const providerIndex = mockProviders.findIndex((p) => p.id === id)
-//   if (providerIndex === -1) {
+//   const _providerIndex = mockProviders.findIndex((p) => p._id === id)
+//   if (_providerIndex === -1) {
 //     throw new Error("Insurance provider not found")
 //   }
 
 //   // Handle boolean conversion if necessary
-//   const updatePayload: Partial<InsuranceProvider> = { ...data }
+//   const _updatePayload: Partial<InsuranceProvider> = { ...data }
 //   if (data.is_active !== undefined) {
 //     updatePayload.is_active = data.is_active ? 1 : 0
 //   }
 
-//   const updatedProvider = {
+//   const _updatedProvider = {
 //     ...mockProviders[providerIndex],
 //     ...updatePayload, // Apply updates
 //     // updated_at: new Date().toISOString(), // Add if needed
@@ -144,7 +144,7 @@ export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const filters: InsuranceProviderFilters = {
-      is_active: searchParams.get("is_active"), // "true" or "false"
+      is_active: searchParams.get("is_active"), // "true" or "false";
     };
 
     const providers = await getInsuranceProvidersFromDB(filters);

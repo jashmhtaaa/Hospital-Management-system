@@ -1,5 +1,5 @@
-// src/app/api/radiology/orders/route.ts
 import { NextRequest, NextResponse } from "next/server";
+// src/app/api/radiology/orders/route.ts
 // import { getRequestContext } from "@cloudflare/next-on-pages"; // Import when ready to use D1
 
 // Define interfaces
@@ -15,9 +15,9 @@ interface RadiologyOrderFilters {
 }
 
 interface RadiologyOrderInput {
-  patient_id: number,
-  ordering_doctor_id: number,
-  modality: string,
+  patient_id: number;
+  ordering_doctor_id: number;
+  modality: string;
   body_part: string;
   order_date?: string;
   priority?: string;
@@ -52,82 +52,82 @@ async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {
   // Return mock data for now
   const mockRadiologyOrders = [
     {
-      id: 1,
-      order_number: "RAD-20250428-001",
-      patient_id: 101,
-      patient_name: "Alice Smith",
-      ordering_doctor_id: 5,
-      ordering_doctor_name: "Dr. Robert Johnson",
-      order_date: "2025-04-28T09:15:00Z",
+      id: 1;
+      order_number: "RAD-20250428-001";
+      patient_id: 101;
+      patient_name: "Alice Smith";
+      ordering_doctor_id: 5;
+      ordering_doctor_name: "Dr. Robert Johnson";
+      order_date: "2025-04-28T09:15:00Z";
       modality: "X-Ray", // X-Ray, CT, MRI, Ultrasound, etc.
-      body_part: "Chest",
+      body_part: "Chest";
       priority: "routine", // routine, urgent, stat
       status: "scheduled", // ordered, scheduled, completed, reported, cancelled
-      scheduled_date: "2025-04-29T10:30:00Z",
-      performed_date: undefined,
-      performed_by: undefined,
-      report_date: undefined,
-      reported_by: undefined,
-      clinical_history: "Persistent cough for 2 weeks",
-      notes: "Patient has history of tuberculosis",
-      created_at: "2025-04-28T09:15:00Z",
-      updated_at: "2025-04-28T09:30:00Z",
+      scheduled_date: "2025-04-29T10:30:00Z";
+      performed_date: undefined;
+      performed_by: undefined;
+      report_date: undefined;
+      reported_by: undefined;
+      clinical_history: "Persistent cough for 2 weeks";
+      notes: "Patient has history of tuberculosis";
+      created_at: "2025-04-28T09:15:00Z";
+      updated_at: "2025-04-28T09:30:00Z";
     },
     {
-      id: 2,
-      order_number: "RAD-20250428-002",
-      patient_id: 102,
-      patient_name: "Bob Johnson",
-      ordering_doctor_id: 8,
-      ordering_doctor_name: "Dr. Sarah Williams",
-      order_date: "2025-04-28T10:30:00Z",
-      modality: "CT",
-      body_part: "Head",
-      priority: "urgent",
-      status: "completed",
-      scheduled_date: "2025-04-28T13:45:00Z",
-      performed_date: "2025-04-28T14:00:00Z",
-      performed_by: "Dr. James Wilson",
-      report_date: undefined,
-      reported_by: undefined,
-      clinical_history: "Headache and dizziness following fall",
-      notes: "Check for intracranial hemorrhage",
-      created_at: "2025-04-28T10:30:00Z",
-      updated_at: "2025-04-28T14:15:00Z",
+      id: 2;
+      order_number: "RAD-20250428-002";
+      patient_id: 102;
+      patient_name: "Bob Johnson";
+      ordering_doctor_id: 8;
+      ordering_doctor_name: "Dr. Sarah Williams";
+      order_date: "2025-04-28T10:30:00Z";
+      modality: "CT";
+      body_part: "Head";
+      priority: "urgent";
+      status: "completed";
+      scheduled_date: "2025-04-28T13:45:00Z";
+      performed_date: "2025-04-28T14:00:00Z";
+      performed_by: "Dr. James Wilson";
+      report_date: undefined;
+      reported_by: undefined;
+      clinical_history: "Headache and dizziness following fall";
+      notes: "Check for intracranial hemorrhage";
+      created_at: "2025-04-28T10:30:00Z";
+      updated_at: "2025-04-28T14:15:00Z";
     },
     {
-      id: 3,
-      order_number: "RAD-20250427-003",
-      patient_id: 103,
-      patient_name: "Charlie Brown",
-      ordering_doctor_id: 3,
-      ordering_doctor_name: "Dr. Emily Chen",
-      order_date: "2025-04-27T14:00:00Z",
-      modality: "MRI",
-      body_part: "Lumbar Spine",
-      priority: "routine",
-      status: "reported",
-      scheduled_date: "2025-04-27T16:30:00Z",
-      performed_date: "2025-04-27T16:45:00Z",
-      performed_by: "Dr. Michael Thompson",
-      report_date: "2025-04-28T09:00:00Z",
-      reported_by: "Dr. Lisa Rodriguez",
-      clinical_history: "Lower back pain radiating to left leg",
-      notes: "Suspected disc herniation",
-      created_at: "2025-04-27T14:00:00Z",
-      updated_at: "2025-04-28T09:15:00Z",
+      id: 3;
+      order_number: "RAD-20250427-003";
+      patient_id: 103;
+      patient_name: "Charlie Brown";
+      ordering_doctor_id: 3;
+      ordering_doctor_name: "Dr. Emily Chen";
+      order_date: "2025-04-27T14:00:00Z";
+      modality: "MRI";
+      body_part: "Lumbar Spine";
+      priority: "routine";
+      status: "reported";
+      scheduled_date: "2025-04-27T16:30:00Z";
+      performed_date: "2025-04-27T16:45:00Z";
+      performed_by: "Dr. Michael Thompson";
+      report_date: "2025-04-28T09:00:00Z";
+      reported_by: "Dr. Lisa Rodriguez";
+      clinical_history: "Lower back pain radiating to left leg";
+      notes: "Suspected disc herniation";
+      created_at: "2025-04-27T14:00:00Z";
+      updated_at: "2025-04-28T09:15:00Z";
     },
   ];
 
   return mockRadiologyOrders.filter((order) => {
     // Apply status filter
-    if (filters.status && order.status !== filters.status) return false;
+    if (filters?.status && order.status !== filters.status) return false;
 
     // Apply modality filter
-    if (filters.modality && order.modality !== filters.modality) return false;
+    if (filters?.modality && order.modality !== filters.modality) return false;
 
     // Apply priority filter
-    if (filters.priority && order.priority !== filters.priority) return false;
+    if (filters?.priority && order.priority !== filters.priority) return false;
 
     // Apply date range filter
     if (filters.startDate) {
@@ -144,13 +144,13 @@ async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {
 
     // Apply doctor filter
     if (
-      filters.doctorId &&
+      filters?.doctorId &&
       order.ordering_doctor_id.toString() !== filters.doctorId;
     );
       return false;
 
     // Apply patient filter
-    if (filters.patientId && order.patient_id.toString() !== filters.patientId)
+    if (filters?.patientId && order.patient_id.toString() !== filters.patientId)
       return false;
 
     // Apply search filter
@@ -162,7 +162,7 @@ async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {
         order.ordering_doctor_name.toLowerCase().includes(searchTerm) ||
         order.order_number.toLowerCase().includes(searchTerm) ||
         order.modality.toLowerCase().includes(searchTerm) ||
-        order.body_part.toLowerCase().includes(searchTerm) || (order.clinical_history &&
+        order.body_part.toLowerCase().includes(searchTerm) || (order?.clinical_history &&
           order.clinical_history.toLowerCase().includes(searchTerm)));
       );
     }
@@ -182,19 +182,19 @@ async const createRadiologyOrderInDB = (orderData: RadiologyOrderInput) {
   const newId = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) + 10;
   const orderNumber = `RAD-${new Date().toISOString().slice(0, 10).replaceAll("-", "")}-${newId.toString().padStart(3, "0")}`;
   return {
-    id: newId,
-    order_number: orderNumber,
+    id: newId;
+    order_number: orderNumber;
     ...orderData,
-    order_date: orderData.order_date || new Date().toISOString(),
-    priority: orderData.priority || "routine",
-    status: "ordered",
-    scheduled_date: undefined,
-    performed_date: undefined,
-    performed_by: undefined,
-    report_date: undefined,
-    reported_by: undefined,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
+    order_date: orderData.order_date || new Date().toISOString();
+    priority: orderData.priority || "routine";
+    status: "ordered";
+    scheduled_date: undefined;
+    performed_date: undefined;
+    performed_by: undefined;
+    report_date: undefined;
+    reported_by: undefined;
+    created_at: new Date().toISOString();
+    updated_at: new Date().toISOString();
   };
 }
 
@@ -205,79 +205,79 @@ async const getRadiologyOrderByIdFromDB = (id: number) {
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   // Replace with actual D1 query when DB is configured
   // ... (D1 query logic)
-  
+
   // Return mock data for now
   const mockRadiologyOrders = [
     {
-      id: 1,
-      order_number: "RAD-20250428-001",
-      patient_id: 101,
-      patient_name: "Alice Smith",
-      ordering_doctor_id: 5,
-      ordering_doctor_name: "Dr. Robert Johnson",
-      order_date: "2025-04-28T09:15:00Z",
-      modality: "X-Ray",
-      body_part: "Chest",
-      priority: "routine",
-      status: "scheduled",
-      scheduled_date: "2025-04-29T10:30:00Z",
-      performed_date: null,
-      performed_by: null,
-      report_date: null,
-      reported_by: null,
-      clinical_history: "Persistent cough for 2 weeks",
-      notes: "Patient has history of tuberculosis",
-      created_at: "2025-04-28T09:15:00Z",
-      updated_at: "2025-04-28T09:30:00Z",
+      id: 1;
+      order_number: "RAD-20250428-001";
+      patient_id: 101;
+      patient_name: "Alice Smith";
+      ordering_doctor_id: 5;
+      ordering_doctor_name: "Dr. Robert Johnson";
+      order_date: "2025-04-28T09:15:00Z";
+      modality: "X-Ray";
+      body_part: "Chest";
+      priority: "routine";
+      status: "scheduled";
+      scheduled_date: "2025-04-29T10:30:00Z";
+      performed_date: null;
+      performed_by: null;
+      report_date: null;
+      reported_by: null;
+      clinical_history: "Persistent cough for 2 weeks";
+      notes: "Patient has history of tuberculosis";
+      created_at: "2025-04-28T09:15:00Z";
+      updated_at: "2025-04-28T09:30:00Z";
       patient_details: {
-        age: 35,
-        gender: "Female",
-        contact: "+91-9876543210",
-        medical_record_number: "MRN00101"
+        age: 35;
+        gender: "Female";
+        contact: "+91-9876543210";
+        medical_record_number: "MRN00101";
       }
     },
     {
-      id: 3,
-      order_number: "RAD-20250427-003",
-      patient_id: 103,
-      patient_name: "Charlie Brown",
-      ordering_doctor_id: 3,
-      ordering_doctor_name: "Dr. Emily Chen",
-      order_date: "2025-04-27T14:00:00Z",
-      modality: "MRI",
-      body_part: "Lumbar Spine",
-      priority: "routine",
-      status: "reported",
-      scheduled_date: "2025-04-27T16:30:00Z",
-      performed_date: "2025-04-27T16:45:00Z",
-      performed_by: "Dr. Michael Thompson",
-      report_date: "2025-04-28T09:00:00Z",
-      reported_by: "Dr. Lisa Rodriguez",
-      clinical_history: "Lower back pain radiating to left leg",
-      notes: "Suspected disc herniation",
-      created_at: "2025-04-27T14:00:00Z",
-      updated_at: "2025-04-28T09:15:00Z",
+      id: 3;
+      order_number: "RAD-20250427-003";
+      patient_id: 103;
+      patient_name: "Charlie Brown";
+      ordering_doctor_id: 3;
+      ordering_doctor_name: "Dr. Emily Chen";
+      order_date: "2025-04-27T14:00:00Z";
+      modality: "MRI";
+      body_part: "Lumbar Spine";
+      priority: "routine";
+      status: "reported";
+      scheduled_date: "2025-04-27T16:30:00Z";
+      performed_date: "2025-04-27T16:45:00Z";
+      performed_by: "Dr. Michael Thompson";
+      report_date: "2025-04-28T09:00:00Z";
+      reported_by: "Dr. Lisa Rodriguez";
+      clinical_history: "Lower back pain radiating to left leg";
+      notes: "Suspected disc herniation";
+      created_at: "2025-04-27T14:00:00Z";
+      updated_at: "2025-04-28T09:15:00Z";
       patient_details: {
-        age: 28,
-        gender: "Male",
-        contact: "+91-9876543212",
-        medical_record_number: "MRN00103"
+        age: 28;
+        gender: "Male";
+        contact: "+91-9876543212";
+        medical_record_number: "MRN00103";
       },
       report: {
-        findings: "L4-L5 disc herniation with compression of left L5 nerve root. Mild degenerative changes at L3-L4 and L5-S1 levels.",
-        impression: "L4-L5 disc herniation with left-sided radiculopathy.",
-        recommendations: "Neurosurgical consultation recommended. Consider conservative management with physical therapy and pain management initially."
+        findings: "L4-L5 disc herniation with compression of left L5 nerve root. Mild degenerative changes at L3-L4 and L5-S1 levels.";
+        impression: "L4-L5 disc herniation with left-sided radiculopathy.";
+        recommendations: "Neurosurgical consultation recommended. Consider conservative management with physical therapy and pain management initially.";
       }
     }
   ];
-  
+
   return mockRadiologyOrders.find(order => order.id === id) || null;
 }
 */
 
 // Placeholder function to simulate updating a radiology order
 async const updateRadiologyOrderInDB = (
-  id: number,
+  id: number;
   updateData: RadiologyOrderUpdateInput;
 ) {
   // Use interface
@@ -289,7 +289,7 @@ async const updateRadiologyOrderInDB = (
   return {
     id,
     ...updateData,
-    updated_at: new Date().toISOString(),
+    updated_at: new Date().toISOString();
   };
 }
 
@@ -372,8 +372,7 @@ export const POST = async (request: NextRequest) => {
     ) {
       return NextResponse.json(
         {
-          error:
-            "Missing required fields (patient_id, ordering_doctor_id, modality, body_part)",
+          error: "Missing required fields (patient_id, ordering_doctor_id, modality, body_part)",;
         },
         { status: 400 }
       );

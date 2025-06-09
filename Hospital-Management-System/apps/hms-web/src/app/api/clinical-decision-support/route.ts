@@ -1,7 +1,8 @@
-
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+
+
 import { authService } from '@/lib/auth/auth-service';
+import { prisma } from '@/lib/prisma';
 
 // AI/ML Clinical Decision Support Engine
 class ClinicalDecisionSupport {
@@ -18,23 +19,23 @@ class ClinicalDecisionSupport {
     'aspirin': ['ibuprofen', 'naproxen', 'diclofenac']
   };
 
-  static async analyzePrescription(patientId: string, medications: any[]) {
+  static async analyzePrescription(patientId: string, medications: unknown[]) {
     // Get patient data including allergies, current medications, lab results
     const patient = await prisma.patient.findUnique({
       where: { id: patientId },
       include: {
-        allergies: true,
+        allergies: true;
         prescriptions: {
           where: { status: 'ACTIVE' },
           include: { items: true }
         },
         labResults: {
           orderBy: { resultDate: 'desc' },
-          take: 10
+          take: 10;
         },
         vitals: {
           orderBy: { recordedAt: 'desc' },
-          take: 5
+          take: 5;
         }
       }
     });
@@ -54,10 +55,10 @@ class ClinicalDecisionSupport {
       for (const med2 of allMeds) {
         if (med1 !== med2 && this.drugInteractionMatrix[med1.toLowerCase()]?.includes(med2.toLowerCase())) {
           alerts.push({
-            type: 'DRUG_INTERACTION',
-            severity: 'HIGH',
+            type: 'DRUG_INTERACTION';
+            severity: 'HIGH';
             message: `Potential interaction between ${med1} and ${med2}`,
-            recommendation: 'Monitor patient closely or consider alternative medication'
+            recommendation: 'Monitor patient closely or consider alternative medication';
           });
         }
       }
@@ -68,10 +69,10 @@ class ClinicalDecisionSupport {
       for (const medication of medications) {
         if (this.allergyAlerts[allergy.allergen.toLowerCase()]?.includes(medication.name.toLowerCase())) {
           alerts.push({
-            type: 'ALLERGY_ALERT',
-            severity: 'CRITICAL',
+            type: 'ALLERGY_ALERT';
+            severity: 'CRITICAL';
             message: `Patient is allergic to ${allergy.allergen}. ${medication.name} may cause allergic reaction`,
-            recommendation: 'Do not prescribe. Find alternative medication'
+            recommendation: 'Do not prescribe. Find alternative medication';
           });
         }
       }
@@ -92,24 +93,24 @@ class ClinicalDecisionSupport {
     return {
       alerts,
       recommendations,
-      riskScore: this.calculateRiskScore(alerts),
-      confidence: 0.85 // ML model confidence
+      riskScore: this.calculateRiskScore(alerts);
+      confidence: 0.85 // ML model confidence;
     };
   }
 
-  static async analyzeDosage(patient: any, medications: any[]) {
+  static async analyzeDosage(patient: unknown, medications: unknown[]) {
     const recommendations = [];
-    
+
     // Age-based dosage adjustments
     const age = new Date().getFullYear() - new Date(patient.dateOfBirth).getFullYear();
-    
+
     if (age > 65) {
       for (const med of medications) {
         if (['digoxin', 'warfarin', 'metformin'].includes(med.name.toLowerCase())) {
           recommendations.push({
-            type: 'DOSAGE_ADJUSTMENT',
+            type: 'DOSAGE_ADJUSTMENT';
             message: `Consider reduced dosage of ${med.name} for elderly patient`,
-            suggestion: 'Start with 50% of standard adult dose'
+            suggestion: 'Start with 50% of standard adult dose';
           });
         }
       }
@@ -121,9 +122,9 @@ class ClinicalDecisionSupport {
       for (const med of medications) {
         if (['metformin', 'digoxin', 'lisinopril'].includes(med.name.toLowerCase())) {
           recommendations.push({
-            type: 'RENAL_ADJUSTMENT',
+            type: 'RENAL_ADJUSTMENT';
             message: `Adjust ${med.name} dosage for impaired kidney function (Cr: ${latestCreatinine.value})`,
-            suggestion: 'Consider dose reduction or alternative medication'
+            suggestion: 'Consider dose reduction or alternative medication';
           });
         }
       }
@@ -132,38 +133,38 @@ class ClinicalDecisionSupport {
     return recommendations;
   }
 
-  static async analyzeLabResults(labResults: any[], medications: any[]) {
+  static async analyzeLabResults(labResults: unknown[], medications: unknown[]) {
     const alerts = [];
 
     for (const result of labResults) {
       // High potassium alert
       if (result.testName === 'Potassium' && result.value > 5.0) {
-        const potassiumSparing = medications.filter(m => 
+        const potassiumSparing = medications.filter(m =>
           ['lisinopril', 'spironolactone', 'amiloride'].includes(m.name.toLowerCase())
         );
-        
+
         if (potassiumSparing.length > 0) {
           alerts.push({
-            type: 'LAB_CONTRAINDICATION',
-            severity: 'HIGH',
+            type: 'LAB_CONTRAINDICATION';
+            severity: 'HIGH';
             message: `High potassium level (${result.value}) with potassium-sparing medications`,
-            recommendation: 'Monitor potassium closely, consider alternative ACE inhibitor'
+            recommendation: 'Monitor potassium closely, consider alternative ACE inhibitor';
           });
         }
       }
 
       // Low blood sugar with diabetes medications
       if (result.testName === 'Glucose' && result.value < 70) {
-        const diabetesMeds = medications.filter(m => 
+        const diabetesMeds = medications.filter(m =>
           ['metformin', 'insulin', 'glipizide'].includes(m.name.toLowerCase())
         );
-        
+
         if (diabetesMeds.length > 0) {
           alerts.push({
-            type: 'HYPOGLYCEMIA_RISK',
-            severity: 'HIGH',
+            type: 'HYPOGLYCEMIA_RISK';
+            severity: 'HIGH';
             message: `Low glucose (${result.value}) with diabetes medications`,
-            recommendation: 'Adjust diabetes medication dosage, monitor blood sugar'
+            recommendation: 'Adjust diabetes medication dosage, monitor blood sugar';
           });
         }
       }
@@ -172,32 +173,32 @@ class ClinicalDecisionSupport {
     return alerts;
   }
 
-  static async generateDiagnosticSuggestions(patient: any) {
+  static async generateDiagnosticSuggestions(patient: unknown) {
     const suggestions = [];
-    
+
     // Analyze vital signs patterns
-    if (patient.vitals && patient.vitals.length > 0) {
+    if (patient?.vitals && patient.vitals.length > 0) {
       const recentVitals = patient.vitals[0];
-      
+
       // Hypertension detection
       if (recentVitals.systolicBP > 140 || recentVitals.diastolicBP > 90) {
         suggestions.push({
-          type: 'DIAGNOSTIC_SUGGESTION',
-          condition: 'Hypertension',
-          confidence: 0.8,
+          type: 'DIAGNOSTIC_SUGGESTION';
+          condition: 'Hypertension';
+          confidence: 0.8;
           recommendation: 'Consider 24-hour BP monitoring, echocardiogram, and fundoscopy',
-          tests: ['24-hour BP monitoring', 'ECG', 'Echocardiogram', 'Fundoscopy']
+          tests: ['24-hour BP monitoring', 'ECG', 'Echocardiogram', 'Fundoscopy'];
         });
       }
 
       // Fever with specific patterns
       if (recentVitals.temperature > 101) {
         suggestions.push({
-          type: 'DIAGNOSTIC_SUGGESTION',
-          condition: 'Infectious process',
-          confidence: 0.7,
+          type: 'DIAGNOSTIC_SUGGESTION';
+          condition: 'Infectious process';
+          confidence: 0.7;
           recommendation: 'Consider blood cultures, CBC with differential, and imaging if indicated',
-          tests: ['Blood cultures', 'CBC with differential', 'CRP', 'Procalcitonin']
+          tests: ['Blood cultures', 'CBC with differential', 'CRP', 'Procalcitonin'];
         });
       }
     }
@@ -206,21 +207,21 @@ class ClinicalDecisionSupport {
     if (patient.labResults) {
       const hemoglobin = patient.labResults.find(r => r.testName === 'Hemoglobin');
       const mcv = patient.labResults.find(r => r.testName === 'MCV');
-      
+
       if (hemoglobin && hemoglobin.value < 10) {
         let anemiaType = 'Unknown';
-        if (mcv) {
+        if (mcv != null) {
           if (mcv.value < 80) anemiaType = 'Microcytic (Iron deficiency, Thalassemia)';
           else if (mcv.value > 100) anemiaType = 'Macrocytic (B12/Folate deficiency)';
           else anemiaType = 'Normocytic (Chronic disease, Hemolysis)';
         }
-        
+
         suggestions.push({
-          type: 'DIAGNOSTIC_SUGGESTION',
+          type: 'DIAGNOSTIC_SUGGESTION';
           condition: `Anemia - ${anemiaType}`,
-          confidence: 0.9,
-          recommendation: 'Investigate underlying cause of anemia',
-          tests: ['Iron studies', 'B12', 'Folate', 'Reticulocyte count', 'Peripheral smear']
+          confidence: 0.9;
+          recommendation: 'Investigate underlying cause of anemia';
+          tests: ['Iron studies', 'B12', 'Folate', 'Reticulocyte count', 'Peripheral smear'];
         });
       }
     }
@@ -228,7 +229,7 @@ class ClinicalDecisionSupport {
     return suggestions;
   }
 
-  static calculateRiskScore(alerts: any[]) {
+  static calculateRiskScore(alerts: unknown[]) {
     let score = 0;
     for (const alert of alerts) {
       switch (alert.severity) {
@@ -243,11 +244,11 @@ class ClinicalDecisionSupport {
 }
 
 // GET /api/clinical-decision-support/analyze
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const patientId = searchParams.get('patientId');
-    
+
     if (!patientId) {
       return NextResponse.json({ error: 'Patient ID required' }, { status: 400 });
     }
@@ -259,25 +260,25 @@ export const GET = async (request: NextRequest) => {
 
     // Get patient's active prescriptions for analysis
     const prescriptions = await prisma.prescription.findMany({
-      where: { 
+      where: {
         patientId,
-        status: 'ACTIVE'
+        status: 'ACTIVE';
       },
       include: { items: true }
     });
 
     const medications = prescriptions.flatMap(p => p.items.map(item => ({
-      name: item.medicationName,
-      dosage: item.dosage,
-      frequency: item.frequency
+      name: item.medicationName;
+      dosage: item.dosage;
+      frequency: item.frequency;
     })));
 
     const analysis = await ClinicalDecisionSupport.analyzePrescription(patientId, medications);
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       patientId,
       analysis,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString();
     });
 
   } catch (error) {
@@ -287,10 +288,10 @@ export const GET = async (request: NextRequest) => {
 };
 
 // POST /api/clinical-decision-support/prescription-check
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     const { patientId, medications } = await request.json();
-    
+
     const { user } = await authService.verifyToken(request);
     if (!user || !['Doctor', 'Pharmacist'].includes(user.role)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
@@ -301,14 +302,14 @@ export const POST = async (request: NextRequest) => {
     // Log the clinical decision support usage
     await prisma.auditLog.create({
       data: {
-        action: 'CLINICAL_DECISION_SUPPORT',
-        userId: user.id,
-        resourceType: 'PRESCRIPTION',
-        resourceId: patientId,
+        action: 'CLINICAL_DECISION_SUPPORT';
+        userId: user.id;
+        resourceType: 'PRESCRIPTION';
+        resourceId: patientId;
         details: {
-          medications: medications.map(m => m.name),
-          alertCount: analysis.alerts.length,
-          riskScore: analysis.riskScore
+          medications: medications.map(m => m.name);
+          alertCount: analysis.alerts.length;
+          riskScore: analysis.riskScore;
         }
       }
     });

@@ -1,9 +1,9 @@
+import React, { useState, useEffect } from "react"; // Added useState, useEffect
+import {
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react"; // Added useState, useEffect
-import {
   Table,
   TableBody,
   TableCell,
@@ -18,11 +18,11 @@ import { useToast } from "@/hooks/use-toast"; // Added useToast
 // Define Patient interface (assuming structure based on usage)
 interface Patient {
   id: string; // Changed to string based on usage in handlers
-  name: string,
-  tokenNumber: number,
+  name: string;
+  tokenNumber: number;
   checkInTime: string; // Keep as string, format on display
   waitingTime: number; // in minutes
-  status: "waiting" | "in-progress" | "completed" | "cancelled",
+  status: "waiting" | "in-progress" | "completed" | "cancelled";
   doctorName: string; // Assuming this comes from API
 }
 
@@ -104,7 +104,7 @@ const getStatusBadge = (status: Patient["status"]) => {
   }
 };
 
-export default const OPDPatientQueue = (_props: OPDPatientQueueProperties) {
+export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
   const { toast } = useToast(); // Initialize toast
 
   // State variables
@@ -192,13 +192,13 @@ export default const OPDPatientQueue = (_props: OPDPatientQueueProperties) {
   };
 
   // Render logic
-  if (loading) { // Use combined loading state
+  if (loading != null) { // Use combined loading state
     return (
       <div className="flex justify-center p-4">Loading patient queue...</div>;
     );
   }
 
-  if (error) {
+  if (error != null) {
     return <div className="text-red-500 p-4">Error loading queue: {error}</div>;
   }
 
@@ -239,8 +239,8 @@ export default const OPDPatientQueue = (_props: OPDPatientQueueProperties) {
               <TableCell>{patient.name}</TableCell>
               <TableCell>
                 {new Date(patient.checkInTime).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
+                  hour: "2-digit";
+                  minute: "2-digit";
                 })}
               </TableCell>
               <TableCell>{formatWaitingTime(patient.waitingTime)}</TableCell>

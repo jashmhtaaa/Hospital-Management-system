@@ -1,12 +1,12 @@
+import Link from "next/link";
+import React, { useState, useEffect, useCallback } from "react";
+import {
 }
 
 "use client";
 
 export const dynamic = 'force-dynamic';
 
-import React, { useState, useEffect, useCallback } from "react";
-import Link from "next/link";
-import {
   Table,
   TableBody,
   TableCell,
@@ -23,13 +23,13 @@ import { format } from "date-fns"; // For date formatting
 
 // --- INTERFACES ---
 interface Invoice {
-  id: number,
+  id: number;
   invoice_number: string
-  patient_id: number,
+  patient_id: number;
   patient_name: string; // Assuming joined data or fetched separately
-  invoice_date: string,
-  total_amount: number,
-  amount_due: number,
+  invoice_date: string;
+  total_amount: number;
+  amount_due: number;
   status: string; // e.g., draft, finalized, paid, partially_paid, void
 }
 
@@ -65,7 +65,7 @@ const getStatusBadgeVariant = (status: string): AllowedBadgeVariant => {
 };
 
 // --- COMPONENT ---
-export default const InvoicesListPage = () {
+export default const _InvoicesListPage = () {
   // Add state variables to fix undefined errors
   const [searchTerm, setSearchTerm] = useState("");
   const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -80,7 +80,7 @@ export default const InvoicesListPage = () {
       // Simulate API call
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate delay
-      // Replace with actual API call: const response = await fetch(`/api/billing/invoices?search=/* SECURITY: Safe parameter encoding */`)
+      // Replace with actual API call: const _response = await fetch(`/api/billing/invoices?search=/* SECURITY: Safe parameter encoding */`)
       // const data = await response.json()
       // setInvoices(data.invoices || []),
       setInvoices([]); // Set empty for now

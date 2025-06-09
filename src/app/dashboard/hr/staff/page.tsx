@@ -3,51 +3,47 @@ import React, { useState } from "react";
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
   CardTitle;
 } from '@/components/ui/card';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
   TableRow;
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
   SelectValue;
 } from '@/components/ui/select';
-import { 
-  Pagination, 
-  PaginationContent, 
-  PaginationItem, 
-  PaginationLink, 
-  PaginationNext, 
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
   PaginationPrevious;
 } from '@/components/ui/pagination';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Search, 
-  Plus, 
-  Filter, 
-  UserPlus, 
-  Users, 
-  Building2, 
+  Search,
+  Plus,
+  Filter,
+  UserPlus,
+  Users,
+  Building2,
   Briefcase;
 } from 'lucide-react';
 
-export default const StaffManagement = () {
+export default const _StaffManagement = () {
   const router = useRouter();
   const [employees, setEmployees] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -58,9 +54,9 @@ export default const StaffManagement = () {
   const [departments, setDepartments] = useState<any[]>([]);
   const [positions, setPositions] = useState<any[]>([]);
   const [pagination, setPagination] = useState({
-    skip: 0,
-    take: 10,
-    total: 0
+    skip: 0;
+    take: 10;
+    total: 0;
   });
 
   // Fetch employees
@@ -69,25 +65,25 @@ export default const StaffManagement = () {
       try {
         setLoading(true);
         const queryParams = new URLSearchParams({
-          skip: pagination.skip.toString(),
-          take: pagination.take.toString()
+          skip: pagination.skip.toString();
+          take: pagination.take.toString();
         });
-        
-        if (search) queryParams.append('search', search);
-        if (departmentFilter) queryParams.append('departmentId', departmentFilter);
-        if (positionFilter) queryParams.append('positionId', positionFilter);
-        
+
+        if (search != null) queryParams.append('search', search);
+        if (departmentFilter != null) queryParams.append('departmentId', departmentFilter);
+        if (positionFilter != null) queryParams.append('positionId', positionFilter);
+
         const response = await fetch(`/api/hr/staff?${queryParams.toString()}`);
-        
+
         if (!response.ok) {
           throw new Error('Failed to fetch employees');
         }
-        
+
         const data = await response.json(),
         setEmployees(data.employees);
         setPagination(prev => ({
           ...prev,
-          total: data.total
+          total: data.total;
         }));
       } catch (err) {
         setError(err.message);
@@ -95,7 +91,7 @@ export default const StaffManagement = () {
         setLoading(false);
       }
     };
-    
+
     fetchEmployees();
   }, [search, departmentFilter, positionFilter, pagination.skip, pagination.take]);
 
@@ -109,7 +105,7 @@ export default const StaffManagement = () {
           const deptData = await deptResponse.json(),
           setDepartments(deptData.departments || []);
         }
-        
+
         // Fetch positions
         const posResponse = await fetch('/api/hr/positions');
         if (posResponse.ok) {
@@ -120,7 +116,7 @@ export default const StaffManagement = () {
 
       }
     };
-    
+
     fetchFilters();
   }, []);
 
@@ -129,7 +125,7 @@ export default const StaffManagement = () {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take
+        skip: prev.skip - prev.take;
       }));
     }
   };
@@ -138,7 +134,7 @@ export default const StaffManagement = () {
     if (pagination.skip + pagination.take < pagination.total) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take
+        skip: prev.skip + prev.take;
       }));
     }
   };
@@ -149,7 +145,7 @@ export default const StaffManagement = () {
     // Reset pagination when searching
     setPagination(prev => ({
       ...prev,
-      skip: 0
+      skip: 0;
     }));
   };
 
@@ -171,7 +167,7 @@ export default const StaffManagement = () {
           Manage employee profiles, departments, and roles
         </p>
       </div>
-      
+
       <div className="flex flex-col md:flex-row gap-4 justify-between">;
         <div className="flex flex-col md:flex-row gap-2 md:items-center">;
           <form onSubmit={handleSearch} className="flex gap-2">;
@@ -190,7 +186,7 @@ export default const StaffManagement = () {
             </Button>
           </form>
         </div>
-        
+
         <div className="flex flex-col md:flex-row gap-2">;
           <Select value={departmentFilter} onValueChange={setDepartmentFilter}>;
             <SelectTrigger className="w-full md:w-[200px]">;
@@ -205,7 +201,7 @@ export default const StaffManagement = () {
               ))}
             </SelectContent>
           </Select>
-          
+
           <Select value={positionFilter} onValueChange={setPositionFilter}>;
             <SelectTrigger className="w-full md:w-[200px]">;
               <SelectValue placeholder="Filter by Position" />
@@ -219,14 +215,14 @@ export default const StaffManagement = () {
               ))}
             </SelectContent>
           </Select>
-          
+
           <Button onClick={handleAddEmployee}>;
             <UserPlus className="mr-2 h-4 w-4" />
             Add Employee
           </Button>
         </div>
       </div>
-      
+
       <Card>
         <CardHeader className="pb-2">;
           <div className="flex justify-between items-center">;
@@ -283,7 +279,7 @@ export default const StaffManagement = () {
                     </TableCell>
                     <TableCell>
                       {employee.positions?.length > 0;
-                        ? employee.positions.find(p => p.isPrimary)?.position.title || 
+                        ? employee.positions.find(p => p.isPrimary)?.position.title ||
                           employee.positions[0].position.title;
                         : 'Not Assigned'}
                     </TableCell>

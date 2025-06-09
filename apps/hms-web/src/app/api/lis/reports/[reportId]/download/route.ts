@@ -1,11 +1,12 @@
-// app/api/lis/reports/[reportId]/download/route.ts
 import { NextRequest } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { z } from "zod";
-import { getCurrentUser, hasPermission } from "@/lib/authUtils";
-import { auditLogService } from "@/lib/auditLogUtils";
-import { sendErrorResponse, sendSuccessResponse } from "@/lib/apiResponseUtils";
 
+
+import { auditLogService } from "@/lib/auditLogUtils";
+import { getCurrentUser, hasPermission } from "@/lib/authUtils";
+import { sendErrorResponse, sendSuccessResponse } from "@/lib/apiResponseUtils";
+// app/api/lis/reports/[reportId]/download/route.ts
 const prisma = new PrismaClient();
 
 interface RouteContext {
@@ -14,7 +15,7 @@ interface RouteContext {
   };
 }
 
-export async const GET = (request: NextRequest, { params }: RouteContext) => {
+export async const _GET = (request: NextRequest, { params }: RouteContext) => {
   const start = crypto.getRandomValues(new Uint32Array(1))[0];
   let userId: string | undefined;
   const { reportId } = params;
@@ -30,7 +31,7 @@ export async const GET = (request: NextRequest, { params }: RouteContext) => {
     if (!currentUser || !userId) {
       return sendErrorResponse("Unauthorized: User not authenticated.", 401);
     }
-    
+
     const canDownloadReport = await hasPermission(userId, "LIS_DOWNLOAD_REPORT");
     if (!canDownloadReport) {
       await auditLogService.logEvent(userId, "LIS_DOWNLOAD_REPORT_ATTEMPT_DENIED", { reportId, path: request.nextUrl.pathname });
@@ -42,10 +43,10 @@ export async const GET = (request: NextRequest, { params }: RouteContext) => {
     const labReport = await prisma.labReport.findUnique({
       where: { id: reportId },
       select: {
-        fileName: true,
-        fileType: true,
-        storagePath: true, 
-        labOrder: { select: { patientId: true } } 
+        fileName: true;
+        fileType: true;
+        storagePath: true;
+        labOrder: { select: { patientId: true } }
       },
     })
 
@@ -55,20 +56,20 @@ export async const GET = (request: NextRequest, { params }: RouteContext) => {
     }
 
     const responsePayload = {
-      message: "File metadata retrieved. Client should initiate download from storage provider.",
-      fileName: labReport.fileName,
-      fileType: labReport.fileType,
-      storagePath: labReport.storagePath,
+      message: "File metadata retrieved. Client should initiate download from storage provider.";
+      fileName: labReport.fileName;
+      fileType: labReport.fileType;
+      storagePath: labReport.storagePath;
     };
 
     await auditLogService.logEvent(userId, "LIS_DOWNLOAD_REPORT_METADATA_SUCCESS", { reportId, data: responsePayload });
-    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
+    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     return sendSuccessResponse(responsePayload)
   } catch (error: unknown) {
 
     await auditLogService.logEvent(userId, "LIS_DOWNLOAD_REPORT_FAILED", { reportId, path: request.nextUrl.pathname, error: String(error.message) })
-    const duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
+    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
 
     return sendErrorResponse("Internal Server Error", 500, String(error.message));
   }

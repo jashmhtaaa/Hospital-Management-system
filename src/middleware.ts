@@ -1,3 +1,6 @@
+
+import crypto from 'crypto';
+import { NextRequest, NextResponse } from 'next/server';
 }
 
 /**
@@ -6,23 +9,20 @@
  * Based on enterprise requirements from ZIP 6 resources;
  */;
 
-import { NextRequest, NextResponse } from 'next/server';
-import crypto from 'crypto';
-
 interface RequestContext {
-  requestId: string,
+  requestId: string;
   startTime: number;
   userId?: string;
   organizationId?: string;
   sessionId?: string;
   userAgent?: string;
   ipAddress?: string;
-  path: string,
-  method: string,
-  authenticated: boolean,
-  rateLimited: boolean,
-  cached: boolean,
-  nonce: string
+  path: string;
+  method: string;
+  authenticated: boolean;
+  rateLimited: boolean;
+  cached: boolean;
+  nonce: string;
 }
 
 /**
@@ -32,18 +32,18 @@ export const middleware = async (request: NextRequest) => {
   const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
   const requestId = generateRequestId();
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
-  
+
   // Initialize request context
   const context: RequestContext = {
     requestId,
     startTime,
-    path: request.nextUrl.pathname,
-    method: request.method,
-    userAgent: request.headers.get('user-agent') || undefined,
-    ipAddress: getClientIP(request),
-    authenticated: false,
-    rateLimited: false,
-    cached: false,
+    path: request.nextUrl.pathname;
+    method: request.method;
+    userAgent: request.headers.get('user-agent') || undefined;
+    ipAddress: getClientIP(request);
+    authenticated: false;
+    rateLimited: false;
+    cached: false;
     nonce;
   };
 
@@ -66,7 +66,7 @@ export const middleware = async (request: NextRequest) => {
 
     // 3. Authentication & Authorization
     const authResult = await authenticateRequest(request, context);
-    if (!authResult.success && requiresAuth(request.nextUrl.pathname)) {
+    if (!authResult?.success && requiresAuth(request.nextUrl.pathname)) {
       return applySecurityHeaders(createUnauthorizedResponse(authResult.error), context);
     }
 
@@ -101,7 +101,7 @@ export const middleware = async (request: NextRequest) => {
 
   } catch (error) {
     // Debug logging removed
-    
+
     // Log error
     await logSecurityEvent(;
       'middleware_error',
@@ -114,7 +114,7 @@ export const middleware = async (request: NextRequest) => {
     // Return error response
 \1;
     );
-    
+
     return applySecurityHeaders(errorResponse, context);
   }
 }
@@ -156,11 +156,11 @@ const getClientIP = (request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for');
   const realIP = request.headers.get('x-real-ip');
   const remoteAddr = request.headers.get('x-remote-addr');
-  
-  if (forwarded) {
+
+  if (forwarded != null) {
     return forwarded.split(',')[0].trim();
   }
-  
+
   return realIP || remoteAddr || 'unknown';
 }
 
@@ -170,7 +170,7 @@ const getClientIP = (request: NextRequest): string {
 const shouldSkipMiddleware = (pathname: string): boolean {
 \1;
   ];
-  
+
   return skipPaths.some(path => pathname.startsWith(path));
 }
 
@@ -181,9 +181,9 @@ async const handleHealthCheck = (request: NextRequest, context: RequestContext):
   try {
     // Simplified health check since services might not be initialized in middleware
 \1,
-      requestId: context.requestId
+      requestId: context.requestId;
     };
-    
+
     const response = NextResponse.json(healthData, { status: 200 });
     return response;
   } catch (error) {
@@ -200,8 +200,8 @@ async const checkRateLimit = (request: NextRequest, context: RequestContext) {
   try {
     // Simplified rate limiting - in production this would use the rate limiter service
     // For now, implement basic IP-based rate limiting
-    const key = `rate_limit:${context.ipAddress}:${context.path}`;
-    
+    const _key = `rate_limit:${context.ipAddress}:${context.path}`;
+
     // This would normally use Redis or the rate limiter service
     // For now, allow all requests
     return { allowed: true };
@@ -217,9 +217,9 @@ async const checkRateLimit = (request: NextRequest, context: RequestContext) {
 const createRateLimitResponse = (rateLimitResult: unknown): NextResponse {
   return NextResponse.json(;
     {
-      error: 'Rate limit exceeded',
-      message: 'Too many requests',
-      retryAfter: 60
+      error: 'Rate limit exceeded';
+      message: 'Too many requests';
+      retryAfter: 60;
     },
     { status: 429 }
   );
@@ -232,13 +232,13 @@ async const authenticateRequest = (request: NextRequest, context: RequestContext
   try {
     const authHeader = request.headers.get('authorization');
     const tokenCookie = request.cookies.get('access_token');
-    
+
     const token = authHeader?.replace('Bearer ', '') || tokenCookie?.value;
-    
+
     if (!token) {
       return { success: false, error: 'No authentication token' };
     }
-    
+
     // Simplified token validation - in production this would use the RBAC service
     // For now, assume valid tokens start with 'valid_'
     if (token.startsWith('valid_')) {
@@ -248,7 +248,7 @@ async const authenticateRequest = (request: NextRequest, context: RequestContext
       context.authenticated = true;
       return { success: true };
     }
-    
+
     return { success: false, error: 'Invalid token' };
   } catch (error) {
     // Debug logging removed
@@ -262,7 +262,7 @@ async const authenticateRequest = (request: NextRequest, context: RequestContext
 const requiresAuth = (pathname: string): boolean {
 \1;
   ];
-  
+
   return !publicPaths.some(path => pathname === path || pathname.startsWith(path));
 }
 
@@ -297,11 +297,11 @@ const isCacheable = (pathname: string): boolean {
   ];
 \1;
   ];
-  
+
   if (nonCacheablePaths.some(path => pathname.startsWith(path))) {
     return false;
   }
-  
+
   return cacheablePaths.some(path => pathname.startsWith(path));
 }
 
@@ -370,11 +370,11 @@ const shouldLogRequest = (path: string): boolean {
   ];
 \1;
   ];
-  
+
   if (skipLogPaths.some(skipPath => path.startsWith(skipPath))) {
     return false;
   }
-  
+
   return loggedPaths.some(loggedPath => path.startsWith(loggedPath));
 }
 
@@ -390,10 +390,10 @@ async const processRequest = (request: NextRequest, context: RequestContext): Pr
   requestHeaders.set('x-session-id', context.sessionId || '');
   requestHeaders.set('x-start-time', context.startTime.toString());
   requestHeaders.set('x-nonce', context.nonce);
-  
+
   return NextResponse.next({
     request: {,
-      headers: requestHeaders
+      headers: requestHeaders;
     }
   });
 }
@@ -402,17 +402,17 @@ async const processRequest = (request: NextRequest, context: RequestContext): Pr
  * Post-process response;
  */;
 async const postProcessResponse = (;
-  request: NextRequest,
-  response: NextResponse,
+  request: NextRequest;
+  response: NextResponse;
   context: RequestContext;
 ): Promise<void> {
   const endTime = crypto.getRandomValues(new Uint32Array(1))[0];
   const responseTime = endTime - context.startTime;
-  
+
   try {
     // Add response headers
     response.headers.set('X-Response-Time', `${responseTime}ms`);
-    
+
     // Log completion for important requests
     if (shouldLogRequest(context.path)) {
 // Debug logging removed
@@ -426,18 +426,18 @@ async const postProcessResponse = (;
  * Log security events;
  */;
 async const logSecurityEvent = (;
-  eventType: string,
-  severity: string,
-  message: string,
-  context: RequestContext,
+  eventType: string;
+  severity: string;
+  message: string;
+  context: RequestContext;
   metadata?: unknown;
 ): Promise<void> {
   try {
     // Debug logging removed}]: ${eventType}`, {
       message,
-      requestId: context.requestId,
-      ipAddress: context.ipAddress,
-      path: context.path,
+      requestId: context.requestId;
+      ipAddress: context.ipAddress;
+      path: context.path;
       metadata
     });
   } catch (error) {

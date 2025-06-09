@@ -1,32 +1,33 @@
-}
 import React from 'react';
+
+
+import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-
+}
 interface Theatre {
-  id: string,
-  name: string,
-  type: string,
+  id: string;
+  name: string;
+  type: string;
   status: 'available' | 'occupied' | 'maintenance';
   currentProcedure?: string;
   nextAvailable?: string;
 }
 
 interface OTTheatreListProps {
-  theatres: Theatre[]
+  theatres: Theatre[];
 }
 
 /**
  * Operation Theatre list component;
  */
-export const OTTheatreList = ({ theatres }: OTTheatreListProps) => {
+export const _OTTheatreList = ({ theatres }: OTTheatreListProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'available': return <Badge variant="success">Available</Badge>;
       case 'occupied': return <Badge variant="danger">Occupied</Badge>;
       case 'maintenance': return <Badge variant="warning">Maintenance</Badge>;
-      default: return <Badge>Unknown</Badge>
+      default: return <Badge>Unknown</Badge>;
     }
   };
 

@@ -1,16 +1,17 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Select } from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 /**
  * Emergency Room triage form component;
  */
-export const ERTriageForm = () => {
+export const _ERTriageForm = () => {
   return (
     <Card>
       <CardHeader>
@@ -23,7 +24,7 @@ export const ERTriageForm = () => {
               <Label htmlFor="chiefComplaint">Chief Complaint</Label>;
               <Input id="chiefComplaint" placeholder="Patient's main complaint" />
             </div>
-            
+
             <div className="space-y-2">;
               <Label htmlFor="triageLevel">Triage Level</Label>;
               <Select>id="triageLevel"
@@ -37,7 +38,7 @@ export const ERTriageForm = () => {
               </Select>
             </div>
           </div>
-          
+
           <div className="space-y-2">;
             <Label htmlFor="vitalSigns">Vital Signs</Label>;
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">;
@@ -67,12 +68,12 @@ export const ERTriageForm = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="space-y-2">;
             <Label htmlFor="symptoms">Symptoms & Observations</Label>;
             <Textarea id="symptoms" placeholder="Detailed description of symptoms and observations" />
           </div>
-          
+
           <div className="space-y-2">;
             <Label>Critical Indicators</Label>
             <div className="grid grid-cols-1 gap-2 md:grid-cols-2">;
@@ -102,7 +103,7 @@ export const ERTriageForm = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="flex justify-end space-x-2">;
             <Button variant="outline">Reset</Button>;
             <Button>Submit Triage</Button>

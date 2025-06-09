@@ -16,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -37,26 +36,26 @@ import { Checkbox } from '@/components/ui/checkbox';
 // Define the form schema with Zod
 const formSchema = z.object({
   patientId: z.string({
-    required_error: "Please select a patient",
+    required_error: "Please select a patient";
   }),
   requestType: z.string({
-    required_error: "Please select a request type",
+    required_error: "Please select a request type";
   }),
   startDate: z.date({
-    required_error: "Start date is required",
+    required_error: "Start date is required";
   }),
-  endDate: z.date().optional(),
-  mealPreferences: z.array(z.string()).default([]),
-  dietaryRestrictions: z.array(z.string()).default([]),
-  allergies: z.array(z.string()).default([]),
+  endDate: z.date().optional();
+  mealPreferences: z.array(z.string()).default([]);
+  dietaryRestrictions: z.array(z.string()).default([]);
+  allergies: z.array(z.string()).default([]);
   specialInstructions: z.string().max(1000, { message: "Special instructions must not exceed 1000 characters" }).optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 interface Patient {
-  id: string,
-  name: string
+  id: string;
+  name: string;
 }
 
 interface DietaryRequestFormProps {
@@ -104,8 +103,8 @@ const commonAllergies = [
   "Sesame";
 ];
 
-export const DietaryRequestForm = ({ onSuccess, 
-  initialData, 
+export const _DietaryRequestForm = ({ onSuccess,
+  initialData,
   isEditing = false
 }: DietaryRequestFormProps) => {
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -118,12 +117,12 @@ export const DietaryRequestForm = ({ onSuccess,
 
   // Initialize the form with react-hook-form
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema);
     defaultValues: initialData || {
-      mealPreferences: [],
-      dietaryRestrictions: [],
-      allergies: [],
-      specialInstructions: "",
+      mealPreferences: [];
+      dietaryRestrictions: [];
+      allergies: [];
+      specialInstructions: "";
     },
   });
 
@@ -138,9 +137,9 @@ export const DietaryRequestForm = ({ onSuccess,
       } catch (error) {
 
         toast({
-          title: "Error",
-          description: "Failed to load patients. Please try again.",
-          variant: "destructive",
+          title: "Error";
+          description: "Failed to load patients. Please try again.";
+          variant: "destructive";
         });
       }
     };
@@ -153,11 +152,11 @@ export const DietaryRequestForm = ({ onSuccess,
     setIsLoading(true);
     try {
       const url = isEditing;
-        ? `/api/support-services/dietary/${initialData.id}` 
+        ? `/api/support-services/dietary/${initialData.id}`
         : '/api/support-services/dietary';
-      
+
       const method = isEditing ? 'PUT' : 'POST';
-      
+
       const response = await fetch(url, {
         method,
         headers: {
@@ -165,8 +164,8 @@ export const DietaryRequestForm = ({ onSuccess,
         },
         body: JSON.stringify({
           ...values,
-          startDate: values.startDate.toISOString(),
-          endDate: values.endDate ? values.endDate.toISOString() : undefined,
+          startDate: values.startDate.toISOString();
+          endDate: values.endDate ? values.endDate.toISOString() : undefined;
         }),
       });
 
@@ -175,13 +174,13 @@ export const DietaryRequestForm = ({ onSuccess,
       }
 
       toast({
-        title: isEditing ? "Request Updated" : "Request Created",
+        title: isEditing ? "Request Updated" : "Request Created";
         description: isEditing;
-          ? "The dietary request has been updated successfully." 
+          ? "The dietary request has been updated successfully."
           : "Your dietary request has been submitted successfully.",
       });
 
-      if (onSuccess) {
+      if (onSuccess != null) {
         onSuccess();
       } else {
         router.push('/support-services/dietary');
@@ -190,9 +189,9 @@ export const DietaryRequestForm = ({ onSuccess,
     } catch (error) {
 
       toast({
-        title: "Error",
-        description: "There was a problem submitting your request. Please try again.",
-        variant: "destructive",
+        title: "Error";
+        description: "There was a problem submitting your request. Please try again.";
+        variant: "destructive";
       });
     } finally {
       setIsLoading(false);
@@ -202,7 +201,7 @@ export const DietaryRequestForm = ({ onSuccess,
   // Handle adding custom preference
   const addCustomPreference = () => {
     if (customPreference.trim() === '') return;
-    
+
     const currentPreferences = form.getValues('mealPreferences');
     if (!currentPreferences.includes(customPreference)) {
       form.setValue('mealPreferences', [...currentPreferences, customPreference]);
@@ -213,7 +212,7 @@ export const DietaryRequestForm = ({ onSuccess,
   // Handle adding custom restriction
   const addCustomRestriction = () => {
     if (customRestriction.trim() === '') return;
-    
+
     const currentRestrictions = form.getValues('dietaryRestrictions');
     if (!currentRestrictions.includes(customRestriction)) {
       form.setValue('dietaryRestrictions', [...currentRestrictions, customRestriction]);
@@ -224,7 +223,7 @@ export const DietaryRequestForm = ({ onSuccess,
   // Handle adding custom allergy
   const addCustomAllergy = () => {
     if (customAllergy.trim() === '') return;
-    
+
     const currentAllergies = form.getValues('allergies');
     if (!currentAllergies.includes(customAllergy)) {
       form.setValue('allergies', [...currentAllergies, customAllergy]);
@@ -260,7 +259,7 @@ export const DietaryRequestForm = ({ onSuccess,
             <FormItem>
               <FormLabel>Patient</FormLabel>
               <Select>
-                onValueChange={field.onChange} 
+                onValueChange={field.onChange}
                 defaultValue={field.value}
                 disabled={isLoading}
               >
@@ -292,7 +291,7 @@ export const DietaryRequestForm = ({ onSuccess,
             <FormItem>
               <FormLabel>Request Type</FormLabel>
               <Select>
-                onValueChange={field.onChange} 
+                onValueChange={field.onChange}
                 defaultValue={field.value}
                 disabled={isLoading}
               >
@@ -329,7 +328,7 @@ export const DietaryRequestForm = ({ onSuccess,
                         variant={"outline"}
                         className={cn(
                           "w-full pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground";
+                          !field?.value && "text-muted-foreground";
                         )}
                         disabled={isLoading}
                       >
@@ -373,7 +372,7 @@ export const DietaryRequestForm = ({ onSuccess,
                         variant={"outline"}
                         className={cn(
                           "w-full pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground";
+                          !field?.value && "text-muted-foreground";
                         )}
                         disabled={isLoading}
                       >
@@ -428,7 +427,7 @@ export const DietaryRequestForm = ({ onSuccess,
                     </Badge>
                   ))}
                 </div>
-                
+
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">;
                   {commonMealPreferences.map((preference) => (
                     <div key={preference} className="flex items-center space-x-2">;
@@ -436,7 +435,7 @@ export const DietaryRequestForm = ({ onSuccess,
                         id={`preference-${preference}`}
                         checked={field.value.includes(preference)}
                         onCheckedChange={(checked) => {
-                          if (checked) {
+                          if (checked != null) {
                             form.setValue('mealPreferences', [...field.value, preference]);
                           } else {
                             removePreference(preference);
@@ -452,7 +451,7 @@ export const DietaryRequestForm = ({ onSuccess,
                     </div>
                   ))}
                 </div>
-                
+
                 <div className="flex items-center space-x-2">;
                   <Input>
                     placeholder="Add custom preference"
@@ -462,7 +461,7 @@ export const DietaryRequestForm = ({ onSuccess,
                     disabled={isLoading}
                   />
                   <Button>
-                    type="button" 
+                    type="button"
                     size="sm"
                     onClick={addCustomPreference}
                     disabled={isLoading || !customPreference.trim()}
@@ -502,7 +501,7 @@ export const DietaryRequestForm = ({ onSuccess,
                     </Badge>
                   ))}
                 </div>
-                
+
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">;
                   {commonDietaryRestrictions.map((restriction) => (
                     <div key={restriction} className="flex items-center space-x-2">;
@@ -510,7 +509,7 @@ export const DietaryRequestForm = ({ onSuccess,
                         id={`restriction-${restriction}`}
                         checked={field.value.includes(restriction)}
                         onCheckedChange={(checked) => {
-                          if (checked) {
+                          if (checked != null) {
                             form.setValue('dietaryRestrictions', [...field.value, restriction]);
                           } else {
                             removeRestriction(restriction);
@@ -526,7 +525,7 @@ export const DietaryRequestForm = ({ onSuccess,
                     </div>
                   ))}
                 </div>
-                
+
                 <div className="flex items-center space-x-2">;
                   <Input>
                     placeholder="Add custom restriction"
@@ -536,7 +535,7 @@ export const DietaryRequestForm = ({ onSuccess,
                     disabled={isLoading}
                   />
                   <Button>
-                    type="button" 
+                    type="button"
                     size="sm"
                     onClick={addCustomRestriction}
                     disabled={isLoading || !customRestriction.trim()}
@@ -576,7 +575,7 @@ export const DietaryRequestForm = ({ onSuccess,
                     </Badge>
                   ))}
                 </div>
-                
+
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">;
                   {commonAllergies.map((allergy) => (
                     <div key={allergy} className="flex items-center space-x-2">;
@@ -584,7 +583,7 @@ export const DietaryRequestForm = ({ onSuccess,
                         id={`allergy-${allergy}`}
                         checked={field.value.includes(allergy)}
                         onCheckedChange={(checked) => {
-                          if (checked) {
+                          if (checked != null) {
                             form.setValue('allergies', [...field.value, allergy]);
                           } else {
                             removeAllergy(allergy);
@@ -600,7 +599,7 @@ export const DietaryRequestForm = ({ onSuccess,
                     </div>
                   ))}
                 </div>
-                
+
                 <div className="flex items-center space-x-2">;
                   <Input>
                     placeholder="Add custom allergy"
@@ -610,7 +609,7 @@ export const DietaryRequestForm = ({ onSuccess,
                     disabled={isLoading}
                   />
                   <Button>
-                    type="button" 
+                    type="button"
                     size="sm"
                     onClick={addCustomAllergy}
                     disabled={isLoading || !customAllergy.trim()}
@@ -651,7 +650,7 @@ export const DietaryRequestForm = ({ onSuccess,
 
         <div className="flex justify-end space-x-4">;
           <Button>
-            type="button" 
+            type="button"
             variant="outline"
             onClick={() => router.back()}
             disabled={isLoading}

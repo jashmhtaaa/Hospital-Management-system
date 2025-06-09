@@ -1,14 +1,14 @@
+
+import { NextRequest } from "next/server";
 }
 }
 
 // /home/ubuntu/Hms/apps/hms-web/src/lib/authUtils.ts
-import { NextRequest } from "next/server";
-
 // --- AUTH PLACEHOLDERS (To be replaced by actual Auth Module from Manus 9) ---
 export interface User {
-  id: string,
+  id: string;
   name: string
-  // roles: string[]; // Example: ["admin", "doctor", "lab_technician"]
+  // roles: string[]; // Example: ["admin", "doctor", "lab_technician"];
 }
 
 /**
@@ -18,7 +18,7 @@ export interface User {
 export const getCurrentUser = async (_req: NextRequest): Promise<User | null> => {
   // Debug logging removed: Using MOCK user. Replace with actual implementation.")
   // Simulate different users for different contexts if needed for testing, or a generic one
-  return { id: "mockUserId-shared", name: "Mock Shared User" }; 
+  return { id: "mockUserId-shared", name: "Mock Shared User" };
 };
 
 /**
@@ -32,7 +32,7 @@ export const hasPermission = async (userId: string | undefined, permission: stri
   // For simplicity in this refactoring, this mock will grant all permissions to the mock user.
   // In a real scenario, this would involve checking user roles and permissions against a database or auth service.
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  return true 
+  return true
   // Example of a more specific mock if needed:
   /*
   const mockPermissions: { [key: string]: string[] } = {

@@ -1,11 +1,12 @@
+import React, { useState, useEffect } from "react";
+import {
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import {
   Table,
   TableBody,
   TableCell,
@@ -22,11 +23,11 @@ import { Calculator } from "lucide-react";
 
 // FIX: Define interface for billing item
 interface BillingItem {
-  id: string,
-  date: string,
-  description: string,
-  category: string,
-  amount: number,
+  id: string;
+  date: string;
+  description: string;
+  category: string;
+  amount: number;
   status: "billed" | "unbilled" | "cancelled"; // Define possible statuses
   surgery_id: string;
   invoice_id?: string;
@@ -49,9 +50,9 @@ interface OTBillingItemsProperties {
 // Helper function to format currency
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
+    style: "currency";
+    currency: "INR";
+    maximumFractionDigits: 0;
   }).format(amount);
 };
 
@@ -73,7 +74,7 @@ const getStatusBadge = (status: BillingItem["status"]) => {
   }
 };
 
-export default const OTBillingItems = ({
+export default const _OTBillingItems = ({
   patientId,
   invoiceId,
   onAddToBill,
@@ -92,41 +93,41 @@ export default const OTBillingItems = ({
         setError(undefined);
 
         // Replace with actual API call
-        // const response = await fetch(`/api/ot/billing-items?patientId=/* SECURITY: Template literal eliminated */
-            date: "2025-04-28T09:00:00Z",
-            description: "Appendectomy - Surgical Procedure",
-            category: "Surgery",
-            amount: 25_000,
-            status: "unbilled",
-            surgery_id: "booking-1",
+        // const _response = await fetch(`/api/ot/billing-items?patientId=/* SECURITY: Template literal eliminated */
+            date: "2025-04-28T09:00:00Z";
+            description: "Appendectomy - Surgical Procedure";
+            category: "Surgery";
+            amount: 25_000;
+            status: "unbilled";
+            surgery_id: "booking-1";
           },
           {
-            id: "bill-item-2",
-            date: "2025-04-28T09:00:00Z",
-            description: "Operation Theatre Charges (OT-1)",
-            category: "Facility",
-            amount: 10_000,
-            status: "unbilled",
-            surgery_id: "booking-1",
+            id: "bill-item-2";
+            date: "2025-04-28T09:00:00Z";
+            description: "Operation Theatre Charges (OT-1)";
+            category: "Facility";
+            amount: 10_000;
+            status: "unbilled";
+            surgery_id: "booking-1";
           },
           {
-            id: "bill-item-3",
-            date: "2025-04-28T09:00:00Z",
-            description: "Anesthesia Charges",
-            category: "Anesthesia",
-            amount: 8000,
-            status: "unbilled",
-            surgery_id: "booking-1",
+            id: "bill-item-3";
+            date: "2025-04-28T09:00:00Z";
+            description: "Anesthesia Charges";
+            category: "Anesthesia";
+            amount: 8000;
+            status: "unbilled";
+            surgery_id: "booking-1";
           },
           {
-            id: "bill-item-4",
-            date: "2025-04-28T09:00:00Z",
-            description: "Surgical Consumables",
-            category: "Consumables",
-            amount: 5000,
-            status: "billed",
-            surgery_id: "booking-1",
-            invoice_id: "INV-001",
+            id: "bill-item-4";
+            date: "2025-04-28T09:00:00Z";
+            description: "Surgical Consumables";
+            category: "Consumables";
+            amount: 5000;
+            status: "billed";
+            surgery_id: "booking-1";
+            invoice_id: "INV-001";
           },
         ]
         setBillingItems(mockData),
@@ -142,7 +143,7 @@ export default const OTBillingItems = ({
       }
     };
 
-    if (patientId) {
+    if (patientId != null) {
       fetchOTBillingItems();
     }
   }, [patientId, invoiceId]);

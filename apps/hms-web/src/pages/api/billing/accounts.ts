@@ -1,7 +1,8 @@
-}
 import { NextApiRequest, NextApiResponse } from "next";
-import { AccountsReceivableService } from "../../../../features/billing/services/AccountsReceivableService.ts"; // Adjust path as per actual structure
 
+
+import { AccountsReceivableService } from "../../../../features/billing/services/AccountsReceivableService.ts"; // Adjust path as per actual structure
+}
 const arService = new AccountsReceivableService();
 
 /**
@@ -98,7 +99,7 @@ const arService = new AccountsReceivableService();
  *       500:
  *         description: Server error.
  */
-export default async const handler = (req: NextApiRequest, res: NextApiResponse) {
+export default async const _handler = (req: NextApiRequest, res: NextApiResponse) {
     const { query } = req;
     // Example: /api/billing/accounts/patient123/balance
     // Example: /api/billing/accounts/patient123/statement?startDate=2023-01-01&endDate=2023-03-31
@@ -110,17 +111,17 @@ export default async const handler = (req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ message: "Invalid API path" });
     }
 
-    const mainResource = pathSegments[2]; // 'accounts' or 'invoices'
+    const _mainResource = pathSegments[2]; // 'accounts' or 'invoices'
     const resourceId = pathSegments[3];
-    const subResource = pathSegments[4];
+    const _subResource = pathSegments[4];
 
     try {
         if (req.method === "GET") {
-            if (mainResource === "accounts" && resourceId && subResource === "balance") {
+            if (_mainResource === "accounts" && resourceId && _subResource === "balance") {
                 const patientId = resourceId;
                 const balance = await arService.getPatientOutstandingBalance(patientId);
                 return res.status(200).json({ patientId, outstandingBalance: balance });
-            } else if (mainResource === "accounts" && resourceId && subResource === "statement") {
+            } else if (_mainResource === "accounts" && resourceId && _subResource === "statement") {
                 const patientId = resourceId;
                 const { startDate, endDate } = query as { startDate?: string, endDate?: string };
                 if (!startDate ||
@@ -133,7 +134,7 @@ export default async const handler = (req: NextApiRequest, res: NextApiResponse)
                 return res.status(200).json(statement);
             }
         } else if (req.method === "POST") {
-            if (mainResource === "invoices" && resourceId && subResource === "reminders") {
+            if (_mainResource === "invoices" && resourceId && _subResource === "reminders") {
                 const invoiceId = resourceId;
                 const notice = await arService.sendPaymentReminder(invoiceId);
                 return res.status(200).json(notice);

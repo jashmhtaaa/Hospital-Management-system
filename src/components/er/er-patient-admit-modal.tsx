@@ -1,14 +1,15 @@
+import * as z from "zod";
+import React, { useState, useEffect } from "react";
+import {
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Button } from "@/components/ui/button";
 }
 
 // src/components/er/ERPatientAdmitModal.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -16,7 +17,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
   Form,
   FormControl,
   FormField,
@@ -26,7 +26,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -46,9 +45,9 @@ const admitFormSchema = z.object({
   admittingDoctorId: z;
     .string();
     .min(1, { message: "Admitting doctor is required." }),
-  admissionNotes: z.string().optional(),
+  admissionNotes: z.string().optional();
   wardType: z.string().min(1, { message: "Ward type is required." }),
-  bedPreference: z.string().optional(),
+  bedPreference: z.string().optional();
   admissionReason: z;
     .string();
     .min(1, { message: "Admission reason is required." }),
@@ -57,26 +56,26 @@ const admitFormSchema = z.object({
 type AdmitFormValues = z.infer<typeof admitFormSchema>;
 
 interface ERPatientAdmitModalProperties {
-  isOpen: boolean,
+  isOpen: boolean;
   onClose: () => void;
   visitData?: {
-    id: string,
-    patientName: string,
-    chiefComplaint: string
+    id: string;
+    patientName: string;
+    chiefComplaint: string;
   };
   onSuccess?: () => void;
 }
 
 // FIX: Define interface for expected API error response
 interface ApiErrorResponse {
-  error: string
+  error: string;
 }
 
 // FIX: Define interface for expected admission success response
 interface AdmissionSuccessResponse {
   id: string; // Assuming the API returns the new admission ID
   // Add other properties returned by the API on success
-export default const ERPatientAdmitModal = ({
+export default const _ERPatientAdmitModal = ({
   isOpen,
   onClose,
   visitData,
@@ -86,30 +85,30 @@ export default const ERPatientAdmitModal = ({
   const { toast } = useToast(); // FIX: Use the hook
 
   const form = useForm<AdmitFormValues>({
-    resolver: zodResolver(admitFormSchema),
+    resolver: zodResolver(admitFormSchema);
     defaultValues: {
-      visitId: visitData?.id || "",
-      patientName: visitData?.patientName || "",
-      admittingDoctorId: "",
-      admissionNotes: "",
-      wardType: "",
-      bedPreference: "",
-      admissionReason: visitData?.chiefComplaint || "",
+      visitId: visitData?.id || "";
+      patientName: visitData?.patientName || "";
+      admittingDoctorId: "";
+      admissionNotes: "";
+      wardType: "";
+      bedPreference: "";
+      admissionReason: visitData?.chiefComplaint || "";
     },
   });
 
   // Update form when visitData changes
   useEffect(() => {
     // FIX: Changed useState to useEffect
-    if (visitData) {
+    if (visitData != null) {
       form.reset({
-        visitId: visitData.id,
-        patientName: visitData.patientName,
+        visitId: visitData.id;
+        patientName: visitData.patientName;
         admittingDoctorId: "", // Keep doctor selection empty
-        admissionNotes: "",
-        wardType: "",
-        bedPreference: "",
-        admissionReason: visitData.chiefComplaint || "",
+        admissionNotes: "";
+        wardType: "";
+        bedPreference: "";
+        admissionReason: visitData.chiefComplaint || "";
       });
     }
   }, [visitData, form]); // FIX: Added dependencies
@@ -122,16 +121,16 @@ export default const ERPatientAdmitModal = ({
       // Step 1: Create IPD admission
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       const admissionResponse = await fetch("/api/ipd/admissions", {
-        method: "POST",
+        method: "POST";
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          visit_id: data.visitId,
-          admitting_doctor_id: data.admittingDoctorId,
-          ward_type: data.wardType,
-          bed_preference: data.bedPreference || undefined,
-          admission_reason: data.admissionReason,
-          admission_notes: data.admissionNotes || undefined,
-          source: "ER",
+          visit_id: data.visitId;
+          admitting_doctor_id: data.admittingDoctorId;
+          ward_type: data.wardType;
+          bed_preference: data.bedPreference || undefined;
+          admission_reason: data.admissionReason;
+          admission_notes: data.admissionNotes || undefined;
+          source: "ER";
         }),
       })
 
@@ -164,13 +163,13 @@ export default const ERPatientAdmitModal = ({
       // Step 2: Update ER visit status
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       const visitResponse = await fetch(`/api/er/visits/${data.visitId}`, {
-        method: "PUT",
+        method: "PUT";
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          current_status: "Admitted",
-          disposition: "Admitted to IPD",
+          current_status: "Admitted";
+          disposition: "Admitted to IPD";
           // Optionally link admission_id if backend supports it
-          // admission_id: newAdmission?.id
+          // admission_id: newAdmission?.id;
         }),
       })
 
@@ -198,11 +197,11 @@ export default const ERPatientAdmitModal = ({
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
       toast({
-        title: "Patient Admitted",
+        title: "Patient Admitted";
         description: `Admission ${newAdmission?.id || "(ID not returned)"} created. Awaiting bed assignment.`,
       })
 
-      if (onSuccess) {
+      if (onSuccess != null) {
         onSuccess();
       }
       form.reset(),
@@ -211,12 +210,12 @@ export default const ERPatientAdmitModal = ({
       // FIX: Use unknown for catch block error
 
       toast({
-        title: "Admission Failed",
+        title: "Admission Failed";
         description:
           error instanceof Error;
             ? error.message;
             : "An unexpected error occurred.",
-        variant: "destructive",
+        variant: "destructive";
       });
     } finally {
       setIsLoading(false);

@@ -1,37 +1,34 @@
 import React, { useState, useEffect } from 'react';
+import {
 import { useRouter } from 'next/navigation';
-import { 
-  Table, 
-  TableBody, 
-  TableCaption, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
   TableRow;
 } from '../ui/table';
-import { 
-  Pagination, 
-  PaginationContent, 
-  PaginationItem, 
-  PaginationLink, 
-  PaginationNext, 
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
   PaginationPrevious;
 } from '../ui/pagination';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
   CardTitle;
 } from '../ui/card';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
   SelectValue;
 } from '../ui/select';
 import { Badge } from '../ui/badge';
@@ -41,21 +38,21 @@ import { useToast } from '../../hooks/use-toast';
 
 // Define patient status colors
 const statusColors: Record<string, string> = {
-  Active: 'success',
-  Inactive: 'secondary',
-  Deceased: 'destructive',
+  Active: 'success';
+  Inactive: 'secondary';
+  Deceased: 'destructive';
   'On Hold': 'warning';
 };
 
 // Patient interface
 interface Patient {
-  id: string,
-  mrn: string,
-  firstName: string,
-  lastName: string,
-  dateOfBirth: string,
-  gender: string,
-  status: string,
+  id: string;
+  mrn: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  gender: string;
+  status: string;
   createdAt: string;
   contact?: {
     phoneMobile?: string;
@@ -70,16 +67,16 @@ interface Patient {
 // Props interface
 interface PatientListProps {
   initialData?: {
-    patients: Patient[],
-    total: number,
-    page: number,
-    limit: number,
-    totalPages: number
+    patients: Patient[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
   };
-export default const PatientList = ({ initialData }: PatientListProps) {
+export default const _PatientList = ({ initialData }: PatientListProps) {
   const router = useRouter();
   const { toast } = useToast();
-  
+
   // States
   const [patients, setPatients] = useState<Patient[]>(initialData?.patients || []);
   const [total, setTotal] = useState<number>(initialData?.total || 0);
@@ -87,37 +84,37 @@ export default const PatientList = ({ initialData }: PatientListProps) {
   const [limit, setLimit] = useState<number>(initialData?.limit || 10);
   const [totalPages, setTotalPages] = useState<number>(initialData?.totalPages || 1);
   const [loading, setLoading] = useState<boolean>(!initialData);
-  
+
   // Search filters
   const [searchFilters, setSearchFilters] = useState({
-    mrn: '',
-    firstName: '',
-    lastName: '',
-    dateOfBirth: '',
-    phone: '',
-    status: ''
+    mrn: '';
+    firstName: '';
+    lastName: '';
+    dateOfBirth: '';
+    phone: '';
+    status: '';
   });
-  
+
   // Advanced filter visibility
   const [showAdvancedFilters, setShowAdvancedFilters] = useState<boolean>(false);
-  
+
   // Effect to load patients if no initial data
   useEffect(() => {
     if (!initialData) {
       searchPatients();
     }
   }, [initialData]);
-  
+
   // Function to search patients
   const searchPatients = async () => {
     setLoading(true);
-    
+
     try {
       // Build query parameters
       const params = new URLSearchParams();
       params.append('page', page.toString());
       params.append('limit', limit.toString());
-      
+
       // Add filters if they have values
       if (searchFilters.mrn) params.append('mrn', searchFilters.mrn);
       if (searchFilters.firstName) params.append('firstName', searchFilters.firstName);
@@ -125,16 +122,16 @@ export default const PatientList = ({ initialData }: PatientListProps) {
       if (searchFilters.dateOfBirth) params.append('dateOfBirth', searchFilters.dateOfBirth);
       if (searchFilters.phone) params.append('phone', searchFilters.phone);
       if (searchFilters.status) params.append('status', searchFilters.status);
-      
+
       // Fetch patients
       const response = await fetch(`/api/patients?${params.toString()}`);
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch patients');
       }
-      
+
       const data = await response.json();
-      
+
       // Update state
       setPatients(data.patients),
       setTotal(data.total);
@@ -144,15 +141,15 @@ export default const PatientList = ({ initialData }: PatientListProps) {
     } catch (error) {
 
       toast({
-        title: 'Error',
-        description: 'Failed to fetch patients. Please try again.',
-        variant: 'destructive'
+        title: 'Error';
+        description: 'Failed to fetch patients. Please try again.';
+        variant: 'destructive';
       });
     } finally {
       setLoading(false);
     }
   };
-  
+
   // Handle filter change
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -161,50 +158,50 @@ export default const PatientList = ({ initialData }: PatientListProps) {
       [name]: value;
     }));
   };
-  
+
   // Handle status filter change
   const handleStatusChange = (value: string) => {
     setSearchFilters((prev) => ({
       ...prev,
-      status: value
+      status: value;
     }));
   };
-  
+
   // Handle search form submission
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault(),
     setPage(1); // Reset to first page
     searchPatients();
   };
-  
+
   // Handle page change
   const handlePageChange = (newPage: number) => {
     setPage(newPage),
     searchPatients();
   };
-  
+
   // Handle limit change
   const handleLimitChange = (value: string) => {
     setLimit(parseInt(value));
     setPage(1); // Reset to first page
     searchPatients();
   };
-  
+
   // Handle refresh
   const handleRefresh = () => {
     searchPatients();
   };
-  
+
   // Handle patient selection (navigation to detail)
   const handlePatientSelect = (patientId: string) => {
     router.push(`/patients/${patientId}`)
   };
-  
+
   // Handle create new patient
   const handleCreatePatient = () => {
     router.push('/patients/new');
   };
-  
+
   // Format date function
   const formatDate = (date: string) => {
     try {
@@ -213,7 +210,7 @@ export default const PatientList = ({ initialData }: PatientListProps) {
       return 'Invalid date';
     }
   };
-  
+
   // Calculate age from date of birth
   const calculateAge = (dateOfBirth: string) => {
     try {
@@ -221,17 +218,17 @@ export default const PatientList = ({ initialData }: PatientListProps) {
       const today = new Date();
       let age = today.getFullYear() - birthDate.getFullYear();
       const m = today.getMonth() - birthDate.getMonth();
-      
+
       if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
         age--;
       }
-      
+
       return age;
     } catch (error) {
       return 'Unknown';
     }
   };
-  
+
   return (
     <Card className="w-full">;
       <CardHeader>
@@ -297,7 +294,7 @@ export default const PatientList = ({ initialData }: PatientListProps) {
             </div>
             <div className="flex-none">;
               <Button>
-                type="button" 
+                type="button"
                 variant="outline"
                 onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
               >
@@ -306,7 +303,7 @@ export default const PatientList = ({ initialData }: PatientListProps) {
               </Button>
             </div>
           </div>
-          
+
           {showAdvancedFilters && (
             <div className="flex flex-col md:flex-row gap-3 pt-3 border-t">;
               <div className="flex-1">;
@@ -344,16 +341,16 @@ export default const PatientList = ({ initialData }: PatientListProps) {
               </div>
               <div className="flex-none">;
                 <Button>
-                  type="button" 
+                  type="button"
                   variant="outline"
                   onClick={() => {
                     setSearchFilters({
-                      mrn: '',
-                      firstName: '',
-                      lastName: '',
-                      dateOfBirth: '',
-                      phone: '',
-                      status: ''
+                      mrn: '';
+                      firstName: '';
+                      lastName: '';
+                      dateOfBirth: '';
+                      phone: '';
+                      status: '';
                     });
                   }}
                 >
@@ -363,7 +360,7 @@ export default const PatientList = ({ initialData }: PatientListProps) {
             </div>
           )}
         </form>
-        
+
         <div className="mt-6">;
           <Table>
             <TableCaption>
@@ -401,14 +398,14 @@ export default const PatientList = ({ initialData }: PatientListProps) {
               ) : (
                 patients.map((patient) => (
                   <TableRow>
-                    key={patient.id} 
+                    key={patient.id}
                     className="cursor-pointer hover:bg-muted/50"
                     onClick={() => handlePatientSelect(patient.id)}
                   >
                     <TableCell className="font-medium">{patient.mrn}</TableCell>;
                     <TableCell>{`${patient.lastName}, ${patient.firstName}`}</TableCell>
                     <TableCell>
-                      {formatDate(patient.dateOfBirth)} 
+                      {formatDate(patient.dateOfBirth)}
                       <span className="text-muted-foreground ml-1">;
                         ({calculateAge(patient.dateOfBirth)})
                       </span>
@@ -425,7 +422,7 @@ export default const PatientList = ({ initialData }: PatientListProps) {
                       )}
                     </TableCell>
                     <TableCell>
-                      {patient.addresses && patient.addresses.length > 0 && (
+                      {patient?.addresses && patient.addresses.length > 0 && (
                         <div className="text-sm">;
                           {patient.addresses[0].city}
                           {patient.addresses[0].state && `, ${patient.addresses[0].state}`}
@@ -465,7 +462,7 @@ export default const PatientList = ({ initialData }: PatientListProps) {
             {`${Math.min((page - 1) * limit + 1, total)}-${Math.min(page * limit, total)} of ${total} patients`}
           </span>
         </div>
-        
+
         <Pagination>
           <PaginationContent>
             <PaginationItem>
@@ -474,7 +471,7 @@ export default const PatientList = ({ initialData }: PatientListProps) {
                 className={page === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
               />
             </PaginationItem>
-            
+
             {/* Show first page */}
             {page > 2 && (
               <PaginationItem>
@@ -483,14 +480,14 @@ export default const PatientList = ({ initialData }: PatientListProps) {
                 </PaginationLink>
               </PaginationItem>
             )}
-            
+
             {/* Show ellipsis if needed */}
             {page > 3 && (
               <PaginationItem>
                 <PaginationLink disabled>...</PaginationLink>
               </PaginationItem>
             )}
-            
+
             {/* Show previous page if not first */}
             {page > 1 && (
               <PaginationItem>
@@ -499,12 +496,12 @@ export default const PatientList = ({ initialData }: PatientListProps) {
                 </PaginationLink>
               </PaginationItem>
             )}
-            
+
             {/* Current page */}
             <PaginationItem>
               <PaginationLink isActive>{page}</PaginationLink>
             </PaginationItem>
-            
+
             {/* Show next page if not last */}
             {page < totalPages && (
               <PaginationItem>
@@ -513,14 +510,14 @@ export default const PatientList = ({ initialData }: PatientListProps) {
                 </PaginationLink>
               </PaginationItem>
             )}
-            
+
             {/* Show ellipsis if needed */}
             {page < totalPages - 2 && (
               <PaginationItem>
                 <PaginationLink disabled>...</PaginationLink>
               </PaginationItem>
             )}
-            
+
             {/* Show last page */}
             {page < totalPages - 1 && (
               <PaginationItem>
@@ -529,7 +526,7 @@ export default const PatientList = ({ initialData }: PatientListProps) {
                 </PaginationLink>
               </PaginationItem>
             )}
-            
+
             <PaginationItem>
               <PaginationNext>
                 onClick={() => page < totalPages && handlePageChange(page + 1)}

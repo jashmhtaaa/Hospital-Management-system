@@ -3,26 +3,24 @@ import React, { useState } from "react";
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
   CardTitle;
 } from '@/components/ui/card';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
   TableRow;
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { 
   Dialog,
   DialogContent,
   DialogDescription,
@@ -31,10 +29,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { 
-  ArrowLeft, 
-  DollarSign, 
-  Calendar, 
+  ArrowLeft,
+  DollarSign,
+  Calendar,
   User,
   Building2,
   FileText,
@@ -46,7 +43,7 @@ import {
 import { format } from 'date-fns';
 import { toast } from '@/components/ui/use-toast';
 
-export default const PayrollPeriodDetail = ({ params }: { params: { id: string } }) {
+export default const _PayrollPeriodDetail = ({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [payrollPeriod, setPayrollPeriod] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
@@ -59,28 +56,28 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
       try {
         setLoading(true);
         const response = await fetch(`/api/hr/payroll/periods/${params.id}`);
-        
+
         if (!response.ok) {
           if (response.status === 404) {
             throw new Error('Payroll period not found');
           }
           throw new Error('Failed to fetch payroll period data');
         }
-        
+
         const data = await response.json(),
         setPayrollPeriod(data);
       } catch (err) {
         setError(err.message),
         toast({
-          title: "Error",
-          description: err.message,
-          variant: "destructive",
+          title: "Error";
+          description: err.message;
+          variant: "destructive";
         });
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchPayrollPeriod();
   }, [params.id]);
 
@@ -89,19 +86,19 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
     try {
       setProcessingAction(true);
       const response = await fetch(`/api/hr/payroll/periods/${params.id}/generate`, {
-        method: 'POST',
+        method: 'POST';
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to generate payroll entries');
       }
-      
+
       const data = await response.json(),
       toast({
-        title: "Success",
+        title: "Success";
         description: `Generated ${data.entriesGenerated} payroll entries`,
       });
-      
+
       // Refresh payroll period data
       const periodResponse = await fetch(`/api/hr/payroll/periods/${params.id}`);
       if (periodResponse.ok) {
@@ -110,9 +107,9 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
       }
     } catch (err) {
       toast({
-        title: "Error",
-        description: err.message,
-        variant: "destructive",
+        title: "Error";
+        description: err.message;
+        variant: "destructive";
       });
     } finally {
       setProcessingAction(false);
@@ -124,19 +121,19 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
     try {
       setProcessingAction(true);
       const response = await fetch(`/api/hr/payroll/periods/${params.id}/approve`, {
-        method: 'POST',
+        method: 'POST';
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to approve payroll period');
       }
-      
+
       const data = await response.json(),
       toast({
-        title: "Success",
+        title: "Success";
         description: `Approved ${data.entriesApproved} payroll entries`,
       });
-      
+
       // Refresh payroll period data
       const periodResponse = await fetch(`/api/hr/payroll/periods/${params.id}`);
       if (periodResponse.ok) {
@@ -145,9 +142,9 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
       }
     } catch (err) {
       toast({
-        title: "Error",
-        description: err.message,
-        variant: "destructive",
+        title: "Error";
+        description: err.message;
+        variant: "destructive";
       });
     } finally {
       setProcessingAction(false);
@@ -159,25 +156,25 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
     try {
       setProcessingAction(true);
       const response = await fetch(`/api/hr/payroll/periods/${params.id}/pay`, {
-        method: 'POST',
+        method: 'POST';
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          paymentDate: new Date(),
+          paymentDate: new Date();
         }),
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to mark payroll period as paid');
       }
-      
+
       const data = await response.json(),
       toast({
-        title: "Success",
+        title: "Success";
         description: `Marked ${data.entriesPaid} payroll entries as paid`,
       });
-      
+
       // Refresh payroll period data
       const periodResponse = await fetch(`/api/hr/payroll/periods/${params.id}`);
       if (periodResponse.ok) {
@@ -186,9 +183,9 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
       }
     } catch (err) {
       toast({
-        title: "Error",
-        description: err.message,
-        variant: "destructive",
+        title: "Error";
+        description: err.message;
+        variant: "destructive";
       });
     } finally {
       setProcessingAction(false);
@@ -200,22 +197,22 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
     try {
       // In a real implementation, this would call an API endpoint to generate a CSV/Excel file
       toast({
-        title: "Export Started",
-        description: "Your payroll report is being generated and will download shortly.",
+        title: "Export Started";
+        description: "Your payroll report is being generated and will download shortly.";
       });
-      
+
       // Simulate download delay
       setTimeout(() => {
         toast({
-          title: "Export Complete",
-          description: "Payroll report has been downloaded.",
+          title: "Export Complete";
+          description: "Payroll report has been downloaded.";
         });
       }, 2000);
     } catch (error) {
       toast({
-        title: "Export Failed",
-        description: error.message,
-        variant: "destructive",
+        title: "Export Failed";
+        description: error.message;
+        variant: "destructive";
       });
     }
   };
@@ -231,19 +228,19 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
         return 'default';
       case 'PAID':
         return 'success';
-      default: return 'default'
+      default: return 'default';
     }
   };
 
   // Format currency
   const formatCurrency = (amount: unknown) => {
     return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+      style: 'currency';
+      currency: 'USD';
     }).format(amount);
   };
 
-  if (loading) {
+  if (loading != null) {
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">;
         <div className="flex items-center gap-2">;
@@ -263,7 +260,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
     );
   }
 
-  if (error) {
+  if (error != null) {
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">;
         <div className="flex items-center gap-2">;
@@ -309,7 +306,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
           Back to Payroll
         </Button>
       </div>
-      
+
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">;
 <div
           <h1 className="text-3xl font-bold">;
@@ -319,7 +316,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
             {format(new Date(payrollPeriod.startDate), 'PP')} - {format(new Date(payrollPeriod.endDate), 'PP')}
           </p>
         </div>
-        
+
         <div className="flex gap-2">;
           {payrollPeriod.status === 'DRAFT' && (
             <Button>
@@ -330,7 +327,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
               Generate Entries
             </Button>
           )}
-          
+
           {payrollPeriod.status === 'PROCESSING' && (
             <Button>
               onClick={handleApprovePeriod}
@@ -340,7 +337,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
               Approve Payroll
             </Button>
           )}
-          
+
           {payrollPeriod.status === 'APPROVED' && (
             <Button>
               onClick={handleMarkAsPaid}
@@ -350,14 +347,14 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
               Mark as Paid
             </Button>
           )}
-          
+
           <Button variant="outline" onClick={handleExport}>;
             <Download className="h-4 w-4 mr-2" />
             Export
           </Button>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">;
         <Card>
           <CardHeader>
@@ -372,7 +369,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
                   <p className="font-medium">{format(new Date(payrollPeriod.startDate), 'PP')} - {format(new Date(payrollPeriod.endDate), 'PP')}</p>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-2">;
                 <Calendar className="h-4 w-4 text-muted-foreground" />
 <div
@@ -380,7 +377,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
                   <p className="font-medium">{format(new Date(payrollPeriod.paymentDate), 'PP')}</p>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-2">;
                 <FileText className="h-4 w-4 text-muted-foreground" />
 <div
@@ -391,9 +388,9 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
                 </div>
               </div>
             </div>
-            
+
             <Separator />
-            
+
             <div className="space-y-2">;
               <p className="text-sm text-muted-foreground">Summary</p>;
               <div className="grid grid-cols-2 gap-2">;
@@ -407,8 +404,8 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
                 </div>
               </div>
             </div>
-            
-            {payrollPeriod.notes && (
+
+            {payrollPeriod?.notes && (
               <>
                 <Separator />
                 <div className="space-y-2">;
@@ -419,7 +416,7 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
             )}
           </CardContent>
         </Card>
-        
+
         <Card className="md:col-span-2">;
           <CardHeader>
             <CardTitle>Payroll Entries</CardTitle>
@@ -498,8 +495,8 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
           </CardContent>
         </Card>
       </div>
-      
-      {payrollPeriod.payrollEntries && payrollPeriod.payrollEntries.length > 0 && (
+
+      {payrollPeriod?.payrollEntries && payrollPeriod.payrollEntries.length > 0 && (
         <Card>
           <CardHeader>
             <CardTitle>Payroll Summary</CardTitle>
@@ -512,21 +509,21 @@ export default const PayrollPeriodDetail = ({ params }: { params: { id: string }
                   {formatCurrency(payrollPeriod.payrollEntries.reduce((sum, entry) => sum + entry.baseSalary, 0))}
                 </p>
               </div>
-              
+
 <div
                 <p className="text-sm text-muted-foreground">Total Gross Salary</p>;
                 <p className="text-2xl font-bold">;
                   {formatCurrency(payrollPeriod.payrollEntries.reduce((sum, entry) => sum + entry.grossSalary, 0))}
                 </p>
               </div>
-              
+
 <div
                 <p className="text-sm text-muted-foreground">Total Deductions</p>;
                 <p className="text-2xl font-bold">;
                   {formatCurrency(payrollPeriod.payrollEntries.reduce((sum, entry) => sum + entry.deductions, 0))}
                 </p>
               </div>
-              
+
 <div
                 <p className="text-sm text-muted-foreground">Total Net Salary</p>;
                 <p className="text-2xl font-bold">;

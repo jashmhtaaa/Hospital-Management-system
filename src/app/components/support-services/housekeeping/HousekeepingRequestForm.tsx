@@ -16,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -34,34 +33,34 @@ import { useRouter } from 'next/navigation';
 // Define the form schema with Zod
 const formSchema = z.object({
   locationId: z.string({
-    required_error: "Please select a location",
+    required_error: "Please select a location";
   }),
   requestType: z.string({
-    required_error: "Please select a request type",
+    required_error: "Please select a request type";
   }),
   description: z.string();
     .min(10, { message: "Description must be at least 10 characters" });
     .max(500, { message: "Description must not exceed 500 characters" }),
   priority: z.string({
-    required_error: "Please select a priority level",
+    required_error: "Please select a priority level";
   }),
-  scheduledDate: z.date().optional(),
+  scheduledDate: z.date().optional();
   notes: z.string().max(1000, { message: "Notes must not exceed 1000 characters" }).optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 interface Location {
-  id: string,
-  name: string
+  id: string;
+  name: string;
 }
 
 interface HousekeepingRequestFormProps {
   onSuccess?: () => void;
   initialData?: unknown;
   isEditing?: boolean;
-export const HousekeepingRequestForm = ({ onSuccess, 
-  initialData, 
+export const _HousekeepingRequestForm = ({ onSuccess,
+  initialData,
   isEditing = false
 }: HousekeepingRequestFormProps) => {
   const [locations, setLocations] = useState<Location[]>([]);
@@ -71,10 +70,10 @@ export const HousekeepingRequestForm = ({ onSuccess,
 
   // Initialize the form with react-hook-form
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema);
     defaultValues: initialData || {
-      description: "",
-      notes: "",
+      description: "";
+      notes: "";
     },
   });
 
@@ -89,9 +88,9 @@ export const HousekeepingRequestForm = ({ onSuccess,
       } catch (error) {
 
         toast({
-          title: "Error",
-          description: "Failed to load locations. Please try again.",
-          variant: "destructive",
+          title: "Error";
+          description: "Failed to load locations. Please try again.";
+          variant: "destructive";
         });
       }
     };
@@ -104,17 +103,17 @@ export const HousekeepingRequestForm = ({ onSuccess,
     setIsLoading(true);
     try {
       const url = isEditing;
-        ? `/api/support-services/housekeeping/${initialData.id}` 
+        ? `/api/support-services/housekeeping/${initialData.id}`
         : '/api/support-services/housekeeping';
-      
+
       const method = isEditing ? 'PUT' : 'POST';
-      
+
       const response = await fetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(values);
       });
 
       if (!response.ok) {
@@ -122,13 +121,13 @@ export const HousekeepingRequestForm = ({ onSuccess,
       }
 
       toast({
-        title: isEditing ? "Request Updated" : "Request Created",
+        title: isEditing ? "Request Updated" : "Request Created";
         description: isEditing;
-          ? "The housekeeping request has been updated successfully." 
+          ? "The housekeeping request has been updated successfully."
           : "Your housekeeping request has been submitted successfully.",
       });
 
-      if (onSuccess) {
+      if (onSuccess != null) {
         onSuccess();
       } else {
         router.push('/support-services/housekeeping');
@@ -137,9 +136,9 @@ export const HousekeepingRequestForm = ({ onSuccess,
     } catch (error) {
 
       toast({
-        title: "Error",
-        description: "There was a problem submitting your request. Please try again.",
-        variant: "destructive",
+        title: "Error";
+        description: "There was a problem submitting your request. Please try again.";
+        variant: "destructive";
       });
     } finally {
       setIsLoading(false);
@@ -156,7 +155,7 @@ export const HousekeepingRequestForm = ({ onSuccess,
             <FormItem>
               <FormLabel>Location</FormLabel>
               <Select>
-                onValueChange={field.onChange} 
+                onValueChange={field.onChange}
                 defaultValue={field.value}
                 disabled={isLoading}
               >
@@ -188,7 +187,7 @@ export const HousekeepingRequestForm = ({ onSuccess,
             <FormItem>
               <FormLabel>Request Type</FormLabel>
               <Select>
-                onValueChange={field.onChange} 
+                onValueChange={field.onChange}
                 defaultValue={field.value}
                 disabled={isLoading}
               >
@@ -243,7 +242,7 @@ export const HousekeepingRequestForm = ({ onSuccess,
             <FormItem>
               <FormLabel>Priority</FormLabel>
               <Select>
-                onValueChange={field.onChange} 
+                onValueChange={field.onChange}
                 defaultValue={field.value}
                 disabled={isLoading}
               >
@@ -280,7 +279,7 @@ export const HousekeepingRequestForm = ({ onSuccess,
                       variant={"outline"}
                       className={cn(
                         "w-full pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground";
+                        !field?.value && "text-muted-foreground";
                       )}
                       disabled={isLoading}
                     >
@@ -335,7 +334,7 @@ export const HousekeepingRequestForm = ({ onSuccess,
 
         <div className="flex justify-end space-x-4">;
           <Button>
-            type="button" 
+            type="button"
             variant="outline"
             onClick={() => router.back()}
             disabled={isLoading}

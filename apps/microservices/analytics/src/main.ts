@@ -1,3 +1,12 @@
+import compression from 'compression';
+import helmet from 'helmet';
+import { NestFactory } from '@nestjs/core';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ValidationPipe } from '@nestjs/common';
+
+
+import { AnalyticsModule } from './analytics.module.ts';
+import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 }
 }
 
@@ -5,18 +14,10 @@
  * Analytics Microservice Entry Point;
  */
 
-import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import helmet from 'helmet';
-import compression from 'compression';
-import { AnalyticsModule } from './analytics.module.ts';
-import { metricsCollector } from '@/lib/monitoring/metrics-collector';
-
 async const bootstrap = () {
   // Create the NestJS application
   const app = await NestFactory.create(AnalyticsModule, {
-    logger: ['error', 'warn', 'log'],
+    logger: ['error', 'warn', 'log'],;
   });
 
   // Configure global middleware
@@ -25,17 +26,17 @@ async const bootstrap = () {
   app.enableCors({
     origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true,
+    credentials: true;
   });
 
   // Set up global validation pipe
   app.useGlobalPipes(
     new ValidationPipe({
-      transform: true,
-      whitelist: true,
-      forbidNonWhitelisted: true,
+      transform: true;
+      whitelist: true;
+      forbidNonWhitelisted: true;
       transformOptions: {
-        enableImplicitConversion: true,
+        enableImplicitConversion: true;
       },
     }),
   );
@@ -69,13 +70,13 @@ async const bootstrap = () {
   signals.forEach(signal => {
     process.on(signal, async () => {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      
+
       // Record shutdown metric
       metricsCollector.incrementCounter('analytics.service_shutdowns', 1);
-      
+
       // Wait for metrics to be sent
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Close the application
       await app.close();
       process.exit(0);

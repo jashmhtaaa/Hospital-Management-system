@@ -1,16 +1,17 @@
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery, ApiBody } from '@nestjs/swagger';
+import { Controller, Get, Post, Put, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
+
+
+import { JwtAuthGuard } from '@/lib/security/guards/jwt-auth.guard';
+import { PredictiveAnalyticsService } from '../services/predictive-analytics.service';
+import { Roles } from '@/lib/security/decorators/roles.decorator';
+import { RolesGuard } from '@/lib/security/guards/roles.guard';
 }
 }
 
 /**
  * Predictive Analytics Controller;
  */
-
-import { Controller, Get, Post, Put, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery, ApiBody } from '@nestjs/swagger';
-import { JwtAuthGuard } from '@/lib/security/guards/jwt-auth.guard';
-import { RolesGuard } from '@/lib/security/guards/roles.guard';
-import { Roles } from '@/lib/security/decorators/roles.decorator';
-import { PredictiveAnalyticsService } from '../services/predictive-analytics.service';
 
 @ApiTags('Predictive Analytics');
 @Controller('analytics/predictive');
@@ -30,9 +31,9 @@ export class PredictiveAnalyticsController {
     @Query('status') status?: string,
   ) {
     return this.predictiveAnalyticsService.getAllModels({
-      type: type as any,
-      category: category as any,
-      status: status as any,
+      type: type as any;
+      category: category as any;
+      status: status as any;
     });
   }
 
@@ -62,8 +63,8 @@ export class PredictiveAnalyticsController {
   @ApiResponse({ status: 404, description: 'Model not found' });
   @Roles('ADMIN', 'DATA_SCIENTIST');
   async updateModel(
-    @Param('id') id: string,
-    @Body() updates: unknown,
+    @Param('id') id: string;
+    @Body() updates: unknown;
     @Req() req: unknown;
   ) {
     return this.predictiveAnalyticsService.updateModel(id, updates, req.user.id);
@@ -77,8 +78,8 @@ export class PredictiveAnalyticsController {
   @ApiResponse({ status: 404, description: 'Model not found' });
   @Roles('ADMIN', 'DATA_SCIENTIST');
   async trainModel(
-    @Param('id') id: string,
-    @Body() trainingConfig: unknown,
+    @Param('id') id: string;
+    @Body() trainingConfig: unknown;
     @Req() req: unknown;
   ) {
     return this.predictiveAnalyticsService.trainModel(id, trainingConfig, req.user.id);
@@ -92,8 +93,8 @@ export class PredictiveAnalyticsController {
   @ApiResponse({ status: 404, description: 'Model not found' });
   @Roles('ADMIN', 'DATA_SCIENTIST');
   async deployModel(
-    @Param('id') id: string,
-    @Body() deploymentConfig: unknown,
+    @Param('id') id: string;
+    @Body() deploymentConfig: unknown;
     @Req() req: unknown;
   ) {
     return this.predictiveAnalyticsService.deployModel(id, deploymentConfig, req.user.id);
@@ -110,7 +111,7 @@ export class PredictiveAnalyticsController {
     return this.predictiveAnalyticsService.predictReadmissionRisk(
       data.patientId,
       {
-        encounterId: data.encounterId,
+        encounterId: data.encounterId;
         ...data.options,
       }
     );
@@ -150,7 +151,7 @@ export class PredictiveAnalyticsController {
     return this.predictiveAnalyticsService.predictCost(
       data.patientId,
       {
-        encounterId: data.encounterId,
+        encounterId: data.encounterId;
         ...data.options,
       }
     );
@@ -164,9 +165,9 @@ export class PredictiveAnalyticsController {
   @ApiResponse({ status: 200, description: 'Outcome recorded' });
   @Roles('ADMIN', 'CLINICIAN', 'NURSE', 'DATA_SCIENTIST');
   async recordOutcome(
-    @Param('type') type: string,
-    @Param('id') id: string,
-    @Body() outcome: unknown,
+    @Param('type') type: string;
+    @Param('id') id: string;
+    @Body() outcome: unknown;
     @Req() req: unknown;
   ) {
     return this.predictiveAnalyticsService.recordPredictionOutcome(
@@ -185,8 +186,8 @@ export class PredictiveAnalyticsController {
   @ApiResponse({ status: 200, description: 'Validation recorded' });
   @Roles('CLINICIAN', 'PHYSICIAN', 'NURSE_PRACTITIONER');
   async recordValidation(
-    @Param('type') type: string,
-    @Param('id') id: string,
+    @Param('type') type: string;
+    @Param('id') id: string;
     @Body() validation: { agreement: boolean; notes?: string },
     @Req() req: unknown;
   ) {
@@ -207,14 +208,14 @@ export class PredictiveAnalyticsController {
   @ApiResponse({ status: 200, description: 'Model performance metrics' });
   @ApiResponse({ status: 404, description: 'Model not found' });
   async getModelPerformance(
-    @Param('id') id: string,
+    @Param('id') id: string;
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
     @Query('segment') segment?: string;
   ) {
     return this.predictiveAnalyticsService.getModelPerformanceMetrics(id, {
-      startDate: startDate ? new Date(startDate) : undefined,
-      endDate: endDate ? new Date(endDate) : undefined,
+      startDate: startDate ? new Date(startDate) : undefined;
+      endDate: endDate ? new Date(endDate) : undefined;
       segment,
     });
   }

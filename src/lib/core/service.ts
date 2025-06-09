@@ -1,12 +1,12 @@
+
+import { NotFoundError, AuthorizationError } from './errors.ts';
+import { Repository, QueryOptions } from './repository.ts';
 }
 
 /**
  * Core service layer implementation for the Financial Management system;
  * Provides standardized business logic and validation;
  */
-
-import { Repository, QueryOptions } from './repository.ts';
-import { NotFoundError, AuthorizationError } from './errors.ts';
 
 // Base service interface
 export interface Service<T, ID, CreateDTO, UpdateDTO> {
@@ -41,10 +41,10 @@ export abstract class BaseService<T, ID, CreateDTO, UpdateDTO> implements Servic
   async update(id: ID, data: UpdateDTO): Promise<T> {
     // Ensure entity exists
     await this.findById(id);
-    
+
     // Validate update data
     await this.validateUpdate(id, data);
-    
+
     // Perform update
     return this.repository.update(id, data as unknown as Partial<T>);
   }
@@ -52,10 +52,10 @@ export abstract class BaseService<T, ID, CreateDTO, UpdateDTO> implements Servic
   async delete(id: ID): Promise<boolean> {
     // Ensure entity exists
     await this.findById(id);
-    
+
     // Validate deletion
     await this.validateDelete(id);
-    
+
     // Perform deletion
     return this.repository.delete(id);
   }
@@ -84,9 +84,9 @@ export interface AuditService {
 
 // Audit event interface
 export interface AuditEvent {
-  action: string,
-  entityType: string,
-  entityId: string,
+  action: string;
+  entityType: string;
+  entityId: string;
   userId: string;
   details?: Record<string, unknown>;
 }
@@ -95,7 +95,7 @@ export interface AuditEvent {
 export class PermissionService {
   // This is a simplified implementation
   // In a real application, this would connect to a database or authorization service
-  
+
   // Sample permission map for demonstration
   private permissions: Record<string, Record<string, string[]>> = {
     'user1': {
@@ -114,18 +114,18 @@ export class PermissionService {
       'payment': ['read', 'create', 'update', 'delete', 'refund'],
     },
   };
-  
+
   async hasPermission(userId: string, action: string, resource: string): Promise<boolean> {
     // Check if user exists in permissions map
     if (!this.permissions[userId]) {
       return false;
     }
-    
+
     // Check if resource exists for user
     if (!this.permissions[userId][resource]) {
       return false;
     }
-    
+
     // Check if action is allowed for resource
     return this.permissions[userId][resource].includes(action);
   }
@@ -135,42 +135,42 @@ export class PermissionService {
 export abstract class AuthorizedService<T, ID, CreateDTO, UpdateDTO> extends BaseService<T, ID, CreateDTO, UpdateDTO> {
   constructor(
     repository: Repository<T, ID>,
-    private permissionService: PermissionService,
+    private permissionService: PermissionService;
     private resourceType: string;
   ) {
     super(repository);
   }
-  
+
   async findById(id: ID, userId: string): Promise<T> {
     await this.checkPermission(userId, 'read');
     return super.findById(id);
   }
-  
+
   async findAll(options?: QueryOptions, userId?: string): Promise<T[]> {
-    if (userId) {
+    if (userId != null) {
       await this.checkPermission(userId, 'read');
     }
     return super.findAll(options);
   }
-  
+
   async create(data: CreateDTO, userId: string): Promise<T> {
     await this.checkPermission(userId, 'create');
     return super.create(data);
   }
-  
+
   async update(id: ID, data: UpdateDTO, userId: string): Promise<T> {
     await this.checkPermission(userId, 'update');
     return super.update(id, data);
   }
-  
+
   async delete(id: ID, userId: string): Promise<boolean> {
     await this.checkPermission(userId, 'delete');
     return super.delete(id);
   }
-  
+
   private async checkPermission(userId: string, action: string): Promise<void> {
     const hasPermission = await this.permissionService.hasPermission(userId, action, this.resourceType);
     if (!hasPermission) {
-      throw new AuthorizationError(`User does not have permission to /* SECURITY: Template literal eliminated */
+      throw new AuthorizationError(`User does not have permission to /* SECURITY: Template literal eliminated */;
     }
   }

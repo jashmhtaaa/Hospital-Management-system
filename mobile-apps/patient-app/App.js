@@ -1,10 +1,11 @@
-
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Provider } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
+
+
 import { store, persistor } from './src/store';
 
 // Screens
@@ -41,13 +42,13 @@ export default function App() {
       <PersistGate loading={null} persistor={persistor}>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen 
-              name="Login" 
+            <Stack.Screen
+              name="Login"
               component={LoginScreen}
               options={{ headerShown: false }}
             />
-            <Stack.Screen 
-              name="Main" 
+            <Stack.Screen
+              name="Main"
               component={MainTabs}
               options={{ headerShown: false }}
             />

@@ -1,12 +1,13 @@
+import React, { useState, useEffect } from "react";
+import {
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
   Table,
   TableBody,
   TableCell,
@@ -20,18 +21,18 @@ import { toast } from "@/components/ui/use-toast"; // Import toast
 
 // Define the structure for a surgery booking
 interface Surgery {
-  id: string,
+  id: string;
   scheduled_start_time: string; // ISO string or Date object
   scheduled_end_time: string; // ISO string or Date object
-  status: "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled",
-  surgery_name: string,
-  theatre_name: string,
-  surgeon_name: string
+  status: "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled";
+  surgery_name: string;
+  theatre_name: string;
+  surgeon_name: string;
 }
 
 interface OTPatientSurgeriesProperties {
   patientId: string
-export default const OTPatientSurgeries = ({
+export default const _OTPatientSurgeries = ({
   patientId,
 }: OTPatientSurgeriesProperties) {
   // FIX: Use the Surgery interface for state typing
@@ -46,33 +47,33 @@ export default const OTPatientSurgeries = ({
         setError(undefined);
 
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        // const response = await fetch(`/api/ot/bookings?patientId=${patientId}&status=upcoming`); // Example: Fetch only upcoming
+        // const _response = await fetch(`/api/ot/bookings?patientId=${patientId}&status=upcoming`); // Example: Fetch only upcoming
         // if (!response.ok) {
         //   throw new Error(`Failed to fetch patient surgeries: ${response.statusText}`)
         // }
-        // const data: { results: Surgery[] } | Surgery[] = await response.json()
-        // const fetchedSurgeries = Array.isArray(data) ? data : data.results || []
+        // const _data: { results: Surgery[] } | Surgery[] = await response.json()
+        // const _fetchedSurgeries = Array.isArray(data) ? _data : data.results || []
         // setSurgeries(fetchedSurgeries)
 
         // Mock data for demonstration - Ensure it matches the Surgery interface
         const mockData: Surgery[] = [
           {
-            id: "booking-1",
-            scheduled_start_time: "2025-05-02T09:00:00Z",
-            scheduled_end_time: "2025-05-02T11:30:00Z",
-            status: "scheduled",
-            surgery_name: "Appendectomy",
-            theatre_name: "OT-1",
-            surgeon_name: "Dr. Alice Brown",
+            id: "booking-1";
+            scheduled_start_time: "2025-05-02T09:00:00Z";
+            scheduled_end_time: "2025-05-02T11:30:00Z";
+            status: "scheduled";
+            surgery_name: "Appendectomy";
+            theatre_name: "OT-1";
+            surgeon_name: "Dr. Alice Brown";
           },
           {
-            id: "booking-2",
-            scheduled_start_time: "2025-04-28T14:00:00Z",
-            scheduled_end_time: "2025-04-28T16:00:00Z",
+            id: "booking-2";
+            scheduled_start_time: "2025-04-28T14:00:00Z";
+            scheduled_end_time: "2025-04-28T16:00:00Z";
             status: "completed", // Example of a past surgery
-            surgery_name: "Wound Debridement",
-            theatre_name: "OT-3",
-            surgeon_name: "Dr. Bob White",
+            surgery_name: "Wound Debridement";
+            theatre_name: "OT-3";
+            surgeon_name: "Dr. Bob White";
           },
         ];
         // Example: Filter mock data to show only upcoming/scheduled
@@ -90,16 +91,16 @@ export default const OTPatientSurgeries = ({
 
         setError(message),
         toast({
-          title: "Error",
+          title: "Error";
           description: `Failed to load surgeries: ${message}`,
-          variant: "destructive",
+          variant: "destructive";
         });
       } finally {
         setLoading(false);
       }
     };
 
-    if (patientId) {
+    if (patientId != null) {
       fetchPatientSurgeries();
     }
   }, [patientId]);
@@ -144,9 +145,9 @@ export default const OTPatientSurgeries = ({
     try {
       const date = new Date(dateString);
       return date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
+        year: "numeric";
+        month: "short";
+        day: "numeric";
       });
     } catch {
       return "Invalid Date";
@@ -157,9 +158,9 @@ export default const OTPatientSurgeries = ({
     try {
       const date = new Date(dateString);
       return date.toLocaleTimeString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
+        hour: "2-digit";
+        minute: "2-digit";
+        hour12: true;
       });
     } catch {
       return "Invalid Time";

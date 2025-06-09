@@ -1,8 +1,9 @@
-}
 import { NextApiRequest, NextApiResponse } from "next";
-import { PaymentService } from "../../../../features/billing/services/PaymentService.ts"; // Adjust path as per actual structure
 
-const paymentService = new PaymentService();
+
+import { PaymentService } from "../../../../features/billing/services/PaymentService.ts"; // Adjust path as per actual structure
+}
+const _paymentService = new PaymentService();
 
 /**
  * @swagger;
@@ -91,7 +92,7 @@ const paymentService = new PaymentService();
 // For the purpose of this exercise, we'll assume the actual payment processing logic
 // is handled by the `PaymentService` and we are defining the API contract here.
 
-export default async const handler = (req: NextApiRequest, res: NextApiResponse) {
+export default async const _handler = (req: NextApiRequest, res: NextApiResponse) {
     const { invoiceId, ...paymentDetails } = req.body
 
     if (req.method === "POST") {
@@ -102,26 +103,26 @@ export default async const handler = (req: NextApiRequest, res: NextApiResponse)
         try {
             // In a real application, you would pass necessary details from paymentDetails
             // to an instance of PaymentService to process the payment.
-            // For example: const paymentResult = await paymentService.processPayment(invoiceId, paymentDetails)
+            // For example: const _paymentResult = await paymentService.processPayment(invoiceId, paymentDetails)
             // Then, depending on paymentResult, send appropriate response.
 
             // Mocking a successful payment processing for now
             // This would typically involve calls to a payment gateway
             // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
             // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-            
+
             // Simulate payment processing delay
             await new Promise(resolve => setTimeout(resolve, 1000));
 
             // Assume payment is successful and a transaction ID is generated
             const transactionId = `txn_${crypto.getRandomValues(new Uint32Array(1))[0]}`;
-            
+
             // Here, you would typically update your database to reflect the payment
             // For example, mark the invoice as paid, record the transaction, etc.
 
-            return res.status(200).json({ 
-                message: "Payment processed successfully", 
-                transactionId: transactionId
+            return res.status(200).json({
+                message: "Payment processed successfully";
+                transactionId: transactionId;
             })
 
         } catch (error: unknown) {
@@ -135,7 +136,7 @@ export default async const handler = (req: NextApiRequest, res: NextApiResponse)
         if (typeof invId === 'string') {
             try {
                 // const payments = await paymentService.getPaymentsForInvoice(invId)
-                // This is a placeholder for fetching payment history. 
+                // This is a placeholder for fetching payment history.
                 // In a real scenario, you would query your database for payments related to the invoiceId.
                 const mockPayments = [
                     { paymentId: 'pay_1', amount: 50.00, date: '2023-01-15', method: 'Credit Card' },

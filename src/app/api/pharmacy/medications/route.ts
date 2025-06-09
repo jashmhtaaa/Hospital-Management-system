@@ -1,8 +1,9 @@
+import { IronSession } from "iron-session"; // Import IronSession
 import { NextRequest, NextResponse } from "next/server";
+
+
 import { getDB } from "@/lib/database"; // Assuming db returns a promise
 import { getSession, IronSessionData } from "@/lib/session"; // Import IronSessionData
-import { IronSession } from "iron-session"; // Import IronSession
-
 // Define interfaces for data structures
 // interface _Medication { // FIX: Prefixed unused interface - Removed as it's unused
 //   id: string
@@ -25,10 +26,10 @@ import { IronSession } from "iron-session"; // Import IronSession
 // } // FIX: Commented out body to fix parsing error
 
 interface MedicationInput {
-  item_code: string,
+  item_code: string;
   generic_name: string;
   brand_name?: string | null;
-  dosage_form: string,
+  dosage_form: string;
   strength: string;
   route?: string | null;
   unit_of_measure: string;
@@ -65,9 +66,9 @@ export const GET = async (request: NextRequest) => {
 
     const { searchParams } = new URL(request.url)
     const filters: MedicationFilters = {
-      search: searchParams.get("search"),
-      category: searchParams.get("category"),
-      manufacturer: searchParams.get("manufacturer"),
+      search: searchParams.get("search");
+      category: searchParams.get("category");
+      manufacturer: searchParams.get("manufacturer");
       prescription_required: searchParams.has("prescription_required");
         ? searchParams.get("prescription_required") === "true";
         : undefined,
@@ -165,8 +166,7 @@ export const POST = async (request: NextRequest) => {
     ) {
       return NextResponse.json(
         {
-          error:
-            "Missing required fields (item_code, generic_name, dosage_form, strength, unit_of_measure)",
+          error: "Missing required fields (item_code, generic_name, dosage_form, strength, unit_of_measure)",;
         },
         { status: 400 }
       );
@@ -180,7 +180,7 @@ export const POST = async (request: NextRequest) => {
       .prepare("SELECT id FROM Medications WHERE item_code = ?");
       .bind(data.item_code);
       .first();
-    if (existingMed) {
+    if (existingMed != null) {
       return NextResponse.json(
         { error: "Medication with this item code already exists" },
         { status: 409 }

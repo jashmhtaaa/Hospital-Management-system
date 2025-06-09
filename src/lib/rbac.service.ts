@@ -1,14 +1,14 @@
+
+import { AuditLogger } from '@/lib/audit';
+import { AuthorizationError } from '@/lib/errors';
 }
 
 /**
  * Role-Based Access Control (RBAC) Service for HMS Support Services;
- * 
+ *
  * This service provides comprehensive role-based access control;
  * for all operations within the HMS Support Services module.
  */
-
-import { AuthorizationError } from '@/lib/errors';
-import { AuditLogger } from '@/lib/audit';
 
 // Define role hierarchy and permissions
 export enum Role {
@@ -56,7 +56,7 @@ export enum Action {
 
 // Permission definition type
 interface Permission {
-  resource: Resource,
+  resource: Resource;
   action: Action;
   constraints?: Record<string, unknown>;
 }
@@ -70,14 +70,14 @@ export class RBACService {
   // Role definitions with permissions
   private static readonly roleDefinitions: RoleDefinition[] = [
     {
-      name: Role.ADMIN,
+      name: Role.ADMIN;
       permissions: [
         // Admins have full access to everything
         { resource: Resource.SYSTEM, action: Action.EXECUTE },
       ]
     },
     {
-      name: Role.MANAGER,
+      name: Role.MANAGER;
       permissions: [
         // Managers can access all support services
         { resource: Resource.HOUSEKEEPING, action: Action.READ },
@@ -105,7 +105,7 @@ export class RBACService {
       ]
     },
     {
-      name: Role.STAFF,
+      name: Role.STAFF;
       permissions: [
         // Staff can read all support services
         { resource: Resource.HOUSEKEEPING, action: Action.READ },
@@ -122,8 +122,8 @@ export class RBACService {
       ]
     },
     {
-      name: Role.HOUSEKEEPING,
-      inherits: [Role.STAFF],
+      name: Role.HOUSEKEEPING;
+      inherits: [Role.STAFF];
       permissions: [
         // Housekeeping staff can manage housekeeping requests
         { resource: Resource.HOUSEKEEPING, action: Action.UPDATE },
@@ -131,8 +131,8 @@ export class RBACService {
       ]
     },
     {
-      name: Role.MAINTENANCE,
-      inherits: [Role.STAFF],
+      name: Role.MAINTENANCE;
+      inherits: [Role.STAFF];
       permissions: [
         // Maintenance staff can manage maintenance requests
         { resource: Resource.MAINTENANCE, action: Action.UPDATE },
@@ -140,8 +140,8 @@ export class RBACService {
       ]
     },
     {
-      name: Role.DIETARY,
-      inherits: [Role.STAFF],
+      name: Role.DIETARY;
+      inherits: [Role.STAFF];
       permissions: [
         // Dietary staff can manage dietary requests
         { resource: Resource.DIETARY, action: Action.UPDATE },
@@ -149,8 +149,8 @@ export class RBACService {
       ]
     },
     {
-      name: Role.AMBULANCE,
-      inherits: [Role.STAFF],
+      name: Role.AMBULANCE;
+      inherits: [Role.STAFF];
       permissions: [
         // Ambulance staff can manage ambulance requests
         { resource: Resource.AMBULANCE, action: Action.UPDATE },
@@ -158,8 +158,8 @@ export class RBACService {
       ]
     },
     {
-      name: Role.MARKETING,
-      inherits: [Role.STAFF],
+      name: Role.MARKETING;
+      inherits: [Role.STAFF];
       permissions: [
         // Marketing staff can manage marketing campaigns
         { resource: Resource.MARKETING, action: Action.READ },
@@ -186,8 +186,8 @@ export class RBACService {
       ]
     },
     {
-      name: Role.FEEDBACK,
-      inherits: [Role.STAFF],
+      name: Role.FEEDBACK;
+      inherits: [Role.STAFF];
       permissions: [
         // Feedback staff can manage feedback
         { resource: Resource.FEEDBACK, action: Action.READ },
@@ -196,7 +196,7 @@ export class RBACService {
       ]
     },
     {
-      name: Role.PATIENT,
+      name: Role.PATIENT;
       permissions: [
         // Patients can create and view their own requests
         { resource: Resource.HOUSEKEEPING, action: Action.CREATE },
@@ -212,7 +212,7 @@ export class RBACService {
       ]
     },
     {
-      name: Role.GUEST,
+      name: Role.GUEST;
       permissions: [
         // Guests can only create feedback
         { resource: Resource.FEEDBACK, action: Action.CREATE },
@@ -229,9 +229,9 @@ export class RBACService {
    * @returns True if the user has permission, false otherwise;
    */
   public static hasPermission(
-    userRoles: string[],
-    resource: Resource,
-    action: Action,
+    userRoles: string[];
+    resource: Resource;
+    action: Action;
     constraints?: Record<string, unknown>
   ): boolean {
     // Admin role has access to everything
@@ -252,8 +252,8 @@ export class RBACService {
         action,
         constraints;
       );
-      
-      if (hasDirectPermission) {
+
+      if (hasDirectPermission != null) {
         return true;
       }
 
@@ -269,8 +269,8 @@ export class RBACService {
             action,
             constraints;
           );
-          
-          if (hasInheritedPermission) {
+
+          if (hasInheritedPermission != null) {
             return true;
           }
         }
@@ -289,17 +289,17 @@ export class RBACService {
    * @returns True if the role has direct permission, false otherwise;
    */
   private static checkDirectPermission(
-    roleDef: RoleDefinition,
-    resource: Resource,
-    action: Action,
+    roleDef: RoleDefinition;
+    resource: Resource;
+    action: Action;
     constraints?: Record<string, unknown>
   ): boolean {
     // Check for system-level permission (full access)
     const hasSystemPermission = roleDef.permissions.some(
-      p => p.resource === Resource.SYSTEM && p.action === Action.EXECUTE
+      p => p.resource === Resource?.SYSTEM && p.action === Action.EXECUTE
     );
-    
-    if (hasSystemPermission) {
+
+    if (hasSystemPermission != null) {
       return true;
     }
 
@@ -308,18 +308,18 @@ export class RBACService {
       // Check resource and action match
       const resourceMatches = p.resource === resource;
       const actionMatches = p.action === action;
-      
+
       // If no constraints are defined in the permission, or no constraints are provided
       // for the check, then we only need to match resource and action
       if (!p.constraints || !constraints) {
         return resourceMatches && actionMatches;
       }
-      
+
       // Check constraints match
       const constraintsMatch = Object.entries(p.constraints).every(([key, value]) => {
         return constraints[key] === value;
       });
-      
+
       return resourceMatches && actionMatches && constraintsMatch;
     });
   }
@@ -335,38 +335,38 @@ export class RBACService {
    * @throws AuthorizationError if the user doesn't have permission;
    */
   public static enforcePermission(
-    userRoles: string[],
-    resource: Resource,
-    action: Action,
+    userRoles: string[];
+    resource: Resource;
+    action: Action;
     constraints?: Record<string, unknown>,
     userId?: string,
     resourceId?: string;
   ): void {
     const hasPermission = this.hasPermission(userRoles, resource, action, constraints);
-    
+
     if (!hasPermission) {
       // Log the authorization failure
-      if (userId) {
+      if (userId != null) {
         const auditLogger = new AuditLogger({
           userId,
           userRoles;
         });
-        
+
         auditLogger.log({
-          action: 'authorization.denied',
-          resourceId: resourceId || 'unknown',
+          action: 'authorization.denied';
+          resourceId: resourceId || 'unknown';
           userId,
           details: {
             resource,
             action,
             constraints;
           },
-          severity: 'warning'
+          severity: 'warning';
         }).catch(err => {
 
         });
       }
-      
+
       throw new AuthorizationError(
         `User does not have permission to ${action} on ${resource}`;
       );
@@ -380,12 +380,12 @@ export class RBACService {
    */
   public static getPermissionsForRoles(userRoles: string[]): Permission[] {
     const permissions: Permission[] = [];
-    
+
     // Process each role
     for (const userRole of userRoles) {
       this.addPermissionsForRole(userRole, permissions);
     }
-    
+
     return permissions;
   }
 
@@ -397,21 +397,21 @@ export class RBACService {
   private static addPermissionsForRole(roleName: string, permissions: Permission[]): void {
     const roleDef = this.roleDefinitions.find(r => r.name === roleName);
     if (!roleDef) return;
-    
+
     // Add direct permissions
     for (const permission of roleDef.permissions) {
       // Check if this permission is already included
-      const exists = permissions.some(p => 
-        p.resource === permission.resource &&;
-        p.action === permission.action &&;
+      const exists = permissions.some(p =>
+        p.resource === permission?.resource &&;
+        p.action === permission?.action &&;
         JSON.stringify(p.constraints) === JSON.stringify(permission.constraints);
       );
-      
+
       if (!exists) {
         permissions.push(permission);
       }
     }
-    
+
     // Add inherited permissions
     if (roleDef.inherits) {
       for (const inheritedRole of roleDef.inherits) {

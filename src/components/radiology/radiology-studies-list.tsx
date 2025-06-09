@@ -1,11 +1,12 @@
+import React, { useState, useEffect } from "react";
+import {
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import {
   Table,
   TableBody,
   TableCell,
@@ -19,13 +20,13 @@ import { useRouter } from "next/navigation";
 
 // Define interface for Radiology Study data
 interface RadiologyStudy {
-  id: string,
-  patient_name: string,
-  procedure_name: string,
-  accession_number: string | null,
+  id: string;
+  patient_name: string;
+  procedure_name: string;
+  accession_number: string | null;
   study_datetime: string; // Assuming ISO string format
   status: "scheduled" | "acquired" | "reported" | "verified"
-export default const RadiologyStudiesList = () {
+export default const _RadiologyStudiesList = () {
   const [studies, setStudies] = useState<RadiologyStudy[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>();
@@ -66,10 +67,10 @@ export default const RadiologyStudiesList = () {
     status: RadiologyStudy["status"]
   ): React.ReactNode => {
     const statusStyles: { [key in RadiologyStudy["status"]]: string } = {
-      scheduled: "bg-yellow-100 text-yellow-800",
-      acquired: "bg-blue-100 text-blue-800",
-      reported: "bg-purple-100 text-purple-800",
-      verified: "bg-green-100 text-green-800",
+      scheduled: "bg-yellow-100 text-yellow-800";
+      acquired: "bg-blue-100 text-blue-800";
+      reported: "bg-purple-100 text-purple-800";
+      verified: "bg-green-100 text-green-800";
     };
 
     const statusText =;

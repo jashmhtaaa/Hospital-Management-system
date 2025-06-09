@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from '@/lib/session';
+
+
+import { CacheInvalidation } from '@/lib/cache/invalidation';
 import { DB } from '@/lib/database';
 import { RedisCache } from '@/lib/cache/redis';
-import { CacheInvalidation } from '@/lib/cache/invalidation';
 import { auditLog } from '@/lib/audit';
+import { getSession } from '@/lib/session';
 import { notifyUsers } from '@/lib/notifications';
-
 /**
  * GET /api/diagnostics/lab/results/critical-alerts;
  * Get critical result alerts;
@@ -36,7 +37,7 @@ export const GET = async (request: NextRequest) => {
       async () => {
         // Build query
         let query = `;
-          SELECT ca.*, 
+          SELECT ca.*,
                  lr.result_value, lr.units, lr.result_date,
                  lt.test_name, lt.test_code, lt.loinc_code,
                  p.patient_id, p.first_name, p.last_name, p.date_of_birth,
@@ -53,13 +54,13 @@ export const GET = async (request: NextRequest) => {
         const params: unknown[] = [];
 
         // Add status filter if provided
-        if (status) {
+        if (status != null) {
           query += ' AND ca.status = ?';
           params.push(status);
         }
 
         // Add assigned_to filter if provided
-        if (assignedTo) {
+        if (assignedTo != null) {
           if (assignedTo === 'me') {
             query += ' AND ca.assigned_to = ?';
             params.push(session.user.id);
@@ -91,10 +92,10 @@ export const GET = async (request: NextRequest) => {
           SELECT COUNT(*) as total;
           FROM laboratory_critical_alerts ca;
           WHERE 1=1;
-          /* SECURITY: Template literal eliminated */ 'lab_manager', 'lab_supervisor'].includes(session.user.roleName) ? 
+          /* SECURITY: Template literal eliminated */ 'lab_manager', 'lab_supervisor'].includes(session.user.roleName) ?
             ' AND (ca.assigned_to = ? OR ca.assigned_to IS NULL)' : ''}
         `;
-        
+
         const countParams = [...params.slice(0, -2)];
         const countResult = await DB.query(countQuery, countParams);
 
@@ -112,9 +113,9 @@ export const GET = async (request: NextRequest) => {
 
         // Log access
         await auditLog({
-          userId: session.user.id,
-          action: 'read',
-          resource: 'laboratory_critical_alerts',
+          userId: session.user.id;
+          action: 'read';
+          resource: 'laboratory_critical_alerts';
           details: { status, assignedTo, page, pageSize }
         });
 
@@ -135,8 +136,8 @@ export const GET = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch critical alerts',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to fetch critical alerts';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }
@@ -184,7 +185,7 @@ export const POST = async (request: NextRequest) => {
       'SELECT id FROM laboratory_critical_alerts WHERE result_id = ? AND status != ?',
       [resultId, 'resolved']
     );
-    
+
     if (existingAlertCheck.results.length > 0) {
       return NextResponse.json({ error: 'An active alert already exists for this result' }, { status: 409 });
     }
@@ -210,23 +211,23 @@ export const POST = async (request: NextRequest) => {
 
     // Log creation
     await auditLog({
-      userId: session.user.id,
-      action: 'create',
-      resource: 'laboratory_critical_alerts',
-      resourceId: result.insertId,
-      details: body
+      userId: session.user.id;
+      action: 'create';
+      resource: 'laboratory_critical_alerts';
+      resourceId: result.insertId;
+      details: body;
     });
 
     // Send notifications
-    if (assignedTo) {
+    if (assignedTo != null) {
       await notifyUsers({
-        userIds: [assignedTo],
-        title: 'Critical Result Alert',
-        message: 'You have been assigned a critical result alert that requires your attention',
-        type: 'critical_alert',
-        resourceId: result.insertId,
-        resourceType: 'laboratory_critical_alerts',
-        priority: 'high'
+        userIds: [assignedTo];
+        title: 'Critical Result Alert';
+        message: 'You have been assigned a critical result alert that requires your attention';
+        type: 'critical_alert';
+        resourceId: result.insertId;
+        resourceType: 'laboratory_critical_alerts';
+        priority: 'high';
       });
     } else {
       // Notify all lab supervisors and managers if unassigned
@@ -234,18 +235,18 @@ export const POST = async (request: NextRequest) => {
         'SELECT id FROM users WHERE role_id IN (SELECT id FROM roles WHERE name IN (?, ?))',
         ['lab_supervisor', 'lab_manager']
       );
-      
+
       const supervisorIds = supervisors.results.map(user => user.id);
-      
+
       if (supervisorIds.length > 0) {
         await notifyUsers({
-          userIds: supervisorIds,
-          title: 'Unassigned Critical Result Alert',
-          message: 'A new critical result alert requires assignment',
-          type: 'critical_alert',
-          resourceId: result.insertId,
-          resourceType: 'laboratory_critical_alerts',
-          priority: 'high'
+          userIds: supervisorIds;
+          title: 'Unassigned Critical Result Alert';
+          message: 'A new critical result alert requires assignment';
+          type: 'critical_alert';
+          resourceId: result.insertId;
+          resourceType: 'laboratory_critical_alerts';
+          priority: 'high';
         });
       }
     }
@@ -255,7 +256,7 @@ export const POST = async (request: NextRequest) => {
 
     // Get the created alert
     const createdAlert = await DB.query(
-      `SELECT ca.*, 
+      `SELECT ca.*,
               lr.result_value, lr.units, lr.result_date,
               lt.test_name, lt.test_code, lt.loinc_code,
               p.patient_id, p.first_name, p.last_name, p.date_of_birth,
@@ -275,8 +276,8 @@ export const POST = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to create critical alert',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to create critical alert';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }
@@ -313,7 +314,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     // Authorization
     const isAssignedToUser = existingAlert.assigned_to === session.user.id;
     const isManager = ['admin', 'lab_manager', 'lab_supervisor'].includes(session.user.roleName);
-    
+
     if (!isAssignedToUser && !isManager) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
@@ -327,14 +328,14 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       if (!isManager && !isAssignedToUser) {
         return NextResponse.json({ error: 'Forbidden: Cannot change status' }, { status: 403 });
       }
-      
+
       updateFields.push('status = ?');
       updateParams.push(status);
-      
+
       // If resolving, require acknowledgement
       if (status === 'resolved' && !acknowledgement) {
-        return NextResponse.json({ 
-          error: 'Acknowledgement required to resolve critical alert'
+        return NextResponse.json({
+          error: 'Acknowledgement required to resolve critical alert';
         }, { status: 400 });
       }
     }
@@ -349,12 +350,12 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       if (!isManager) {
         return NextResponse.json({ error: 'Forbidden: Cannot reassign alert' }, { status: 403 });
       }
-      
+
       updateFields.push('assigned_to = ?');
       updateParams.push(assignedTo || null);
     }
 
-    if (acknowledgement) {
+    if (acknowledgement != null) {
       updateFields.push('acknowledged_at = NOW()');
       updateFields.push('acknowledged_by = ?');
       updateParams.push(session.user.id);
@@ -375,24 +376,24 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
       // Log update
       await auditLog({
-        userId: session.user.id,
-        action: 'update',
-        resource: 'laboratory_critical_alerts',
-        resourceId: id,
-        details: body
+        userId: session.user.id;
+        action: 'update';
+        resource: 'laboratory_critical_alerts';
+        resourceId: id;
+        details: body;
       });
 
       // Send notifications for assignment changes
       if (assignedTo !== undefined && assignedTo !== existingAlert.assigned_to) {
-        if (assignedTo) {
+        if (assignedTo != null) {
           await notifyUsers({
-            userIds: [assignedTo],
-            title: 'Critical Result Alert Assignment',
-            message: 'You have been assigned a critical result alert that requires your attention',
-            type: 'critical_alert',
-            resourceId: id,
-            resourceType: 'laboratory_critical_alerts',
-            priority: 'high'
+            userIds: [assignedTo];
+            title: 'Critical Result Alert Assignment';
+            message: 'You have been assigned a critical result alert that requires your attention';
+            type: 'critical_alert';
+            resourceId: id;
+            resourceType: 'laboratory_critical_alerts';
+            priority: 'high';
           });
         }
       }
@@ -401,37 +402,37 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       if (status !== undefined && status !== existingAlert.status) {
         // Notify relevant parties about status change
         const notifyIds = [];
-        
+
         // Always notify the creator
         if (existingAlert.created_by !== session.user.id) {
           notifyIds.push(existingAlert.created_by);
         }
-        
+
         // Notify the assigned user if they didn't make the change
-        if (existingAlert.assigned_to && existingAlert.assigned_to !== session.user.id) {
+        if (existingAlert?.assigned_to && existingAlert.assigned_to !== session.user.id) {
           notifyIds.push(existingAlert.assigned_to);
         }
-        
+
         if (notifyIds.length > 0) {
           await notifyUsers({
-            userIds: notifyIds,
-            title: 'Critical Alert Status Update',
+            userIds: notifyIds;
+            title: 'Critical Alert Status Update';
             message: `Critical alert status changed to ${status}`,
-            type: 'critical_alert_update',
-            resourceId: id,
-            resourceType: 'laboratory_critical_alerts',
-            priority: 'medium'
+            type: 'critical_alert_update';
+            resourceId: id;
+            resourceType: 'laboratory_critical_alerts';
+            priority: 'medium';
           });
         }
       }
 
       // Invalidate cache
-      await CacheInvalidation.invalidatePattern('diagnostic: lab:critical-alerts:*')
+      await CacheInvalidation.invalidatePattern('diagnostic: lab: critical-alerts:*');
     }
 
     // Get the updated alert
     const updatedAlert = await DB.query(
-      `SELECT ca.*, 
+      `SELECT ca.*,
               lr.result_value, lr.units, lr.result_date,
               lt.test_name, lt.test_code, lt.loinc_code,
               p.patient_id, p.first_name, p.last_name, p.date_of_birth,
@@ -451,7 +452,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to update critical alert',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to update critical alert';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }

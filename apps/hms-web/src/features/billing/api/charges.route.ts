@@ -1,8 +1,9 @@
-}
 import { NextApiRequest, NextApiResponse } from "next";
+
+
 import { ChargeCaptureService } from "../../../../features/billing/services/ChargeCaptureService.ts"; // Adjust path as per actual structure
 import { ChargeInput } from "../../../../features/billing/types.ts"; // Adjust path
-
+}
 const chargeCaptureService = new ChargeCaptureService();
 
 /**
@@ -55,7 +56,7 @@ const chargeCaptureService = new ChargeCaptureService();
  *       500:
  *         description: Server error.
  */
-export default async const handler = (req: NextApiRequest, res: NextApiResponse) {
+export default async const _handler = (req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "POST") {
         try {
             const { patientId, ...chargeData } = req.body as { patientId: string } & ChargeInput;

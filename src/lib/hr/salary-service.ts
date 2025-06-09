@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 /**
@@ -13,9 +13,9 @@ export class SalaryService {
     name: string;
     description?: string;
     components: {
-      name: string,
-      type: 'EARNING' | 'DEDUCTION' | 'TAX',
-      calculationType: 'FIXED' | 'PERCENTAGE' | 'FORMULA',
+      name: string;
+      type: 'EARNING' | 'DEDUCTION' | 'TAX';
+      calculationType: 'FIXED' | 'PERCENTAGE' | 'FORMULA';
       value: number;
       formula?: string;
       taxable: boolean;
@@ -23,7 +23,7 @@ export class SalaryService {
     }[];
   }) {
     const { name, description, components } = data;
-    
+
     // Create salary structure with components
     return prisma.salaryStructure.create({
       data: {
@@ -31,22 +31,22 @@ export class SalaryService {
         description,
         components: {
           create: components.map(component => ({
-            name: component.name,
-            type: component.type,
-            calculationType: component.calculationType,
-            value: component.value,
-            formula: component.formula,
-            taxable: component.taxable,
-            isBase: component.isBase || false,
+            name: component.name;
+            type: component.type;
+            calculationType: component.calculationType;
+            value: component.value;
+            formula: component.formula;
+            taxable: component.taxable;
+            isBase: component.isBase || false;
           })),
         },
       },
       include: {
-        components: true,
+        components: true;
       },
     });
   }
-  
+
   /**
    * Get a salary structure by ID;
    */
@@ -54,27 +54,27 @@ export class SalaryService {
     return prisma.salaryStructure.findUnique({
       where: { id },
       include: {
-        components: true,
+        components: true;
       },
     });
   }
-  
+
   /**
    * List all salary structures;
    */
   async listSalaryStructures() {
     return prisma.salaryStructure.findMany({
       include: {
-        components: true,
+        components: true;
         _count: {
           select: {
-            employees: true,
+            employees: true;
           },
         },
       },
     });
   }
-  
+
   /**
    * Update a salary structure;
    */
@@ -88,14 +88,14 @@ export class SalaryService {
       data,
     });
   }
-  
+
   /**
    * Add a component to a salary structure;
    */
   async addSalaryComponent(structureId: string, data: {
-    name: string,
-    type: 'EARNING' | 'DEDUCTION' | 'TAX',
-    calculationType: 'FIXED' | 'PERCENTAGE' | 'FORMULA',
+    name: string;
+    type: 'EARNING' | 'DEDUCTION' | 'TAX';
+    calculationType: 'FIXED' | 'PERCENTAGE' | 'FORMULA';
     value: number;
     formula?: string;
     taxable: boolean;
@@ -104,11 +104,11 @@ export class SalaryService {
     return prisma.salaryComponent.create({
       data: {
         ...data,
-        salaryStructureId: structureId,
+        salaryStructureId: structureId;
       },
     });
   }
-  
+
   /**
    * Update a salary component;
    */
@@ -127,7 +127,7 @@ export class SalaryService {
       data,
     });
   }
-  
+
   /**
    * Delete a salary component;
    */
@@ -136,60 +136,60 @@ export class SalaryService {
       where: { id },
     });
   }
-  
+
   /**
    * Assign a salary structure to an employee;
    */
   async assignSalaryStructure(data: {
-    employeeId: string,
-    salaryStructureId: string,
-    baseSalary: number,
+    employeeId: string;
+    salaryStructureId: string;
+    baseSalary: number;
     effectiveDate: Date;
     endDate?: Date;
     notes?: string;
   }) {
     const { employeeId, salaryStructureId, baseSalary, effectiveDate, endDate, notes } = data;
-    
+
     // Check if employee exists
     const employee = await prisma.employee.findUnique({
       where: { id: employeeId },
     });
-    
+
     if (!employee) {
       throw new Error('Employee not found');
     }
-    
+
     // Check if salary structure exists
     const salaryStructure = await prisma.salaryStructure.findUnique({
       where: { id: salaryStructureId },
     });
-    
+
     if (!salaryStructure) {
       throw new Error('Salary structure not found');
     }
-    
+
     // If there's an existing active assignment, end it
     if (!endDate) {
       const existingAssignment = await prisma.employeeSalary.findFirst({
         where: {
           employeeId,
-          endDate: null,
+          endDate: null;
         },
       });
-      
-      if (existingAssignment) {
+
+      if (existingAssignment != null) {
         await prisma.employeeSalary.update({
           where: { id: existingAssignment.id },
           data: {
-            endDate: new Date(effectiveDate),
+            endDate: new Date(effectiveDate);
             notes: existingAssignment.notes;
-              ? `${existingAssignment.notes}; Automatically ended due to new assignment.` 
+              ? `${existingAssignment.notes}; Automatically ended due to new assignment.`
               : 'Automatically ended due to new assignment.',
           },
         });
       }
     }
-    
+
     // Create new assignment
     return prisma.employeeSalary.create({
       data: {
@@ -203,20 +203,20 @@ export class SalaryService {
       include: {
         employee: {
           select: {
-            firstName: true,
-            lastName: true,
-            employeeId: true,
+            firstName: true;
+            lastName: true;
+            employeeId: true;
           },
         },
         salaryStructure: {
           include: {
-            components: true,
+            components: true;
           },
         },
       },
     });
   }
-  
+
   /**
    * Get employee's current salary structure;
    */
@@ -224,18 +224,18 @@ export class SalaryService {
     return prisma.employeeSalary.findFirst({
       where: {
         employeeId,
-        endDate: null,
+        endDate: null;
       },
       include: {
         salaryStructure: {
           include: {
-            components: true,
+            components: true;
           },
         },
       },
     });
   }
-  
+
   /**
    * Get employee's salary history;
    */
@@ -245,14 +245,14 @@ export class SalaryService {
         employeeId,
       },
       orderBy: {
-        effectiveDate: 'desc',
+        effectiveDate: 'desc';
       },
       include: {
-        salaryStructure: true,
+        salaryStructure: true;
       },
     });
   }
-  
+
   /**
    * Calculate employee's gross salary;
    */
@@ -262,7 +262,7 @@ export class SalaryService {
       where: {
         employeeId,
         effectiveDate: {
-          lte: date,
+          lte: date;
         },
         OR: [
           { endDate: null },
@@ -272,27 +272,27 @@ export class SalaryService {
       include: {
         salaryStructure: {
           include: {
-            components: true,
+            components: true;
           },
         },
       },
     });
-    
+
     if (!employeeSalary) {
       throw new Error('No salary structure assigned for the given date');
     }
-    
+
     const { baseSalary, salaryStructure } = employeeSalary;
-    
+
     // Calculate each component
     let grossSalary = baseSalary;
     const componentBreakdown = [];
-    
+
     for (const component of salaryStructure.components) {
       if (!component.active) continue;
-      
+
       let componentValue = 0;
-      
+
       switch (component.calculationType) {
         case 'FIXED':
           componentValue = component.value;
@@ -306,28 +306,28 @@ export class SalaryService {
           componentValue = baseSalary * (component.value / 100);
           break;
       }
-      
+
       // Add to gross salary if it's an earning, subtract if it's a deduction or tax
       if (component.type === 'EARNING') {
         grossSalary += componentValue;
       } else {
         grossSalary -= componentValue;
       }
-      
+
       componentBreakdown.push({
-        componentId: component.id,
-        name: component.name,
-        type: component.type,
-        value: componentValue,
+        componentId: component.id;
+        name: component.name;
+        type: component.type;
+        value: componentValue;
       });
     }
-    
+
     return {
       employeeId,
       baseSalary,
       grossSalary,
       componentBreakdown,
-      calculationDate: date,
+      calculationDate: date;
     };
   }
-export const salaryService = new SalaryService();
+export const _salaryService = new SalaryService();

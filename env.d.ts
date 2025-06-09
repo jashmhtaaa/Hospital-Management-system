@@ -30,8 +30,8 @@ interface D1Result<T = unknown> {
 
 // Define the type for D1 exec results
 interface D1ExecResult {
-  count: number,
-  duration: number
+  count: number;
+  duration: number;
 }
 
 // Define the type for Cloudflare Fetcher binding (assuming standard type)
@@ -41,12 +41,12 @@ interface Fetcher {
 
 // Define the Cloudflare environment bindings
 interface CloudflareEnv {
-  DB: D1Database,
+  DB: D1Database;
   ASSETS: Fetcher;
   [key: string]: unknown; // Index signature to satisfy Record<string, unknown> constraint
   // Add other bindings (KV, R2, etc.) here if needed
   // MY_KV_NAMESPACE: KVNamespace
-  // MY_R2_BUCKET: R2Bucket
+  // MY_R2_BUCKET: R2Bucket;
 }
 
 // It might also be necessary to declare the types for process.env if used

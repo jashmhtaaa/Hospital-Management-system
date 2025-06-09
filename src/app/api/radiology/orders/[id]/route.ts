@@ -1,16 +1,17 @@
-import { NextRequest, NextResponse } from "next/server";
 import { D1Database, D1Result } from "@cloudflare/workers-types"; // Import D1Result
-import { getSession } from "@/lib/session";
-import { checkUserRole } from "@/lib/auth";
+import { NextRequest, NextResponse } from "next/server";
 
+
+import { checkUserRole } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 // Define interface for PUT request body
 interface OrderUpdateInput {
   status?: string;
   priority?: string;
   clinical_indication?: string;
   procedure_type_id?: string;
-export const GET = async (
-  request: NextRequest,
+export const _GET = async (
+  request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   const session = await getSession()
@@ -53,8 +54,8 @@ export const GET = async (
       { status: 500 }
     );
   }
-export const PUT = async (
-  request: NextRequest,
+export const _PUT = async (
+  request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   const session = await getSession()
@@ -104,9 +105,9 @@ export const PUT = async (
       .run(); // Add type D1Result
 
     // Check info.meta.changes if available, otherwise check info.success
-    const changesMade = info.meta?.changes ?? (info.success ? 1 : 0); // D1Response meta might have changes
+    const _changesMade = info.meta?.changes ?? (info.success ? 1 : 0); // D1Response meta might have changes
 
-    if (changesMade === 0) {
+    if (_changesMade === 0) {
       // Check if the order exists
       const existingOrder = await DB.prepare(
         "SELECT id FROM RadiologyOrders WHERE id = ?";
@@ -121,14 +122,14 @@ export const PUT = async (
       }
       // If it exists but no changes were made (e.g., same data sent), return success
       return NextResponse.json({
-        id: orderId,
-        status: "Radiology order update processed (no changes detected)",
+        id: orderId;
+        status: "Radiology order update processed (no changes detected)";
       });
     }
 
     return NextResponse.json({
-      id: orderId,
-      status: "Radiology order updated",
+      id: orderId;
+      status: "Radiology order updated";
     });
   } catch (error: unknown) {
     // FIX: Use unknown instead of any
@@ -139,8 +140,8 @@ export const PUT = async (
       { status: 500 }
     );
   }
-export const DELETE = async (
-  request: NextRequest,
+export const _DELETE = async (
+  request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   const session = await getSession()
@@ -167,9 +168,9 @@ export const DELETE = async (
       .run();
 
     // Check info.meta.changes if available, otherwise check info.success
-    const changesMade = info.meta?.changes ?? (info.success ? 1 : 0);
+    const _changesMade = info.meta?.changes ?? (info.success ? 1 : 0);
 
-    if (changesMade === 0) {
+    if (_changesMade === 0) {
       const existingOrder = await DB.prepare(
         "SELECT id, status FROM RadiologyOrders WHERE id = ?";
       );
@@ -190,8 +191,8 @@ export const DELETE = async (
         existingOrder.status === "cancelled";
       ) {
         return NextResponse.json({
-          id: orderId,
-          status: "Radiology order already cancelled",
+          id: orderId;
+          status: "Radiology order already cancelled";
         });
       }
       return NextResponse.json(
@@ -201,8 +202,8 @@ export const DELETE = async (
     }
 
     return NextResponse.json({
-      id: orderId,
-      status: "Radiology order cancelled",
+      id: orderId;
+      status: "Radiology order cancelled";
     });
   } catch (error: unknown) {
     // FIX: Use unknown instead of any

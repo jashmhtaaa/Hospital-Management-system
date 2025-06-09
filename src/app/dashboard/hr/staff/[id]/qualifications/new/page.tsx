@@ -3,15 +3,14 @@ import React, { useState } from "react";
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
   CardTitle;
 } from '@/components/ui/card';
-import {
   Form,
   FormControl,
   FormDescription,
@@ -35,29 +34,29 @@ import { toast } from '@/components/ui/use-toast';
 const qualificationSchema = z.object({
   code: z.string().min(1, "Qualification code is required"),
   name: z.string().min(1, "Qualification name is required"),
-  issuer: z.string().optional(),
-  identifier: z.string().optional(),
-  startDate: z.date(),
-  endDate: z.date().optional(),
-  attachment: z.string().optional(),
+  issuer: z.string().optional();
+  identifier: z.string().optional();
+  startDate: z.date();
+  endDate: z.date().optional();
+  attachment: z.string().optional();
 });
 
-export default const AddQualification = ({ params }: { params: { id: string } }) {
+export default const _AddQualification = ({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [employee, setEmployee] = useState<any | null>(null);
 
   // Initialize form
   const form = useForm({
-    resolver: zodResolver(qualificationSchema),
+    resolver: zodResolver(qualificationSchema);
     defaultValues: {
-      code: '',
-      name: '',
-      issuer: '',
-      identifier: '',
-      startDate: new Date(),
-      endDate: undefined,
-      attachment: '',
+      code: '';
+      name: '';
+      issuer: '';
+      identifier: '';
+      startDate: new Date();
+      endDate: undefined;
+      attachment: '';
     },
   });
 
@@ -73,53 +72,53 @@ export default const AddQualification = ({ params }: { params: { id: string } })
       } catch (err) {
 
         toast({
-          title: "Error",
-          description: "Failed to load employee data",
-          variant: "destructive",
+          title: "Error";
+          description: "Failed to load employee data";
+          variant: "destructive";
         });
       }
     };
-    
+
     fetchEmployee();
   }, [params.id]);
 
   // Handle form submission
-  const onSubmit = async (data) => {
+  const _onSubmit = async (data) => {
     try {
       setLoading(true);
-      
+
       // Format dates for API
       const formattedData = {
         ...data,
         startDate: format(data.startDate, 'yyyy-MM-dd'),
-        endDate: data.endDate ? format(data.endDate, 'yyyy-MM-dd') : undefined,
+        endDate: data.endDate ? format(data.endDate, 'yyyy-MM-dd') : undefined,;
       };
-      
+
       const response = await fetch(`/api/hr/staff/${params.id}/qualifications`, {
-        method: 'POST',
+        method: 'POST';
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formattedData),
+        body: JSON.stringify(formattedData);
       });
-      
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to add qualification');
       }
-      
+
       toast({
-        title: "Qualification Added",
-        description: "Successfully added qualification to employee record",
+        title: "Qualification Added";
+        description: "Successfully added qualification to employee record";
       });
-      
+
       // Navigate back to employee profile
       router.push(`/dashboard/hr/staff/${params.id}`);
     } catch (error) {
       toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
+        title: "Error";
+        description: error.message;
+        variant: "destructive";
       });
     } finally {
       setLoading(false);
@@ -138,7 +137,7 @@ export default const AddQualification = ({ params }: { params: { id: string } })
           Back to Employee Profile
         </Button>
       </div>
-      
+
       <div className="flex flex-col gap-2">;
         <h1 className="text-3xl font-bold">Add Qualification</h1>;
         <p className="text-muted-foreground">;
@@ -160,7 +159,7 @@ export default const AddQualification = ({ params }: { params: { id: string } })
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="code"
@@ -177,7 +176,7 @@ export default const AddQualification = ({ params }: { params: { id: string } })
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="issuer"
@@ -194,7 +193,7 @@ export default const AddQualification = ({ params }: { params: { id: string } })
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="identifier"
@@ -211,7 +210,7 @@ export default const AddQualification = ({ params }: { params: { id: string } })
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="startDate"
@@ -223,7 +222,7 @@ export default const AddQualification = ({ params }: { params: { id: string } })
                           <FormControl>
                             <Button>
                               variant={"outline"}
-                              className={`w-full pl-3 text-left font-normal ${!field.value && "text-muted-foreground"}`}
+                              className={`w-full pl-3 text-left font-normal ${!field?.value && "text-muted-foreground"}`}
                             >
                               {field.value ? (
                                 format(field.value, "PPP");
@@ -250,7 +249,7 @@ export default const AddQualification = ({ params }: { params: { id: string } })
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="endDate"
@@ -262,7 +261,7 @@ export default const AddQualification = ({ params }: { params: { id: string } })
                           <FormControl>
                             <Button>
                               variant={"outline"}
-                              className={`w-full pl-3 text-left font-normal ${!field.value && "text-muted-foreground"}`}
+                              className={`w-full pl-3 text-left font-normal ${!field?.value && "text-muted-foreground"}`}
                             >
                               {field.value ? (
                                 format(field.value, "PPP");
@@ -289,7 +288,7 @@ export default const AddQualification = ({ params }: { params: { id: string } })
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField>
                   control={form.control}
                   name="attachment"
@@ -307,10 +306,10 @@ export default const AddQualification = ({ params }: { params: { id: string } })
                   )}
                 />
               </div>
-              
+
               <div className="flex justify-end gap-2">
                 <Button>
-                  type="button" 
+                  type="button"
                   variant="outline"
                   onClick={() => router.push(`/dashboard/hr/staff/${params.id}`)}
                 >

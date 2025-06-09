@@ -1,39 +1,37 @@
 import React, { useState, useEffect } from 'react';
+import {
 import { useRouter } from 'next/navigation';
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
+  Tabs,
+  TabsContent,
+  TabsList,
   TabsTrigger;
 } from '../ui/tabs';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
   CardTitle;
 } from '../ui/card';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
-import { 
-  AlertCircle, 
-  Calendar, 
-  ChevronLeft, 
-  ClipboardList, 
-  Clock, 
-  Edit, 
-  FileText, 
-  Heart, 
-  Mail, 
-  MapPin, 
-  Phone, 
-  PlusCircle, 
-  Printer, 
-  RefreshCw, 
-  Shield, 
-  User, 
-  UserCheck, 
+  AlertCircle,
+  Calendar,
+  ChevronLeft,
+  ClipboardList,
+  Clock,
+  Edit,
+  FileText,
+  Heart,
+  Mail,
+  MapPin,
+  Phone,
+  PlusCircle,
+  Printer,
+  RefreshCw,
+  Shield,
+  User,
+  UserCheck,
   Users;
 } from 'lucide-react';
 import { format, formatDistance } from 'date-fns';
@@ -49,20 +47,20 @@ import PatientDocuments from './patient-documents.ts';
 
 // Define patient status colors
 const statusColors: Record<string, string> = {
-  Active: 'success',
-  Inactive: 'secondary',
-  Deceased: 'destructive',
+  Active: 'success';
+  Inactive: 'secondary';
+  Deceased: 'destructive';
   'On Hold': 'warning';
 };
 
 // Patient interface
 interface Patient {
-  id: string,
-  mrn: string,
-  firstName: string,
+  id: string;
+  mrn: string;
+  firstName: string;
   lastName: string;
   middleName?: string;
-  dateOfBirth: string,
+  dateOfBirth: string;
   gender: string;
   biologicalSex?: string;
   maritalStatus?: string;
@@ -72,10 +70,10 @@ interface Patient {
   nationality?: string;
   religion?: string;
   occupation?: string;
-  status: string,
-  vip: boolean,
-  confidential: boolean,
-  registrationDate: string,
+  status: string;
+  vip: boolean;
+  confidential: boolean;
+  registrationDate: string;
   updatedAt: string;
   contact?: {
     phoneHome?: string;
@@ -83,24 +81,24 @@ interface Patient {
     phoneWork?: string;
     phonePreferred: string;
     email?: string;
-    emailOptIn: boolean,
-    smsOptIn: boolean
+    emailOptIn: boolean;
+    smsOptIn: boolean;
   };
   addresses?: {
-    id: string,
-    addressType: string,
-    isPrimary: boolean,
+    id: string;
+    addressType: string;
+    isPrimary: boolean;
     addressLine1: string;
     addressLine2?: string;
     city: string;
     state?: string;
-    postalCode: string,
-    country: string
+    postalCode: string;
+    country: string;
   }[];
   identifications?: {
-    id: string,
-    idType: string,
-    idNumber: string,
+    id: string;
+    idType: string;
+    idNumber: string;
     isPrimary: boolean;
     issuingCountry?: string;
     issuingState?: string;
@@ -108,22 +106,22 @@ interface Patient {
     expirationDate?: string;
   }[];
   contacts?: {
-    id: string,
-    firstName: string,
-    lastName: string,
-    relationship: string,
+    id: string;
+    firstName: string;
+    lastName: string;
+    relationship: string;
     isPrimary: boolean;
     phoneHome?: string;
     phoneMobile?: string;
     phoneWork?: string;
     phonePreferred: string;
     email?: string;
-    isLegalGuardian: boolean,
-    hasDecisionMaking: boolean
+    isLegalGuardian: boolean;
+    hasDecisionMaking: boolean;
   }[];
   insurances?: {
-    id: string,
-    insuranceType: string,
+    id: string;
+    insuranceType: string;
     payerName: string;
     planName?: string;
     policyNumber: string;
@@ -145,67 +143,67 @@ interface Patient {
 interface PatientDetailProps {
   patientId: string;
   initialData?: Patient;
-export default const PatientDetail = ({ patientId, initialData }: PatientDetailProps) {
+export default const _PatientDetail = ({ patientId, initialData }: PatientDetailProps) {
   const router = useRouter();
   const { toast } = useToast();
-  
+
   // States
   const [patient, setPatient] = useState<Patient | null>(initialData || null);
   const [loading, setLoading] = useState<boolean>(!initialData);
   const [activeTab, setActiveTab] = useState<string>('demographics');
-  
+
   // Effect to load patient if no initial data
   useEffect(() => {
     if (!initialData && patientId) {
       fetchPatient();
     }
   }, [initialData, patientId]);
-  
+
   // Function to fetch patient data
   const fetchPatient = async () => {
     setLoading(true);
-    
+
     try {
       const response = await fetch(`/api/patients/${patientId}`);
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch patient details');
       }
-      
+
       const data = await response.json(),
       setPatient(data);
     } catch (error) {
 
       toast({
-        title: 'Error',
-        description: 'Failed to fetch patient details. Please try again.',
-        variant: 'destructive'
+        title: 'Error';
+        description: 'Failed to fetch patient details. Please try again.';
+        variant: 'destructive';
       });
     } finally {
       setLoading(false);
     }
   };
-  
+
   // Handle back button
   const handleBack = () => {
     router.push('/patients');
   };
-  
+
   // Handle edit patient
   const handleEditPatient = () => {
     router.push(`/patients/${patientId}/edit`);
   };
-  
+
   // Handle print
   const handlePrint = () => {
     window.print();
   };
-  
+
   // Handle refresh
   const handleRefresh = () => {
     fetchPatient();
   };
-  
+
   // Format date function
   const formatDate = (date: string) => {
     try {
@@ -214,7 +212,7 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
       return 'Invalid date';
     }
   };
-  
+
   // Calculate age from date of birth
   const calculateAge = (dateOfBirth: string) => {
     try {
@@ -222,19 +220,19 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
       const today = new Date();
       let age = today.getFullYear() - birthDate.getFullYear();
       const m = today.getMonth() - birthDate.getMonth();
-      
+
       if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
         age--;
       }
-      
+
       return age;
     } catch (error) {
       return 'Unknown';
     }
   };
-  
+
   // If loading
-  if (loading) {
+  if (loading != null) {
     return (
       <Card className="w-full">;
         <CardHeader>
@@ -250,7 +248,7 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
       </Card>
     );
   }
-  
+
   // If patient not found
   if (!patient) {
     return (
@@ -272,7 +270,7 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
       </Card>
     );
   }
-  
+
   return (
     <div className="space-y-6">;
       <Card className="w-full">;
@@ -289,7 +287,7 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
                       VIP
                     </Badge>
                   )}
-                  {patient.confidential && (
+                  {patient?.confidential && (
                     <Badge variant="outline" className="border-destructive text-destructive">;
                       Confidential
                     </Badge>
@@ -327,7 +325,7 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
                       <span>{patient.contact.email}</span>
                     </div>
                   )}
-                  {patient.addresses && patient.addresses.length > 0 && (
+                  {patient?.addresses && patient.addresses.length > 0 && (
                     <div className="flex items-center text-sm">;
                       <MapPin className="h-3.5 w-3.5 mr-1 text-muted-foreground" />
 <span
@@ -366,7 +364,7 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
               </Button>
             </div>
           </div>
-          
+
           <div className="flex flex-wrap gap-2 mt-4 text-xs">;
             <div className="flex items-center px-2 py-1 rounded-md bg-muted">;
               <Clock className="h-3 w-3 mr-1" />
@@ -376,7 +374,7 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
               <Clock className="h-3 w-3 mr-1" />
               <span>Last Updated: {formatDistance(new Date(patient.updatedAt), new Date(), { addSuffix: true })}</span>
             </div>
-            {patient.language && patient.language !== 'English' && (
+            {patient?.language && patient.language !== 'English' && (
               <div className="flex items-center px-2 py-1 rounded-md bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300">;
                 <span>Language: {patient.language}</span>
               </div>
@@ -384,7 +382,7 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
           </div>
         </CardHeader>
       </Card>
-      
+
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">;
         <TabsList className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8">;
           <TabsTrigger value="demographics">;
@@ -420,71 +418,71 @@ export default const PatientDetail = ({ patientId, initialData }: PatientDetailP
             <span className="hidden sm:inline">Documents</span>
           </TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="demographics">;
           <PatientDemographics patient={patient} onUpdate={fetchPatient} />
         </TabsContent>
-        
+
         <TabsContent value="contacts">;
           <PatientContacts>
-            patientId={patient.id} 
-            contacts={patient.contacts || []} 
-            onUpdate={fetchPatient} 
+            patientId={patient.id}
+            contacts={patient.contacts || []}
+            onUpdate={fetchPatient}
           />
         </TabsContent>
-        
+
         <TabsContent value="insurance">;
           <PatientInsurance>
-            patientId={patient.id} 
-            insurances={patient.insurances || []} 
-            onUpdate={fetchPatient} 
+            patientId={patient.id}
+            insurances={patient.insurances || []}
+            onUpdate={fetchPatient}
           />
         </TabsContent>
-        
+
         <TabsContent value="allergies">;
           <PatientAllergies>
-            patientId={patient.id} 
-            allergies={patient.allergies || []} 
-            onUpdate={fetchPatient} 
+            patientId={patient.id}
+            allergies={patient.allergies || []}
+            onUpdate={fetchPatient}
           />
         </TabsContent>
-        
+
         <TabsContent value="problems">;
           <PatientConditions>
-            patientId={patient.id} 
-            conditions={patient.conditions || []} 
-            onUpdate={fetchPatient} 
+            patientId={patient.id}
+            conditions={patient.conditions || []}
+            onUpdate={fetchPatient}
           />
         </TabsContent>
-        
+
         <TabsContent value="appointments">;
           <PatientAppointments>
-            patientId={patient.id} 
-            appointments={patient.appointments || []} 
+            patientId={patient.id}
+            appointments={patient.appointments || []}
           />
         </TabsContent>
-        
+
         <TabsContent value="visits">;
           <PatientVisits>
-            patientId={patient.id} 
-            visits={patient.visits || []} 
+            patientId={patient.id}
+            visits={patient.visits || []}
           />
         </TabsContent>
-        
+
         <TabsContent value="documents">;
           <PatientDocuments>
-            patientId={patient.id} 
-            documents={patient.documents || []} 
+            patientId={patient.id}
+            documents={patient.documents || []}
           />
         </TabsContent>
       </Tabs>
-      
+
       <div className="flex justify-between print:hidden">;
         <Button variant="outline" onClick={handleBack}>;
           <ChevronLeft className="h-4 w-4 mr-2" />
           Back to Patient List
         </Button>
-        
+
         <div className="flex gap-2">;
           <Button variant="outline" onClick={handleRefresh}>;
             <RefreshCw className="h-4 w-4 mr-2" />

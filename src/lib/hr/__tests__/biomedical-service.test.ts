@@ -1,42 +1,43 @@
-import { describe, it, expect, beforeEach, jest, afterEach } from '@jest/globals';
-import { BiomedicalService } from '../biomedical-service';
 import { PrismaClient } from '@prisma/client';
-import { cache } from '@/lib/cache';
+import { describe, it, expect, beforeEach, jest, afterEach } from '@jest/globals';
 
+
+import { BiomedicalService } from '../biomedical-service';
+import { cache } from '@/lib/cache';
 // Mock PrismaClient
 jest.mock('@prisma/client', () => {
   const mockPrismaClient = {
     biomedicalEquipment: {
-      create: jest.fn(),
-      findUnique: jest.fn(),
-      findMany: jest.fn(),
-      update: jest.fn(),
-      count: jest.fn(),
-      findFirst: jest.fn(),
+      create: jest.fn();
+      findUnique: jest.fn();
+      findMany: jest.fn();
+      update: jest.fn();
+      count: jest.fn();
+      findFirst: jest.fn();
     },
     calibrationRecord: {
-      create: jest.fn(),
-      findMany: jest.fn(),
+      create: jest.fn();
+      findMany: jest.fn();
     },
     maintenanceRecord: {
-      create: jest.fn(),
-      findMany: jest.fn(),
+      create: jest.fn();
+      findMany: jest.fn();
     },
     $transaction: jest.fn((callback) => callback(mockPrismaClient)),
   };
   return {
-    PrismaClient: jest.fn(() => mockPrismaClient),
+    PrismaClient: jest.fn(() => mockPrismaClient);
   };
 });
 
 // Mock cache service
 jest.mock('@/lib/cache', () => ({
   cache: {
-    get: jest.fn(),
-    set: jest.fn(),
-    del: jest.fn(),
-    delPattern: jest.fn(),
-    clear: jest.fn(),
+    get: jest.fn();
+    set: jest.fn();
+    del: jest.fn();
+    delPattern: jest.fn();
+    clear: jest.fn();
   },
 }));
 
@@ -74,7 +75,7 @@ describe('BiomedicalService', () => {
       expect(cache.get).toHaveBeenCalledWith('biomedical:id:123'),
       expect(prisma.biomedicalEquipment.findUnique).toHaveBeenCalledWith({
         where: { id: '123' },
-        include: expect.any(Object),
+        include: expect.any(Object);
       });
       expect(cache.set).toHaveBeenCalledWith(
         'biomedical:id:123',
@@ -89,10 +90,10 @@ describe('BiomedicalService', () => {
     it('should return cached list if available', async () => {
       const mockResult = {
         equipment: [{ id: '123', serialNumber: 'SN123' }],
-        total: 1,
-        skip: 0,
-        take: 10,
-        nextCursor: null,
+        total: 1;
+        skip: 0;
+        take: 10;
+        nextCursor: null;
       };
       (cache.get as jest.Mock).mockResolvedValue(JSON.stringify(mockResult));
 
@@ -140,12 +141,12 @@ describe('BiomedicalService', () => {
       jest.spyOn(BiomedicalService.prototype, 'invalidateBiomedicalCache' as any).mockResolvedValue(undefined);
 
       await biomedicalService.createBiomedicalEquipment({
-        serialNumber: 'SN123',
-        modelNumber: 'MDL123',
-        manufacturer: 'TestMfg',
-        type: 'Monitor',
-        category: 'Diagnostic',
-        status: 'ACTIVE',
+        serialNumber: 'SN123';
+        modelNumber: 'MDL123';
+        manufacturer: 'TestMfg';
+        type: 'Monitor';
+        category: 'Diagnostic';
+        status: 'ACTIVE';
       }),
       expect(prisma.biomedicalEquipment.create).toHaveBeenCalled(),
       expect(BiomedicalService.prototype.invalidateBiomedicalCache).toHaveBeenCalled();
@@ -180,10 +181,10 @@ describe('BiomedicalService', () => {
       jest.spyOn(BiomedicalService.prototype, 'invalidateBiomedicalCache' as any).mockResolvedValue(undefined);
 
       await biomedicalService.recordCalibration('123', {
-        date: new Date(),
-        performedBy: 'Technician',
-        result: 'PASS',
-        nextCalibrationDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 90 * 24 * 60 * 60 * 1000),
+        date: new Date();
+        performedBy: 'Technician';
+        result: 'PASS';
+        nextCalibrationDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 90 * 24 * 60 * 60 * 1000);
       });
 
       expect(prisma.calibrationRecord.create).toHaveBeenCalled(),
@@ -195,14 +196,14 @@ describe('BiomedicalService', () => {
   describe('FHIR conversion', () => {
     it('should convert equipment to FHIR Device with R5 compliance', () => {
       const mockEquipment = {
-        id: '123',
-        serialNumber: 'SN123',
-        manufacturer: 'TestMfg',
-        modelNumber: 'MDL123',
-        type: 'Monitor',
-        status: 'ACTIVE',
-        location: 'Ward 1',
-        department: 'Cardiology',
+        id: '123';
+        serialNumber: 'SN123';
+        manufacturer: 'TestMfg';
+        modelNumber: 'MDL123';
+        type: 'Monitor';
+        status: 'ACTIVE';
+        location: 'Ward 1';
+        department: 'Cardiology';
         properties: { weight: '5kg', power: '110V' },
       };
 
@@ -223,11 +224,11 @@ describe('BiomedicalService', () => {
 
     it('should create FHIR DeviceDefinition with R5 compliance', () => {
       const result = biomedicalService.createFhirDeviceDefinition({
-        type: 'Monitor',
-        manufacturer: 'TestMfg',
-        modelNumber: 'MDL123',
-        description: 'Patient Monitor',
-        category: 'Diagnostic',
+        type: 'Monitor';
+        manufacturer: 'TestMfg';
+        modelNumber: 'MDL123';
+        description: 'Patient Monitor';
+        category: 'Diagnostic';
       }),
       expect(result.resourceType).toEqual('DeviceDefinition'),
       expect(result.meta.profile).toContain('https://hl7.org/fhir/r5/StructureDefinition/DeviceDefinition'),
@@ -241,44 +242,44 @@ describe('BiomedicalService', () => {
   describe('calculateReliabilityMetrics', () => {
     it('should calculate reliability metrics based on maintenance history', async () => {
       const mockEquipment = {
-        id: '123',
-        serialNumber: 'SN123',
-        purchaseDate: new Date('2023-01-01'),
+        id: '123';
+        serialNumber: 'SN123';
+        purchaseDate: new Date('2023-01-01');
       };
-      
+
       const mockMaintenanceRecords = [
         {
-          date: new Date('2023-03-01'),
-          type: 'CORRECTIVE',
-          status: 'COMPLETED',
-          cost: 100,
+          date: new Date('2023-03-01');
+          type: 'CORRECTIVE';
+          status: 'COMPLETED';
+          cost: 100;
         },
         {
-          date: new Date('2023-06-01'),
-          type: 'CORRECTIVE',
-          status: 'COMPLETED',
-          cost: 150,
+          date: new Date('2023-06-01');
+          type: 'CORRECTIVE';
+          status: 'COMPLETED';
+          cost: 150;
         },
         {
-          date: new Date('2023-09-01'),
-          type: 'PREVENTIVE',
-          status: 'COMPLETED',
-          cost: 50,
+          date: new Date('2023-09-01');
+          type: 'PREVENTIVE';
+          status: 'COMPLETED';
+          cost: 50;
         },
       ];
-      
+
       const mockCalibrationRecords = [
         {
-          date: new Date('2023-02-01'),
-          result: 'PASS',
+          date: new Date('2023-02-01');
+          result: 'PASS';
         },
         {
-          date: new Date('2023-08-01'),
-          result: 'FAIL',
+          date: new Date('2023-08-01');
+          result: 'FAIL';
         },
         {
-          date: new Date('2023-08-15'),
-          result: 'PASS',
+          date: new Date('2023-08-15');
+          result: 'PASS';
         },
       ];
 
@@ -299,27 +300,27 @@ describe('BiomedicalService', () => {
   describe('predictMaintenanceNeeds', () => {
     it('should predict maintenance needs based on historical data', async () => {
       const mockEquipment = {
-        id: '123',
-        serialNumber: 'SN123',
-        purchaseDate: new Date('2023-01-01'),
-        calibrationFrequency: 90,
+        id: '123';
+        serialNumber: 'SN123';
+        purchaseDate: new Date('2023-01-01');
+        calibrationFrequency: 90;
       };
-      
+
       const mockMaintenanceRecords = [
         {
-          date: new Date('2023-03-01'),
-          type: 'CORRECTIVE',
-          status: 'COMPLETED',
+          date: new Date('2023-03-01');
+          type: 'CORRECTIVE';
+          status: 'COMPLETED';
         },
         {
-          date: new Date('2023-06-01'),
-          type: 'CORRECTIVE',
-          status: 'COMPLETED',
+          date: new Date('2023-06-01');
+          type: 'CORRECTIVE';
+          status: 'COMPLETED';
         },
         {
-          date: new Date('2023-09-01'),
-          type: 'CORRECTIVE',
-          status: 'COMPLETED',
+          date: new Date('2023-09-01');
+          type: 'CORRECTIVE';
+          status: 'COMPLETED';
         },
       ];
 
@@ -338,12 +339,12 @@ describe('BiomedicalService', () => {
 
     it('should use manufacturer recommendations when no historical data exists', async () => {
       const mockEquipment = {
-        id: '123',
-        serialNumber: 'SN123',
-        purchaseDate: new Date('2023-01-01'),
-        calibrationFrequency: 90,
+        id: '123';
+        serialNumber: 'SN123';
+        purchaseDate: new Date('2023-01-01');
+        calibrationFrequency: 90;
       };
-      
+
       const mockMaintenanceRecords: unknown[] = [];
 
       (prisma.biomedicalEquipment.findUnique as jest.Mock).mockResolvedValue(mockEquipment);

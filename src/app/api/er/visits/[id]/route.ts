@@ -3,8 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Define interface for ER Visit data
 interface ERVisit {
-  id: string,
-  patient_id: string | number,
+  id: string;
+  patient_id: string | number;
   arrival_timestamp: string; // ISO string
   chief_complaint: string;
   // FIX: Allow null for optional fields based on TS errors in related files
@@ -39,7 +39,7 @@ interface ERVisitUpdateInput {
 // ... (Assuming POST handler exists in the correct file: /api/er/visits/route.ts)
 
 // GET /api/er/visits/[id] - Get details of a specific ER visit
-export const GET = async (
+export const _GET = async (
   _request: NextRequest, // FIX: Prefixed as unused, changed Request to NextRequest
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
@@ -85,7 +85,7 @@ export const GET = async (
 }
 
 // PUT /api/er/visits/[id] - Update a specific ER visit
-export const PUT = async (
+export const _PUT = async (
   request: NextRequest, // Use NextRequest for json() => { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -123,8 +123,8 @@ export const PUT = async (
     // Placeholder for database update
     /*
     const setClause = updateFields.map(field => `${field} = ?`).join(", ");
-    const values = updateFields.map(field => updateData[field]); 
-    
+    const values = updateFields.map(field => updateData[field]);
+
     await db;
       .prepare(`UPDATE er_visits SET ${setClause}, updated_at = ? WHERE id = ?`);
       .bind(...values, new Date().toISOString(), visitId);
@@ -156,22 +156,22 @@ export const PUT = async (
     if (updateData.current_status || updateData.current_location) {
       // FIX: Define type for log entry
       interface StatusLogEntry {
-        id: string,
-        visit_id: string,
-        status: string | null | undefined,
-        location: string | null | undefined,
-        updated_by_id: string | number | undefined,
-        timestamp: string
+        id: string;
+        visit_id: string;
+        status: string | null | undefined;
+        location: string | null | undefined;
+        updated_by_id: string | number | undefined;
+        timestamp: string;
       }
-      const logEntry: StatusLogEntry = {
-        id: uuidv4(),
-        visit_id: visitId,
-        status: updateData.current_status,
-        location: updateData.current_location,
+      const _logEntry: StatusLogEntry = {
+        id: uuidv4();
+        visit_id: visitId;
+        status: updateData.current_status;
+        location: updateData.current_location;
         updated_by_id: updateData.updated_by_id, // Assuming updated_by_id is passed
-        timestamp: new Date().toISOString(),
+        timestamp: new Date().toISOString();
       };
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement;
     }
 
     // Return the updated visit
@@ -215,17 +215,17 @@ export const DELETE = async (
       .prepare("DELETE FROM er_critical_alerts WHERE visit_id = ?");
       .bind(visitId);
       .run();
-      
+
     await db;
       .prepare("DELETE FROM er_patient_status_logs WHERE visit_id = ?");
       .bind(visitId);
       .run();
-      
+
     await db;
       .prepare("DELETE FROM er_triage_assessments WHERE visit_id = ?");
       .bind(visitId);
       .run();
-      
+
     // Finally delete the visit
     await db;
       .prepare("DELETE FROM er_visits WHERE id = ?");

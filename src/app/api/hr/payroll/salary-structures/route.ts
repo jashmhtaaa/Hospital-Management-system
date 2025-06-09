@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { salaryService } from '@/lib/hr/salary-service';
 import { z } from 'zod';
 
+
+import { salaryService } from '@/lib/hr/salary-service';
 // Schema for salary structure creation
 const salaryStructureSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  description: z.string().optional(),
+  description: z.string().optional();
   components: z.array(
     z.object({
       name: z.string().min(1, "Component name is required"),
@@ -15,20 +16,20 @@ const salaryStructureSchema = z.object({
       calculationType: z.enum(['FIXED', 'PERCENTAGE', 'FORMULA'], {
         errorMap: () => ({ message: "Calculation type must be FIXED, PERCENTAGE, or FORMULA" });
       }),
-      value: z.number(),
-      formula: z.string().optional(),
-      taxable: z.boolean(),
-      isBase: z.boolean().optional(),
+      value: z.number();
+      formula: z.string().optional();
+      taxable: z.boolean();
+      isBase: z.boolean().optional();
     });
   ).min(1, "At least one component is required"),
 });
 
 // POST handler for creating salary structure
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     // Parse request body
     const body = await request.json();
-    
+
     // Validate request data
     const validationResult = salaryStructureSchema.safeParse(body);
     if (!validationResult.success) {
@@ -37,10 +38,10 @@ export const POST = async (request: NextRequest) => {
         { status: 400 }
       );
     }
-    
+
     // Create salary structure
     const salaryStructure = await salaryService.createSalaryStructure(validationResult.data);
-    
+
     return NextResponse.json(salaryStructure);
   } catch (error) {
 
@@ -52,10 +53,10 @@ export const POST = async (request: NextRequest) => {
 }
 
 // GET handler for listing salary structures
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   try {
     const salaryStructures = await salaryService.listSalaryStructures();
-    
+
     return NextResponse.json({ salaryStructures });
   } catch (error) {
 

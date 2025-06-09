@@ -1,28 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+
+
+import type { D1ResultWithMeta, D1Database, D1PreparedStatement, D1Result } from "@/types/cloudflare";
 import { DB } from "@/lib/database";
 import { Invoice } from "@/types/billing";
 import { getSession } from "@/lib/session";
-import { z } from "zod";
-import type { D1ResultWithMeta, D1Database, D1PreparedStatement, D1Result } from "@/types/cloudflare";
-
 // Zod schema for invoice creation
 const invoiceCreateSchema = z.object({
-  patient_id: z.number(),
-  consultation_id: z.number().optional().nullable(),
+  patient_id: z.number();
+  consultation_id: z.number().optional().nullable();
   issue_date: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Invalid issue date format",
+    message: "Invalid issue date format";
   }),
   due_date: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Invalid due date format",
+    message: "Invalid due date format";
   }),
   status: z.enum(["Draft", "Sent", "Paid", "Overdue", "Cancelled"]),
-  notes: z.string().optional().nullable(),
+  notes: z.string().optional().nullable();
   items: z.array(
     z.object({
-      billable_item_id: z.number(),
-      description: z.string(),
-      quantity: z.number().positive(),
-      unit_price: z.number().nonnegative(),
+      billable_item_id: z.number();
+      description: z.string();
+      quantity: z.number().positive();
+      unit_price: z.number().nonnegative();
     });
   ).min(1, "At least one invoice item is required"),
 });
@@ -35,7 +36,7 @@ async const generateInvoiceNumber = (db: D1Database): Promise<string> {
 }
 
 // GET /api/invoices - Fetch list of invoices (with filtering/pagination)
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   try {
     const session = await getSession()
     if (!session.isLoggedIn) {
@@ -55,8 +56,8 @@ export const GET = async (request: NextRequest) => {
 
     const validSortColumns = ["invoice_number", "issue_date", "due_date", "total_amount", "status"];
     const validSortOrders = ["asc", "desc"];
-    const finalSortBy = validSortColumns.includes(sortBy) ? sortBy : "issue_date";
-    const finalSortOrder = validSortOrders.includes(sortOrder) ? sortOrder.toUpperCase() : "DESC";
+    const _finalSortBy = validSortColumns.includes(sortBy) ? sortBy : "issue_date";
+    const _finalSortOrder = validSortOrders.includes(sortOrder) ? sortOrder.toUpperCase() : "DESC";
 
     let query = `;
       SELECT;
@@ -71,25 +72,25 @@ export const GET = async (request: NextRequest) => {
     let countQuery = `SELECT COUNT(*) as total FROM Invoices WHERE 1=1`;
     const countParameters: (string | number)[] = [];
 
-    if (statusFilter) {
+    if (statusFilter != null) {
       query += " AND i.status = ?";
       queryParameters.push(statusFilter);
       countQuery += " AND status = ?";
       countParameters.push(statusFilter);
     }
-    if (patientIdFilter) {
+    if (patientIdFilter != null) {
       query += " AND i.patient_id = ?";
       queryParameters.push(Number.parseInt(patientIdFilter));
       countQuery += " AND patient_id = ?";
       countParameters.push(Number.parseInt(patientIdFilter));
     }
-    if (dateFromFilter) {
+    if (dateFromFilter != null) {
       query += " AND i.issue_date >= ?";
       queryParameters.push(dateFromFilter);
       countQuery += " AND issue_date >= ?";
       countParameters.push(dateFromFilter);
     }
-    if (dateToFilter) {
+    if (dateToFilter != null) {
       query += " AND i.issue_date <= ?";
       queryParameters.push(dateToFilter);
       countQuery += " AND issue_date <= ?";
@@ -108,12 +109,12 @@ export const GET = async (request: NextRequest) => {
     const total = countResult?.total || 0;
 
     return NextResponse.json({
-      data: results,
+      data: results;
       pagination: {
         page,
         limit,
         total,
-        totalPages: Math.ceil(total / limit),
+        totalPages: Math.ceil(total / limit);
       },
     });
 
@@ -131,7 +132,7 @@ export const GET = async (request: NextRequest) => {
 }
 
 // POST /api/invoices - Create a new invoice
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
     const session = await getSession();
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });

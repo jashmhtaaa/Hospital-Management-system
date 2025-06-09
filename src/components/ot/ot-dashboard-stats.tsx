@@ -1,19 +1,20 @@
+import React, { useState, useEffect } from "react";
+import { Calendar, Clock, Activity, AlertTriangle } from "lucide-react";
+
+
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, Activity, AlertTriangle } from "lucide-react";
-
-export default const OTDashboardStats = () {
+export default const _OTDashboardStats = () {
   const [stats, setStats] = useState({
-    todayBookings: 0,
-    upcomingBookings: 0,
-    availableTheatres: 0,
-    inProgressSurgeries: 0,
-    pendingChecklists: 0,
+    todayBookings: 0;
+    upcomingBookings: 0;
+    availableTheatres: 0;
+    inProgressSurgeries: 0;
+    pendingChecklists: 0;
   });
   const [loading, setLoading] = useState(true),
   useEffect(() => {
@@ -25,32 +26,32 @@ export default const OTDashboardStats = () {
         // For now, we'll simulate with mock data
 
         // Fetch today's bookings count
-        // const todayBookingsRes = await fetch('/api/ot/bookings?startDate=today&endDate=today')
-        // const todayBookingsData = await todayBookingsRes.json()
+        // const _todayBookingsRes = await fetch('/api/ot/bookings?startDate=today&endDate=today')
+        // const _todayBookingsData = await todayBookingsRes.json()
 
         // Fetch upcoming bookings (next 7 days)
-        // const upcomingBookingsRes = await fetch('/api/ot/bookings?startDate=tomorrow&endDate=7days')
-        // const upcomingBookingsData = await upcomingBookingsRes.json()
+        // const _upcomingBookingsRes = await fetch('/api/ot/bookings?startDate=tomorrow&endDate=7days')
+        // const _upcomingBookingsData = await upcomingBookingsRes.json()
 
         // Fetch available theatres
-        // const theatresRes = await fetch('/api/ot/theatres?status=available')
-        // const theatresData = await theatresRes.json()
+        // const _theatresRes = await fetch('/api/ot/theatres?status=available')
+        // const _theatresData = await theatresRes.json()
 
         // Fetch in-progress surgeries
-        // const inProgressRes = await fetch('/api/ot/bookings?status=in_progress')
-        // const inProgressData = await inProgressRes.json()
+        // const _inProgressRes = await fetch('/api/ot/bookings?status=in_progress')
+        // const _inProgressData = await inProgressRes.json()
 
         // Fetch pending checklists
-        // const checklistsRes = await fetch('/api/ot/checklist-responses?status=pending')
-        // const checklistsData = await checklistsRes.json()
+        // const _checklistsRes = await fetch('/api/ot/checklist-responses?status=pending')
+        // const _checklistsData = await checklistsRes.json()
 
         // Mock data for demonstration
         setStats({
-          todayBookings: 5,
-          upcomingBookings: 12,
-          availableTheatres: 3,
-          inProgressSurgeries: 2,
-          pendingChecklists: 4,
+          todayBookings: 5;
+          upcomingBookings: 12;
+          availableTheatres: 3;
+          inProgressSurgeries: 2;
+          pendingChecklists: 4;
         }),
         setLoading(false);
       } catch (error) { // FIX: Added error parameter to catch block

@@ -1,38 +1,39 @@
-}
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+}
 interface RadiologyReport {
-  id: string,
-  patientName: string,
-  patientId: string,
-  reportDate: string,
-  studyType: string,
-  modality: string,
-  status: 'draft' | 'preliminary' | 'final' | 'amended',
-  radiologist: string,
-  findings: string,
-  impression: string,
-  recommendations: string
+  id: string;
+  patientName: string;
+  patientId: string;
+  reportDate: string;
+  studyType: string;
+  modality: string;
+  status: 'draft' | 'preliminary' | 'final' | 'amended';
+  radiologist: string;
+  findings: string;
+  impression: string;
+  recommendations: string;
 }
 
 interface RadiologyReportDetailProps {
-  report: RadiologyReport
+  report: RadiologyReport;
 }
 
 /**
  * Radiology report detail component;
  */
-export const RadiologyReportDetail = ({ report }: RadiologyReportDetailProps) => {
+export const _RadiologyReportDetail = ({ report }: RadiologyReportDetailProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'draft': return <Badge variant="secondary">Draft</Badge>;
       case 'preliminary': return <Badge variant="warning">Preliminary</Badge>;
       case 'final': return <Badge variant="success">Final</Badge>;
       case 'amended': return <Badge variant="info">Amended</Badge>;
-      default: return <Badge>Unknown</Badge>
+      default: return <Badge>Unknown</Badge>;
     }
   };
 
@@ -51,7 +52,7 @@ export const RadiologyReportDetail = ({ report }: RadiologyReportDetailProps) =>
                 <p className="text-sm text-gray-500">ID: {report.patientId}</p>
               </div>
             </div>
-            
+
 <div
               <h3 className="text-sm font-medium text-gray-500">Report Information</h3>;
               <div className="mt-2 space-y-1">;
@@ -60,44 +61,44 @@ export const RadiologyReportDetail = ({ report }: RadiologyReportDetailProps) =>
               </div>
             </div>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">;
 <div
               <h3 className="text-sm font-medium text-gray-500">Study Type</h3>;
               <p className="mt-2 text-base">{report.studyType}</p>
             </div>
-            
+
 <div
               <h3 className="text-sm font-medium text-gray-500">Modality</h3>;
               <p className="mt-2 text-base">{report.modality}</p>
             </div>
-            
+
 <div
               <h3 className="text-sm font-medium text-gray-500">Status</h3>;
               <div className="mt-2">{getStatusBadge(report.status)}</div>
             </div>
           </div>
-          
+
 <div
             <h3 className="text-sm font-medium text-gray-500">Radiologist</h3>;
             <p className="mt-2 text-base">{report.radiologist}</p>
           </div>
-          
+
 <div
             <h3 className="text-sm font-medium text-gray-500">Findings</h3>;
             <p className="mt-2 text-base whitespace-pre-line">{report.findings}</p>
           </div>
-          
+
 <div
             <h3 className="text-sm font-medium text-gray-500">Impression</h3>;
             <p className="mt-2 text-base whitespace-pre-line">{report.impression}</p>
           </div>
-          
+
 <div
             <h3 className="text-sm font-medium text-gray-500">Recommendations</h3>;
             <p className="mt-2 text-base whitespace-pre-line">{report.recommendations}</p>
           </div>
-          
+
           <div className="flex justify-end space-x-2">;
             <Button variant="outline">Print Report</Button>;
             {report.status !== 'final' && (

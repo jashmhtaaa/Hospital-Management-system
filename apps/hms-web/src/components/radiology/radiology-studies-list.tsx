@@ -1,38 +1,39 @@
-}
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+}
 interface RadiologyStudy {
-  id: string,
-  patientName: string,
-  patientId: string,
-  studyDate: string,
-  studyType: string,
-  modality: string,
-  bodyPart: string,
-  status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled',
-  technician: string
+  id: string;
+  patientName: string;
+  patientId: string;
+  studyDate: string;
+  studyType: string;
+  modality: string;
+  bodyPart: string;
+  status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled';
+  technician: string;
 }
 
 interface RadiologyStudiesListProps {
-  studies: RadiologyStudy[],
-  onViewStudy: (studyId: string) => void
+  studies: RadiologyStudy[];
+  onViewStudy: (studyId: string) => void;
 }
 
 /**
  * Radiology studies list component;
  */
-export const RadiologyStudiesList = ({ studies, onViewStudy }: RadiologyStudiesListProps) => {
+export const _RadiologyStudiesList = ({ studies, onViewStudy }: RadiologyStudiesListProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
       case 'scheduled': return <Badge variant="secondary">Scheduled</Badge>;
       case 'in-progress': return <Badge variant="warning">In Progress</Badge>;
       case 'completed': return <Badge variant="success">Completed</Badge>;
       case 'cancelled': return <Badge variant="danger">Cancelled</Badge>;
-      default: return <Badge>Unknown</Badge>
+      default: return <Badge>Unknown</Badge>;
     }
   };
 

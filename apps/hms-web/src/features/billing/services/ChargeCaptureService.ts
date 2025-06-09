@@ -1,7 +1,8 @@
-}
 import { PrismaClient } from '@prisma/client'; // Assuming Prisma is used
-import { ChargeInput, PatientCharge } from '../types'; // Assuming types are defined in ../types/index.ts
 
+
+import { ChargeInput, PatientCharge } from '../types'; // Assuming types are defined in ../types/index.ts
+}
 const prisma = new PrismaClient();
 
 /**
@@ -35,7 +36,7 @@ export class ChargeCaptureService {
         }
 
         // Fetch service details and price from ChargeMaster (placeholder)
-        // const serviceDetails = await prisma.chargeMaster.findUnique({
+        // const _serviceDetails = await prisma.chargeMaster.findUnique({
         //     where: { id: chargeInput.serviceId },
         // })
         // if (!serviceDetails) {
@@ -50,19 +51,19 @@ export class ChargeCaptureService {
         const newCharge = {
             id: `charge_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
             patientId,
-            serviceId: chargeInput.serviceId,
+            serviceId: chargeInput.serviceId;
             serviceName: chargeInput.serviceName || 'Unknown Service', // Placeholder
-            quantity: chargeInput.quantity,
+            quantity: chargeInput.quantity;
             unitPrice,
             totalAmount,
-            chargeDate: new Date(),
-            department: chargeInput.department || 'General',
-            notes: chargeInput.notes,
-            status: 'PENDING_BILLING', // Initial status
+            chargeDate: new Date();
+            department: chargeInput.department || 'General';
+            notes: chargeInput.notes;
+            status: 'PENDING_BILLING', // Initial status;
         } as PatientCharge;
 
         // In a real scenario, this would be saved to the database:
-        // const savedCharge = await prisma.patientCharge.create({ data: newCharge })
+        // const _savedCharge = await prisma.patientCharge.create({ data: newCharge })
         // return savedCharge
 
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement

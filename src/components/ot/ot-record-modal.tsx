@@ -1,9 +1,9 @@
+import React, { useState, useEffect } from "react";
+import {
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -30,30 +30,30 @@ interface VitalReadings {
 }
 
 interface MedicationAdministered {
-  medication_name: string,
-  dosage: string,
-  time: string
+  medication_name: string;
+  dosage: string;
+  time: string;
 }
 
 interface ChecklistResponse {
-  id: string,
-  text: string,
-  checked: boolean
+  id: string;
+  text: string;
+  checked: boolean;
 }
 
 // Define the OTRecord type
 interface OTRecord {
   id?: string; // Optional ID for existing records
-  procedure_notes: string,
-  procedure_start_time: string | Date | null,
-  procedure_end_time: string | Date | null,
-  anesthesia_type: string,
-  anesthesia_notes: string,
-  vitals: VitalReadings,
-  medications_administered: MedicationAdministered[],
-  complications: string,
+  procedure_notes: string;
+  procedure_start_time: string | Date | null;
+  procedure_end_time: string | Date | null;
+  anesthesia_type: string;
+  anesthesia_notes: string;
+  vitals: VitalReadings;
+  medications_administered: MedicationAdministered[];
+  complications: string;
   blood_loss_ml: number | string | null; // Allow string for input
-  post_op_instructions: string,
+  post_op_instructions: string;
   recovery_notes: string;
   checklist_responses?: ChecklistResponse[]; // Optional checklist responses
 }
@@ -64,21 +64,21 @@ interface OTRecordSaveData;
     OTRecord,
     "id" | "vitals" | "medications_administered" | "checklist_responses";
   > {
-  booking_id: string,
-  procedure_start_time: string | null,
-  procedure_end_time: string | null,
-  blood_loss_ml: number | null,
+  booking_id: string;
+  procedure_start_time: string | null;
+  procedure_end_time: string | null;
+  blood_loss_ml: number | null;
   checklist_responses: ChecklistResponse[];
   // Include vitals and meds if they are saved separately or structured differently for API
 }
 
 // Props for the modal - use defined types
 interface OTRecordModalProperties {
-  trigger: React.ReactNode,
+  trigger: React.ReactNode;
   bookingId: string;
   existingRecord?: OTRecord; // Use OTRecord type
   onSave: (recordData: OTRecordSaveData) => Promise<void>; // Use OTRecordSaveData type
-export default const OTRecordModal = ({
+export default const _OTRecordModal = ({
   trigger,
   bookingId,
   existingRecord,
@@ -87,26 +87,26 @@ export default const OTRecordModal = ({
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("procedure");
   const [formData, setFormData] = useState(() => ({
-    procedure_notes: existingRecord?.procedure_notes || "",
+    procedure_notes: existingRecord?.procedure_notes || "";
     procedure_start_time: existingRecord?.procedure_start_time;
       ? new Date(existingRecord.procedure_start_time).toISOString().slice(0, 16);
       : "",
     procedure_end_time: existingRecord?.procedure_end_time;
       ? new Date(existingRecord.procedure_end_time).toISOString().slice(0, 16);
       : "",
-    anesthesia_type: existingRecord?.anesthesia_type || "",
-    anesthesia_notes: existingRecord?.anesthesia_notes || "",
+    anesthesia_type: existingRecord?.anesthesia_type || "";
+    anesthesia_notes: existingRecord?.anesthesia_notes || "";
     vitals: existingRecord?.vitals || {
-      bp_readings: [],
-      pulse_readings: [],
-      o2_saturation_readings: [],
-      temperature_readings: [],
+      bp_readings: [];
+      pulse_readings: [];
+      o2_saturation_readings: [];
+      temperature_readings: [];
     },
-    medications_administered: existingRecord?.medications_administered || [],
-    complications: existingRecord?.complications || "",
-    blood_loss_ml: existingRecord?.blood_loss_ml || "",
-    post_op_instructions: existingRecord?.post_op_instructions || "",
-    recovery_notes: existingRecord?.recovery_notes || "",
+    medications_administered: existingRecord?.medications_administered || [];
+    complications: existingRecord?.complications || "";
+    blood_loss_ml: existingRecord?.blood_loss_ml || "";
+    post_op_instructions: existingRecord?.post_op_instructions || "";
+    recovery_notes: existingRecord?.recovery_notes || "";
   }));
 
   // Mock data for checklist items - replace with fetched template if applicable
@@ -127,9 +127,9 @@ export default const OTRecordModal = ({
 
   // Reset form when existingRecord prop changes or modal opens
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen != null) {
       setFormData({
-        procedure_notes: existingRecord?.procedure_notes || "",
+        procedure_notes: existingRecord?.procedure_notes || "";
         procedure_start_time: existingRecord?.procedure_start_time;
           ? new Date(existingRecord.procedure_start_time);
               .toISOString();
@@ -140,20 +140,19 @@ export default const OTRecordModal = ({
               .toISOString();
               .slice(0, 16);
           : "",
-        anesthesia_type: existingRecord?.anesthesia_type || "",
-        anesthesia_notes: existingRecord?.anesthesia_notes || "",
+        anesthesia_type: existingRecord?.anesthesia_type || "";
+        anesthesia_notes: existingRecord?.anesthesia_notes || "";
         vitals: existingRecord?.vitals || {
-          bp_readings: [],
-          pulse_readings: [],
-          o2_saturation_readings: [],
-          temperature_readings: [],
+          bp_readings: [];
+          pulse_readings: [];
+          o2_saturation_readings: [];
+          temperature_readings: [];
         },
-        medications_administered:
-          existingRecord?.medications_administered || [],
-        complications: existingRecord?.complications || "",
-        blood_loss_ml: existingRecord?.blood_loss_ml || "",
-        post_op_instructions: existingRecord?.post_op_instructions || "",
-        recovery_notes: existingRecord?.recovery_notes || "",
+        medications_administered: existingRecord?.medications_administered || [];
+        complications: existingRecord?.complications || "";
+        blood_loss_ml: existingRecord?.blood_loss_ml || "";
+        post_op_instructions: existingRecord?.post_op_instructions || "";
+        recovery_notes: existingRecord?.recovery_notes || "";
       });
 
       setChecklistItems(
@@ -190,46 +189,46 @@ export default const OTRecordModal = ({
         ? Number.parseInt(formData.blood_loss_ml.toString(), 10);
         : undefined;
       if (
-        formData.blood_loss_ml &&
+        formData?.blood_loss_ml &&
         (Number.isNaN(bloodLoss as number) || (bloodLoss as number) < 0);
       ) {
         toast({
-          title: "Error",
-          description: "Blood loss must be a non-negative number.",
-          variant: "destructive",
+          title: "Error";
+          description: "Blood loss must be a non-negative number.";
+          variant: "destructive";
         }),
         setIsSaving(false);
         return;
       }
 
       const apiData: OTRecordSaveData = {
-        procedure_notes: formData.procedure_notes,
-        anesthesia_type: formData.anesthesia_type,
-        anesthesia_notes: formData.anesthesia_notes,
-        complications: formData.complications,
-        post_op_instructions: formData.post_op_instructions,
-        recovery_notes: formData.recovery_notes,
-        booking_id: bookingId,
+        procedure_notes: formData.procedure_notes;
+        anesthesia_type: formData.anesthesia_type;
+        anesthesia_notes: formData.anesthesia_notes;
+        complications: formData.complications;
+        post_op_instructions: formData.post_op_instructions;
+        recovery_notes: formData.recovery_notes;
+        booking_id: bookingId;
         procedure_start_time: formData.procedure_start_time;
           ? new Date(formData.procedure_start_time).toISOString();
           : null,
         procedure_end_time: formData.procedure_end_time;
           ? new Date(formData.procedure_end_time).toISOString();
           : null,
-        blood_loss_ml: bloodLoss ?? null,
-        checklist_responses: checklistItems,
+        blood_loss_ml: bloodLoss ?? null;
+        checklist_responses: checklistItems;
       };
 
       // Replace with actual API call
-      // const url = existingRecord?.id ? `/api/ot/bookings/${bookingId}/record/${existingRecord.id}` : `/api/ot/bookings/${bookingId}/record`
-      // const method = existingRecord?.id ? "PUT" : "POST"
-      // const response = await fetch(url, {
-      //   method: method,
+      // const _url = existingRecord?.id ? `/api/ot/bookings/${bookingId}/record/${existingRecord.id}` : `/api/ot/bookings/${bookingId}/record`
+      // const _method = existingRecord?.id ? "PUT" : "POST"
+      // const _response = await fetch(url, {
+      //   _method: method;
       //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(apiData),
+      //   body: JSON.stringify(apiData);
       // })
       // if (!response.ok) {
-      //   const errorData = await response.json()
+      //   const _errorData = await response.json()
       //   throw new Error(errorData.message || "Failed to save operation record")
       // }
 
@@ -240,7 +239,7 @@ export default const OTRecordModal = ({
       await onSave(apiData); // Call parent callback to refresh data
 
       toast({
-        title: "Success",
+        title: "Success";
         description: `Operation record ${existingRecord ? "updated" : "created"} successfully.`,
       }),
       setIsOpen(false);
@@ -252,9 +251,9 @@ export default const OTRecordModal = ({
         errorMessage = error.message;
       }
       toast({
-        title: "Error",
-        description: errorMessage,
-        variant: "destructive",
+        title: "Error";
+        description: errorMessage;
+        variant: "destructive";
       });
     } finally {
       setIsSaving(false);

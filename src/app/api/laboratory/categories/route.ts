@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+
+
 import { getDB } from "@/lib/database"; // Using mock DB
 import { getSession } from "@/lib/session";
-
 // Define interface for POST request body
 interface CategoryInput {
   name: string;
@@ -9,7 +10,7 @@ interface CategoryInput {
 }
 
 // GET /api/laboratory/categories - Get all laboratory test categories
-export const GET = async () => {
+export const _GET = async () => {
   try {
     const session = await getSession();
 
@@ -33,8 +34,8 @@ export const GET = async () => {
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json(
       {
-        error: "Failed to fetch laboratory test categories",
-        details: errorMessage,
+        error: "Failed to fetch laboratory test categories";
+        details: errorMessage;
       },
       { status: 500 }
     );
@@ -42,7 +43,7 @@ export const GET = async () => {
 }
 
 // POST /api/laboratory/categories - Create a new laboratory test category
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
 
@@ -105,8 +106,8 @@ export const POST = async (request: NextRequest) => {
     // }
     return NextResponse.json(
       {
-        error: "Failed to create laboratory test category",
-        details: errorMessage,
+        error: "Failed to create laboratory test category";
+        details: errorMessage;
       },
       { status: 500 }
     )

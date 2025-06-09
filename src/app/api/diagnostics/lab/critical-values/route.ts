@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from '@/lib/session';
+
+
+import { CacheInvalidation } from '@/lib/cache/invalidation';
 import { DB } from '@/lib/database';
 import { RedisCache } from '@/lib/cache/redis';
-import { CacheInvalidation } from '@/lib/cache/invalidation';
 import { auditLog } from '@/lib/audit';
-
+import { getSession } from '@/lib/session';
 /**
  * GET /api/diagnostics/lab/critical-values;
  * Get critical value configurations;
@@ -40,7 +41,7 @@ export const GET = async (request: NextRequest) => {
         const params: unknown[] = [];
 
         // Add test filter if provided
-        if (testId) {
+        if (testId != null) {
           query += ' AND cv.test_id = ?';
           params.push(testId);
         }
@@ -68,14 +69,14 @@ export const GET = async (request: NextRequest) => {
 
         // Log access
         await auditLog({
-          userId: session.user.id,
-          action: 'read',
-          resource: 'laboratory_critical_values',
+          userId: session.user.id;
+          action: 'read';
+          resource: 'laboratory_critical_values';
           details: { testId, page, pageSize }
         });
 
         return {
-          criticalValues: result.results,
+          criticalValues: result.results;
           pagination: {
             page,
             pageSize,
@@ -91,8 +92,8 @@ export const GET = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch critical values',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to fetch critical values';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }
@@ -140,7 +141,7 @@ export const POST = async (request: NextRequest) => {
     // Insert critical value
     const query = `;
       INSERT INTO laboratory_critical_values (
-        test_id, gender, min_age, max_age, min_value, max_value, 
+        test_id, gender, min_age, max_age, min_value, max_value,
         units, severity, notification_method, message, created_by, updated_by;
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
@@ -164,11 +165,11 @@ export const POST = async (request: NextRequest) => {
 
     // Log creation
     await auditLog({
-      userId: session.user.id,
-      action: 'create',
-      resource: 'laboratory_critical_values',
-      resourceId: result.insertId,
-      details: body
+      userId: session.user.id;
+      action: 'create';
+      resource: 'laboratory_critical_values';
+      resourceId: result.insertId;
+      details: body;
     });
 
     // Invalidate cache
@@ -187,8 +188,8 @@ export const POST = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to create critical value',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to create critical value';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }
@@ -289,15 +290,15 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
       // Log update
       await auditLog({
-        userId: session.user.id,
-        action: 'update',
-        resource: 'laboratory_critical_values',
-        resourceId: id,
-        details: body
+        userId: session.user.id;
+        action: 'update';
+        resource: 'laboratory_critical_values';
+        resourceId: id;
+        details: body;
       });
 
       // Invalidate cache
-      await CacheInvalidation.invalidatePattern('diagnostic: lab:critical-values:*')
+      await CacheInvalidation.invalidatePattern('diagnostic: lab: critical-values:*');
     }
 
     // Get the updated critical value
@@ -313,8 +314,8 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to update critical value',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to update critical value';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }
@@ -352,10 +353,10 @@ export const DELETE = async (request: NextRequest, { params }: { params: { id: s
 
     // Log deletion
     await auditLog({
-      userId: session.user.id,
-      action: 'delete',
-      resource: 'laboratory_critical_values',
-      resourceId: id,
+      userId: session.user.id;
+      action: 'delete';
+      resource: 'laboratory_critical_values';
+      resourceId: id;
       details: { id }
     });
 
@@ -366,7 +367,7 @@ export const DELETE = async (request: NextRequest, { params }: { params: { id: s
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to delete critical value',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to delete critical value';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }

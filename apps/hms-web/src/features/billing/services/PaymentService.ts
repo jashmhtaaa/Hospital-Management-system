@@ -1,7 +1,8 @@
-}
 import { PrismaClient } from '@prisma/client'; // Assuming Prisma is used
-import { Payment, Invoice, PaymentInput, PaymentGatewayResponse } from '../types'; // Assuming types are defined
 
+
+import { Payment, Invoice, PaymentInput, PaymentGatewayResponse } from '../types'; // Assuming types are defined
+}
 const prisma = new PrismaClient();
 
 /**
@@ -41,7 +42,7 @@ export class PaymentService {
 
         // 3. Integrate with Payment Gateway (placeholder)
         // In a real scenario, you would call the payment gateway API here.
-        // const gatewayResponse: PaymentGatewayResponse = await this.callPaymentGateway(
+        // const _gatewayResponse: PaymentGatewayResponse = await this.callPaymentGateway(
         //     paymentInput.paymentToken, // Or card details, etc.
         //     paymentInput.amount,
         //     paymentInput.currency || 'USD'
@@ -49,10 +50,10 @@ export class PaymentService {
 
         // Mocking gateway response
         const mockGatewayResponse: PaymentGatewayResponse = {
-            success: true,
+            success: true;
             transactionId: `txn_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-            message: 'Payment processed successfully by mock gateway.',
-            amountProcessed: paymentInput.amount,
+            message: 'Payment processed successfully by mock gateway.';
+            amountProcessed: paymentInput.amount;
         };
 
         if (!mockGatewayResponse.success) {
@@ -62,27 +63,27 @@ export class PaymentService {
         // 4. Record the Payment in the Database
         const newPayment: Payment = {
             id: `pay_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-            invoiceId: mockInvoice.id,
-            patientId: mockInvoice.patientId,
-            paymentDate: new Date(),
-            amount: mockGatewayResponse.amountProcessed,
-            paymentMode: paymentInput.paymentMode,
-            transactionReference: mockGatewayResponse.transactionId,
-            status: 'COMPLETED',
-            notes: paymentInput.notes,
+            invoiceId: mockInvoice.id;
+            patientId: mockInvoice.patientId;
+            paymentDate: new Date();
+            amount: mockGatewayResponse.amountProcessed;
+            paymentMode: paymentInput.paymentMode;
+            transactionReference: mockGatewayResponse.transactionId;
+            status: 'COMPLETED';
+            notes: paymentInput.notes;
         };
 
-        // const savedPayment = await prisma.payment.create({ data: newPayment })
+        // const _savedPayment = await prisma.payment.create({ data: newPayment })
 
         // 5. Update Invoice Status and Amount Paid
-        // const updatedAmountPaid = mockInvoice.amountPaid + savedPayment.amount
-        // const newInvoiceStatus = updatedAmountPaid >= mockInvoice.totalAmount ? 'PAID' : 'PARTIALLY_PAID'
+        // const _updatedAmountPaid = mockInvoice.amountPaid + savedPayment.amount
+        // const _newInvoiceStatus = updatedAmountPaid >= mockInvoice.totalAmount ? 'PAID' : 'PARTIALLY_PAID'
 
         // await prisma.invoice.update({
         //     where: { id: invoiceId },
         //     data: {
-        //         amountPaid: updatedAmountPaid,
-        //         status: newInvoiceStatus,
+        //         amountPaid: updatedAmountPaid;
+        //         status: newInvoiceStatus;
         //     },
         // })
 
@@ -113,19 +114,19 @@ export class PaymentService {
         // This is a very simplified mock. You'd likely have a mock DB or service.
         if (invoiceId === 'inv_123_unpaid') {
             return {
-                id: 'inv_123_unpaid',
-                patientId: 'pat_001',
-                patientName: 'Jane Doe',
-                invoiceDate: new Date(),
-                dueDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 15 * 24 * 60 * 60 * 1000),
+                id: 'inv_123_unpaid';
+                patientId: 'pat_001';
+                patientName: 'Jane Doe';
+                invoiceDate: new Date();
+                dueDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 15 * 24 * 60 * 60 * 1000);
                 lineItems: [{ chargeId: 'chg_001', serviceName: 'MRI Scan', quantity: 1, unitPrice: 500, totalPrice: 500 }],
-                subtotal: 500,
-                discountAmount: 0,
-                taxAmount: 50,
-                totalAmount: 550,
-                amountPaid: 0,
-                status: 'DRAFT', 
-                invoiceType: 'FINAL',
+                subtotal: 500;
+                discountAmount: 0;
+                taxAmount: 50;
+                totalAmount: 550;
+                amountPaid: 0;
+                status: 'DRAFT';
+                invoiceType: 'FINAL';
             }
         }
         return null;
@@ -137,9 +138,9 @@ export class PaymentService {
     //     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     //     // Simulate a successful response
     //     return {
-    //         success: true,
+    //         success: true;
     //         transactionId: `gw_txn_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-    //         message: 'Gateway processed successfully.',
+    //         message: 'Gateway processed successfully.';
     //         amountProcessed: amount
     //     }
     // }

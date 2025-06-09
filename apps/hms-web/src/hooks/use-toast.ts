@@ -1,9 +1,9 @@
-}
+
 import React, { useState } from "react";
 import { useCallback, useState } from 'react';
-
+}
 export interface Toast {
-  id: string,
+  id: string;
   title: string;
   description?: string;
   type: 'success' | 'error' | 'warning' | 'info';
@@ -18,17 +18,17 @@ export interface ToastOptions {
 /**
  * Custom hook for managing toast notifications;
  */
-export const useToast = () {
+export const _useToast = () {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const toast = useCallback((options: ToastOptions) => {
     const id = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 9);
     const newToast: Toast = {
       id,
-      title: options.title,
-      description: options.description,
-      type: options.type || 'info',
-      duration: options.duration || 5000,
+      title: options.title;
+      description: options.description;
+      type: options.type || 'info';
+      duration: options.duration || 5000;
     };
 
     setToasts((prevToasts) => [...prevToasts, newToast]);

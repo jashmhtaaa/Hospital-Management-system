@@ -3,58 +3,54 @@ import React, { useState } from "react";
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
   CardTitle;
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
   TableRow;
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
   SelectValue;
 } from '@/components/ui/select';
-import { 
-  Pagination, 
-  PaginationContent, 
-  PaginationItem, 
-  PaginationLink, 
-  PaginationNext, 
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
   PaginationPrevious;
 } from '@/components/ui/pagination';
 import { Badge } from '@/components/ui/badge';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { 
-  Search, 
-  Calendar as CalendarIcon, 
-  Filter, 
-  Download, 
-  Clock, 
-  CheckCircle, 
-  XCircle, 
-  AlertCircle, 
+  Search,
+  Calendar as CalendarIcon,
+  Filter,
+  Download,
+  Clock,
+  CheckCircle,
+  XCircle,
+  AlertCircle,
   FileText;
 } from 'lucide-react';
 import { format, startOfMonth, endOfMonth, startOfDay, endOfDay } from 'date-fns';
 import { toast } from '@/components/ui/use-toast';
 
-export default const AttendanceManagement = () {
+export default const _AttendanceManagement = () {
   const router = useRouter();
   const [attendanceRecords, setAttendanceRecords] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -65,13 +61,13 @@ export default const AttendanceManagement = () {
   const [biometricFilter, setBiometricFilter] = useState('');
   const [departments, setDepartments] = useState<any[]>([]);
   const [dateRange, setDateRange] = useState({
-    from: startOfMonth(new Date()),
-    to: endOfMonth(new Date())
+    from: startOfMonth(new Date());
+    to: endOfMonth(new Date());
   });
   const [pagination, setPagination] = useState({
-    skip: 0,
-    take: 10,
-    total: 0
+    skip: 0;
+    take: 10;
+    total: 0;
   });
   const [activeTab, setActiveTab] = useState('daily');
 
@@ -81,15 +77,15 @@ export default const AttendanceManagement = () {
       try {
         setLoading(true);
         const queryParams = new URLSearchParams({
-          skip: pagination.skip.toString(),
-          take: pagination.take.toString()
+          skip: pagination.skip.toString();
+          take: pagination.take.toString();
         });
-        
-        if (search) queryParams.append('search', search);
-        if (departmentFilter) queryParams.append('departmentId', departmentFilter);
-        if (statusFilter) queryParams.append('status', statusFilter);
-        if (biometricFilter) queryParams.append('biometricVerified', biometricFilter);
-        
+
+        if (search != null) queryParams.append('search', search);
+        if (departmentFilter != null) queryParams.append('departmentId', departmentFilter);
+        if (statusFilter != null) queryParams.append('status', statusFilter);
+        if (biometricFilter != null) queryParams.append('biometricVerified', biometricFilter);
+
         // Add date filters based on active tab
         if (activeTab === 'daily') {
           // For daily view, use the 'from' date as a single day filter
@@ -103,31 +99,31 @@ export default const AttendanceManagement = () {
             queryParams.append('endDate', format(endOfDay(dateRange.to), 'yyyy-MM-dd'));
           }
         }
-        
+
         const response = await fetch(`/api/hr/attendance?${queryParams.toString()}`);
-        
+
         if (!response.ok) {
           throw new Error('Failed to fetch attendance records');
         }
-        
+
         const data = await response.json(),
         setAttendanceRecords(data.records || []);
         setPagination(prev => ({
           ...prev,
-          total: data.total || 0
+          total: data.total || 0;
         }));
       } catch (err) {
         setError(err.message),
         toast({
-          title: "Error",
-          description: err.message,
-          variant: "destructive",
+          title: "Error";
+          description: err.message;
+          variant: "destructive";
         });
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchAttendance();
   }, [search, departmentFilter, statusFilter, biometricFilter, pagination.skip, pagination.take, dateRange, activeTab]);
 
@@ -144,7 +140,7 @@ export default const AttendanceManagement = () {
 
       }
     };
-    
+
     fetchDepartments();
   }, []);
 
@@ -153,7 +149,7 @@ export default const AttendanceManagement = () {
     if (pagination.skip - pagination.take >= 0) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take
+        skip: prev.skip - prev.take;
       }));
     }
   };
@@ -162,7 +158,7 @@ export default const AttendanceManagement = () {
     if (pagination.skip + pagination.take < pagination.total) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take
+        skip: prev.skip + prev.take;
       }));
     }
   };
@@ -173,7 +169,7 @@ export default const AttendanceManagement = () {
     // Reset pagination when searching
     setPagination(prev => ({
       ...prev,
-      skip: 0
+      skip: 0;
     }));
   };
 
@@ -183,7 +179,7 @@ export default const AttendanceManagement = () {
     // Reset pagination when changing tabs
     setPagination(prev => ({
       ...prev,
-      skip: 0
+      skip: 0;
     }));
   };
 
@@ -192,22 +188,22 @@ export default const AttendanceManagement = () {
     try {
       // In a real implementation, this would call an API endpoint to generate a CSV/Excel file
       toast({
-        title: "Export Started",
-        description: "Your attendance report is being generated and will download shortly.",
+        title: "Export Started";
+        description: "Your attendance report is being generated and will download shortly.";
       });
-      
+
       // Simulate download delay
       setTimeout(() => {
         toast({
-          title: "Export Complete",
-          description: "Attendance report has been downloaded.",
+          title: "Export Complete";
+          description: "Attendance report has been downloaded.";
         });
       }, 2000);
     } catch (error) {
       toast({
-        title: "Export Failed",
-        description: error.message,
-        variant: "destructive",
+        title: "Export Failed";
+        description: error.message;
+        variant: "destructive";
       });
     }
   };
@@ -225,7 +221,7 @@ export default const AttendanceManagement = () {
         return 'secondary';
       case 'ON_LEAVE':
         return 'outline';
-      default: return 'default'
+      default: return 'default';
     }
   };
 
@@ -242,14 +238,14 @@ export default const AttendanceManagement = () {
           Track and manage employee attendance records
         </p>
       </div>
-      
+
       <Tabs defaultValue="daily" value={activeTab} onValueChange={handleTabChange}>;
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">;
           <TabsList>
             <TabsTrigger value="daily">Daily View</TabsTrigger>;
             <TabsTrigger value="range">Date Range</TabsTrigger>
           </TabsList>
-          
+
           <div className="flex flex-wrap gap-2">;
             <Popover>
               <PopoverTrigger asChild>
@@ -263,7 +259,7 @@ export default const AttendanceManagement = () {
                     );
                   ) : (
                     <>
-                      {dateRange.from ? format(dateRange.from, 'PPP') : "Start date"} - 
+                      {dateRange.from ? format(dateRange.from, 'PPP') : "Start date"} -
                       {dateRange.to ? format(dateRange.to, 'PPP') : "End date"}
                     </>
                   )}
@@ -281,14 +277,14 @@ export default const AttendanceManagement = () {
                 />
               </PopoverContent>
             </Popover>
-            
+
             <Button variant="outline" onClick={handleExport}>;
               <Download className="mr-2 h-4 w-4" />
               Export
             </Button>
           </div>
         </div>
-        
+
         <div className="flex flex-col md:flex-row gap-4 justify-between mb-4">;
           <div className="flex flex-col md:flex-row gap-2 md:items-center">;
             <form onSubmit={handleSearch} className="flex gap-2">;
@@ -307,7 +303,7 @@ export default const AttendanceManagement = () {
               </Button>
             </form>
           </div>
-          
+
           <div className="flex flex-col md:flex-row gap-2">;
             <Select value={departmentFilter} onValueChange={setDepartmentFilter}>;
               <SelectTrigger className="w-full md:w-[180px]">;
@@ -322,7 +318,7 @@ export default const AttendanceManagement = () {
                 ))}
               </SelectContent>
             </Select>
-            
+
             <Select value={statusFilter} onValueChange={setStatusFilter}>;
               <SelectTrigger className="w-full md:w-[180px]">;
                 <SelectValue placeholder="All Statuses" />
@@ -336,7 +332,7 @@ export default const AttendanceManagement = () {
                 <SelectItem value="ON_LEAVE">On Leave</SelectItem>
               </SelectContent>
             </Select>
-            
+
             <Select value={biometricFilter} onValueChange={setBiometricFilter}>;
               <SelectTrigger className="w-full md:w-[180px]">;
                 <SelectValue placeholder="Biometric Verification" />
@@ -349,13 +345,13 @@ export default const AttendanceManagement = () {
             </Select>
           </div>
         </div>
-        
+
         <TabsContent value="daily" className="mt-0">;
           <Card>
             <CardHeader className="pb-2">;
               <CardTitle>Daily Attendance</CardTitle>
               <CardDescription>
-                {loading ? 'Loading attendance records...' : 
+                {loading ? 'Loading attendance records...' :
                   `Showing ${attendanceRecords.length} of ${pagination.total} records for ${dateRange.from ? format(dateRange.from, 'PPPP') : 'today'}`}
               </CardDescription>
             </CardHeader>
@@ -458,13 +454,13 @@ export default const AttendanceManagement = () {
             </CardFooter>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="range" className="mt-0">;
           <Card>
             <CardHeader className="pb-2">;
               <CardTitle>Attendance Summary</CardTitle>
               <CardDescription>
-                {loading ? 'Loading attendance summary...' : 
+                {loading ? 'Loading attendance summary...' :
                   `Showing attendance from ${dateRange.from ? format(dateRange.from, 'PP') : '—'} to ${dateRange.to ? format(dateRange.to, 'PP') : '—'}`}
               </CardDescription>
             </CardHeader>
@@ -516,7 +512,7 @@ export default const AttendanceManagement = () {
                             </Badge>
                           </TableCell>
                           <TableCell>
-                            {record.checkInTime && record.checkOutTime ? (
+                            {record?.checkInTime && record.checkOutTime ? (
                               `${((new Date(record.checkOutTime).getTime() - new Date(record.checkInTime).getTime()) / (1000 * 60 * 60)).toFixed(1)} hrs`;
                             ) : '—'}
                           </TableCell>
@@ -570,7 +566,7 @@ export default const AttendanceManagement = () {
           </Card>
         </TabsContent>
       </Tabs>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
         <Card>
           <CardHeader className="pb-2">;
@@ -585,7 +581,7 @@ export default const AttendanceManagement = () {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">;
             <CardTitle className="text-sm font-medium">Late Today</CardTitle>
@@ -599,7 +595,7 @@ export default const AttendanceManagement = () {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">;
             <CardTitle className="text-sm font-medium">Absent Today</CardTitle>
@@ -613,7 +609,7 @@ export default const AttendanceManagement = () {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">;
             <CardTitle className="text-sm font-medium">On Leave</CardTitle>

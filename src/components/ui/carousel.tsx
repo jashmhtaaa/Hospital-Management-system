@@ -1,9 +1,9 @@
+import * as React from "react";
+import useEmblaCarousel, {
 }
 
 "use client";
 
-import * as React from "react";
-import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -26,10 +26,10 @@ type CarouselProps = {
 type CarouselContextProps = {
   carouselRef: ReturnType<typeof useEmblaCarousel>[0]
   api: ReturnType<typeof useEmblaCarousel>[1]
-  scrollPrev: () => void,
-  scrollNext: () => void,
-  canScrollPrev: boolean,
-  canScrollNext: boolean
+  scrollPrev: () => void;
+  scrollNext: () => void;
+  canScrollPrev: boolean;
+  canScrollNext: boolean;
 } & CarouselProps;
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
@@ -63,7 +63,7 @@ const Carousel = React.forwardRef<;
     const [carouselRef, api] = useEmblaCarousel(
       {
         ...opts,
-        axis: orientation === "horizontal" ? "x" : "y",
+        axis: orientation === "horizontal" ? "x" : "y";
       },
       plugins;
     );
@@ -126,10 +126,9 @@ const Carousel = React.forwardRef<;
       <CarouselContext.Provider;
         value={{
           carouselRef,
-          api: api,
+          api: api;
           opts,
-          orientation:
-            orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
+          orientation: orientation || (opts?.axis === "y" ? "vertical" : "horizontal");
           scrollPrev,
           scrollNext,
           canScrollPrev,

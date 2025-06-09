@@ -1,21 +1,21 @@
-/**
- * HIPAA Compliance Validation Script - TypeScript Version
- * 
- * This script validates that the Hospital Management System meets all HIPAA requirements.
- * 
- * HIPAA Safeguards Validated:
- * - Administrative Safeguards (Access Control, Workforce Training, etc.)
- * - Physical Safeguards (Facility Access, Workstation Security, etc.)
- * - Technical Safeguards (Access Control, Audit Controls, Integrity, Transmission Security)
- * 
- * @version 2.0.0
- * @author HMS Development Team
- * @compliance HIPAA Security Rule §164.308, §164.310, §164.312
- */
 
 import * as fs from 'fs';
 import * as path from 'path';
 import { execSync } from 'child_process';
+/**
+ * HIPAA Compliance Validation Script - TypeScript Version
+ *
+ * This script validates that the Hospital Management System meets all HIPAA requirements.
+ *
+ * HIPAA Safeguards Validated:
+ * - Administrative Safeguards (Access Control, Workforce Training, etc.)
+ * - Physical Safeguards (Facility Access, Workstation Security, etc.)
+ * - Technical Safeguards (Access Control, Audit Controls, Integrity, Transmission Security)
+ *
+ * @version 2.0.0
+ * @author HMS Development Team
+ * @compliance HIPAA Security Rule §164.308, §164.310, §164.312
+ */
 
 // Type definitions for HIPAA compliance
 interface HIPAAConfig {
@@ -43,34 +43,34 @@ interface HIPAAConfig {
   readonly dataRetentionPolicyRequired: boolean;
   readonly workforceTrainingRequired: boolean;
   readonly securityOfficerDesignated: boolean;
-  readonly incidentResponsePlanRequired: boolean
+  readonly incidentResponsePlanRequired: boolean;
 }
 
 interface ValidationResult {
-  name: string,
-  passed: boolean,
-  details: string,
-  severity: 'critical' | 'high' | 'medium' | 'low',
+  name: string;
+  passed: boolean;
+  details: string;
+  severity: 'critical' | 'high' | 'medium' | 'low';
   regulation: string; // HIPAA regulation reference
   remediation?: string; // Suggested fix
 }
 
 interface ValidationWarning {
-  name: string,
+  name: string;
   details: string
-  recommendation: string
+  recommendation: string;
 }
 
 interface ComplianceResults {
-  totalChecks: number,
-  passedChecks: number,
-  failedChecks: ValidationResult[],
-  warnings: ValidationWarning[],
+  totalChecks: number;
+  passedChecks: number;
+  failedChecks: ValidationResult[];
+  warnings: ValidationWarning[];
   complianceScore: number; // 0-100
-  criticalIssues: number,
+  criticalIssues: number;
   highPriorityIssues: number
-  lastValidated: Date,
-  validatedBy: string
+  lastValidated: Date;
+  validatedBy: string;
 }
 
 // HIPAA Configuration - Enterprise Healthcare Standards
@@ -78,27 +78,27 @@ const HIPAA_CONFIG: HIPAAConfig = {
   requiredEncryptionStrength: 256, // AES-256 required for PHI
   auditLogRetentionDays: 2190, // 6 years (HIPAA requirement)
   passwordMinLength: 14, // Enhanced from NIST recommendations
-  passwordComplexity: true,
+  passwordComplexity: true;
   mfaRequired: true, // Required for PHI access
   sessionTimeoutMinutes: 10, // Stricter than 15 for healthcare
-  automaticLogoutRequired: true,
+  automaticLogoutRequired: true;
   minimumTlsVersion: 1.3, // Latest TLS for data in transit
-  emergencyAccessProcedureRequired: true,
-  auditLoggingRequired: true,
-  uniqueUserIdentificationRequired: true,
+  emergencyAccessProcedureRequired: true;
+  auditLoggingRequired: true;
+  uniqueUserIdentificationRequired: true;
   encryptionAtRestRequired: true, // All PHI must be encrypted at rest
   encryptionInTransitRequired: true, // All PHI transmission encrypted
-  dataBackupRequired: true,
-  disasterRecoveryRequired: true,
-  businessAssociateAgreementRequired: true,
-  breachNotificationRequired: true,
-  accessControlRequired: true,
+  dataBackupRequired: true;
+  disasterRecoveryRequired: true;
+  businessAssociateAgreementRequired: true;
+  breachNotificationRequired: true;
+  accessControlRequired: true;
   minimumAuthorizationRoles: [
-    'admin', 'doctor', 'nurse', 'receptionist', 'patient', 
+    'admin', 'doctor', 'nurse', 'receptionist', 'patient',
     'lab_technician', 'pharmacist', 'radiologist', 'security_officer'
   ] as const,
   rolesWithPHIAccess: [
-    'admin', 'doctor', 'nurse', 'lab_technician', 
+    'admin', 'doctor', 'nurse', 'lab_technician',
     'pharmacist', 'radiologist'
   ] as const,
   requiredAuditEvents: [
@@ -107,39 +107,39 @@ const HIPAA_CONFIG: HIPAAConfig = {
     'authorization_failure', 'system_access', 'data_export',
     'configuration_change', 'emergency_access'
   ] as const,
-  dataRetentionPolicyRequired: true,
-  workforceTrainingRequired: true,
-  securityOfficerDesignated: true,
-  incidentResponsePlanRequired: true
+  dataRetentionPolicyRequired: true;
+  workforceTrainingRequired: true;
+  securityOfficerDesignated: true;
+  incidentResponsePlanRequired: true;
 } as const
 
 // Results collection with enhanced tracking
 const results: ComplianceResults = {
-  totalChecks: 0,
-  passedChecks: 0,
-  failedChecks: [],
-  warnings: [],
-  complianceScore: 0,
-  criticalIssues: 0,
-  highPriorityIssues: 0,
-  lastValidated: new Date(),
-  validatedBy: 'HIPAA Validation System'
+  totalChecks: 0;
+  passedChecks: 0;
+  failedChecks: [];
+  warnings: [];
+  complianceScore: 0;
+  criticalIssues: 0;
+  highPriorityIssues: 0;
+  lastValidated: new Date();
+  validatedBy: 'HIPAA Validation System';
 }
 
 // Enhanced logging functions with severity tracking
 function logCheck(
-  name: string, 
-  passed: boolean, 
-  details: string,
-  severity: ValidationResult['severity'] = 'medium',
-  regulation: string = 'HIPAA Security Rule',
+  name: string;
+  passed: boolean;
+  details: string;
+  severity: ValidationResult['severity'] = 'medium';
+  regulation: string = 'HIPAA Security Rule';
   remediation?: string
 ): void {
   results.totalChecks++
-  
-  if (passed) {
+
+  if (passed != null) {
     results.passedChecks++;
-    /* SECURITY: Console statement removed */
+    /* SECURITY: Console statement removed */;
   } else {
     const result: ValidationResult = {
       name,
@@ -149,19 +149,19 @@ function logCheck(
       regulation,
       remediation
     };
-    
+
     results.failedChecks.push(result);
-    
+
     if (severity === 'critical') {
       results.criticalIssues++;
     } else if (severity === 'high') {
       results.highPriorityIssues++;
     }
-    
-    const icon = severity === 'critical' ? '🚨' : severity === 'high' ? '⚠️' : '⚡';
+
+    const _icon = severity === 'critical' ? '🚨' : severity === 'high' ? '⚠️' : '⚡';
     /* SECURITY: Console statement removed */
-    if (remediation) {
-      /* SECURITY: Console statement removed */
+    if (remediation != null) {
+      /* SECURITY: Console statement removed */;
     }
   }
 }
@@ -170,7 +170,7 @@ function logWarning(name: string, details: string, recommendation: string): void
   const warning: ValidationWarning = { name, details, recommendation };
   results.warnings.push(warning);
   /* SECURITY: Console statement removed */
-  /* SECURITY: Console statement removed */
+  /* SECURITY: Console statement removed */;
 }
 
 // Enhanced file system utilities with error handling
@@ -185,9 +185,9 @@ function fileExists(filePath: string): boolean {
 function fileContains(filePath: string, searchString: string | RegExp): boolean {
   try {
     if (!fs.existsSync(filePath)) return false;
-    
+
     const content = fs.readFileSync(filePath, 'utf8');
-    
+
     if (typeof searchString === 'string') {
       return content.includes(searchString);
     } else {
@@ -208,11 +208,11 @@ function findFilesWithPattern(startPath: string, pattern: RegExp): string[] {
 
   try {
     const files = fs.readdirSync(startPath);
-    
+
     for (const file of files) {
       const filename = path.join(startPath, file);
       const stat = fs.lstatSync(filename);
-      
+
       if (stat.isDirectory() && !file.startsWith('.') && file !== 'node_modules') {
         results = results.concat(findFilesWithPattern(filename, pattern));
       } else if (pattern.test(filename)) {
@@ -220,9 +220,9 @@ function findFilesWithPattern(startPath: string, pattern: RegExp): string[] {
       }
     }
   } catch (error) {
-    /* SECURITY: Console statement removed */
+    /* SECURITY: Console statement removed */;
   }
-  
+
   return results;
 }
 
@@ -237,14 +237,14 @@ function getFileContent(filePath: string): string | null {
 // Main validation functions
 function validateAccessControls(): void {
   /* SECURITY: Console statement removed */(1))...')
-  
+
   // 1.1 Check RBAC Implementation
   const rbacFiles = [
     './src/lib/rbac/rbac.service.ts',
     './src/lib/security/auth.service.ts',
     './src/lib/rbac/roles.ts'
   ]
-  
+
   let rbacImplemented = false;
   for (const file of rbacFiles) {
     if (fileExists(file)) {
@@ -252,7 +252,7 @@ function validateAccessControls(): void {
       break;
     }
   }
-  
+
   logCheck(
     'Role-Based Access Control Implementation',
     rbacImplemented,
@@ -263,25 +263,25 @@ function validateAccessControls(): void {
   );
 
   // 1.2 Check for minimum required roles
-  if (rbacImplemented) {
+  if (rbacImplemented != null) {
     const rolesFile = './src/lib/rbac/roles.ts'
     if (fileExists(rolesFile)) {
       const rolesContent = getFileContent(rolesFile);
       const missingRoles: string[] = [];
-      
-      if (rolesContent) {
+
+      if (rolesContent != null) {
         for (const role of HIPAA_CONFIG.minimumAuthorizationRoles) {
           if (!rolesContent.includes(role)) {
             missingRoles.push(role);
           }
         }
       }
-      
+
       logCheck(
         'Required Authorization Roles',
         missingRoles.length === 0,
-        missingRoles.length === 0 
-          ? 'All required roles are defined' 
+        missingRoles.length === 0
+          ? 'All required roles are defined'
           : `Missing roles: ${missingRoles.join(', ')}`,
         'high',
         'HIPAA §164.308(a)(3)',
@@ -292,7 +292,7 @@ function validateAccessControls(): void {
 
   // 1.3 Check unique user identification
   const authServiceExists = fileExists('./src/lib/security/auth.service.ts')
-  if (authServiceExists) {
+  if (authServiceExists != null) {
     const hasUniqueUserIds = fileContains('./src/lib/security/auth.service.ts', /userId|username|email/),
     logCheck(
       'Unique User Identification',
@@ -318,7 +318,7 @@ function validateAccessControls(): void {
 
 function validateAuditControls(): void {
   /* SECURITY: Console statement removed */)...');
-  
+
   // 2.1 Check audit service implementation
   const auditServiceExists = fileExists('./src/lib/audit/audit.service.ts'),
   logCheck(
@@ -330,10 +330,10 @@ function validateAuditControls(): void {
     'Implement comprehensive audit logging service'
   )
 
-  if (auditServiceExists) {
+  if (auditServiceExists != null) {
     const auditContent = getFileContent('./src/lib/audit/audit.service.ts');
-    
-    if (auditContent) {
+
+    if (auditContent != null) {
       // Check for required audit events
       const missingEvents: string[] = []
       for (const event of HIPAA_CONFIG.requiredAuditEvents) {
@@ -341,12 +341,12 @@ function validateAuditControls(): void {
           missingEvents.push(event);
         }
       }
-      
+
       logCheck(
         'Required Audit Events Coverage',
         missingEvents.length === 0,
-        missingEvents.length === 0 
-          ? 'All required audit events are logged' 
+        missingEvents.length === 0
+          ? 'All required audit events are logged'
           : `Missing audit events: ${missingEvents.join(', ')}`,
         'high',
         'HIPAA §164.312(b)',
@@ -369,16 +369,16 @@ function validateAuditControls(): void {
 
 function validateEncryption(): void {
   /* SECURITY: Console statement removed */(2)(iv) & §164.312(e))...');
-  
+
   // 3.1 Check encryption service
   const encryptionFiles = [
     './src/services/encryption_service.ts',
     './src/services/encryption_service_secure.ts'
   ]
-  
+
   let encryptionImplemented = false;
   let strongEncryption = false;
-  
+
   for (const file of encryptionFiles) {
     if (fileExists(file)) {
       encryptionImplemented = true;
@@ -388,7 +388,7 @@ function validateEncryption(): void {
       }
     }
   }
-  
+
   logCheck(
     'Encryption Service Implementation',
     encryptionImplemented,
@@ -409,7 +409,7 @@ function validateEncryption(): void {
 
   // 3.2 Check for encryption at rest
   const prismaSchemaExists = fileExists('./prisma/schema.prisma')
-  if (prismaSchemaExists) {
+  if (prismaSchemaExists != null) {
     const hasEncryptedFields = fileContains('./prisma/schema.prisma', /@encrypted|encrypt/i),
     logCheck(
       'Encryption at Rest',
@@ -422,7 +422,7 @@ function validateEncryption(): void {
   }
 
   // 3.3 Check transmission security
-  const hasHttpsConfig = fileContains('./next.config.ts', /https|ssl|tls/) || 
+  const hasHttpsConfig = fileContains('./next.config.ts', /https|ssl|tls/) ||
                         fileContains('./next.config.js', /https|ssl|tls/),
   logCheck(
     'Transmission Security (HTTPS/TLS)',
@@ -436,11 +436,11 @@ function validateEncryption(): void {
 
 function validateIntegrityControls(): void {
   /* SECURITY: Console statement removed */(1))...');
-  
+
   // 4.1 Check for data integrity measures
-  const hasDataValidation = fileExists('./src/lib/validation/') || 
+  const hasDataValidation = fileExists('./src/lib/validation/') ||
                            findFilesWithPattern('./src', /validation|validator/i).length > 0
-  
+
   logCheck(
     'Data Validation Implementation',
     hasDataValidation,
@@ -464,7 +464,7 @@ function validateIntegrityControls(): void {
 
 function validateBusinessAssociateCompliance(): void {
   /* SECURITY: Console statement removed */)...');
-  
+
   // 5.1 Check for BA agreement documentation
   const baDocsExist = fileExists('./docs/compliance/business-associate-agreements/') ||
                      fileExists('./docs/business-associate-agreements/'),
@@ -480,8 +480,8 @@ function validateBusinessAssociateCompliance(): void {
   // 5.2 Check for third-party service integrations
   const hasThirdPartyServices = fileContains('./package.json', /twilio|sendgrid|stripe|aws|google/) ||
                                fileExists('./src/lib/integrations/')
-  
-  if (hasThirdPartyServices) {
+
+  if (hasThirdPartyServices != null) {
     logWarning(
       'Third-Party Service Integration',
       'Third-party services detected that may process PHI',
@@ -492,7 +492,7 @@ function validateBusinessAssociateCompliance(): void {
 
 function validateBreachNotification(): void {
   /* SECURITY: Console statement removed */...');
-  
+
   // 6.1 Check for incident response procedures
   const hasIncidentResponse = fileExists('./docs/security/incident-response-plan.md') ||
                              fileExists('./src/lib/security/incident-response.service.ts'),
@@ -520,7 +520,7 @@ function validateBreachNotification(): void {
 
 function validateWorkforceTraining(): void {
   /* SECURITY: Console statement removed */(5))...');
-  
+
   // 7.1 Check for training documentation
   const hasTrainingDocs = fileExists('./docs/training/') ||
                          fileExists('./docs/workforce-training/'),
@@ -549,7 +549,7 @@ function validateWorkforceTraining(): void {
 function generateComplianceReport(): void {
   // Calculate compliance score
   results.complianceScore = Math.round((results.passedChecks / results.totalChecks) * 100)
-  
+
   /* SECURITY: Console statement removed */);
   /* SECURITY: Console statement removed */
   /* SECURITY: Console statement removed */);
@@ -561,46 +561,46 @@ function generateComplianceReport(): void {
   /* SECURITY: Console statement removed */
   /* SECURITY: Console statement removed */
   /* SECURITY: Console statement removed */}`);
-  
+
   // Compliance status
-  let status = '🔴 NON-COMPLIANT'
+  let _status = '🔴 NON-COMPLIANT'
   if (results.complianceScore >= 95 && results.criticalIssues === 0) {
-    status = '🟢 COMPLIANT';
+    _status = '🟢 COMPLIANT';
   } else if (results.complianceScore >= 80 && results.criticalIssues === 0) {
-    status = '🟡 MOSTLY COMPLIANT';
+    _status = '🟡 MOSTLY COMPLIANT';
   }
-  
+
   /* SECURITY: Console statement removed */
-  
+
   // Failed checks details
   if (results.failedChecks.length > 0) {
     /* SECURITY: Console statement removed *//* SECURITY: Console statement removed */);
-    
+
     results.failedChecks.forEach((check, index) => {
-      const severityIcon = check.severity === 'critical' ? '🚨' : 
+      const _severityIcon = check.severity === 'critical' ? '🚨' :
                           check.severity === 'high' ? '⚠️' : '⚡';
       /* SECURITY: Console statement removed */
       /* SECURITY: Console statement removed */
       /* SECURITY: Console statement removed */
       if (check.remediation) {
-        /* SECURITY: Console statement removed */
+        /* SECURITY: Console statement removed */;
       }
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     });
   }
-  
+
   // Warnings
   if (results.warnings.length > 0) {
     /* SECURITY: Console statement removed *//* SECURITY: Console statement removed */);
-    
+
     results.warnings.forEach((warning, index) => {
       /* SECURITY: Console statement removed */
       /* SECURITY: Console statement removed */
       /* SECURITY: Console statement removed */
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     });
   }
-  
+
   // Save results to file
   const reportPath = './docs/compliance/hipaa-validation-report.json'
   try {
@@ -609,15 +609,15 @@ function generateComplianceReport(): void {
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
-    
+
     fs.writeFileSync(reportPath, JSON.stringify(results, null, 2));
-    /* SECURITY: Console statement removed */
+    /* SECURITY: Console statement removed */;
   } catch (error) {
-    /* SECURITY: Console statement removed */
+    /* SECURITY: Console statement removed */;
   }
-  
+
   /* SECURITY: Console statement removed */);
-  
+
   // Exit with appropriate code
   process.exit(results.criticalIssues > 0 ? 1 : 0)
 }
@@ -626,7 +626,7 @@ function generateComplianceReport(): void {
 function main(): void {
   /* SECURITY: Console statement removed *//* SECURITY: Console statement removed */
   /* SECURITY: Console statement removed */
-  
+
   try {
     validateAccessControls(),
     validateAuditControls();

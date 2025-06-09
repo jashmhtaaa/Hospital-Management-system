@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { D1Database } from "@cloudflare/workers-types";
 
-export const runtime = "edge";
+import { D1Database } from "@cloudflare/workers-types";
+import { NextRequest, NextResponse } from "next/server";
+export const _runtime = "edge";
 
 // Interface for the POST request body
 interface ChecklistResponseBody {
@@ -12,8 +12,8 @@ interface ChecklistResponseBody {
 }
 
 // GET /api/ot/bookings/[id]/checklist-responses - Get checklist responses for a booking
-export const GET = async (
-  request: NextRequest,
+export const _GET = async (
+  request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -31,8 +31,8 @@ export const GET = async (
     const DB = process.env.DB as unknown as D1Database;
     let query = `;
         SELECT;
-            r.id, r.phase, r.responses, r.completed_at, 
-            t.name as template_name, 
+            r.id, r.phase, r.responses, r.completed_at,
+            t.name as template_name,
             u.name as completed_by_name;
         FROM OTChecklistResponses r;
         JOIN OTChecklistTemplates t ON r.checklist_template_id = t.id;
@@ -41,7 +41,7 @@ export const GET = async (
     `;
     const queryParameters: string[] = [bookingId];
 
-    if (phase) {
+    if (phase != null) {
       query += " AND r.phase = ?";
       queryParameters.push(phase);
     }
@@ -79,8 +79,8 @@ export const GET = async (
 }
 
 // POST /api/ot/bookings/[id]/checklist-responses - Add/Update checklist responses for a booking
-export const POST = async (
-  request: NextRequest,
+export const _POST = async (
+  request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -168,7 +168,7 @@ export const POST = async (
       responseId = crypto.randomUUID();
       await DB.prepare(
         `INSERT INTO OTChecklistResponses (
-                id, booking_id, checklist_template_id, phase, responses, 
+                id, booking_id, checklist_template_id, phase, responses,
                 completed_by_id, completed_at, created_at, updated_at;
              ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
       );
@@ -204,7 +204,7 @@ export const POST = async (
         // Keep responses as original string if parsing fails
       }
       return NextResponse.json(finalResult[0], {
-        status: existing && existing.length > 0 ? 200 : 201,
+        status: existing && existing.length > 0 ? 200 : 201;
       })
     } else {
       return NextResponse.json(

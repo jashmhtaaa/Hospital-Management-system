@@ -13,12 +13,12 @@ describe("InvoiceService", () => {
   describe("generateInvoiceForPatient", () => {
     it("should generate an invoice correctly for a patient with outstanding charges", async () => {
       // Arrange
-      const patientId = "patient-xyz";
+      const _patientId = "patient-xyz";
       // Mock ChargeCaptureService.getUnbilledChargesForPatient(patientId) to return some charges
       // Mock other necessary dependencies
 
       // Act
-      // const invoiceService = new InvoiceService(/* pass mocks */)
+      // const _invoiceService = new InvoiceService(/* pass mocks */)
       // const invoice = await invoiceService.generateInvoiceForPatient(patientId)
 
       // Assert
@@ -31,11 +31,11 @@ describe("InvoiceService", () => {
 
     it("should not generate an invoice if there are no outstanding charges", async () => {
       // Arrange
-      const patientId = "patient-no-charges";
+      const _patientId = "patient-no-charges";
       // Mock ChargeCaptureService.getUnbilledChargesForPatient(patientId) to return an empty array
 
       // Act
-      // const invoiceService = new InvoiceService(/* pass mocks */)
+      // const _invoiceService = new InvoiceService(/* pass mocks */)
       // const invoice = await invoiceService.generateInvoiceForPatient(patientId)
 
       // Assert
@@ -47,12 +47,12 @@ describe("InvoiceService", () => {
   describe("getInvoiceById", () => {
     it("should retrieve an invoice if it exists", async () => {
       // Arrange
-      const invoiceId = "invoice-123";
+      const _invoiceId = "invoice-123";
       // Mock repository to return an invoice object
 
       // Act
-      // const invoiceService = new InvoiceService(/* pass mocks */)
-      // const result = await invoiceService.getInvoiceById(invoiceId)
+      // const _invoiceService = new InvoiceService(/* pass mocks */)
+      // const _result = await invoiceService.getInvoiceById(invoiceId)
 
       // Assert
       // expect(result).toBeDefined()

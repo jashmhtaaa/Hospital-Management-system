@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { D1Database } from "@cloudflare/workers-types";
 
-export const runtime = "edge";
+import { D1Database } from "@cloudflare/workers-types";
+import { NextRequest, NextResponse } from "next/server";
+export const _runtime = "edge";
 
 // Interface for required staff/equipment (example)
 interface RequiredResource {
@@ -21,8 +21,8 @@ interface SurgeryTypeUpdateBody {
 }
 
 // GET /api/ot/surgery-types/[id] - Get details of a specific surgery type
-export const GET = async (
-  _request: NextRequest,
+export const _GET = async (
+  _request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -52,13 +52,13 @@ export const GET = async (
     // Parse JSON fields
     try {
       if (
-        surgeryType.required_staff &&
+        surgeryType?.required_staff &&
         typeof surgeryType.required_staff === "string"
       ) {
         surgeryType.required_staff = JSON.parse(surgeryType.required_staff);
       }
       if (
-        surgeryType.required_equipment &&
+        surgeryType?.required_equipment &&
         typeof surgeryType.required_equipment === "string"
       ) {
         surgeryType.required_equipment = JSON.parse(
@@ -81,8 +81,8 @@ export const GET = async (
 }
 
 // PUT /api/ot/surgery-types/[id] - Update an existing surgery type
-export const PUT = async (
-  _request: NextRequest,
+export const _PUT = async (
+  _request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -174,7 +174,7 @@ export const PUT = async (
     if (!results || results.length === 0) {
       return NextResponse.json(
         {
-          message: "Failed to fetch updated surgery type details after update",
+          message: "Failed to fetch updated surgery type details after update";
         },
         { status: 500 }
       );
@@ -184,7 +184,7 @@ export const PUT = async (
     // Parse JSON fields
     try {
       if (
-        updatedSurgeryType.required_staff &&
+        updatedSurgeryType?.required_staff &&
         typeof updatedSurgeryType.required_staff === "string"
       ) {
         updatedSurgeryType.required_staff = JSON.parse(
@@ -192,7 +192,7 @@ export const PUT = async (
         );
       }
       if (
-        updatedSurgeryType.required_equipment &&
+        updatedSurgeryType?.required_equipment &&
         typeof updatedSurgeryType.required_equipment === "string"
       ) {
         updatedSurgeryType.required_equipment = JSON.parse(
@@ -224,7 +224,7 @@ export const PUT = async (
 
 // DELETE /api/ot/surgery-types/[id] - Delete a surgery type
 export const DELETE = async (
-  _request: NextRequest,
+  _request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   try {
@@ -263,8 +263,8 @@ export const DELETE = async (
       // FIX: Check errorMessage
       return NextResponse.json(
         {
-          message: "Cannot delete surgery type with existing bookings",
-          details: errorMessage,
+          message: "Cannot delete surgery type with existing bookings";
+          details: errorMessage;
         },
         { status: 409 }
       );

@@ -1,14 +1,15 @@
+import * as z from "zod";
+import React, { useState, useEffect } from "react";
+import {
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Button } from "@/components/ui/button";
 }
 
 // src/components/er/ERRadiologyOrderModal.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -16,7 +17,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
   Form,
   FormControl,
   FormField,
@@ -25,7 +25,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -43,16 +42,16 @@ const radiologyOrderFormSchema = z.object({
     .min(1, { message: "Ordering doctor is required." }),
   procedureTypeId: z.string().min(1, { message: "Select a procedure type." }),
   priority: z.literal("STAT"), // Default to STAT for ER
-  clinicalNotes: z.string().optional(),
+  clinicalNotes: z.string().optional();
 });
 
 type RadiologyOrderFormValues = z.infer<typeof radiologyOrderFormSchema>;
 
 interface ERRadiologyOrderModalProperties {
-  isOpen: boolean,
+  isOpen: boolean;
   onClose: () => void;
   visitData?: {
-    id: string,
+    id: string;
     patientName: string;
     assignedDoctorId?: string; // Pass assigned doctor if available
   };
@@ -69,7 +68,7 @@ const availableProcedureTypes = [
   { id: "proc_mri_brain_wo", name: "MRI Brain w/o Contrast" },
 ];
 
-export default const ERRadiologyOrderModal = ({
+export default const _ERRadiologyOrderModal = ({
   isOpen,
   onClose,
   visitData,
@@ -79,20 +78,20 @@ export default const ERRadiologyOrderModal = ({
   const { toast } = useToast(); // FIX: Get toast function from hook
 
   const form = useForm<RadiologyOrderFormValues>({
-    resolver: zodResolver(radiologyOrderFormSchema),
+    resolver: zodResolver(radiologyOrderFormSchema);
     defaultValues: {
-      visitId: visitData?.id || "",
-      patientName: visitData?.patientName || "",
+      visitId: visitData?.id || "";
+      patientName: visitData?.patientName || "";
       orderingDoctorId: visitData?.assignedDoctorId || "", // Pre-fill if available
-      procedureTypeId: "",
-      priority: "STAT",
-      clinicalNotes: "",
+      procedureTypeId: "";
+      priority: "STAT";
+      clinicalNotes: "";
     },
   });
 
   // Update form when visitData changes
   useEffect(() => {
-    if (visitData) {
+    if (visitData != null) {
       form.setValue("visitId", visitData.id);
       form.setValue("patientName", visitData.patientName);
       form.setValue("orderingDoctorId", visitData.assignedDoctorId || "");
@@ -106,16 +105,16 @@ export default const ERRadiologyOrderModal = ({
     try {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       const response = await fetch("/api/radiology/orders", {
-        method: "POST",
+        method: "POST";
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           patient_id: visitData?.id, // Assuming visit ID links to patient in backend
-          visit_id: data.visitId,
-          ordering_doctor_id: data.orderingDoctorId,
-          procedure_type_id: data.procedureTypeId,
-          priority: data.priority,
-          clinical_notes: data.clinicalNotes || undefined,
-          order_source: "ER", // Indicate order source
+          visit_id: data.visitId;
+          ordering_doctor_id: data.orderingDoctorId;
+          procedure_type_id: data.procedureTypeId;
+          priority: data.priority;
+          clinical_notes: data.clinicalNotes || undefined;
+          order_source: "ER", // Indicate order source;
         }),
       });
 
@@ -136,28 +135,28 @@ export default const ERRadiologyOrderModal = ({
       // This might require another API call or be handled by backend logic
 
       toast({
-        title: "Radiology Order Submitted",
+        title: "Radiology Order Submitted";
         description: `STAT order ${newOrder.id} placed successfully.`,
       });
 
-      if (onSuccess) {
+      if (onSuccess != null) {
         onSuccess(); // Trigger potential refresh of tracking board
       }
       form.reset({
         ...form.getValues(), // Keep visit/patient info
         procedureTypeId: "", // Clear selected procedure
-        clinicalNotes: "",
+        clinicalNotes: "";
       });
       onClose();
     } catch (error: unknown) {
 
       toast({
-        title: "Order Failed",
+        title: "Order Failed";
         description:
           error instanceof Error;
             ? error.message;
             : "An unexpected error occurred.",
-        variant: "destructive",
+        variant: "destructive";
       });
     } finally {
       setIsLoading(false);

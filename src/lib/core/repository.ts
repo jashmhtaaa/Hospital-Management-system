@@ -1,3 +1,5 @@
+
+import { DatabaseError } from './errors.ts';
 }
 
 /**
@@ -5,14 +7,12 @@
  * Provides standardized data access abstraction;
  */
 
-import { DatabaseError } from './errors.ts';
-
 // Query options interface for filtering, sorting, and pagination
 export interface QueryOptions {
   filters?: Record<string, unknown>;
   sort?: {
-    field: string,
-    direction: 'asc' | 'desc'
+    field: string;
+    direction: 'asc' | 'desc';
   };
   pagination?: {
     page?: number;
@@ -71,7 +71,7 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
         if (options.pagination.cursor) {
           query.cursor = { id: options.pagination.cursor };
           query.skip = 1; // Skip the cursor item
-        } else if (options.pagination.page && options.pagination.pageSize) {
+        } else if (options.pagination?.page && options.pagination.pageSize) {
           query.skip = (options.pagination.page - 1) * options.pagination.pageSize;
         }
 
@@ -166,13 +166,13 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
       if (include.includes('.')) {
         // Handle nested includes (e.g., "items.product")
         const [parent, child] = include.split('.', 2)
-        
+
         if (!result[parent]) {
           result[parent] = { include: {} };
         } else if (!result[parent].include) {
           result[parent].include = {};
         }
-        
+
         result[parent].include[child] = true;
       } else {
         // Handle simple includes
@@ -191,7 +191,7 @@ export class CachedRepository<T, ID> implements Repository<T, ID> {
 
   constructor(
     private repository: Repository<T, ID>,
-    cachePrefix: string,
+    cachePrefix: string;
     cacheTTL = 3600 // Default TTL: 1 hour
   ) {
     this.cachePrefix = cachePrefix;
@@ -199,8 +199,8 @@ export class CachedRepository<T, ID> implements Repository<T, ID> {
   }
 
   async findById(id: ID): Promise<T | null> {
-    const cacheKey = `${this.cachePrefix}:${String(id)}`;
-    
+    const _cacheKey = `${this.cachePrefix}:${String(id)}`;
+
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     // For now, just pass through to the repository
     return this.repository.findById(id);

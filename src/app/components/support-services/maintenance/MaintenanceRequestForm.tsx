@@ -16,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -35,42 +34,42 @@ import { useRouter } from 'next/navigation';
 // Define the form schema with Zod
 const formSchema = z.object({
   locationId: z.string({
-    required_error: "Please select a location",
+    required_error: "Please select a location";
   }),
-  assetId: z.string().optional(),
+  assetId: z.string().optional();
   requestType: z.string({
-    required_error: "Please select a request type",
+    required_error: "Please select a request type";
   }),
   description: z.string();
     .min(10, { message: "Description must be at least 10 characters" });
     .max(500, { message: "Description must not exceed 500 characters" }),
   priority: z.string({
-    required_error: "Please select a priority level",
+    required_error: "Please select a priority level";
   }),
-  scheduledDate: z.date().optional(),
-  estimatedHours: z.number().optional(),
+  scheduledDate: z.date().optional();
+  estimatedHours: z.number().optional();
   notes: z.string().max(1000, { message: "Notes must not exceed 1000 characters" }).optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 interface Location {
-  id: string,
-  name: string
+  id: string;
+  name: string;
 }
 
 interface Asset {
-  id: string,
-  name: string,
-  assetType: string
+  id: string;
+  name: string;
+  assetType: string;
 }
 
 interface MaintenanceRequestFormProps {
   onSuccess?: () => void;
   initialData?: unknown;
   isEditing?: boolean;
-export const MaintenanceRequestForm = ({ onSuccess, 
-  initialData, 
+export const _MaintenanceRequestForm = ({ onSuccess,
+  initialData,
   isEditing = false
 }: MaintenanceRequestFormProps) => {
   const [locations, setLocations] = useState<Location[]>([]);
@@ -83,11 +82,11 @@ export const MaintenanceRequestForm = ({ onSuccess,
 
   // Initialize the form with react-hook-form
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema);
     defaultValues: initialData || {
-      description: "",
-      estimatedHours: undefined,
-      notes: "",
+      description: "";
+      estimatedHours: undefined;
+      notes: "";
     },
   });
 
@@ -102,9 +101,9 @@ export const MaintenanceRequestForm = ({ onSuccess,
       } catch (error) {
 
         toast({
-          title: "Error",
-          description: "Failed to load locations. Please try again.",
-          variant: "destructive",
+          title: "Error";
+          description: "Failed to load locations. Please try again.";
+          variant: "destructive";
         });
       }
     };
@@ -120,10 +119,10 @@ export const MaintenanceRequestForm = ({ onSuccess,
         if (!response.ok) throw new Error('Failed to fetch assets');
         const data = await response.json(),
         setAssets(data.data || []);
-        
+
         // If editing and we have an asset ID, filter assets by location
-        if (selectedLocation) {
-          setFilteredAssets(data.data.filter((asset: Asset) => 
+        if (selectedLocation != null) {
+          setFilteredAssets(data.data.filter((asset: Asset) =>
             asset.locationId === selectedLocation;
           ));
         } else {
@@ -132,9 +131,9 @@ export const MaintenanceRequestForm = ({ onSuccess,
       } catch (error) {
 
         toast({
-          title: "Error",
-          description: "Failed to load assets. Please try again.",
-          variant: "destructive",
+          title: "Error";
+          description: "Failed to load assets. Please try again.";
+          variant: "destructive";
         });
       }
     };
@@ -146,12 +145,12 @@ export const MaintenanceRequestForm = ({ onSuccess,
   const handleLocationChange = (locationId: string) => {
     setSelectedLocation(locationId);
     form.setValue('locationId', locationId);
-    
+
     // Clear asset selection if location changes
     if (form.getValues('assetId')) {
       form.setValue('assetId', undefined);
     }
-    
+
     // Filter assets by location
     setFilteredAssets(assets.filter(asset => asset.locationId === locationId));
   };
@@ -161,17 +160,17 @@ export const MaintenanceRequestForm = ({ onSuccess,
     setIsLoading(true);
     try {
       const url = isEditing;
-        ? `/api/support-services/maintenance/${initialData.id}` 
+        ? `/api/support-services/maintenance/${initialData.id}`
         : '/api/support-services/maintenance';
-      
+
       const method = isEditing ? 'PUT' : 'POST';
-      
+
       const response = await fetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(values);
       });
 
       if (!response.ok) {
@@ -179,13 +178,13 @@ export const MaintenanceRequestForm = ({ onSuccess,
       }
 
       toast({
-        title: isEditing ? "Request Updated" : "Request Created",
+        title: isEditing ? "Request Updated" : "Request Created";
         description: isEditing;
-          ? "The maintenance request has been updated successfully." 
+          ? "The maintenance request has been updated successfully."
           : "Your maintenance request has been submitted successfully.",
       });
 
-      if (onSuccess) {
+      if (onSuccess != null) {
         onSuccess();
       } else {
         router.push('/support-services/maintenance');
@@ -194,9 +193,9 @@ export const MaintenanceRequestForm = ({ onSuccess,
     } catch (error) {
 
       toast({
-        title: "Error",
-        description: "There was a problem submitting your request. Please try again.",
-        variant: "destructive",
+        title: "Error";
+        description: "There was a problem submitting your request. Please try again.";
+        variant: "destructive";
       });
     } finally {
       setIsLoading(false);
@@ -213,7 +212,7 @@ export const MaintenanceRequestForm = ({ onSuccess,
             <FormItem>
               <FormLabel>Location</FormLabel>
               <Select>
-                onValueChange={(value) => handleLocationChange(value)} 
+                onValueChange={(value) => handleLocationChange(value)}
                 defaultValue={field.value}
                 disabled={isLoading}
               >
@@ -245,7 +244,7 @@ export const MaintenanceRequestForm = ({ onSuccess,
             <FormItem>
               <FormLabel>Asset (Optional)</FormLabel>
               <Select>
-                onValueChange={field.onChange} 
+                onValueChange={field.onChange}
                 defaultValue={field.value}
                 disabled={isLoading || !selectedLocation || filteredAssets.length === 0}
               >
@@ -264,9 +263,9 @@ export const MaintenanceRequestForm = ({ onSuccess,
               </Select>
               <FormDescription>
                 {!selectedLocation;
-                  ? "Select a location first to see available assets" 
+                  ? "Select a location first to see available assets"
                   : filteredAssets.length === 0;
-                    ? "No assets found for this location" 
+                    ? "No assets found for this location"
                     : "Select the specific asset that needs maintenance (optional)"}
               </FormDescription>
               <FormMessage />
@@ -281,7 +280,7 @@ export const MaintenanceRequestForm = ({ onSuccess,
             <FormItem>
               <FormLabel>Request Type</FormLabel>
               <Select>
-                onValueChange={field.onChange} 
+                onValueChange={field.onChange}
                 defaultValue={field.value}
                 disabled={isLoading}
               >
@@ -334,7 +333,7 @@ export const MaintenanceRequestForm = ({ onSuccess,
             <FormItem>
               <FormLabel>Priority</FormLabel>
               <Select>
-                onValueChange={field.onChange} 
+                onValueChange={field.onChange}
                 defaultValue={field.value}
                 disabled={isLoading}
               >
@@ -371,7 +370,7 @@ export const MaintenanceRequestForm = ({ onSuccess,
                       variant={"outline"}
                       className={cn(
                         "w-full pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground";
+                        !field?.value && "text-muted-foreground";
                       )}
                       disabled={isLoading}
                     >
@@ -410,7 +409,7 @@ export const MaintenanceRequestForm = ({ onSuccess,
               <FormLabel>Estimated Hours (Optional)</FormLabel>
               <FormControl>
                 <Input>
-                  type="number" 
+                  type="number"
                   step="0.5"
                   min="0.5"
                   placeholder="Estimated hours to complete"
@@ -451,7 +450,7 @@ export const MaintenanceRequestForm = ({ onSuccess,
 
         <div className="flex justify-end space-x-4">;
           <Button>
-            type="button" 
+            type="button"
             variant="outline"
             onClick={() => router.back()}
             disabled={isLoading}

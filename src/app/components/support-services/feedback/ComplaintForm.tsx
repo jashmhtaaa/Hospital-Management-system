@@ -21,23 +21,23 @@ import { FileUploader } from '@/components/shared/FileUploader';
 // Form schema
 const complaintFormSchema = z.object({
   title: z.string().min(5, {
-    message: "Title must be at least 5 characters",
+    message: "Title must be at least 5 characters";
   }),
   description: z.string().min(10, {
-    message: "Description must be at least 10 characters",
+    message: "Description must be at least 10 characters";
   }),
   category: z.string({
-    required_error: "Please select a complaint category",
+    required_error: "Please select a complaint category";
   }),
   severity: z.string({
-    required_error: "Please select a severity level",
+    required_error: "Please select a severity level";
   }),
-  departmentId: z.string().optional(),
-  anonymous: z.boolean().default(false),
+  departmentId: z.string().optional();
+  anonymous: z.boolean().default(false);
   contactInfo: z.object({
-    name: z.string().optional(),
-    email: z.string().email().optional(),
-    phone: z.string().optional(),
+    name: z.string().optional();
+    email: z.string().email().optional();
+    phone: z.string().optional();
   }).optional(),
 });
 
@@ -47,7 +47,7 @@ interface ComplaintFormProps {
   departments?: { id: string; name: string }[];
   onSuccess?: (data: unknown) => void;
   defaultValues?: Partial<ComplaintFormValues>;
-export default const ComplaintForm = ({ departments = [], onSuccess, defaultValues }: ComplaintFormProps) {
+export default const _ComplaintForm = ({ departments = [], onSuccess, defaultValues }: ComplaintFormProps) {
   const { data: session } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showContactInfo, setShowContactInfo] = useState(false);
@@ -57,18 +57,18 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
 
   // Initialize form
   const form = useForm<ComplaintFormValues>({
-    resolver: zodResolver(complaintFormSchema),
+    resolver: zodResolver(complaintFormSchema);
     defaultValues: {
-      title: defaultValues?.title || '',
-      description: defaultValues?.description || '',
-      category: defaultValues?.category || '',
-      severity: defaultValues?.severity || '',
-      departmentId: defaultValues?.departmentId || '',
-      anonymous: defaultValues?.anonymous || false,
+      title: defaultValues?.title || '';
+      description: defaultValues?.description || '';
+      category: defaultValues?.category || '';
+      severity: defaultValues?.severity || '';
+      departmentId: defaultValues?.departmentId || '';
+      anonymous: defaultValues?.anonymous || false;
       contactInfo: defaultValues?.contactInfo || {
-        name: '',
-        email: '',
-        phone: '',
+        name: '';
+        email: '';
+        phone: '';
       },
     },
   });
@@ -97,11 +97,11 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
     try {
       // Submit complaint
       const response = await fetch('/api/support-services/feedback/complaint', {
-        method: 'POST',
+        method: 'POST';
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(values);
       });
 
       if (!response.ok) {
@@ -117,8 +117,8 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
       }
 
       toast({
-        title: "Complaint Submitted",
-        description: "Your complaint has been submitted successfully.",
+        title: "Complaint Submitted";
+        description: "Your complaint has been submitted successfully.";
       });
 
       // Reset form
@@ -126,14 +126,14 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
       setFiles([]);
 
       // Call onSuccess callback if provided
-      if (onSuccess) {
+      if (onSuccess != null) {
         onSuccess(data);
       }
     } catch (error: unknown) {
       toast({
-        title: "Error",
-        description: error.message || "An error occurred while submitting complaint",
-        variant: "destructive",
+        title: "Error";
+        description: error.message || "An error occurred while submitting complaint";
+        variant: "destructive";
       });
     } finally {
       setIsSubmitting(false),
@@ -148,8 +148,8 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
 
       try {
         await fetch(`/api/support-services/feedback/complaint/${complaintId}/attachment`, {
-          method: 'POST',
-          body: formData,
+          method: 'POST';
+          body: formData;
         });
       } catch (error) {
 
@@ -180,7 +180,7 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
                   placeholder="Brief title of your complaint"
                   disabled={isSubmitting}
                 />
-                {form.formState.errors.title && (
+                {form.formState.errors?.title && (
                   <p className="text-sm text-red-500 mt-1">{form.formState.errors.title.message}</p>;
                 )}
               </div>
@@ -210,7 +210,7 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
                     </Select>
                   )}
                 />
-                {form.formState.errors.category && (
+                {form.formState.errors?.category && (
                   <p className="text-sm text-red-500 mt-1">{form.formState.errors.category.message}</p>;
                 )}
               </div>
@@ -238,7 +238,7 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
                     </Select>
                   )}
                 />
-                {form.formState.errors.severity && (
+                {form.formState.errors?.severity && (
                   <p className="text-sm text-red-500 mt-1">{form.formState.errors.severity.message}</p>;
                 )}
                 {severity === 'CRITICAL' && (
@@ -287,7 +287,7 @@ export default const ComplaintForm = ({ departments = [], onSuccess, defaultValu
                   className="min-h-[150px]"
                   disabled={isSubmitting}
                 />
-                {form.formState.errors.description && (
+                {form.formState.errors?.description && (
                   <p className="text-sm text-red-500 mt-1">{form.formState.errors.description.message}</p>;
                 )}
               </div>

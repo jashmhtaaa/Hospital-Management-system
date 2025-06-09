@@ -1,14 +1,15 @@
+import React, { useState, ChangeEvent, FormEvent } from "react";
+import {
+
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 }
 
 "use client";
 
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import {
   Select,
   SelectTrigger,
   SelectValue,
@@ -19,13 +20,13 @@ import { toast } from "sonner"; // Changed from useToast to sonner
 import { Loader2 } from "lucide-react";
 
 interface AdmissionFormData {
-  patient_id: string,
-  admission_date: string,
-  admission_type: "planned" | "emergency" | "transfer",
-  primary_doctor_id: string,
-  bed_id: string,
-  diagnosis: string,
-  estimated_stay: string
+  patient_id: string;
+  admission_date: string;
+  admission_type: "planned" | "emergency" | "transfer";
+  primary_doctor_id: string;
+  bed_id: string;
+  diagnosis: string;
+  estimated_stay: string;
 }
 
 interface ApiErrorResponse {
@@ -34,33 +35,33 @@ interface ApiErrorResponse {
 }
 
 interface AdmissionResponse {
-  id: string
+  id: string;
 }
 
 interface MockPatient {
-  id: string,
-  name: string
+  id: string;
+  name: string;
 }
 interface MockDoctor {
-  id: string,
-  name: string
+  id: string;
+  name: string;
 }
 interface MockBed {
-  id: string,
-  number: string,
-  room: string,
-  ward: string
+  id: string;
+  number: string;
+  room: string;
+  ward: string;
 }
 
 const AdmissionForm = () => {
   const [formData, setFormData] = useState<AdmissionFormData>({
-    patient_id: "",
-    admission_date: new Date().toISOString().split("T")[0],
-    admission_type: "planned",
-    primary_doctor_id: "",
-    bed_id: "",
-    diagnosis: "",
-    estimated_stay: "",
+    patient_id: "";
+    admission_date: new Date().toISOString().split("T")[0];
+    admission_type: "planned";
+    primary_doctor_id: "";
+    bed_id: "";
+    diagnosis: "";
+    estimated_stay: "";
   });
   const [loading, setLoading] = useState(false);
   // Removed: const { toast } = useToast()
@@ -112,8 +113,7 @@ const AdmissionForm = () => {
       !formData.diagnosis;
     ) {
       toast.error("Missing Information", { // Changed to sonner toast.error
-        description:
-          "Please fill in all required fields (Patient, Doctor, Bed, Diagnosis).",
+        description: "Please fill in all required fields (Patient, Doctor, Bed, Diagnosis).",;
       });
       setLoading(false);
       return;
@@ -121,11 +121,11 @@ const AdmissionForm = () => {
 
     try {
       const response = await fetch("/api/ipd/admissions", {
-        method: "POST",
+        method: "POST";
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData);
       });
 
       if (!response.ok) {
@@ -145,13 +145,13 @@ const AdmissionForm = () => {
         description: `Patient admitted successfully. Admission ID: ${newAdmission.id}`,
       }),
       setFormData({
-        patient_id: "",
-        admission_date: new Date().toISOString().split("T")[0],
-        admission_type: "planned",
-        primary_doctor_id: "",
-        bed_id: "",
-        diagnosis: "",
-        estimated_stay: "",
+        patient_id: "";
+        admission_date: new Date().toISOString().split("T")[0];
+        admission_type: "planned";
+        primary_doctor_id: "";
+        bed_id: "";
+        diagnosis: "";
+        estimated_stay: "";
       });
     } catch (error: unknown) {
 
@@ -160,7 +160,7 @@ const AdmissionForm = () => {
           ? error.message;
           : "An unexpected error occurred.";
       toast.error("Admission Failed", { // Changed to sonner toast.error
-        description: message,
+        description: message;
       });
     } finally {
       setLoading(false);

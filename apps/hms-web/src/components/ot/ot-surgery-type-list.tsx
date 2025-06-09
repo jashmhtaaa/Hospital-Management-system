@@ -1,33 +1,34 @@
-}
 import React from 'react';
+
+
+import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-
+}
 interface SurgeryType {
-  id: string,
-  name: string,
-  category: string,
-  averageDuration: string,
-  specialEquipment: string[],
-  specialistRequired: string,
-  riskLevel: 'low' | 'medium' | 'high'
+  id: string;
+  name: string;
+  category: string;
+  averageDuration: string;
+  specialEquipment: string[];
+  specialistRequired: string;
+  riskLevel: 'low' | 'medium' | 'high';
 }
 
 interface OTSurgeryTypeListProps {
-  surgeryTypes: SurgeryType[]
+  surgeryTypes: SurgeryType[];
 }
 
 /**
  * Operation Theatre surgery type list component;
  */
-export const OTSurgeryTypeList = ({ surgeryTypes }: OTSurgeryTypeListProps) => {
+export const _OTSurgeryTypeList = ({ surgeryTypes }: OTSurgeryTypeListProps) => {
   const getRiskBadge = (risk: string) => {
     switch(risk) {
       case 'low': return <Badge variant="secondary">Low Risk</Badge>;
       case 'medium': return <Badge variant="warning">Medium Risk</Badge>;
       case 'high': return <Badge variant="danger">High Risk</Badge>;
-      default: return <Badge>Unknown</Badge>
+      default: return <Badge>Unknown</Badge>;
     }
   };
 

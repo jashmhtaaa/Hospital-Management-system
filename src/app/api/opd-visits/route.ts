@@ -1,28 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+
+
+import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database
+import { Consultation } from "@/types/opd";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
-import { z } from "zod";
-import { Consultation } from "@/types/opd";
-import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database
-
 // Zod schema for creating an OPD visit
 const opdVisitCreateSchema = z.object({
-    patient_id: z.number(),
-    doctor_id: z.number(),
+    patient_id: z.number();
+    doctor_id: z.number();
     consultation_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid consultation datetime format",
+        message: "Invalid consultation datetime format";
     }),
     chief_complaint: z.string().min(1, "Chief complaint is required"),
-    history_of_present_illness: z.string().optional().nullable(),
-    past_medical_history: z.string().optional().nullable(),
-    physical_examination: z.string().optional().nullable(),
-    diagnosis: z.string().optional().nullable(),
-    treatment_plan: z.string().optional().nullable(),
-    follow_up_instructions: z.string().optional().nullable(),
+    history_of_present_illness: z.string().optional().nullable();
+    past_medical_history: z.string().optional().nullable();
+    physical_examination: z.string().optional().nullable();
+    diagnosis: z.string().optional().nullable();
+    treatment_plan: z.string().optional().nullable();
+    follow_up_instructions: z.string().optional().nullable();
 });
 
 // GET /api/opd-visits - Fetch list of OPD visits (with filtering/pagination)
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
     const session = await getSession()
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -43,8 +44,8 @@ export const GET = async (request: NextRequest) => {
 
         const validSortColumns = ["consultation_datetime", "created_at", "status"];
         const validSortOrders = ["asc", "desc"];
-        const finalSortBy = validSortColumns.includes(sortBy) ? sortBy : "consultation_datetime";
-        const finalSortOrder = validSortOrders.includes(sortOrder) ? sortOrder.toUpperCase() : "DESC";
+        const _finalSortBy = validSortColumns.includes(sortBy) ? sortBy : "consultation_datetime";
+        const _finalSortOrder = validSortOrders.includes(sortOrder) ? sortOrder.toUpperCase() : "DESC";
 
         let query = `;
             SELECT;
@@ -61,31 +62,31 @@ export const GET = async (request: NextRequest) => {
         let countQuery = `SELECT COUNT(*) as total FROM Consultations WHERE visit_type = 'OPD'`;
         const countParameters: (string | number)[] = [];
 
-        if (patientIdFilter) {
+        if (patientIdFilter != null) {
             query += " AND c.patient_id = ?";
             queryParameters.push(Number.parseInt(patientIdFilter));
             countQuery += " AND patient_id = ?";
             countParameters.push(Number.parseInt(patientIdFilter));
         }
-        if (doctorIdFilter) {
+        if (doctorIdFilter != null) {
             query += " AND c.doctor_id = ?";
             queryParameters.push(Number.parseInt(doctorIdFilter));
             countQuery += " AND doctor_id = ?";
             countParameters.push(Number.parseInt(doctorIdFilter));
         }
-        if (dateFromFilter) {
+        if (dateFromFilter != null) {
             query += " AND DATE(c.consultation_datetime) >= ?";
             queryParameters.push(dateFromFilter);
             countQuery += " AND DATE(consultation_datetime) >= ?";
             countParameters.push(dateFromFilter);
         }
-        if (dateToFilter) {
+        if (dateToFilter != null) {
             query += " AND DATE(c.consultation_datetime) <= ?";
             queryParameters.push(dateToFilter);
             countQuery += " AND DATE(consultation_datetime) <= ?";
             countParameters.push(dateToFilter);
         }
-        if (statusFilter) {
+        if (statusFilter != null) {
             query += " AND c.visit_status = ?";
             queryParameters.push(statusFilter);
             countQuery += " AND visit_status = ?";
@@ -104,12 +105,12 @@ export const GET = async (request: NextRequest) => {
         const total = countResult?.total || 0;
 
         return NextResponse.json({
-            data: results,
+            data: results;
             pagination: {
                 page,
                 limit,
                 total,
-                totalPages: Math.ceil(total / limit),
+                totalPages: Math.ceil(total / limit);
             },
         });
 
@@ -127,7 +128,7 @@ export const GET = async (request: NextRequest) => {
 }
 
 // POST /api/opd-visits - Create a new OPD visit (Consultation record)
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
     const session = await getSession()
     if (!session.isLoggedIn) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });

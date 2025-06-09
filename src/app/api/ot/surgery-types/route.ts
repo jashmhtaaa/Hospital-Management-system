@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { D1Database } from "@cloudflare/workers-types";
 
-export const runtime = "edge";
+import { D1Database } from "@cloudflare/workers-types";
+import { NextRequest, NextResponse } from "next/server";
+export const _runtime = "edge";
 
 // Interface for required staff/equipment (re-used from [id] route, consider moving to a shared types file)
 interface RequiredResource {
@@ -21,7 +21,7 @@ interface SurgeryTypeCreateBody {
 }
 
 // GET /api/ot/surgery-types - List all surgery types
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const specialty = searchParams.get("specialty");
@@ -32,7 +32,7 @@ export const GET = async (request: NextRequest) => {
       "SELECT id, name, description, specialty, estimated_duration_minutes, updated_at FROM SurgeryTypes";
     const parameters: string[] = [];
 
-    if (specialty) {
+    if (specialty != null) {
       query += " WHERE specialty = ?";
       parameters.push(specialty);
     }
@@ -56,7 +56,7 @@ export const GET = async (request: NextRequest) => {
 }
 
 // POST /api/ot/surgery-types - Create a new surgery type
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     const body = (await request.json()) as SurgeryTypeCreateBody;
     const {
@@ -109,7 +109,7 @@ export const POST = async (request: NextRequest) => {
       // Parse JSON fields before returning
       try {
         if (
-          newSurgeryType.required_staff &&
+          newSurgeryType?.required_staff &&
           typeof newSurgeryType.required_staff === "string"
         ) {
           newSurgeryType.required_staff = JSON.parse(
@@ -117,7 +117,7 @@ export const POST = async (request: NextRequest) => {
           );
         }
         if (
-          newSurgeryType.required_equipment &&
+          newSurgeryType?.required_equipment &&
           typeof newSurgeryType.required_equipment === "string"
         ) {
           newSurgeryType.required_equipment = JSON.parse(
@@ -139,8 +139,8 @@ export const POST = async (request: NextRequest) => {
           estimated_duration_minutes,
           required_staff,
           required_equipment,
-          created_at: now,
-          updated_at: now,
+          created_at: now;
+          updated_at: now;
         },
         { status: 201 }
       );

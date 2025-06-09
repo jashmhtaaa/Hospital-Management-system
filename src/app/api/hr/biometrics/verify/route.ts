@@ -1,22 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { biometricService } from '@/lib/hr/biometric-service';
 import { z } from 'zod';
 
+
+import { biometricService } from '@/lib/hr/biometric-service';
 // Schema for biometric verification
 const biometricVerificationSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   templateType: z.enum(['FINGERPRINT', 'FACIAL', 'IRIS'], {
     errorMap: () => ({ message: "Template type must be FINGERPRINT, FACIAL, or IRIS" });
   }),
-  sampleData: z.string().min(1, "Sample data is required"),
+  sampleData: z.string().min(1, "Sample data is required"),;
 });
 
 // POST handler for verifying biometric data
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   try {
     // Parse request body
     const body = await request.json();
-    
+
     // Validate request data
     const validationResult = biometricVerificationSchema.safeParse(body);
     if (!validationResult.success) {
@@ -25,10 +26,10 @@ export const POST = async (request: NextRequest) => {
         { status: 400 }
       );
     }
-    
+
     // Verify biometric data
     const result = await biometricService.verifyBiometric(validationResult.data);
-    
+
     return NextResponse.json(result);
   } catch (error) {
 

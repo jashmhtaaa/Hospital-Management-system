@@ -1,12 +1,13 @@
-
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { 
-  AlertTriangle, 
-  Brain, 
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+  AlertTriangle,
+  Brain,
   Activity,
   TrendingUp,
   Shield,
@@ -40,11 +41,11 @@ const ClinicalDecisionSupport: React.FC<{ patientId: string }> = ({ patientId })
   const [analysis, setAnalysis] = useState<CDSAnalysis | null>(null);
   const [loading, setLoading] = useState(false);
   const [prescriptionData, setPrescriptionData] = useState({
-    medications: []
+    medications: [];
   });
 
   useEffect(() => {
-    if (patientId) {
+    if (patientId != null) {
       fetchCDSAnalysis();
     }
   }, [patientId]);
@@ -56,24 +57,24 @@ const ClinicalDecisionSupport: React.FC<{ patientId: string }> = ({ patientId })
       const data = await response.json();
       setAnalysis(data.analysis);
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     } finally {
       setLoading(false);
     }
   };
 
-  const checkPrescription = async (medications: any[]) => {
+  const checkPrescription = async (medications: unknown[]) => {
     setLoading(true);
     try {
       const response = await fetch('/api/clinical-decision-support/prescription-check', {
-        method: 'POST',
+        method: 'POST';
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ patientId, medications })
       });
       const data = await response.json();
       setAnalysis(data.analysis);
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     } finally {
       setLoading(false);
     }
@@ -106,7 +107,7 @@ const ClinicalDecisionSupport: React.FC<{ patientId: string }> = ({ patientId })
     return 'text-green-600';
   };
 
-  if (loading) {
+  if (loading != null) {
     return (
       <Card>
         <CardContent className="p-6">
@@ -212,20 +213,20 @@ const ClinicalDecisionSupport: React.FC<{ patientId: string }> = ({ patientId })
                 <div key={index} className="p-4 border rounded-lg">
                   <div className="flex items-center justify-between mb-2">
                     <Badge variant="outline">{rec.type.replace('_', ' ')}</Badge>
-                    {rec.confidence && (
+                    {rec?.confidence && (
                       <Badge className="bg-green-100 text-green-800">
                         {Math.round(rec.confidence * 100)}% confidence
                       </Badge>
                     )}
                   </div>
-                  
-                  {rec.condition && (
+
+                  {rec?.condition && (
                     <div className="font-medium text-lg mb-2">{rec.condition}</div>
                   )}
-                  
+
                   <p className="text-gray-700 mb-3">{rec.recommendation}</p>
-                  
-                  {rec.tests && rec.tests.length > 0 && (
+
+                  {rec?.tests && rec.tests.length > 0 && (
                     <div>
                       <div className="text-sm font-medium mb-1">Suggested Tests:</div>
                       <div className="flex flex-wrap gap-1">
@@ -237,8 +238,8 @@ const ClinicalDecisionSupport: React.FC<{ patientId: string }> = ({ patientId })
                       </div>
                     </div>
                   )}
-                  
-                  {rec.suggestion && (
+
+                  {rec?.suggestion && (
                     <div className="mt-2 p-2 bg-blue-50 rounded text-sm">
                       <strong>Suggestion:</strong> {rec.suggestion}
                     </div>

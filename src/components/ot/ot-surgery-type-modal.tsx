@@ -1,9 +1,9 @@
+import React, { useState, useEffect } from "react";
+import {
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -21,9 +21,9 @@ import { useToast } from "@/components/ui/use-toast";
 // Define SurgeryType interface
 interface SurgeryType {
   id?: string; // Optional for new types
-  name: string,
-  description: string | null,
-  specialty: string | null,
+  name: string;
+  description: string | null;
+  specialty: string | null;
   estimated_duration_minutes: number | string | null; // Allow string for input
   required_staff?: unknown; // JSON structure, use unknown for now
   required_equipment?: unknown; // JSON structure, use unknown for now
@@ -32,10 +32,10 @@ interface SurgeryType {
 
 // Define the type for data passed to onSave
 interface SurgeryTypeSaveData {
-  name: string,
-  description: string | null,
-  specialty: string | null,
-  estimated_duration_minutes: number | null,
+  name: string;
+  description: string | null;
+  specialty: string | null;
+  estimated_duration_minutes: number | null;
   required_staff: unknown | null; // Parsed JSON
   required_equipment: unknown | null; // Parsed JSON
 }
@@ -45,16 +45,16 @@ interface OTSurgeryTypeModalProperties {
   trigger: React.ReactNode;
   surgeryType?: SurgeryType; // Use SurgeryType type
   onSave: (surgeryTypeData: SurgeryTypeSaveData) => Promise<void>; // Use SurgeryTypeSaveData type
-export default const OTSurgeryTypeModal = ({
+export default const _OTSurgeryTypeModal = ({
   trigger,
   surgeryType,
   onSave,
 }: OTSurgeryTypeModalProperties) {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState(() => ({
-    name: surgeryType?.name || "",
-    description: surgeryType?.description || "",
-    specialty: surgeryType?.specialty || "",
+    name: surgeryType?.name || "";
+    description: surgeryType?.description || "";
+    specialty: surgeryType?.specialty || "";
     estimated_duration_minutes:
       surgeryType?.estimated_duration_minutes?.toString() || "", // Ensure it's a string for input
     required_staff: surgeryType?.required_staff;
@@ -69,11 +69,11 @@ export default const OTSurgeryTypeModal = ({
 
   // Reset form when surgeryType prop changes or modal opens
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen != null) {
       setFormData({
-        name: surgeryType?.name || "",
-        description: surgeryType?.description || "",
-        specialty: surgeryType?.specialty || "",
+        name: surgeryType?.name || "";
+        description: surgeryType?.description || "";
+        specialty: surgeryType?.specialty || "";
         estimated_duration_minutes:
           surgeryType?.estimated_duration_minutes?.toString() || "", // Ensure it's a string for input
         required_staff: surgeryType?.required_staff;
@@ -108,9 +108,9 @@ export default const OTSurgeryTypeModal = ({
           parsedStaff = JSON.parse(formData.required_staff);
       } catch {
         toast({
-          title: "Error",
-          description: "Invalid JSON format for Required Staff.",
-          variant: "destructive",
+          title: "Error";
+          description: "Invalid JSON format for Required Staff.";
+          variant: "destructive";
         }),
         setIsSaving(false);
         return;
@@ -120,9 +120,9 @@ export default const OTSurgeryTypeModal = ({
           parsedEquipment = JSON.parse(formData.required_equipment);
       } catch {
         toast({
-          title: "Error",
-          description: "Invalid JSON format for Required Equipment.",
-          variant: "destructive",
+          title: "Error";
+          description: "Invalid JSON format for Required Equipment.";
+          variant: "destructive";
         }),
         setIsSaving(false);
         return;
@@ -132,37 +132,37 @@ export default const OTSurgeryTypeModal = ({
         ? Number.parseInt(formData.estimated_duration_minutes, 10);
         : undefined;
       if (
-        formData.estimated_duration_minutes &&
+        formData?.estimated_duration_minutes &&
         (Number.isNaN(duration as number) || (duration as number) < 0);
       ) {
         toast({
-          title: "Error",
-          description: "Estimated duration must be a non-negative number.",
-          variant: "destructive",
+          title: "Error";
+          description: "Estimated duration must be a non-negative number.";
+          variant: "destructive";
         }),
         setIsSaving(false);
         return;
       }
 
       const apiData: SurgeryTypeSaveData = {
-        name: formData.name,
-        description: formData.description || null,
-        specialty: formData.specialty || null,
-        estimated_duration_minutes: duration ?? null,
-        required_staff: parsedStaff,
-        required_equipment: parsedEquipment,
+        name: formData.name;
+        description: formData.description || null;
+        specialty: formData.specialty || null;
+        estimated_duration_minutes: duration ?? null;
+        required_staff: parsedStaff;
+        required_equipment: parsedEquipment;
       };
 
       // Replace with actual API call
-      // const url = surgeryType?.id ? `/api/ot/surgery-types/${surgeryType.id}` : `/api/ot/surgery-types`
-      // const method = surgeryType?.id ? "PUT" : "POST"
-      // const response = await fetch(url, {
-      //   method: method,
+      // const _url = surgeryType?.id ? `/api/ot/surgery-types/${surgeryType.id}` : `/api/ot/surgery-types`
+      // const _method = surgeryType?.id ? "PUT" : "POST"
+      // const _response = await fetch(url, {
+      //   _method: method;
       //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(apiData),
+      //   body: JSON.stringify(apiData);
       // })
       // if (!response.ok) {
-      //   const errorData = await response.json()
+      //   const _errorData = await response.json()
       //   throw new Error(errorData.message || "Failed to save surgery type")
       // }
 
@@ -173,7 +173,7 @@ export default const OTSurgeryTypeModal = ({
       await onSave(apiData); // Call parent callback to refresh list
 
       toast({
-        title: "Success",
+        title: "Success";
         description: `Surgery Type ${surgeryType ? "updated" : "created"} successfully.`,
       }),
       setIsOpen(false);
@@ -185,9 +185,9 @@ export default const OTSurgeryTypeModal = ({
         errorMessage = error.message;
       }
       toast({
-        title: "Error",
-        description: errorMessage,
-        variant: "destructive",
+        title: "Error";
+        description: errorMessage;
+        variant: "destructive";
       });
     } finally {
       setIsSaving(false);

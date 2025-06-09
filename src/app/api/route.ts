@@ -1,7 +1,8 @@
+import { IronSession } from "iron-session"; // Import IronSession
 import { NextRequest, NextResponse } from "next/server";
+
 import { getDB } from "@/lib/database";
 import { getSession, IronSessionData } from "@/lib/session"; // Import IronSessionData
-import { IronSession } from "iron-session"; // Import IronSession
 // import { checkUserRole } from "@/lib/auth"
 
 // Define Database interface (can be moved to a shared types file)
@@ -9,26 +10,26 @@ interface PreparedStatement {
   // FIX: Replaced any[] with unknown[]
   bind(...parameters: unknown[]): {
     run(): Promise<{
-      success: boolean,
+      success: boolean;
       meta: { duration: number; changes?: number };
     }>;
     // FIX: Replaced any with unknown
     all<T = unknown>(): Promise<{
-      results: T[],
-      success: boolean,
+      results: T[];
+      success: boolean;
       meta: { duration: number };
     }>;
     // FIX: Replaced any with unknown
     first<T = unknown>(colName?: string): Promise<T | null>;
   };
   run(): Promise<{
-    success: boolean,
+    success: boolean;
     meta: { duration: number; changes?: number };
   }>;
   // FIX: Replaced any with unknown
   all<T = unknown>(): Promise<{
-    results: T[],
-    success: boolean,
+    results: T[];
+    success: boolean;
     meta: { duration: number };
   }>;
   // FIX: Replaced any with unknown
@@ -42,9 +43,9 @@ interface Database {
 
 // Define interfaces
 interface RadiologyStudy {
-  id: string,
-  order_id: string,
-  accession_number: string,
+  id: string;
+  order_id: string;
+  accession_number: string;
   study_datetime: string; // ISO date string
   modality_id?: string | null;
   technician_id?: string | null;
@@ -86,7 +87,7 @@ interface RadiologyStudyPutData {
 }
 
 // GET a specific Radiology Study by ID
-export const GET = async (
+export const _GET = async (
   _request: NextRequest, // Renamed to _request as it's unused
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ): Promise<NextResponse> {
@@ -151,8 +152,8 @@ export const GET = async (
 }
 
 // PUT (update) a specific Radiology Study (Technician or Admin)
-export const PUT = async (
-  request: NextRequest,
+export const _PUT = async (
+  request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ): Promise<NextResponse> {
   try {
@@ -263,15 +264,15 @@ export const PUT = async (
           .first<RadiologyStudy>(); // Use generic type argument
         return NextResponse.json(
           currentStudy || {
-            id: studyId,
-            message: "Radiology study update processed (no changes detected)",
+            id: studyId;
+            message: "Radiology study update processed (no changes detected)";
           }
         );
       }
 
       // If status is updated to \'completed\', \'reported\' or \'verified\', update the parent order status
       if (
-        fieldsToUpdate.status &&
+        fieldsToUpdate?.status &&
         ["completed", "reported", "verified"].includes(
           fieldsToUpdate.status as string;
         );
@@ -306,8 +307,8 @@ export const PUT = async (
         .first<RadiologyStudy>(); // Use generic type argument
       return NextResponse.json(
         updatedStudy || {
-          id: studyId,
-          message: "Radiology study updated successfully",
+          id: studyId;
+          message: "Radiology study updated successfully";
         }
       );
     } catch (databaseError) {
@@ -366,18 +367,17 @@ export const DELETE = async (
       .prepare("SELECT id FROM RadiologyReports WHERE study_id = ? LIMIT 1");
       .bind(studyId);
       .first();
-    if (associatedReports) {
+    if (associatedReports != null) {
       return NextResponse.json(
         {
-          error:
-            "Cannot delete study with associated reports. Consider cancelling the study or deleting reports first.",
+          error: "Cannot delete study with associated reports. Consider cancelling the study or deleting reports first.";
         },
         { status: 400 }
       );
     }
 
     // Option 1: Soft delete (recommended)
-    // const cancelledAt = new Date().toISOString()
+    // const _cancelledAt = new Date().toISOString()
     // const info = await db.prepare("UPDATE RadiologyStudies SET status = ?, updated_at = ? WHERE id = ?")
     //                   .bind("cancelled", cancelledAt, studyId)
     //                   .run()
@@ -397,8 +397,8 @@ export const DELETE = async (
     }
 
     return NextResponse.json({
-      id: studyId,
-      status: "Radiology study deleted",
+      id: studyId;
+      status: "Radiology study deleted";
     });
   } catch (error: unknown) {
     const message =;

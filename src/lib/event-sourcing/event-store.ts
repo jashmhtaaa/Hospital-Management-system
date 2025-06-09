@@ -1,20 +1,21 @@
 import { Kafka, Producer, Consumer } from 'kafkajs';
-import { PrismaService } from '@/lib/prisma';
-import { metricsCollector } from '@/lib/monitoring/metrics-collector';
-import { logger } from '@/lib/core/logging';
-import { EncryptionService } from '@/lib/security/encryption.service';
 
+
+import { EncryptionService } from '@/lib/security/encryption.service';
+import { PrismaService } from '@/lib/prisma';
+import { logger } from '@/lib/core/logging';
+import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 /**
  * Event interface for domain events;
  */
 export interface DomainEvent<T = any> {
-  id: string,
-  type: string,
-  aggregateId: string,
-  aggregateType: string,
-  version: number,
-  timestamp: Date,
-  data: T,
+  id: string;
+  type: string;
+  aggregateId: string;
+  aggregateType: string;
+  version: number;
+  timestamp: Date;
+  data: T;
   metadata: {
     userId?: string;
     correlationId?: string;
@@ -35,7 +36,7 @@ export interface EventStore {
   getEventsByType(eventType: string, limit?: number, offset?: number): Promise<DomainEvent[]>;
   subscribeToEvents(eventTypes: string[], consumer: (event: DomainEvent) => Promise<void>): Promise<void>;
   replayEvents(aggregateId: string, aggregateType: string, handler: (event: DomainEvent) => Promise<void>): Promise<void>;
-  replayAllEvents(aggregateType: string, handler: (event: DomainEvent) => Promise<void>): Promise<void>
+  replayAllEvents(aggregateType: string, handler: (event: DomainEvent) => Promise<void>): Promise<void>;
 }
 
 /**
@@ -48,32 +49,32 @@ export class KafkaEventStore implements EventStore {
   private isProducerConnected = false;
 
   constructor(
-    private readonly prisma: PrismaService,
-    private readonly encryptionService: EncryptionService,
+    private readonly prisma: PrismaService;
+    private readonly encryptionService: EncryptionService;
     brokers: string[] = process.env.KAFKA_BROKERS?.split(',') || ['localhost:9092'],
-    clientId: string = 'hms-event-store',
+    clientId: string = 'hms-event-store';
     private readonly encryptSensitiveData: boolean = process.env.ENCRYPT_EVENTS === 'true';
   ) {
     this.kafka = new Kafka({
       clientId,
       brokers,
-      ssl: process.env.KAFKA_SSL === 'true',
+      ssl: process.env.KAFKA_SSL === 'true';
       sasl: process.env.KAFKA_SASL === 'true' ? {
-        mechanism: 'scram-sha-512',
-        username: process.env.KAFKA_USERNAME || '',
-        password: process.env.KAFKA_PASSWORD || '',
+        mechanism: 'scram-sha-512';
+        username: process.env.KAFKA_USERNAME || '';
+        password: process.env.KAFKA_PASSWORD || '';
       } : undefined,
       retry: {
-        initialRetryTime: 100,
-        retries: 8
+        initialRetryTime: 100;
+        retries: 8;
       }
     });
 
     this.producer = this.kafka.producer({
-      allowAutoTopicCreation: false,
+      allowAutoTopicCreation: false;
       transactionalId: `${clientId}-tx`,
-      maxInFlightRequests: 5,
-      idempotent: true
+      maxInFlightRequests: 5;
+      idempotent: true;
     });
   }
 
@@ -102,8 +103,8 @@ export class KafkaEventStore implements EventStore {
     // Create full event
     const event: DomainEvent<T> = {
       ...eventData,
-      id: uuidv4(),
-      timestamp: new Date(),
+      id: uuidv4();
+      timestamp: new Date();
     };
 
     try {
@@ -117,19 +118,19 @@ export class KafkaEventStore implements EventStore {
 
       // Start transaction to ensure both database and Kafka writes succeed
       const transaction = await this.producer.transaction();
-      
+
       try {
         // Save to database first (event sourcing store)
         await this.prisma.domainEvent.create({
           data: {
-            id: event.id,
-            type: event.type,
-            aggregateId: event.aggregateId,
-            aggregateType: event.aggregateType,
-            version: event.version,
-            timestamp: event.timestamp,
-            data: processedEvent.data as any,
-            metadata: processedEvent.metadata as any,
+            id: event.id;
+            type: event.type;
+            aggregateId: event.aggregateId;
+            aggregateType: event.aggregateType;
+            version: event.version;
+            timestamp: event.timestamp;
+            data: processedEvent.data as any;
+            metadata: processedEvent.metadata as any;
           }
         })
 
@@ -138,14 +139,14 @@ export class KafkaEventStore implements EventStore {
           topic,
           messages: [
             {
-              key: event.aggregateId,
-              value: JSON.stringify(processedEvent),
+              key: event.aggregateId;
+              value: JSON.stringify(processedEvent);
               headers: {
-                eventType: event.type,
-                aggregateType: event.aggregateType,
-                version: String(event.version),
-                timestamp: event.timestamp.toISOString(),
-                correlationId: event.metadata.correlationId || uuidv4(),
+                eventType: event.type;
+                aggregateType: event.aggregateType;
+                version: String(event.version);
+                timestamp: event.timestamp.toISOString();
+                correlationId: event.metadata.correlationId || uuidv4();
               }
             }
           ]
@@ -156,8 +157,8 @@ export class KafkaEventStore implements EventStore {
 
         // Track metrics
         metricsCollector.incrementCounter('event_store.events_saved', 1, {
-          eventType: event.type,
-          aggregateType: event.aggregateType
+          eventType: event.type;
+          aggregateType: event.aggregateType;
         });
 
         return event;
@@ -167,18 +168,18 @@ export class KafkaEventStore implements EventStore {
         throw error;
       }
     } catch (error) {
-      logger.error('Failed to save event to event store', { 
-        error, 
-        eventType: event.type, 
-        aggregateId: event.aggregateId, 
-        aggregateType: event.aggregateType
+      logger.error('Failed to save event to event store', {
+        error,
+        eventType: event.type;
+        aggregateId: event.aggregateId;
+        aggregateType: event.aggregateType;
       });
 
       // Track error metrics
       metricsCollector.incrementCounter('event_store.save_errors', 1, {
-        eventType: event.type,
-        aggregateType: event.aggregateType,
-        errorType: error.name || 'unknown'
+        eventType: event.type;
+        aggregateType: event.aggregateType;
+        errorType: error.name || 'unknown';
       });
 
       throw error;
@@ -196,7 +197,7 @@ export class KafkaEventStore implements EventStore {
           aggregateType;
         },
         orderBy: {
-          version: 'asc'
+          version: 'asc';
         }
       });
 
@@ -207,16 +208,16 @@ export class KafkaEventStore implements EventStore {
 
       return events.map(event => this.mapDatabaseEventToDomainEvent(event));
     } catch (error) {
-      logger.error('Failed to get events from event store', { 
-        error, 
-        aggregateId, 
+      logger.error('Failed to get events from event store', {
+        error,
+        aggregateId,
         aggregateType;
       });
 
       // Track error metrics
       metricsCollector.incrementCounter('event_store.retrieval_errors', 1, {
         aggregateType,
-        errorType: error.name || 'unknown'
+        errorType: error.name || 'unknown';
       });
 
       throw error;
@@ -230,13 +231,13 @@ export class KafkaEventStore implements EventStore {
     try {
       const events = await this.prisma.domainEvent.findMany({
         where: {
-          type: eventType
+          type: eventType;
         },
         orderBy: {
-          timestamp: 'asc'
+          timestamp: 'asc';
         },
-        take: limit,
-        skip: offset
+        take: limit;
+        skip: offset;
       });
 
       // Track metrics
@@ -246,15 +247,15 @@ export class KafkaEventStore implements EventStore {
 
       return events.map(event => this.mapDatabaseEventToDomainEvent(event));
     } catch (error) {
-      logger.error('Failed to get events by type from event store', { 
-        error, 
+      logger.error('Failed to get events by type from event store', {
+        error,
         eventType;
       });
 
       // Track error metrics
       metricsCollector.incrementCounter('event_store.retrieval_errors', 1, {
         eventType,
-        errorType: error.name || 'unknown'
+        errorType: error.name || 'unknown';
       });
 
       throw error;
@@ -265,8 +266,8 @@ export class KafkaEventStore implements EventStore {
    * Subscribe to events of specific types;
    */
   async subscribeToEvents(
-    eventTypes: string[], 
-    handler: (event: DomainEvent) => Promise<void>,
+    eventTypes: string[];
+    handler: (event: DomainEvent) => Promise<void>;
     options: {
       groupId?: string;
       fromBeginning?: boolean;
@@ -285,17 +286,17 @@ export class KafkaEventStore implements EventStore {
       // Create consumer
       const consumer = this.kafka.consumer({
         groupId,
-        sessionTimeout: 30000,
-        heartbeatInterval: 3000,
-        maxInFlightRequests: 5,
+        sessionTimeout: 30000;
+        heartbeatInterval: 3000;
+        maxInFlightRequests: 5;
         retry: {
-          initialRetryTime: 300,
-          retries: 10
+          initialRetryTime: 300;
+          retries: 10;
         }
       });
 
       await consumer.connect();
-      
+
       // Subscribe to topics
       for (const topic of topics) {
         await consumer.subscribe({ topic, fromBeginning });
@@ -303,30 +304,30 @@ export class KafkaEventStore implements EventStore {
 
       // Set up message handler
       await consumer.run({
-        partitionsConsumedConcurrently: 3,
+        partitionsConsumedConcurrently: 3;
         eachMessage: async ({ topic, partition, message }) => {
           try {
             if (!message.value) return;
 
             const event: DomainEvent = JSON.parse(message.value.toString());
-            
+
             // Filter by event type if necessary
             if (eventTypes.includes(event.type)) {
               const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
-              
+
               // Decrypt sensitive data if needed
               const processedEvent = this.encryptSensitiveData;
                 ? await this.decryptSensitiveData(event);
                 : event;
-              
+
               // Process the event
               await handler(processedEvent);
-              
+
               // Track metrics
               const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
               metricsCollector.recordTimer('event_store.event_processing_time', duration, {
-                eventType: event.type,
-                consumerGroup: groupId
+                eventType: event.type;
+                consumerGroup: groupId;
               });
             }
           } catch (error) {
@@ -334,16 +335,16 @@ export class KafkaEventStore implements EventStore {
               error,
               topic,
               partition,
-              offset: message.offset,
-              eventType: message.headers?.eventType?.toString() || 'unknown',
-              consumerGroup: groupId
+              offset: message.offset;
+              eventType: message.headers?.eventType?.toString() || 'unknown';
+              consumerGroup: groupId;
             });
 
             // Track error metrics
             metricsCollector.incrementCounter('event_store.consumer_errors', 1, {
               topic,
-              consumerGroup: groupId,
-              errorType: error.name || 'unknown'
+              consumerGroup: groupId;
+              errorType: error.name || 'unknown';
             });
           }
         }
@@ -351,7 +352,7 @@ export class KafkaEventStore implements EventStore {
 
       // Store consumer for cleanup
       this.consumers.set(groupId, consumer);
-      
+
       logger.info('Event consumer subscribed successfully', {
         groupId,
         topics,
@@ -366,7 +367,7 @@ export class KafkaEventStore implements EventStore {
 
       // Track error metrics
       metricsCollector.incrementCounter('event_store.subscription_errors', 1, {
-        errorType: error.name || 'unknown'
+        errorType: error.name || 'unknown';
       });
 
       throw error;
@@ -377,19 +378,19 @@ export class KafkaEventStore implements EventStore {
    * Replay events for a specific aggregate;
    */
   async replayEvents(
-    aggregateId: string, 
-    aggregateType: string, 
+    aggregateId: string;
+    aggregateType: string;
     handler: (event: DomainEvent) => Promise<void>;
   ): Promise<void> {
     try {
       const events = await this.getEvents(aggregateId, aggregateType);
-      
+
       for (const event of events) {
         // Decrypt sensitive data if needed
         const processedEvent = this.encryptSensitiveData;
           ? await this.decryptSensitiveData(event);
           : event;
-        
+
         await handler(processedEvent);
       }
 
@@ -398,16 +399,16 @@ export class KafkaEventStore implements EventStore {
         aggregateType;
       });
     } catch (error) {
-      logger.error('Failed to replay events', { 
-        error, 
-        aggregateId, 
+      logger.error('Failed to replay events', {
+        error,
+        aggregateId,
         aggregateType;
       });
 
       // Track error metrics
       metricsCollector.incrementCounter('event_store.replay_errors', 1, {
         aggregateType,
-        errorType: error.name || 'unknown'
+        errorType: error.name || 'unknown';
       });
 
       throw error;
@@ -418,14 +419,14 @@ export class KafkaEventStore implements EventStore {
    * Replay all events for an aggregate type;
    */
   async replayAllEvents(
-    aggregateType: string, 
-    handler: (event: DomainEvent) => Promise<void>,
+    aggregateType: string;
+    handler: (event: DomainEvent) => Promise<void>;
     batchSize = 100;
   ): Promise<void> {
     try {
       let processed = 0;
       let hasMore = true;
-      
+
       while (hasMore) {
         const events = await this.prisma.domainEvent.findMany({
           where: {
@@ -435,28 +436,28 @@ export class KafkaEventStore implements EventStore {
             { aggregateId: 'asc' },
             { version: 'asc' }
           ],
-          skip: processed,
-          take: batchSize
+          skip: processed;
+          take: batchSize;
         });
-        
+
         if (events.length === 0) {
           hasMore = false;
           break;
         }
-        
+
         for (const event of events) {
           const domainEvent = this.mapDatabaseEventToDomainEvent(event);
-          
+
           // Decrypt sensitive data if needed
           const processedEvent = this.encryptSensitiveData;
             ? await this.decryptSensitiveData(domainEvent);
             : domainEvent;
-          
+
           await handler(processedEvent);
         }
-        
+
         processed += events.length;
-        
+
         // Track progress
         logger.info(`Replayed ${processed} events for aggregate type ${aggregateType}`);
       }
@@ -466,15 +467,15 @@ export class KafkaEventStore implements EventStore {
         aggregateType;
       });
     } catch (error) {
-      logger.error('Failed to replay all events', { 
-        error, 
+      logger.error('Failed to replay all events', {
+        error,
         aggregateType;
       });
 
       // Track error metrics
       metricsCollector.incrementCounter('event_store.replay_errors', 1, {
         aggregateType,
-        errorType: error.name || 'unknown'
+        errorType: error.name || 'unknown';
       });
 
       throw error;
@@ -495,7 +496,7 @@ export class KafkaEventStore implements EventStore {
           logger.error(`Error disconnecting consumer group ${groupId}`, { error });
         }
       }
-      
+
       // Disconnect producer
       if (this.isProducerConnected) {
         await this.producer.disconnect();
@@ -544,26 +545,26 @@ export class KafkaEventStore implements EventStore {
 
     // Deep clone to avoid modifying the original
     const processedEvent = JSON.parse(JSON.stringify(event)) as DomainEvent<T>;
-    
+
     // Function to recursively process object
     const processObject = async (obj: unknown, path = ''): Promise<unknown> => {
       if (!obj || typeof obj !== 'object') return obj;
-      
+
       if (Array.isArray(obj)) {
         for (let i = 0; i < obj.length; i++) {
           obj[i] = await processObject(obj[i], `${path}[${i}]`);
         }
         return obj;
       }
-      
+
       for (const key of Object.keys(obj)) {
         const currentPath = path ? `${path}.${key}` : key;
-        
+
         // Check if field should be encrypted
-        const shouldEncrypt = sensitiveFieldPatterns.some(pattern => 
+        const shouldEncrypt = sensitiveFieldPatterns.some(pattern =>
           pattern.test(currentPath);
         );
-        
+
         if (shouldEncrypt && typeof obj[key] === 'string') {
           // Encrypt sensitive string fields
           obj[key] = await this.encryptionService.encryptText(obj[key]);
@@ -572,13 +573,13 @@ export class KafkaEventStore implements EventStore {
           obj[key] = await processObject(obj[key], currentPath);
         }
       }
-      
+
       return obj;
     };
-    
+
     // Process the data field
     processedEvent.data = await processObject(processedEvent.data, 'data');
-    
+
     return processedEvent;
   }
 
@@ -588,18 +589,18 @@ export class KafkaEventStore implements EventStore {
   private async decryptSensitiveData<T>(event: DomainEvent<T>): Promise<DomainEvent<T>> {
     // Deep clone to avoid modifying the original
     const processedEvent = JSON.parse(JSON.stringify(event)) as DomainEvent<T>;
-    
+
     // Function to recursively process object
     const processObject = async (obj: unknown): Promise<unknown> => {
       if (!obj || typeof obj !== 'object') return obj;
-      
+
       if (Array.isArray(obj)) {
         for (let i = 0; i < obj.length; i++) {
           obj[i] = await processObject(obj[i]);
         }
         return obj;
       }
-      
+
       for (const key of Object.keys(obj)) {
         if (typeof obj[key] === 'string' && obj[key].startsWith('enc:')) {
           // Decrypt encrypted fields
@@ -607,9 +608,9 @@ export class KafkaEventStore implements EventStore {
             obj[key] = await this.encryptionService.decryptText(obj[key]);
           } catch (error) {
             // If decryption fails, leave as is
-            logger.warn('Failed to decrypt field', { 
-              error: error.message,
-              field: key
+            logger.warn('Failed to decrypt field', {
+              error: error.message;
+              field: key;
             });
           }
         } else if (typeof obj[key] === 'object' && obj[key] !== null) {
@@ -617,13 +618,13 @@ export class KafkaEventStore implements EventStore {
           obj[key] = await processObject(obj[key]);
         }
       }
-      
+
       return obj;
     };
-    
+
     // Process the data field
     processedEvent.data = await processObject(processedEvent.data);
-    
+
     return processedEvent;
   }
 
@@ -632,13 +633,13 @@ export class KafkaEventStore implements EventStore {
    */
   private mapDatabaseEventToDomainEvent(dbEvent: unknown): DomainEvent {
     return {
-      id: dbEvent.id,
-      type: dbEvent.type,
-      aggregateId: dbEvent.aggregateId,
-      aggregateType: dbEvent.aggregateType,
-      version: dbEvent.version,
-      timestamp: dbEvent.timestamp,
-      data: dbEvent.data,
+      id: dbEvent.id;
+      type: dbEvent.type;
+      aggregateId: dbEvent.aggregateId;
+      aggregateType: dbEvent.aggregateType;
+      version: dbEvent.version;
+      timestamp: dbEvent.timestamp;
+      data: dbEvent.data;
       metadata: dbEvent.metadata || {}
     };
   }
@@ -650,8 +651,8 @@ let eventStoreInstance: KafkaEventStore | null = null;
 /**
  * Get the event store singleton instance;
  */
-export const getEventStore = async (
-  prisma: PrismaService,
+export const _getEventStore = async (
+  prisma: PrismaService;
   encryptionService: EncryptionService;
 ): Promise<EventStore> => {
   if (!eventStoreInstance) {
@@ -664,8 +665,8 @@ export const getEventStore = async (
 /**
  * Shutdown the event store;
  */
-export const shutdownEventStore = async (): Promise<void> => {
-  if (eventStoreInstance) {
+export const _shutdownEventStore = async (): Promise<void> => {
+  if (eventStoreInstance != null) {
     await eventStoreInstance.shutdown();
     eventStoreInstance = null;
   }

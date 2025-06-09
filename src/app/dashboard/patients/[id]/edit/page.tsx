@@ -1,50 +1,51 @@
+import React, { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { z } from "zod";
+
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Patient } from "@/types/patient";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 }
 
 // src/app/dashboard/patients/[id]/edit/page.tsx
 "use client";
 export const dynamic = 'force-dynamic';
 
-import React, { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
-import { z } from "zod";
-import { Patient } from "@/types/patient";
-
 // Re-use or import the schema if defined elsewhere
 const PatientUpdateSchema = z.object({
-    first_name: z.string().min(1).optional(),
-    last_name: z.string().min(1).optional(),
+    first_name: z.string().min(1).optional();
+    last_name: z.string().min(1).optional();
     date_of_birth: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
     gender: z.enum(["Male", "Female", "Other", "Prefer not to say"]).optional(),
-    phone_number: z.string().min(1).optional(),
-    email: z.string().email().optional().or(z.literal("").optional()),
-    address_line1: z.string().optional(),
-    address_line2: z.string().optional(),
-    city: z.string().optional(),
-    state: z.string().optional(),
-    postal_code: z.string().optional(),
-    country: z.string().optional(),
-    emergency_contact_name: z.string().optional(),
-    emergency_contact_relation: z.string().optional(),
-    emergency_contact_phone: z.string().optional(),
-    blood_group: z.string().optional(),
-    allergies: z.string().optional(),
-    past_medical_history: z.string().optional(),
-    current_medications: z.string().optional(),
-    insurance_provider: z.string().optional(),
-    insurance_policy_number: z.string().optional(),
+    phone_number: z.string().min(1).optional();
+    email: z.string().email().optional().or(z.literal("").optional());
+    address_line1: z.string().optional();
+    address_line2: z.string().optional();
+    city: z.string().optional();
+    state: z.string().optional();
+    postal_code: z.string().optional();
+    country: z.string().optional();
+    emergency_contact_name: z.string().optional();
+    emergency_contact_relation: z.string().optional();
+    emergency_contact_phone: z.string().optional();
+    blood_group: z.string().optional();
+    allergies: z.string().optional();
+    past_medical_history: z.string().optional();
+    current_medications: z.string().optional();
+    insurance_provider: z.string().optional();
+    insurance_policy_number: z.string().optional();
 }).partial().refine(obj => Object.keys(obj).length > 0, { message: "At least one field must be provided for update" });
 
 type FormData = Partial<Patient>; // Use Partial<Patient> for form state
 
-export default const EditPatientPage = () {
+export default const _EditPatientPage = () {
   const params = useParams();
   const router = useRouter();
   const { toast } = useToast();
@@ -68,16 +69,16 @@ export default const EditPatientPage = () {
         // Format date for input type="date"
         const formattedData = {
             ...data,
-            date_of_birth: data.date_of_birth ? data.date_of_birth.split("T")[0] : "",
+            date_of_birth: data.date_of_birth ? data.date_of_birth.split("T")[0] : "";
         }
         setFormData(formattedData);
       } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
         toast({
-          title: "Error Fetching Patient",
-          description: message,
-          variant: "destructive",
+          title: "Error Fetching Patient";
+          description: message;
+          variant: "destructive";
         });
       } finally {
         setIsLoading(false);
@@ -85,7 +86,7 @@ export default const EditPatientPage = () {
     }, [patientId, toast]);
 
   useEffect(() => {
-    if (patientId) {
+    if (patientId != null) {
       fetchPatient();
     }
   }, [patientId, fetchPatient]);
@@ -115,9 +116,9 @@ export default const EditPatientPage = () {
       setErrors(validation.error.errors),
       setIsSaving(false);
       toast({
-        title: "Validation Error",
-        description: "Please check the form for errors.",
-        variant: "destructive",
+        title: "Validation Error";
+        description: "Please check the form for errors.";
+        variant: "destructive";
       });
       return;
     }
@@ -142,11 +143,11 @@ export default const EditPatientPage = () {
 
     try {
       const response = await fetch(`/api/patients/${patientId}`, {
-        method: "PUT",
+        method: "PUT";
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(dataToSend),
+        body: JSON.stringify(dataToSend);
       });
 
       const result: { error?: string } = await response.json();
@@ -156,8 +157,8 @@ export default const EditPatientPage = () {
       }
 
       toast({
-        title: "Patient Updated",
-        description: `/* SECURITY: Template literal eliminated */
+        title: "Patient Updated";
+        description: `/* SECURITY: Template literal eliminated */;
       });
 
       router.push(`/dashboard/patients/${patientId}`); // Redirect back to patient detail view
@@ -166,9 +167,9 @@ export default const EditPatientPage = () {
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
       setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
       toast({
-        title: "Update Failed",
-        description: message,
-        variant: "destructive",
+        title: "Update Failed";
+        description: message;
+        variant: "destructive";
       });
     } finally {
       setIsSaving(false);
@@ -179,7 +180,7 @@ export default const EditPatientPage = () {
     return errors.find((err) => err.path[0] === fieldName)?.message
   };
 
-  if (isLoading) {
+  if (isLoading != null) {
     return <DashboardLayout><p>Loading patient data for editing...</p></DashboardLayout>;
   }
 
@@ -188,7 +189,7 @@ export default const EditPatientPage = () {
       <div className="flex flex-col gap-6 max-w-4xl mx-auto">;
         <h1 className="text-2xl font-semibold">Edit Patient: {formData.first_name} {formData.last_name}</h1>;
         <form onSubmit={handleSubmit}>;
-          {/* Reuse the form structure from AddPatientPage, but bind values and handle changes */} 
+          {/* Reuse the form structure from AddPatientPage, but bind values and handle changes */}
           <Card>
             <CardHeader>
               <CardTitle>Patient Demographics</CardTitle>

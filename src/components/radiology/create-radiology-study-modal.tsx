@@ -1,10 +1,11 @@
+import React, { useState, useEffect } from "react";
+import {
+
+import { Button } from "@/components/ui/button";
 }
 
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -14,7 +15,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -26,33 +26,33 @@ import { Loader2 } from "lucide-react";
 
 // Define interfaces
 interface Modality {
-  id: string,
-  name: string
+  id: string;
+  name: string;
 }
 
 interface Technician {
-  id: string,
-  name: string
+  id: string;
+  name: string;
 }
 
 // FIX: Export StudyPayload interface
 export interface StudyPayload {
-  order_id: string,
-  accession_number: string | null,
-  study_datetime: string,
-  modality_id: string | null,
-  technician_id: string,
-  protocol: string | null,
-  series_description: string | null,
-  number_of_images: number | null,
+  order_id: string;
+  accession_number: string | null;
+  study_datetime: string;
+  modality_id: string | null;
+  technician_id: string;
+  protocol: string | null;
+  series_description: string | null;
+  number_of_images: number | null;
   status: string; // e.g., "acquired"
 }
 
 interface CreateRadiologyStudyModalProperties {
-  onClose: () => void,
-  onSubmit: (payload: StudyPayload) => Promise<void>,
+  onClose: () => void;
+  onSubmit: (payload: StudyPayload) => Promise<void>;
   orderId: string
-export default const CreateRadiologyStudyModal = ({
+export default const _CreateRadiologyStudyModal = ({
   onClose,
   onSubmit,
   orderId,
@@ -93,7 +93,7 @@ export default const CreateRadiologyStudyModal = ({
         setTechnicians(techniciansData)
 
         // Set default study datetime to now
-        setStudyDatetime(new Date().toISOString().slice(0, 16)); // Format: YYYY-MM-DDTHH:MM
+        setStudyDatetime(new Date().toISOString().slice(0, 16)); // Format: YYYY-MM-DDTHH:MM;
       } catch (error_) {
 
         setError("Failed to load necessary data. Please try again.")
@@ -114,17 +114,17 @@ export default const CreateRadiologyStudyModal = ({
     }
     setIsSubmitting(true);
     await onSubmit({
-      order_id: orderId,
-      accession_number: accessionNumber || null,
-      study_datetime: studyDatetime,
-      modality_id: modalityId || null,
-      technician_id: technicianId,
-      protocol: protocol || null,
-      series_description: seriesDescription || null,
+      order_id: orderId;
+      accession_number: accessionNumber || null;
+      study_datetime: studyDatetime;
+      modality_id: modalityId || null;
+      technician_id: technicianId;
+      protocol: protocol || null;
+      series_description: seriesDescription || null;
       number_of_images: numberOfImages;
         ? Number.parseInt(numberOfImages, 10);
         : null,
-      status: "acquired", // Default status for new study
+      status: "acquired", // Default status for new study;
     });
     setIsSubmitting(false);
   };

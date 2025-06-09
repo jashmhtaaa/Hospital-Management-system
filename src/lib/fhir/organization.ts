@@ -1,3 +1,4 @@
+import {
 }
 
 /**
@@ -7,7 +8,6 @@
  * Source: ZIP 6 - FHIR R4 data models for hospital management system microservices;
  */
 
-import {
   FHIRBase,
   FHIRIdentifier,
   FHIRHumanName,
@@ -59,13 +59,13 @@ export class FHIROrganizationUtils {
    * Create a basic organization;
    */
   static createBasicOrganization(data: {
-    name: string,
+    name: string;
     type: 'hospital' | 'department' | 'clinic' | 'laboratory' | 'pharmacy' | 'insurance';
     identifier?: string;
     address?: {
-      street: string,
-      city: string,
-      state: string,
+      street: string;
+      city: string;
+      state: string;
       zipCode: string;
       country?: string;
     };
@@ -76,14 +76,14 @@ export class FHIROrganizationUtils {
     active?: boolean;
   }): FHIROrganization {
     const organization: FHIROrganization = {
-      resourceType: 'Organization',
-      active: data.active !== false,
-      name: data.name,
+      resourceType: 'Organization';
+      active: data.active !== false;
+      name: data.name;
       type: [{
         coding: [{
-          system: 'https://terminology.hl7.org/CodeSystem/organization-type',
-          code: this.getOrganizationTypeCode(data.type),
-          display: this.getOrganizationTypeDisplay(data.type)
+          system: 'https://terminology.hl7.org/CodeSystem/organization-type';
+          code: this.getOrganizationTypeCode(data.type);
+          display: this.getOrganizationTypeDisplay(data.type);
         }]
       }]
     }
@@ -91,36 +91,36 @@ export class FHIROrganizationUtils {
     // Add identifier if provided
     if (data.identifier) {
       organization.identifier = [{
-        use: 'official',
+        use: 'official';
         system: 'urn:oid:2.16.840.1.113883.4.7', // Healthcare organization identifier
-        value: data.identifier
+        value: data.identifier;
       }];
     }
 
     // Add contact information
     const telecom: FHIRContactPoint[] = [];
-    
+
     if (data.phone) {
       telecom.push({
-        system: 'phone',
-        value: data.phone,
-        use: 'work'
+        system: 'phone';
+        value: data.phone;
+        use: 'work';
       });
     }
 
     if (data.email) {
       telecom.push({
-        system: 'email',
-        value: data.email,
-        use: 'work'
+        system: 'email';
+        value: data.email;
+        use: 'work';
       });
     }
 
     if (data.website) {
       telecom.push({
-        system: 'url',
-        value: data.website,
-        use: 'work'
+        system: 'url';
+        value: data.website;
+        use: 'work';
       });
     }
 
@@ -131,13 +131,13 @@ export class FHIROrganizationUtils {
     // Add address if provided
     if (data.address) {
       organization.address = [{
-        use: 'work',
-        type: 'both',
-        line: [data.address.street],
-        city: data.address.city,
-        state: data.address.state,
-        postalCode: data.address.zipCode,
-        country: data.address.country || 'US'
+        use: 'work';
+        type: 'both';
+        line: [data.address.street];
+        city: data.address.city;
+        state: data.address.state;
+        postalCode: data.address.zipCode;
+        country: data.address.country || 'US';
       }];
     }
 
@@ -145,7 +145,7 @@ export class FHIROrganizationUtils {
     if (data.parentOrganizationId) {
       organization.partOf = {
         reference: `Organization/${data.parentOrganizationId}`,
-        type: 'Organization'
+        type: 'Organization';
       };
     }
 
@@ -156,16 +156,16 @@ export class FHIROrganizationUtils {
    * Create a hospital organization;
    */
   static createHospital(data: {
-    name: string,
-    identifier: string,
+    name: string;
+    identifier: string;
     address: {
-      street: string,
-      city: string,
-      state: string,
+      street: string;
+      city: string;
+      state: string;
       zipCode: string;
       country?: string;
     };
-    phone: string,
+    phone: string;
     email: string;
     website?: string;
     licenseNumber?: string;
@@ -173,8 +173,8 @@ export class FHIROrganizationUtils {
   }): FHIROrganization {
     const hospital = this.createBasicOrganization({
       ...data,
-      type: 'hospital',
-      active: true
+      type: 'hospital';
+      active: true;
     });
 
     // Add additional identifiers for hospital
@@ -182,15 +182,15 @@ export class FHIROrganizationUtils {
 
     if (data.licenseNumber) {
       hospital.identifier.push({
-        use: 'official',
+        use: 'official';
         type: {
           coding: [{
-            system: 'https://terminology.hl7.org/CodeSystem/v2-0203',
-            code: 'LI',
-            display: 'License number'
+            system: 'https://terminology.hl7.org/CodeSystem/v2-0203';
+            code: 'LI';
+            display: 'License number';
           }]
         },
-        value: data.licenseNumber
+        value: data.licenseNumber;
       })
     }
 
@@ -199,9 +199,9 @@ export class FHIROrganizationUtils {
       data.accreditation.forEach(accred => {
         hospital.type!.push({
           coding: [{
-            system: 'https://terminology.hl7.org/CodeSystem/organization-type',
-            code: 'accredited',
-            display: accred
+            system: 'https://terminology.hl7.org/CodeSystem/organization-type';
+            code: 'accredited';
+            display: accred;
           }]
         })
       });
@@ -216,28 +216,28 @@ export class FHIROrganizationUtils {
   static createDepartment(data: {
     name: string;
     identifier?: string;
-    hospitalId: string,
+    hospitalId: string;
     departmentType: 'emergency' | 'icu' | 'surgery' | 'cardiology' | 'pediatrics' | 'radiology' | 'laboratory' | 'pharmacy' | 'administration';
     phone?: string;
     email?: string;
     location?: string;
   }): FHIROrganization {
     const department = this.createBasicOrganization({
-      name: data.name,
-      type: 'department',
-      identifier: data.identifier,
-      phone: data.phone,
-      email: data.email,
-      parentOrganizationId: data.hospitalId,
-      active: true
+      name: data.name;
+      type: 'department';
+      identifier: data.identifier;
+      phone: data.phone;
+      email: data.email;
+      parentOrganizationId: data.hospitalId;
+      active: true;
     });
 
     // Add department-specific type
     department.type!.push({
       coding: [{
-        system: 'https://snomed.info/sct',
-        code: this.getDepartmentCode(data.departmentType),
-        display: this.getDepartmentDisplay(data.departmentType)
+        system: 'https://snomed.info/sct';
+        code: this.getDepartmentCode(data.departmentType);
+        display: this.getDepartmentDisplay(data.departmentType);
       }]
     })
 
@@ -250,12 +250,12 @@ export class FHIROrganizationUtils {
   static createClinic(data: {
     name: string;
     identifier?: string;
-    specialty: string,
+    specialty: string;
     address: {
-      street: string,
-      city: string,
-      state: string,
-      zipCode: string
+      street: string;
+      city: string;
+      state: string;
+      zipCode: string;
     };
     phone: string;
     email?: string;
@@ -263,15 +263,15 @@ export class FHIROrganizationUtils {
   }): FHIROrganization {
     const clinic = this.createBasicOrganization({
       ...data,
-      type: 'clinic',
-      active: true
+      type: 'clinic';
+      active: true;
     });
 
     // Add specialty type
     clinic.type!.push({
       coding: [{
-        system: 'https://snomed.info/sct',
-        code: 'specialty-clinic',
+        system: 'https://snomed.info/sct';
+        code: 'specialty-clinic';
         display: `${data.specialty} Clinic`
       }]
     });
@@ -363,7 +363,7 @@ export class FHIROrganizationUtils {
    * Get primary phone number;
    */
   static getPrimaryPhone(organization: FHIROrganization): string | undefined {
-    return organization.telecom?.find(contact => 
+    return organization.telecom?.find(contact =>
       contact.system === 'phone' && (contact.use === 'work' || !contact.use);
     )?.value;
   }
@@ -372,7 +372,7 @@ export class FHIROrganizationUtils {
    * Get primary email;
    */
   static getPrimaryEmail(organization: FHIROrganization): string | undefined {
-    return organization.telecom?.find(contact => 
+    return organization.telecom?.find(contact =>
       contact.system === 'email' && (contact.use === 'work' || !contact.use);
     )?.value;
   }
@@ -381,7 +381,7 @@ export class FHIROrganizationUtils {
    * Get website URL;
    */
   static getWebsite(organization: FHIROrganization): string | undefined {
-    return organization.telecom?.find(contact => 
+    return organization.telecom?.find(contact =>
       contact.system === 'url';
     )?.value;
   }
@@ -421,7 +421,7 @@ export class FHIROrganizationUtils {
    * Check if organization is a hospital;
    */
   static isHospital(organization: FHIROrganization): boolean {
-    return organization.type?.some(type => 
+    return organization.type?.some(type =>
       type.coding?.some(coding => coding.code === 'prov' && coding.display === 'Healthcare Provider');
     ) || false;
   }
@@ -430,7 +430,7 @@ export class FHIROrganizationUtils {
    * Check if organization is a department;
    */
   static isDepartment(organization: FHIROrganization): boolean {
-    return organization.type?.some(type => 
+    return organization.type?.some(type =>
       type.coding?.some(coding => coding.code === 'dept');
     ) || false;
   }
@@ -446,7 +446,7 @@ export class FHIROrganizationUtils {
    * Format organization for display;
    */
   static formatForDisplay(organization: FHIROrganization): {
-    name: string,
+    name: string;
     type: string;
     phone?: string;
     email?: string;
@@ -457,15 +457,15 @@ export class FHIROrganizationUtils {
     parentOrganization?: string;
   } {
     return {
-      name: this.getDisplayName(organization),
-      type: this.getTypeDisplay(organization),
-      phone: this.getPrimaryPhone(organization),
-      email: this.getPrimaryEmail(organization),
-      website: this.getWebsite(organization),
-      address: this.getWorkAddress(organization),
-      identifier: this.getPrimaryIdentifier(organization),
-      isActive: this.isActive(organization),
-      parentOrganization: this.getParentOrganizationId(organization)
+      name: this.getDisplayName(organization);
+      type: this.getTypeDisplay(organization);
+      phone: this.getPrimaryPhone(organization);
+      email: this.getPrimaryEmail(organization);
+      website: this.getWebsite(organization);
+      address: this.getWorkAddress(organization);
+      identifier: this.getPrimaryIdentifier(organization);
+      isActive: this.isActive(organization);
+      parentOrganization: this.getParentOrganizationId(organization);
     };
   }
 
@@ -480,7 +480,7 @@ export class FHIROrganizationUtils {
     }
 
     // At least one name, identifier, or telecom must be provided
-    if (!organization.name && !organization.identifier && !organization.telecom) {
+    if (!organization?.name && !organization?.identifier && !organization.telecom) {
       errors.push('At least one of name, identifier, or telecom must be provided');
     }
 
@@ -490,7 +490,7 @@ export class FHIROrganizationUtils {
         if (!contact.system || !contact.value) {
           errors.push(`Contact ${index + 1} must have system and value`);
         }
-        if (contact.system && !['phone', 'fax', 'email', 'pager', 'url', 'sms', 'other'].includes(contact.system)) {
+        if (contact?.system && !['phone', 'fax', 'email', 'pager', 'url', 'sms', 'other'].includes(contact.system)) {
           errors.push(`Contact ${index + 1} system must be valid`);
         }
       });
@@ -506,7 +506,7 @@ export class FHIROrganizationUtils {
     }
 
     return {
-      valid: errors.length === 0,
+      valid: errors.length === 0;
       errors;
     };
   }
@@ -516,21 +516,21 @@ export class FHIROrganizationUtils {
    */
   static fromHMSOrganization(hmsOrganization: unknown): FHIROrganization {
     return this.createBasicOrganization({
-      name: hmsOrganization.name,
-      type: hmsOrganization.type || 'hospital',
-      identifier: hmsOrganization.identifier || hmsOrganization.id,
+      name: hmsOrganization.name;
+      type: hmsOrganization.type || 'hospital';
+      identifier: hmsOrganization.identifier || hmsOrganization.id;
       address: hmsOrganization.address ? {
-        street: hmsOrganization.address.street || '',
-        city: hmsOrganization.address.city || '',
-        state: hmsOrganization.address.state || '',
-        zipCode: hmsOrganization.address.zipCode || '',
-        country: hmsOrganization.address.country
+        street: hmsOrganization.address.street || '';
+        city: hmsOrganization.address.city || '';
+        state: hmsOrganization.address.state || '';
+        zipCode: hmsOrganization.address.zipCode || '';
+        country: hmsOrganization.address.country;
       } : undefined,
-      phone: hmsOrganization.phone,
-      email: hmsOrganization.email,
-      website: hmsOrganization.website,
-      parentOrganizationId: hmsOrganization.parentId,
-      active: hmsOrganization.isActive !== false
+      phone: hmsOrganization.phone;
+      email: hmsOrganization.email;
+      website: hmsOrganization.website;
+      parentOrganizationId: hmsOrganization.parentId;
+      active: hmsOrganization.isActive !== false;
     });
   }
 
@@ -538,8 +538,8 @@ export class FHIROrganizationUtils {
    * Get organizations by type;
    */
   static getOrganizationsByType(organizations: FHIROrganization[], type: string): FHIROrganization[] {
-    return organizations.filter(org => 
-      org.type?.some(t => 
+    return organizations.filter(org =>
+      org.type?.some(t =>
         t.coding?.some(coding => coding.code === type || coding.display?.toLowerCase().includes(type.toLowerCase()));
       );
     );
@@ -549,7 +549,7 @@ export class FHIROrganizationUtils {
    * Get child organizations;
    */
   static getChildOrganizations(organizations: FHIROrganization[], parentId: string): FHIROrganization[] {
-    return organizations.filter(org => 
+    return organizations.filter(org =>
       this.getParentOrganizationId(org) === parentId;
     );
   }
@@ -566,7 +566,7 @@ export class FHIROrganizationUtils {
       const children = this.getChildOrganizations(organizations, org.id!);
       return {
         ...org,
-        children: children.map(child => buildHierarchy(child))
+        children: children.map(child => buildHierarchy(child));
       };
     };
 
@@ -583,9 +583,9 @@ export class FHIROrganizationUtils {
       const type = this.getTypeDisplay(org).toLowerCase();
       const identifier = this.getPrimaryIdentifier(org)?.toLowerCase() || '';
       const address = this.getWorkAddress(org).toLowerCase();
-      
+
       return name.includes(searchLower) ||;
-             type.includes(searchLower) || 
+             type.includes(searchLower) ||
              identifier.includes(searchLower) ||
              address.includes(searchLower);
     });

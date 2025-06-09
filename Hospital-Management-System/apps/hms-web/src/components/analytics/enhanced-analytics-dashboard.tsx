@@ -1,24 +1,24 @@
-
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  BarChart, 
-  Bar, 
-  LineChart, 
-  Line, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+
+  BarChart,
+  Bar,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
   PieChart,
   Pie,
   Cell
 } from 'recharts';
-import {
   TrendingUp,
   TrendingDown,
   Users,
@@ -38,11 +38,11 @@ interface AnalyticsData {
     bedOccupancyRate: number;
     patientSatisfactionScore: number;
   };
-  patientMetrics: any;
-  financialMetrics: any;
-  clinicalMetrics: any;
-  operationalMetrics: any;
-  predictions: any;
+  patientMetrics: unknown;
+  financialMetrics: unknown;
+  clinicalMetrics: unknown;
+  operationalMetrics: unknown;
+  predictions: unknown;
 }
 
 const EnhancedAnalyticsDashboard: React.FC = () => {
@@ -54,10 +54,10 @@ const EnhancedAnalyticsDashboard: React.FC = () => {
   useEffect(() => {
     fetchAnalytics();
     fetchRealTimeData();
-    
+
     // Set up real-time updates
     const interval = setInterval(fetchRealTimeData, 30000); // Every 30 seconds
-    
+
     return () => clearInterval(interval);
   }, [timeRange]);
 
@@ -68,7 +68,7 @@ const EnhancedAnalyticsDashboard: React.FC = () => {
       const data = await response.json();
       setAnalyticsData(data.analytics);
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     } finally {
       setLoading(false);
     }
@@ -80,16 +80,16 @@ const EnhancedAnalyticsDashboard: React.FC = () => {
       const data = await response.json();
       setRealTimeData(data.realTimeData);
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */;
     }
   };
 
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
+  const _COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
+      style: 'currency';
+      currency: 'USD';
     }).format(amount);
   };
 
@@ -129,7 +129,7 @@ const EnhancedAnalyticsDashboard: React.FC = () => {
     </Card>
   );
 
-  if (loading) {
+  if (loading != null) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
@@ -156,7 +156,7 @@ const EnhancedAnalyticsDashboard: React.FC = () => {
               size="sm"
               onClick={() => setTimeRange(range)}
             >
-              {range === '7d' ? '7 Days' : 
+              {range === '7d' ? '7 Days' :
                range === '30d' ? '30 Days' :
                range === '90d' ? '90 Days' : '1 Year'}
             </Button>
@@ -325,7 +325,7 @@ const EnhancedAnalyticsDashboard: React.FC = () => {
                         Confidence: {(analyticsData.predictions.predictedAdmissions?.confidence * 100 || 0).toFixed(0)}%
                       </div>
                     </div>
-                    
+
                     <div className="p-4 bg-green-50 rounded-lg">
                       <div className="flex justify-between items-center">
                         <span className="text-sm font-medium">Capacity Forecast</span>

@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
 import { D1Database } from "@cloudflare/workers-types";
+import { NextRequest, NextResponse } from "next/server";
 import { nanoid } from "nanoid";
-import { getSession } from "@/lib/session";
-import { checkUserRole } from "@/lib/auth";
 
+
+import { checkUserRole } from "@/lib/auth";
+import { getSession } from "@/lib/session";
 // Define interface for POST request body
 interface ModalityInput {
   name?: string;
@@ -12,7 +13,7 @@ interface ModalityInput {
 }
 
 // GET all Radiology Modalities
-export const GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {
   const session = await getSession();
   if (
     !session?.user ||
@@ -45,7 +46,7 @@ export const GET = async (request: NextRequest) => {
 }
 
 // POST a new Radiology Modality (Admin only)
-export const POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {
   const session = await getSession()
   if (!session?.user || !(await checkUserRole(request, ["Admin"]))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
@@ -69,7 +70,7 @@ export const POST = async (request: NextRequest) => {
     );
       .bind(name);
       .first();
-    if (existingModality) {
+    if (existingModality != null) {
       return NextResponse.json(
         { error: "Modality with this name already exists" },
         { status: 409 }

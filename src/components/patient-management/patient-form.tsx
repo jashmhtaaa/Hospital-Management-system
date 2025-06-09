@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import {
 import { useRouter } from 'next/navigation';
-import { 
   Form,
   FormControl,
   FormDescription,
@@ -9,15 +9,13 @@ import {
   FormLabel,
   FormMessage;
 } from '../ui/form';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
   CardTitle;
 } from '../ui/card';
-import {
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -26,25 +24,22 @@ import {
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { Checkbox } from '../ui/checkbox';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
   SelectValue;
 } from '../ui/select';
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
+  Tabs,
+  TabsContent,
+  TabsList,
   TabsTrigger;
 } from '../ui/tabs';
-import { 
-  AlertCircle, 
-  ArrowLeft, 
-  ChevronLeft, 
-  Save, 
-  User, 
+  AlertCircle,
+  ArrowLeft,
+  ChevronLeft,
+  Save,
+  User,
   X;
 } from 'lucide-react';
 import { format } from 'date-fns';
@@ -57,55 +52,55 @@ import * as z from 'zod';
 const patientFormSchema = z.object({
   // Personal Information
   firstName: z.string().min(1, "First name is required"),
-  middleName: z.string().optional(),
+  middleName: z.string().optional();
   lastName: z.string().min(1, "Last name is required"),
-  preferredName: z.string().optional(),
+  preferredName: z.string().optional();
   dateOfBirth: z.string().min(1, "Date of birth is required"),
   gender: z.string().min(1, "Gender is required"),
-  biologicalSex: z.string().optional(),
-  genderIdentity: z.string().optional(),
-  pronouns: z.string().optional(),
-  maritalStatus: z.string().optional(),
-  
+  biologicalSex: z.string().optional();
+  genderIdentity: z.string().optional();
+  pronouns: z.string().optional();
+  maritalStatus: z.string().optional();
+
   // Contact Information
-  phoneHome: z.string().optional(),
-  phoneMobile: z.string().optional(),
-  phoneWork: z.string().optional(),
+  phoneHome: z.string().optional();
+  phoneMobile: z.string().optional();
+  phoneWork: z.string().optional();
   phonePreferred: z.string().min(1, "Preferred phone type is required"),
-  email: z.string().email().optional().or(z.literal('')),
-  emailOptIn: z.boolean().default(false),
-  smsOptIn: z.boolean().default(false),
-  mailOptIn: z.boolean().default(true),
-  
+  email: z.string().email().optional().or(z.literal(''));
+  emailOptIn: z.boolean().default(false);
+  smsOptIn: z.boolean().default(false);
+  mailOptIn: z.boolean().default(true);
+
   // Address
-  addressLine1: z.string().optional(),
-  addressLine2: z.string().optional(),
-  city: z.string().optional(),
-  state: z.string().optional(),
-  postalCode: z.string().optional(),
-  country: z.string().default("USA"),
-  
+  addressLine1: z.string().optional();
+  addressLine2: z.string().optional();
+  city: z.string().optional();
+  state: z.string().optional();
+  postalCode: z.string().optional();
+  country: z.string().default("USA");
+
   // Demographics
-  language: z.string().default("English"),
-  interpreter: z.boolean().default(false),
-  ethnicity: z.string().optional(),
-  race: z.string().optional(),
-  nationality: z.string().optional(),
-  religion: z.string().optional(),
-  educationLevel: z.string().optional(),
-  occupation: z.string().optional(),
-  
+  language: z.string().default("English");
+  interpreter: z.boolean().default(false);
+  ethnicity: z.string().optional();
+  race: z.string().optional();
+  nationality: z.string().optional();
+  religion: z.string().optional();
+  educationLevel: z.string().optional();
+  occupation: z.string().optional();
+
   // Medical
-  bloodType: z.string().optional(),
-  rh: z.string().optional(),
-  organDonor: z.boolean().default(false),
-  
+  bloodType: z.string().optional();
+  rh: z.string().optional();
+  organDonor: z.boolean().default(false);
+
   // Administrative
-  mrn: z.string().optional(),
-  status: z.string().default("Active"),
-  vip: z.boolean().default(false),
-  confidential: z.boolean().default(false),
-  notes: z.string().optional(),
+  mrn: z.string().optional();
+  status: z.string().default("Active");
+  vip: z.boolean().default(false);
+  confidential: z.boolean().default(false);
+  notes: z.string().optional();
 });
 
 type PatientFormValues = z.infer<typeof patientFormSchema>;
@@ -114,188 +109,188 @@ type PatientFormValues = z.infer<typeof patientFormSchema>;
 interface PatientFormProps {
   initialData?: unknown;
   isEditing?: boolean;
-export default const PatientForm = ({ initialData, isEditing = false }: PatientFormProps) {
+export default const _PatientForm = ({ initialData, isEditing = false }: PatientFormProps) {
   const router = useRouter();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   // Default values for the form
   const defaultValues: Partial<PatientFormValues> = initialData ? {
     // Personal Information,
-    firstName: initialData.firstName || '',
-    middleName: initialData.middleName || '',
-    lastName: initialData.lastName || '',
-    preferredName: initialData.preferredName || '',
+    firstName: initialData.firstName || '';
+    middleName: initialData.middleName || '';
+    lastName: initialData.lastName || '';
+    preferredName: initialData.preferredName || '';
     dateOfBirth: initialData.dateOfBirth ? format(new Date(initialData.dateOfBirth), 'yyyy-MM-dd') : '',
-    gender: initialData.gender || '',
-    biologicalSex: initialData.biologicalSex || '',
-    genderIdentity: initialData.genderIdentity || '',
-    pronouns: initialData.pronouns || '',
-    maritalStatus: initialData.maritalStatus || '',
-    
+    gender: initialData.gender || '';
+    biologicalSex: initialData.biologicalSex || '';
+    genderIdentity: initialData.genderIdentity || '';
+    pronouns: initialData.pronouns || '';
+    maritalStatus: initialData.maritalStatus || '';
+
     // Contact Information
-    phoneHome: initialData.contact?.phoneHome || '',
-    phoneMobile: initialData.contact?.phoneMobile || '',
-    phoneWork: initialData.contact?.phoneWork || '',
-    phonePreferred: initialData.contact?.phonePreferred || 'Mobile',
-    email: initialData.contact?.email || '',
-    emailOptIn: initialData.contact?.emailOptIn || false,
-    smsOptIn: initialData.contact?.smsOptIn || false,
-    mailOptIn: initialData.contact?.mailOptIn || true,
-    
+    phoneHome: initialData.contact?.phoneHome || '';
+    phoneMobile: initialData.contact?.phoneMobile || '';
+    phoneWork: initialData.contact?.phoneWork || '';
+    phonePreferred: initialData.contact?.phonePreferred || 'Mobile';
+    email: initialData.contact?.email || '';
+    emailOptIn: initialData.contact?.emailOptIn || false;
+    smsOptIn: initialData.contact?.smsOptIn || false;
+    mailOptIn: initialData.contact?.mailOptIn || true;
+
     // Address
-    addressLine1: initialData.addresses &&
+    addressLine1: initialData?.addresses &&
       initialData.addresses.length > 0 ? initialData.addresses[0].addressLine1 : '',
-    addressLine2: initialData.addresses &&
+    addressLine2: initialData?.addresses &&
       initialData.addresses.length > 0 ? initialData.addresses[0].addressLine2 : '',
-    city: initialData.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].city : '',
-    state: initialData.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].state : '',
-    postalCode: initialData.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].postalCode : '',
-    country: initialData.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].country : 'USA',
-    
+    city: initialData?.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].city : '';
+    state: initialData?.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].state : '';
+    postalCode: initialData?.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].postalCode : '';
+    country: initialData?.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].country : 'USA';
+
     // Demographics
-    language: initialData.language || 'English',
-    interpreter: initialData.interpreter || false,
-    ethnicity: initialData.ethnicity || '',
-    race: initialData.race || '',
-    nationality: initialData.nationality || '',
-    religion: initialData.religion || '',
-    educationLevel: initialData.educationLevel || '',
-    occupation: initialData.occupation || '',
-    
+    language: initialData.language || 'English';
+    interpreter: initialData.interpreter || false;
+    ethnicity: initialData.ethnicity || '';
+    race: initialData.race || '';
+    nationality: initialData.nationality || '';
+    religion: initialData.religion || '';
+    educationLevel: initialData.educationLevel || '';
+    occupation: initialData.occupation || '';
+
     // Medical
-    bloodType: initialData.bloodType || '',
-    rh: initialData.rh || '',
-    organDonor: initialData.organDonor || false,
-    
+    bloodType: initialData.bloodType || '';
+    rh: initialData.rh || '';
+    organDonor: initialData.organDonor || false;
+
     // Administrative
-    mrn: initialData.mrn || '',
-    status: initialData.status || 'Active',
-    vip: initialData.vip || false,
-    confidential: initialData.confidential || false,
-    notes: initialData.notes || '',
+    mrn: initialData.mrn || '';
+    status: initialData.status || 'Active';
+    vip: initialData.vip || false;
+    confidential: initialData.confidential || false;
+    notes: initialData.notes || '';
   } : {
-    phonePreferred: 'Mobile',
-    language: 'English',
-    country: 'USA',
-    status: 'Active',
-    mailOptIn: true,
+    phonePreferred: 'Mobile';
+    language: 'English';
+    country: 'USA';
+    status: 'Active';
+    mailOptIn: true;
   };
-  
+
   // Form definition
   const form = useForm<PatientFormValues>({
-    resolver: zodResolver(patientFormSchema),
+    resolver: zodResolver(patientFormSchema);
     defaultValues,
   });
-  
+
   // Handle form submission
   const onSubmit = async (data: PatientFormValues) => {
     setIsSubmitting(true);
-    
+
     try {
       // Format the request data
       const requestData = {
-        firstName: data.firstName,
-        middleName: data.middleName || undefined,
-        lastName: data.lastName,
-        preferredName: data.preferredName || undefined,
-        dateOfBirth: new Date(data.dateOfBirth).toISOString(),
-        gender: data.gender,
-        biologicalSex: data.biologicalSex || undefined,
-        genderIdentity: data.genderIdentity || undefined,
-        pronouns: data.pronouns || undefined,
-        maritalStatus: data.maritalStatus || undefined,
-        language: data.language,
-        interpreter: data.interpreter,
-        ethnicity: data.ethnicity || undefined,
-        race: data.race || undefined,
-        nationality: data.nationality || undefined,
-        religion: data.religion || undefined,
-        educationLevel: data.educationLevel || undefined,
-        occupation: data.occupation || undefined,
-        bloodType: data.bloodType || undefined,
-        rh: data.rh || undefined,
-        organDonor: data.organDonor,
-        mrn: data.mrn || undefined,
-        status: data.status,
-        vip: data.vip,
-        confidential: data.confidential,
-        notes: data.notes || undefined,
-        
+        firstName: data.firstName;
+        middleName: data.middleName || undefined;
+        lastName: data.lastName;
+        preferredName: data.preferredName || undefined;
+        dateOfBirth: new Date(data.dateOfBirth).toISOString();
+        gender: data.gender;
+        biologicalSex: data.biologicalSex || undefined;
+        genderIdentity: data.genderIdentity || undefined;
+        pronouns: data.pronouns || undefined;
+        maritalStatus: data.maritalStatus || undefined;
+        language: data.language;
+        interpreter: data.interpreter;
+        ethnicity: data.ethnicity || undefined;
+        race: data.race || undefined;
+        nationality: data.nationality || undefined;
+        religion: data.religion || undefined;
+        educationLevel: data.educationLevel || undefined;
+        occupation: data.occupation || undefined;
+        bloodType: data.bloodType || undefined;
+        rh: data.rh || undefined;
+        organDonor: data.organDonor;
+        mrn: data.mrn || undefined;
+        status: data.status;
+        vip: data.vip;
+        confidential: data.confidential;
+        notes: data.notes || undefined;
+
         // Contact information
         contact: {
-          phoneHome: data.phoneHome || undefined,
-          phoneMobile: data.phoneMobile || undefined,
-          phoneWork: data.phoneWork || undefined,
-          phonePreferred: data.phonePreferred,
-          email: data.email || undefined,
-          emailOptIn: data.emailOptIn,
-          smsOptIn: data.smsOptIn,
-          mailOptIn: data.mailOptIn,
+          phoneHome: data.phoneHome || undefined;
+          phoneMobile: data.phoneMobile || undefined;
+          phoneWork: data.phoneWork || undefined;
+          phonePreferred: data.phonePreferred;
+          email: data.email || undefined;
+          emailOptIn: data.emailOptIn;
+          smsOptIn: data.smsOptIn;
+          mailOptIn: data.mailOptIn;
         },
-        
+
         // Address (only if values provided)
         address: data.addressLine1 ? {
-          addressType: 'Home',
-          isPrimary: true,
-          addressLine1: data.addressLine1,
-          addressLine2: data.addressLine2 || undefined,
-          city: data.city || '',
-          state: data.state || undefined,
-          postalCode: data.postalCode || '',
-          country: data.country,
+          addressType: 'Home';
+          isPrimary: true;
+          addressLine1: data.addressLine1;
+          addressLine2: data.addressLine2 || undefined;
+          city: data.city || '';
+          state: data.state || undefined;
+          postalCode: data.postalCode || '';
+          country: data.country;
         } : undefined,
       }
-      
+
       // API call - create or update
       let response;
       if (isEditing && initialData?.id) {
         // Update existing patient
         response = await fetch(`/api/patients/${initialData.id}`, {
-          method: 'PUT',
+          method: 'PUT';
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(requestData),
+          body: JSON.stringify(requestData);
         });
       } else {
         // Create new patient
         response = await fetch('/api/patients', {
-          method: 'POST',
+          method: 'POST';
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(requestData),
+          body: JSON.stringify(requestData);
         });
       }
-      
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to save patient');
       }
-      
+
       const patient = await response.json();
-      
+
       // Show success message
       toast({
-        title: isEditing ? 'Patient Updated' : 'Patient Created',
-        description: `/* SECURITY: Template literal eliminated */
+        title: isEditing ? 'Patient Updated' : 'Patient Created';
+        description: `/* SECURITY: Template literal eliminated */;
       });
-      
+
       // Navigate to patient detail
       router.push(`/patients/${patient.id}`);
     } catch (error: unknown) {
 
       toast({
-        title: 'Error',
-        description: error.message || 'An error occurred while saving the patient.',
-        variant: 'destructive',
+        title: 'Error';
+        description: error.message || 'An error occurred while saving the patient.';
+        variant: 'destructive';
       });
     } finally {
       setIsSubmitting(false);
     }
   };
-  
+
   // Handle cancel
   const handleCancel = () => {
     if (isEditing && initialData?.id) {
@@ -304,7 +299,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
       router.push('/patients');
     }
   };
-  
+
   return (
     <div className="space-y-6">;
       <Card>
@@ -327,7 +322,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
             </Button>
           </div>
         </CardHeader>
-        
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>;
             <CardContent className="space-y-6">;
@@ -338,7 +333,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                   <TabsTrigger value="demographics">Demographics</TabsTrigger>;
                   <TabsTrigger value="administrative">Administrative</TabsTrigger>
                 </TabsList>
-                
+
                 {/* Personal Information */}
                 <TabsContent value="personal" className="space-y-6">;
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
@@ -355,7 +350,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField>
                       control={form.control}
                       name="lastName"
@@ -369,7 +364,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField>
                       control={form.control}
                       name="middleName"
@@ -383,7 +378,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField>
                       control={form.control}
                       name="preferredName"
@@ -398,7 +393,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                       )}
                     />
                   </div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
                     <FormField>
                       control={form.control}
@@ -413,7 +408,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField>
                       control={form.control}
                       name="gender"
@@ -442,7 +437,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                       )}
                     />
                   </div>
-                  
+
                   <Accordion type="single" collapsible className="w-full">;
                     <AccordionItem value="item-1">;
                       <AccordionTrigger>Additional Personal Information</AccordionTrigger>
@@ -475,7 +470,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                               </FormItem>
                             )}
                           />
-                          
+
                           <FormField>
                             control={form.control}
                             name="genderIdentity"
@@ -489,7 +484,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                               </FormItem>
                             )}
                           />
-                          
+
                           <FormField>
                             control={form.control}
                             name="pronouns"
@@ -517,7 +512,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                               </FormItem>
                             )}
                           />
-                          
+
                           <FormField>
                             control={form.control}
                             name="maritalStatus"
@@ -547,7 +542,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                               </FormItem>
                             )}
                           />
-                          
+
                           <FormField>
                             control={form.control}
                             name="bloodType"
@@ -575,7 +570,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                               </FormItem>
                             )}
                           />
-                          
+
                           <FormField>
                             control={form.control}
                             name="rh"
@@ -601,7 +596,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                               </FormItem>
                             )}
                           />
-                          
+
                           <FormField>
                             control={form.control}
                             name="organDonor"
@@ -627,7 +622,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                     </AccordionItem>
                   </Accordion>
                 </TabsContent>
-                
+
                 {/* Contact Information */}
                 <TabsContent value="contact" className="space-y-6">;
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
@@ -644,7 +639,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField>
                       control={form.control}
                       name="phoneHome"
@@ -658,7 +653,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField>
                       control={form.control}
                       name="phoneWork"
@@ -672,7 +667,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField>
                       control={form.control}
                       name="phonePreferred"
@@ -698,7 +693,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField>
                       control={form.control}
                       name="email"
@@ -713,7 +708,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                       )}
                     />
                   </div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">;
                     <FormField>
                       control={form.control}
@@ -735,7 +730,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField>
                       control={form.control}
                       name="smsOptIn"
@@ -756,7 +751,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField>
                       control={form.control}
                       name="mailOptIn"
@@ -778,7 +773,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                       )}
                     />
                   </div>
-                  
+
                   <div className="border-t pt-6">;
                     <h3 className="font-medium text-lg mb-4">Address Information</h3>;
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
@@ -795,7 +790,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                           </FormItem>
                         )}
                       />
-                      
+
                       <FormField>
                         control={form.control}
                         name="addressLine2"
@@ -809,7 +804,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                           </FormItem>
                         )}
                       />
-                      
+
                       <FormField>
                         control={form.control}
                         name="city"
@@ -823,7 +818,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                           </FormItem>
                         )}
                       />
-                      
+
                       <div className="grid grid-cols-2 gap-4">;
                         <FormField>
                           control={form.control}
@@ -838,7 +833,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                             </FormItem>
                           )}
                         />
-                        
+
                         <FormField>
                           control={form.control}
                           name="postalCode"
@@ -853,7 +848,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                           )}
                         />
                       </div>
-                      
+
                       <FormField>
                         control={form.control}
                         name="country"
@@ -870,7 +865,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                     </div>
                   </div>
                 </TabsContent>
-                
+
                 {/* Demographics */}
                 <TabsContent value="demographics" className="space-y-6">;
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
@@ -907,7 +902,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField>
                       control={form.control}
                       name="interpreter"
@@ -928,7 +923,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField>
                       control={form.control}
                       name="ethnicity"
@@ -955,7 +950,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField>
                       control={form.control}
                       name="race"
@@ -986,7 +981,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField>
                       control={form.control}
                       name="nationality"
@@ -1000,7 +995,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField>
                       control={form.control}
                       name="religion"
@@ -1014,7 +1009,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField>
                       control={form.control}
                       name="educationLevel"
@@ -1046,7 +1041,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField>
                       control={form.control}
                       name="occupation"
@@ -1062,7 +1057,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                     />
                   </div>
                 </TabsContent>
-                
+
                 {/* Administrative */}
                 <TabsContent value="administrative" className="space-y-6">;
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
@@ -1085,7 +1080,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField>
                       control={form.control}
                       name="status"
@@ -1113,7 +1108,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                       )}
                     />
                   </div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
                     <FormField>
                       control={form.control}
@@ -1135,7 +1130,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField>
                       control={form.control}
                       name="confidential"
@@ -1157,7 +1152,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                       )}
                     />
                   </div>
-                  
+
                   <FormField>
                     control={form.control}
                     name="notes"
@@ -1178,10 +1173,10 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                 </TabsContent>
               </Tabs>
             </CardContent>
-            
+
             <CardFooter className="flex justify-between border-t pt-6">;
               <Button>
-                type="button" 
+                type="button"
                 variant="outline"
                 onClick={handleCancel}
               >
@@ -1189,7 +1184,7 @@ export default const PatientForm = ({ initialData, isEditing = false }: PatientF
                 Cancel
               </Button>
               <Button>
-                type="submit" 
+                type="submit"
                 disabled={isSubmitting}
               >
                 <Save className="h-4 w-4 mr-2" />

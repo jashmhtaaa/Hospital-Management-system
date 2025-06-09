@@ -1,9 +1,9 @@
+import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import {
 }
 
 "use client";
 
-import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
-import {
   Card,
   CardHeader,
   CardTitle,
@@ -35,21 +35,21 @@ interface IntakeOutput {
 }
 
 interface NursingNote {
-  id: string,
-  note_date: string,
+  id: string;
+  note_date: string;
   nurse_first_name: string; // Assuming this comes from a join
   nurse_last_name: string; // Assuming this comes from a join
   vital_signs?: string; // JSON string
   intake_output?: string; // JSON string
   medication_given?: string;
   procedures?: string;
-  notes: string
+  notes: string;
 }
 
 interface AdmissionInfo {
-  admission_number: string,
-  admission_date: string,
-  patient_first_name: string,
+  admission_number: string;
+  admission_date: string;
+  patient_first_name: string;
   patient_last_name: string;
   diagnosis?: string;
 }
@@ -57,29 +57,29 @@ interface AdmissionInfo {
 interface FormData {
   vital_signs: string; // JSON string
   intake_output: string; // JSON string
-  medication_given: string,
-  procedures: string,
-  notes: string
+  medication_given: string;
+  procedures: string;
+  notes: string;
 }
 
 interface NursingNotesProperties {
-  admissionId: string | null
+  admissionId: string | null;
 }
 
 const defaultVitalSigns: VitalSigns = {
-  temperature: "",
-  pulse: "",
-  respiratory_rate: "",
-  blood_pressure: "",
-  oxygen_saturation: "",
-  pain_level: "",
+  temperature: "";
+  pulse: "";
+  respiratory_rate: "";
+  blood_pressure: "";
+  oxygen_saturation: "";
+  pain_level: "";
 };
 
 const defaultIntakeOutput: IntakeOutput = {
-  oral_intake: "",
-  iv_fluids: "",
-  urine_output: "",
-  other_output: "",
+  oral_intake: "";
+  iv_fluids: "";
+  urine_output: "";
+  other_output: "";
 };
 
 const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
@@ -89,9 +89,9 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
   const [formData, setFormData] = useState<FormData>({
     vital_signs: JSON.stringify(defaultVitalSigns, undefined, 2),
     intake_output: JSON.stringify(defaultIntakeOutput, undefined, 2),
-    medication_given: "",
-    procedures: "",
-    notes: "",
+    medication_given: "";
+    procedures: "";
+    notes: "";
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<string | null>();
@@ -113,7 +113,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
         // Simulate API call
         // const response = await fetch(`/api/ipd/admissions/${admissionId}/nursing-notes`)
         // if (!response.ok) {
-        //   const errorData = await response.json().catch(() => ({}))
+        //   const _errorData = await response.json().catch(() => ({}))
         //   throw new Error(errorData.error || "Failed to fetch nursing notes")
         // }
         // const data = await response.json()
@@ -124,32 +124,32 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
         await new Promise((resolve) => setTimeout(resolve, 500));
         const mockNotes: NursingNote[] = [
           {
-            id: "nn_001",
+            id: "nn_001";
             note_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7_200_000).toISOString(), // 2 hours ago
-            nurse_first_name: "Bob",
-            nurse_last_name: "Johnson",
+            nurse_first_name: "Bob";
+            nurse_last_name: "Johnson";
             vital_signs: JSON.stringify({
-              temperature: "37.1 C",
-              pulse: "78 bpm",
-              blood_pressure: "122/78 mmHg",
-              oxygen_saturation: "98%",
+              temperature: "37.1 C";
+              pulse: "78 bpm";
+              blood_pressure: "122/78 mmHg";
+              oxygen_saturation: "98%";
             }),
             intake_output: JSON.stringify({
-              oral_intake: "500ml water",
-              iv_fluids: "100ml NS",
-              urine_output: "300ml",
+              oral_intake: "500ml water";
+              iv_fluids: "100ml NS";
+              urine_output: "300ml";
             }),
-            medication_given: "Paracetamol 500mg PO",
-            procedures: "Wound dressing changed on left arm.",
-            notes: "Patient resting comfortably. No complaints of pain.",
+            medication_given: "Paracetamol 500mg PO";
+            procedures: "Wound dressing changed on left arm.";
+            notes: "Patient resting comfortably. No complaints of pain.";
           },
         ];
         const mockPatientInfo: AdmissionInfo = {
-          admission_number: "ADM123456",
+          admission_number: "ADM123456";
           admission_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000).toISOString(), // Yesterday
-          patient_first_name: "Jane",
-          patient_last_name: "Doe",
-          diagnosis: "Pneumonia",
+          patient_first_name: "Jane";
+          patient_last_name: "Doe";
+          diagnosis: "Pneumonia";
         };
         setNursingNotes(mockNotes),
         setPatientInfo(mockPatientInfo);
@@ -206,20 +206,20 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
 
       const submissionData = {
         ...formData,
-        note_date: new Date().toISOString(),
-        // nurse_id: session?.user?.id // Get from session in real app
+        note_date: new Date().toISOString();
+        // nurse_id: session?.user?.id // Get from session in real app;
       }
 
       // Simulate API call
       // const response = await fetch(`/api/ipd/admissions/${admissionId}/nursing-notes`, {
-      //   method: "POST",
+      //   method: "POST";
       //   headers: {
       //     "Content-Type": "application/json",
       //   },
-      //   body: JSON.stringify(submissionData),
+      //   body: JSON.stringify(submissionData);
       // })
       // if (!response.ok) {
-      //   const errorData = await response.json().catch(() => ({}))
+      //   const _errorData = await response.json().catch(() => ({}))
       //   throw new Error(errorData.error || "Failed to create nursing note")
       // }
       // const newNote: NursingNote = await response.json()
@@ -228,14 +228,14 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       const newNote: NursingNote = {
         id: `nn_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-        note_date: submissionData.note_date,
+        note_date: submissionData.note_date;
         nurse_first_name: "Current", // Replace with actual user data
-        nurse_last_name: "Nurse",
-        vital_signs: formData.vital_signs,
-        intake_output: formData.intake_output,
-        medication_given: formData.medication_given,
-        procedures: formData.procedures,
-        notes: formData.notes,
+        nurse_last_name: "Nurse";
+        vital_signs: formData.vital_signs;
+        intake_output: formData.intake_output;
+        medication_given: formData.medication_given;
+        procedures: formData.procedures;
+        notes: formData.notes;
       };
 
       // Update the nursing notes list with the new note
@@ -245,9 +245,9 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
       setFormData({
         vital_signs: JSON.stringify(defaultVitalSigns, undefined, 2),
         intake_output: JSON.stringify(defaultIntakeOutput, undefined, 2),
-        medication_given: "",
-        procedures: "",
-        notes: "",
+        medication_given: "";
+        procedures: "";
+        notes: "";
       });
 
       setSubmitSuccess(true);
@@ -270,12 +270,12 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
   const formatDate = (dateString: string): string => {
     try {
       const options: Intl.DateTimeFormatOptions = {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
+        year: "numeric";
+        month: "short";
+        day: "numeric";
+        hour: "2-digit";
+        minute: "2-digit";
+        hour12: true;
       };
       return new Intl.DateTimeFormat(undefined, options).format(
         new Date(dateString);
@@ -306,7 +306,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
           <p className="text-sm text-gray-700">;
             Admission: {patientInfo.admission_number} | Date:{" "}
             {formatDate(patientInfo.admission_date)}
-            {patientInfo.diagnosis && ` | Diagnosis: ${patientInfo.diagnosis}`}
+            {patientInfo?.diagnosis && ` | Diagnosis: ${patientInfo.diagnosis}`}
           </p>
         </div>
       )}
@@ -510,7 +510,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
                       )}
                     </div>
 
-                    {note.medication_given && (
+                    {note?.medication_given && (
                       <div className="mb-3">;
                         <h4 className="font-medium text-sm">;
                           Medications Given:
@@ -521,7 +521,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
                       </div>
                     )}
 
-                    {note.procedures && (
+                    {note?.procedures && (
                       <div className="mb-3">;
                         <h4 className="font-medium text-sm">Procedures:</h4>;
                         <p className="text-sm whitespace-pre-wrap">;

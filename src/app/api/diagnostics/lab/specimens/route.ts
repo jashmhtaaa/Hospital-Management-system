@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from '@/lib/session';
+
+
+import { CacheInvalidation } from '@/lib/cache/invalidation';
 import { DB } from '@/lib/database';
 import { RedisCache } from '@/lib/cache/redis';
-import { CacheInvalidation } from '@/lib/cache/invalidation';
 import { auditLog } from '@/lib/audit';
 import { generateBarcodeData } from '@/lib/barcode';
-
+import { getSession } from '@/lib/session';
 /**
  * GET /api/diagnostics/lab/specimens;
  * Get laboratory specimens with optional filtering;
@@ -46,8 +47,8 @@ export const GET = async (request: NextRequest) => {
       async () => {
         // Build query
         let query = `;
-          SELECT s.*, 
-                 p.patient_id as patient_identifier, p.first_name, p.last_name, 
+          SELECT s.*,
+                 p.patient_id as patient_identifier, p.first_name, p.last_name,
                  u1.username as collected_by_name,
                  u2.username as received_by_name,
                  lo.order_number;
@@ -61,37 +62,37 @@ export const GET = async (request: NextRequest) => {
         const params: unknown[] = [];
 
         // Add filters
-        if (patientId) {
+        if (patientId != null) {
           query += ' AND s.patient_id = ?';
           params.push(patientId);
         }
 
-        if (orderId) {
+        if (orderId != null) {
           query += ' AND s.order_id = ?';
           params.push(orderId);
         }
 
-        if (status) {
+        if (status != null) {
           query += ' AND s.status = ?';
           params.push(status);
         }
 
-        if (specimenType) {
+        if (specimenType != null) {
           query += ' AND s.specimen_type = ?';
           params.push(specimenType);
         }
 
-        if (collectedAfter) {
+        if (collectedAfter != null) {
           query += ' AND s.collected_at >= ?';
           params.push(collectedAfter);
         }
 
-        if (collectedBefore) {
+        if (collectedBefore != null) {
           query += ' AND s.collected_at <= ?';
           params.push(collectedBefore);
         }
 
-        if (search) {
+        if (search != null) {
           query += ' AND (s.barcode_id LIKE ? OR s.specimen_id LIKE ? OR p.patient_id LIKE ? OR CONCAT(p.first_name, " ", p.last_name) LIKE ?)';
           const searchTerm = `%${search}%`;
           params.push(searchTerm, searchTerm, searchTerm, searchTerm);
@@ -113,7 +114,7 @@ export const GET = async (request: NextRequest) => {
           WHERE 1=1;
           /* SECURITY: Template literal eliminated */ " ", p.last_name) LIKE ?)' : ''}
         `;
-        
+
         const countParams = params.slice(0, -2);
         const countResult = await DB.query(countQuery, countParams);
 
@@ -122,14 +123,14 @@ export const GET = async (request: NextRequest) => {
 
         // Log access
         await auditLog({
-          userId: session.user.id,
-          action: 'read',
-          resource: 'laboratory_specimens',
+          userId: session.user.id;
+          action: 'read';
+          resource: 'laboratory_specimens';
           details: { patientId, orderId, status, specimenType, page, pageSize }
         });
 
         return {
-          specimens: result.results,
+          specimens: result.results;
           pagination: {
             page,
             pageSize,
@@ -145,8 +146,8 @@ export const GET = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch specimens',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to fetch specimens';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }
@@ -170,12 +171,12 @@ export const POST = async (request: NextRequest) => {
 
     // Parse request body
     const body = await request.json();
-    const { 
-      patientId, 
-      orderId, 
-      specimenType, 
-      collectionMethod, 
-      collectionSite, 
+    const {
+      patientId,
+      orderId,
+      specimenType,
+      collectionMethod,
+      collectionSite,
       collectionNotes,
       containerType,
       volume,
@@ -195,7 +196,7 @@ export const POST = async (request: NextRequest) => {
     }
 
     // Check if order exists if provided
-    if (orderId) {
+    if (orderId != null) {
       const orderCheck = await DB.query('SELECT id FROM laboratory_orders WHERE id = ?', [orderId]);
       if (orderCheck.results.length === 0) {
         return NextResponse.json({ error: 'Order not found' }, { status: 404 });
@@ -204,14 +205,14 @@ export const POST = async (request: NextRequest) => {
 
     // Generate unique specimen ID
     const specimenId = `SP/* SECURITY: Template literal eliminated */
-    
+
     // Generate barcode data
     const barcodeId = await generateBarcodeData(specimenId);
 
     // Insert specimen
     const query = `;
       INSERT INTO laboratory_specimens (
-        specimen_id, barcode_id, patient_id, order_id, specimen_type, 
+        specimen_id, barcode_id, patient_id, order_id, specimen_type,
         collection_method, collection_site, collection_notes,
         container_type, volume, volume_units, priority,
         status, collected_by, collected_at, created_by, updated_by;
@@ -241,11 +242,11 @@ export const POST = async (request: NextRequest) => {
 
     // Log creation
     await auditLog({
-      userId: session.user.id,
-      action: 'create',
-      resource: 'laboratory_specimens',
-      resourceId: result.insertId,
-      details: body
+      userId: session.user.id;
+      action: 'create';
+      resource: 'laboratory_specimens';
+      resourceId: result.insertId;
+      details: body;
     });
 
     // Create specimen tracking entry
@@ -267,8 +268,8 @@ export const POST = async (request: NextRequest) => {
 
     // Get the created specimen
     const createdSpecimen = await DB.query(
-      `SELECT s.*, 
-              p.patient_id as patient_identifier, p.first_name, p.last_name, 
+      `SELECT s.*,
+              p.patient_id as patient_identifier, p.first_name, p.last_name,
               u1.username as collected_by_name,
               u2.username as received_by_name,
               lo.order_number;
@@ -285,8 +286,8 @@ export const POST = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to create specimen',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to create specimen';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }
@@ -310,10 +311,10 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
     // Parse request body
     const body = await request.json();
-    const { 
-      specimenType, 
-      collectionMethod, 
-      collectionSite, 
+    const {
+      specimenType,
+      collectionMethod,
+      collectionSite,
       collectionNotes,
       containerType,
       volume,
@@ -336,7 +337,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     // Authorization
     const isLabStaff = ['admin', 'lab_manager', 'lab_supervisor', 'lab_technician'].includes(session.user.roleName);
     const isCollector = ['phlebotomist', 'nurse'].includes(session.user.roleName);
-    
+
     // Only lab staff can update received specimens
     if (existingSpecimen.status === 'received' && !isLabStaff) {
       return NextResponse.json({ error: 'Forbidden: Cannot update received specimen' }, { status: 403 });
@@ -345,8 +346,8 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     // Build update query
     const updateFields: string[] = [];
     const updateParams: unknown[] = [];
-    let statusChanged = false;
-    let oldStatus = existingSpecimen.status;
+    let _statusChanged = false;
+    let _oldStatus = existingSpecimen.status;
     let trackingNote = null;
 
     if (specimenType !== undefined) {
@@ -397,8 +398,8 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
       updateFields.push('status = ?');
       updateParams.push(status);
-      statusChanged = true;
-      
+      _statusChanged = true;
+
       // Set tracking note based on status change
       switch (status) {
         case 'received':
@@ -439,12 +440,12 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
         updateParams.push(storageLocation || null);
         trackingNote = `Specimen storage location updated to ${storageLocation || 'unspecified'}`;
       }
-      
+
       // Handle rejection reason update without status change
       if (rejectionReason !== undefined) {
         updateFields.push('rejection_reason = ?');
         updateParams.push(rejectionReason || null);
-        if (rejectionReason) {
+        if (rejectionReason != null) {
           trackingNote = `Rejection reason updated: ${rejectionReason}`;
         }
       }
@@ -454,7 +455,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     if (receivedBy !== undefined && isLabStaff) {
       updateFields.push('received_by = ?');
       updateParams.push(receivedBy || null);
-      
+
       if (receivedBy && !existingSpecimen.received_by) {
         updateFields.push('received_at = NOW()');
         trackingNote = 'Specimen receipt recorded';
@@ -476,15 +477,15 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
       // Log update
       await auditLog({
-        userId: session.user.id,
-        action: 'update',
-        resource: 'laboratory_specimens',
-        resourceId: id,
-        details: body
+        userId: session.user.id;
+        action: 'update';
+        resource: 'laboratory_specimens';
+        resourceId: id;
+        details: body;
       });
 
       // Create tracking entry if status changed or tracking note exists
-      if (trackingNote) {
+      if (trackingNote != null) {
         await DB.query(
           `INSERT INTO laboratory_specimen_tracking (
             specimen_id, location, status, notes, performed_by, created_at;
@@ -500,13 +501,13 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       }
 
       // Invalidate cache
-      await CacheInvalidation.invalidatePattern('diagnostic: lab:specimens:*')
+      await CacheInvalidation.invalidatePattern('diagnostic: lab: specimens:*');
     }
 
     // Get the updated specimen
     const updatedSpecimen = await DB.query(
-      `SELECT s.*, 
-              p.patient_id as patient_identifier, p.first_name, p.last_name, 
+      `SELECT s.*,
+              p.patient_id as patient_identifier, p.first_name, p.last_name,
               u1.username as collected_by_name,
               u2.username as received_by_name,
               lo.order_number;
@@ -523,8 +524,8 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to update specimen',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to update specimen';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }
@@ -533,7 +534,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
  * GET /api/diagnostics/lab/specimens/:id/tracking;
  * Get tracking history for a specimen;
  */
-export const GET_TRACKING = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_TRACKING = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();
@@ -572,9 +573,9 @@ export const GET_TRACKING = async (request: NextRequest, { params }: { params: {
 
         // Log access
         await auditLog({
-          userId: session.user.id,
-          action: 'read',
-          resource: 'laboratory_specimen_tracking',
+          userId: session.user.id;
+          action: 'read';
+          resource: 'laboratory_specimen_tracking';
           details: { specimenId: id }
         });
 
@@ -587,8 +588,8 @@ export const GET_TRACKING = async (request: NextRequest, { params }: { params: {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch specimen tracking',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to fetch specimen tracking';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }
@@ -597,7 +598,7 @@ export const GET_TRACKING = async (request: NextRequest, { params }: { params: {
  * POST /api/diagnostics/lab/specimens/:id/aliquot;
  * Create an aliquot from a parent specimen;
  */
-export const POST_ALIQUOT = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _POST_ALIQUOT = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
     // Authentication
     const session = await getSession();
@@ -617,7 +618,7 @@ export const POST_ALIQUOT = async (request: NextRequest, { params }: { params: {
 
     // Parse request body
     const body = await request.json();
-    const { 
+    const {
       containerType,
       volume,
       volumeUnits,
@@ -640,21 +641,21 @@ export const POST_ALIQUOT = async (request: NextRequest, { params }: { params: {
 
     // Check if parent specimen is in a valid state for aliquoting
     if (!['received', 'processing', 'stored'].includes(parentSpecimen.status)) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         error: 'Cannot create aliquot: Parent specimen must be received, processing, or stored';
       }, { status: 400 });
     }
 
     // Generate unique specimen ID for aliquot
     const specimenId = `AL/* SECURITY: Template literal eliminated */
-    
+
     // Generate barcode data
     const barcodeId = await generateBarcodeData(specimenId);
 
     // Insert aliquot specimen
     const query = `;
       INSERT INTO laboratory_specimens (
-        specimen_id, barcode_id, patient_id, order_id, specimen_type, 
+        specimen_id, barcode_id, patient_id, order_id, specimen_type,
         parent_specimen_id, container_type, volume, volume_units,
         priority, status, storage_location, collected_by, collected_at,
         received_by, received_at, created_by, updated_by;
@@ -686,10 +687,10 @@ export const POST_ALIQUOT = async (request: NextRequest, { params }: { params: {
 
     // Log creation
     await auditLog({
-      userId: session.user.id,
-      action: 'create',
-      resource: 'laboratory_specimens',
-      resourceId: result.insertId,
+      userId: session.user.id;
+      action: 'create';
+      resource: 'laboratory_specimens';
+      resourceId: result.insertId;
       details: { ...body, parentSpecimenId: id, type: 'aliquot' }
     });
 
@@ -727,8 +728,8 @@ export const POST_ALIQUOT = async (request: NextRequest, { params }: { params: {
 
     // Get the created aliquot
     const createdAliquot = await DB.query(
-      `SELECT s.*, 
-              p.patient_id as patient_identifier, p.first_name, p.last_name, 
+      `SELECT s.*,
+              p.patient_id as patient_identifier, p.first_name, p.last_name,
               u1.username as collected_by_name,
               u2.username as received_by_name,
               lo.order_number,
@@ -747,8 +748,8 @@ export const POST_ALIQUOT = async (request: NextRequest, { params }: { params: {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to create aliquot',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to create aliquot';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }
@@ -757,7 +758,7 @@ export const POST_ALIQUOT = async (request: NextRequest, { params }: { params: {
  * POST /api/diagnostics/lab/specimens/barcode;
  * Generate barcode for a specimen;
  */
-export const POST_BARCODE = async (request: NextRequest) => {
+export const _POST_BARCODE = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
@@ -786,13 +787,13 @@ export const POST_BARCODE = async (request: NextRequest) => {
     let barcodeId = specimen.barcode_id;
     if (!barcodeId) {
       barcodeId = await generateBarcodeData(specimen.specimen_id);
-      
+
       // Update specimen with barcode ID
       await DB.query(
         'UPDATE laboratory_specimens SET barcode_id = ?, updated_by = ?, updated_at = NOW() WHERE id = ?',
         [barcodeId, session.user.id, specimenId]
       );
-      
+
       // Invalidate cache
       await CacheInvalidation.invalidatePattern('diagnostic:lab:specimens:*');
       await CacheInvalidation.invalidatePattern(`diagnostic:lab:specimen:${specimenId}:*`);
@@ -803,24 +804,24 @@ export const POST_BARCODE = async (request: NextRequest) => {
 
     // Log access
     await auditLog({
-      userId: session.user.id,
-      action: 'generate',
-      resource: 'laboratory_specimen_barcode',
-      resourceId: specimenId,
+      userId: session.user.id;
+      action: 'generate';
+      resource: 'laboratory_specimen_barcode';
+      resourceId: specimenId;
       details: { specimenId, barcodeId }
     });
 
     return NextResponse.json({
       barcodeId,
-      specimenId: specimen.specimen_id,
+      specimenId: specimen.specimen_id;
       barcodeImage,
-      format: 'CODE128'
+      format: 'CODE128';
     });
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to generate barcode',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to generate barcode';
+      details: error instanceof Error ? error.message : 'Unknown error';
     }, { status: 500 });
   }
 }

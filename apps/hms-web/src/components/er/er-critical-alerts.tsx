@@ -1,32 +1,33 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 
+
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 interface Alert {
-  id: string,
-  patientId: string,
-  patientName: string,
-  alertType: 'critical' | 'urgent' | 'warning',
-  message: string,
-  timestamp: string,
-  acknowledged: boolean
+  id: string;
+  patientId: string;
+  patientName: string;
+  alertType: 'critical' | 'urgent' | 'warning';
+  message: string;
+  timestamp: string;
+  acknowledged: boolean;
 }
 
 interface ERCriticalAlertsProps {
-  alerts: Alert[],
-  onAcknowledge: (alertId: string) => void
+  alerts: Alert[];
+  onAcknowledge: (alertId: string) => void;
 }
 
 /**
  * Emergency Room critical alerts component;
  */
-export const ERCriticalAlerts = ({ alerts, onAcknowledge = () => {} }: ERCriticalAlertsProps) => {
+export const _ERCriticalAlerts = ({ alerts, onAcknowledge = () => {} }: ERCriticalAlertsProps) => {
   const getAlertBadge = (type: string) => {
     switch(type) {
       case 'critical': return <Badge variant="danger">Critical</Badge>;
       case 'urgent': return <Badge variant="warning">Urgent</Badge>;
       case 'warning': return <Badge variant="secondary">Warning</Badge>;
-      default: return <Badge>Unknown</Badge>
+      default: return <Badge>Unknown</Badge>;
     }
   };
 
@@ -56,7 +57,7 @@ export const ERCriticalAlerts = ({ alerts, onAcknowledge = () => {} }: ERCritica
           <div className="space-y-3">;
             {alerts.map((alert) => (
 <div
-                key={alert.id} 
+                key={alert.id}
                 className={`flex items-start justify-between p-3 rounded-md ${
                   !alert.acknowledged ? 'bg-red-50 border border-red-200' : 'bg-gray-50'
                 }`}
@@ -69,7 +70,7 @@ export const ERCriticalAlerts = ({ alerts, onAcknowledge = () => {} }: ERCritica
                   <p className="mt-1 text-sm">{alert.message}</p>
                   <p className="text-xs text-gray-500 mt-1">{alert.timestamp}</p>
                 </div>
-                {!alert.acknowledged && (
+                {!alert?.acknowledged && (
                   <button
                     onClick={() => onAcknowledge(alert.id)}
                     className="px-2 py-1 text-xs bg-white border border-gray-300 rounded hover:bg-gray-100"

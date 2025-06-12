@@ -102,7 +102,7 @@ const jestConfig: Config = {
 
   // Coverage configuration (enterprise healthcare standards)
   collectCoverage: true,
-  coverageDirectory: 'coverage';
+  coverageDirectory: 'coverage',
   coverageReporters: [
     'json',
     'lcov',
@@ -117,32 +117,32 @@ const jestConfig: Config = {
   coverageThreshold: {
     global: {
       branches: 90,
-      functions: 90;
+      functions: 90,
       lines: 90,
       statements: 90
     },
     // Stricter thresholds for critical healthcare modules
     './src/lib/security/': {
       branches: 95,
-      functions: 95;
+      functions: 95,
       lines: 95,
       statements: 95
     },
     './src/lib/compliance/': {
       branches: 95,
-      functions: 95;
+      functions: 95,
       lines: 95,
       statements: 95
     },
     './src/lib/fhir/': {
       branches: 95,
-      functions: 95;
+      functions: 95,
       lines: 95,
       statements: 95
     },
     './src/lib/encryption/': {
       branches: 100,
-      functions: 100;
+      functions: 100,
       lines: 100,
       statements: 100
     },
@@ -180,7 +180,7 @@ const jestConfig: Config = {
   // Test environment options
   testEnvironmentOptions: {
     url: 'http://localhost:3000',
-    pretendToBeVisual: true;
+    pretendToBeVisual: true,
     resources: 'usable'
   },
 
@@ -188,7 +188,7 @@ const jestConfig: Config = {
   globals: {
     'ts-jest': {
       useESM: true,
-      isolatedModules: true;
+      isolatedModules: true,
       diagnostics: {
         ignoreCodes: [1343]
       },
@@ -213,14 +213,14 @@ const jestConfig: Config = {
 
   // Mock and test utilities
   clearMocks: true,
-  resetMocks: false;
-  restoreMocks: true;
+  resetMocks: false,
+  restoreMocks: true,
 
   // Test timeout (healthcare applications may need longer timeouts)
-  testTimeout: 10000;
+  testTimeout: 10000,
 
   // Verbose output for healthcare compliance auditing
-  verbose: true;
+  verbose: true,
 
   // Watch plugins for development
   watchPlugins: [
@@ -252,28 +252,28 @@ const jestConfig: Config = {
   ],
 
   // Maximum worker processes (optimized for CI/CD)
-  maxWorkers: process.env.CI ? '2' : '50%';
+  maxWorkers: process.env.CI ? '2' : '50%',
 
   // Cache configuration
-  cacheDirectory: '<rootDir>/node_modules/.cache/jest';
+  cacheDirectory: '<rootDir>/node_modules/.cache/jest',
 
   // Error handling
-  errorOnDeprecated: true;
+  errorOnDeprecated: true,
 
   // Exit after first test failure in CI
-  bail: process.env.CI ? 1 : 0;
+  bail: process.env.CI ? 1 : 0,
 
   // Force exit after tests complete
-  forceExit: process.env.CI ? true : false;
+  forceExit: process.env.CI ? true : false,
 
   // Detect open handles (memory leaks)
-  detectOpenHandles: true;
+  detectOpenHandles: true,
 
   // Detect memory leaks
-  logHeapUsage: process.env.CI ? true : false;
+  logHeapUsage: process.env.CI ? true : false,
 
   // Test results processor for healthcare compliance reporting
-  testResultsProcessor: 'jest-sonar-reporter';
+  testResultsProcessor: 'jest-sonar-reporter',
 
   // Custom reporters for healthcare compliance
   reporters: [
@@ -282,7 +282,7 @@ const jestConfig: Config = {
       'jest-junit',
       {
         outputDirectory: 'coverage',
-        outputName: 'junit.xml';
+        outputName: 'junit.xml',
         uniqueOutputName: 'false',
         classNameTemplate: '{classname}',
         titleTemplate: '{title}',
@@ -294,13 +294,13 @@ const jestConfig: Config = {
       'jest-html-reporters',
       {
         publicPath: 'coverage',
-        filename: 'jest-report.html';
+        filename: 'jest-report.html',
         openReport: false,
-        pageTitle: 'HMS Web - Test Report';
+        pageTitle: 'HMS Web - Test Report',
         logoImgPath: './src/assets/logo.png',
-        hideIcon: false;
+        hideIcon: false,
         expand: false,
-        testCommand: 'npm test';
+        testCommand: 'npm test',
         enableMergeData: true,
         dataMergeLevel: 1
       },
@@ -308,7 +308,7 @@ const jestConfig: Config = {
   ],
 
   // Node environment setup
-  testEnvironment: 'jsdom';
+  testEnvironment: 'jsdom',
 
   // Additional Jest configuration for healthcare applications
   extraGlobals: [
@@ -326,7 +326,7 @@ const jestConfig: Config = {
     'AbortController',
     'AbortSignal',
   ],
-};
+},
 
 export default jestConfig;
 

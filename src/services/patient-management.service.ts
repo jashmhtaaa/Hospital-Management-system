@@ -262,8 +262,7 @@ export class PatientManagementService {
       // Log audit
       await this.auditService.logAction({
         action: 'Create',
-        resourceType: 'Patient';
-        resourceId: patient.id,
+        resourceType: 'Patient',        resourceId: patient.id,
         description: `Created patient record for /* SECURITY: Template literal eliminated */
         performedBy: userId,
         performerRole: await this.authService.getUserRole(userId)
@@ -292,14 +291,10 @@ export class PatientManagementService {
         where: { id: patientId },
         include: {
           contact: true,
-          addresses: true;
-          identifications: true,
-          contacts: true;
-          insurances: true,
-          allergies: true;
-          conditions: true,
-          documents: true;
-          appointments: {
+          addresses: true,          identifications: true,
+          contacts: true,          insurances: true,
+          allergies: true,          conditions: true,
+          documents: true,          appointments: {
             take: 5,
             orderBy: { startDateTime: 'desc' }
           },
@@ -325,8 +320,7 @@ export class PatientManagementService {
       // Log audit
       await this.auditService.logAction({
         action: 'View',
-        resourceType: 'Patient';
-        resourceId: patientId,
+        resourceType: 'Patient',        resourceId: patientId,
         description: `Viewed patient record for /* SECURITY: Template literal eliminated */
         performedBy: userId,
         performerRole: await this.authService.getUserRole(userId)
@@ -390,8 +384,7 @@ export class PatientManagementService {
       // Log audit
       await this.auditService.logAction({
         action: 'Update',
-        resourceType: 'Patient';
-        resourceId: patientId,
+        resourceType: 'Patient',        resourceId: patientId,
         description: `Updated patient record for /* SECURITY: Template literal eliminated */
         performedBy: userId,
         performerRole: await this.authService.getUserRole(userId)
@@ -443,8 +436,7 @@ export class PatientManagementService {
       // Log audit
       await this.auditService.logAction({
         action: 'Create',
-        resourceType: 'PatientAddress';
-        resourceId: address.id,
+        resourceType: 'PatientAddress',        resourceId: address.id,
         description: `Added address for patient ${patientId}`,
         performedBy: userId,
         performerRole: await this.authService.getUserRole(userId)
@@ -508,8 +500,7 @@ export class PatientManagementService {
       // Log audit
       await this.auditService.logAction({
         action: 'Create',
-        resourceType: 'PatientIdentification';
-        resourceId: identification.id,
+        resourceType: 'PatientIdentification',        resourceId: identification.id,
         description: `Added identification for patient ${patientId}`,
         performedBy: userId,
         performerRole: await this.authService.getUserRole(userId)
@@ -560,8 +551,7 @@ export class PatientManagementService {
       // Log audit
       await this.auditService.logAction({
         action: 'Create',
-        resourceType: 'EmergencyContact';
-        resourceId: contact.id,
+        resourceType: 'EmergencyContact',        resourceId: contact.id,
         description: `Added emergency contact for patient ${patientId}`,
         performedBy: userId,
         performerRole: await this.authService.getUserRole(userId)
@@ -633,8 +623,7 @@ export class PatientManagementService {
       // Log audit
       await this.auditService.logAction({
         action: 'Create',
-        resourceType: 'PatientInsurance';
-        resourceId: insurance.id,
+        resourceType: 'PatientInsurance',        resourceId: insurance.id,
         description: `Added insurance for patient ${patientId}`,
         performedBy: userId,
         performerRole: await this.authService.getUserRole(userId)
@@ -734,18 +723,15 @@ export class PatientManagementService {
       // Log audit
       await this.auditService.logAction({
         action: 'Search',
-        resourceType: 'Patient';
-        description: 'Performed patient search',
-        performedBy: userId;
-        performerRole: await this.authService.getUserRole(userId)
+        resourceType: 'Patient',        description: 'Performed patient search',
+        performedBy: userId,        performerRole: await this.authService.getUserRole(userId)
       });
 
       return {
         patients,
         total,
         page: searchParams.page || 1,
-        limit: take;
-        totalPages: Math.ceil(total / take)
+        limit: take,        totalPages: Math.ceil(total / take)
       };
     } catch (error) {
 
@@ -769,8 +755,7 @@ export class PatientManagementService {
         where: { id: patientId },
         data: {
           status: 'Deceased',
-          deceasedDate: data.deceasedDate;
-          deceasedReason: data.deceasedReason
+          deceasedDate: data.deceasedDate,          deceasedReason: data.deceasedReason
         }
       });
 
@@ -780,8 +765,7 @@ export class PatientManagementService {
       // Log audit
       await this.auditService.logAction({
         action: 'Update',
-        resourceType: 'Patient';
-        resourceId: patientId,
+        resourceType: 'Patient',        resourceId: patientId,
         description: `Marked patient ${patientId} as deceased`,
         performedBy: userId,
         performerRole: await this.authService.getUserRole(userId)
@@ -813,16 +797,11 @@ export class PatientManagementService {
             where: { id: sourcePatientId },
             include: {
               contact: true,
-              addresses: true;
-              identifications: true,
-              contacts: true;
-              insurances: true,
-              allergies: true;
-              conditions: true,
-              documents: true;
-              appointments: true,
-              visits: true;
-              vitalSigns: true,
+              addresses: true,              identifications: true,
+              contacts: true,              insurances: true,
+              allergies: true,              conditions: true,
+              documents: true,              appointments: true,
+              visits: true,              vitalSigns: true,
               immunizations: true
             }
           }),
@@ -842,16 +821,11 @@ export class PatientManagementService {
               addressType: address.addressType,
               isPrimary: false, // Don't override target's primary addresses
               addressLine1: address.addressLine1,
-              addressLine2: address.addressLine2;
-              city: address.city,
-              state: address.state;
-              postalCode: address.postalCode,
-              country: address.country;
-              county: address.county,
-              validFrom: address.validFrom;
-              validTo: address.validTo,
-              isBilling: address.isBilling;
-              isShipping: address.isShipping,
+              addressLine2: address.addressLine2,              city: address.city,
+              state: address.state,              postalCode: address.postalCode,
+              country: address.country,              county: address.county,
+              validFrom: address.validFrom,              validTo: address.validTo,
+              isBilling: address.isBilling,              isShipping: address.isShipping,
               notes: `Merged from patient ${sourcePatientId}: ${address.notes || ''}`,
               patientId: targetPatientId
             }
@@ -864,8 +838,7 @@ export class PatientManagementService {
           const existingId = await tx.patientIdentification.findFirst({
             where: {
               patientId: targetPatientId,
-              idType: id.idType;
-              idNumber: id.idNumber
+              idType: id.idType,              idNumber: id.idNumber
             }
           });
 
@@ -873,12 +846,9 @@ export class PatientManagementService {
             await tx.patientIdentification.create({
               data: {
                 idType: id.idType,
-                idNumber: id.idNumber;
-                issuingCountry: id.issuingCountry,
-                issuingState: id.issuingState;
-                issueDate: id.issueDate,
-                expirationDate: id.expirationDate;
-                isPrimary: false, // Don't override target's primary IDs
+                idNumber: id.idNumber,                issuingCountry: id.issuingCountry,
+                issuingState: id.issuingState,                issueDate: id.issueDate,
+                expirationDate: id.expirationDate,                isPrimary: false, // Don't override target's primary IDs
                 documentImageUrl: id.documentImageUrl,
                 notes: `Merged from patient ${sourcePatientId}: ${id.notes || ''}`,
                 patientId: targetPatientId
@@ -892,22 +862,15 @@ export class PatientManagementService {
           await tx.emergencyContact.create({
             data: {
               firstName: contact.firstName,
-              lastName: contact.lastName;
-              relationship: contact.relationship,
+              lastName: contact.lastName,              relationship: contact.relationship,
               isPrimary: false, // Don't override target's primary contacts
               phoneHome: contact.phoneHome,
-              phoneMobile: contact.phoneMobile;
-              phoneWork: contact.phoneWork,
-              phonePreferred: contact.phonePreferred;
-              email: contact.email,
-              addressLine1: contact.addressLine1;
-              addressLine2: contact.addressLine2,
-              city: contact.city;
-              state: contact.state,
-              postalCode: contact.postalCode;
-              country: contact.country,
-              isLegalGuardian: contact.isLegalGuardian;
-              hasDecisionMaking: contact.hasDecisionMaking,
+              phoneMobile: contact.phoneMobile,              phoneWork: contact.phoneWork,
+              phonePreferred: contact.phonePreferred,              email: contact.email,
+              addressLine1: contact.addressLine1,              addressLine2: contact.addressLine2,
+              city: contact.city,              state: contact.state,
+              postalCode: contact.postalCode,              country: contact.country,
+              isLegalGuardian: contact.isLegalGuardian,              hasDecisionMaking: contact.hasDecisionMaking,
               notes: `Merged from patient ${sourcePatientId}: ${contact.notes || ''}`,
               patientId: targetPatientId
             }
@@ -920,8 +883,7 @@ export class PatientManagementService {
           const existingInsurance = await tx.patientInsurance.findFirst({
             where: {
               patientId: targetPatientId,
-              payerName: insurance.payerName;
-              policyNumber: insurance.policyNumber
+              payerName: insurance.payerName,              policyNumber: insurance.policyNumber
             }
           });
 
@@ -930,22 +892,14 @@ export class PatientManagementService {
               data: {
                 insuranceType: 'Secondary', // Don't override primary insurance
                 payerName: insurance.payerName,
-                planName: insurance.planName;
-                policyNumber: insurance.policyNumber,
-                groupNumber: insurance.groupNumber;
-                subscriberId: insurance.subscriberId,
-                subscriberName: insurance.subscriberName;
-                subscriberRelation: insurance.subscriberRelation,
-                startDate: insurance.startDate;
-                endDate: insurance.endDate,
-                copayAmount: insurance.copayAmount;
-                coinsuranceRate: insurance.coinsuranceRate,
-                deductibleAmount: insurance.deductibleAmount;
-                deductibleMet: insurance.deductibleMet,
-                outOfPocketMax: insurance.outOfPocketMax;
-                outOfPocketMet: insurance.outOfPocketMet,
-                cardFrontImageUrl: insurance.cardFrontImageUrl;
-                cardBackImageUrl: insurance.cardBackImageUrl,
+                planName: insurance.planName,                policyNumber: insurance.policyNumber,
+                groupNumber: insurance.groupNumber,                subscriberId: insurance.subscriberId,
+                subscriberName: insurance.subscriberName,                subscriberRelation: insurance.subscriberRelation,
+                startDate: insurance.startDate,                endDate: insurance.endDate,
+                copayAmount: insurance.copayAmount,                coinsuranceRate: insurance.coinsuranceRate,
+                deductibleAmount: insurance.deductibleAmount,                deductibleMet: insurance.deductibleMet,
+                outOfPocketMax: insurance.outOfPocketMax,                outOfPocketMet: insurance.outOfPocketMet,
+                cardFrontImageUrl: insurance.cardFrontImageUrl,                cardBackImageUrl: insurance.cardBackImageUrl,
                 notes: `Merged from patient ${sourcePatientId}: ${insurance.notes || ''}`,
                 patientId: targetPatientId
               }
@@ -959,14 +913,10 @@ export class PatientManagementService {
           await tx.patientAllergy.create({
             data: {
               allergyType: allergy.allergyType,
-              allergen: allergy.allergen;
-              reaction: allergy.reaction,
-              severity: allergy.severity;
-              status: allergy.status,
-              onsetDate: allergy.onsetDate;
-              endDate: allergy.endDate,
-              recordedBy: allergy.recordedBy;
-              notes: `Merged from patient ${sourcePatientId}: ${allergy.notes || ''}`,
+              allergen: allergy.allergen,              reaction: allergy.reaction,
+              severity: allergy.severity,              status: allergy.status,
+              onsetDate: allergy.onsetDate,              endDate: allergy.endDate,
+              recordedBy: allergy.recordedBy,              notes: `Merged from patient ${sourcePatientId}: ${allergy.notes || ''}`,
               patientId: targetPatientId
             }
           });
@@ -977,16 +927,11 @@ export class PatientManagementService {
           await tx.patientCondition.create({
             data: {
               conditionName: condition.conditionName,
-              conditionCode: condition.conditionCode;
-              category: condition.category,
-              status: condition.status;
-              onsetDate: condition.onsetDate,
-              endDate: condition.endDate;
-              severity: condition.severity,
-              bodySite: condition.bodySite;
-              stage: condition.stage,
-              recordedBy: condition.recordedBy;
-              notes: `Merged from patient ${sourcePatientId}: ${condition.notes || ''}`,
+              conditionCode: condition.conditionCode,              category: condition.category,
+              status: condition.status,              onsetDate: condition.onsetDate,
+              endDate: condition.endDate,              severity: condition.severity,
+              bodySite: condition.bodySite,              stage: condition.stage,
+              recordedBy: condition.recordedBy,              notes: `Merged from patient ${sourcePatientId}: ${condition.notes || ''}`,
               isConfidential: condition.isConfidential,
               patientId: targetPatientId
             }
@@ -1022,16 +967,14 @@ export class PatientManagementService {
           where: { id: sourcePatientId },
           data: {
             status: 'Inactive',
-            notes: `This patient record was merged into patient ${targetPatientId} on ${new Date().toISOString()} by ${userId}`;
-          }
+            notes: `This patient record was merged into patient ${targetPatientId} on ${new Date().toISOString()} by ${userId}`,          }
         });
 
         // Update target patient with note about merge
         const updatedTargetPatient = await tx.patient.update({
           where: { id: targetPatientId },
           data: {
-            notes: targetPatient.notes;
-              ? `${targetPatient.notes}\nMerged with patient ${sourcePatientId} on ${new Date().toISOString()} by ${userId}`
+            notes: targetPatient.notes,              ? `${targetPatient.notes}\nMerged with patient ${sourcePatientId} on ${new Date().toISOString()} by ${userId}`
               : `Merged with patient ${sourcePatientId} on ${new Date().toISOString()} by ${userId}`;
           }
         });
@@ -1039,8 +982,7 @@ export class PatientManagementService {
         // Log audit
         await this.auditService.logAction({
           action: 'Merge',
-          resourceType: 'Patient';
-          resourceId: targetPatientId,
+          resourceType: 'Patient',          resourceId: targetPatientId,
           description: `Merged patient ${sourcePatientId} into patient ${targetPatientId}`,
           performedBy: userId,
           performerRole: await this.authService.getUserRole(userId)
@@ -1071,10 +1013,8 @@ export class PatientManagementService {
         where: { id: patientId },
         include: {
           contact: true,
-          addresses: true;
-          identifications: true,
-          contacts: true;
-          insurances: true
+          addresses: true,          identifications: true,
+          contacts: true,          insurances: true
         }
       });
 
@@ -1088,8 +1028,7 @@ export class PatientManagementService {
       // Log audit
       await this.auditService.logAction({
         action: 'View',
-        resourceType: 'PatientMPI';
-        resourceId: patientId,
+        resourceType: 'PatientMPI',        resourceId: patientId,
         description: `Viewed MPI for patient ${patientId}`,
         performedBy: userId,
         performerRole: await this.authService.getUserRole(userId)

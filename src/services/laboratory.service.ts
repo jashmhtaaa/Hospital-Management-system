@@ -16,8 +16,7 @@ const LabTestSchema = z.object({
   testCategory: z.string().min(1, "Test category is required"),
   testType: z.string().min(1, "Test type is required"),
   sampleTypes: z.array(z.string()),
-  containerTypes: z.array(z.string());
-  defaultPriority: z.string().default("Routine"),
+  containerTypes: z.array(z.string()),  defaultPriority: z.string().default("Routine"),
   defaultDepartment: z.string().optional(),
   methodUsed: z.string().optional(),
   equipmentUsed: z.string().optional(),
@@ -233,8 +232,7 @@ export class LaboratoryService {
       // Log audit
       await this.auditService.logAction({
         action: 'Create',
-        resourceType: 'LabTest';
-        resourceId: test.id,
+        resourceType: 'LabTest',        resourceId: test.id,
         description: `Created lab test: ${test.testName} (${test.testCode})`,
         performedBy: userId
       });
@@ -276,8 +274,7 @@ export class LaboratoryService {
       // Log audit
       await this.auditService.logAction({
         action: 'View',
-        resourceType: 'LabTest';
-        resourceId: testId,
+        resourceType: 'LabTest',        resourceId: testId,
         description: `Viewed lab test: ${test.testName} (${test.testCode})`,
         performedBy: userId
       });
@@ -329,8 +326,7 @@ export class LaboratoryService {
       // Log audit
       await this.auditService.logAction({
         action: 'Update',
-        resourceType: 'LabTest';
-        resourceId: testId,
+        resourceType: 'LabTest',        resourceId: testId,
         description: `Updated lab test: ${test.testName} (${test.testCode})`,
         performedBy: userId
       });
@@ -367,26 +363,16 @@ export class LaboratoryService {
           data: {
             orderNumber,
             patientId: validatedOrder.patientId,
-            encounterId: validatedOrder.encounterId;
-            orderingProviderId: validatedOrder.orderingProviderId,
-            orderingProviderName: validatedOrder.orderingProviderName;
-            orderDateTime: validatedOrder.orderDateTime,
-            priority: validatedOrder.priority;
-            collectionType: validatedOrder.collectionType,
-            clinicalInfo: validatedOrder.clinicalInfo;
-            diagnosis: validatedOrder.diagnosis,
-            diagnosisCode: validatedOrder.diagnosisCode;
-            isFasting: validatedOrder.isFasting,
-            collectionDateTime: validatedOrder.collectionDateTime;
-            collectionSite: validatedOrder.collectionSite,
-            collectedBy: validatedOrder.collectedBy;
-            specimenReceivedDateTime: validatedOrder.specimenReceivedDateTime,
-            receivedBy: validatedOrder.receivedBy;
-            status: validatedOrder.status,
-            departmentId: validatedOrder.departmentId;
-            locationId: validatedOrder.locationId,
-            notes: validatedOrder.notes;
-            isRecurring: validatedOrder.isRecurring,
+            encounterId: validatedOrder.encounterId,            orderingProviderId: validatedOrder.orderingProviderId,
+            orderingProviderName: validatedOrder.orderingProviderName,            orderDateTime: validatedOrder.orderDateTime,
+            priority: validatedOrder.priority,            collectionType: validatedOrder.collectionType,
+            clinicalInfo: validatedOrder.clinicalInfo,            diagnosis: validatedOrder.diagnosis,
+            diagnosisCode: validatedOrder.diagnosisCode,            isFasting: validatedOrder.isFasting,
+            collectionDateTime: validatedOrder.collectionDateTime,            collectionSite: validatedOrder.collectionSite,
+            collectedBy: validatedOrder.collectedBy,            specimenReceivedDateTime: validatedOrder.specimenReceivedDateTime,
+            receivedBy: validatedOrder.receivedBy,            status: validatedOrder.status,
+            departmentId: validatedOrder.departmentId,            locationId: validatedOrder.locationId,
+            notes: validatedOrder.notes,            isRecurring: validatedOrder.isRecurring,
             recurringPattern: validatedOrder.recurringPattern
           }
         });
@@ -396,14 +382,10 @@ export class LaboratoryService {
           await tx.labOrderItem.create({
             data: {
               orderId: newOrder.id,
-              testId: item.testId;
-              profileId: item.profileId,
-              status: item.status || 'Ordered';
-              priority: item.priority || validatedOrder.priority,
-              scheduledDateTime: item.scheduledDateTime;
-              performingLabId: item.performingLabId,
-              referralLabId: item.referralLabId;
-              billable: item.billable,
+              testId: item.testId,              profileId: item.profileId,
+              status: item.status || 'Ordered',              priority: item.priority || validatedOrder.priority,
+              scheduledDateTime: item.scheduledDateTime,              performingLabId: item.performingLabId,
+              referralLabId: item.referralLabId,              billable: item.billable,
               notes: item.notes
             }
           });
@@ -415,8 +397,7 @@ export class LaboratoryService {
       // Log audit
       await this.auditService.logAction({
         action: 'Create',
-        resourceType: 'LabOrder';
-        resourceId: order.id,
+        resourceType: 'LabOrder',        resourceId: order.id,
         description: `Created lab order: ${order.orderNumber} for patient ${order.patientId}`,
         performedBy: userId
       });
@@ -424,13 +405,11 @@ export class LaboratoryService {
       // Send notification to lab department
       await this.notificationService.sendNotification({
         type: 'LabOrderCreated',
-        title: 'New Lab Order';
-        message: `New lab order ${order.orderNumber} created for patient ${order.patientId}`,
+        title: 'New Lab Order',        message: `New lab order ${order.orderNumber} created for patient ${order.patientId}`,
         priority: order.priority === 'STAT' ? 'high' : 'medium',
         recipientRoles: ['Lab Technician', 'Lab Manager'],
         recipientIds: [],
-        relatedResourceType: 'LabOrder';
-        relatedResourceId: order.id
+        relatedResourceType: 'LabOrder',        relatedResourceId: order.id
       });
 
       return order;
@@ -475,8 +454,7 @@ export class LaboratoryService {
       // Log audit
       await this.auditService.logAction({
         action: 'View',
-        resourceType: 'LabOrder';
-        resourceId: orderId,
+        resourceType: 'LabOrder',        resourceId: orderId,
         description: `Viewed lab order: ${order.orderNumber}`,
         performedBy: userId
       });
@@ -520,8 +498,7 @@ export class LaboratoryService {
       // Log audit
       await this.auditService.logAction({
         action: 'Update',
-        resourceType: 'LabOrder';
-        resourceId: orderId,
+        resourceType: 'LabOrder',        resourceId: orderId,
         description: `Updated lab order status: ${order.orderNumber} to ${statusData.status}`,
         performedBy: userId
       });
@@ -530,24 +507,20 @@ export class LaboratoryService {
       if (statusData.status === 'Completed') {
         await this.notificationService.sendNotification({
           type: 'LabOrderCompleted',
-          title: 'Lab Order Completed';
-          message: `Lab order ${order.orderNumber} has been completed`,
+          title: 'Lab Order Completed',          message: `Lab order ${order.orderNumber} has been completed`,
           priority: 'medium',
           recipientRoles: ['Physician', 'Nurse'],
           recipientIds: [order.orderingProviderId],
-          relatedResourceType: 'LabOrder';
-          relatedResourceId: order.id
+          relatedResourceType: 'LabOrder',          relatedResourceId: order.id
         });
       } else if (statusData.status === 'Cancelled') {
         await this.notificationService.sendNotification({
           type: 'LabOrderCancelled',
-          title: 'Lab Order Cancelled';
-          message: `Lab order ${order.orderNumber} has been cancelled`,
+          title: 'Lab Order Cancelled',          message: `Lab order ${order.orderNumber} has been cancelled`,
           priority: 'medium',
           recipientRoles: ['Physician', 'Nurse'],
           recipientIds: [order.orderingProviderId],
-          relatedResourceType: 'LabOrder';
-          relatedResourceId: order.id
+          relatedResourceType: 'LabOrder',          relatedResourceId: order.id
         });
       }
 
@@ -595,22 +568,14 @@ export class LaboratoryService {
         data: {
           sampleId,
           orderId: validatedSample.orderId,
-          patientId: validatedSample.patientId;
-          sampleTypeId: validatedSample.sampleTypeId,
-          containerType: validatedSample.containerType;
-          volume: validatedSample.volume,
-          collectionDateTime: validatedSample.collectionDateTime;
-          collectedBy: validatedSample.collectedBy,
-          collectionSite: validatedSample.collectionSite;
-          collectionMethod: validatedSample.collectionMethod,
-          receivedDateTime: validatedSample.receivedDateTime;
-          receivedBy: validatedSample.receivedBy,
-          receivedCondition: validatedSample.receivedCondition;
-          status: validatedSample.status,
-          storageLocation: validatedSample.storageLocation;
-          parentSampleId: validatedSample.parentSampleId,
-          isAliquot: validatedSample.isAliquot;
-          processingNotes: validatedSample.processingNotes,
+          patientId: validatedSample.patientId,          sampleTypeId: validatedSample.sampleTypeId,
+          containerType: validatedSample.containerType,          volume: validatedSample.volume,
+          collectionDateTime: validatedSample.collectionDateTime,          collectedBy: validatedSample.collectedBy,
+          collectionSite: validatedSample.collectionSite,          collectionMethod: validatedSample.collectionMethod,
+          receivedDateTime: validatedSample.receivedDateTime,          receivedBy: validatedSample.receivedBy,
+          receivedCondition: validatedSample.receivedCondition,          status: validatedSample.status,
+          storageLocation: validatedSample.storageLocation,          parentSampleId: validatedSample.parentSampleId,
+          isAliquot: validatedSample.isAliquot,          processingNotes: validatedSample.processingNotes,
           notes: validatedSample.notes
         }
       });
@@ -621,8 +586,7 @@ export class LaboratoryService {
           where: { id: order.id },
           data: {
             status: 'Collected',
-            collectionDateTime: validatedSample.collectionDateTime;
-            collectedBy: validatedSample.collectedBy,
+            collectionDateTime: validatedSample.collectionDateTime,            collectedBy: validatedSample.collectedBy,
             collectionSite: validatedSample.collectionSite
           }
         });
@@ -634,8 +598,7 @@ export class LaboratoryService {
           where: { id: order.id },
           data: {
             status: 'In Process',
-            specimenReceivedDateTime: validatedSample.receivedDateTime;
-            receivedBy: validatedSample.receivedBy
+            specimenReceivedDateTime: validatedSample.receivedDateTime,            receivedBy: validatedSample.receivedBy
           }
         });
       }
@@ -643,8 +606,7 @@ export class LaboratoryService {
       // Log audit
       await this.auditService.logAction({
         action: 'Create',
-        resourceType: 'LabSample';
-        resourceId: sample.id,
+        resourceType: 'LabSample',        resourceId: sample.id,
         description: `Registered lab sample: ${sample.sampleId} for order ${order.orderNumber}`,
         performedBy: userId
       });
@@ -678,8 +640,7 @@ export class LaboratoryService {
         where: { id: validatedResult.parameterId },
         include: {
           criticalRanges: true,
-          referenceRanges: true;
-          test: true
+          referenceRanges: true,          test: true
         }
       });
 
@@ -744,43 +705,29 @@ export class LaboratoryService {
         data: {
           resultId,
           orderId: validatedResult.orderId,
-          sampleId: validatedResult.sampleId;
-          parameterId: validatedResult.parameterId,
-          resultValue: validatedResult.resultValue;
-          resultValueNumeric: validatedResult.resultValueNumeric,
-          units: validatedResult.units || parameter.units;
-          referenceRange,
+          sampleId: validatedResult.sampleId,          parameterId: validatedResult.parameterId,
+          resultValue: validatedResult.resultValue,          resultValueNumeric: validatedResult.resultValueNumeric,
+          units: validatedResult.units || parameter.units,          referenceRange,
           flags,
           interpretation: validatedResult.interpretation,
-          status: validatedResult.status;
-          performedBy: validatedResult.performedBy,
-          performedDateTime: validatedResult.performedDateTime;
-          verifiedBy: validatedResult.verifiedBy,
-          verifiedDateTime: validatedResult.verifiedDateTime;
-          reportedDateTime: validatedResult.reportedDateTime,
-          correctedResultId: validatedResult.correctedResultId;
-          correctionReason: validatedResult.correctionReason,
-          analyticalMethod: validatedResult.analyticalMethod;
-          equipmentId: validatedResult.equipmentId,
-          equipmentName: validatedResult.equipmentName;
-          batchId: validatedResult.batchId,
-          runId: validatedResult.runId;
-          dilutionFactor: validatedResult.dilutionFactor,
-          notes: validatedResult.notes;
-          isCritical,
+          status: validatedResult.status,          performedBy: validatedResult.performedBy,
+          performedDateTime: validatedResult.performedDateTime,          verifiedBy: validatedResult.verifiedBy,
+          verifiedDateTime: validatedResult.verifiedDateTime,          reportedDateTime: validatedResult.reportedDateTime,
+          correctedResultId: validatedResult.correctedResultId,          correctionReason: validatedResult.correctionReason,
+          analyticalMethod: validatedResult.analyticalMethod,          equipmentId: validatedResult.equipmentId,
+          equipmentName: validatedResult.equipmentName,          batchId: validatedResult.batchId,
+          runId: validatedResult.runId,          dilutionFactor: validatedResult.dilutionFactor,
+          notes: validatedResult.notes,          isCritical,
           criticalNotifiedTo: validatedResult.criticalNotifiedTo,
-          criticalNotifiedDateTime: validatedResult.criticalNotifiedDateTime;
-          criticalNotifiedBy: validatedResult.criticalNotifiedBy,
-          criticalAcknowledgedBy: validatedResult.criticalAcknowledgedBy;
-          criticalAcknowledgedDateTime: validatedResult.criticalAcknowledgedDateTime
+          criticalNotifiedDateTime: validatedResult.criticalNotifiedDateTime,          criticalNotifiedBy: validatedResult.criticalNotifiedBy,
+          criticalAcknowledgedBy: validatedResult.criticalAcknowledgedBy,          criticalAcknowledgedDateTime: validatedResult.criticalAcknowledgedDateTime
         }
       });
 
       // Log audit
       await this.auditService.logAction({
         action: 'Create',
-        resourceType: 'LabResult';
-        resourceId: result.id,
+        resourceType: 'LabResult',        resourceId: result.id,
         description: `Entered lab result for ${parameter.test.testName} - ${parameter.parameterName} on order ${order.orderNumber}`,
         performedBy: userId
       });
@@ -789,13 +736,11 @@ export class LaboratoryService {
       if (isCritical != null) {
         await this.notificationService.sendNotification({
           type: 'CriticalLabResult',
-          title: 'Critical Lab Result';
-          message: `Critical lab result for ${parameter.test.testName} - ${parameter.parameterName} on order ${order.orderNumber}`,
+          title: 'Critical Lab Result',          message: `Critical lab result for ${parameter.test.testName} - ${parameter.parameterName} on order ${order.orderNumber}`,
           priority: 'high',
           recipientRoles: ['Physician', 'Nurse'],
           recipientIds: [order.orderingProviderId],
-          relatedResourceType: 'LabResult';
-          relatedResourceId: result.id
+          relatedResourceType: 'LabResult',          relatedResourceId: result.id
         });
       }
 
@@ -867,13 +812,11 @@ export class LaboratoryService {
         // Send notification for completed order
         await this.notificationService.sendNotification({
           type: 'LabOrderCompleted',
-          title: 'Lab Order Completed';
-          message: `All results for lab order ${order.orderNumber} have been entered`,
+          title: 'Lab Order Completed',          message: `All results for lab order ${order.orderNumber} have been entered`,
           priority: 'medium',
           recipientRoles: ['Physician', 'Nurse'],
           recipientIds: [order.orderingProviderId],
-          relatedResourceType: 'LabOrder';
-          relatedResourceId: order.id
+          relatedResourceType: 'LabOrder',          relatedResourceId: order.id
         });
       }
 
@@ -911,8 +854,7 @@ export class LaboratoryService {
         where: { id: resultId },
         data: {
           status: 'Final',
-          verifiedBy: verificationData.verifiedBy;
-          verifiedDateTime: new Date(),
+          verifiedBy: verificationData.verifiedBy,          verifiedDateTime: new Date(),
           notes: verificationData.notes ? `/* SECURITY: Template literal eliminated */
         }
       });
@@ -920,8 +862,7 @@ export class LaboratoryService {
       // Log audit
       await this.auditService.logAction({
         action: 'Update',
-        resourceType: 'LabResult';
-        resourceId: resultId,
+        resourceType: 'LabResult',        resourceId: resultId,
         description: `Verified lab result for ${existingResult.parameter.test.testName} - ${existingResult.parameter.parameterName} on order ${existingResult.order.orderNumber}`,
         performedBy: userId
       });
@@ -1010,8 +951,7 @@ export class LaboratoryService {
       // Log audit
       await this.auditService.logAction({
         action: 'Search',
-        resourceType: 'LabOrder';
-        description: 'Performed lab order search',
+        resourceType: 'LabOrder',        description: 'Performed lab order search',
         performedBy: userId
       });
 
@@ -1019,8 +959,7 @@ export class LaboratoryService {
         orders,
         total,
         page: searchParams.page || 1,
-        limit: take;
-        totalPages: Math.ceil(total / take)
+        limit: take,        totalPages: Math.ceil(total / take)
       };
     } catch (error) {
 
@@ -1050,8 +989,7 @@ export class LaboratoryService {
           order: {
             select: {
               orderNumber: true,
-              orderDateTime: true;
-              orderingProviderName: true
+              orderDateTime: true,              orderingProviderName: true
             }
           }
         },
@@ -1064,8 +1002,7 @@ export class LaboratoryService {
       // Log audit
       await this.auditService.logAction({
         action: 'View',
-        resourceType: 'LabResult';
-        description: `Viewed lab results for patient ${patientId}`,
+        resourceType: 'LabResult',        description: `Viewed lab results for patient ${patientId}`,
         performedBy: userId
       });
 
@@ -1084,8 +1021,7 @@ export class LaboratoryService {
             testId,
             testName,
             testCode: result.parameter.test.testCode,
-            latestDate: result.performedDateTime;
-            parameters: []
+            latestDate: result.performedDateTime,            parameters: []
           };
         }
 
@@ -1097,16 +1033,11 @@ export class LaboratoryService {
         // Add parameter to test
         acc[testId].parameters.push({
           id: result.id,
-          parameterId: result.parameterId;
-          parameterName: result.parameter.parameterName,
-          resultValue: result.resultValue;
-          units: result.units,
-          referenceRange: result.referenceRange;
-          flags: result.flags,
-          isCritical: result.isCritical;
-          performedDateTime: result.performedDateTime,
-          status: result.status;
-          orderNumber: result.order.orderNumber,
+          parameterId: result.parameterId,          parameterName: result.parameter.parameterName,
+          resultValue: result.resultValue,          units: result.units,
+          referenceRange: result.referenceRange,          flags: result.flags,
+          isCritical: result.isCritical,          performedDateTime: result.performedDateTime,
+          status: result.status,          orderNumber: result.order.orderNumber,
           orderDateTime: result.order.orderDateTime
         });
 
@@ -1174,8 +1105,7 @@ export class LaboratoryService {
       // Log audit
       await this.auditService.logAction({
         action: 'View',
-        resourceType: 'LabResult';
-        description: `Viewed result trend for patient ${patientId}, test parameter ${parameter.parameterName}`,
+        resourceType: 'LabResult',        description: `Viewed result trend for patient ${patientId}, test parameter ${parameter.parameterName}`,
         performedBy: userId
       });
 
@@ -1196,22 +1126,16 @@ export class LaboratoryService {
       return {
         parameter: {
           id: parameter.id,
-          name: parameter.parameterName;
-          units: parameter.units,
-          testName: parameter.test.testName;
-          testCode: parameter.test.testCode
+          name: parameter.parameterName,          units: parameter.units,
+          testName: parameter.test.testName,          testCode: parameter.test.testCode
         },
         referenceRanges,
         results: results.map(result => ({
           id: result.id,
-          resultValue: result.resultValue;
-          resultValueNumeric: result.resultValueNumeric,
-          units: result.units;
-          flags: result.flags,
-          isCritical: result.isCritical;
-          performedDateTime: result.performedDateTime,
-          status: result.status;
-          orderNumber: result.order.orderNumber
+          resultValue: result.resultValue,          resultValueNumeric: result.resultValueNumeric,
+          units: result.units,          flags: result.flags,
+          isCritical: result.isCritical,          performedDateTime: result.performedDateTime,
+          status: result.status,          orderNumber: result.order.orderNumber
         }))
       };
     } catch (error) {

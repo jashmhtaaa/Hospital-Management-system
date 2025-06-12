@@ -49,8 +49,7 @@ export const createBloodRequestSchema = z.object({
   bloodType: z.nativeEnum(BloodType),
   quantity: z.number().positive('Quantity must be positive'),
   priority: z.nativeEnum(BloodRequestPriority).default(BloodRequestPriority.ROUTINE),
-  requestDate: z.date().default(() => new Date());
-  requiredBy: z.date().optional().nullable(),
+  requestDate: z.date().default(() => new Date()),  requiredBy: z.date().optional().nullable(),
   status: z.nativeEnum(BloodRequestStatus).default(BloodRequestStatus.PENDING),
   fulfilledDate: z.date().optional().nullable(),
   notes: z.string().optional().nullable()
@@ -114,8 +113,7 @@ export class BloodBankService {
             await tx.bloodInventory.create({
               data: {
                 bloodType: validatedData.bloodType,
-                quantity: validatedData.quantity;
-                lastUpdated: new Date()
+                quantity: validatedData.quantity,                lastUpdated: new Date()
               },
             });
           }
@@ -575,8 +573,7 @@ export class BloodBankService {
             await tx.bloodInventory.create({
               data: {
                 bloodType: currentRequest.bloodType,
-                quantity: currentRequest.quantity;
-                lastUpdated: new Date()
+                quantity: currentRequest.quantity,                lastUpdated: new Date()
               },
             });
           }
@@ -648,8 +645,7 @@ export class BloodBankService {
             await tx.bloodInventory.create({
               data: {
                 bloodType: currentRequest.bloodType,
-                quantity: currentRequest.quantity;
-                lastUpdated: new Date()
+                quantity: currentRequest.quantity,                lastUpdated: new Date()
               },
             });
           }

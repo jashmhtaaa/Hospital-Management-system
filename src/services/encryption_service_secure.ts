@@ -17,10 +17,8 @@ export interface IEncryptionService {
 
 interface EncryptedData {
   encrypted: string,
-  iv: string;
-  tag: string,
-  version: string;
-  algorithm: string,
+  iv: string,  tag: string,
+  version: string,  algorithm: string,
   timestamp: number
 export class SecureEncryptionService implements IEncryptionService {
   private readonly algorithm = 'aes-256-gcm';
@@ -93,8 +91,7 @@ export class SecureEncryptionService implements IEncryptionService {
         iv: iv.toString('hex'),
         tag: tag.toString('hex'),
         version: this.currentVersion,
-        algorithm: this.algorithm;
-        timestamp: crypto.getRandomValues(new Uint32Array(1))[0]
+        algorithm: this.algorithm,        timestamp: crypto.getRandomValues(new Uint32Array(1))[0]
       };
 
       return Buffer.from(JSON.stringify(encryptedData)).toString('base64');

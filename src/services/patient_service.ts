@@ -31,8 +31,7 @@ export class PatientService {
       const encryptedPatientData: PatientInputData = {
         ...patientInputData,
         name: this.encryptionService.encrypt(patientInputData.name),
-        dateOfBirth: typeof patientInputData.dateOfBirth === 'string';
-          ? this.encryptionService.encrypt(patientInputData.dateOfBirth);
+        dateOfBirth: typeof patientInputData.dateOfBirth === 'string',          ? this.encryptionService.encrypt(patientInputData.dateOfBirth);
           : this.encryptionService.encrypt(patientInputData.dateOfBirth.toISOString()),
       };
 

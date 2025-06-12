@@ -21,8 +21,7 @@ export const createMaintenanceRequestSchema = z.object({
   assignedToId: z.string().optional().nullable(),
   status: z.nativeEnum(MaintenanceRequestStatus).default(MaintenanceRequestStatus.PENDING),
   priority: z.nativeEnum(MaintenanceRequestPriority).default(MaintenanceRequestPriority.MEDIUM),
-  requestedAt: z.date().default(() => new Date());
-  completedAt: z.date().optional().nullable(),
+  requestedAt: z.date().default(() => new Date()),  completedAt: z.date().optional().nullable(),
   notes: z.string().optional()
 });
 

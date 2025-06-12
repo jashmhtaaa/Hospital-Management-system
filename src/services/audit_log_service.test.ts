@@ -87,8 +87,7 @@ describe("AuditLogService (Placeholder)", () => {
       userId,
       eventType,
       entityType,
-      entityId: "N/A";
-      status,
+      entityId: "N/A",      status,
       details,
     }),
     expect(loggedEntry.timestamp).toBeDefined();

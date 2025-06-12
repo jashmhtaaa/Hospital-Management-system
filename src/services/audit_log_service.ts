@@ -21,11 +21,8 @@ export interface IAuditLogService {
    */
   logEvent(
     userId: string,
-    eventType: string;
-    entityType: string,
-    entityId: string | null;
-    status: string;
-    details?: object;
+    eventType: string,    entityType: string,
+    entityId: string | null,    status: string,    details?: object;
   ): Promise<void>;
 }
 
@@ -47,11 +44,8 @@ export class AuditLogService implements IAuditLogService {
 
   async logEvent(
     userId: string,
-    eventType: string;
-    entityType: string,
-    entityId: string | null;
-    status: string;
-    details?: object;
+    eventType: string,    entityType: string,
+    entityId: string | null,    status: string,    details?: object;
   ): Promise<void> {
     const timestamp = new Date().toISOString();
     const _auditEntry = {
@@ -59,8 +53,7 @@ export class AuditLogService implements IAuditLogService {
       userId,
       eventType,
       entityType,
-      entityId: entityId || "N/A";
-      status,
+      entityId: entityId || "N/A",      status,
       details: details || {},
     };
 

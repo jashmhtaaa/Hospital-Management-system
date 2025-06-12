@@ -124,8 +124,7 @@ export const GET = async (request: NextRequest) => {
         // Log access
         await auditLog({
           userId: session.user.id,
-          action: 'read';
-          resource: 'laboratory_specimens',
+          action: 'read',          resource: 'laboratory_specimens',
           details: { patientId, orderId, status, specimenType, page, pageSize }
         });
 
@@ -182,7 +181,7 @@ export const POST = async (request: NextRequest) => {
       volume,
       volumeUnits,
       priority;
-    } = body;
+    } = body;;
 
     // Validate required fields
     if (!patientId || !specimenType) {
@@ -243,10 +242,8 @@ export const POST = async (request: NextRequest) => {
     // Log creation
     await auditLog({
       userId: session.user.id,
-      action: 'create';
-      resource: 'laboratory_specimens',
-      resourceId: result.insertId;
-      details: body
+      action: 'create',      resource: 'laboratory_specimens',
+      resourceId: result.insertId,      details: body
     });
 
     // Create specimen tracking entry
@@ -324,7 +321,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       rejectionReason,
       storageLocation,
       receivedBy;
-    } = body;
+    } = body;;
 
     // Check if specimen exists
     const existingCheck = await DB.query('SELECT * FROM laboratory_specimens WHERE id = ?', [id]);
@@ -478,10 +475,8 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       // Log update
       await auditLog({
         userId: session.user.id,
-        action: 'update';
-        resource: 'laboratory_specimens',
-        resourceId: id;
-        details: body
+        action: 'update',        resource: 'laboratory_specimens',
+        resourceId: id,        details: body
       });
 
       // Create tracking entry if status changed or tracking note exists
@@ -574,8 +569,7 @@ export const _GET_TRACKING = async (request: NextRequest, { params }: { params: 
         // Log access
         await auditLog({
           userId: session.user.id,
-          action: 'read';
-          resource: 'laboratory_specimen_tracking',
+          action: 'read',          resource: 'laboratory_specimen_tracking',
           details: { specimenId: id }
         });
 
@@ -624,7 +618,7 @@ export const _POST_ALIQUOT = async (request: NextRequest, { params }: { params: 
       volumeUnits,
       storageLocation,
       notes;
-    } = body;
+    const {}
 
     // Validate required fields
     if (!containerType || !volume || !volumeUnits) {
@@ -654,7 +648,7 @@ export const _POST_ALIQUOT = async (request: NextRequest, { params }: { params: 
 
     // Insert aliquot specimen
     const query = `;
-      INSERT INTO laboratory_specimens (
+      `INSERT INTO laboratory_specimens (
         specimen_id, barcode_id, patient_id, order_id, specimen_type,
         parent_specimen_id, container_type, volume, volume_units,
         priority, status, storage_location, collected_by, collected_at,
@@ -688,10 +682,8 @@ export const _POST_ALIQUOT = async (request: NextRequest, { params }: { params: 
     // Log creation
     await auditLog({
       userId: session.user.id,
-      action: 'create';
-      resource: 'laboratory_specimens',
-      resourceId: result.insertId;
-      details: { ...body, parentSpecimenId: id, type: 'aliquot' }
+      action: 'create',      resource: 'laboratory_specimens',
+      resourceId: result.insertId,      details: { ...body, parentSpecimenId: id, type: 'aliquot' }
     });
 
     // Create specimen tracking entry
@@ -805,16 +797,13 @@ export const _POST_BARCODE = async (request: NextRequest) => {
     // Log access
     await auditLog({
       userId: session.user.id,
-      action: 'generate';
-      resource: 'laboratory_specimen_barcode',
-      resourceId: specimenId;
-      details: { specimenId, barcodeId }
+      action: 'generate',      resource: 'laboratory_specimen_barcode',
+      resourceId: specimenId,      details: { specimenId, barcodeId }
     });
 
     return NextResponse.json({
       barcodeId,
-      specimenId: specimen.specimen_id;
-      barcodeImage,
+      specimenId: specimen.specimen_id,      barcodeImage,
       format: 'CODE128'
     });
   } catch (error) {

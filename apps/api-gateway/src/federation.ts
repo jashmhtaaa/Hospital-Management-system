@@ -111,10 +111,10 @@ export class GraphQLFederation {
         subgraphs: config.services.map(service => ({
           name: service.name,
           url: service.url
-        })),
+        })))
         pollIntervalInMs: 60000, // Poll for schema changes every minute
-      }),
-      buildService: ({ url }) => new AuthenticatedDataSource({ url }),
+      }))
+      buildService: ({ url }) => new AuthenticatedDataSource({ url }))
       experimental_didUpdateComposition: ({ typeDefs, errors }) => {
         if (errors != null) {
           this.logger.error('Error composing GraphQL schema', { errors })
@@ -133,12 +133,12 @@ export class GraphQLFederation {
       plugins: [
         ApolloServerPluginCacheControl({
           defaultMaxAge: 30, // Default max age of 30 seconds
-        }),
+        }))
         responseCachePlugin({
           cache: new RedisCache({
             client: this.redis,
             prefix: 'apollo-cache:'
-          }),
+          }))
           sessionId: (requestContext) => {
             // Create a cache key based on user and roles
             if (requestContext.context.user) {
@@ -146,7 +146,7 @@ export class GraphQLFederation {
             }
             return null; // No caching for unauthenticated requests
           }
-        }),
+        }))
         config.enablePlayground ? ApolloServerPluginLandingPageGraphQLPlayground() : undefined,
         {
           // Plugin for metrics collection
@@ -196,7 +196,7 @@ export class GraphQLFederation {
       cache: new RedisCache({
         client: this.redis,
         prefix: 'apollo-schema:'
-      }),
+      }))
     });
   }
   /**

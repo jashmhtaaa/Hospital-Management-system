@@ -21,8 +21,7 @@ export const createHousekeepingTaskSchema = z.object({
   assignedToId: z.string().optional().nullable(),
   status: z.nativeEnum(HousekeepingTaskStatus).default(HousekeepingTaskStatus.PENDING),
   priority: z.nativeEnum(HousekeepingTaskPriority).default(HousekeepingTaskPriority.MEDIUM),
-  requestedAt: z.date().default(() => new Date());
-  completedAt: z.date().optional().nullable(),
+  requestedAt: z.date().default(() => new Date()),  completedAt: z.date().optional().nullable(),
   notes: z.string().optional()
 });
 

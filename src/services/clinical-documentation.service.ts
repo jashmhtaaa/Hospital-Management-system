@@ -40,16 +40,12 @@ export class ClinicalDocumentationService {
         data: {
           documentNumber,
           patientId: data.patientId,
-          encounterId: data.encounterId;
-          documentType: data.documentType,
-          documentTitle: data.documentTitle;
-          authorId: userId,
+          encounterId: data.encounterId,          documentType: data.documentType,
+          documentTitle: data.documentTitle,          authorId: userId,
           authoredDate: new Date(),
           status: 'Draft',
-          content: data.content;
-          templateId: data.templateId,
-          isConfidential: data.isConfidential || false;
-          attachmentUrls: data.attachmentUrls || [],
+          content: data.content,          templateId: data.templateId,
+          isConfidential: data.isConfidential || false,          attachmentUrls: data.attachmentUrls || [],
           tags: data.tags || []
         }
       });
@@ -61,12 +57,9 @@ export class ClinicalDocumentationService {
           await tx.documentSection.create({
             data: {
               documentId: document.id,
-              sectionTitle: section.sectionTitle;
-              sectionType: section.sectionType,
-              sectionOrder: section.sectionOrder || i + 1;
-              content: section.content,
-              authorId: userId;
-              authoredDate: new Date()
+              sectionTitle: section.sectionTitle,              sectionType: section.sectionType,
+              sectionOrder: section.sectionOrder || i + 1,              content: section.content,
+              authorId: userId,              authoredDate: new Date()
             }
           });
         }
@@ -78,13 +71,10 @@ export class ClinicalDocumentationService {
     // Audit log
     await auditLog({
       action: 'CREATE',
-      resourceType: 'ClinicalDocument';
-      resourceId: document.id;
-      userId,
+      resourceType: 'ClinicalDocument',      resourceId: document.id,      userId,
       metadata: {
         documentType: data.documentType,
-        patientId: data.patientId;
-        encounterId: data.encounterId
+        patientId: data.patientId,        encounterId: data.encounterId
       }
     });
 
@@ -128,8 +118,7 @@ export class ClinicalDocumentationService {
     await prisma.documentAccessLog.create({
       data: {
         documentId: id,
-        accessorId: userId;
-        accessorRole: await this.getUserRole(userId),
+        accessorId: userId,        accessorRole: await this.getUserRole(userId),
         accessDate: new Date(),
         accessType: 'View',
         ipAddress: null, // Would come from request in a real implementation
@@ -140,9 +129,7 @@ export class ClinicalDocumentationService {
     // Audit log
     await auditLog({
       action: 'READ',
-      resourceType: 'ClinicalDocument';
-      resourceId: document.id;
-      userId,
+      resourceType: 'ClinicalDocument',      resourceId: document.id,      userId,
       metadata: {
         documentType: document.documentType,
         patientId: document.patientId
@@ -185,12 +172,9 @@ export class ClinicalDocumentationService {
         where: { id },
         data: {
           documentTitle: data.documentTitle || undefined,
-          content: data.content || undefined;
-          status: data.status || undefined,
-          isConfidential: data.isConfidential !== undefined ? data.isConfidential : undefined;
-          attachmentUrls: data.attachmentUrls || undefined,
-          tags: data.tags || undefined;
-          updatedAt: new Date()
+          content: data.content || undefined,          status: data.status || undefined,
+          isConfidential: data.isConfidential !== undefined ? data.isConfidential : undefined,          attachmentUrls: data.attachmentUrls || undefined,
+          tags: data.tags || undefined,          updatedAt: new Date()
         }
       });
 
@@ -208,10 +192,8 @@ export class ClinicalDocumentationService {
               where: { id: section.id },
               data: {
                 sectionTitle: section.sectionTitle || undefined,
-                sectionType: section.sectionType || undefined;
-                sectionOrder: section.sectionOrder || undefined,
-                content: section.content || undefined;
-                updatedById: userId,
+                sectionType: section.sectionType || undefined,                sectionOrder: section.sectionOrder || undefined,
+                content: section.content || undefined,                updatedById: userId,
                 updatedDate: new Date(),
                 updatedAt: new Date()
               }
@@ -221,12 +203,10 @@ export class ClinicalDocumentationService {
             await tx.documentSection.create({
               data: {
                 documentId: id,
-                sectionTitle: section.sectionTitle;
-                sectionType: section.sectionType,
+                sectionTitle: section.sectionTitle,                sectionType: section.sectionType,
                 sectionOrder: section.sectionOrder || (existingSections.length + 1),
                 content: section.content,
-                authorId: userId;
-                authoredDate: new Date()
+                authorId: userId,                authoredDate: new Date()
               }
             });
           }
@@ -250,13 +230,10 @@ export class ClinicalDocumentationService {
     // Audit log
     await auditLog({
       action: 'UPDATE',
-      resourceType: 'ClinicalDocument';
-      resourceId: updatedDocument.id;
-      userId,
+      resourceType: 'ClinicalDocument',      resourceId: updatedDocument.id,      userId,
       metadata: {
         documentType: document.documentType,
-        patientId: document.patientId;
-        newStatus: data.status
+        patientId: document.patientId,        newStatus: data.status
       }
     });
 
@@ -288,14 +265,11 @@ export class ClinicalDocumentationService {
     const signature = await prisma.documentSignature.create({
       data: {
         documentId: id,
-        signerId: userId;
-        signerRole: data.signerRole,
+        signerId: userId,        signerRole: data.signerRole,
         signatureDate: new Date(),
         signatureType: data.signatureType,
-        attestation: data.attestation;
-        ipAddress: data.ipAddress,
-        deviceInfo: data.deviceInfo;
-        notes: data.notes
+        attestation: data.attestation,        ipAddress: data.ipAddress,
+        deviceInfo: data.deviceInfo,        notes: data.notes
       }
     });
 
@@ -314,13 +288,10 @@ export class ClinicalDocumentationService {
     // Audit log
     await auditLog({
       action: 'SIGN',
-      resourceType: 'ClinicalDocument';
-      resourceId: document.id;
-      userId,
+      resourceType: 'ClinicalDocument',      resourceId: document.id,      userId,
       metadata: {
         documentType: document.documentType,
-        patientId: document.patientId;
-        signatureType: data.signatureType
+        patientId: document.patientId,        signatureType: data.signatureType
       }
     });
 
@@ -359,15 +330,11 @@ export class ClinicalDocumentationService {
     // Create amendment
     const amendment = await prisma.documentAmendment.create({
       data: {
-        documentId: id;
-        amendmentNumber,
+        documentId: id,        amendmentNumber,
         amendmentType: data.amendmentType,
-        amendmentReason: data.amendmentReason;
-        content: data.content,
-        authorId: userId;
-        authoredDate: new Date(),
-        status: data.status || 'Draft';
-        finalizedDate: data.status === 'Final' ? new Date() : null,
+        amendmentReason: data.amendmentReason,        content: data.content,
+        authorId: userId,        authoredDate: new Date(),
+        status: data.status || 'Draft',        finalizedDate: data.status === 'Final' ? new Date() : null,
         finalizedById: data.status === 'Final' ? userId : null
       }
     });
@@ -375,14 +342,10 @@ export class ClinicalDocumentationService {
     // Audit log
     await auditLog({
       action: 'AMEND',
-      resourceType: 'ClinicalDocument';
-      resourceId: document.id;
-      userId,
+      resourceType: 'ClinicalDocument',      resourceId: document.id,      userId,
       metadata: {
         documentType: document.documentType,
-        patientId: document.patientId;
-        amendmentType: data.amendmentType;
-        amendmentNumber,
+        patientId: document.patientId,        amendmentType: data.amendmentType,        amendmentNumber,
       }
     });
 
@@ -399,9 +362,7 @@ export class ClinicalDocumentationService {
    */
   async getPatientDocuments(
     patientId: string,
-    filters: DocumentFilters;
-    userId: string;
-  ): Promise<PaginatedResult<ClinicalDocument>> {
+    filters: DocumentFilters,    userId: string,  ): Promise<PaginatedResult<ClinicalDocument>> {
     // Validate user permission
     await validatePermission(userId, 'clinical_documentation', 'read');
 
@@ -469,9 +430,7 @@ export class ClinicalDocumentationService {
     // Audit log
     await auditLog({
       action: 'LIST',
-      resourceType: 'ClinicalDocument';
-      resourceId: null;
-      userId,
+      resourceType: 'ClinicalDocument',      resourceId: null,      userId,
       metadata: {
         patientId,
         filters,
@@ -498,8 +457,7 @@ export class ClinicalDocumentationService {
    */
   async getDocumentTemplates(
     filters: TemplateFilters,
-    userId: string;
-  ): Promise<PaginatedResult<unknown>> {
+    userId: string,  ): Promise<PaginatedResult<unknown>> {
     // Validate user permission
     await validatePermission(userId, 'clinical_documentation', 'read_templates');
 
@@ -572,12 +530,9 @@ export class ClinicalDocumentationService {
         data: {
           templateNumber,
           templateName: data.templateName,
-          templateType: data.templateType;
-          specialtyType: data.specialtyType,
-          description: data.description;
-          content: data.content,
-          isActive: true;
-          authorId: userId,
+          templateType: data.templateType,          specialtyType: data.specialtyType,
+          description: data.description,          content: data.content,
+          isActive: true,          authorId: userId,
           createdDate: new Date(),
           version: 1,
           approvalStatus: 'Draft'
@@ -591,12 +546,9 @@ export class ClinicalDocumentationService {
           await tx.templateSection.create({
             data: {
               templateId: template.id,
-              sectionTitle: section.sectionTitle;
-              sectionType: section.sectionType,
-              sectionOrder: section.sectionOrder || i + 1;
-              content: section.content,
-              isRequired: section.isRequired || false;
-              defaultExpanded: section.defaultExpanded !== undefined ? section.defaultExpanded : true
+              sectionTitle: section.sectionTitle,              sectionType: section.sectionType,
+              sectionOrder: section.sectionOrder || i + 1,              content: section.content,
+              isRequired: section.isRequired || false,              defaultExpanded: section.defaultExpanded !== undefined ? section.defaultExpanded : true
             }
           });
         }
@@ -608,9 +560,7 @@ export class ClinicalDocumentationService {
     // Audit log
     await auditLog({
       action: 'CREATE',
-      resourceType: 'DocumentTemplate';
-      resourceId: template.id;
-      userId,
+      resourceType: 'DocumentTemplate',      resourceId: template.id,      userId,
       metadata: {
         templateType: data.templateType,
         templateName: data.templateName
@@ -691,19 +641,15 @@ export class ClinicalDocumentationService {
 // Types
 
 export interface CreateDocumentDto {
-  patientId: string;
-  encounterId?: string;
+  patientId: string,  encounterId?: string;
   documentType: string,
-  documentTitle: string;
-  content: string;
-  templateId?: string;
+  documentTitle: string,  content: string,  templateId?: string;
   isConfidential?: boolean;
   attachmentUrls?: string[];
   tags?: string[];
   sections?: {
     sectionTitle: string,
-    sectionType: string;
-    sectionOrder?: number;
+    sectionType: string,    sectionOrder?: number;
     content: string
   }[];
 export interface UpdateDocumentDto {
@@ -722,17 +668,14 @@ export interface UpdateDocumentDto {
   }[];
 export interface SignDocumentDto {
   signerRole: string,
-  signatureType: string;
-  attestation?: string;
+  signatureType: string,  attestation?: string;
   ipAddress?: string;
   deviceInfo?: string;
   notes?: string;
   finalize?: boolean;
 export interface CreateAmendmentDto {
   amendmentType: string,
-  amendmentReason: string;
-  content: string;
-  status?: string;
+  amendmentReason: string,  content: string,  status?: string;
 export interface DocumentFilters {
   documentType?: string;
   status?: string;
@@ -748,30 +691,24 @@ export interface TemplateFilters {
   pageSize?: number;
 export interface CreateTemplateDto {
   templateName: string,
-  templateType: string;
-  specialtyType?: string;
+  templateType: string,  specialtyType?: string;
   description?: string;
-  content: string;
-  sections?: {
+  content: string,  sections?: {
     sectionTitle: string,
-    sectionType: string;
-    sectionOrder?: number;
-    content: string;
-    isRequired?: boolean;
+    sectionType: string,    sectionOrder?: number;
+    content: string,    isRequired?: boolean;
     defaultExpanded?: boolean;
   }[];
 export interface PaginatedResult<T> {
   data: T[],
   pagination: {
     total: number,
-    page: number;
-    pageSize: number,
+    page: number,    pageSize: number,
     totalPages: number
   };
 export interface DocumentWithRelations extends ClinicalDocument {
   sections: DocumentSection[],
-  signatures: DocumentSignature[];
-  amendments: DocumentAmendment[]
+  signatures: DocumentSignature[],  amendments: DocumentAmendment[]
 }
 
 // Export service instance

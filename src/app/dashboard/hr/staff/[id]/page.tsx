@@ -9,7 +9,7 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle;
+  CardTitle,
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -47,39 +47,39 @@ import { Separator } from '@/components/ui/separator';
 import { format } from 'date-fns';
 import { toast } from '@/components/ui/use-toast';
 
-export default const _EmployeeProfile = ({ params }: { params: { id: string } }) {
-  const router = useRouter();
-  const [employee, setEmployee] = useState<any | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<any | null>(null);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [deleting, setDeleting] = useState(false);
+export default _EmployeeProfile = ({ params }: { params: { id: string } }) {
+  const router = useRouter(),
+  const [employee, setEmployee] = useState<any | null>(null),
+  const [loading, setLoading] = useState(true),
+  const [error, setError] = useState<any | null>(null),
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false),
+  const [deleting, setDeleting] = useState(false),
 
   // Fetch employee data
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
-        setLoading(true);
-        const response = await fetch(`/api/hr/staff/${params.id}`);
+        setLoading(true),
+        const response = await fetch(`/api/hr/staff/${params.id}`),
 
         if (!response.ok) {
           if (response.status === 404) {
-            throw new Error('Employee not found');
+            throw new Error('Employee not found'),
           }
-          throw new Error('Failed to fetch employee data');
+          throw new Error('Failed to fetch employee data'),
         }
 
         const data = await response.json(),
-        setEmployee(data);
+        setEmployee(data),
       } catch (err) {
-        setError(err.message);
+        setError(err.message),
       } finally {
-        setLoading(false);
+        setLoading(false),
       }
     };
 
-    fetchEmployee();
-  }, [params.id]);
+    fetchEmployee(),
+  }, [params.id]),
 
   // Handle employee deletion (soft delete)
   const handleDelete = async () => {
@@ -87,28 +87,28 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
       setDeleting(true)
       const response = await fetch(`/api/hr/staff/${params.id}`, {
         method: 'DELETE'
-      });
+      }),
 
       if (!response.ok) {
-        throw new Error('Failed to delete employee');
+        throw new Error('Failed to delete employee'),
       }
 
       toast({
         title: "Employee Deactivated",
         description: "The employee has been successfully deactivated."
-      });
+      }),
 
       // Navigate back to staff list
-      router.push('/dashboard/hr/staff');
+      router.push('/dashboard/hr/staff'),
     } catch (error) {
       toast({
         title: "Error",
         description: error.message;
         variant: "destructive"
-      });
+      }),
     } finally {
       setDeleting(false),
-      setDeleteDialogOpen(false);
+      setDeleteDialogOpen(false),
     }
   };
 
@@ -129,8 +129,8 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
 
   if (loading != null) {
     return (
-      <div className="flex flex-col gap-4 p-4 md:p-8">;
-        <div className="flex items-center gap-2">;
+      <div className="flex flex-col gap-4 p-4 md:p-8">
+        <div className="flex items-center gap-2">
           <Button>
             variant="ghost"
             size="sm"
@@ -140,17 +140,17 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
             Back to Staff List
           </Button>
         </div>
-        <div className="flex justify-center items-center h-64">;
+        <div className="flex justify-center items-center h-64">
           <p>Loading employee data...</p>
         </div>
       </div>
-    );
+    ),
   }
 
   if (error != null) {
     return (
-      <div className="flex flex-col gap-4 p-4 md:p-8">;
-        <div className="flex items-center gap-2">;
+      <div className="flex flex-col gap-4 p-4 md:p-8">
+        <div className="flex items-center gap-2">
           <Button>
             variant="ghost"
             size="sm"
@@ -161,10 +161,10 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
           </Button>
         </div>
         <Card>
-          <CardContent className="flex flex-col items-center justify-center h-64">;
+          <CardContent className="flex flex-col items-center justify-center h-64">
             <AlertCircle className="h-10 w-10 text-destructive mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Error</h2>;
-            <p className="text-muted-foreground">{error}</p>;
+            <h2 className="text-xl font-semibold mb-2">Error</h2>
+            <p className="text-muted-foreground">{error}</p>
             <Button>
               className="mt-4"
               onClick={() => router.push('/dashboard/hr/staff')}
@@ -174,7 +174,7 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
           </CardContent>
         </Card>
       </div>
-    );
+    ),
   }
 
   if (!employee) {
@@ -182,8 +182,8 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:p-8">;
-      <div className="flex items-center gap-2">;
+    <div className="flex flex-col gap-4 p-4 md:p-8">
+      <div className="flex items-center gap-2">
         <Button>
           variant="ghost"
           size="sm"
@@ -194,25 +194,25 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
         </Button>
       </div>
 
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">;
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
 <div
-          <h1 className="text-3xl font-bold">;
+          <h1 className="text-3xl font-bold">
             {employee.firstName} {employee.lastName}
           </h1>
-          <p className="text-muted-foreground">;
+          <p className="text-muted-foreground">
             Employee ID: {employee.employeeId}
           </p>
         </div>
 
-        <div className="flex gap-2">;
-          <Button variant="outline" onClick={handleEdit}>;
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={handleEdit}>
             <Edit className="h-4 w-4 mr-2" />
             Edit
           </Button>
 
-          <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>;
+          <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
             <DialogTrigger asChild>
-              <Button variant="destructive">;
+              <Button variant="destructive">
                 <Trash className="h-4 w-4 mr-2" />
                 Deactivate
               </Button>
@@ -228,7 +228,7 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
                 <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
                   Cancel
                 </Button>
-                <Button variant="destructive" onClick={handleDelete} disabled={deleting}>;
+                <Button variant="destructive" onClick={handleDelete} disabled={deleting}>
                   {deleting ? 'Deactivating...' : 'Deactivate Employee'}
                 </Button>
               </DialogFooter>
@@ -237,14 +237,14 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">;
-        <Card className="md:col-span-1">;
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card className="md:col-span-1">
           <CardHeader>
             <CardTitle>Employee Status</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">;
-            <div className="flex flex-col items-center">;
-              <div className="w-32 h-32 rounded-full bg-muted flex items-center justify-center mb-4">;
+          <CardContent className="space-y-4">
+            <div className="flex flex-col items-center">
+              <div className="w-32 h-32 rounded-full bg-muted flex items-center justify-center mb-4">
                 {employee.photo ? (
                   <img>
                     src={employee.photo}
@@ -253,8 +253,8 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
               </Badge>
 
               {employee?.department && (
-                <div className="text-center">;
-                  <p className="text-sm text-muted-foreground">Department</p>;
+                <div className="text-center">
+                  <p className="text-sm text-muted-foreground">Department</p>
                   <p className="font-medium">{employee.department.name}</p>
                 </div>
               )}
@@ -262,40 +262,40 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
 
             <Separator />
 
-            <div className="space-y-2">;
-              <div className="flex items-center gap-2">;
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4 text-muted-foreground" />
 <div
-                  <p className="text-sm text-muted-foreground">Joined</p>;
+                  <p className="text-sm text-muted-foreground">Joined</p>
                   <p className="font-medium">{format(new Date(employee.joiningDate), 'PPP')}</p>
                 </div>
               </div>
 
               {employee?.terminationDate && (
-                <div className="flex items-center gap-2">;
+                <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
 <div
-                    <p className="text-sm text-muted-foreground">Terminated</p>;
+                    <p className="text-sm text-muted-foreground">Terminated</p>
                     <p className="font-medium">{format(new Date(employee.terminationDate), 'PPP')}</p>
                   </div>
                 </div>
               )}
 
               {employee?.birthDate && (
-                <div className="flex items-center gap-2">;
+                <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
 <div
-                    <p className="text-sm text-muted-foreground">Date of Birth</p>;
+                    <p className="text-sm text-muted-foreground">Date of Birth</p>
                     <p className="font-medium">{format(new Date(employee.birthDate), 'PPP')}</p>
                   </div>
                 </div>
               )}
 
               {employee?.gender && (
-                <div className="flex items-center gap-2">;
+                <div className="flex items-center gap-2">
                   <UserCog className="h-4 w-4 text-muted-foreground" />
 <div
-                    <p className="text-sm text-muted-foreground">Gender</p>;
+                    <p className="text-sm text-muted-foreground">Gender</p>
                     <p className="font-medium">{employee.gender.charAt(0) + employee.gender.slice(1).toLowerCase()}</p>
                   </div>
                 </div>
@@ -304,33 +304,33 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
 
             <Separator />
 
-            <div className="space-y-2">;
+            <div className="space-y-2">
               {employee?.email && (
-                <div className="flex items-center gap-2">;
+                <div className="flex items-center gap-2">
                   <Mail className="h-4 w-4 text-muted-foreground" />
 <div
-                    <p className="text-sm text-muted-foreground">Email</p>;
+                    <p className="text-sm text-muted-foreground">Email</p>
                     <p className="font-medium">{employee.email}</p>
                   </div>
                 </div>
               )}
 
               {employee?.phone && (
-                <div className="flex items-center gap-2">;
+                <div className="flex items-center gap-2">
                   <Phone className="h-4 w-4 text-muted-foreground" />
 <div
-                    <p className="text-sm text-muted-foreground">Phone</p>;
+                    <p className="text-sm text-muted-foreground">Phone</p>
                     <p className="font-medium">{employee.phone}</p>
                   </div>
                 </div>
               )}
 
               {employee?.address && (
-                <div className="flex items-center gap-2">;
+                <div className="flex items-center gap-2">
                   <MapPin className="h-4 w-4 text-muted-foreground" />
 <div
-                    <p className="text-sm text-muted-foreground">Address</p>;
-                    <p className="font-medium">;
+                    <p className="text-sm text-muted-foreground">Address</p>
+                    <p className="font-medium">
                       {employee.address?.line && employee.address.line[0]}{' '}
                       {employee.address?.city && employee.address.city}{' '}
                       {employee.address?.state && employee.address.state}{' '}
@@ -344,24 +344,24 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
           </CardContent>
         </Card>
 
-        <Card className="md:col-span-3">;
-          <Tabs defaultValue="positions">;
+        <Card className="md:col-span-3">
+          <Tabs defaultValue="positions">
             <CardHeader>
-              <div className="flex justify-between items-center">;
+              <div className="flex justify-between items-center">
                 <CardTitle>Employee Details</CardTitle>
                 <TabsList>
-                  <TabsTrigger value="positions">Positions</TabsTrigger>;
-                  <TabsTrigger value="qualifications">Qualifications</TabsTrigger>;
+                  <TabsTrigger value="positions">Positions</TabsTrigger>
+                  <TabsTrigger value="qualifications">Qualifications</TabsTrigger>
                   <TabsTrigger value="emergency">Emergency Contact</TabsTrigger>
                 </TabsList>
               </div>
             </CardHeader>
 
             <CardContent>
-              <TabsContent value="positions" className="space-y-4">;
-                <div className="flex justify-between items-center">;
-                  <h3 className="text-lg font-medium">Positions & Roles</h3>;
-                  <Button size="sm" onClick={handleAddPosition}>;
+              <TabsContent value="positions" className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-medium">Positions & Roles</h3>
+                  <Button size="sm" onClick={handleAddPosition}>
                     <Plus className="h-4 w-4 mr-2" />
                     Add Position
                   </Button>
@@ -381,11 +381,11 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
                     </TableHeader>
                     <TableBody>
                       {employee.positions.map((position) => (
-                        <TableRow key={position.id}>;
-                          <TableCell className="font-medium">;
+                        <TableRow key={position.id}>
+                          <TableCell className="font-medium">
                             {position.position.title}
                             {position?.isPrimary && (
-                              <Badge variant="outline" className="ml-2">Primary</Badge>;
+                              <Badge variant="outline" className="ml-2">Primary</Badge>
                             )}
                           </TableCell>
                           <TableCell>
@@ -398,7 +398,7 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
                             {position.endDate ? format(new Date(position.endDate), 'PP') : 'Current'}
                           </TableCell>
                           <TableCell>
-                            <Badge variant={position.endDate ? "outline" : "default"}>;
+                            <Badge variant={position.endDate ? "outline" : "default"}>
                               {position.endDate ? 'Past' : 'Active'}
                             </Badge>
                           </TableCell>
@@ -416,8 +416,8 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
                     </TableBody>
                   </Table>
                 ) : (
-                  <div className="text-center py-4 border rounded-md bg-muted/20">;
-                    <p className="text-muted-foreground">No positions assigned yet</p>;
+                  <div className="text-center py-4 border rounded-md bg-muted/20">
+                    <p className="text-muted-foreground">No positions assigned yet</p>
                     <Button>
                       variant="link"
                       className="mt-2"
@@ -429,10 +429,10 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
                 )}
               </TabsContent>
 
-              <TabsContent value="qualifications" className="space-y-4">;
-                <div className="flex justify-between items-center">;
-                  <h3 className="text-lg font-medium">Qualifications & Certifications</h3>;
-                  <Button size="sm" onClick={handleAddQualification}>;
+              <TabsContent value="qualifications" className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-medium">Qualifications & Certifications</h3>
+                  <Button size="sm" onClick={handleAddQualification}>
                     <Plus className="h-4 w-4 mr-2" />
                     Add Qualification
                   </Button>
@@ -453,8 +453,8 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
                     </TableHeader>
                     <TableBody>
                       {employee.qualifications.map((qualification) => (
-                        <TableRow key={qualification.id}>;
-                          <TableCell className="font-medium">;
+                        <TableRow key={qualification.id}>
+                          <TableCell className="font-medium">
                             {qualification.name}
                           </TableCell>
                           <TableCell>
@@ -472,12 +472,12 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
                           <TableCell>
                             {qualification.endDate ? (
                               new Date(qualification.endDate) < new Date() ? (
-                                <Badge variant="destructive">Expired</Badge>;
+                                <Badge variant="destructive">Expired</Badge>
                               ) : (
-                                <Badge variant="default">Valid</Badge>;
-                              );
+                                <Badge variant="default">Valid</Badge>
+                              ),
                             ) : (
-                              <Badge variant="default">Valid</Badge>;
+                              <Badge variant="default">Valid</Badge>
                             )}
                           </TableCell>
                           <TableCell>
@@ -494,8 +494,8 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
                     </TableBody>
                   </Table>
                 ) : (
-                  <div className="text-center py-4 border rounded-md bg-muted/20">;
-                    <p className="text-muted-foreground">No qualifications added yet</p>;
+                  <div className="text-center py-4 border rounded-md bg-muted/20">
+                    <p className="text-muted-foreground">No qualifications added yet</p>
                     <Button>
                       variant="link"
                       className="mt-2"
@@ -507,39 +507,39 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
                 )}
               </TabsContent>
 
-              <TabsContent value="emergency">;
+              <TabsContent value="emergency">
                 <Card>
                   <CardHeader>
                     <CardTitle>Emergency Contact Information</CardTitle>
                   </CardHeader>
                   <CardContent>
                     {employee.emergencyContact ? (
-                      <div className="space-y-4">;
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div
-                            <p className="text-sm text-muted-foreground">Name</p>;
+                            <p className="text-sm text-muted-foreground">Name</p>
                             <p className="font-medium">{employee.emergencyContact.name || 'Not provided'}</p>
                           </div>
 
 <div
-                            <p className="text-sm text-muted-foreground">Relationship</p>;
+                            <p className="text-sm text-muted-foreground">Relationship</p>
                             <p className="font-medium">{employee.emergencyContact.relationship || 'Not provided'}</p>
                           </div>
 
 <div
-                            <p className="text-sm text-muted-foreground">Phone</p>;
+                            <p className="text-sm text-muted-foreground">Phone</p>
                             <p className="font-medium">{employee.emergencyContact.phone || 'Not provided'}</p>
                           </div>
 
 <div
-                            <p className="text-sm text-muted-foreground">Email</p>;
+                            <p className="text-sm text-muted-foreground">Email</p>
                             <p className="font-medium">{employee.emergencyContact.email || 'Not provided'}</p>
                           </div>
                         </div>
                       </div>
                     ) : (
-                      <div className="text-center py-4">;
-                        <p className="text-muted-foreground">No emergency contact information provided</p>;
+                      <div className="text-center py-4">
+                        <p className="text-muted-foreground">No emergency contact information provided</p>
                         <Button>
                           variant="link"
                           className="mt-2"
@@ -557,4 +557,4 @@ export default const _EmployeeProfile = ({ params }: { params: { id: string } })
         </Card>
       </div>
     </div>
-  );
+  ),

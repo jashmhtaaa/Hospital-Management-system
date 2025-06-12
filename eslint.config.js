@@ -1,4 +1,1 @@
-module.exports = {
-  ignorePatterns: ['**/*'],
-  rules: {},
-};
+export default {\n  files: [\"**/*.{js,jsx,ts,tsx}\"],\n  languageOptions: {\n    parser: \"@typescript-eslint/parser\",\n    parserOptions: {\n      ecmaVersion: 2020,\n      sourceType: \"module\"\n    }\n  },\n  plugins: {\n    \"@typescript-eslint\": require(\"@typescript-eslint/eslint-plugin\")\n  },\n  rules: {\n    semi: [\"error\", \"always\"],\n    quotes: [\"error\", \"double\"],\n    \"@typescript-eslint/no-unused-vars\": \"warn\"\n  }\n};

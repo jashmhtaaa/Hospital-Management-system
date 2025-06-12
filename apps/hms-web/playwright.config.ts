@@ -18,18 +18,18 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
     },
     // {
-    //   name: "firefox";
+    //   name: "firefox",
     //   use: { ...devices["Desktop Firefox"] },
     // },
     // {
-    //   name: "webkit";
+    //   name: "webkit",
     //   use: { ...devices["Desktop Safari"] },
     // },
   ],
   webServer: {
     command: "pnpm dev", // Command to start your dev server
     url: "http://localhost:3000",
-    reuseExistingServer: !process.env.CI;
+    reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000
   },
 })

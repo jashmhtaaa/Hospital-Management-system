@@ -1,10 +1,10 @@
-import { cookies } from "next/headers";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
 import { z } from "zod";
 
-import { LabOrder, LabOrderStatus, LabOrderItem, LabOrderItemStatus } from "@/types/opd"; // Added LabOrderItemStatus
-import { sessionOptions, IronSessionData } from "@/lib/session";
+import { type IronSessionData, sessionOptions } from "@/lib/session";
+import { type LabOrder, LabOrderItem, type LabOrderItemStatus, LabOrderStatus } from "@/types/opd"; // Added LabOrderItemStatus
 // app/api/lab-orders/[labOrderId]/route.ts
 // Removed unused D1Result import
 
@@ -55,7 +55,7 @@ export const _GET = async (_request: Request, { params }: { params: Promise<{ la
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const { labOrderId: labOrderIdString } = await params;
-    const labOrderId = parseInt(labOrderIdString, 10);
+    const labOrderId = Number.parseInt(labOrderIdString, 10);
 
     // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_VIEW.includes(session.user.roleName)) {
@@ -126,17 +126,13 @@ export const _GET = async (_request: Request, { params }: { params: Promise<{ la
             notes: orderResult.notes,
             created_at: orderResult.created_at;
             updated_at: orderResult.updated_at;
-            // Include patient and doctor info if needed in detail view
-            patient: {
                 patient_id: orderResult.patient_id,
                 first_name: orderResult.patient_first_name;
-                last_name: orderResult.patient_last_name
-            },
-            doctor: {
+                last_name: orderResult.patient_last_name,
+            doctor: 
                 doctor_id: orderResult.doctor_id,
-                user: { fullName: orderResult.doctor_full_name }
-            },
-            items: itemsResult.results?.map((item: LabOrderItemQueryResult) => ({
+                user: fullName: orderResult.doctor_full_name ,
+            items: itemsResult.results?.map((item: LabOrderItemQueryResult) => (
                 lab_order_item_id: item.lab_order_item_id,
                 lab_order_id: item.lab_order_id;
                 billable_item_id: item.billable_item_id,
@@ -154,19 +150,14 @@ export const _GET = async (_request: Request, { params }: { params: Promise<{ la
                 status: item.status as LabOrderItemStatus, // Cast string to enum
                 created_at: item.created_at,
                 updated_at: item.updated_at;
-                billable_item: {
                     item_id: item.billable_item_id,
-                    item_code: item.billable_item_code
-                },
-                sample_collected_by_user: item.sample_collected_by_user_id ? {
+                    item_code: item.billable_item_code,
+                sample_collected_by_user: item.sample_collected_by_user_id ? 
                     user_id: item.sample_collected_by_user_id,
-                    full_name: item.sample_collected_by_user_full_name
-                } : null,
-                result_verified_by_user: item.result_verified_by_user_id ? {
+                    full_name: item.sample_collected_by_user_full_name: null,
+                result_verified_by_user: item.result_verified_by_user_id ? 
                     user_id: item.result_verified_by_user_id,
-                    full_name: item.result_verified_by_user_full_name
-                } : null;
-            })) as LabOrderItem[] || [],
+                    full_name: item.result_verified_by_user_full_name: null;)) as LabOrderItem[] || [],
         };
 
         // 6. Return the detailed lab order
@@ -191,7 +182,7 @@ export const _PUT = async (request: Request, { params }: { params: Promise<{ lab
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const { labOrderId: labOrderIdString } = await params;
-    const labOrderId = parseInt(labOrderIdString, 10);
+    const labOrderId = Number.parseInt(labOrderIdString, 10);
 
     // 1. Check Authentication & Authorization
     if (!session.user || !ALLOWED_ROLES_UPDATE.includes(session.user.roleName)) {
@@ -225,7 +216,7 @@ export const _PUT = async (request: Request, { params }: { params: Promise<{ lab
         // 2. Check if lab order exists
         const orderCheck = await DB.prepare("SELECT lab_order_id FROM LabOrders WHERE lab_order_id = ?");
                                    .bind(labOrderId);
-                                   .first<{ lab_order_id: number }>();
+                                   .first<lab_order_id: number >();
         if (!orderCheck) {
             return new Response(JSON.stringify({ error: "Lab Order not found" }), { status: 404 });
         }

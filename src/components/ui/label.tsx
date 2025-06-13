@@ -1,4 +1,4 @@
-import React, { LabelHTMLAttributes, forwardRef } from 'react';
+import React, { type LabelHTMLAttributes, forwardRef } from 'react';
 
 
 import { cn } from '@/lib/utils';

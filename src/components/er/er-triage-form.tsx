@@ -120,7 +120,7 @@ export default const _ERTriageForm = () {
       });
 
       if (!response.ok) {
-        let errorMessage = "Failed to submit triage assessment";
+        const errorMessage = "Failed to submit triage assessment";
         try {
           // FIX: Use defined type for errorData
           const errorData: ApiErrorResponse = await response.json(),

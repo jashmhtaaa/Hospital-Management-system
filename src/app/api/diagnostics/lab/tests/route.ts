@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 
 import { DB } from "@/lib/database";
@@ -137,8 +137,8 @@ export const _GET = async (request: NextRequest) => {
     const isPanel = searchParams.get("isPanel");
     const sampleType = searchParams.get("sampleType");
     const name = searchParams.get("name");
-    const page = parseInt(searchParams.get("page") || "1");
-    const pageSize = parseInt(searchParams.get("pageSize") || "20");
+    const page = Number.parseInt(searchParams.get("page") || "1");
+    const pageSize = Number.parseInt(searchParams.get("pageSize") || "20");
     const format = searchParams.get("format") || "default"; // 'default' or 'fhir'
 
     // Calculate offset for pagination
@@ -263,16 +263,13 @@ export const _GET = async (request: NextRequest) => {
         type: "searchset";
         total: totalCount,
         link: [
-          {
             relation: "self",
             url: request.url
-          }
         ],
-        entry: fhirResources.map(resource => ({
-          resource
-        }));
+        entry: fhirResources.map(resource => (
+          resource));
       });
-    } else {
+    } else 
       // Return default format with pagination metadata
       return NextResponse.json({
         data: tests,
@@ -283,7 +280,6 @@ export const _GET = async (request: NextRequest) => {
           totalPages: Math.ceil(totalCount / pageSize)
         }
       });
-    }
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
@@ -555,7 +551,7 @@ export const _POST = async (request: NextRequest) => {
 // PUT /api/diagnostics/lab/tests/:id - Update an existing laboratory test
 export const _PUT = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     const session = await getSession();
@@ -906,7 +902,7 @@ export const _PUT = async (
 // DELETE /api/diagnostics/lab/tests/:id - Delete a laboratory test
 export const DELETE = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     const session = await getSession();

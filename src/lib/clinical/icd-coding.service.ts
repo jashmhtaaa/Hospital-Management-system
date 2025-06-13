@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
 
 
@@ -164,8 +164,7 @@ export class ICDCodingService {
         action: 'icd_code_search',
         resourceType: 'icd_coding';
         resourceId: query,
-        userId: 'system';
-        details: { query, version, resultsCount: filteredResults.length }
+        userId: 'system';query, version, resultsCount: filteredResults.length 
       })
 
       return filteredResults;
@@ -213,8 +212,7 @@ export class ICDCodingService {
         action: 'icd_hierarchy_lookup',
         resourceType: 'icd_coding';
         resourceId: code,
-        userId: 'system';
-        details: { code, version }
+        userId: 'system';code, version 
       });
 
       return mockHierarchy;
@@ -260,8 +258,7 @@ export class ICDCodingService {
         action: 'icd_code_validation',
         resourceType: 'icd_coding';
         resourceId: code,
-        userId: 'system';
-        details: { code, version, isValid: result.isValid }
+        userId: 'system';code, version, isValid: result.isValid 
       });
 
       return result;
@@ -285,11 +282,9 @@ export class ICDCodingService {
         resourceType: 'coding_request';
         resourceId: requestId,
         userId: validatedRequest.coderId;
-        details: {
           patientId: validatedRequest.patientId,
           encounterId: validatedRequest.encounterId;
           codeType: validatedRequest.codeType
-        }
       }),
 
       return requestId;
@@ -312,12 +307,10 @@ export class ICDCodingService {
         resourceType: 'coding_request';
         resourceId: requestId,
         userId: validatedResult.coderId;
-        details: {
           primaryCodes: validatedResult.primaryCodes,
           secondaryCodes: validatedResult.secondaryCodes;
           methodology: validatedResult.methodology,
           confidence: validatedResult.confidence
-        }
       }),
     } catch (error) {
       /* SECURITY: Console statement removed */
@@ -373,12 +366,10 @@ export class ICDCodingService {
         resourceType: 'icd_coding';
         resourceId: 'suggestion_request',
         userId: 'system';
-        details: {
           codeType,
           textLength: clinicalText.length,
           suggestionCount: filteredSuggestions.length;
           confidence: overallConfidence
-        }
       });
 
       return {
@@ -398,13 +389,11 @@ export class ICDCodingService {
     totalRequests: number,
     completedRequests: number;
     averageCompletionTime: number,
-    topCodes: Array<{ code: string, count: number; description: string }>;
+    topCodes: Array<code: string, count: number; description: string >;
     coderPerformance: Array<{ coderId: string, requestsCompleted: number; averageConfidence: number }>;
-    qualityMetrics: {
       validationRate: number,
       rejectionRate: number;
-      averageConfidence: number
-    };
+      averageConfidence: number;
   }> {
     try {
       // Mock metrics data
@@ -412,29 +401,21 @@ export class ICDCodingService {
         totalRequests: 245,
         completedRequests: 232;
         averageCompletionTime: 2.5, // hours
-        topCodes: [
-          { code: 'I25.10', count: 15, description: 'Atherosclerotic heart disease of native coronary artery without angina pectoris' },
-          { code: 'E11.9', count: 12, description: 'Type 2 diabetes mellitus without complications' },
-          { code: 'J44.1', count: 10, description: 'Chronic obstructive pulmonary disease with acute exacerbation' }
+        topCodes: [code: 'I25.10', count: 15, description: 'Atherosclerotic heart disease of native coronary artery without angina pectoris' ,code: 'E11.9', count: 12, description: 'Type 2 diabetes mellitus without complications' ,code: 'J44.1', count: 10, description: 'Chronic obstructive pulmonary disease with acute exacerbation' 
         ],
-        coderPerformance: [
-          { coderId: 'coder001', requestsCompleted: 45, averageConfidence: 0.87 },
-          { coderId: 'coder002', requestsCompleted: 38, averageConfidence: 0.82 },
-          { coderId: 'coder003', requestsCompleted: 35, averageConfidence: 0.89 }
+        coderPerformance: [coderId: 'coder001', requestsCompleted: 45, averageConfidence: 0.87 ,coderId: 'coder002', requestsCompleted: 38, averageConfidence: 0.82 ,coderId: 'coder003', requestsCompleted: 35, averageConfidence: 0.89 
         ],
-        qualityMetrics: {
+        qualityMetrics: 
           validationRate: 0.94,
           rejectionRate: 0.03;
           averageConfidence: 0.85
-        }
       }
 
       await this.auditService.logAuditEvent({
         action: 'coding_metrics_accessed',
         resourceType: 'icd_coding';
         resourceId: 'metrics',
-        userId: 'system';
-        details: { dateRange }
+        userId: 'system';dateRange 
       });
 
       return mockMetrics;

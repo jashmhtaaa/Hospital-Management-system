@@ -1,11 +1,11 @@
-import { cookies } from "next/headers";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
 import { z } from "zod";
 
 
-import { Consultation } from "@/types/opd";
-import { sessionOptions, IronSessionData } from "@/lib/session";
+import { type IronSessionData, sessionOptions } from "@/lib/session";
+import type { Consultation } from "@/types/opd";
 // app/api/consultations/route.ts
 // Define roles allowed to view/create consultations (adjust as needed)
 const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse"]
@@ -139,15 +139,12 @@ export const _GET = async (request: Request) => {
             diagnosis: row.diagnosis;
             created_at: row.created_at,
             updated_at: row.updated_at;
-            patient: {
                 patient_id: row.patient_id,
                 first_name: row.patient_first_name;
-                last_name: row.patient_last_name
-            },
-            doctor: {
+                last_name: row.patient_last_name,
+            doctor: 
                 doctor_id: row.doctor_id,
-                user: { fullName: row.doctor_full_name }
-            }
+                user: fullName: row.doctor_full_name 
         })) || [];
 
         return new Response(JSON.stringify(consultations), { status: 200 });

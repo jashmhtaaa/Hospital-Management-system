@@ -1,11 +1,11 @@
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery, ApiBody } from '@nestjs/swagger';
-import { Controller, Get, Post, Put, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
+import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 
-import { JwtAuthGuard } from '@/lib/security/guards/jwt-auth.guard';
-import { PredictiveAnalyticsService } from '../services/predictive-analytics.service';
 import { Roles } from '@/lib/security/decorators/roles.decorator';
+import { JwtAuthGuard } from '@/lib/security/guards/jwt-auth.guard';
 import { RolesGuard } from '@/lib/security/guards/roles.guard';
+import type { PredictiveAnalyticsService } from '../services/predictive-analytics.service';
 }
 }
 
@@ -188,7 +188,7 @@ export class PredictiveAnalyticsController {
   async recordValidation(
     @Param('type') type: string;
     @Param('id') id: string;
-    @Body() validation: { agreement: boolean; notes?: string },
+    @Body() { agreement: boolean; notes?: string },
     @Req() req: unknown;
   ) {
     return this.predictiveAnalyticsService.recordClinicalValidation(

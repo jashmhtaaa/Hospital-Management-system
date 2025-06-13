@@ -1,10 +1,10 @@
 
 import { AuditLogger } from '@/lib/audit';
+import { decryptData, encryptData } from '@/lib/encryption';
+import { DatabaseError, NotFoundError, ValidationError } from '@/lib/errors';
 import { FhirResourceGenerator } from '@/lib/fhir';
-import { MarketingCampaign, CampaignChannel, Contact, ContactSegment, Lead } from '@/lib/models/marketing';
+import { CampaignChannel, Contact, ContactSegment, Lead, MarketingCampaign } from '@/lib/models/marketing';
 import { NotificationService } from '@/lib/notifications';
-import { ValidationError, DatabaseError, NotFoundError } from '@/lib/errors';
-import { encryptData, decryptData } from '@/lib/encryption';
 import { prisma } from '@/lib/prisma';
 /**
  * Service for managing marketing campaigns and related operations;
@@ -133,7 +133,7 @@ export class MarketingCampaignService {
     endDateTo?: Date;
     page?: number;
     limit?: number;
-  }): Promise<{ data: MarketingCampaign[], pagination: { total: number, page: number; limit: number, totalPages: number } }> {
+  }): Promise<{ data: MarketingCampaign[], pagination: total: number, page: number; limit: number, totalPages: number }> {
     try {
       const {
         type,
@@ -205,9 +205,7 @@ export class MarketingCampaignService {
         },
         skip: (page - 1) * limit,
         take: limit;
-        orderBy: {
           createdAt: 'desc'
-        }
       });
 
       return {
@@ -252,10 +250,9 @@ export class MarketingCampaignService {
         action: 'campaign.update',
         resourceId: id;
         userId,
-        details: {
+        details: 
           campaignName: updatedCampaign.name,
           updatedFields: Object.keys(data)
-        }
       });
 
       return updatedCampaign;
@@ -291,10 +288,9 @@ export class MarketingCampaignService {
         action: 'campaign.delete',
         resourceId: id;
         userId,
-        details: {
+        details: 
           campaignName: existingCampaign.name,
           campaignType: existingCampaign.type
-        }
       });
     } catch (error) {
       if (error instanceof NotFoundError) {
@@ -532,19 +528,14 @@ export class MarketingCampaignService {
       sent: campaign.startDate,
       received: campaign.endDate;
       recipient: [],
-      sender: {
+      sender: 
         reference: `Organization/hospital`,
-        display: 'Hospital Marketing Department'
-      },
+        display: 'Hospital Marketing Department',
       payload: [
-        {
           contentString: campaign.description
-        }
       ],
       note: [
-        {
           text: `Marketing campaign: ${campaign.name}`
-        }
       ]
     };
 
@@ -722,10 +713,9 @@ export class ContactService {
         action: 'contact.create',
         resourceId: contact.id;
         userId,
-        details: {
+        details: 
           contactEmail: data.email,
           contactSource: data.source
-        }
       });
 
       return this.decryptSensitiveData(contact);
@@ -754,32 +744,20 @@ export class ContactService {
             }
           },
           notes: {
-            include: {
-              createdByUser: {
-                select: {
                   id: true,
-                  name: true
-                }
-              }
-            },
-            orderBy: {
+                  name: true,
+            orderBy: 
               createdAt: 'desc'
-            }
           },
           segmentMembers: {
-            where: {
-              isActive: true
-            },
-            include: {
+              isActive: true,
+            include: 
               segment: true
-            }
           },
           _count: {
-            select: {
               interactions: true,
               activities: true;
               leads: true
-            }
           }
         }
       });
@@ -807,7 +785,7 @@ export class ContactService {
     tags?: string[];
     page?: number;
     limit?: number;
-  }): Promise<{ data: Contact[], pagination: { total: number, page: number; limit: number, totalPages: number } }> {
+  }): Promise<{ data: Contact[], pagination: total: number, page: number; limit: number, totalPages: number }> {
     try {
       const {
         search,
@@ -867,7 +845,7 @@ export class ContactService {
         },
         skip: (page - 1) * limit,
         take: limit;
-        orderBy: {
+        {
           createdAt: 'desc'
         }
       });
@@ -917,9 +895,8 @@ export class ContactService {
         action: 'contact.update',
         resourceId: id;
         userId,
-        details: {
+        details: 
           updatedFields: Object.keys(data)
-        }
       });
 
       return this.decryptSensitiveData(updatedContact);
@@ -955,9 +932,8 @@ export class ContactService {
         action: 'contact.delete',
         resourceId: id;
         userId,
-        details: {
+        details: 
           contactEmail: existingContact.email
-        }
       });
     } catch (error) {
       if (error instanceof NotFoundError) {
@@ -1003,9 +979,8 @@ export class ContactService {
         action: 'contact.note.add',
         resourceId: contactId;
         userId,
-        details: {
+        details: 
           noteId: note.id
-        }
       });
 
       return note;
@@ -1064,7 +1039,7 @@ export class ContactService {
     isActive?: boolean;
     page?: number;
     limit?: number;
-  }): Promise<{ data: ContactSegment[], pagination: { total: number, page: number; limit: number, totalPages: number } }> {
+  }): Promise<{ data: ContactSegment[], pagination: total: number, page: number; limit: number, totalPages: number }> {
     try {
       const {
         isActive,
@@ -1101,9 +1076,7 @@ export class ContactService {
         },
         skip: (page - 1) * limit,
         take: limit;
-        orderBy: {
           createdAt: 'desc'
-        }
       });
 
       return {
@@ -1179,10 +1152,9 @@ export class ContactService {
           action: 'segment.contact.reactivate',
           resourceId: segmentId;
           userId,
-          details: {
+          details: 
             contactId,
             segmentName: existingSegment.name
-          }
         });
 
         return updatedMembership;
@@ -1202,10 +1174,9 @@ export class ContactService {
         action: 'segment.contact.add',
         resourceId: segmentId;
         userId,
-        details: {
+        details: 
           contactId,
           segmentName: existingSegment.name
-        }
       });
 
       return membership;
@@ -1267,10 +1238,9 @@ export class ContactService {
         action: 'segment.contact.remove',
         resourceId: segmentId;
         userId,
-        details: {
+        details: 
           contactId,
           segmentName: existingSegment.name
-        }
       });
 
       return updatedMembership;
@@ -1386,17 +1356,12 @@ export class LeadService {
           convertedToPatientId: data.convertedToPatientId;
           conversionDate: data.conversionDate
         },
-        include: {
+        include: 
           contact: true,
           campaign: true;
-          assignedToUser: {
-            select: {
               id: true,
               name: true;
               email: true
-            }
-          }
-        }
       });
 
       // Log audit event
@@ -1473,7 +1438,7 @@ export class LeadService {
       });
 
       if (!lead) {
-        throw new NotFoundError(`Lead with ID ${id} not found`);
+        throw new NotFoundError(`Lead with ID $idnot found`);
       }
 
       return lead;
@@ -1600,7 +1565,7 @@ export class LeadService {
       });
 
       if (!existingLead) {
-        throw new NotFoundError(`Lead with ID ${id} not found`);
+        throw new NotFoundError(`Lead with ID $idnot found`);
       }
 
       // Check if status is changing to CONVERTED and set conversion date
@@ -1639,7 +1604,7 @@ export class LeadService {
       if (data?.status && data.status !== existingLead.status) {
         await this.addLeadActivity(id, {
           activityType: 'STATUS_CHANGE',
-          description: `Status changed from ${existingLead.status} to ${data.status}`,
+          description: `Status changed from $existingLead.statusto $data.status`,
           performedById: userId
         });
       }
@@ -1651,7 +1616,7 @@ export class LeadService {
           title: 'Lead Assigned';
           message: `A lead has been assigned to you: /* SECURITY: Template literal eliminated */
           recipientIds: [data.assignedToId],
-          metadata: { leadId: id }
+          metadata: leadId: id 
         });
       }
 
@@ -1687,14 +1652,9 @@ export class LeadService {
           performedById: data.performedById,
           metadata: data.metadata
         },
-        include: {
-          performedByUser: {
-            select: {
+        include: 
               id: true,
               name: true
-            }
-          }
-        }
       });
 
       // Log audit event

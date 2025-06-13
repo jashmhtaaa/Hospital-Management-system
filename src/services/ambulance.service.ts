@@ -490,7 +490,7 @@ export class AmbulanceService {
           (updateData.status === AmbulanceRunStatus.COMPLETED ||;
            updateData.status === AmbulanceRunStatus.CANCELLED) &&;
           currentRun.status !== AmbulanceRunStatus?.COMPLETED &&;
-          currentRun.status !== AmbulanceRunStatus.CANCELLED) {
+          currentRun.status !== AmbulanceRunStatus.CANCELLED) 
 
         await prisma.ambulance.update({
           where: { id: run.ambulanceId },
@@ -498,7 +498,6 @@ export class AmbulanceService {
             status: AmbulanceStatus.AVAILABLE
           },
         });
-      }
 
       return run;
     } catch (error) {
@@ -606,7 +605,7 @@ export class AmbulanceService {
         // If status is changing to COMPLETED or CANCELLED, update ambulance status
         if ((status === AmbulanceRunStatus.COMPLETED || status === AmbulanceRunStatus.CANCELLED) &&
             currentRun.status !== AmbulanceRunStatus?.COMPLETED &&;
-            currentRun.status !== AmbulanceRunStatus.CANCELLED) {
+            currentRun.status !== AmbulanceRunStatus.CANCELLED) 
 
           await tx.ambulance.update({
             where: { id: currentRun.ambulanceId },
@@ -614,7 +613,6 @@ export class AmbulanceService {
               status: AmbulanceStatus.AVAILABLE
             },
           });
-        }
 
         return updatedRun;
       });

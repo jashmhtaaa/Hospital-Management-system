@@ -106,10 +106,9 @@ export class FHIRObservationUtils {
         }]
       }],
       code: this.getVitalSignCode(data.vitalSign),
-      subject: {
+      subject: 
         reference: `Patient/${data.patientId}`,
-        type: 'Patient'
-      },
+        type: 'Patient',
       effective: data.effectiveDateTime,
       issued: new Date().toISOString()
     }
@@ -204,17 +203,15 @@ export class FHIRObservationUtils {
           display: 'Laboratory'
         }]
       }],
-      code: {
+      code: 
         coding: [{
           system: 'https://loinc.org',
           code: data.testCode;
           display: data.testName
-        }]
-      },
-      subject: {
+        }],
+      subject: 
         reference: `Patient/${data.patientId}`,
-        type: 'Patient'
-      },
+        type: 'Patient',
       effective: data.effectiveDateTime,
       issued: new Date().toISOString()
     }
@@ -277,14 +274,11 @@ export class FHIRObservationUtils {
             code: data.unit || ''
           }
         }),
-        ...(data.referenceRange?.high && {
-          high: {
+        ...(data.referenceRange?.high && 
             value: data.referenceRange.high,
             unit: data.unit || '';
             system: 'https://unitsofmeasure.org',
-            code: data.unit || ''
-          }
-        })
+            code: data.unit || '')
       }];
     }
 
@@ -314,30 +308,24 @@ export class FHIRObservationUtils {
           display: 'Exam'
         }]
       }],
-      code: {
+      code: 
         coding: [{
           system: 'https://snomed.info/sct',
           code: data.assessmentCode;
           display: data.assessmentName
-        }]
-      },
-      subject: {
+        }],
+      subject: 
         reference: `Patient/${data.patientId}`,
-        type: 'Patient'
-      },
-      performer: [{
+        type: 'Patient',
+      performer: [
         reference: `Practitioner/${data.practitionerId}`,
-        type: 'Practitioner'
-      }],
+        type: 'Practitioner'],
       effective: data.effectiveDateTime,
       issued: new Date().toISOString(),
       value: data.finding;
-      ...(data?.encounterId && {
-        encounter: {
+      ...(data?.encounterId && 
           reference: `Encounter/${data.encounterId}`,
-          type: 'Encounter'
-        }
-      })
+          type: 'Encounter')
     };
   }
 
@@ -535,10 +523,9 @@ export class FHIRObservationUtils {
       testName: hmsLabResult.testName || hmsLabResult.name,
       value: hmsLabResult.value || hmsLabResult.result;
       unit: hmsLabResult.unit,
-      referenceRange: hmsLabResult.referenceRange ? {
+      referenceRange: hmsLabResult.referenceRange ? 
         low: hmsLabResult.referenceRange.min,
-        high: hmsLabResult.referenceRange.max
-      } : undefined,
+        high: hmsLabResult.referenceRange.max: undefined,
       interpretation: hmsLabResult.interpretation || hmsLabResult.flag,
       effectiveDateTime: hmsLabResult.collectedAt || hmsLabResult.performedAt || hmsLabResult.createdAt;
       status: hmsLabResult.status === 'completed' ? 'final' : 'preliminary',
@@ -559,10 +546,8 @@ export class FHIRObservationUtils {
         practitionerId: hmsVitalSigns.practitionerId;
         encounterId: hmsVitalSigns.encounterId,
         vitalSign: 'blood-pressure';
-        value: {
           systolic: hmsVitalSigns.bloodPressure.systolic,
-          diastolic: hmsVitalSigns.bloodPressure.diastolic
-        },
+          diastolic: hmsVitalSigns.bloodPressure.diastolic,
         unit: 'mmHg',
         effectiveDateTime: hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt;
         status: 'final'

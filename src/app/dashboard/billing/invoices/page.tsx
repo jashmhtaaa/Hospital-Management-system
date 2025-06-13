@@ -14,12 +14,12 @@ export const dynamic = 'force-dynamic';
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Badge, type BadgeProps } from "@/components/ui/badge"; // Import BadgeProps
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge, BadgeProps } from "@/components/ui/badge"; // Import BadgeProps
 import { Skeleton } from "@/components/ui/skeleton";
-import { PlusCircle, Search, Eye } from "lucide-react";
 import { format } from "date-fns"; // For date formatting
+import { Eye, PlusCircle, Search } from "lucide-react";
 
 // --- INTERFACES ---
 interface Invoice {

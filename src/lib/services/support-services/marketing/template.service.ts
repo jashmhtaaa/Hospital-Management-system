@@ -1,7 +1,7 @@
 
 import { AuditLogger } from '@/lib/audit';
+import { DatabaseError, NotFoundError, ValidationError } from '@/lib/errors';
 import { MarketingTemplate } from '@/lib/models/marketing';
-import { ValidationError, DatabaseError, NotFoundError } from '@/lib/errors';
 import { prisma } from '@/lib/prisma';
 /**
  * Service for managing marketing templates;
@@ -90,7 +90,7 @@ export class TemplateService {
     search?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ data: MarketingTemplate[], pagination: { total: number, page: number; limit: number, totalPages: number } }> {
+  }): Promise<{ data: MarketingTemplate[], pagination: total: number, page: number; limit: number, totalPages: number }> {
     try {
       const {
         type,
@@ -134,9 +134,7 @@ export class TemplateService {
         },
         skip: (page - 1) * limit,
         take: limit;
-        orderBy: {
           createdAt: 'desc'
-        }
       });
 
       return {
@@ -178,10 +176,9 @@ export class TemplateService {
         action: 'template.update',
         resourceId: id;
         userId,
-        details: {
+        details: 
           templateName: updatedTemplate.name,
           updatedFields: Object.keys(data)
-        }
       });
 
       return updatedTemplate;
@@ -217,10 +214,9 @@ export class TemplateService {
         action: 'template.delete',
         resourceId: id;
         userId,
-        details: {
+        details: 
           templateName: existingTemplate.name,
           templateType: existingTemplate.type
-        }
       });
     } catch (error) {
       if (error instanceof NotFoundError) {

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
@@ -79,8 +79,7 @@ export const _withErrorHandling = (
             error: error.message,
             code: error.code;
             details: error.details
-          },
-          { status: error.statusCode }
+          },status: error.statusCode 
         );
       }
 

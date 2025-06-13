@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 
 import { DB } from "@/lib/database";
@@ -182,8 +182,8 @@ export const _GET = async (request: NextRequest) => {
     const fromDate = searchParams.get("fromDate");
     const toDate = searchParams.get("toDate");
     const verified = searchParams.get("verified");
-    const page = parseInt(searchParams.get("page") || "1");
-    const pageSize = parseInt(searchParams.get("pageSize") || "20");
+    const page = Number.parseInt(searchParams.get("page") || "1");
+    const pageSize = Number.parseInt(searchParams.get("pageSize") || "20");
     const format = searchParams.get("format") || "default"; // 'default' or 'fhir'
 
     // Calculate offset for pagination
@@ -379,7 +379,7 @@ export const _GET = async (request: NextRequest) => {
         // Add specimen reference if available
         if (result.specimen_barcode) {
           resource.specimen = {
-            reference: `Specimen/${result.specimen_id || 'unknown'}`
+            reference: `Specimen/$result.specimen_id || 'unknown'`
           };
         }
 
@@ -400,7 +400,7 @@ export const _GET = async (request: NextRequest) => {
         // Add device if available
         if (result.device_id) {
           resource.device = {
-            reference: `Device/${result.device_id}`,
+            reference: `Device/$result.device_id`,
             display: result.device_name
           };
         }
@@ -482,13 +482,13 @@ export const _GET = async (request: NextRequest) => {
 
           if (result.delta_check_notes) {
             resource.note.push({
-              text: `Delta check: ${result.delta_check_notes}`;
+              text: `Delta check: $result.delta_check_notes`;
             });
           }
 
           if (result.correction_reason) {
             resource.note.push({
-              text: `Correction: ${result.correction_reason}`;
+              text: `Correction: $result.correction_reason`;
             });
           }
         }
@@ -529,11 +529,11 @@ export const _GET = async (request: NextRequest) => {
                 range.age_low !== undefined &&;
                 range.age_high !== null &&;
                 range.age_high !== undefined) {
-                text += ` age ${range.age_low}-${range.age_high}`;
+                text += ` age $range.age_low-$range.age_high`;
               } else if (range.age_low !== null && range.age_low !== undefined) {
-                text += ` age >= ${range.age_low}`;
+                text += ` age >= $range.age_low`;
               } else if (range.age_high !== null && range.age_high !== undefined) {
-                text += ` age <= ${range.age_high}`;
+                text += ` age <= $range.age_high`;
               }
               refRange.text = text;
             }
@@ -792,7 +792,7 @@ export const _POST = async (request: NextRequest) => {
           absolute_delta: absoluteDelta,
           percent_delta: percentDelta;
           passed: deltaCheckPassed,
-          notes: deltaCheckNotes || `Delta check ${deltaCheckPassed ? 'passed' : 'failed'}`
+          notes: deltaCheckNotes || `Delta check $deltaCheckPassed ? 'passed' : 'failed'`
         };
       } else {
         deltaCheckResult = {
@@ -808,7 +808,7 @@ export const _POST = async (request: NextRequest) => {
       // Get reference ranges for this test/parameter
       const rangesQuery = `;
         SELECT * FROM lab_test_reference_ranges;
-        WHERE test_id = ? ${body.parameter_id ? "AND parameter_id = ?" : ""}
+        WHERE test_id = ? $body.parameter_id ? "AND parameter_id = ?" : ""
         ORDER BY id;
       `;
 
@@ -1101,11 +1101,10 @@ export const _POST = async (request: NextRequest) => {
 
       // Return the created result
       return NextResponse.json(createdResult, { status: 201 });
-    } catch (error) {
+    } catch (error) 
       // Rollback transaction on error
       await DB.query("ROLLBACK", []);
       throw error;
-    }
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
@@ -1119,7 +1118,7 @@ export const _POST = async (request: NextRequest) => {
 // PUT /api/diagnostics/lab/results/:id - Update a laboratory result
 export const _PUT = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     const session = await getSession();
@@ -1519,7 +1518,7 @@ export const _PUT = async (
 // POST /api/diagnostics/lab/results/:id/verify - Verify a laboratory result
 export const _POST_VERIFY = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     const session = await getSession();
@@ -1674,8 +1673,8 @@ export const _GET_CRITICAL = async (request: NextRequest) => {
     // Parse query parameters
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
-    const page = parseInt(searchParams.get("page") || "1");
-    const pageSize = parseInt(searchParams.get("pageSize") || "20");
+    const page = Number.parseInt(searchParams.get("page") || "1");
+    const pageSize = Number.parseInt(searchParams.get("pageSize") || "20");
 
     // Calculate offset for pagination
     const offset = (page - 1) * pageSize;
@@ -1760,7 +1759,7 @@ export const _GET_CRITICAL = async (request: NextRequest) => {
 // PUT /api/diagnostics/lab/results/critical/:id - Update critical alert status
 export const _PUT_CRITICAL = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     const session = await getSession();

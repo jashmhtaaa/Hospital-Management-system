@@ -1,8 +1,8 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 
-import { InsurancePolicy } from "../../../../features/insurance/types.ts"; // Adjust path
 import { InsurancePolicyService } from "../../../../features/insurance/services/InsurancePolicyService.ts"; // Adjust path as per actual structure
+import type { InsurancePolicy } from "../../../../features/insurance/types.ts"; // Adjust path
 }
 const policyService = new InsurancePolicyService();
 

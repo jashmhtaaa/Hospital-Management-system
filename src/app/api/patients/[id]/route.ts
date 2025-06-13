@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 
-import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database
 import { DB } from "@/lib/database";
-import { Patient } from "@/types/patient";
 import { getSession } from "@/lib/session";
+import type { D1Database, D1ResultWithMeta } from "@/types/cloudflare"; // Import D1Database
+import type { Patient } from "@/types/patient";
 // Zod schema for patient update
 const patientUpdateSchema = z.object({
     mrn: z.string().optional(),
@@ -135,7 +135,7 @@ export const _PUT = async (
         fieldsToUpdate.updated_by_user_id = userId;
 
         const setClauses = Object.keys(fieldsToUpdate);
-            .map((key) => `${key} = ?`);
+            .map((key) => `$key= ?`);
             .join(", ");
         const values = Object.values(fieldsToUpdate);
 

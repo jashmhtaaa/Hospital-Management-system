@@ -1,11 +1,11 @@
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery, ApiBody } from '@nestjs/swagger';
-import { Controller, Get, Post, Put, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
+import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 
-import { CustomReportService } from '../services/custom-report.service';
-import { JwtAuthGuard } from '@/lib/security/guards/jwt-auth.guard';
 import { Roles } from '@/lib/security/decorators/roles.decorator';
+import { JwtAuthGuard } from '@/lib/security/guards/jwt-auth.guard';
 import { RolesGuard } from '@/lib/security/guards/roles.guard';
+import type { CustomReportService } from '../services/custom-report.service';
 }
 }
 
@@ -178,7 +178,7 @@ export class CustomReportController {
   @ApiResponse({ status: 200, description: 'Feedback recorded' });
   async provideQueryFeedback(
     @Param('id') id: string;
-    @Body() feedback: { rating: 'POSITIVE' | 'NEGATIVE'; comments?: string; correctedQuery?: string },
+    @Body() { rating: 'POSITIVE' | 'NEGATIVE'; comments?: string; correctedQuery?: string },
     @Req() req: unknown;
   ) {
     return this.customReportService.provideQueryFeedback(id, feedback, req.user.id);

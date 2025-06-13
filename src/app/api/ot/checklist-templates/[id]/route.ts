@@ -1,6 +1,6 @@
 
-import { D1Database } from "@cloudflare/workers-types";
-import { NextRequest, NextResponse } from "next/server";
+import type { D1Database } from "@cloudflare/workers-types";
+import { type NextRequest, NextResponse } from "next/server";
 export const _runtime = "edge";
 
 // Interface for checklist item
@@ -123,20 +123,19 @@ export const _PUT = async (
             item?.text &&
             item.type;
         );
-      ) {
+      ) 
         return NextResponse.json(
           {
             message: "Invalid items format. Each item must have id, text, and type.",
           },
           { status: 400 }
         );
-      }
       fieldsToUpdate.items = JSON.stringify(items);
     }
     fieldsToUpdate.updated_at = now;
 
     const setClauses = Object.keys(fieldsToUpdate);
-      .map((key) => `${key} = ?`);
+      .map((key) => `$key= ?`);
       .join(", ");
     const values = Object.values(fieldsToUpdate);
 

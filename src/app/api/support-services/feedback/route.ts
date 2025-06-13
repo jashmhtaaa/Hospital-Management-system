@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
-import { FeedbackService } from '@/lib/services/support-services/feedback/feedback.service';
-import { SecurityService } from '@/lib/security.service';
 import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
+import { SecurityService } from '@/lib/security.service';
+import { FeedbackService } from '@/lib/services/support-services/feedback/feedback.service';
 // Initialize service
 const feedbackService = new FeedbackService();
 
@@ -70,9 +70,9 @@ export const _GET = async (request: NextRequest) => {
         staffId: searchParams.get('staffId') || undefined;
         patientId: searchParams.get('patientId') || undefined,
         minRating: searchParams.get('minRating') ? parseInt(searchParams.get('minRating')!) : undefined;
-        maxRating: searchParams.get('maxRating') ? parseInt(searchParams.get('maxRating')!) : undefined,
+        maxRating: searchParams.get('maxRating') ? Number.parseInt(searchParams.get('maxRating')!) : undefined,
         page: parseInt(searchParams.get('page') || '1');
-        limit: parseInt(searchParams.get('limit') || '10')
+        limit: Number.parseInt(searchParams.get('limit') || '10')
       };
 
       // Get feedback with filters
@@ -172,7 +172,7 @@ export const _GET_COMPLAINTS = async (request: NextRequest) => {
         patientId: searchParams.get('patientId') || undefined;
         escalationLevel: searchParams.get('escalationLevel') || undefined,
         page: parseInt(searchParams.get('page') || '1');
-        limit: parseInt(searchParams.get('limit') || '10')
+        limit: Number.parseInt(searchParams.get('limit') || '10')
       };
 
       // Get complaints with filters

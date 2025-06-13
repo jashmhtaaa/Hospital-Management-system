@@ -1,10 +1,10 @@
 
 import { AuditLogger } from '@/lib/audit';
-import { Contact, ContactNote, ContactStatus } from '@/lib/models/marketing';
+import { decryptData, encryptData } from '@/lib/encryption';
+import { DatabaseError, NotFoundError, ValidationError } from '@/lib/errors';
 import { FhirResourceGenerator } from '@/lib/fhir';
+import { Contact, ContactNote, ContactStatus } from '@/lib/models/marketing';
 import { NotificationService } from '@/lib/notifications';
-import { ValidationError, DatabaseError, NotFoundError } from '@/lib/errors';
-import { encryptData, decryptData } from '@/lib/encryption';
 import { prisma } from '@/lib/prisma';
 /**
  * Service for managing marketing contacts and related operations;
@@ -145,7 +145,7 @@ export class ContactService {
     hasPatient?: boolean;
     page?: number;
     limit?: number;
-  }): Promise<{ data: Contact[], pagination: { total: number, page: number; limit: number, totalPages: number } }> {
+  }): Promise<{ data: Contact[], pagination: total: number, page: number; limit: number, totalPages: number }> {
     try {
       const {
         status,
@@ -211,16 +211,14 @@ export class ContactService {
             }
           },
           _count: {
-            select: {
               notes: true,
               leads: true;
               segmentMembers: true
-            }
           }
         },
         skip: (page - 1) * limit,
         take: limit;
-        orderBy: {
+        {
           createdAt: 'desc'
         }
       });
@@ -282,9 +280,8 @@ export class ContactService {
         action: 'contact.update',
         resourceId: id;
         userId,
-        details: {
+        details: 
           updatedFields: Object.keys(data)
-        }
       });
 
       // Decrypt sensitive data before returning
@@ -333,9 +330,8 @@ export class ContactService {
         action: 'contact.note.add',
         resourceId: contactId;
         userId,
-        details: {
+        details: 
           noteId: note.id
-        }
       });
 
       return note;

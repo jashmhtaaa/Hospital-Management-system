@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
-import { MarketingCampaignService } from '@/lib/services/support-services/marketing/marketing.service';
-import { SecurityService } from '@/lib/security.service';
 import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
+import { SecurityService } from '@/lib/security.service';
+import { MarketingCampaignService } from '@/lib/services/support-services/marketing/marketing.service';
 // Initialize service
 const marketingService = new MarketingCampaignService();
 
@@ -263,7 +263,7 @@ export const _GET_CONTACTS = async (request: NextRequest) => {
         source: searchParams.get('source') || undefined;
         segmentId: searchParams.get('segmentId') || undefined,
         search: searchParams.get('search') || undefined;
-        page: parseInt(searchParams.get('page') || '1'),
+        page: Number.parseInt(searchParams.get('page') || '1'),
         limit: parseInt(searchParams.get('limit') || '10')
       };
 

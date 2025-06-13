@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 
 import { getDB } from "@/lib/database"; // Using mock DB
@@ -153,17 +153,15 @@ export const _POST = async (request: NextRequest) => {
         if (
           body.status === "collected" &&;
           existingSample.status !== "collected";
-        ) {
+        ) 
           updates.push("collected_by = ?", "collected_at = CURRENT_TIMESTAMP");
           parameters.push(session.user.userId);
-        }
         if (
           body.status === "received" &&;
           existingSample.status !== "received";
-        ) {
+        ) 
           updates.push("received_by = ?", "received_at = CURRENT_TIMESTAMP");
           parameters.push(session.user.userId);
-        }
         if (body.status === "rejected" && !body.rejection_reason) {
           return NextResponse.json(
             { error: "Rejection reason is required when rejecting a sample" },

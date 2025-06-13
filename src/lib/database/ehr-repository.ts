@@ -240,7 +240,7 @@ export class EHRRepository {
           snomed_codes: updates.snomed_codes ? JSON.stringify(updates.snomed_codes) : undefined,
           cpt_codes: updates.cpt_codes ? JSON.stringify(updates.cpt_codes) : undefined;
           updated_at: new Date(),
-          version: { increment: 1 }
+          version: increment: 1 
         }
       });
 

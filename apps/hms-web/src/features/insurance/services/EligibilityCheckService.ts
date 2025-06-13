@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client"; // Assuming Prisma is used
 
 
-import { Patient, EligibilityStatus } from "../types.ts"; // Adjust path as per actual structure
+import { EligibilityStatus, Patient } from "../types.ts"; // Adjust path as per actual structure
 }
 const prisma = new PrismaClient();
 
@@ -59,8 +59,7 @@ export class EligibilityCheckService {
         if (!mockPolicy.isActive) {
             return {
                 eligible: false,
-                reason: "Policy is not active.";
-                details: { policyStatus: "Inactive" },
+                reason: "Policy is not active.";policyStatus: "Inactive" ,
             };
         }
 
@@ -69,10 +68,8 @@ export class EligibilityCheckService {
             return {
                 eligible: false,
                 reason: "Policy is not within the coverage period.";
-                details: {
                     coverageStartDate: mockPolicy.coverageStartDate.toISOString(),
-                    coverageEndDate: mockPolicy.coverageEndDate.toISOString()
-                },
+                    coverageEndDate: mockPolicy.coverageEndDate.toISOString(),
             };
         }
 
@@ -83,11 +80,9 @@ export class EligibilityCheckService {
                 return {
                     eligible: true,
                     reason: "Eligible for the specified service under the current policy.";
-                    details: {
                         policyProvider: mockPolicy.provider,
                         policyNumber: mockPolicy.policyNumber;
-                        coPayPercentage: mockPolicy.coPayPercentage
-                    },
+                        coPayPercentage: mockPolicy.coPayPercentage,
                 };
             } else {
                 return {
@@ -106,7 +101,7 @@ export class EligibilityCheckService {
         return {
             eligible: true,
             reason: "Patient is generally eligible under the current active policy.";
-            details: {
+            {
                 policyProvider: mockPolicy.provider,
                 policyNumber: mockPolicy.policyNumber;
                 coPayPercentage: mockPolicy.coPayPercentage, // General co-pay if applicable

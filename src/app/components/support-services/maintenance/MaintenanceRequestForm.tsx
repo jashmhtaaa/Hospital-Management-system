@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import {
@@ -16,6 +12,10 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
   Select,
   SelectContent,
   SelectItem,
@@ -23,12 +23,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/use-toast';
+import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { useToast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 
 // Define the form schema with Zod
@@ -160,7 +160,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
     setIsLoading(true);
     try {
       const url = isEditing;
-        ? `/api/support-services/maintenance/${initialData.id}`
+        ? `/api/support-services/maintenance/$initialData.id`
         : '/api/support-services/maintenance';
 
       const method = isEditing ? 'PUT' : 'POST';

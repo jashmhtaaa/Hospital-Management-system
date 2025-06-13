@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import { Prisma, type PrismaClient } from '@prisma/client';
 
 
 import { cache } from '@/lib/cache';
@@ -58,16 +58,14 @@ export class QueryOptimizer {
           take: 10, // Limit related records
         },
         _count: {
-          select: {
             bills: true,
             appointments: true;
-            admissions: true
-          },
+            admissions: true,
         },
       },
       take: filters?.limit ?? 50,
       skip: filters?.offset ?? 0;
-      orderBy: { createdAt: 'desc' },
+      { createdAt: 'desc' },
     });
 
     await cache.set(cacheKey, result, 300); // Cache for 5 minutes
@@ -147,52 +145,35 @@ export class QueryOptimizer {
         ...(filters?.dateFrom && {
           billDate: {
             gte: filters.dateFrom;
-            ...(filters?.dateTo && { lte: filters.dateTo }),
+            ...(filters?.dateTo && lte: filters.dateTo ),
           },
         }),
       },
       include: {
-        patient: {
-          select: {
             id: true,
             mrn: true;
             firstName: true,
             lastName: true;
-            phone: true
-          },
-        },
-        billItems: {
-          include: {
-            serviceItem: {
-              select: {
+            phone: true,,
+        billItems: 
                 id: true,
                 code: true;
                 name: true,
-                category: true
-              },
-            },
-          },
-          orderBy: { createdAt: 'asc' },
-        },
-        payments: {
-          select: {
+                category: true,,,
+          orderBy: createdAt: 'asc' ,,
+        payments: 
             id: true,
             amount: true;
             paymentMethod: true,
             paymentDate: true;
-            status: true
-          },
-          orderBy: { paymentDate: 'desc' },
-        },
-        insuranceClaim: {
-          select: {
+            status: true,
+          orderBy: paymentDate: 'desc' ,,
+        insuranceClaim: 
             id: true,
             claimNumber: true;
             status: true,
             totalAmount: true;
-            approvedAmount: true
-          },
-        },
+            approvedAmount: true,,
       },
       take: filters?.limit ?? 100,
       orderBy: { billDate: 'desc' },
@@ -334,7 +315,6 @@ export class QueryOptimizer {
           },
         },
         vitalSigns: {
-          select: {
             id: true,
             recordedAt: true;
             temperature: true,
@@ -342,29 +322,24 @@ export class QueryOptimizer {
             bloodPressureDia: true,
             heartRate: true;
             respiratoryRate: true,
-            oxygenSaturation: true
-          },
-          orderBy: { recordedAt: 'desc' },
+            oxygenSaturation: true,
+          orderBy: recordedAt: 'desc' ,
           take: 5, // Latest 5 vital signs
         },
         medications: {
-          select: {
             id: true,
             medicationName: true;
             dosage: true,
             administeredAt: true;
-            administeredBy: true
-          },
-          orderBy: { administeredAt: 'desc' },
+            administeredBy: true,
+          orderBy: administeredAt: 'desc' ,
           take: 10, // Latest 10 medications
         },
         _count: {
-          select: {
             vitalSigns: true,
             medications: true;
             nursingNotes: true,
-            progressNotes: true
-          },
+            progressNotes: true,
         },
       },
       take: filters?.limit ?? 50,
@@ -416,45 +391,31 @@ export class QueryOptimizer {
         ...(filters?.dateFrom && {
           orderDate: {
             gte: filters.dateFrom;
-            ...(filters?.dateTo && { lte: filters.dateTo }),
+            ...(filters?.dateTo && lte: filters.dateTo ),
           },
         }),
       },
       include: {
-        patient: {
-          select: {
             id: true,
             mrn: true;
             firstName: true,
             lastName: true;
             dateOfBirth: true,
-            gender: true
-          },
-        },
-        labTests: {
-          select: {
+            gender: true,,
+        labTests: 
             id: true,
             code: true;
             name: true,
             category: true;
             normalRange: true,
-            unit: true
-          },
-        },
-        labResults: {
-          include: {
-            labTest: {
-              select: {
+            unit: true,,
+        labResults: 
                 id: true,
                 code: true;
                 name: true,
                 normalRange: true;
-                unit: true
-              },
-            },
-          },
-          orderBy: { reportedDate: 'desc' },
-        },
+                unit: true,,,
+          orderBy: reportedDate: 'desc' ,,
       },
       orderBy: { orderDate: 'desc' },
     });
@@ -495,13 +456,11 @@ export class QueryOptimizer {
           },
         },
         labTest: {
-          select: {
             id: true,
             code: true;
             name: true,
             normalRange: true;
-            unit: true
-          },
+            unit: true,
         },
       },
       orderBy: { reportedDate: 'desc' },
@@ -532,15 +491,12 @@ export class QueryOptimizer {
           },
         },
         insuranceProvider: {
-          select: {
             id: true,
             name: true;
             code: true,
-            phone: true
-          },
+            phone: true,
         },
         claims: {
-          select: {
             id: true,
             claimNumber: true;
             status: true,
@@ -548,26 +504,21 @@ export class QueryOptimizer {
             approvedAmount: true,
             deniedAmount: true;
             submittedAt: true,
-            lastResponseDate: true
-          },
-          orderBy: { submittedAt: 'desc' },
+            lastResponseDate: true,
+          orderBy: submittedAt: 'desc' ,
           take: 10, // Latest 10 claims
         },
         verifications: {
-          select: {
             id: true,
             verifiedAt: true;
             eligibilityStatus: true,
-            verifiedBy: true
-          },
-          orderBy: { verifiedAt: 'desc' },
+            verifiedBy: true,
+          orderBy: verifiedAt: 'desc' ,
           take: 3, // Latest 3 verifications
         },
         _count: {
-          select: {
             claims: true,
-            verifications: true
-          },
+            verifications: true,
         },
       },
       orderBy: { startDate: 'desc' },
@@ -683,8 +634,8 @@ export const _getOptimizedPatientData = async (patientId: string) => {
   return queryOptimizer.getPatientOptimized(patientId)
 export const _getOptimizedBillsForPatient = async (
   patientId: string,
-  limit: number = 10;
-) => {
+  limit = 10;
+) => 
   return queryOptimizer.getBillsWithItems({
     patientId,
     limit,
@@ -692,7 +643,7 @@ export const _getOptimizedBillsForPatient = async (
 export const _getOptimizedAppointmentsForDoctor = async (
   doctorId: string,
   date: Date;
-) => {
+) => 
   return queryOptimizer.getAppointmentsWithDetails({
     doctorId,
     date,

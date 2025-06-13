@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 
-import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database
-import { Consultation } from "@/types/opd";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
+import type { D1Database, D1ResultWithMeta } from "@/types/cloudflare"; // Import D1Database
+import { Consultation } from "@/types/opd";
 // Zod schema for creating an OPD visit
 const opdVisitCreateSchema = z.object({
     patient_id: z.number(),

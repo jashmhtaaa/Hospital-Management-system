@@ -1,10 +1,10 @@
-import { cookies } from "next/headers";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
 import { z } from "zod";
 
 
-import { sessionOptions, IronSessionData } from "@/lib/session"; // FIX: Import IronSessionData
+import { type IronSessionData, sessionOptions } from "@/lib/session"; // FIX: Import IronSessionData
 // app/api/invoices/[invoiceId]/payments/route.ts
 // Define roles allowed to manage payments (adjust as needed)
 const ALLOWED_ROLES_MANAGE = ["Admin", "Receptionist", "Billing Staff"]
@@ -14,7 +14,7 @@ const getInvoiceId = (pathname: string): number | null {
     // Pathname might be /api/invoices/123/payments
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 2]; // Second to last part
-    const id = parseInt(idStr, 10);
+    const id = Number.parseInt(idStr, 10);
     return isNaN(id) ? null : id;
 }
 

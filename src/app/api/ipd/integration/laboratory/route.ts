@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { LaboratoryService, LabOrderSchema, LabCancelSchema, LabResultNotificationSchema } from '@/services/integration/LaboratoryService';
 import { handleApiError } from '@/lib/api/errorHandler';
-import { ipdMiddleware } from '../../middleware/auth';
 import { logger } from '@/lib/logger';
+import { LabCancelSchema, LabOrderSchema, LabResultNotificationSchema, LaboratoryService } from '@/services/integration/LaboratoryService';
+import { ipdMiddleware } from '../../middleware/auth';
 /**
  * Integration endpoint for Laboratory Module;
  * This endpoint handles lab test orders and results;
@@ -123,7 +123,7 @@ export const getLabResults = async (req: NextRequest) => {
     const { searchParams } = new URL(req.url);
     const patientId = searchParams.get('patientId');
     const encounterId = searchParams.get('encounterId') || undefined;
-    const limit = parseInt(searchParams.get('limit') || '50');
+    const limit = Number.parseInt(searchParams.get('limit') || '50');
     const includeDetails = searchParams.get('includeDetails') === 'true';
 
     if (!patientId) {

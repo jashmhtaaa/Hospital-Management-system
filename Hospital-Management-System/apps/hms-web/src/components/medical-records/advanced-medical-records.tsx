@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import type React from 'react';
+import { useState, useEffect } from 'react';
 import {
 
 import { Badge } from '@/components/ui/badge';
@@ -44,7 +45,7 @@ const AdvancedMedicalRecords: React.FC = () => {
   const [suggestedCodes, setSuggestedCodes] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const searchICD10 = async (query: string, type: string = 'search') => {
+  const searchICD10 = async (query: string, type = 'search') => {
     if (!query.trim()) return;
 
     setLoading(true);

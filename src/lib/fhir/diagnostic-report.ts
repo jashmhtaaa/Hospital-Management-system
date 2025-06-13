@@ -86,40 +86,32 @@ export class FHIRDiagnosticReportUtils {
           display: 'Laboratory'
         }]
       }],
-      code: {
+      code: 
         coding: [{
           system: 'https://loinc.org',
           code: data.reportCode;
           display: data.reportName
-        }]
-      },
-      subject: {
+        }],
+      subject: 
         reference: `Patient/${data.patientId}`,
-        type: 'Patient'
-      },
-      performer: [{
+        type: 'Patient',
+      performer: [
         reference: `Practitioner/${data.practitionerId}`,
-        type: 'Practitioner'
-      }],
+        type: 'Practitioner'],
       effective: data.effectiveDateTime,
       issued: new Date().toISOString(),
-      result: data.observations.map(obsId => ({
+      result: data.observations.map(obsId => (
         reference: `Observation/${obsId}`,
-        type: 'Observation'
-      })),
-      ...(data?.encounterId && {
-        encounter: {
+        type: 'Observation')),
+      ...(data?.encounterId && 
           reference: `Encounter/${data.encounterId}`,
-          type: 'Encounter'
-        }
-      }),
-      ...(data?.specimens && {
+          type: 'Encounter'),
+      ...(data?.specimens && 
         specimen: data.specimens.map(specId => ({
           reference: `Specimen/${specId}`,
           type: 'Specimen'
-        }))
-      }),
-      ...(data?.conclusion && { conclusion: data.conclusion })
+        }))),
+      ...(data?.conclusion && conclusion: data.conclusion )
     };
   }
 
@@ -149,40 +141,37 @@ export class FHIRDiagnosticReportUtils {
           display: 'Radiology'
         }]
       }],
-      code: {
+      code: 
         coding: [{
           system: 'https://loinc.org',
           code: data.studyType;
           display: data.studyName
-        }]
-      },
-      subject: {
+        }],
+      subject: 
         reference: `Patient/${data.patientId}`,
-        type: 'Patient'
-      },
-      resultsInterpreter: [{
+        type: 'Patient',
+      resultsInterpreter: [
         reference: `Practitioner/${data.radiologistId}`,
-        type: 'Practitioner'
-      }],
+        type: 'Practitioner'],
       effective: data.effectiveDateTime,
       issued: new Date().toISOString(),
-      conclusion: `Findings: ${data.findings}\n\nImpression: ${data.impression}`,
+      conclusion: `Findings: $data.findings\n\nImpression: $data.impression`,
       ...(data?.encounterId && {
         encounter: {
-          reference: `Encounter/${data.encounterId}`,
+          reference: `Encounter/$data.encounterId`,
           type: 'Encounter'
         }
       }),
       ...(data?.imagingStudyId && {
         imagingStudy: [{
-          reference: `ImagingStudy/${data.imagingStudyId}`,
+          reference: `ImagingStudy/$data.imagingStudyId`,
           type: 'ImagingStudy'
         }]
       }),
       ...(data?.images && {
         media: data.images.map(imageId => ({
           link: {
-            reference: `Media/${imageId}`,
+            reference: `Media/$imageId`,
             type: 'Media'
           }
         }))
@@ -223,28 +212,28 @@ export class FHIRDiagnosticReportUtils {
         }]
       },
       subject: {
-        reference: `Patient/${data.patientId}`,
+        reference: `Patient/$data.patientId`,
         type: 'Patient'
       },
       resultsInterpreter: [{
-        reference: `Practitioner/${data.pathologistId}`,
+        reference: `Practitioner/$data.pathologistId`,
         type: 'Practitioner'
       }],
       effective: data.effectiveDateTime,
       issued: new Date().toISOString(),
       specimen: [{
-        reference: `Specimen/${data.specimenId}`,
+        reference: `Specimen/$data.specimenId`,
         type: 'Specimen'
       }],
       conclusion: [
-        `Diagnosis: ${data.diagnosis}`,
-        `Gross Description: ${data.grossDescription}`,
-        `Microscopic Description: ${data.microscopicDescription}`,
-        `Conclusion: ${data.conclusion}`
+        `Diagnosis: $data.diagnosis`,
+        `Gross Description: $data.grossDescription`,
+        `Microscopic Description: $data.microscopicDescription`,
+        `Conclusion: $data.conclusion`
       ].join('\n\n'),
       ...(data?.encounterId && {
         encounter: {
-          reference: `Encounter/${data.encounterId}`,
+          reference: `Encounter/$data.encounterId`,
           type: 'Encounter'
         }
       })
@@ -280,20 +269,20 @@ export class FHIRDiagnosticReportUtils {
 
     const study = studyMapping[data.studyType];
 
-    let conclusion = `Findings: ${data.findings}\n\nInterpretation: ${data.interpretation}`;
+    let conclusion = `Findings: $data.findings\n\nInterpretation: $data.interpretation`;
 
     if (data?.measurements && data.measurements.length > 0) {
       conclusion += ';\n\nMeasurements:\n';
       data.measurements.forEach(measurement => {
-        conclusion += `- ${measurement.parameter}: ${measurement.value}`;
-        if (measurement.unit) conclusion += ` ${measurement.unit}`;
+        conclusion += `- $measurement.parameter: $measurement.value`;
+        if (measurement.unit) conclusion += ` $measurement.unit`;
         if (measurement.normalRange) conclusion += ` (Normal: ${measurement.normalRange})`;
         conclusion += '\n';
       });
     }
 
     if (data.recommendations) {
-      conclusion += `;\n\nRecommendations: ${data.recommendations}`;
+      conclusion += `;\n\nRecommendations: $data.recommendations`;
     }
 
     return {
@@ -314,11 +303,11 @@ export class FHIRDiagnosticReportUtils {
         }]
       },
       subject: {
-        reference: `Patient/${data.patientId}`,
+        reference: `Patient/$data.patientId`,
         type: 'Patient'
       },
       resultsInterpreter: [{
-        reference: `Practitioner/${data.cardiologistId}`,
+        reference: `Practitioner/$data.cardiologistId`,
         type: 'Practitioner'
       }],
       effective: data.effectiveDateTime,
@@ -326,7 +315,7 @@ export class FHIRDiagnosticReportUtils {
       conclusion,
       ...(data?.encounterId && {
         encounter: {
-          reference: `Encounter/${data.encounterId}`,
+          reference: `Encounter/$data.encounterId`,
           type: 'Encounter'
         }
       })
@@ -447,7 +436,7 @@ export class FHIRDiagnosticReportUtils {
       'corrected', 'appended', 'cancelled', 'entered-in-error', 'unknown';
     ];
     if (report?.status && !validStatuses.includes(report.status)) {
-      errors.push(`status must be one of: ${validStatuses.join(', ')}`);
+      errors.push(`status must be one of: $validStatuses.join(', ')`);
     }
 
     // Validate that final reports have results or conclusion

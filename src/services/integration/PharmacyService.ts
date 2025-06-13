@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
 
 
-import { logAudit, AuditAction } from '@/lib/audit';
+import { AuditAction, logAudit } from '@/lib/audit';
 import { logger } from '@/lib/logger';
 // Initialize Prisma client
 const prisma = new PrismaClient();

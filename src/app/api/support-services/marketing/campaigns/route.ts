@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
-import { MarketingCampaignService } from '@/lib/services/support-services/marketing/marketing.service';
 import { authOptions } from '@/lib/auth';
 import { validatePermission } from '@/lib/permissions';
+import { MarketingCampaignService } from '@/lib/services/support-services/marketing/marketing.service';
 const campaignService = new MarketingCampaignService();
 
 // Campaign filter schema

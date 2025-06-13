@@ -1,11 +1,11 @@
-import { cookies } from "next/headers";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
 import { z } from "zod";
 
 
+import { type IronSessionData, sessionOptions } from "@/lib/session"; // FIX: Import IronSessionData
 import { DoctorSchedule } from "@/types/schedule";
-import { sessionOptions, IronSessionData } from "@/lib/session"; // FIX: Import IronSessionData
 // app/api/doctors/[id]/schedules/route.ts
 // Define roles allowed to view/manage schedules (adjust as needed)
 const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Doctor"]
@@ -15,7 +15,7 @@ const ALLOWED_ROLES_MANAGE = ["Admin", "Doctor"]; // Only Admin or the Doctor th
 const getDoctorId = (pathname: string): number | null {
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 2]; // Second to last part
-    const id = parseInt(idStr, 10);
+    const id = Number.parseInt(idStr, 10);
     return isNaN(id) ? null : id;
 }
 

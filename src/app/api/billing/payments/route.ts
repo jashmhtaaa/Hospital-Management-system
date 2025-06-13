@@ -133,7 +133,7 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
         },
       },
     }),
-    prisma.payment.count({ where }),
+    prisma.payment.count(where ),
   ]);
 
   return createPaginatedResponse(payments, query.page, query.pageSize, total);

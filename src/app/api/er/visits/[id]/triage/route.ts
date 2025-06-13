@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 // import { getRequestContext } from "@cloudflare/next-on-pages"; // Cloudflare specific
 
 // Define interface for triage input data
@@ -80,14 +80,13 @@ export const _POST = async (
       !triageData.triage_nurse_id ||
       !triageData.esi_level ||
       !triageData.vital_signs;
-    ) {
+    ) 
       return NextResponse.json(
         {
           error: "Missing required fields (triage_nurse_id, esi_level, vital_signs)",
         },
         { status: 400 }
       );
-    }
 
     // Validate ESI level
     if (triageData.esi_level < 1 || triageData.esi_level > 5) {

@@ -269,11 +269,9 @@ export class PayrollService {
     }
 
     // Update payroll period status
-    await prisma.payrollPeriod.update({
-      where: { id: payrollPeriodId },
-      data: {
-        status: 'PROCESSING'
-      },
+    await prisma.payrollPeriod.update({id: payrollPeriodId ,
+      data: 
+        status: 'PROCESSING',
     });
 
     return {

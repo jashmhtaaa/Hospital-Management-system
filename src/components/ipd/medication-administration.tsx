@@ -1,4 +1,5 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import type React from "react";
+import { type ChangeEvent, type FormEvent, useEffect, useState } from "react"
 import {
 }
 
@@ -141,9 +142,8 @@ const MedicationAdministration: React.FC<;
             : "An unknown error occurred.";
 
         setError(`Failed to load medication records: ${message}`);
-      } finally {
+      } finally 
         setLoading(false);
-      }
     };
 
     fetchMedicationRecords();

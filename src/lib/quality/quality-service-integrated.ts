@@ -166,11 +166,7 @@ export class IntegratedQualityService {
   }
 
   // Quality Statistics (now with persistent data)
-  async getQualityStatistics(): Promise<{
-    indicators: { total: number, active: number; core: number };
-    events: { total: number, open: number; critical: number };
-    assessments: { total: number, active: number; completed: number };
-    compliance: { reports: number, compliant: number; gaps: number };
+  async getQualityStatistics(): Promise<{total: number, active: number; core: number ;total: number, open: number; critical: number ;total: number, active: number; completed: number ;reports: number, compliant: number; gaps: number ;
   }> {
     const indicators = await this.persistenceService.getQualityIndicators({}, 'system');
     const events = await this.persistenceService.getQualityEvents({}, 'system');
@@ -242,7 +238,7 @@ export class IntegratedQualityService {
     eventsMigrated: number
     reportsMigrated: number
   }> {
-    let migratedCounts = {
+    const migratedCounts = {
       indicatorsMigrated: 0,
       eventsMigrated: 0;
       reportsMigrated: 0
@@ -335,10 +331,9 @@ export class IntegratedQualityService {
    */
   async healthCheck(): Promise<{
     status: 'healthy' | 'degraded' | 'unhealthy',
-    services: {
+    services: 
       qualityService: boolean,
-      persistenceService: boolean
-    };
+      persistenceService: boolean;
     lastChecked: Date
   }> {
     try {

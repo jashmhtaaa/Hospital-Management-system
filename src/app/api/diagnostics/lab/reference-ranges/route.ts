@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 
 import { DB } from "@/lib/database";
@@ -108,12 +108,11 @@ export const _POST = async (request: NextRequest) => {
     if (
       (body.value_low === undefined && body.value_high === undefined && !body.text_value) ||;
       (body?.text_value && (body.value_low !== undefined || body.value_high !== undefined));
-    ) {
+    ) 
       return NextResponse.json(
         { error: "Either numeric range values or text value must be provided, but not both" },
         { status: 400 }
       );
-    }
 
     // Check if test exists
     const testCheckResult = await DB.query(
@@ -230,7 +229,7 @@ export const _POST = async (request: NextRequest) => {
 // PUT /api/diagnostics/lab/reference-ranges/:id - Update a reference range
 export const _PUT = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     const session = await getSession();
@@ -286,12 +285,11 @@ export const _PUT = async (
       if (
         (updatedValueLow === null && updatedValueHigh === null && !updatedTextValue) ||;
         (updatedTextValue && (updatedValueLow !== null || updatedValueHigh !== null));
-      ) {
+      ) 
         return NextResponse.json(
           { error: "Either numeric range values or text value must be provided, but not both" },
           { status: 400 }
         );
-      }
     }
 
     // Check for overlapping ranges if age or gender criteria are being updated
@@ -476,7 +474,7 @@ export const _PUT = async (
 // DELETE /api/diagnostics/lab/reference-ranges/:id - Delete a reference range
 export const DELETE = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     const session = await getSession();

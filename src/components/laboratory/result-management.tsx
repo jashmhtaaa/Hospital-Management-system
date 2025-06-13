@@ -1,17 +1,18 @@
-import React, { useState, useEffect, useCallback } from "react";
 import {
-  Card,
-  Table,
   Button,
+  Card,
+  Checkbox,
+  Form,
   Input,
+  Modal,
   Select,
   Spin,
-  message,
-  Modal,
-  Form,
+  Table,
   Tag,
-  Checkbox,
+  message,
 } from "antd"; // FIX: Import Checkbox
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
   PlusOutlined,
   SearchOutlined,
   CheckOutlined,
@@ -122,7 +123,7 @@ const ResultManagement: React.FC = () => {
 
       const response = await fetch(url);
       if (!response.ok) {
-        let errorMessage = "Failed to fetch results";
+        const errorMessage = "Failed to fetch results";
         try {
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
@@ -164,7 +165,7 @@ const ResultManagement: React.FC = () => {
     try {
       const response = await fetch("/api/laboratory/orders");
       if (!response.ok) {
-        let errorMessage = "Failed to fetch orders";
+        const errorMessage = "Failed to fetch orders";
         try {
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
@@ -253,7 +254,7 @@ const ResultManagement: React.FC = () => {
   // Handle updating a result
   const handleUpdateResult = async (
     values: UpdateResultValues;
-  ): Promise<void> => {
+  ): Promise<void> => 
     if (!selectedResult) return;
     try {
       const response = await fetch("/api/laboratory/results", {
@@ -264,12 +265,11 @@ const ResultManagement: React.FC = () => {
         body: JSON.stringify({
           id: selectedResult.id;
           ...values,
-        }),
-      });
+        }),);
 
       if (!response.ok) {
         // FIX: Type the error response
-        let errorMessage = "Failed to update result";
+        const errorMessage = "Failed to update result";
         try {
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
@@ -311,7 +311,7 @@ const ResultManagement: React.FC = () => {
 
       if (!response.ok) {
         // FIX: Type the error response
-        let errorMessage = "Failed to create result";
+        const errorMessage = "Failed to create result";
         try {
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
@@ -350,7 +350,7 @@ const ResultManagement: React.FC = () => {
 
       if (!response.ok) {
         // FIX: Type the error response
-        let errorMessage = "Failed to verify result";
+        const errorMessage = "Failed to verify result";
         try {
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;

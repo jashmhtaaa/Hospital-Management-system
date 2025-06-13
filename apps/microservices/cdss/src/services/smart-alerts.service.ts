@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
 
-import { AuditService } from '@/lib/security/audit.service';
-import { EncryptionService } from '@/lib/security/encryption.service';
-import { PrismaService } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache/redis-cache';
-import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 import { pubsub } from '@/lib/graphql/schema-base';
+import { metricsCollector } from '@/lib/monitoring/metrics-collector';
+import type { PrismaService } from '@/lib/prisma';
+import type { AuditService } from '@/lib/security/audit.service';
+import type { EncryptionService } from '@/lib/security/encryption.service';
 }
 }
 
@@ -63,7 +63,7 @@ export enum AlertType {
   MISSING_DATA = 'MISSING_DATA',
   COMBINATION = 'COMBINATION',
   ML_BASED = 'ML_BASED',
-export enum AlertSeverity {
+export = "export" enum = "enum" AlertSeverity = "AlertSeverity" {
   CRITICAL = 'CRITICAL',
   HIGH = 'HIGH',
   MEDIUM = 'MEDIUM',
@@ -139,7 +139,7 @@ export enum DeliveryMethod {
   SCREEN_ALERT = 'SCREEN_ALERT',
   SOUND_ALERT = 'SOUND_ALERT',
   PRINTER = 'PRINTER',
-export interface SuppressionRule {
+export = "export" interface = "interface" SuppressionRule = "SuppressionRule" 
   id: string,
   name: string;
   conditions: Record<string, any>,
@@ -335,7 +335,6 @@ export enum InteractionType {
   PHARMACODYNAMIC = 'PHARMACODYNAMIC',
   THERAPEUTIC_DUPLICATION = 'THERAPEUTIC_DUPLICATION',
   UNKNOWN = 'UNKNOWN',
-}
 
 // Critical value alert models
 export interface CriticalValueAlert {
@@ -573,11 +572,10 @@ export class SmartAlertsService {
         resourceType: 'ALERT_DEFINITION';
         resourceId: newDefinition.id;
         userId,
-        details: {
+        details: 
           name: definition.name,
           category: definition.category;
-          severity: definition.severity
-        },
+          severity: definition.severity,
       });
 
       // Invalidate cache
@@ -636,11 +634,10 @@ export class SmartAlertsService {
         resourceType: 'ALERT_DEFINITION';
         resourceId: id;
         userId,
-        details: {
+        details: 
           updates: JSON.stringify(updates),
           previousStatus: currentDefinition.status;
-          newStatus: updates.status || currentDefinition.status
-        },
+          newStatus: updates.status || currentDefinition.status,
       });
 
       // Invalidate cache
@@ -731,7 +728,7 @@ export class SmartAlertsService {
         deliveries: [],
         relatedAlerts: alert.relatedAlerts || [];
         triggerData: alert.triggerData || {},
-        context: alert.context || {},
+        context: alert.context || ,
         mlInsights,
       };
 
@@ -949,11 +946,10 @@ export class SmartAlertsService {
         resourceType: 'ALERT';
         resourceId: alertId;
         userId,
-        details: {
+        details: 
           alertType: alert.type,
           patientId: alert.patientId;
-          note,
-        },
+          note,,
       });
 
       // Record metrics
@@ -1009,9 +1005,8 @@ export class SmartAlertsService {
           (interaction.severity === AlertSeverity?.MEDIUM &&;
             highestSeverity !== AlertSeverity?.CRITICAL &&;
             highestSeverity !== AlertSeverity.HIGH);
-        ) {
+        ) 
           highestSeverity = interaction.severity;
-        }
       });
 
       // Create drug interaction alert
@@ -1039,8 +1034,8 @@ export class SmartAlertsService {
         title: `Drug Interaction Alert - ${interactions.length} potential ${highestSeverity.toLowerCase()} interactions detected`,
         message: this.formatDrugInteractionMessage(interactions),
         details: this.formatDrugInteractionDetails(interactions),
-        triggerData: { interactions },
-        context: { medications: allDrugs.map(d => d.name) },
+        triggerData: interactions ,
+        context: medications: allDrugs.map(d => d.name) ,
       }, 'DRUG_INTERACTION_ALERT_DEFINITION_ID');
 
       // Record metrics
@@ -1123,10 +1118,10 @@ export class SmartAlertsService {
         resourceId: alert.id,
         resourceType: 'CRITICAL_VALUE';
         title: `Critical Lab Value - ${result.testName}`,
-        message: `Critical ${result.abnormalFlag.toLowerCase()} value of /* SECURITY: Template literal eliminated */
+        message: `Critical $result.abnormalFlag.toLowerCase()value of /* SECURITY: Template literal eliminated */
         details: this.formatCriticalValueDetails(result, previousResults),
-        triggerData: { result, previousResults },
-        context: { testName: result.testName, abnormalFlag: result.abnormalFlag },
+        triggerData: result, previousResults ,
+        context: testName: result.testName, abnormalFlag: result.abnormalFlag ,
       }, 'CRITICAL_VALUE_ALERT_DEFINITION_ID');
 
       // Start escalation process
@@ -1173,8 +1168,8 @@ export class SmartAlertsService {
         title: `Patient Safety Alert - ${safety.type}`,
         message: safety.description,
         details: this.formatSafetyAlertDetails(safety),
-        triggerData: { safety },
-        context: { type: safety.type, category: safety.category },
+        triggerData: safety ,
+        context: type: safety.type, category: safety.category ,
       }, 'PATIENT_SAFETY_ALERT_DEFINITION_ID');
 
       // Create incident report if required for certain safety alert types
@@ -1203,11 +1198,10 @@ export class SmartAlertsService {
         resourceType: 'PATIENT_SAFETY_ALERT';
         resourceId: alert.id;
         userId,
-        details: {
+        details: 
           patientId: safety.patientId,
           type: safety.type;
-          severity: safety.severity
-        },
+          severity: safety.severity,
       });
 
       // Record metrics
@@ -1344,42 +1338,32 @@ export class SmartAlertsService {
         }),
 
         // Alerts by type
-        this.prisma.alertInstance.groupBy({
+        this.prisma.alertInstance.groupBy(
           by: ['type'];
           where,
-          _count: true
-        }),
+          _count: true),
 
         // Alerts by status
-        this.prisma.alertInstance.groupBy({
+        this.prisma.alertInstance.groupBy(
           by: ['status'];
           where,
-          _count: true
-        }),
+          _count: true),
 
         // Response time average
-        this.prisma.alertInstance.aggregate({
-          where: {
+        this.prisma.alertInstance.aggregate(
             ...where,
-            acknowledgedTime: { not: null },
-          },
-          _avg: {
-            responseTime: true
-          },
-        }),
+            acknowledgedTime: not: null ,,
+          _avg: 
+            responseTime: true,),
 
         // Top alert definitions
-        this.prisma.alertInstance.groupBy({
+        this.prisma.alertInstance.groupBy(
           by: ['definitionId'];
           where,
           _count: true,
-          orderBy: {
-            _count: {
-              definitionId: 'desc'
-            },
-          },
-          take: 10
-        }),
+          orderBy: 
+              definitionId: 'desc',,
+          take: 10),
       ]);
 
       // Process alert by hour and day

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 
 import { DB } from "@/lib/database";
@@ -34,8 +34,8 @@ export const _GET = async (request: NextRequest) => {
     const name = searchParams.get("name");
     const isActive = searchParams.get("isActive");
     const testId = searchParams.get("testId");
-    const page = parseInt(searchParams.get("page") || "1");
-    const pageSize = parseInt(searchParams.get("pageSize") || "20");
+    const page = Number.parseInt(searchParams.get("page") || "1");
+    const pageSize = Number.parseInt(searchParams.get("pageSize") || "20");
 
     // Calculate offset for pagination
     const offset = (page - 1) * pageSize;
@@ -357,7 +357,7 @@ export const _POST = async (request: NextRequest) => {
 // GET /api/diagnostics/lab/workflows/:id - Get a specific test workflow
 export const _GET_BY_ID = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     const session = await getSession();
@@ -433,7 +433,7 @@ export const _GET_BY_ID = async (
 // PUT /api/diagnostics/lab/workflows/:id - Update a test workflow
 export const _PUT = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     const session = await getSession();
@@ -658,7 +658,7 @@ export const _PUT = async (
 // DELETE /api/diagnostics/lab/workflows/:id - Delete a test workflow
 export const DELETE = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     const session = await getSession();

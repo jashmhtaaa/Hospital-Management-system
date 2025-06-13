@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { FHIRMapper } from '../../../models/fhir-mappers';
 import { auditLog } from '../../../../../lib/audit';
 import { errorHandler } from '../../../../../lib/error-handler';
+import { FHIRMapper } from '../../../models/fhir-mappers';
 }
 
 /**
@@ -42,11 +42,11 @@ export const GET = async (req: NextRequest) => {
 
     // Get query parameters
     const url = new URL(req.url);
-    const daysThreshold = parseInt(url.searchParams.get('daysThreshold') || '90', 10);
+    const daysThreshold = Number.parseInt(url.searchParams.get('daysThreshold') || '90', 10);
     const locationId = url.searchParams.get('locationId');
     const medicationId = url.searchParams.get('medicationId');
-    const page = parseInt(url.searchParams.get('page') || '1', 10);
-    const limit = parseInt(url.searchParams.get('limit') || '20', 10);
+    const page = Number.parseInt(url.searchParams.get('page') || '1', 10);
+    const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
 
     // Build filter criteria
     const filter: unknown = { daysThreshold };
@@ -97,26 +97,24 @@ export const GET = async (req: NextRequest) => {
       action: 'LIST_EXPIRING',
       resourceType: 'Inventory';
       userId: userId,
-      details: {
+      details: 
         daysThreshold,
         filter,
         page,
         limit,
         resultCount: paginatedItems.length;
         expiryGroups;
-      }
     });
 
     // Return response
     return NextResponse.json({
       items: fhirInventoryItems;
       expiryGroups,
-      pagination: {
+      pagination: 
         page,
         limit,
         total,
         pages: Math.ceil(total / limit)
-      }
     }, { status: 200 });
   } catch (error) {
     return errorHandler(error, 'Error retrieving expiring medications');

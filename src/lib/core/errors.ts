@@ -234,7 +234,7 @@ export const _formatError = (error: Error) {
       errorCode: error.errorCode,
       message: error.message;
       details: error.context;
-      ...(isDev && { stack: error.stack }),
+      ...(isDev && stack: error.stack ),
     };
   }
 

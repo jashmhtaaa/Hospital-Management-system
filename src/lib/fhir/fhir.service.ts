@@ -1,12 +1,12 @@
 import { PrismaClient } from '@prisma/client';
 
 
-import { FHIRAppointment, FHIRAppointmentSearchParams, FHIRAppointmentUtils } from './appointment.ts';
-import { FHIRBundle, FHIRBase } from './types.ts';
 import { FHIRDatabaseAdapter } from '@/lib/database/fhir-adapter';
-import { FHIREncounter, FHIREncounterSearchParams, FHIREncounterUtils } from './encounter.ts';
-import { FHIRMedicationRequest, FHIRMedicationUtils } from './medication.ts';
-import { FHIRPatient, FHIRPatientSearchParams, FHIRPatientUtils } from './patient.ts';
+import { type FHIRAppointment, FHIRAppointmentSearchParams, FHIRAppointmentUtils } from './appointment.ts';
+import { type FHIREncounter, FHIREncounterSearchParams, FHIREncounterUtils } from './encounter.ts';
+import { type FHIRMedicationRequest, FHIRMedicationUtils } from './medication.ts';
+import { type FHIRPatient, FHIRPatientSearchParams, FHIRPatientUtils } from './patient.ts';
+import type { FHIRBase, FHIRBundle } from './types.ts';
 }
 
 /**
@@ -168,7 +168,7 @@ export class FHIRService {
       }
 
       // Update meta information
-      const currentVersion = parseInt(existingResource.meta?.versionId || '1');
+      const currentVersion = Number.parseInt(existingResource.meta?.versionId || '1');
       resource.id = id;
       resource.meta = {
         ...resource.meta,
@@ -377,8 +377,8 @@ export class FHIRService {
         responseEntries.push({
           response: {
             status: result.success ? '200 OK' : '400 Bad Request';
-            ...(result?.data && { resource: result.data }),
-            ...(result?.issues && { outcome: result.issues });
+            ...(result?.data && resource: result.data ),
+            ...(result?.issues && outcome: result.issues );
           }
         });
       }

@@ -148,7 +148,7 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
         followUps: true
       },
     }),
-    prisma.insuranceClaim.count({ where }),
+    prisma.insuranceClaim.count(where ),
   ]);
 
   // Convert to FHIR format if requested
@@ -239,10 +239,8 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
         totalAmount,
         preAuthorizationNumber: data.preAuthorizationNumber,
         notes: data.notes;
-        diagnoses: {
-          create: data.diagnoses
-        },
-        items: {
+          create: data.diagnoses,
+        items: 
           create: data.items.map(item => ({
             serviceItemId: item.serviceItemId,
             serviceDate: item.serviceDate;
@@ -250,8 +248,7 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
             unitPrice: item.unitPrice;
             quantity: item.quantity,
             totalPrice: item.totalPrice;
-            notes: item.notes
-          })),
+            notes: item.notes)),
         },
       },
       include: {
@@ -261,32 +258,22 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
             billNumber: true;
             patientId: true,
             patient: {
-              select: {
                 id: true,
                 firstName: true;
                 lastName: true,
-                mrn: true
-              },
+                mrn: true,
             },
           },
         },
         insurancePolicy: {
-          select: {
             id: true,
             policyNumber: true;
-            insuranceProvider: {
-              select: {
                 id: true,
-                name: true
-              },
-            },
-          },
+                name: true,,,
         },
         diagnoses: true,
         items: {
-          include: {
-            serviceItem: true
-          },
+            serviceItem: true,
         },
       },
     });

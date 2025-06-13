@@ -1,5 +1,5 @@
+import { Activity, AlertTriangle, Calendar, Clock } from "lucide-react";
 import React, { useState, useEffect } from "react";
-import { Calendar, Clock, Activity, AlertTriangle } from "lucide-react";
 
 
 import { Badge } from "@/components/ui/badge";
@@ -54,10 +54,9 @@ export default const _OTDashboardStats = () {
           pendingChecklists: 4
         }),
         setLoading(false);
-      } catch (error) { // FIX: Added error parameter to catch block
+      } catch (error) 
 
         setLoading(false)
-      }
     };
 
     fetchStats();

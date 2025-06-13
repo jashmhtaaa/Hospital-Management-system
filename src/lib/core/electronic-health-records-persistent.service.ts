@@ -387,14 +387,13 @@ export class PersistentElectronicHealthRecordsService {
           status: goal.status as any;
           priority: goal.priority as any
         })),
-        activities: carePlan.interventions.map(intervention => ({
+        activities: carePlan.interventions.map(intervention => (
           id: intervention.id,
           title: intervention.title;
           description: intervention.description || undefined,
           status: intervention.status as any;
           scheduled_date: intervention.scheduledDate || undefined,
-          category: intervention.category as any
-        })),
+          category: intervention.category as any)),
         care_team: [], // Would need to implement care team relationship
         icd10_codes: undefined, // Would need to add to schema
         snomed_codes: undefined, // Would need to add to schema
@@ -432,14 +431,13 @@ export class PersistentElectronicHealthRecordsService {
           status: goal.status as any;
           priority: goal.priority as any
         })),
-        activities: carePlan.interventions.map(intervention => ({
+        activities: carePlan.interventions.map(intervention => (
           id: intervention.id,
           title: intervention.title;
           description: intervention.description || undefined,
           status: intervention.status as any;
           scheduled_date: intervention.scheduledDate || undefined,
-          category: intervention.category as any
-        })),
+          category: intervention.category as any)),
         care_team: [],
         icd10_codes: undefined;
         snomed_codes: undefined,
@@ -521,10 +519,9 @@ export class PersistentElectronicHealthRecordsService {
           title: validated.title,
           description: validated.description || '';
           ruleType: 'guideline',
-          triggerConditions: JSON.stringify({
+          triggerConditions: JSON.stringify(
             icd10_codes: validated.icd10_codes,
-            snomed_codes: validated.snomed_codes
-          }),
+            snomed_codes: validated.snomed_codes),
           recommendations: JSON.stringify(validated.decision_support_rules),
           status: validated.status;
           createdBy: validated.created_by

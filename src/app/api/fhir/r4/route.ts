@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { FHIRBundle } from '@/lib/fhir/types';
 import { fhirService } from '@/lib/fhir/fhir.service';
+import type { FHIRBundle } from '@/lib/fhir/types';
 }
 
 /**
@@ -102,148 +102,63 @@ export const GET = async () => {
       date: new Date().toISOString(),
       publisher: 'Hospital Management System',
       kind: 'instance';
-      software: {
         name: 'HMS FHIR Server',
-        version: '1.0.0'
-      },
-      implementation: {
+        version: '1.0.0',
+      implementation: 
         description: 'Hospital Management System FHIR R4 Server',
-        url: '/fhir/r4'
-      },
+        url: '/fhir/r4',
       fhirVersion: '4.0.1',
       format: ['application/fhir+json', 'application/json'],
-      rest: [{
+      rest: [
         mode: 'server',
-        security: {
+        security: 
           cors: true,
-          service: [{
+          service: [
             coding: [{
               system: 'https://terminology.hl7.org/CodeSystem/restful-security-service',
               code: 'OAuth';
               display: 'OAuth'
-            }]
-          }]
-        },
+            }]],
         resource: [
-          {
             type: 'Patient',
             profile: 'https://hl7.org/fhir/StructureDefinition/Patient',
-            interaction: [
-              { code: 'read' },
-              { code: 'create' },
-              { code: 'update' },
-              { code: 'delete' },
-              { code: 'search-type' }
+            interaction: [code: 'read' ,code: 'create' ,code: 'update' ,code: 'delete' ,code: 'search-type' 
             ],
-            searchParam: [
-              { name: 'identifier', type: 'token' },
-              { name: 'name', type: 'string' },
-              { name: 'family', type: 'string' },
-              { name: 'given', type: 'string' },
-              { name: 'phone', type: 'token' },
-              { name: 'email', type: 'token' },
-              { name: 'birthdate', type: 'date' },
-              { name: 'gender', type: 'token' },
-              { name: 'active', type: 'token' }
-            ]
-          },
-          {
+            searchParam: [name: 'identifier', type: 'token' ,name: 'name', type: 'string' ,name: 'family', type: 'string' ,name: 'given', type: 'string' ,name: 'phone', type: 'token' ,name: 'email', type: 'token' ,name: 'birthdate', type: 'date' ,name: 'gender', type: 'token' ,name: 'active', type: 'token' 
+            ],
             type: 'Appointment',
             profile: 'https://hl7.org/fhir/StructureDefinition/Appointment',
-            interaction: [
-              { code: 'read' },
-              { code: 'create' },
-              { code: 'update' },
-              { code: 'delete' },
-              { code: 'search-type' }
+            interaction: [code: 'read' ,code: 'create' ,code: 'update' ,code: 'delete' ,code: 'search-type' 
             ],
-            searchParam: [
-              { name: 'patient', type: 'reference' },
-              { name: 'practitioner', type: 'reference' },
-              { name: 'date', type: 'date' },
-              { name: 'status', type: 'token' },
-              { name: 'service-type', type: 'token' }
-            ]
-          },
-          {
+            searchParam: [name: 'patient', type: 'reference' ,name: 'practitioner', type: 'reference' ,name: 'date', type: 'date' ,name: 'status', type: 'token' ,name: 'service-type', type: 'token' 
+            ],
             type: 'Encounter',
             profile: 'https://hl7.org/fhir/StructureDefinition/Encounter',
-            interaction: [
-              { code: 'read' },
-              { code: 'create' },
-              { code: 'update' },
-              { code: 'delete' },
-              { code: 'search-type' }
+            interaction: [code: 'read' ,code: 'create' ,code: 'update' ,code: 'delete' ,code: 'search-type' 
             ],
-            searchParam: [
-              { name: 'patient', type: 'reference' },
-              { name: 'practitioner', type: 'reference' },
-              { name: 'date', type: 'date' },
-              { name: 'status', type: 'token' },
-              { name: 'class', type: 'token' }
-            ]
-          },
-          {
+            searchParam: [name: 'patient', type: 'reference' ,name: 'practitioner', type: 'reference' ,name: 'date', type: 'date' ,name: 'status', type: 'token' ,name: 'class', type: 'token' 
+            ],
             type: 'MedicationRequest',
             profile: 'https://hl7.org/fhir/StructureDefinition/MedicationRequest',
-            interaction: [
-              { code: 'read' },
-              { code: 'create' },
-              { code: 'update' },
-              { code: 'delete' },
-              { code: 'search-type' }
+            interaction: [code: 'read' ,code: 'create' ,code: 'update' ,code: 'delete' ,code: 'search-type' 
             ],
-            searchParam: [
-              { name: 'patient', type: 'reference' },
-              { name: 'requester', type: 'reference' },
-              { name: 'status', type: 'token' },
-              { name: 'intent', type: 'token' },
-              { name: 'medication', type: 'reference' }
-            ]
-          },
-          {
+            searchParam: [name: 'patient', type: 'reference' ,name: 'requester', type: 'reference' ,name: 'status', type: 'token' ,name: 'intent', type: 'token' ,name: 'medication', type: 'reference' 
+            ],
             type: 'Observation',
             profile: 'https://hl7.org/fhir/StructureDefinition/Observation',
-            interaction: [
-              { code: 'read' },
-              { code: 'create' },
-              { code: 'update' },
-              { code: 'delete' },
-              { code: 'search-type' }
+            interaction: [code: 'read' ,code: 'create' ,code: 'update' ,code: 'delete' ,code: 'search-type' 
             ],
-            searchParam: [
-              { name: 'patient', type: 'reference' },
-              { name: 'category', type: 'token' },
-              { name: 'code', type: 'token' },
-              { name: 'date', type: 'date' },
-              { name: 'status', type: 'token' }
-            ]
-          },
-          {
+            searchParam: [name: 'patient', type: 'reference' ,name: 'category', type: 'token' ,name: 'code', type: 'token' ,name: 'date', type: 'date' ,name: 'status', type: 'token' 
+            ],
             type: 'DiagnosticReport',
             profile: 'https://hl7.org/fhir/StructureDefinition/DiagnosticReport',
-            interaction: [
-              { code: 'read' },
-              { code: 'create' },
-              { code: 'update' },
-              { code: 'delete' },
-              { code: 'search-type' }
+            interaction: [code: 'read' ,code: 'create' ,code: 'update' ,code: 'delete' ,code: 'search-type' 
             ],
-            searchParam: [
-              { name: 'patient', type: 'reference' },
-              { name: 'category', type: 'token' },
-              { name: 'code', type: 'token' },
-              { name: 'date', type: 'date' },
-              { name: 'status', type: 'token' }
+            searchParam: [name: 'patient', type: 'reference' ,name: 'category', type: 'token' ,name: 'code', type: 'token' ,name: 'date', type: 'date' ,name: 'status', type: 'token' 
             ]
-          }
         ],
-        interaction: [
-          { code: 'batch' },
-          { code: 'transaction' },
-          { code: 'search-system' }
-        ]
-      }]
+        interaction: [code: 'batch' ,code: 'transaction' ,code: 'search-system' 
+        ]]
     }
 
     return NextResponse.json(capabilityStatement, {

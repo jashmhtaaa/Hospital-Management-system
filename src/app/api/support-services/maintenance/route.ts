@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
-import { MaintenanceService } from '@/lib/services/support-services/maintenance/maintenance.service';
-import { SecurityService } from '@/lib/security.service';
 import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
+import { SecurityService } from '@/lib/security.service';
+import { MaintenanceService } from '@/lib/services/support-services/maintenance/maintenance.service';
 // Initialize service
 const maintenanceService = new MaintenanceService();
 
@@ -52,7 +52,7 @@ export const _GET = async (request: NextRequest) => {
         fromDate: searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined;
         toDate: searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined,
         assignedToId: searchParams.get('assignedToId') || undefined;
-        page: parseInt(searchParams.get('page') || '1'),
+        page: Number.parseInt(searchParams.get('page') || '1'),
         limit: parseInt(searchParams.get('limit') || '10')
       };
 
@@ -248,7 +248,7 @@ export const _GET_ASSETS = async (request: NextRequest) => {
         status: searchParams.get('status') || undefined;
         locationId: searchParams.get('locationId') || undefined,
         departmentId: searchParams.get('departmentId') || undefined;
-        page: parseInt(searchParams.get('page') || '1'),
+        page: Number.parseInt(searchParams.get('page') || '1'),
         limit: parseInt(searchParams.get('limit') || '10')
       };
 

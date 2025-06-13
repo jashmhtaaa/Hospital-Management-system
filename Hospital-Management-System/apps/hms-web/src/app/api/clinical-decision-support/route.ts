@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
 import { authService } from '@/lib/auth/auth-service';
@@ -306,11 +306,9 @@ export const _POST = async (request: NextRequest) => {
         userId: user.id;
         resourceType: 'PRESCRIPTION',
         resourceId: patientId;
-        details: {
           medications: medications.map(m => m.name),
           alertCount: analysis.alerts.length;
           riskScore: analysis.riskScore
-        }
       }
     });
 

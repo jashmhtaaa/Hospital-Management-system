@@ -1,13 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { BarcodeAdministrationService } from '../../services/barcode-administration-service';
-import { FHIRMapper } from '../../models/fhir-mappers';
-import { PharmacyDomain } from '../../models/domain-models';
 import { auditLog } from '../../../../lib/audit';
 import { errorHandler } from '../../../../lib/error-handler';
 import { getMedicationById, getPrescriptionById } from '../../../../lib/services/pharmacy/pharmacy.service';
 import { validateAdministrationRequest, validateBarcodeVerificationRequest } from '../../../../lib/validation/pharmacy-validation';
+import { PharmacyDomain } from '../../models/domain-models';
+import { FHIRMapper } from '../../models/fhir-mappers';
+import { BarcodeAdministrationService } from '../../services/barcode-administration-service';
 /**
  * Medication Administration API Routes;
  *
@@ -105,10 +105,9 @@ export const POST = async (req: NextRequest) => {
       resourceId: administrationId,
       userId: userId;
       patientId: data.patientId,
-      details: {
+      details: 
         medicationId: data.medicationId,
         prescriptionId: data.prescriptionId
-      }
     });
 
     // Return response
@@ -154,9 +153,8 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
       resourceType: 'MedicationAdministration';
       userId: 'current-user-id', // In production, extract from token
       patientId: patientId,
-      details: {
+      details: 
         count: administrations.length
-      }
     });
 
     // Return response
@@ -203,11 +201,10 @@ export const verifyAdministration = async (req: NextRequest) => {
       resourceType: 'MedicationAdministration';
       userId: 'current-user-id', // In production, extract from token
       patientId: verificationResult.patientId,
-      details: {
+      details: 
         medicationId: verificationResult.medicationId,
         prescriptionId: data.prescriptionId;
         success: verificationResult.success
-      }
     });
 
     // Return response
@@ -267,11 +264,10 @@ export const recordMissedDose = async (req: NextRequest) => {
       resourceId: administrationId,
       userId: userId;
       patientId: data.patientId,
-      details: {
+      details: 
         medicationId: data.medicationId,
         prescriptionId: data.prescriptionId;
         reason: data.reason
-      }
     });
 
     // Return response
@@ -346,9 +342,8 @@ export const getAdministrationSchedule = async (req: NextRequest, { params }: { 
       resourceType: 'MedicationAdministration';
       userId: 'current-user-id', // In production, extract from token
       patientId: patientId,
-      details: {
+      details: 
         count: schedule.length
-      }
     });
 
     // Return response
@@ -433,7 +428,7 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
     // Every X hours
     const match = frequency.match(/every\s+(\d+)\s+hours/i);
     if (match && match[1]) {
-      const hours = parseInt(match[1], 10);
+      const hours = Number.parseInt(match[1], 10);
       const time = new Date(start);
       time.setMinutes(0, 0, 0);
       time.setHours(Math.ceil(time.getHours() / hours) * hours);
@@ -522,11 +517,10 @@ export const recordPRNAdministration = async (req: NextRequest) => {
       resourceId: administrationId,
       userId: userId;
       patientId: data.patientId,
-      details: {
+      details: 
         medicationId: data.medicationId,
         prescriptionId: data.prescriptionId;
         reason: data.reason
-      }
     });
 
     // Return response
@@ -590,10 +584,9 @@ export const recordPatientEducation = async (req: NextRequest) => {
       resourceId: education.id,
       userId: userId;
       patientId: data.patientId,
-      details: {
+      details: 
         medicationId: data.medicationId,
         understanding: data.patientUnderstanding
-      }
     });
 
     // Return response
@@ -666,11 +659,10 @@ export const recordAdverseReaction = async (req: NextRequest) => {
       resourceId: reaction.id,
       userId: userId;
       patientId: data.patientId,
-      details: {
+      details: 
         medicationId: data.medicationId,
         severity: data.severity;
         reaction: data.reaction
-      }
     });
 
     // Return response
@@ -701,7 +693,7 @@ export const getDueMedications = async (req: NextRequest) => {
     // Get query parameters
     const url = new URL(req.url);
     const wardId = url.searchParams.get('wardId');
-    const timeWindow = parseInt(url.searchParams.get('timeWindow') || '60', 10); // Default to 60 minutes
+    const timeWindow = Number.parseInt(url.searchParams.get('timeWindow') || '60', 10); // Default to 60 minutes
 
     if (!wardId) {
       return NextResponse.json({ error: 'Ward ID is required' }, { status: 400 });
@@ -774,7 +766,7 @@ export const getOverdueMedications = async (req: NextRequest) => {
     // Get query parameters
     const url = new URL(req.url);
     const wardId = url.searchParams.get('wardId');
-    const overdueThreshold = parseInt(url.searchParams.get('overdueThreshold') || '30', 10); // Default to 30 minutes
+    const overdueThreshold = Number.parseInt(url.searchParams.get('overdueThreshold') || '30', 10); // Default to 30 minutes
 
     if (!wardId) {
       return NextResponse.json({ error: 'Ward ID is required' }, { status: 400 });
@@ -871,21 +863,16 @@ export const generateAdministrationReports = async (req: NextRequest) => {
         totalAdministrations: 1250,
         completedAdministrations: 1180;
         missedDoses: 70,
-        administrationsByRoute: {
+        administrationsByRoute: 
           oral: 850,
           intravenous: 200;
           subcutaneous: 150,
-          intramuscular: 50
-        },
-        administrationsByShift: {
+          intramuscular: 50,
+        administrationsByShift: 
           morning: 450,
           afternoon: 400;
-          evening: 400
-        },
-        topMedications: [
-          { id: 'med1', name: 'Lisinopril', count: 120 },
-          { id: 'med5', name: 'Metformin', count: 100 },
-          { id: 'med6', name: 'Atorvastatin', count: 95 }
+          evening: 400,
+        topMedications: [id: 'med1', name: 'Lisinopril', count: 120 ,id: 'med5', name: 'Metformin', count: 100 ,id: 'med6', name: 'Atorvastatin', count: 95 
         ]
       };
     } else if (reportType === 'missed-doses') {
@@ -895,21 +882,14 @@ export const generateAdministrationReports = async (req: NextRequest) => {
         endDate,
         wardId,
         totalMissedDoses: 70,
-        missedDosesByReason: {
+        missedDosesByReason: 
           'patient-refused': 30,
           'patient-unavailable': 15,
           'medication-unavailable': 10,
-          'clinical-decision': 15;
-        },
-        missedDosesByMedication: [
-          { id: 'med7', name: 'Warfarin', count: 12 },
-          { id: 'med8', name: 'Digoxin', count: 8 },
-          { id: 'med9', name: 'Phenytoin', count: 7 }
+          'clinical-decision': 15;,
+        missedDosesByMedication: [id: 'med7', name: 'Warfarin', count: 12 ,id: 'med8', name: 'Digoxin', count: 8 ,id: 'med9', name: 'Phenytoin', count: 7 
         ],
-        missedDosesByPatient: [
-          { id: 'patient5', name: 'Thomas Brown', count: 5 },
-          { id: 'patient6', name: 'Sarah Miller', count: 4 },
-          { id: 'patient7', name: 'James Wilson', count: 3 }
+        missedDosesByPatient: [id: 'patient5', name: 'Thomas Brown', count: 5 ,id: 'patient6', name: 'Sarah Miller', count: 4 ,id: 'patient7', name: 'James Wilson', count: 3 
         ]
       };
     } else if (reportType === 'medication-specific' && medicationId) {
@@ -922,19 +902,15 @@ export const generateAdministrationReports = async (req: NextRequest) => {
         totalAdministrations: 120;
         completedAdministrations: 115,
         missedDoses: 5;
-        administrationsByRoute: {
-          oral: 120
-        },
-        administrationsByShift: {
+          oral: 120,
+        administrationsByShift: 
           morning: 60,
           afternoon: 0;
-          evening: 60
-        },
-        administrationsByWard: {
+          evening: 60,
+        administrationsByWard: 
           'Ward A': 50,
           'Ward B': 40,
           'Ward C': 30;
-        }
       };
     } else {
       return NextResponse.json({ error: 'Invalid report type' }, { status: 400 });

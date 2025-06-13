@@ -1,7 +1,7 @@
 
 import { AuditLogger } from '@/lib/audit';
-import { CampaignAnalytics } from '@/lib/models/marketing';
-import { ValidationError, DatabaseError, NotFoundError } from '@/lib/errors';
+import { DatabaseError, NotFoundError, ValidationError } from '@/lib/errors';
+import type { CampaignAnalytics } from '@/lib/models/marketing';
 import { prisma } from '@/lib/prisma';
 /**
  * Service for managing marketing analytics;
@@ -61,11 +61,10 @@ export class AnalyticsService {
         action: existingAnalytics ? 'analytics.update' : 'analytics.create',
         resourceId: campaignId;
         userId,
-        details: {
+        details: 
           analyticsId: analytics.id,
           date: data.date.toISOString().split('T')[0];
           metricKeys: Object.keys(data.metrics)
-        }
       });
 
       return analytics;

@@ -1,5 +1,5 @@
 
-import { Ambulance, AmbulanceCrew, AmbulanceTrip, AmbulanceMaintenance } from '@prisma/client';
+import { Ambulance, AmbulanceCrew, AmbulanceMaintenance, type AmbulanceTrip } from '@prisma/client';
 // FHIR-compliant interfaces for Ambulance Management
 
 /**
@@ -264,7 +264,7 @@ export const _toFHIRAmbulance = (ambulance: Ambulance & {
       }
     ],
     status: statusMap[ambulance.status] || 'unknown',
-    type: {
+    {
       coding: [{
         system: 'https://hms.local/fhir/CodeSystem/ambulance-type',
         code: vehicleTypeMap[ambulance.vehicleType]?.code || 'ambulance';
@@ -384,14 +384,14 @@ export const _toFHIRAmbulanceTrip = (trip: AmbulanceTrip & {
           display: 'Ambulance Transport'
         }
       ],
-      text: `${trip.tripType} Ambulance Transport`
+      text: `$trip.tripTypeAmbulance Transport`
     },
     subject: trip.patientId ? {
-      reference: `Patient/${trip.patientId}`,
+      reference: `Patient/$trip.patientId`,
       display: trip.patient?.name || 'Unknown Patient'
     } : undefined,
     requester: {
-      reference: `User/${trip.requestedById}`,
+      reference: `User/$trip.requestedById`,
       display: trip.requestedByUser?.name || 'Unknown Requester'
     },
     performer: performers.length > 0 ? performers : undefined,
@@ -504,13 +504,13 @@ export const _toFHIRAmbulanceMaintenance = (maintenance: AmbulanceMaintenance & 
       text: maintenanceTypeMap[maintenance.maintenanceType]?.display || maintenance.maintenanceType
     },
     focus: {
-      reference: `Device/${maintenance.ambulanceId}`,
-      display: maintenance.ambulance?.registrationNumber ? `Ambulance ${maintenance.ambulance.registrationNumber}` : 'Unknown Ambulance'
+      reference: `Device/$maintenance.ambulanceId`,
+      display: maintenance.ambulance?.registrationNumber ? `Ambulance $maintenance.ambulance.registrationNumber` : 'Unknown Ambulance'
     },
     authoredOn: maintenance.createdAt.toISOString(),
     lastModified: maintenance.updatedAt.toISOString(),
     owner: maintenance.performedById ? {
-      reference: `User/${maintenance.performedById}`,
+      reference: `User/$maintenance.performedById`,
       display: maintenance.performedByUser?.name || 'Unknown User'
     } : undefined,
     description: maintenance.description,

@@ -1,26 +1,27 @@
-import React, { useState, useEffect } from "react";
 import {
-  Card,
-  Table,
   Button,
+  Card,
+  Form,
   Input,
+  Modal,
   Select,
   Spin,
-  message,
-  Modal,
-  Form,
   Switch,
+  Table,
+  message,
 } from "antd";
+import type React from "react";
+import { useEffect, useState } from "react";
   PlusOutlined,
   SearchOutlined,
   ReloadOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
 import type {
-  TableColumnsType,
-  TableProps,
   FormProps,
+  TableColumnsType,
   TablePaginationConfig,
+  TableProps,
 } from "antd";
 import type { FilterValue, SorterResult } from "antd/es/table/interface";
 
@@ -105,7 +106,7 @@ const TestCatalogManagement: React.FC = () => {
     try {
       const response = await fetch("/api/laboratory/categories");
       if (!response.ok) {
-        let errorMessage = "Failed to fetch categories";
+        const errorMessage = "Failed to fetch categories";
         try {
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorData.message || errorMessage;
@@ -163,7 +164,7 @@ const TestCatalogManagement: React.FC = () => {
 
       const response = await fetch(url);
       if (!response.ok) {
-        let errorMessage = "Failed to fetch tests";
+        const errorMessage = "Failed to fetch tests";
         try {
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorData.message || errorMessage;
@@ -193,12 +194,11 @@ const TestCatalogManagement: React.FC = () => {
       setTableParameters((previous) => {
         const newPagination: TablePaginationConfig | undefined =;
           previous.pagination;
-            ? {
+            ? 
                 ...previous.pagination,
                 current: parameters.pagination?.current ?? 1,
                 pageSize: parameters.pagination?.pageSize ?? 10;
                 total: data.totalCount ?? fetchedData.length
-              }
             : undefined; // Keep pagination undefined if it was initially undefined
 
         return {
@@ -245,11 +245,10 @@ const TestCatalogManagement: React.FC = () => {
     const newParameters: TableParameters = {
       ...tableParameters,
       pagination: tableParameters.pagination;
-        ? {
+        ? 
             // Check if pagination exists before spreading
             ...tableParameters.pagination,
             current: 1
-          }
         : undefined, // Keep pagination undefined if it doesn't exist
     };
     setTableParameters(newParameters),
@@ -273,9 +272,8 @@ const TestCatalogManagement: React.FC = () => {
       if (
         values?.processing_time &&
         (processingTimeNumber === undefined || Number.isNaN(processingTimeNumber));
-      ) {
+      ) 
         throw new Error("Invalid processing time entered. Must be a number.");
-      }
 
       const payload: Omit<Test, "id" | "category_name"> = {
         ...values,
@@ -293,7 +291,7 @@ const TestCatalogManagement: React.FC = () => {
       });
 
       if (!response.ok) {
-        let errorMessage = `Failed to add test (status: ${response.status})`;
+        const errorMessage = `Failed to add test (status: ${response.status})`;
         try {
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorData.message || errorMessage;
@@ -440,23 +438,22 @@ const TestCatalogManagement: React.FC = () => {
             <strong>Category:</strong> {test.category_name || "N/A"}
           </p>
           <p>
-            <strong>Description:</strong> {test.description || "N/A"}
+            <strong>Description:</strong> test.description || "N/A"
           </p>
           <p>
-            <strong>Sample Type:</strong> {test.sample_type}
+            <strong>Sample Type:</strong> test.sample_type
           </p>
           <p>
-            <strong>Sample Volume:</strong> {test.sample_volume || "N/A"}
+            <strong>Sample Volume:</strong> test.sample_volume || "N/A"
           </p>
           <p>
-            <strong>Processing Time:</strong>{" "}
-            {test.processing_time === undefined;
+            <strong>Processing Time:</strong>" "test.processing_time === undefined;
               ? "N/A"
-              : `${test.processing_time} minutes`}
+              : `$test.processing_timeminutes`}
           </p>
           <p>
             <strong>Price:</strong>{" "}
-            {test.price === undefined ? "N/A" : `$${test.price.toFixed(2)}`}
+            {test.price === undefined ? "N/A" : `$$test.price.toFixed(2)`}
           </p>
           <p>
             <strong>Status:</strong> {test.is_active ? "Active" : "Inactive"}

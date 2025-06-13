@@ -2,7 +2,7 @@ import React from 'react';
 
 
 import { Badge } from '@/components/ui/badge';
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 interface Patient {
   id: string,
   name: string;

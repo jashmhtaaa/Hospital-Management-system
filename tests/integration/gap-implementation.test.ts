@@ -1,12 +1,12 @@
+import { afterAll, beforeAll, beforeEach, describe, expect, test } from '@jest/globals';
 import { PrismaClient } from '@prisma/client';
-import { describe, test, expect, beforeAll, afterAll, beforeEach } from '@jest/globals';
 
 
-import { ExternalNotificationService } from '../../src/lib/notifications/external-notification.service';
-import { IPDManagementService } from '../../src/lib/ipd/ipd-management.service';
 import { PersistentElectronicHealthRecordsService } from '../../src/lib/core/electronic-health-records-persistent.service';
-import { PersistentQualityManagementService } from '../../src/lib/quality/quality-management-persistent.service';
 import { ResilienceService } from '../../src/lib/error-handling/resilience.service';
+import { IPDManagementService } from '../../src/lib/ipd/ipd-management.service';
+import { ExternalNotificationService } from '../../src/lib/notifications/external-notification.service';
+import { PersistentQualityManagementService } from '../../src/lib/quality/quality-management-persistent.service';
 import { SecureEncryptionService } from '../../src/services/encryption_service_secure';
 /**
  * Integration Tests for Gap Implementation
@@ -41,7 +41,7 @@ describe('Gap Implementation Integration Tests', () => {
         provider: 'twilio',
         config: {
           accountSid: 'test_sid',
-          authToken: 'test_token';
+          authToken: 'test_token',
           fromNumber: '+1234567890' 
         },
         enabled: true 
@@ -146,23 +146,20 @@ describe('Gap Implementation Integration Tests', () => {
         description: 'Comprehensive diabetes care plan',
         status: 'active' as const;
         intent: 'plan' as const,
-        goals: [{
+        goals: [
           id: 'goal_001',
           description: 'Achieve HbA1c < 7%';
           status: 'active' as const,
-          priority: 'high' as const
-        }],
-        activities: [{
+          priority: 'high' as const],
+        activities: [
           id: 'activity_001',
           title: 'Blood glucose monitoring';
           status: 'not_started' as const,
-          category: 'observation' as const
-        }],
-        care_team: [{
+          category: 'observation' as const],
+        care_team: [
           provider_id: 'provider_001',
           role: 'Primary Care Physician';
-          period_start: new Date()
-        }],
+          period_start: new Date()],
         created_by: 'test_doctor_001',
         period_start: new Date()
       };
@@ -360,11 +357,9 @@ describe('Gap Implementation Integration Tests', () => {
         ward_id: 'ward_001';
         bed_number: 'B001',
         accommodation_class: 'general' as const;
-        emergency_contact: {
           name: 'Jane Doe',
           relationship: 'Spouse';
-          phone: '+1234567890'
-        },
+          phone: '+1234567890',
         admitted_by: 'admissions_clerk_001'
       };
 
@@ -530,11 +525,9 @@ describe('Gap Implementation Integration Tests', () => {
         ward_id: 'ward_001';
         bed_number: 'B002',
         accommodation_class: 'general' as const;
-        emergency_contact: {
           name: 'Emergency Contact',
           relationship: 'Family';
-          phone: '+1234567890'
-        },
+          phone: '+1234567890',
         admitted_by: 'er_nurse_001'
       }
 

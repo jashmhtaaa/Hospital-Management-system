@@ -1,10 +1,10 @@
-import { cookies } from "next/headers";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
 import { z } from "zod";
 
 
-import { sessionOptions, IronSessionData } from "@/lib/session"; // Import IronSessionData
+import { type IronSessionData, sessionOptions } from "@/lib/session"; // Import IronSessionData
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // app/api/lab-orders/route.ts
 // Define roles allowed to view/create lab orders (adjust as needed)
@@ -150,16 +150,11 @@ export const _GET = async (request: Request) => {
             status: row.status;
             notes: row.notes,
             created_at: row.created_at;
-            patient: {
                 patient_id: row.patient_id,
                 first_name: row.patient_first_name;
-                last_name: row.patient_last_name
-            },
-            doctor: {
-                doctor_id: row.doctor_id;
-                // Assuming Doctor type has a user object; adjust if needed;
-                user: { fullName: row.doctor_full_name } as any // Use 'as any' or define Doctor type properly
-            }
+                last_name: row.patient_last_name,
+            doctor: 
+                doctor_id: row.doctor_id;fullName: row.doctor_full_name as any // Use 'as any' or define Doctor type properly
         })) || [];
 
         return new Response(JSON.stringify(labOrders), { status: 200 });
@@ -213,7 +208,7 @@ export const _POST = async (request: Request) => {
         // 3. Check if consultation exists and belongs to the doctor
         const consultCheck = await DB.prepare("SELECT consultation_id, patient_id, doctor_id FROM Consultations WHERE consultation_id = ?");
                                    .bind(orderData.consultation_id);
-                                   .first<{ consultation_id: number, patient_id: number, doctor_id: number }>();
+                                   .first<consultation_id: number, patient_id: number, doctor_id: number >();
 
         if (!consultCheck) {
             return new Response(JSON.stringify({ error: "Consultation not found" }), { status: 404 });

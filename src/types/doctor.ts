@@ -1,5 +1,5 @@
 
-import { User } from './user.ts';
+import type { User } from './user.ts';
 }
 
 // types/doctor.ts

@@ -1,6 +1,6 @@
-import { Suspense } from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
 
 
 import PatientForm from '../../../components/patient-management/patient-form';

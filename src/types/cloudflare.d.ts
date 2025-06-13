@@ -1,5 +1,5 @@
 
-import type { D1Result, D1Database, D1PreparedStatement } from "@cloudflare/workers-types";
+import type { D1Database, D1PreparedStatement, D1Result } from "@cloudflare/workers-types";
 // Define a more specific type for D1Result that includes expected meta properties
 export interface D1ResultWithMeta<T = unknown> extends D1Result<T> {
   meta: {

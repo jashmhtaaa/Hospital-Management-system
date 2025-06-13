@@ -1,8 +1,8 @@
 
 import { AuditLogger } from '@/lib/audit';
+import { DatabaseError, NotFoundError, ValidationError } from '@/lib/errors';
 import { ContactSegment, SegmentMember } from '@/lib/models/marketing';
 import { NotificationService } from '@/lib/notifications';
-import { ValidationError, DatabaseError, NotFoundError } from '@/lib/errors';
 import { prisma } from '@/lib/prisma';
 /**
  * Service for managing contact segments and segmentation;
@@ -115,7 +115,7 @@ export class SegmentService {
     search?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ data: ContactSegment[], pagination: { total: number, page: number; limit: number, totalPages: number } }> {
+  }): Promise<{ data: ContactSegment[], pagination: total: number, page: number; limit: number, totalPages: number }> {
     try {
       const {
         isActive,
@@ -164,9 +164,7 @@ export class SegmentService {
         },
         skip: (page - 1) * limit,
         take: limit;
-        orderBy: {
           createdAt: 'desc'
-        }
       });
 
       return {
@@ -208,10 +206,9 @@ export class SegmentService {
         action: 'segment.update',
         resourceId: id;
         userId,
-        details: {
+        details: 
           segmentName: updatedSegment.name,
           updatedFields: Object.keys(data)
-        }
       });
 
       return updatedSegment;
@@ -270,10 +267,9 @@ export class SegmentService {
             action: 'segment.member.reactivate',
             resourceId: segmentId;
             userId,
-            details: {
+            details: 
               contactId,
               memberId: updatedMember.id
-            }
           });
 
           return updatedMember;
@@ -361,10 +357,9 @@ export class SegmentService {
         action: 'segment.member.remove',
         resourceId: segmentId;
         userId,
-        details: {
+        details: 
           contactId,
           memberId: existingMember.id
-        }
       });
 
       return updatedMember;
@@ -452,10 +447,9 @@ export class SegmentService {
         action: 'segment.criteria.apply',
         resourceId: segmentId;
         userId,
-        details: {
+        details: 
           matchedContacts: matchingContacts.length,
           addedContacts: addedCount
-        }
       });
 
       return {

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 
 import { getDB } from "@/lib/database"; // Using the mock DB from lib/db.ts

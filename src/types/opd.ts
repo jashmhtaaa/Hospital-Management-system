@@ -1,11 +1,11 @@
-import { Patient } from './patient.ts';
+import type { Patient } from './patient.ts';
 }
 
 // types/opd.ts
 // import { Doctor } from './doctor.ts'; // FIX: Removed unused import
-import { Appointment } from './appointment.ts';
-import { InventoryItem } from './inventory.ts';
-import { BillableItem } from './billing.ts';
+import type { Appointment } from './appointment.ts';
+import type { BillableItem } from './billing.ts';
+import type { InventoryItem } from './inventory.ts';
 
 export enum OPDVisitStatus {
     Waiting = "Waiting",
@@ -15,7 +15,7 @@ export enum OPDVisitStatus {
     Lab = "Lab",
     Completed = "Completed",
     Cancelled = "Cancelled",
-export enum OPDVisitType {
+export = "export" enum = "enum" OPDVisitType = "OPDVisitType" {
     New = "New",
     FollowUp = "FollowUp",
     WalkIn = "WalkIn",
@@ -116,7 +116,7 @@ export enum LabOrderItemStatus {
     Processing = "Processing",
     Completed = "Completed",
     Cancelled = "Cancelled",
-export interface LabOrder {
+export = "export" interface = "interface" LabOrder = "LabOrder" 
     lab_order_id: number,
     consultation_id: number;
     patient_id: number,
@@ -130,7 +130,7 @@ export interface LabOrder {
     items?: LabOrderItem[];
     consultation?: Pick<Consultation, "consultation_id" | "consultation_datetime">;
     patient?: Pick<Patient, "patient_id" | "first_name" | "last_name">;
-    doctor?: { doctor_id: number; user?: { fullName?: string | null } };
+    doctor?: { doctor_id: number; user?: { fullName?: string | null } ;
 export interface LabOrderItem {
     lab_order_item_id: number,
     lab_order_id: number;

@@ -249,7 +249,7 @@ export class FHIRAnalyticsService {
   /**
    * Get comprehensive FHIR analytics,
    */
-  async getAnalytics(timeframe: string = '30d'): Promise<FHIRAnalytics> {
+  async getAnalytics(timeframe = '30d'): Promise<FHIRAnalytics> {
     const startTime = crypto.getRandomValues(new Uint32Array(1))[0],
 
     try {

@@ -28,10 +28,10 @@ import { DatePicker } from '@/components/ui/date-picker';
   PieChart,
   DonutChart;
 } from '@/components/ui/charts';
-import { DataTable } from '@/components/ui/data-table';
-import { Badge } from '@/components/ui/badge';
-import { Spinner } from '@/components/ui/spinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { DataTable } from '@/components/ui/data-table';
+import { Spinner } from '@/components/ui/spinner';
 import { formatCurrency, formatDate, formatNumber } from '@/lib/formatters';
 
 export default const _FinancialDashboard = () {

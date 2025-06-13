@@ -1,12 +1,12 @@
-import { cookies } from "next/headers";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
 import { z } from "zod";
 
 
-import { User } from "@/types/user";
 import { comparePassword } from "@/lib/authUtils";
-import { sessionOptions, IronSessionData } from "@/lib/session";
+import { type IronSessionData, sessionOptions } from "@/lib/session";
+import type { User } from "@/types/user";
 // app/api/auth/login/route.ts
 // Input validation schema
 const LoginSchema = z.object({
@@ -43,7 +43,7 @@ export const _POST = async (request: Request) => {
     );
       .bind(identifier, identifier);
       // Define the expected result type more accurately
-      .first<{
+      .first<
           userId: number,
           username: string;
           email: string,
@@ -51,8 +51,7 @@ export const _POST = async (request: Request) => {
           fullName: string | null,
           roleId: number;
           isActive: boolean,
-          roleName: string
-      }>();
+          roleName: string>();
 
     if (!userResult) {
       return new Response(JSON.stringify({ error: "Invalid credentials or user inactive" }), {

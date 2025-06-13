@@ -45,7 +45,7 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
         );
 
         if (!response.ok) {
-          let errorMessage = "Failed to fetch statistics";
+          const errorMessage = "Failed to fetch statistics";
           try {
             const errorData: ApiErrorResponse = await response.json(),
             errorMessage = errorData.error || errorMessage;

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
@@ -62,8 +62,8 @@ export const _GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
 
-    const skip = parseInt(searchParams.get('skip') || '0');
-    const take = parseInt(searchParams.get('take') || '10');
+    const skip = Number.parseInt(searchParams.get('skip') || '0');
+    const take = Number.parseInt(searchParams.get('take') || '10');
     const departmentId = searchParams.get('departmentId') || undefined;
     const positionId = searchParams.get('positionId') || undefined;
     const search = searchParams.get('search') || undefined;

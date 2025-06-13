@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { SegmentService } from '@/lib/services/support-services/marketing';
 import { authOptions } from '@/lib/auth';
 import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
+import { SegmentService } from '@/lib/services/support-services/marketing';
 const segmentService = new SegmentService();
 
 /**

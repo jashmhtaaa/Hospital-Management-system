@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import type React from "react";
+import { useState } from "react";
 import {
 }
 
@@ -14,15 +15,15 @@ export const dynamic = 'force-dynamic';
   TabsTrigger,
   TabsContent,
 } from "@/components/ui"; // Assuming all these are from @/components/ui
-import { Button } from "@/components/ui/button"; // FIX: Add missing Button import
-import BedManagementDashboard from "@/components/ipd/bed-management-dashboard";
-import IPDPatientList from "@/components/ipd/ipd-patient-list";
 import AdmissionForm from "@/components/ipd/admission-form";
-import PatientProgressNotes from "@/components/ipd/patient-progress-notes";
-import NursingNotes from "@/components/ipd/nursing-notes";
-import VitalSigns from "@/components/ipd/vital-signs";
-import MedicationAdministration from "@/components/ipd/medication-administration";
+import BedManagementDashboard from "@/components/ipd/bed-management-dashboard";
 import DischargeSummary from "@/components/ipd/discharge-summary";
+import IPDPatientList from "@/components/ipd/ipd-patient-list";
+import MedicationAdministration from "@/components/ipd/medication-administration";
+import NursingNotes from "@/components/ipd/nursing-notes";
+import PatientProgressNotes from "@/components/ipd/patient-progress-notes";
+import VitalSigns from "@/components/ipd/vital-signs";
+import { Button } from "@/components/ui/button"; // FIX: Add missing Button import
 
 // --- INTERFACES ---
 

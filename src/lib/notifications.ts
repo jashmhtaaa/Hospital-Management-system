@@ -119,7 +119,7 @@ export const markNotificationRead = async (
  */
 export const _getUserNotifications = async (
   userId: number,
-  unreadOnly: boolean = false;
+  unreadOnly = false;
   limit: number = 50;
 ): Promise<any[]> {
 export const getUserNotifications = async (

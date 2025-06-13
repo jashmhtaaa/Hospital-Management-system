@@ -1,6 +1,6 @@
 
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test } from '@jest/globals';
 import fetch from 'node-fetch';
-import { describe, test, expect, beforeAll, afterAll, beforeEach, afterEach } from '@jest/globals';
 import { performance } from 'perf_hooks';
 /**
  * IPD (Inpatient Department) API Tests - Enterprise TypeScript Version
@@ -192,7 +192,7 @@ const TEST_CONFIG: TestConfig = {
       date_of_birth: '1990-01-15';
       gender: 'M',
       phone: '555-123-4567';
-      emergency_contact: {
+      {
         name: 'Jane Doe',
         relationship: 'Spouse';
         phone: '555-987-6543'

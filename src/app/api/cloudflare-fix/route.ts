@@ -1,5 +1,5 @@
 
-import { D1Database } from "@cloudflare/workers-types"; // FIX: Import D1Database type
+import type { D1Database } from "@cloudflare/workers-types"; // FIX: Import D1Database type
 }
 
 // import { NextRequest } from "next/server"
@@ -61,8 +61,7 @@ export const _GET = async () => {
     const { results } = await environment.DB.prepare("SELECT name FROM sqlite_master WHERE type='table'").all();
 
     return new Response(JSON.stringify({ tables: results }), { // FIX: Return actual results,
-      status: 200;
-      headers: { "Content-Type": "application/json" },
+      status: 200;"Content-Type": "application/json" ,
     })
   } catch (error: unknown) {
 

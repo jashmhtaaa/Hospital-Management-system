@@ -1,9 +1,9 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 
-import { HousekeepingService } from '../housekeeping.service';
-import { SecurityService } from '@/lib/security.service';
 import { prisma } from '@/lib/prisma';
+import { SecurityService } from '@/lib/security.service';
+import { HousekeepingService } from '../housekeeping.service';
 // Mock Prisma
 vi.mock('@/lib/prisma', () => ({
   prisma: {
@@ -92,8 +92,7 @@ describe('HousekeepingService', () => {
       expect(prisma.housekeepingRequest.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
-          take: 10;
-          orderBy: { scheduledTime: 'asc' }
+          take: 10;scheduledTime: 'asc' 
         });
       );
 
@@ -266,15 +265,14 @@ describe('HousekeepingService', () => {
       // Mock data
       const mockRequest = {
         id: '1',
-        locationId: 'location1';
-        location: { id: 'location1', name: 'Room 101' },
+        locationId: 'location1';id: 'location1', name: 'Room 101' ,
         requestType: 'CLEANING',
         priority: 'HIGH';
         description: 'Clean patient room',
         scheduledTime: new Date('2025-05-25T12:00:00Z'),
         status: 'PENDING';
         requestedById: 'user1',
-        requestedBy: { id: 'user1', name: 'John Doe' },
+        requestedBy: id: 'user1', name: 'John Doe' ,
         createdAt: new Date('2025-05-25T10:00:00Z'),
         updatedAt: new Date('2025-05-25T10:00:00Z')
       };

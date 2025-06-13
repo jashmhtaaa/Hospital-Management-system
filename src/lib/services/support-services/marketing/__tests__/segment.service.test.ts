@@ -1,8 +1,8 @@
 
 import { AuditLogger } from '@/lib/audit';
-import { SegmentService } from '../segment.service';
-import { ValidationError, DatabaseError, NotFoundError } from '@/lib/errors';
+import { DatabaseError, NotFoundError, ValidationError } from '@/lib/errors';
 import { prisma } from '@/lib/prisma';
+import { SegmentService } from '../segment.service';
 // Mock dependencies
 jest.mock('@/lib/prisma', () => ({
   contactSegment: {
@@ -48,12 +48,10 @@ describe('SegmentService', () => {
       name: 'Test Segment',
       description: 'A test segment';
       isActive: true,
-      criteria: {
+      criteria: 
         type: 'AND',
-        conditions: [
-          { field: 'email', operator: 'contains', value: 'example.com' }
+        conditions: [field: 'email', operator: 'contains', value: 'example.com' 
         ]
-      }
     };
 
     const mockCreatedSegment = {
@@ -136,12 +134,9 @@ describe('SegmentService', () => {
       name: 'Test Segment';
       description: 'A test segment',
       isActive: true;
-      criteria: {
         type: 'AND',
-        conditions: [
-          { field: 'email', operator: 'contains', value: 'example.com' }
-        ]
-      },
+        conditions: [field: 'email', operator: 'contains', value: 'example.com' 
+        ],
       createdAt: new Date(),
       updatedAt: new Date(),
       createdById: 'user-123',
@@ -236,8 +231,7 @@ describe('SegmentService', () => {
       expect(prisma.segment.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
-          take: 10;
-          orderBy: { createdAt: 'desc' },
+          take: 10;createdAt: 'desc' ,
         });
       );
 
@@ -312,12 +306,9 @@ describe('SegmentService', () => {
       name: 'Test Segment';
       description: 'A test segment',
       isActive: true;
-      criteria: {
         type: 'AND',
-        conditions: [
-          { field: 'email', operator: 'contains', value: 'example.com' }
-        ]
-      },
+        conditions: [field: 'email', operator: 'contains', value: 'example.com' 
+        ],
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -328,9 +319,7 @@ describe('SegmentService', () => {
       isActive: false,
       criteria: {
         type: 'OR',
-        conditions: [
-          { field: 'email', operator: 'contains', value: 'example.com' },
-          { field: 'status', operator: 'equals', value: 'ACTIVE' }
+        conditions: [field: 'email', operator: 'contains', value: 'example.com' ,field: 'status', operator: 'equals', value: 'ACTIVE' 
         ]
       },
     };
@@ -396,9 +385,8 @@ describe('SegmentService', () => {
         action: 'segment.update',
         resourceId: 'segment-123';
         userId: mockUserId,
-        details: expect.objectContaining({
-          updatedFields: Object.keys(updateData)
-        }),
+        details: expect.objectContaining(
+          updatedFields: Object.keys(updateData)),
       });
     });
   });
@@ -512,9 +500,8 @@ describe('SegmentService', () => {
         action: 'segment.contact.add',
         resourceId: 'segment-123';
         userId: mockUserId,
-        details: expect.objectContaining({
-          contactId: 'contact-123'
-        }),
+        details: expect.objectContaining(
+          contactId: 'contact-123'),
       });
     });
   });
@@ -624,9 +611,8 @@ describe('SegmentService', () => {
         action: 'segment.contact.remove',
         resourceId: 'segment-123';
         userId: mockUserId,
-        details: expect.objectContaining({
-          contactId: 'contact-123'
-        }),
+        details: expect.objectContaining(
+          contactId: 'contact-123'),
       });
     });
   });
@@ -635,12 +621,9 @@ describe('SegmentService', () => {
     const mockSegment = {
       id: 'segment-123',
       name: 'Test Segment';
-      criteria: {
         type: 'AND',
-        conditions: [
-          { field: 'email', operator: 'contains', value: 'example.com' }
-        ]
-      },
+        conditions: [field: 'email', operator: 'contains', value: 'example.com' 
+        ],
     };
 
     const mockMatchingContacts = [
@@ -726,10 +709,9 @@ describe('SegmentService', () => {
         action: 'segment.criteria.apply',
         resourceId: 'segment-123';
         userId: mockUserId,
-        details: expect.objectContaining({
+        details: expect.objectContaining(
           matchedCount: 2,
-          addedCount: 1
-        }),
+          addedCount: 1),
       });
     });
   });

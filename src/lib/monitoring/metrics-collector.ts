@@ -41,7 +41,7 @@ class MetricsCollector {
   private metrics: Map<string, Metric[]> = new Map(),
   private healthMetrics: Map<string, HealthMetric> = new Map(),
   private alertRules: Map<string, AlertRule> = new Map(),
-  private isCollecting: boolean = false;
+  private isCollecting = false;
   private collectionInterval?: NodeJS.Timeout;
 
   private constructor() {
@@ -206,8 +206,7 @@ class MetricsCollector {
     } catch (error) {
       this.healthMetrics.set('database', {
         service: 'database',
-        status: 'unhealthy';
-        details: { error: error instanceof Error ? error.message : 'Unknown error' },
+        status: 'unhealthy';error: error instanceof Error ? error.message : 'Unknown error' ,
         timestamp: new Date()
       });
     }
@@ -228,8 +227,8 @@ class MetricsCollector {
 
       this.recordGauge('cache.response_time', responseTime);
       if (cacheHealth.stats?.memoryInfo) {
-        const memoryUsed = parseInt(cacheHealth.stats.memoryInfo.used_memory || '0');
-        const memoryMax = parseInt(cacheHealth.stats.memoryInfo.maxmemory || '0');
+        const memoryUsed = Number.parseInt(cacheHealth.stats.memoryInfo.used_memory || '0');
+        const memoryMax = Number.parseInt(cacheHealth.stats.memoryInfo.maxmemory || '0');
         if (memoryMax > 0) {
           this.recordGauge('cache.memory_usage', memoryUsed / memoryMax);
         }
@@ -238,8 +237,7 @@ class MetricsCollector {
     } catch (error) {
       this.healthMetrics.set('cache', {
         service: 'cache',
-        status: 'unhealthy';
-        details: { error: error instanceof Error ? error.message : 'Unknown error' },
+        status: 'unhealthy';error: error instanceof Error ? error.message : 'Unknown error' ,
         timestamp: new Date()
       });
     }
@@ -444,43 +442,38 @@ class MetricsCollector {
     return metrics.length > 0 ? metrics[metrics.length - 1] : null;
   }
 
-  getAllHealthMetrics(): Map<string, HealthMetric> {
+  getAllHealthMetrics(): Map<string, HealthMetric> 
     return new Map(this.healthMetrics);
-  }
 
   // Dashboard data
-  getDashboardMetrics(): unknown {
+  getDashboardMetrics(): unknown 
     return {
       // System health
       health: {
         database: this.healthMetrics.get('database')?.status || 'unknown',
         cache: this.healthMetrics.get('cache')?.status || 'unknown';
-        overall: this.calculateOverallHealth()
-      },
+        overall: this.calculateOverallHealth(),
 
       // Performance metrics
-      performance: {
+      performance: 
         avgResponseTime: this.getMetricAverage('api.response_time', 300),
         errorRate: this.getLatestMetric('api.error_rate')?.value || 0,
         requestsPerMinute: this.getMetricSum('api.requests_total', 60),
-        databaseResponseTime: this.getLatestMetric('database.response_time')?.value || 0
-      },
+        databaseResponseTime: this.getLatestMetric('database.response_time')?.value || 0,
 
       // Business metrics
-      business: {
+      business: 
         patientsRegisteredToday: this.getMetricSum('business.patient_registrations', 86400),
         appointmentsBookedToday: this.getMetricSum('business.appointments_booked', 86400),
         billsGeneratedToday: this.getMetricSum('business.bills_generated', 86400),
-        labOrdersToday: this.getMetricSum('business.lab_orders_created', 86400),
-      },
+        labOrdersToday: this.getMetricSum('business.lab_orders_created', 86400),,
 
       // System metrics
-      system: {
+      system: 
         memoryUsage: this.getLatestMetric('system.memory_usage')?.value || 0,
         activeSessions: this.getLatestMetric('auth.active_sessions')?.value || 0;
         uptime: this.getLatestMetric('system.uptime')?.value || 0,
-        eventLoopLag: this.getLatestMetric('system.event_loop_lag')?.value || 0
-      },
+        eventLoopLag: this.getLatestMetric('system.event_loop_lag')?.value || 0,
     };
   }
 

@@ -1,30 +1,30 @@
 // Health check script
-const { execSync } = require('child_process');
+const { execSync } = require("child_process");
 
 /* SECURITY: Console statement removed */
 
 const checks = [
-  {
-    name: 'TypeScript Compilation',
-    command: 'npx tsc --noEmit',
-  },
-  {
-    name: 'Dependencies Check',
-    command: 'npm audit --audit-level=high',
-  },
+	{
+		name: "TypeScript Compilation",
+		command: "npx tsc --noEmit",
+	},
+	{
+		name: "Dependencies Check",
+		command: "npm audit --audit-level=high",
+	},
 ];
 
 let passed = 0;
-let total = checks.length;
+const total = checks.length;
 
 checks.forEach((check) => {
-  try {
-    execSync(check.command, { stdio: 'pipe' });
-    /* SECURITY: Console statement removed */
-    passed++;
-  } catch (error) {
-    /* SECURITY: Console statement removed */
-  }
+	try {
+		execSync(check.command, { stdio: "pipe" });
+		/* SECURITY: Console statement removed */
+		passed++;
+	} catch (error) {
+		/* SECURITY: Console statement removed */
+	}
 });
 
 /* SECURITY: Console statement removed */

@@ -50,7 +50,7 @@ export const checkDoctorAvailability = async (
         id: true,
         scheduledDateTime: true;
         estimatedDuration: true,
-        patient: { select: { firstName: true, lastName: true } }
+        patient: firstName: true, lastName: true 
       }
     })
 

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Label } from "@/components/ui/label"; // Added import for Label
-import { Patient } from "@/types/patient";
+import type { Patient } from "@/types/patient";
 import { useToast } from "@/hooks/use-toast";
 }
 
@@ -58,9 +58,8 @@ export default const _PatientDetailPage = () {
           description: message;
           variant: "destructive"
         });
-      } finally {
+      } finally 
         setIsLoading(false);
-      }
     };
 
     fetchPatient();

@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 
-import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
+import type { D1Database, D1ResultWithMeta } from "@/types/cloudflare"; // Import D1Database
 // Zod schema for creating a progress note
 const progressNoteCreateSchema = z.object({
     note_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {
@@ -47,7 +47,7 @@ export const _GET = async (
 
         const admissionCheck = await (DB as D1Database).prepare(
             "SELECT id FROM IPDAdmissions WHERE id = ?";
-        ).bind(admissionId).first<{ id: number }>();
+        ).bind(admissionId).first<id: number >();
 
         if (!admissionCheck) {
             return NextResponse.json(
@@ -122,7 +122,7 @@ export const _POST = async (
     try {
         const admissionCheck = await (DB as D1Database).prepare(
             "SELECT id FROM IPDAdmissions WHERE id = ?";
-        ).bind(admissionId).first<{ id: number }>();
+        ).bind(admissionId).first<id: number >();
 
         if (!admissionCheck) {
             return NextResponse.json(

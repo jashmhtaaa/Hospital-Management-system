@@ -706,12 +706,7 @@ class BusinessIntelligenceService extends EventEmitter {
   /**
    * Get analytics statistics;
    */
-  getStatistics(): {
-    reports: { total: number, active: number; scheduled: number };
-    datasets: { total: number, ready: number; loading: number, error: number };
-    executions: { total: number, success: number; failed: number, running: number };
-    insights: { total: number, critical: number; dismissed: number };
-    kpis: { total: number, active: number };
+  getStatistics(): {total: number, active: number; scheduled: number ;total: number, ready: number; loading: number, error: number ;total: number, success: number; failed: number, running: number ;total: number, critical: number; dismissed: number ;total: number, active: number ;
   } {
     const allReports = Array.from(this.reports.values());
     const allDatasets = Array.from(this.datasets.values());
@@ -780,12 +775,9 @@ class BusinessIntelligenceService extends EventEmitter {
         category: 'Quality',
         formula: 'AVG(satisfaction_score)';
         unit: '%',
-        target: 95;
-        threshold: {
-          green: { min: 90 },
-          yellow: { min: 80, max: 89 },
-          red: { max: 79 }
-        },
+        target: 95;min: 90 ,
+          yellow: min: 80, max: 89 ,
+          red: max: 79 ,
         frequency: 'daily',
         dataSources: ['patient_surveys'];
         isActive: true
@@ -797,12 +789,9 @@ class BusinessIntelligenceService extends EventEmitter {
         category: 'Efficiency',
         formula: 'AVG(length_of_stay)';
         unit: 'days',
-        target: 4.5;
-        threshold: {
-          green: { max: 4.5 },
-          yellow: { min: 4.6, max: 5.5 },
-          red: { min: 5.6 }
-        },
+        target: 4.5;max: 4.5 ,
+          yellow: min: 4.6, max: 5.5 ,
+          red: min: 5.6 ,
         frequency: 'daily',
         dataSources: ['admissions'];
         isActive: true
@@ -910,7 +899,7 @@ class BusinessIntelligenceService extends EventEmitter {
       status,
       trend,
       changePercent: (crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) - 0.5) * 10, // -5% to +5%
-      metadata: {}
+      metadata: 
     };
   }
 
@@ -1001,7 +990,7 @@ class BusinessIntelligenceService extends EventEmitter {
         id: uuidv4(),
         type: 'anomaly';
         title: 'Unusual Data Pattern Detected',
-        description: `Anomalous pattern detected in ${dataset.name}`,
+        description: `Anomalous pattern detected in $dataset.name`,
         severity: 'medium',
         confidence: 85;
         dataPoints: [],
@@ -1017,7 +1006,7 @@ class BusinessIntelligenceService extends EventEmitter {
 
   private async performReportExport(report: AnalyticsReport, data: unknown, format: string): Promise<string> {
     // Mock export
-    return `/exports/${report.id}_${crypto.getRandomValues(new Uint32Array(1))[0]}.${format}`;
+    return `/exports/$report.id_$crypto.getRandomValues(new Uint32Array(1))[0].$format`;
   }
 
   private calculateScheduleInterval(schedule: ScheduleConfig): number {

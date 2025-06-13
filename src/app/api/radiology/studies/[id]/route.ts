@@ -1,8 +1,8 @@
-import { IronSession } from "iron-session"; // Import IronSession
-import { NextRequest, NextResponse } from "next/server";
+import type { IronSession } from "iron-session"; // Import IronSession
+import { type NextRequest, NextResponse } from "next/server";
 
 import { getDB } from "@/lib/database";
-import { getSession, IronSessionData } from "@/lib/session"; // Import IronSessionData
+import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData
 // import { checkUserRole } from "@/lib/auth"
 
 // Define Database interface (can be moved to a shared types file)
@@ -163,12 +163,11 @@ export const _PUT = async (
       !session?.user ||
       (session.user.roleName !== "Admin" &&;
         session.user.roleName !== "Technician");
-    ) {
+    ) 
       return NextResponse.json(
         { error: "Unauthorized: Admin or Technician role required" },
         { status: 403 }
       );
-    }
 
     const { id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+)
     if (!studyId) {
@@ -186,26 +185,23 @@ export const _PUT = async (
     if (
       data.number_of_images !== undefined &&
       (typeof data.number_of_images !== "number" || data.number_of_images < 0);
-    ) {
+    ) 
       return NextResponse.json(
         { error: "Invalid number of images" },
         { status: 400 }
       );
-    }
     if (
       data.study_datetime !== undefined &&;
       Number.isNaN(Date.parse(data.study_datetime));
-    ) {
+    ) 
       return NextResponse.json(
         { error: "Invalid study date/time format" },
         { status: 400 }
       );
-    }
 
     // Build the update query dynamically
     // FIX: Replaced any with a more specific type
-    const fieldsToUpdate: Record<string, string | number | null | undefined> =;
-      {};
+    const fieldsToUpdate: Record<string, string | number | null | undefined> =;;
     if (data.accession_number !== undefined)
       fieldsToUpdate.accession_number = data.accession_number;
     if (data.study_datetime !== undefined)
@@ -231,7 +227,7 @@ export const _PUT = async (
     fieldsToUpdate.updated_at = updatedAt;
 
     const setClauses = Object.keys(fieldsToUpdate);
-      .map((key) => `${key} = ?`);
+      .map((key) => `$key= ?`);
       .join(", ");
     const values = [...Object.values(fieldsToUpdate), studyId];
 
@@ -281,7 +277,7 @@ export const _PUT = async (
         const orderIdResult = await database;
           .prepare("SELECT order_id FROM RadiologyStudies WHERE id = ?");
           .bind(studyId);
-          .first<{ order_id: string }>(); // Use generic type argument
+          .first<order_id: string >(); // Use generic type argument
         // Add null check for orderIdResult
         if (orderIdResult?.order_id) {
           // Determine the appropriate order status (e.g., \'completed\' when study is done)
@@ -317,12 +313,11 @@ export const _PUT = async (
         databaseError instanceof Error &&
         databaseError.message?.includes("UNIQUE constraint failed") &&
         databaseError.message?.includes("accession_number");
-      ) {
+      ) 
         return NextResponse.json(
           { error: "Accession number already exists" },
           { status: 409 }
         ); // 409 Conflict
-      }
       // Re-throw other DB errors to be caught by the outer catch block
       throw databaseError;
     }

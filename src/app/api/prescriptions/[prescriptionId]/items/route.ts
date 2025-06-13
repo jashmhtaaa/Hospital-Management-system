@@ -1,8 +1,8 @@
-import { cookies } from "next/headers";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
 
-import { sessionOptions, IronSessionData } from "@/lib/session"; // Import IronSessionData
+import { type IronSessionData, sessionOptions } from "@/lib/session"; // Import IronSessionData
 // app/api/prescriptions/[prescriptionId]/items/route.ts
 // import { PrescriptionItem } from "@/types/opd"; // Removed unused import
 import { z } from "zod";
@@ -15,7 +15,7 @@ const getPrescriptionId = (pathname: string): number | null {
     // Pathname might be /api/prescriptions/123/items
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 2]; // Second to last part
-    const id = parseInt(idStr, 10);
+    const id = Number.parseInt(idStr, 10);
     return isNaN(id) ? null : id;
 }
 
@@ -69,7 +69,7 @@ export const _POST = async (request: Request) => {
         // 3. Check if prescription exists and belongs to the doctor
         const presCheck = await DB.prepare("SELECT prescription_id, doctor_id FROM Prescriptions WHERE prescription_id = ?");
                                   .bind(prescriptionId);
-                                  .first<{ prescription_id: number, doctor_id: number }>();
+                                  .first<prescription_id: number, doctor_id: number >();
 
         if (!presCheck) {
             return new Response(JSON.stringify({ error: "Prescription not found" }), { status: 404 });

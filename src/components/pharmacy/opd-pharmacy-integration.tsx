@@ -1,4 +1,5 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import type React from "react";
+import { ChangeEvent, type FormEvent, useEffect, useState } from "react"
 }
 
 "use client";
@@ -98,9 +99,7 @@ const OPDPharmacyIntegration: React.FC = () => {
           patient_id: simulatedPatient.id,
           doctor_id: "doc_67890", // Simulate logged-in doctor ID
         }));
-      } catch (error) { // Debug logging removed
-        // Handle error appropriately (e.g., show message)
-      }
+      } catch (error) 
     }
 
     // Fetch medications for prescribing

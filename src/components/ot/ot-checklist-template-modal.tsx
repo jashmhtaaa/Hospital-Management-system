@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import type React from "react";
+import { useEffect, useState } from "react";
 import {
 }
 
@@ -63,8 +64,8 @@ export default const _OTChecklistTemplateModal = ({
   }));
   const [items, setItems] = useState<ChecklistItem[]>(() =>
     template?.items && template.items.length > 0;
-      ? template.items.map((item) => ({ ...item })) // Deep copy items
-      : [{ id: crypto.randomUUID(), text: "" }]
+      ? template.items.map((item) => (...item )) // Deep copy items
+      : [id: crypto.randomUUID(), text: "" ]
   );
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
@@ -78,8 +79,8 @@ export default const _OTChecklistTemplateModal = ({
       }),
       setItems(
         template?.items && template.items.length > 0;
-          ? template.items.map((item) => ({ ...item })) // Deep copy items
-          : [{ id: crypto.randomUUID(), text: "" }]
+          ? template.items.map((item) => (...item )) // Deep copy items
+          : [id: crypto.randomUUID(), text: "" ]
       );
     } else {
       // Optionally clear form when closed

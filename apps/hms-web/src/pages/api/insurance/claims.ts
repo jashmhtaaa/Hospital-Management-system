@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 
 import { ClaimProcessingService } from "../../../../features/insurance/services/ClaimProcessingService.ts"; // Adjust path

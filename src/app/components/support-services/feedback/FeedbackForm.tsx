@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/components/ui/use-toast';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, Star } from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import * as z from 'zod';
 
 // Form schema
 const feedbackFormSchema = z.object({
@@ -195,7 +195,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
                 render={({ field }) => (
                   <div className="flex items-center space-x-2 mt-2">;
                     <RadioGroup>
-                      onValueChange={(value) => field.onChange(parseInt(value))}
+                      onValueChange={(value) => field.onChange(Number.parseInt(value))}
                       defaultValue={field.value?.toString()}
                       className="flex space-x-2"
                       disabled={isSubmitting}

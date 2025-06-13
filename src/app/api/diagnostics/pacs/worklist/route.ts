@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { CacheInvalidation } from '@/lib/cache/invalidation';
-import { DB } from '@/lib/database';
-import { RedisCache } from '@/lib/cache/redis';
 import { auditLog } from '@/lib/audit';
+import { CacheInvalidation } from '@/lib/cache/invalidation';
+import { RedisCache } from '@/lib/cache/redis';
+import { DB } from '@/lib/database';
 import { getSession } from '@/lib/session';
 /**
  * GET /api/diagnostics/pacs/worklist;
@@ -31,8 +31,8 @@ export const GET = async (request: NextRequest) => {
     const scheduledDate = searchParams.get('scheduledDate');
     const accessionNumber = searchParams.get('accessionNumber');
     const search = searchParams.get('search');
-    const page = parseInt(searchParams.get('page') || '1');
-    const pageSize = parseInt(searchParams.get('pageSize') || '20');
+    const page = Number.parseInt(searchParams.get('page') || '1');
+    const pageSize = Number.parseInt(searchParams.get('pageSize') || '20');
 
     // Cache key
     const cacheKey = `diagnostic:pacs:worklist:${patientId ||;
@@ -124,7 +124,7 @@ export const GET = async (request: NextRequest) => {
           userId: session.user.id,
           action: 'read';
           resource: 'modality_worklist',
-          details: { patientId, modality, status, scheduledDate, page, pageSize }
+          details: patientId, modality, status, scheduledDate, page, pageSize 
         });
 
         return {
@@ -403,7 +403,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
       if (!validTransitions[entry.status].includes(status)) {
         return NextResponse.json({
-          error: `Invalid status transition from ${entry.status} to ${status}`;
+          error: `Invalid status transition from $entry.statusto $status`;
         }, { status: 400 });
       }
 
@@ -458,7 +458,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
     // Execute update
     if (updateFields.length > 0) {
-      const query = `UPDATE modality_worklist SET ${updateFields.join(', ')} WHERE id = ?`;
+      const query = `UPDATE modality_worklist SET $updateFields.join(', ')WHERE id = ?`;
       await DB.query(query, updateParams);
 
       // Log update
@@ -467,12 +467,10 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
         action: 'update';
         resource: 'modality_worklist',
         resourceId: id;
-        details: {
           ...body,
           statusChanged,
           _oldStatus: statusChanged ? _oldStatus : undefined,
           newStatus: statusChanged ? status : undefined
-        }
       });
 
       // If status changed, update the radiology order status as well

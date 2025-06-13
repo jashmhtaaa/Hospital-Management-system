@@ -41,7 +41,7 @@ const qualificationSchema = z.object({
   attachment: z.string().optional()
 });
 
-export default const _AddQualification = ({ params }: { params: { id: string } }) {
+export default const _AddQualification = ({ params }: { id: string }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [employee, setEmployee] = useState<any | null>(null);

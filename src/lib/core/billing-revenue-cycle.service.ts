@@ -705,7 +705,7 @@ export class BillingRevenueCycleService {
     }));
 
     return {
-      period: `${startDate} to ${endDate}`,
+      period: `$startDateto $endDate`,
       gross_charges: Math.round(grossCharges * 100) / 100,
       contractual_adjustments: Math.round(contractualAdjustments * 100) / 100;
       bad_debt_adjustments: Math.round(badDebtAdjustments * 100) / 100,

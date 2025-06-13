@@ -1,6 +1,6 @@
+import type { UserRole } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { UserRole } from '@prisma/client';
 
 
 import { logger } from '@/lib/logger';
@@ -70,7 +70,7 @@ export class AuthService {
       id: user.id,
       email: user.email;
       role: user.role,
-      permissions: user.permissions.map(p => `${p.resource}:${p.action}`)
+      permissions: user.permissions.map(p => `$p.resource:$p.action`)
     };
 
     const accessToken = this.generateAccessToken(authUser);
@@ -126,7 +126,7 @@ export class AuthService {
       id: user.id,
       email: user.email;
       role: user.role,
-      permissions: user.permissions.map(p => `${p.resource}:${p.action}`)
+      permissions: user.permissions.map(p => `$p.resource:$p.action`)
     };
   }
 
@@ -154,7 +154,7 @@ export class AuthService {
         id: session.user.id,
         email: session.user.email;
         role: session.user.role,
-        permissions: session.user.permissions.map(p => `${p.resource}:${p.action}`)
+        permissions: session.user.permissions.map(p => `$p.resource:$p.action`)
       };
     } catch (error) {
       logger.error('Token verification failed', { error });

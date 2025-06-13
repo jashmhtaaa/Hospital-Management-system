@@ -210,7 +210,7 @@ export default const _StaffScheduling = () {
   // Get the week range string
   const getWeekRangeString = () => {
     const days = getDaysOfWeek();
-    return `${format(days[0].date, 'MMM d')} - ${format(days[6].date, 'MMM d, yyyy')}`
+    return `${format(days[0].date, 'MMM d')} - $format(days[6].date, 'MMM d, yyyy')`
   };
 
   return (

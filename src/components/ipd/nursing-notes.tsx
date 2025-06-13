@@ -1,4 +1,5 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import type React from "react";
+import { type ChangeEvent, type FormEvent, useEffect, useState } from "react"
 import {
 }
 
@@ -134,11 +135,10 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
               blood_pressure: "122/78 mmHg",
               oxygen_saturation: "98%"
             }),
-            intake_output: JSON.stringify({
+            intake_output: JSON.stringify(
               oral_intake: "500ml water",
               iv_fluids: "100ml NS";
-              urine_output: "300ml"
-            }),
+              urine_output: "300ml"),
             medication_given: "Paracetamol 500mg PO",
             procedures: "Wound dressing changed on left arm.";
             notes: "Patient resting comfortably. No complaints of pain."

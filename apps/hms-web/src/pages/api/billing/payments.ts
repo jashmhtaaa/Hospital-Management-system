@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 
 import { PaymentService } from "../../../../features/billing/services/PaymentService.ts"; // Adjust path as per actual structure

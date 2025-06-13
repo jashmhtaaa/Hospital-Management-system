@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 
 import { DB } from "@/lib/database"; // Using mock DB
@@ -102,12 +102,11 @@ export const _POST = async (request: NextRequest) => {
         body[field] === undefined ||;
         body[field] === undefined ||;
         body[field] === "";
-      ) {
+      ) 
         return NextResponse.json(
           { error: `Missing or invalid required field: ${field}` },
           { status: 400 }
         );
-      }
     }
 
     // Insert new test using DB.query

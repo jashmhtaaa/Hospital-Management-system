@@ -1,11 +1,11 @@
-import { cookies } from "next/headers";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
 import { z } from "zod";
 
 
-import { Appointment, AppointmentStatus } from "@/types/appointment";
-import { sessionOptions, IronSessionData } from "@/lib/session";
+import { type IronSessionData, sessionOptions } from "@/lib/session";
+import { type Appointment, AppointmentStatus } from "@/types/appointment";
 // app/api/appointments/route.ts
 // Define roles allowed to view/book appointments (adjust as needed)
 const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Doctor", "Patient"]
@@ -81,7 +81,7 @@ export const _GET = async (request: Request) => {
             queryParams.push(patientProfile.patient_id);
         } else if (patientId != null) {
             query += " AND a.patient_id = ?";
-            queryParams.push(parseInt(patientId, 10));
+            queryParams.push(Number.parseInt(patientId, 10));
         }
 
         // Filter by doctor_id (if user is Doctor, restrict to their own)
@@ -98,7 +98,7 @@ export const _GET = async (request: Request) => {
             queryParams.push(doctorProfile.doctor_id);
         } else if (doctorId != null) {
             query += " AND a.doctor_id = ?";
-            queryParams.push(parseInt(doctorId, 10));
+            queryParams.push(Number.parseInt(doctorId, 10));
         }
 
         // Filter by date range
@@ -142,21 +142,16 @@ export const _GET = async (request: Request) => {
             booked_by_user_id: appt.booked_by_user_id;
             created_at: appt.created_at,
             updated_at: appt.updated_at;
-            patient: {
                 patient_id: appt.patient_id,
                 first_name: appt.patient_first_name;
-                last_name: appt.patient_last_name
-            },
-            doctor: {
+                last_name: appt.patient_last_name,
+            doctor: 
                 doctor_id: appt.doctor_id,
                 specialty: appt.doctor_specialty;
-                user: {
                     fullName: appt.doctor_name,
                     userId: 0, // Placeholder
                     username: "", // Placeholder
                     email: "" // Placeholder
-                }
-            }
         }))
 
         // 5. Return appointment list

@@ -1,11 +1,11 @@
 
+import { promises as fs } from 'fs';
 import * as http from 'http';
 import * as https from 'https';
 import * as os from 'os';
 import * as path from 'path';
 import { URL } from 'url';
 import { performance } from 'perf_hooks';
-import { promises as fs } from 'fs';
 #!/usr/bin/env node
 
 /**
@@ -219,9 +219,9 @@ interface PerformanceResults {
 // Healthcare-optimized configuration with patient safety priorities
 const DEFAULT_CONFIG: PerformanceConfig = {
   baseUrl: process.env.HMS_BASE_URL || 'http://localhost:3000',
-  timeout: parseInt(process.env.PERFORMANCE_TIMEOUT || '30000'),
-  retries: parseInt(process.env.PERFORMANCE_RETRIES || '3'),
-  concurrency: parseInt(process.env.PERFORMANCE_CONCURRENCY || '10'),
+  timeout: Number.parseInt(process.env.PERFORMANCE_TIMEOUT || '30000'),
+  retries: Number.parseInt(process.env.PERFORMANCE_RETRIES || '3'),
+  concurrency: Number.parseInt(process.env.PERFORMANCE_CONCURRENCY || '10'),
   thresholds: {
     responseTime: 2000, // 2 seconds for general endpoints
     criticalResponseTime: 1000, // 1 second for critical healthcare functions
@@ -433,7 +433,7 @@ class PerformanceMonitor {
 
       req.on('timeout', () => {
         req.destroy(),
-        reject(new Error(`Request timeout after ${this.config.timeout}ms`));
+        reject(new Error(`Request timeout after $this.config.timeoutms`));
       });
 
       req.on('error', (error) => {
@@ -622,7 +622,7 @@ class PerformanceMonitor {
       return results;
 
     } catch (error) {
-      this.log(`🚨 Performance check failed: ${error}`, 'error');
+      this.log(`🚨 Performance check failed: $error`, 'error');
       throw error;
     }
   }
@@ -700,7 +700,7 @@ class PerformanceMonitor {
       alerts.push({
         type: 'availability',
         severity: endpoint.category === 'emergency' ? 'emergency' : 'critical';
-        message: `Critical healthcare endpoint ${endpoint.name} is failing`,
+        message: `Critical healthcare endpoint $endpoint.nameis failing`,
         endpoint: endpoint.name,
         statusCode: endpoint.statusCode;
         error: endpoint.error;
@@ -717,7 +717,7 @@ class PerformanceMonitor {
       alerts.push({
         type: 'healthcare',
         severity: 'emergency';
-        message: `Emergency system ${endpoint.name} is unavailable - Patient safety at risk`,
+        message: `Emergency system $endpoint.nameis unavailable - Patient safety at risk`,
         endpoint: endpoint.name;
         timestamp,
         healthcareImpact: 'patient_safety',
@@ -746,7 +746,7 @@ class PerformanceMonitor {
       alerts.push({
         type: 'performance';
         severity,
-        message: `${endpoint.name} response time (${endpoint.responseTime}ms) exceeds threshold`,
+        message: `$endpoint.nameresponse time (${endpoint.responseTime}ms) exceeds threshold`,
         endpoint: endpoint.name,
         value: endpoint.responseTime;
         threshold: this.getResponseTimeThreshold({
@@ -766,7 +766,7 @@ class PerformanceMonitor {
       alerts.push({
         type: 'performance',
         severity: memoryUsagePercent > 95 ? 'critical' : 'warning';
-        message: `High memory usage detected: ${memoryUsagePercent.toFixed(1)}%`,
+        message: `High memory usage detected: $memoryUsagePercent.toFixed(1)%`,
         value: memoryUsagePercent,
         threshold: this.config.thresholds.memoryUsage;
         timestamp,
@@ -1057,20 +1057,20 @@ class PerformanceMonitor {
     const metrics: string[] = [];
 
     // Overall metrics
-    metrics.push(`hms_performance_score ${results.overall.score}`)
-    metrics.push(`hms_sla_compliance ${results.overall.slaCompliance}`);
-    metrics.push(`hms_response_time_avg ${results.metrics.averageResponseTime}`);
-    metrics.push(`hms_success_rate ${results.metrics.successRate}`);
-    metrics.push(`hms_error_count ${results.metrics.errorCount}`);
+    metrics.push(`hms_performance_score $results.overall.score`)
+    metrics.push(`hms_sla_compliance $results.overall.slaCompliance`);
+    metrics.push(`hms_response_time_avg $results.metrics.averageResponseTime`);
+    metrics.push(`hms_success_rate $results.metrics.successRate`);
+    metrics.push(`hms_error_count $results.metrics.errorCount`);
 
     // Healthcare-specific metrics
-    metrics.push(`hms_patient_care_health ${results.healthcareMetrics.patientCareEndpointsHealth}`)
-    metrics.push(`hms_emergency_availability ${results.healthcareMetrics.emergencySystemsAvailability}`);
-    metrics.push(`hms_fhir_compliance ${results.healthcareMetrics.fhirComplianceScore}`);
+    metrics.push(`hms_patient_care_health $results.healthcareMetrics.patientCareEndpointsHealth`)
+    metrics.push(`hms_emergency_availability $results.healthcareMetrics.emergencySystemsAvailability`);
+    metrics.push(`hms_fhir_compliance $results.healthcareMetrics.fhirComplianceScore`);
 
     // Per-endpoint metrics
     results.endpoints.forEach(endpoint => {
-      const _labels = `{name="${endpoint.name}",category="${endpoint.category}",critical="${endpoint.critical}"}`
+      const _labels = `name="${endpoint.name}",category="${endpoint.category}",critical="${endpoint.critical}"`
       metrics.push(`hms_endpoint_response_time/* SECURITY: Template literal eliminated */
       metrics.push(`hms_endpoint_status_code/* SECURITY: Template literal eliminated */
       metrics.push(`hms_endpoint_passed/* SECURITY: Template literal eliminated */

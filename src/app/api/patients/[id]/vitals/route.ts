@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 
-import type { D1ResultWithMeta, D1Database } from "@/types/cloudflare"; // Import D1Database
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
+import type { D1Database, D1ResultWithMeta } from "@/types/cloudflare"; // Import D1Database
 // Zod schema for creating patient vitals
 const vitalCreateSchema = z.object({
     visit_id: z.number().optional().nullable(),
@@ -60,7 +60,7 @@ export const _GET = async (
 
         const patientCheck = await (DB as D1Database).prepare(
             "SELECT patient_id FROM Patients WHERE patient_id = ?";
-        ).bind(patientId).first<{ patient_id: number }>();
+        ).bind(patientId).first<patient_id: number >();
 
         if (!patientCheck) {
             return NextResponse.json(

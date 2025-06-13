@@ -16,7 +16,7 @@ const memoryCache: Record<string, { value: string, expiry: number }> = {};
 
 class CacheService {
   private redisClient: unknown;
-  private connected: boolean = false;
+  private connected = false;
 
   constructor() {
     if (REDIS_ENABLED != null) {
@@ -84,7 +84,7 @@ class CacheService {
    * @param value Value to cache;
    * @param ttl Time to live in seconds;
    */
-  async set(key: string, value: string, ttl: number = 3600): Promise<void> {
+  async set(key: string, value: string, ttl = 3600): Promise<void> {
     try {
       // Try Redis if connected
       if (REDIS_ENABLED && this.connected) {

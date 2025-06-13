@@ -1,13 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { DrugInteractionService } from '../../services/drug-interaction-service';
-import { PharmacyDomain } from '../../models/domain-models';
 import { auditLog } from '../../../../lib/audit';
 import { errorHandler } from '../../../../lib/error-handler';
-import { getMedicationById, getPrescriptionById } from '../../../../lib/services/pharmacy/pharmacy.service';
 import { getPatientById } from '../../../../lib/services/patient/patient.service';
+import { getMedicationById, getPrescriptionById } from '../../../../lib/services/pharmacy/pharmacy.service';
 import { validateInteractionCheckRequest } from '../../../../lib/validation/pharmacy-validation';
+import type { PharmacyDomain } from '../../models/domain-models';
+import { DrugInteractionService } from '../../services/drug-interaction-service';
 }
 
 /**
@@ -77,10 +77,9 @@ export const POST = async (req: NextRequest) => {
       action: 'CHECK',
       resourceType: 'DrugInteraction';
       userId: userId,
-      details: {
+      details: 
         medicationIds: data.medicationIds,
         interactionCount: interactions.length
-      }
     });
 
     // Return response
@@ -133,10 +132,8 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
       resourceType: 'DrugInteraction';
       userId: userId,
       patientId: patientId;
-      details: {
         medicationCount: medicationIds.length,
         interactionCount: interactions.length
-      }
     });
 
     // Return response

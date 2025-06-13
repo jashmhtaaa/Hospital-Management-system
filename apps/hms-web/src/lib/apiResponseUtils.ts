@@ -21,7 +21,7 @@ export const _sendErrorResponse = (message: string, status: number, details?: un
  * @param status The HTTP status code (defaults to 200 for GET, 201 for POST/PUT if not specified).
  * @returns A NextResponse object with the success payload.
  */
-export const _sendSuccessResponse = (data: unknown, status: number = 200) => {
+export const _sendSuccessResponse = (data: unknown, status = 200) => {
   return NextResponse.json(data, { status })
 };
 

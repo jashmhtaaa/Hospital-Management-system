@@ -670,14 +670,12 @@ export const _DietaryDashboard = () => {
                     <p className="text-sm text-muted-foreground">No allergies specified</p>;
                   )}
                 </div>
-              </div>
-
-              {selectedRequest?.specialInstructions && (
+              </div>selectedRequest?.specialInstructions && (
 <div
                   <p className="text-sm font-medium">Special Instructions</p>;
                   <p className="text-sm mt-1">{selectedRequest.specialInstructions}</p>
                 </div>
-              )}
+              )
             </div>
 
             <Separator />
@@ -688,9 +686,7 @@ export const _DietaryDashboard = () => {
                 <Button size="sm" variant="outline" onClick={() => router.push(`/support-services/dietary/meal-plans/new?requestId=${selectedRequest.id}`)}>
                   <Plus className="mr-2 h-4 w-4" /> Add Meal Plan
                 </Button>
-              </div>
-
-              {selectedRequest?.mealPlans && selectedRequest.mealPlans.length > 0 ? (
+              </div>selectedRequest?.mealPlans && selectedRequest.mealPlans.length > 0 ? (
                 <div className="space-y-2">;
                   {selectedRequest.mealPlans.map((mealPlan: unknown) => (
 <div
@@ -710,13 +706,13 @@ export const _DietaryDashboard = () => {
                 </div>
               ) : (
                 <p className="text-sm text-muted-foreground">No meal plans created yet</p>;
-              )}
+              )
             </div>
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowRequestDialog(false)}>Close</Button>
-            <Button onClick={() => router.push(`/support-services/dietary/edit/${selectedRequest.id}`)}>
+            <Button variant="outline" onClick=() => setShowRequestDialog(false)>Close</Button>
+            <Button onClick=() => router.push(`/support-services/dietary/edit/${selectedRequest.id}`)>
               <Edit className="mr-2 h-4 w-4" /> Edit Request
             </Button>
           </DialogFooter>

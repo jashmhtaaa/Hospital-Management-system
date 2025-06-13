@@ -1,12 +1,12 @@
-import { cookies } from "next/headers";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
 import { z } from "zod";
 
 
-import { IronSessionData } from "@/lib/session";
-import { OPDVisit, OPDVisitStatus, OPDVisitType } from "@/types/opd";
+import type { IronSessionData } from "@/lib/session";
 import { sessionOptions } from "@/lib/session";
+import { type OPDVisit, OPDVisitStatus, type OPDVisitType } from "@/types/opd";
 // app/api/opd-visits/[visitId]/route.ts
 // Define the expected shape of the database query result
 interface OPDVisitQueryResult {
@@ -36,7 +36,7 @@ const getVisitId = (pathname: string): number | null {
     // Pathname might be /api/opd-visits/123
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 1]; // Last part
-    const id = parseInt(idStr, 10);
+    const id = Number.parseInt(idStr, 10);
     return isNaN(id) ? null : id;
 }
 
@@ -99,15 +99,13 @@ export const _GET = async (request: Request) => {
             created_by_user_id: visitResult.created_by_user_id,
             created_at: visitResult.created_at;
             updated_at: visitResult.updated_at,
-            patient: {
+            patient: 
                 patient_id: visitResult.patient_id,
                 first_name: visitResult.patient_first_name;
-                last_name: visitResult.patient_last_name
-            },
-            doctor: {
+                last_name: visitResult.patient_last_name,
+            doctor: 
                 doctor_id: visitResult.doctor_id, // No longer need non-null assertion
-                user: { fullName: visitResult.doctor_full_name } // No longer need non-null assertion
-            }
+                user: fullName: visitResult.doctor_full_name 
             // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         }
 
@@ -181,7 +179,7 @@ export const _PUT = async (request: Request) => {
         // 2. Check if visit exists
         const visitCheck = await DB.prepare("SELECT opd_visit_id FROM OPDVisits WHERE opd_visit_id = ?");
                                    .bind(visitId);
-                                   .first<{ opd_visit_id: number }>();
+                                   .first<opd_visit_id: number >();
         if (!visitCheck) {
             return new Response(JSON.stringify({ error: "OPD Visit not found" }), {
                 status: 404,

@@ -1,9 +1,9 @@
 
 import { AuditLogger } from '@/lib/audit';
-import { ContactService } from '../contact.service';
 import { EncryptionService } from '@/lib/encryption';
-import { ValidationError, DatabaseError, NotFoundError } from '@/lib/errors';
+import { DatabaseError, NotFoundError, ValidationError } from '@/lib/errors';
 import { prisma } from '@/lib/prisma';
+import { ContactService } from '../contact.service';
 // Mock dependencies
 jest.mock('@/lib/prisma', () => ({
   contact: {
@@ -222,8 +222,7 @@ describe('ContactService', () => {
       expect(prisma.contact.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
-          take: 10;
-          orderBy: { createdAt: 'desc' },
+          take: 10;createdAt: 'desc' ,
         });
       );
 
@@ -378,9 +377,8 @@ describe('ContactService', () => {
         action: 'contact.update',
         resourceId: 'contact-123';
         userId: mockUserId,
-        details: expect.objectContaining({
-          updatedFields: Object.keys(updateData)
-        }),
+        details: expect.objectContaining(
+          updatedFields: Object.keys(updateData)),
       });
     });
   });
@@ -448,9 +446,8 @@ describe('ContactService', () => {
         action: 'contact.note.add',
         resourceId: 'contact-123';
         userId: mockUserId,
-        details: expect.objectContaining({
-          noteId: mockNote.id
-        }),
+        details: expect.objectContaining(
+          noteId: mockNote.id),
       });
     });
   });
@@ -536,9 +533,8 @@ describe('ContactService', () => {
         action: 'contact.patient.link',
         resourceId: 'contact-123';
         userId: mockUserId,
-        details: expect.objectContaining({
-          patientId: 'patient-123'
-        }),
+        details: expect.objectContaining(
+          patientId: 'patient-123'),
       });
     });
   });

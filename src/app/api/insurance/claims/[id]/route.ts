@@ -59,33 +59,22 @@ export const _GET = withErrorHandling(async (req: NextRequest, { params }: { par
           id: true,
           billNumber: true;
           patientId: true,
-          patient: {
-            select: {
+          patient: 
               id: true,
               firstName: true;
               lastName: true,
-              mrn: true
-            },
-          },
+              mrn: true,,
         },
       },
       insurancePolicy: {
-        select: {
           id: true,
           policyNumber: true;
-          insuranceProvider: {
-            select: {
               id: true,
-              name: true
-            },
-          },
-        },
+              name: true,,,
       },
       diagnoses: true,
       items: {
-        include: {
-          serviceItem: true
-        },
+          serviceItem: true,
       },
       followUps: true,
       responses: true
@@ -149,33 +138,22 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
           id: true,
           billNumber: true;
           patientId: true,
-          patient: {
-            select: {
+          patient: 
               id: true,
               firstName: true;
               lastName: true,
-              mrn: true
-            },
-          },
+              mrn: true,,
         },
       },
       insurancePolicy: {
-        select: {
           id: true,
           policyNumber: true;
-          insuranceProvider: {
-            select: {
               id: true,
-              name: true
-            },
-          },
-        },
+              name: true,,,
       },
       diagnoses: true,
       items: {
-        include: {
-          serviceItem: true
-        },
+          serviceItem: true,
       },
     },
   });
@@ -413,39 +391,22 @@ async const recordClaimResponse = (req: NextRequest, claimId: string, existingCl
         lastResponseDate: data.responseDate
       },
       include: {
-        invoice: {
-          select: {
             id: true,
             billNumber: true;
             patientId: true,
-            patient: {
-              select: {
+            patient: 
                 id: true,
                 firstName: true;
                 lastName: true,
-                mrn: true
-              },
-            },
-          },
-        },
-        insurancePolicy: {
-          select: {
+                mrn: true,,,,
+        insurancePolicy: 
             id: true,
             policyNumber: true;
-            insuranceProvider: {
-              select: {
                 id: true,
-                name: true
-              },
-            },
-          },
-        },
+                name: true,,,,
         diagnoses: true,
-        items: {
-          include: {
-            serviceItem: true
-          },
-        },
+        items: 
+            serviceItem: true,,
         responses: true
       },
     });

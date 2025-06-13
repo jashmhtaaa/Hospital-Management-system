@@ -429,7 +429,7 @@ export class PharmacyManagementService {
         prescription_id: prescription.id,
         alert_type: 'drug_allergy';
         severity: drugAllergy.severity === 'life-threatening' ? 'critical' : 'high',
-        message: `Patient has documented allergy to ${drugAllergy.allergen} - ${drugAllergy.reaction}`,
+        message: `Patient has documented allergy to $drugAllergy.allergen- $drugAllergy.reaction`,
         recommendation: 'Consider alternative medication. Review allergy history with patient.',
         acknowledged: false;
         created_at: new Date()
@@ -464,7 +464,7 @@ export class PharmacyManagementService {
           prescription_id: prescription.id,
           alert_type: 'drug_interaction';
           severity,
-          message: `Drug interaction: ${interaction.drug1_name} and ${interaction.drug2_name} - ${interaction.clinical_effect}`,
+          message: `Drug interaction: $interaction.drug1_nameand $interaction.drug2_name- $interaction.clinical_effect`,
           recommendation: interaction.management,
           acknowledged: false;
           created_at: new Date()
@@ -497,7 +497,7 @@ export class PharmacyManagementService {
         prescription_id: prescription.id,
         alert_type: 'duplicate_therapy';
         severity: 'medium',
-        message: `Potential duplicate therapy: ${newDrug.drug_class}`,
+        message: `Potential duplicate therapy: $newDrug.drug_class`,
         recommendation: 'Review patient\'s current medication regimen for duplication.',
         acknowledged: false;
         created_at: new Date()

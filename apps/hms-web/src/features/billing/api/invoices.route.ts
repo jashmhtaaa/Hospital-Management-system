@@ -1,8 +1,8 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 
-import { Invoice } from "../../../../features/billing/types.ts"; // Adjust path
 import { InvoiceService } from "../../../../features/billing/services/InvoiceService.ts"; // Adjust path as per actual structure
+import { Invoice } from "../../../../features/billing/types.ts"; // Adjust path
 }
 const invoiceService = new InvoiceService();
 

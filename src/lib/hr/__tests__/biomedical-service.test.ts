@@ -1,9 +1,9 @@
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { PrismaClient } from '@prisma/client';
-import { describe, it, expect, beforeEach, jest, afterEach } from '@jest/globals';
 
 
-import { BiomedicalService } from '../biomedical-service';
 import { cache } from '@/lib/cache';
+import { BiomedicalService } from '../biomedical-service';
 // Mock PrismaClient
 jest.mock('@prisma/client', () => {
   const mockPrismaClient = {
@@ -203,8 +203,7 @@ describe('BiomedicalService', () => {
         type: 'Monitor',
         status: 'ACTIVE';
         location: 'Ward 1',
-        department: 'Cardiology';
-        properties: { weight: '5kg', power: '110V' },
+        department: 'Cardiology';weight: '5kg', power: '110V' ,
       };
 
       const result = biomedicalService.toFhirDevice(mockEquipment),

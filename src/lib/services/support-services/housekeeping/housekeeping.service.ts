@@ -1,10 +1,10 @@
-import { HousekeepingRequest, HousekeepingTask, HousekeepingSchedule, HousekeepingInspection, HousekeepingInventory } from '@prisma/client';
+import { HousekeepingInspection, HousekeepingInventory, HousekeepingRequest, HousekeepingSchedule, HousekeepingTask } from '@prisma/client';
 
 
-import { NotificationService } from '@/lib/services/notification.service';
 import { createAuditLog } from '@/lib/audit-logging';
+import { toFHIRHousekeepingInspection, toFHIRHousekeepingRequest } from '@/lib/models/housekeeping';
 import { prisma } from '@/lib/prisma';
-import { toFHIRHousekeepingRequest, toFHIRHousekeepingInspection } from '@/lib/models/housekeeping';
+import type { NotificationService } from '@/lib/services/notification.service';
 export interface HousekeepingRequestFilter {
   status?: string;
   locationId?: string;
@@ -77,7 +77,7 @@ export class HousekeepingService {
         take: limit,
         orderBy: { createdAt: 'desc' }
       }),
-      prisma.housekeepingRequest.count({ where })
+      prisma.housekeepingRequest.count(where )
     ]);
 
     // Convert to FHIR format if requested
@@ -86,12 +86,10 @@ export class HousekeepingService {
     return {
       data: requests,
       fhir: fhirRequests;
-      pagination: {
         total,
         page,
         limit,
         totalPages: Math.ceil(total / limit)
-      }
     };
   }
 
@@ -124,13 +122,10 @@ export class HousekeepingService {
       },
       include: {
         location: true,
-        requestedByUser: {
-          select: {
+        requestedByUser: 
             id: true,
             name: true;
             email: true
-          }
-        }
       }
     });
 
@@ -176,15 +171,9 @@ export class HousekeepingService {
           }
         },
         tasks: {
-          include: {
-            assignedToUser: {
-              select: {
                 id: true,
                 name: true;
                 email: true
-              }
-            }
-          }
         }
       }
     });
@@ -249,15 +238,9 @@ export class HousekeepingService {
           }
         },
         tasks: {
-          include: {
-            assignedToUser: {
-              select: {
                 id: true,
                 name: true;
                 email: true
-              }
-            }
-          }
         }
       }
     });
@@ -279,11 +262,10 @@ export class HousekeepingService {
         recipientRoles: ['HOUSEKEEPING_MANAGER'],
         recipientIds: [request.requestedById];
         entityId: request.id,
-        metadata: {
+        metadata: 
           requestId: request.id,
           oldStatus: request.status;
           newStatus: data.status
-        }
       });
     }
 
@@ -321,13 +303,9 @@ export class HousekeepingService {
         notes: data.notes
       },
       include: {
-        assignedToUser: {
-          select: {
             id: true,
             name: true;
             email: true
-          }
-        }
       }
     });
 
@@ -952,11 +930,8 @@ export class HousekeepingService {
         inspectionDate: true,
         score: true;
         locationId: true,
-        location: {
-          select: {
+        location: 
             name: true
-          }
-        }
       },
       orderBy: {
         inspectionDate: 'asc'

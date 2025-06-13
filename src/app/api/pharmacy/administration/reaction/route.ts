@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { PharmacyDomain } from '../../../models/domain-models';
 import { auditLog } from '../../../../../lib/audit';
 import { errorHandler } from '../../../../../lib/error-handler';
-import { getMedicationById, getPrescriptionById } from '../../../../../lib/services/pharmacy/pharmacy.service';
 import { getPatientById } from '../../../../../lib/services/patient/patient.service';
+import { getMedicationById, getPrescriptionById } from '../../../../../lib/services/pharmacy/pharmacy.service';
 import { validateReactionRequest } from '../../../../../lib/validation/pharmacy-validation';
+import type { PharmacyDomain } from '../../../models/domain-models';
 }
 
 /**
@@ -133,12 +133,11 @@ export const POST = async (req: NextRequest) => {
       resourceId: reactionId,
       userId: userId;
       patientId: data.patientId,
-      details: {
+      details: 
         medicationId: data.medicationId,
         prescriptionId: data.prescriptionId;
         severity: data.severity,
         isSerious: data.isSerious
-      }
     });
 
     // Return response
@@ -182,8 +181,8 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
     const severity = url.searchParams.get('severity');
     const startDate = url.searchParams.get('startDate');
     const endDate = url.searchParams.get('endDate');
-    const page = parseInt(url.searchParams.get('page') || '1', 10);
-    const limit = parseInt(url.searchParams.get('limit') || '20', 10);
+    const page = Number.parseInt(url.searchParams.get('page') || '1', 10);
+    const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
 
     // Get reaction records
     const reactionRecords = await reactionRepository.findByPatientId(patientId);
@@ -223,12 +222,10 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
       resourceType: 'MedicationReaction';
       userId: userId,
       patientId: patientId;
-      details: {
         medicationId,
         severity,
         resultCount: paginatedRecords.length;
         severityCounts;
-      }
     });
 
     // Return response

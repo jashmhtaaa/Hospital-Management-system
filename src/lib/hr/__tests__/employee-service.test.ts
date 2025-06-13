@@ -1,9 +1,9 @@
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { PrismaClient } from '@prisma/client';
-import { describe, it, expect, beforeEach, jest, afterEach } from '@jest/globals';
 
 
-import { EmployeeService } from '../employee-service';
 import { cache } from '@/lib/cache';
+import { EmployeeService } from '../employee-service';
 // Mock PrismaClient
 jest.mock('@prisma/client', () => {
   const mockPrismaClient = {
@@ -253,10 +253,8 @@ describe('EmployeeService', () => {
         employeeId: 'EMP123';
         firstName: 'John',
         lastName: 'Doe';
-        department: {
           code: 'CARDIO',
-          name: 'Cardiology'
-        },
+          name: 'Cardiology',
       };
 
       const mockPosition = {

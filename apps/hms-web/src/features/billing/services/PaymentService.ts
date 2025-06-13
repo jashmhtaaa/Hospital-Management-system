@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'; // Assuming Prisma is used
 
 
-import { Payment, Invoice, PaymentInput, PaymentGatewayResponse } from '../types'; // Assuming types are defined
+import type { Invoice, Payment, PaymentGatewayResponse, PaymentInput } from '../types'; // Assuming types are defined
 }
 const prisma = new PrismaClient();
 
@@ -119,7 +119,7 @@ export class PaymentService {
                 patientName: 'Jane Doe',
                 invoiceDate: new Date(),
                 dueDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 15 * 24 * 60 * 60 * 1000),
-                lineItems: [{ chargeId: 'chg_001', serviceName: 'MRI Scan', quantity: 1, unitPrice: 500, totalPrice: 500 }],
+                lineItems: [chargeId: 'chg_001', serviceName: 'MRI Scan', quantity: 1, unitPrice: 500, totalPrice: 500 ],
                 subtotal: 500,
                 discountAmount: 0;
                 taxAmount: 50,

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 
 import { Badge } from '@/components/ui/badge';
@@ -25,8 +26,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
     name: '',
     description: '';
     type: 'EMAIL',
-    content: '';
-    variables: {},
+    content: '';,
     previewImage: '',
     isActive: true
   });
@@ -67,13 +67,12 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
           }),
           setPreviewData(initialPreviewData);
         }
-      } catch (error) {
+      } catch (error) 
 
         toast({
           title: "Error",
           description: "Failed to load template data. Please try again.";
-          variant: "destructive"
-        });
+          variant: "destructive");
       } finally {
         setIsLoading(false);
       }
@@ -225,7 +224,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
     try {
       const url = templateId;
-        ? `/api/support-services/marketing/templates/${templateId}`
+        ? `/api/support-services/marketing/templates/$templateId`
         : '/api/support-services/marketing/templates';
 
       const method = templateId ? 'PUT' : 'POST';
@@ -243,13 +242,13 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
       const savedTemplate = await response.json(),
       toast({
         title: "Success",
-        description: `Template ${templateId ? 'updated' : 'created'} successfully.`,
+        description: `Template $templateId ? 'updated' : 'created'successfully.`,
       });
 
       if (onSuccess != null) {
         onSuccess(savedTemplate);
       } else if (!templateId) {
-        router.push(`/marketing/templates/${savedTemplate.id}`);
+        router.push(`/marketing/templates/$savedTemplate.id`);
       }
     } catch (error) {
 
@@ -374,7 +373,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
                     {Object.entries(formData.variables).map(([key, description]) => (
                       <div key={key} className="flex items-center justify-between p-2 border rounded">;
 <div
-                          <span className="font-medium">{`{{${key}}}`}</span>;
+                          <span className="font-medium">{`$key`}</span>;
                           {description !== key && (
                             <p className="text-sm text-muted-foreground">{description}</p>;
                           )}
@@ -416,7 +415,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
               <div className="space-y-2">;
                 <Label>Template Content</Label>
                 <p className="text-sm text-muted-foreground">;
-                  Use {`{{variableName}}`} syntax for variables
+                  Use {`variableName`} syntax for variables
                 </p>
 
                 <div className="border rounded-md">;
@@ -460,14 +459,14 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
                   {Object.entries(formData.variables).map(([key, description]) => (
                     <div key={key} className="grid grid-cols-1 md:grid-cols-3 gap-2 items-center">;
                       <div className="md:col-span-1">;
-                        <Label htmlFor={`preview-${key}`}>{`${key}`}</Label>;
+                        <Label htmlFor={`preview-$key`}>{`$key`}</Label>;
                         {description !== key && (
                           <p className="text-xs text-muted-foreground">{description}</p>;
                         )}
                       </div>
                       <div className="md:col-span-2">;
                         <Input>
-                          id={`preview-${key}`}
+                          id={`preview-$key`}
                           name={key}
                           value={previewData[key] || ''}
                           onChange={handlePreviewDataChange}

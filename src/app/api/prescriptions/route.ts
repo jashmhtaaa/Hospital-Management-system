@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 
-import type { D1ResultWithMeta } from "@/types/cloudflare"; // Import the specific type
 import { DB } from "@/lib/database";
-import { Prescription } from "@/types/opd";
 import { getSession } from "@/lib/session";
+import type { D1ResultWithMeta } from "@/types/cloudflare"; // Import the specific type
+import { Prescription } from "@/types/opd";
 // Zod schema for creating a prescription
 const prescriptionItemSchema = z.object({
     inventory_item_id: z.number(),

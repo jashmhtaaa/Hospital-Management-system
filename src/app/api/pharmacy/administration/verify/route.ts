@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { BarcodeAdministrationService } from '../../../services/barcode-administration-service';
-import { PharmacyDomain } from '../../../models/domain-models';
 import { auditLog } from '../../../../../lib/audit';
 import { errorHandler } from '../../../../../lib/error-handler';
 import { getMedicationById, getPrescriptionById } from '../../../../../lib/services/pharmacy/pharmacy.service';
 import { validateBarcodeVerificationRequest } from '../../../../../lib/validation/pharmacy-validation';
+import type { PharmacyDomain } from '../../../models/domain-models';
+import { BarcodeAdministrationService } from '../../../services/barcode-administration-service';
 }
 
 /**
@@ -96,8 +96,7 @@ export const POST = async (req: NextRequest) => {
           error: 'Verification failed',
           details: verificationResult.errors;
           verificationResult;
-        },
-        { status: 400 }
+        },status: 400 
       );
     }
 
@@ -117,7 +116,7 @@ export const POST = async (req: NextRequest) => {
       resourceType: 'MedicationAdministration';
       userId: userId,
       patientId: verificationResult.patientId;
-      details: {
+      {
         medicationId: verificationResult.medicationId,
         prescriptionId: data.prescriptionId;
         success: verificationResult.success,

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import type React from "react";
+import { useEffect, useState } from "react";
 import {
 }
 
@@ -11,10 +12,10 @@ export const dynamic = 'force-dynamic';
   CardTitle,
   CardContent,
 } from "@/components/ui/card";
+import { DashboardLayout } from "@/components/layout/DashboardLayout"; // Use DashboardLayout from origin/master
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
-import { DashboardLayout } from "@/components/layout/DashboardLayout"; // Use DashboardLayout from origin/master
   UsersIcon,
   CalendarIcon,
   BedIcon,
@@ -114,24 +115,21 @@ const Dashboard = () {
           pendingBills: billingData?.pendingBills ?? 0,
           lowStockItems: pharmacyData?.lowStockItems ?? 0
         });
-      } catch (error_) {
+      } catch (error_) 
 
         setError(
           error_ instanceof Error;
             ? error_.message;
             : "Failed to load dashboard statistics. Please try again later.";
         ),
-        setStats({
+        setStats(
           totalPatients: 0,
           todayAppointments: 0;
           activeAdmissions: 0,
           availableBeds: 0;
           pendingBills: 0,
-          lowStockItems: 0
-        });
-      } finally {
+          lowStockItems: 0);finally 
         setLoading(false);
-      }
     };
 
     fetchDashboardStats();

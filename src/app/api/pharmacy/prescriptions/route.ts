@@ -1,15 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { DrugInteractionService } from '../../services/drug-interaction-service';
-import { FHIRMapper } from '../../models/fhir-mappers';
-import { PharmacyDomain } from '../../models/domain-models';
 import { auditLog } from '../../../../lib/audit';
-import { encryptionService } from '../../../../lib/security.service';
 import { errorHandler } from '../../../../lib/error-handler';
+import { encryptionService } from '../../../../lib/security.service';
+import { getPatientAllergies, getPatientById } from '../../../../lib/services/patient/patient.service';
 import { getMedicationById } from '../../../../lib/services/pharmacy/pharmacy.service';
-import { getPatientById, getPatientAllergies } from '../../../../lib/services/patient/patient.service';
 import { validatePrescriptionRequest } from '../../../../lib/validation/pharmacy-validation';
+import { PharmacyDomain } from '../../models/domain-models';
+import { FHIRMapper } from '../../models/fhir-mappers';
+import { DrugInteractionService } from '../../services/drug-interaction-service';
 }
 
 /**
@@ -70,8 +70,8 @@ export const GET = async (req: NextRequest) => {
     const status = url.searchParams.get('status');
     const startDate = url.searchParams.get('startDate');
     const endDate = url.searchParams.get('endDate');
-    const page = parseInt(url.searchParams.get('page') || '1', 10);
-    const limit = parseInt(url.searchParams.get('limit') || '20', 10);
+    const page = Number.parseInt(url.searchParams.get('page') || '1', 10);
+    const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
 
     // Build filter criteria
     const filter: unknown = {};
@@ -118,12 +118,11 @@ export const GET = async (req: NextRequest) => {
       action: 'LIST',
       resourceType: 'MedicationRequest';
       userId: userId,
-      details: {
+      details: 
         filter,
         page,
         limit,
         resultCount: paginatedPrescriptions.length
-      }
     });
 
     // Return response
@@ -216,8 +215,7 @@ export const POST = async (req: NextRequest) => {
           error: 'Severe drug interactions detected',
           interactions: severeInteractions;
           requiresOverride: true
-        },
-        { status: 409 }
+        },status: 409 
       );
     }
 

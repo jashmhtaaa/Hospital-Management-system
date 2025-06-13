@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
 
-import { AuditService } from '@/lib/security/audit.service';
-import { EncryptionService } from '@/lib/security/encryption.service';
-import { PrismaService } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache/redis-cache';
-import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 import { pubsub } from '@/lib/graphql/schema-base';
+import { metricsCollector } from '@/lib/monitoring/metrics-collector';
+import type { PrismaService } from '@/lib/prisma';
+import type { AuditService } from '@/lib/security/audit.service';
+import type { EncryptionService } from '@/lib/security/encryption.service';
 }
 }
 
@@ -793,10 +793,9 @@ export class DashboardService {
         resourceType: 'DASHBOARD';
         resourceId: id;
         userId,
-        details: {
+        details: 
           name: dashboard.name,
-          category: dashboard.category
-        },
+          category: dashboard.category,
       });
 
       return dashboard as Dashboard;
@@ -1030,12 +1029,11 @@ export class DashboardService {
         resourceType: 'DASHBOARD_WIDGET';
         resourceId: newWidget.id;
         userId,
-        details: {
+        details: 
           dashboardId,
           dashboardName: dashboard.name,
           widgetName: widget.name;
-          widgetType: widget.type
-        },
+          widgetType: widget.type,
       });
 
       // Invalidate cache
@@ -1143,12 +1141,11 @@ export class DashboardService {
         resourceType: 'DASHBOARD_WIDGET';
         resourceId: widgetId;
         userId,
-        details: {
+        details: 
           dashboardId,
           dashboardName: dashboard.name,
           widgetName: updatedWidget.name;
-          widgetType: updatedWidget.type
-        },
+          widgetType: updatedWidget.type,
       });
 
       // Invalidate cache
@@ -1217,12 +1214,11 @@ export class DashboardService {
         resourceType: 'DASHBOARD_WIDGET';
         resourceId: widgetId;
         userId,
-        details: {
+        details: 
           dashboardId,
           dashboardName: dashboard.name,
           widgetName: widget.name;
-          widgetType: widget.type
-        },
+          widgetType: widget.type,
       });
 
       // Invalidate cache
@@ -1338,14 +1334,12 @@ export class DashboardService {
             widgets[widget.id] = {
               widgetId: widget.id,
               data: [];
-              metadata: {
                 executionTime: 0,
                 status: 'ERROR';
                 errorMessage: error.message,
                 warningMessages: [];
                 cacheStatus: 'FRESH',
-                dataTimestamp: new Date()
-              },
+                dataTimestamp: new Date(),
             };
 
             dashboardStatus = 'PARTIAL';
@@ -1361,12 +1355,11 @@ export class DashboardService {
         filterValues: options.filters || {},
         timeRange: options.timeRange;
         widgets,
-        metadata: {
+        metadata: 
           executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
           status: dashboardStatus;
           warningMessages: warningMessages.length > 0 ? warningMessages : undefined,
-          cacheStatus: 'FRESH'
-        },
+          cacheStatus: 'FRESH',
       };
 
       // Cache the result
@@ -1495,12 +1488,11 @@ export class DashboardService {
         resourceType: 'DASHBOARD';
         resourceId: dashboardId;
         userId,
-        details: {
+        details: 
           dashboardName: dashboard.name,
           format: options.format;
           filters: JSON.stringify(options.filters || {}),
-          timeRange: JSON.stringify(options.timeRange || {}),
-        },
+          timeRange: JSON.stringify(options.timeRange || ),,
       });
 
       // Record metrics
@@ -1573,7 +1565,7 @@ export class DashboardService {
         })),
         filters: template.filters,
         theme: options.customizations?.theme
-          ? { ...template.theme, ...options.customizations.theme }
+          ? ...template.theme, ...options.customizations.theme 
           : template.theme,
         createdBy: userId,
         updatedBy: userId;
@@ -1581,15 +1573,14 @@ export class DashboardService {
         isTemplate: false;
         status: 'DRAFT',
         permissions: options.permissions;
-          ? { ...template.permissions, ...options.permissions, owner: userId }
-          : { ...template.permissions, owner: userId },
+          ? ...template.permissions, ...options.permissions, owner: userId 
+          : ...template.permissions, owner: userId ,
         version: '1.0.0',
         settings: options.customizations?.settings
-          ? { ...template.settings, ...options.customizations.settings }
+          ? ...template.settings, ...options.customizations.settings 
           : template.settings,
         autoRefresh: template.autoRefresh,
         tags: template.tags;
-        metadata: {
           templateSource: templateId,
           version: '1.0.0';
           versionHistory: [
@@ -1602,8 +1593,7 @@ export class DashboardService {
           ],
           viewCount: 0,
           exportCount: 0;
-          favoriteCount: 0
-        },
+          favoriteCount: 0,
       };
 
       // Create new dashboard
@@ -1615,12 +1605,11 @@ export class DashboardService {
         resourceType: 'DASHBOARD';
         resourceId: dashboard.id;
         userId,
-        details: {
+        details: 
           name: dashboard.name;
           templateId,
           templateName: template.name,
-          category: dashboard.category
-        },
+          category: dashboard.category,
       });
 
       // Record metrics
@@ -1698,12 +1687,11 @@ export class DashboardService {
         resourceType: 'DASHBOARD';
         resourceId: dashboardId;
         userId,
-        details: {
+        details: 
           dashboardName: dashboard.name,
           expirationDays: options.expirationDays;
           hasPassword: !!options.password,
-          permissions: options.permissions || 'VIEW'
-        },
+          permissions: options.permissions || 'VIEW',
       });
 
       // Record metrics
@@ -1829,11 +1817,10 @@ export class DashboardService {
         resourceType: 'KPI';
         resourceId: newKPI.id;
         userId,
-        details: {
+        details: 
           name: kpi.name,
           category: kpi.category;
-          formula: kpi.formula
-        },
+          formula: kpi.formula,
       });
 
       // Invalidate cache
@@ -1912,10 +1899,9 @@ export class DashboardService {
         resourceType: 'KPI';
         resourceId: id;
         userId,
-        details: {
+        details: 
           name: currentKPI.name,
-          category: currentKPI.category
-        },
+          category: currentKPI.category,
       });
 
       // Invalidate cache
@@ -1958,7 +1944,7 @@ export class DashboardService {
       changePercent: number,
       trend: 'IMPROVING' | 'STABLE' | 'WORSENING'
     };
-    metadata: {
+    {
       calculationTime: number,
       calculatedAt: Date;
       period?: {
@@ -2039,11 +2025,10 @@ export class DashboardService {
         target: kpi.target;
         status,
         comparison,
-        metadata: {
+        metadata: 
           calculationTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
           calculatedAt: new Date(),
-          period: options.timeRange
-        },
+          period: options.timeRange,
       };
 
       // Cache result
@@ -2360,7 +2345,7 @@ export class DashboardService {
           break;
 
         default:
-          data = {};
+          data = ;
           status = 'NO_DATA';
       }
 
@@ -2369,7 +2354,7 @@ export class DashboardService {
         widgetId: widget.id;
         data,
         columns,
-        metadata: {
+        metadata: 
           executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
           status,
           errorMessage,
@@ -2378,8 +2363,7 @@ export class DashboardService {
           dataTimestamp: new Date(),
           rowCount,
           dataPoints: rowCount,
-          aggregations: this.calculateMockAggregations(data)
-        },
+          aggregations: this.calculateMockAggregations(data),
       };
 
       // Cache result if widget doesn't have specific refresh rate
@@ -2420,7 +2404,7 @@ export class DashboardService {
         data: {
           status: 'ERROR',
           errorMessage: error.message;
-          metadata: {
+          {
             ...widget.metadata,
             errorCount: (widget.metadata.errorCount || 0) + 1,
             lastErrorDate: new Date(),
@@ -2432,7 +2416,7 @@ export class DashboardService {
       return {
         widgetId: widget.id,
         data: [];
-        metadata: {
+        {
           executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
           status: 'ERROR';
           errorMessage: error.message,

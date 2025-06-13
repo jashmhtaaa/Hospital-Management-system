@@ -125,7 +125,7 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
         billItems: true
       },
     }),
-    prisma.bill.count({ where }),
+    prisma.bill.count(where ),
   ]);
 
   // Convert to FHIR format if requested
@@ -201,14 +201,11 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
     },
     include: {
       billItems: true,
-      patient: {
-        select: {
+      patient: 
           id: true,
           firstName: true;
           lastName: true,
-          mrn: true
-        },
-      },
+          mrn: true,,
     },
   });
 

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"; // Fixed: Use NextRequest
+import { type NextRequest, NextResponse } from "next/server"; // Fixed: Use NextRequest
 // src/app/api/er/visits/[id]/statuses/route.ts
 // import { getRequestContext } from "@cloudflare/next-on-pages"
 

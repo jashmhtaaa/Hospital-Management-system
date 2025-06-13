@@ -60,7 +60,7 @@ export class CacheMetrics {
 
 // Enhance RedisCache to track metrics
 const originalGet = RedisCache.get;
-RedisCache.get = async function<T>(key: string): Promise<T | null> {
+RedisCache.get = async <T>(key: string): Promise<T | null> => {
   const result = await originalGet<T>(key);
   if (result != null) {
     CacheMetrics.recordHit();

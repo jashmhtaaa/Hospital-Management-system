@@ -41,10 +41,9 @@ export const DB = (): DBConnection => {
         throw error;
       }
     },
-    close: async () => {
+    close: async () => 
       // Close the connection
       return Promise.resolve();
-    }
   };
 };
 

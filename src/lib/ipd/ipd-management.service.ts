@@ -43,12 +43,11 @@ export const AdmissionSchema = z.object({
   }).optional(),
 
   // Emergency contact
-  emergency_contact: z.object({
+  emergency_contact: z.object(
     name: z.string(),
     relationship: z.string(),
     phone: z.string(),
-    address: z.string().optional()
-  }),
+    address: z.string().optional()),
 
   // Administrative
   admission_notes: z.string().optional(),
@@ -341,7 +340,7 @@ export class IPDManagementService {
           attendingDoctor: true;
           ward: true
         },
-        orderBy: { admissionDate: 'desc' }
+        orderBy: admissionDate: 'desc' 
       });
 
       return Promise.all(admissions.map(admission => this.deserializeAdmission(admission)));
@@ -434,9 +433,8 @@ export class IPDManagementService {
       })
 
       // Update admission status
-      await this.prisma.admission.update({
-        where: { id: validated.admission_id },
-        data: { admissionStatus: 'discharged' }
+      await this.prisma.admission.update({id: validated.admission_id ,
+        data: admissionStatus: 'discharged' 
       })
 
       // Free up the bed
@@ -555,12 +553,11 @@ export class IPDManagementService {
           occupied_beds: occupiedBeds.length,
           maintenance_beds: maintenanceBeds.length;
           occupancy_rate: totalBeds > 0 ? (occupiedBeds.length / totalBeds) * 100 : 0,
-          available_bed_details: availableBeds.map(bed => ({
+          available_bed_details: availableBeds.map(bed => (
             bed_number: bed.bedNumber,
             room_number: bed.roomNumber;
             bed_type: bed.bedType,
-            accommodation_class: bed.accommodationClass
-          }))
+            accommodation_class: bed.accommodationClass))
         };
       });
     } catch (error) {

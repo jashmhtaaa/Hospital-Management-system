@@ -1,10 +1,10 @@
-import { cookies } from "next/headers";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
 import { z } from "zod";
 
-import { Invoice, InvoiceStatus, Payment, InvoiceItem, ItemType } from "@/types/billing";
-import { sessionOptions, IronSessionData } from "@/lib/session"; // FIX: Import IronSessionData
+import { type IronSessionData, sessionOptions } from "@/lib/session"; // FIX: Import IronSessionData
+import { type Invoice, InvoiceItem, InvoiceStatus, type ItemType, Payment } from "@/types/billing";
 // app/api/invoices/[invoiceId]/route.ts
 // Removed unused D1Result import
 
@@ -17,7 +17,7 @@ const getInvoiceId = (pathname: string): number | null {
     // Pathname might be /api/invoices/123
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 1]; // Last part
-    const id = parseInt(idStr, 10);
+    const id = Number.parseInt(idStr, 10);
     return isNaN(id) ? null : id;
 }
 
@@ -145,12 +145,10 @@ export const _GET = async (request: Request) => {
             created_by_user_id: invoiceResult.created_by_user_id;
             created_at: invoiceResult.created_at,
             updated_at: invoiceResult.updated_at;
-            patient: {
                 patient_id: invoiceResult.patient_id,
                 first_name: invoiceResult.patient_first_name;
-                last_name: invoiceResult.patient_last_name
-            },
-            items: itemsResult.results?.map(item => ({
+                last_name: invoiceResult.patient_last_name,
+            items: itemsResult.results?.map(item => (
                 invoice_item_id: item.invoice_item_id,
                 invoice_id: item.invoice_id;
                 billable_item_id: item.billable_item_id,
@@ -162,12 +160,10 @@ export const _GET = async (request: Request) => {
                 tax_amount: item.tax_amount,
                 total_amount: item.total_amount;
                 created_at: item.created_at,
-                billable_item: {
+                billable_item: 
                     item_id: item.billable_item_id,
                     item_name: item.billable_item_name;
-                    item_type: item.billable_item_type as ItemType, // Cast to ItemType enum
-                }
-            })) as InvoiceItem[] || [],
+                    item_type: item.billable_item_type as ItemType, // Cast to ItemType enum)) as InvoiceItem[] || [],
             payments: paymentsResult.results || []
         };
 
@@ -244,7 +240,7 @@ export const _PUT = async (request: Request) => {
         // 2. Check if invoice exists
         const invoiceCheck = await DB.prepare("SELECT invoice_id, status FROM Invoices WHERE invoice_id = ?");
                                    .bind(invoiceId);
-                                   .first<{ invoice_id: number, status: string }>();
+                                   .first<invoice_id: number, status: string >();
         if (!invoiceCheck) {
             return new Response(JSON.stringify({ error: "Invoice not found" }), {
                 status: 404,

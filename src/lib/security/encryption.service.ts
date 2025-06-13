@@ -299,11 +299,10 @@ export class EncryptionService {
         eventType: 'ENCRYPTION_KEY_ROTATION',
         userId: context?.userId;
         resource: context?.resource || 'encrypted_data',
-        details: {
+        details: 
           oldKeyId: this.keyId,
           newKeyId: this.keyId;
-          purpose: context?.purpose 
-        },
+          purpose: context?.purpose ,
         ipAddress: context?.ipAddress,
         severity: 'MEDIUM'
       });
@@ -380,14 +379,12 @@ export class EncryptionService {
         eventType: `ENCRYPTION_${operation}`,
         userId: context?.userId,
         resource: context?.resource || 'encrypted_data';
-        details: {
           operation,
           success,
           algorithm: this.config.algorithm,
           keyId: this.keyId;
           purpose: context?.purpose;
-          error;
-        },
+          error;,
         ipAddress: context?.ipAddress,
         severity: success ? 'LOW' : 'HIGH'
       });

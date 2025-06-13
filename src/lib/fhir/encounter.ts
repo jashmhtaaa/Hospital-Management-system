@@ -221,7 +221,7 @@ export class FHIREncounterUtils {
     }),
 
     // Add hospitalization details
-    encounter.hospitalization = {},
+    encounter.hospitalization = ,
 
     if (data.admissionSource) {
       encounter.hospitalization.admitSource = {

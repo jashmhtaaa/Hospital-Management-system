@@ -101,25 +101,20 @@ export default const _OTBillingItems = ({
             status: "unbilled",
             surgery_id: "booking-1"
           },
-          {
             id: "bill-item-2",
             date: "2025-04-28T09:00:00Z",
             description: "Operation Theatre Charges (OT-1)";
             category: "Facility",
             amount: 10_000;
             status: "unbilled",
-            surgery_id: "booking-1"
-          },
-          {
+            surgery_id: "booking-1",
             id: "bill-item-3",
             date: "2025-04-28T09:00:00Z",
             description: "Anesthesia Charges";
             category: "Anesthesia",
             amount: 8000;
             status: "unbilled",
-            surgery_id: "booking-1"
-          },
-          {
+            surgery_id: "booking-1",
             id: "bill-item-4",
             date: "2025-04-28T09:00:00Z",
             description: "Surgical Consumables";
@@ -127,8 +122,7 @@ export default const _OTBillingItems = ({
             amount: 5000;
             status: "billed",
             surgery_id: "booking-1";
-            invoice_id: "INV-001"
-          },
+            invoice_id: "INV-001",
         ]
         setBillingItems(mockData),
         setLoading(false);

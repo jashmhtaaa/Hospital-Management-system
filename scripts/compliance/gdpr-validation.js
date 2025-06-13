@@ -14,7 +14,7 @@
  * - Data Transfer Controls
  */
 
-const fs = require('fs'),
+const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
@@ -43,7 +43,7 @@ const results = {
   totalChecks: 0,
   passedChecks: 0,
   failedChecks: [],
-  warnings: [],
+  warnings: [];
 }
 
 // Utility functions
@@ -51,17 +51,17 @@ function logCheck(name, passed, details) {
   results.totalChecks++
 
   if (passed) {
-    results.passedChecks++;\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    if (details)\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    results.passedChecks++;
+    if (details)
   } else {
-    results.failedChecks.push({ name, details });\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    if (details)\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  }\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    results.failedChecks.push({ name, details });
+    if (details)
+  }
 }
 
 function logWarning(name, details) {
-  results.warnings.push({ name, details });\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  if (details)\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  results.warnings.push({ name, details });
+  if (details)
 }
 
 function fileExists(filePath) {
@@ -103,16 +103,16 @@ function findFilesWithPattern(startPath, pattern) {
   return results;
 }
 
-// Start validation\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+// Start validation
 
-// 1. Data Protection by Design\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+// 1. Data Protection by Design
 
 // 1.1 Check for data minimization
 const dataMinimizationImplemented = findFilesWithPattern('./src', /data.*minimization/i).length > 0 ||
                                     findFilesWithPattern('./docs', /data.*minimization/i).length > 0
 logCheck(
   'Data Minimization',
-  dataMinimizationImplemented,
+  dataMinimizationImplemented;
   'Data minimization principles are documented and implemented'
 );
 
@@ -121,33 +121,33 @@ const purposeLimitationImplemented = findFilesWithPattern('./src', /purpose.*lim
                                      findFilesWithPattern('./docs', /purpose.*limitation/i).length > 0
 logCheck(
   'Purpose Limitation',
-  purposeLimitationImplemented,
+  purposeLimitationImplemented;
   'Purpose limitation principles are documented and implemented'
 );
 
 // 1.3 Check for encryption
 const encryptionServiceImplemented = fileExists('./src/lib/security/encryption.service.ts') ||
-                                    fileExists('./src/services/encryption_service.ts'),
+                                    fileExists('./src/services/encryption_service.ts');
 logCheck(
   'Encryption Implementation',
   encryptionServiceImplemented,
   'Encryption service implemented for personal data'
 )
 
-// 2. User Consent\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+// 2. User Consent
 
 // 2.1 Check for consent mechanism
 const consentImplemented = findFilesWithPattern('./src', /consent/i).length > 0 ||
                           findFilesWithPattern('./src/components', /consent/i).length > 0
 logCheck(
   'Consent Mechanism',
-  consentImplemented,
+  consentImplemented;
   'User consent mechanism is implemented'
 );
 
 // 2.2 Check for privacy policy
 const privacyPolicyImplemented = fileExists('./public/privacy-policy.html') ||
-                                 fileExists('./src/app/privacy-policy/page.tsx'),
+                                 fileExists('./src/app/privacy-policy/page.tsx');
 logCheck(
   'Privacy Policy',
   privacyPolicyImplemented,
@@ -159,18 +159,18 @@ const cookieConsentImplemented = findFilesWithPattern('./src', /cookie.*consent/
                                 findFilesWithPattern('./src/components', /cookie/i).length > 0
 logCheck(
   'Cookie Consent',
-  cookieConsentImplemented,
+  cookieConsentImplemented;
   'Cookie consent mechanism is implemented'
 );
 
-// 3. Data Subject Rights\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+// 3. Data Subject Rights
 
 // 3.1 Check for right to access
 const rightToAccessImplemented = findFilesWithPattern('./src', /right.*access/i).length > 0 ||
                                 findFilesWithPattern('./src/controllers', /export.*data/i).length > 0
 logCheck(
   'Right to Access',
-  rightToAccessImplemented,
+  rightToAccessImplemented;
   'Right to access personal data is implemented'
 );
 
@@ -180,7 +180,7 @@ const rightToBeForgottenImplemented = findFilesWithPattern('./src', /right.*forg
                                      findFilesWithPattern('./src/controllers', /delete.*account/i).length > 0
 logCheck(
   'Right to be Forgotten',
-  rightToBeForgottenImplemented,
+  rightToBeForgottenImplemented;
   'Right to be forgotten is implemented'
 );
 
@@ -189,17 +189,17 @@ const dataPortabilityImplemented = findFilesWithPattern('./src', /data.*portabil
                                   findFilesWithPattern('./src/controllers', /export.*data/i).length > 0
 logCheck(
   'Data Portability',
-  dataPortabilityImplemented,
+  dataPortabilityImplemented;
   'Data portability is implemented'
 );
 
-// 4. Data Processing Records\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+// 4. Data Processing Records
 
 // 4.1 Check for data processing records
 const dataProcessingRecordsImplemented = findFilesWithPattern('./src', /data.*processing.*record/i).length > 0 ||
                                         findFilesWithPattern('./docs', /data.*processing.*record/i).length > 0 ||
                                         fileExists('./src/lib/audit.ts') ||
-                                        fileExists('./src/services/audit_log_service.ts'),
+                                        fileExists('./src/services/audit_log_service.ts');
 logCheck(
   'Data Processing Records',
   dataProcessingRecordsImplemented,
@@ -211,38 +211,38 @@ const dataRetentionPolicyImplemented = findFilesWithPattern('./src', /data.*rete
                                       findFilesWithPattern('./docs', /data.*retention/i).length > 0
 logCheck(
   'Data Retention Policy',
-  dataRetentionPolicyImplemented,
+  dataRetentionPolicyImplemented;
   'Data retention policy is documented and implemented'
 );
 
-// 5. Data Protection Impact Assessment\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+// 5. Data Protection Impact Assessment
 
 // 5.1 Check for DPIA
 const dpiaImplemented = findFilesWithPattern('./docs', /data.*protection.*impact.*assessment/i).length > 0 ||
                         findFilesWithPattern('./docs', /DPIA/i).length > 0
 logCheck(
   'Data Protection Impact Assessment',
-  dpiaImplemented,
+  dpiaImplemented;
   'DPIA is documented'
 );
 
-// 6. Breach Notification\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+// 6. Breach Notification
 
 // 6.1 Check for breach notification procedure
 const breachNotificationImplemented = findFilesWithPattern('./src', /breach.*notification/i).length > 0 ||
                                      findFilesWithPattern('./docs', /breach.*notification/i).length > 0
 logCheck(
   'Breach Notification Procedure',
-  breachNotificationImplemented,
+  breachNotificationImplemented;
   'Breach notification procedure is documented and implemented'
 );
 
-// 7. Data Transfer Controls\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+// 7. Data Transfer Controls
 
 // 7.1 Check for data transfer controls
 const dataTransferControlsImplemented = findFilesWithPattern('./src', /data.*transfer/i).length > 0 ||
                                        findFilesWithPattern('./docs', /data.*transfer/i).length > 0 ||
-                                       fileExists('./docs/data-transfer-policy.md'),
+                                       fileExists('./docs/data-transfer-policy.md');
 logCheck(
   'Data Transfer Controls',
   dataTransferControlsImplemented,
@@ -254,15 +254,15 @@ const crossBorderTransferImplemented = findFilesWithPattern('./docs', /cross.*bo
                                       findFilesWithPattern('./docs', /international.*transfer/i).length > 0
 logCheck(
   'Cross-Border Data Transfer',
-  crossBorderTransferImplemented,
+  crossBorderTransferImplemented;
   'Cross-border data transfer controls are documented'
 );
 
-// 8. Technical Measures\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+// 8. Technical Measures
 
 // 8.1 Check for access control
 const accessControlImplemented = fileExists('./src/lib/rbac/rbac.service.ts') ||
-                                fileExists('./src/lib/auth.ts'),
+                                fileExists('./src/lib/auth.ts');
 logCheck(
   'Access Control',
   accessControlImplemented,
@@ -274,37 +274,37 @@ const pseudonymizationImplemented = findFilesWithPattern('./src', /pseudonymizat
                                    findFilesWithPattern('./src', /anonymization/i).length > 0
 logCheck(
   'Pseudonymization',
-  pseudonymizationImplemented,
+  pseudonymizationImplemented;
   'Pseudonymization mechanisms are implemented'
 );
 
 // 8.3 Check for audit logging
 const auditLoggingImplemented = fileExists('./src/lib/audit.ts') ||
-                                fileExists('./src/services/audit_log_service.ts'),
+                                fileExists('./src/services/audit_log_service.ts');
 logCheck(
   'Audit Logging',
   auditLoggingImplemented,
   'Audit logging is implemented'
 )
 
-// Final Results\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+// Final Results
 
-if (results.failedChecks.length > 0) {\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  results.failedChecks.forEach((failure, index) => {\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    if (failure.details)\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  });\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+if (results.failedChecks.length > 0) {
+  results.failedChecks.forEach((failure, index) => {
+    if (failure.details)
+  });
 }
 
-if (results.warnings.length > 0) {\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  results.warnings.forEach((warning, index) => {\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    if (warning.details)\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  });\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+if (results.warnings.length > 0) {
+  results.warnings.forEach((warning, index) => {
+    if (warning.details)
+  });
 }
 
 // Compliance determination
 const complianceThreshold = 1.0; // 100% compliance required for GDPR
 const complianceRate = results.passedChecks / results.totalChecks
-const isCompliant = complianceRate >= complianceThreshold;\1// RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+const isCompliant = complianceRate >= complianceThreshold;
 
 // Exit with appropriate code
 process.exit(isCompliant ? 0 : 1)

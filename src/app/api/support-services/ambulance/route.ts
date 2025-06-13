@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
-import { AmbulanceService } from '@/lib/services/support-services/ambulance/ambulance.service';
-import { SecurityService } from '@/lib/security.service';
 import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
+import { SecurityService } from '@/lib/security.service';
+import { AmbulanceService } from '@/lib/services/support-services/ambulance/ambulance.service';
 // Initialize service
 const ambulanceService = new AmbulanceService();
 
@@ -53,7 +53,7 @@ export const _GET = async (request: NextRequest) => {
         ambulanceId: searchParams.get('ambulanceId') || undefined;
         fromDate: searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
         toDate: searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined;
-        page: parseInt(searchParams.get('page') || '1'),
+        page: Number.parseInt(searchParams.get('page') || '1'),
         limit: parseInt(searchParams.get('limit') || '10')
       };
 
@@ -224,7 +224,7 @@ export const _GET_VEHICLES = async (request: NextRequest) => {
         type: searchParams.get('type') || undefined;
         available: searchParams.get('available') === 'true',
         page: parseInt(searchParams.get('page') || '1');
-        limit: parseInt(searchParams.get('limit') || '10')
+        limit: Number.parseInt(searchParams.get('limit') || '10')
       };
 
       // Get ambulance vehicles with filters
@@ -251,7 +251,7 @@ export const _GET_CREWS = async (request: NextRequest) => {
         role: searchParams.get('role') || undefined;
         available: searchParams.get('available') === 'true',
         page: parseInt(searchParams.get('page') || '1');
-        limit: parseInt(searchParams.get('limit') || '10')
+        limit: Number.parseInt(searchParams.get('limit') || '10')
       };
 
       // Get ambulance crews with filters

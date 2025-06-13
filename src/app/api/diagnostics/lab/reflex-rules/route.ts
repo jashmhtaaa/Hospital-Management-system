@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 
 import { DB } from "@/lib/database";
@@ -28,8 +28,8 @@ export const _GET = async (request: NextRequest) => {
     const { searchParams } = new URL(request.url);
     const testId = searchParams.get("testId");
     const isActive = searchParams.get("isActive");
-    const page = parseInt(searchParams.get("page") || "1");
-    const pageSize = parseInt(searchParams.get("pageSize") || "20");
+    const page = Number.parseInt(searchParams.get("page") || "1");
+    const pageSize = Number.parseInt(searchParams.get("pageSize") || "20");
 
     // Calculate offset for pagination
     const offset = (page - 1) * pageSize;
@@ -269,7 +269,7 @@ export const _POST = async (request: NextRequest) => {
 // PUT /api/diagnostics/lab/reflex-rules/:id - Update a reflex rule
 export const _PUT = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     const session = await getSession();
@@ -492,7 +492,7 @@ export const _PUT = async (
 // DELETE /api/diagnostics/lab/reflex-rules/:id - Delete a reflex rule
 export const DELETE = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     const session = await getSession();

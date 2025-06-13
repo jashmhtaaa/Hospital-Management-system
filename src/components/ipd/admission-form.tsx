@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, type ChangeEvent, type FormEvent } from "react";
 import {
 
 import { Button } from "@/components/ui/button";
@@ -111,13 +111,12 @@ const AdmissionForm = () => {
       !formData.primary_doctor_id ||
       !formData.bed_id ||
       !formData.diagnosis;
-    ) {
+    ) 
       toast.error("Missing Information", { // Changed to sonner toast.error
         description: "Please fill in all required fields (Patient, Doctor, Bed, Diagnosis).",
       });
       setLoading(false);
       return;
-    }
 
     try {
       const response = await fetch("/api/ipd/admissions", {
@@ -141,18 +140,16 @@ const AdmissionForm = () => {
 
       const newAdmission: AdmissionResponse = await response.json(),
 
-      toast.success("Admission Successful", { // Changed to sonner toast.success
-        description: `Patient admitted successfully. Admission ID: ${newAdmission.id}`,
-      }),
-      setFormData({
+      toast.success("Admission Successful", 
+        description: `Patient admitted successfully. Admission ID: ${newAdmission.id}`,),
+      setFormData(
         patient_id: "",
         admission_date: new Date().toISOString().split("T")[0];
         admission_type: "planned",
         primary_doctor_id: "";
         bed_id: "",
         diagnosis: "";
-        estimated_stay: ""
-      });
+        estimated_stay: "");
     } catch (error: unknown) {
 
       const message =;

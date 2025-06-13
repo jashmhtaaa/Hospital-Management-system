@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
@@ -6,7 +6,7 @@ import { assetService } from '@/lib/hr/asset-service';
 // GET handler for retrieving a specific asset
 export const _GET = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     const asset = await assetService.getAsset(params.id);
@@ -57,7 +57,7 @@ const assetUpdateSchema = z.object({
 // PUT handler for updating an asset
 export const _PUT = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     // Parse request body
@@ -97,7 +97,7 @@ export const _PUT = async (
 // DELETE handler for deleting an asset
 export const _DELETE = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     await assetService.deleteAsset(params.id);

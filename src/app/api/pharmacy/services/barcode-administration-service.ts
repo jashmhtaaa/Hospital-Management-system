@@ -1,4 +1,4 @@
-import { injectable, inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 
 
 import { PharmacyDomain } from '../models/domain-models';
@@ -431,7 +431,7 @@ export class BarcodeMedicationAdministrationService {
       // Every X hours
       const hourMatch = frequency.match(/every\s+(\d+)\s+hours?/i);
       if (hourMatch && hourMatch[1]) {
-        const intervalHours = parseInt(hourMatch[1], 10);
+        const intervalHours = Number.parseInt(hourMatch[1], 10);
         const hoursInDay = 24;
 
         for (let hour = 0; hour < hoursInDay; hour += intervalHours) {

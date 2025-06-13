@@ -1,14 +1,14 @@
 
-import accessibilityPlugin from 'eslint-plugin-jsx-a11y';
-import globals from 'globals';
+import pluginJs from '@eslint/js';
+import type { Linter } from 'eslint';
 import importPlugin from 'eslint-plugin-import';
 import jestPlugin from 'eslint-plugin-jest';
-import pluginJs from '@eslint/js';
-import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import accessibilityPlugin from 'eslint-plugin-jsx-a11y';
 import reactPlugin from 'eslint-plugin-react';
+import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import securityPlugin from 'eslint-plugin-security';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import type { Linter } from 'eslint';
 /**
  * Enterprise ESLint Configuration - TypeScript Edition
  * Hospital Management System

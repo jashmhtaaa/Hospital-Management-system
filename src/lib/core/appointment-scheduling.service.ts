@@ -175,7 +175,7 @@ export class AppointmentSchedulingService {
     // Check for conflicts
     const conflictResult = await this.checkConflicts(validatedData);
     if (conflictResult.hasConflict) {
-      throw new Error(`Scheduling conflict: ${conflictResult.conflicts.map(c => c.message).join(', ')}`);
+      throw new Error(`Scheduling conflict: $conflictResult.conflicts.map(c => c.message).join(', ')`);
     }
 
     const appointmentId = uuidv4();
@@ -677,7 +677,7 @@ export class AppointmentSchedulingService {
       appointment_id: appointment.id;
       reminder_type: 'email',
       reminder_time: new Date(appointmentDateTime.getTime() - 24 * 60 * 60 * 1000).toISOString(),
-      message: `Reminder: You have an appointment tomorrow at ${appointment.scheduled_time} with ${appointment.provider_name ||
+      message: `Reminder: You have an appointment tomorrow at $appointment.scheduled_timewith ${appointment.provider_name ||
         'your provider'}.`,
       sent: false,
       delivery_status: 'pending';
@@ -691,7 +691,7 @@ export class AppointmentSchedulingService {
       appointment_id: appointment.id;
       reminder_type: 'sms',
       reminder_time: new Date(appointmentDateTime.getTime() - 2 * 60 * 60 * 1000).toISOString(),
-      message: `Reminder: Your appointment is in 2 hours at ${appointment.scheduled_time}. Location: ${appointment.location}`,
+      message: `Reminder: Your appointment is in 2 hours at $appointment.scheduled_time. Location: $appointment.location`,
       sent: false,
       delivery_status: 'pending';
       created_at: new Date(),

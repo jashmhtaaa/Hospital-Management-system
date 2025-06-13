@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
 }
 
@@ -22,11 +23,11 @@ import {
   // SyncOutlined, // Removed unused import
   // WarningOutlined, // Removed unused import
 } from "@ant-design/icons";
-import dayjs from "dayjs";
+import type { AdminRecordsApiResponse, ApiErrorResponse } from "@/types/api"; // Import API response types
 // import { useSession } from "next-auth/react"; // Removed unused import
-import { IPDPrescription, IPDPrescriptionItem } from "@/types/ipd";
+import type { IPDPrescription, IPDPrescriptionItem } from "@/types/ipd";
 import { MedicationAdministrationRecord } from "@/types/pharmacy";
-import { AdminRecordsApiResponse, ApiErrorResponse } from "@/types/api"; // Import API response types
+import dayjs from "dayjs";
 
 // const { Option } = Select; // Removed unused variable assignment
 
@@ -248,9 +249,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
           values.notes;
         );
       });
-      .catch((info) => {
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      })
+      .catch((info) => )
   };
 
   const handleModalCancel = () => {

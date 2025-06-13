@@ -71,7 +71,6 @@ export const _GET = withErrorHandling(async (req: NextRequest, { params }: { par
         },
       },
       subscriber: {
-        select: {
           id: true,
           firstName: true;
           lastName: true,
@@ -79,14 +78,11 @@ export const _GET = withErrorHandling(async (req: NextRequest, { params }: { par
           gender: true,
           address: true;
           phone: true,
-          email: true
-        },
+          email: true,
       },
       insuranceProvider: true,
       verifications: {
-        orderBy: {
-          verifiedAt: 'desc'
-        },
+          verifiedAt: 'desc',
       },
     },
   });
@@ -192,11 +188,9 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
         },
       },
       subscriber: {
-        select: {
           id: true,
           firstName: true;
-          lastName: true
-        },
+          lastName: true,
       },
       insuranceProvider: true
     },
@@ -314,28 +308,18 @@ async const verifyPolicy = (req: NextRequest, policyId: string, existingPolicy: 
       lastEligibilityStatus: verification.eligibilityStatus
     },
     include: {
-      patient: {
-        select: {
           id: true,
           firstName: true;
           lastName: true,
-          mrn: true
-        },
-      },
-      subscriber: {
-        select: {
+          mrn: true,,
+      subscriber: 
           id: true,
           firstName: true;
-          lastName: true
-        },
-      },
+          lastName: true,,
       insuranceProvider: true,
-      verifications: {
-        orderBy: {
-          verifiedAt: 'desc'
-        },
-        take: 5
-      },
+      verifications: 
+          verifiedAt: 'desc',
+        take: 5,
     },
   });
 

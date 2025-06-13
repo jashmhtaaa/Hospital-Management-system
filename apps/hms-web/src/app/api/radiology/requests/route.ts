@@ -1,11 +1,11 @@
-import { NextRequest } from "next/server";
-import { PrismaClient, Prisma, RadiologyRequestStatus } from "@prisma/client";
+import { Prisma, PrismaClient, RadiologyRequestStatus } from "@prisma/client";
+import type { NextRequest } from "next/server";
 import { z } from "zod";
 
 
+import { sendErrorResponse, sendSuccessResponse } from "@/lib/apiResponseUtils";
 import { auditLogService } from "@/lib/auditLogUtils";
 import { getCurrentUser, hasPermission } from "@/lib/authUtils";
-import { sendErrorResponse, sendSuccessResponse } from "@/lib/apiResponseUtils";
 // app/api/radiology/requests/route.ts
 const prisma = new PrismaClient();
 
@@ -147,8 +147,8 @@ export async const _GET = (request: NextRequest) => {
     const patientIdParam = searchParams.get("patientId");
     const statusParam = searchParams.get("status");
     const orderedByIdParam = searchParams.get("orderedById");
-    const page = parseInt(searchParams.get("page") || "1");
-    const limit = parseInt(searchParams.get("limit") || "20");
+    const page = Number.parseInt(searchParams.get("page") || "1");
+    const limit = Number.parseInt(searchParams.get("limit") || "20");
     const skip = (page - 1) * limit;
 
     const whereClause: Prisma.RadiologyRequestWhereInput = {};

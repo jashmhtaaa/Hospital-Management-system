@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 
 import { getDB } from "@/lib/database"; // Using mock DB
@@ -61,7 +61,7 @@ interface LabOrder {
   result_entry_at: string | null,
   result_verified_at: string | null;
   notes?: string | null;
-  tests: { test_id: number | string, status: string; name?: string }[];
+  { test_id: number | string, status: string; name?: string }[];
   created_at?: string;
   updated_at?: string;
   patient_details?: unknown;
@@ -131,10 +131,9 @@ async const createLabOrderInDB = (orderData: LabOrderInput): Promise<LabOrder> {
     result_verified_at: null,  // Use null instead of undefined
     notes: orderData.notes,
     created_at: new Date().toISOString(),
-    tests: (orderData.tests || []).map((test: LabTestInput) => ({
+    tests: (orderData.tests || []).map((test: LabTestInput) => (
       test_id: test.test_id,
-      status: "pending"
-    })),
+      status: "pending")),
   };
   return newOrder;
 }
@@ -266,14 +265,13 @@ export const _POST = async (request: NextRequest) => {
       !orderData.ordering_doctor_id ||
       !orderData.tests ||
       orderData.tests.length === 0;
-    ) {
+    ) 
       return NextResponse.json(
         {
           error: "Missing required fields (patient_id, ordering_doctor_id, tests)",
         },
         { status: 400 }
       );
-    }
 
     const newOrder = await createLabOrderInDB(orderData);
 
@@ -288,9 +286,8 @@ export const _POST = async (request: NextRequest) => {
     );
   }
 export const _PUT = async (
-  request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
-) {
+  request: NextRequest;params : params: Promise<{ id: string }> 
+) 
   try {
     const session = await getSession()
     if (!session || !session.user) {

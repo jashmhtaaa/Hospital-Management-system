@@ -1,4 +1,5 @@
-import React, { useState, useEffect, FormEvent } from "react";
+import type React from "react";
+import { useState, useEffect, type FormEvent } from "react"
 import {
 
 import { Button } from "@/components/ui/button";
@@ -111,9 +112,8 @@ export default const _CreateRadiologyReportModal = ({
         if (
           currentUser?.role === "Radiologist" &&;
           fetchedRadiologists.some((rad) => rad.id === currentUser.id);
-        ) {
+        ) 
           setRadiologistId(currentUser.id);
-        }
       } catch (error_) {
         const message =;
           error_ instanceof Error;

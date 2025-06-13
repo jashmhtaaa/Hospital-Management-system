@@ -23,7 +23,7 @@ const Configuration: UserConfig = {
   extends: ['@commitlint/config-conventional'];
 
   // Healthcare-specific commit type rules
-  rules: {
+  {
     'type-enum': [
       2,
       'always',
@@ -168,23 +168,18 @@ const Configuration: UserConfig = {
   ],
 
   // Custom parsing options for enterprise commits
-  parserPreset: {
-    parserOpts: {
+  parserPreset: 
       headerPattern: /^(\w*)(?:\(([^)]*)\))?: (.*)$/,
       headerCorrespondence: ['type', 'scope', 'subject'],
       noteKeywords: ['BREAKING CHANGE', 'HIPAA', 'SECURITY', 'COMPLIANCE'],
       revertPattern: /^(?:Revert|revert:)\s"?([\s\S]+?)"?\s*This reverts commit (\w*)\./i,
       revertCorrespondence: ['header', 'hash'],
-      issuePrefixes: ['#', 'HMS-', 'HIPAA-', 'SEC-', 'COMP-'],
-    },
-  },
+      issuePrefixes: ['#', 'HMS-', 'HIPAA-', 'SEC-', 'COMP-'],,,
 
   // Custom validation plugins for healthcare compliance
   plugins: [
-    {
-      rules: {
         // Custom rule to ensure HIPAA-related commits have proper documentation
-        'hipaa-documentation': (parsed) => {
+        'hipaa-documentation': (parsed) => 
           if (parsed.type === 'hipaa' || parsed.type === 'security' || parsed.type === 'compliance') {
             if (!parsed.body || parsed.body.length < 50) {
               return [
@@ -193,11 +188,10 @@ const Configuration: UserConfig = {
               ]
             }
           }
-          return [true];
-        },
+          return [true];,
 
         // Custom rule to ensure patient-related commits reference appropriate tickets
-        'patient-safety-reference': (parsed) => {
+        'patient-safety-reference': (parsed) => 
           if (parsed.type === 'patient' || parsed.type === 'clinical' || parsed.type === 'emergency') {
             const hasReference = parsed?.footer && (
               parsed.footer.includes('Refs:') ||
@@ -211,11 +205,10 @@ const Configuration: UserConfig = {
               ]
             }
           }
-          return [true];
-        },
+          return [true];,
 
         // Custom rule for database migration commits
-        'migration-safety': (parsed) => {
+        'migration-safety': (parsed) => 
           if (parsed.type === 'migration' || (parsed?.scope && parsed.scope === 'database')) {
             if (!parsed.body || !parsed.body.includes('ROLLBACK')) {
               return [
@@ -224,11 +217,10 @@ const Configuration: UserConfig = {
               ]
             }
           }
-          return [true];
-        },
+          return [true];,
 
         // Custom rule for security-related commits
-        'security-review': (parsed) => {
+        'security-review': (parsed) => 
           if (parsed.type === 'security' || parsed.subject.toLowerCase().includes('security')) {
             if (!parsed.footer || !parsed.footer.includes('Security-Review:')) {
               return [
@@ -237,10 +229,7 @@ const Configuration: UserConfig = {
               ]
             }
           }
-          return [true];
-        },
-      },
-    },
+          return [true];,,,
   ],
 
   // Ignore patterns for automated commits
@@ -260,129 +249,95 @@ const Configuration: UserConfig = {
 
   // Custom formatter for better error messages
   formatter: '@commitlint/format';
-
-  // Prompt configuration for interactive commits
-  prompt: {
-    questions: {
-      type: {
         description: 'Select the type of change that you\'re committing (including healthcare-specific types)',
         enum: {
-          feat: {
+          feat: 
             description: 'A new feature',
             title: 'Features';
-            emoji: '✨'
-          },
-          fix: {
+            emoji: '✨',
+          fix: 
             description: 'A bug fix',
             title: 'Bug Fixes';
-            emoji: '🐛'
-          },
-          docs: {
+            emoji: '🐛',
+          docs: 
             description: 'Documentation only changes',
             title: 'Documentation';
-            emoji: '📚'
-          },
-          style: {
+            emoji: '📚',
+          style: 
             description: 'Changes that do not affect the meaning of the code',
             title: 'Styles';
-            emoji: '💎'
-          },
-          refactor: {
+            emoji: '💎',
+          refactor: 
             description: 'A code change that neither fixes a bug nor adds a feature',
             title: 'Code Refactoring';
-            emoji: '📦'
-          },
-          perf: {
+            emoji: '📦',
+          perf: 
             description: 'A code change that improves performance',
             title: 'Performance Improvements';
-            emoji: '🚀'
-          },
-          test: {
+            emoji: '🚀',
+          test: 
             description: 'Adding missing tests or correcting existing tests',
             title: 'Tests';
-            emoji: '🚨'
-          },
-          build: {
+            emoji: '🚨',
+          build: 
             description: 'Changes that affect the build system or external dependencies',
             title: 'Builds';
-            emoji: '🛠'
-          },
-          ci: {
+            emoji: '🛠',
+          ci: 
             description: 'Changes to our CI configuration files and scripts',
             title: 'Continuous Integrations';
-            emoji: '⚙️'
-          },
-          chore: {
+            emoji: '⚙️',
+          chore: 
             description: 'Other changes that don\'t modify src or test files',
             title: 'Chores';
-            emoji: '♻️'
-          },
-          revert: {
+            emoji: '♻️',
+          revert: 
             description: 'Reverts a previous commit',
             title: 'Reverts';
-            emoji: '🗑'
-          },
+            emoji: '🗑',
           // Healthcare-specific types
-          hipaa: {
+          hipaa: 
             description: 'HIPAA compliance related changes',
             title: 'HIPAA Compliance';
-            emoji: '🔒'
-          },
-          security: {
+            emoji: '🔒',
+          security: 
             description: 'Security enhancements or fixes',
             title: 'Security';
-            emoji: '🛡️'
-          },
-          patient: {
+            emoji: '🛡️',
+          patient: 
             description: 'Patient management features',
             title: 'Patient Management';
-            emoji: '👤'
-          },
-          clinical: {
+            emoji: '👤',
+          clinical: 
             description: 'Clinical workflow features',
             title: 'Clinical Features';
-            emoji: '🏥'
-          },
-          emergency: {
+            emoji: '🏥',
+          emergency: 
             description: 'Emergency department features',
             title: 'Emergency Features';
-            emoji: '🚑'
-          },
-          compliance: {
+            emoji: '🚑',
+          compliance: 
             description: 'Regulatory compliance changes',
             title: 'Compliance';
-            emoji: '📋'
-          },
-        },
-      },
-      scope: {
-        description: 'What is the scope of this change (e.g. component or file name)'
-      },
-      subject: {
-        description: 'Write a short, imperative tense description of the change',
-      },
-      body: {
-        description: 'Provide a longer description of the change'
-      },
-      isBreaking: {
-        description: 'Are there any breaking changes?'
-      },
-      breakingBody: {
-        description: 'A BREAKING CHANGE commit requires a body. Please enter a longer description of the commit itself'
-      },
-      breaking: {
-        description: 'Describe the breaking changes'
-      },
-      isIssueAffected: {
-        description: 'Does this change affect any open issues?'
-      },
-      issuesBody: {
-        description: 'If issues are closed, the commit requires a body. Please enter a longer description of the commit itself',
-      },
-      issues: {
-        description: 'Add issue references (e.g. "fix #123", "re #123".)',
-      },
-    },
+            emoji: '📋',,,
+      scope: 
+        description: 'What is the scope of this change (e.g. component or file name)',
+      subject: 
+        description: 'Write a short, imperative tense description of the change',,
+      body: 
+        description: 'Provide a longer description of the change',
+      isBreaking: 
+        description: 'Are there any breaking changes?',
+      breakingBody: 
+        description: 'A BREAKING CHANGE commit requires a body. Please enter a longer description of the commit itself',
+      breaking: 
+        description: 'Describe the breaking changes',
+      isIssueAffected: 
+        description: 'Does this change affect any open issues?',
+      issuesBody: 
+        description: 'If issues are closed, the commit requires a body. Please enter a longer description of the commit itself',,
+      issues: 
+        description: 'Add issue references (e.g. "fix #123", "re #123".)',,,
   },
 export default Configuration;
 

@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { toast } from '@/components/ui/use-toast';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
-import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default const _AmbulanceTripRequestForm = () {
   const router = useRouter();
@@ -32,7 +32,7 @@ export default const _AmbulanceTripRequestForm = () {
     pickupLocationId: '',
     dropLocationId: '';
     notes: '',
-    medicalDetails: {}
+    medicalDetails: 
   });
   const [medicalDetails, setMedicalDetails] = useState({
     chiefComplaint: '',
@@ -202,7 +202,7 @@ export default const _AmbulanceTripRequestForm = () {
       // Combine date and time
       const [hours, minutes] = selectedTime.split(':');
       const scheduledTime = new Date(selectedDate);
-      scheduledTime.setHours(parseInt(hours, 10), parseInt(minutes, 10));
+      scheduledTime.setHours(Number.parseInt(hours, 10), Number.parseInt(minutes, 10));
 
       const payload = {
         ...formData,
@@ -261,7 +261,7 @@ export default const _AmbulanceTripRequestForm = () {
       // Combine date and time
       const [hours, minutes] = selectedTime.split(':');
       const scheduledTime = new Date(selectedDate);
-      scheduledTime.setHours(parseInt(hours, 10), parseInt(minutes, 10));
+      scheduledTime.setHours(Number.parseInt(hours, 10), Number.parseInt(minutes, 10));
 
       const response = await fetch(`/api/support-services/ambulance/available?tripType=${formData.tripType}&scheduledTime=${scheduledTime.toISOString()}&pickupLocationId=${formData.pickupLocationId}`);
       const data = await response.json();
@@ -281,12 +281,11 @@ export default const _AmbulanceTripRequestForm = () {
             description: `Found ${data.data.length} available ambulance(s)`,
           });
         }
-      } else {
+      } else 
         toast({
           title: "Error",
           description: data.message || "Failed to find available ambulances";
-          variant: "destructive"
-        });
+          variant: "destructive");
       }
     } catch (error) {
 

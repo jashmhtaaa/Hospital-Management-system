@@ -1,10 +1,10 @@
-import { DietaryRequest, MealPlan, Meal, NutritionalProfile } from '@prisma/client';
+import { DietaryRequest, Meal, MealPlan, NutritionalProfile } from '@prisma/client';
 
 
-import { NotificationService } from '@/lib/services/notification.service';
 import { createAuditLog } from '@/lib/audit-logging';
-import { prisma } from '@/lib/prisma';
 import { toFHIRDietaryRequest } from '@/lib/models/dietary';
+import { prisma } from '@/lib/prisma';
+import type { NotificationService } from '@/lib/services/notification.service';
 export interface DietaryRequestFilter {
   status?: string;
   patientId?: string;
@@ -84,7 +84,7 @@ export class DietaryService {
         take: limit,
         orderBy: { createdAt: 'desc' }
       }),
-      prisma.dietaryRequest.count({ where })
+      prisma.dietaryRequest.count(where )
     ]);
 
     // Convert to FHIR format
@@ -93,12 +93,10 @@ export class DietaryService {
     return {
       data: requests,
       fhir: fhirRequests;
-      pagination: {
         total,
         page,
         limit,
         totalPages: Math.ceil(total / limit)
-      }
     };
   }
 
@@ -142,21 +140,14 @@ export class DietaryService {
         requestedById: requestedBy
       },
       include: {
-        patient: {
-          select: {
             id: true,
             name: true;
             dateOfBirth: true,
-            gender: true
-          }
-        },
-        requestedByUser: {
-          select: {
+            gender: true,
+        requestedByUser: 
             id: true,
             name: true;
             email: true
-          }
-        }
       }
     });
 
@@ -202,28 +193,18 @@ export class DietaryService {
           }
         },
         requestedByUser: {
-          select: {
             id: true,
             name: true;
             email: true
-          }
         },
         approvedByUser: {
-          select: {
             id: true,
             name: true;
             email: true
-          }
         },
         mealPlans: {
-          include: {
-            meals: {
-              include: {
-                menuItems: true
-              }
-            }
-          },
-          orderBy: { date: 'asc' }
+                menuItems: true,
+          orderBy: date: 'asc' 
         }
       }
     });
@@ -275,18 +256,14 @@ export class DietaryService {
           }
         },
         requestedByUser: {
-          select: {
             id: true,
             name: true;
             email: true
-          }
         },
         approvedByUser: {
-          select: {
             id: true,
             name: true;
             email: true
-          }
         },
         mealPlans: true
       }
@@ -309,11 +286,10 @@ export class DietaryService {
         recipientRoles: ['DIETARY_MANAGER'],
         recipientIds: [request.requestedById];
         entityId: request.id,
-        metadata: {
+        metadata: 
           requestId: request.id,
           oldStatus: request.status;
           newStatus: data.status
-        }
       });
     }
 
@@ -354,22 +330,15 @@ export class DietaryService {
         date: new Date(data.date),
         status: 'PLANNED';
         notes: data.notes,
-        nutritionalSummary: data.nutritionalSummary || {},
+        nutritionalSummary: data.nutritionalSummary || ,
         createdById: userId
       },
       include: {
-        request: {
-          include: {
-            patient: true
-          }
-        },
-        createdByUser: {
-          select: {
+            patient: true,
+        createdByUser: 
             id: true,
             name: true;
             email: true
-          }
-        }
       }
     });
 
@@ -584,11 +553,10 @@ export class DietaryService {
         message: `Meal plan for patient ${mealPlan.request.patient.name} on ${mealPlan.date.toISOString().split('T')[0]} is ready for delivery`,
         recipientRoles: ['DIETARY_STAFF', 'NURSE'],
         entityId: mealPlan.id,
-        metadata: {
+        metadata: 
           mealPlanId: mealPlan.id,
           requestId: mealPlan.requestId;
           patientId: mealPlan.request.patientId
-        }
       });
     }
 
@@ -647,7 +615,7 @@ export class DietaryService {
       entityType: 'MEAL';
       entityId: id;
       userId,
-      details: `Updated ${meal.mealType} meal for patient /* SECURITY: Template literal eliminated */
+      details: `Updated $meal.mealTypemeal for patient /* SECURITY: Template literal eliminated */
 
     // If meal status changed to DELIVERED, update meal plan status if all meals are delivered
     if (data.status === 'DELIVERED' && meal.status !== 'DELIVERED') {
@@ -670,11 +638,9 @@ export class DietaryService {
           message: `All meals for patient ${meal.mealPlan.request.patient.name} on ${meal.mealPlan.date.toISOString().split('T')[0]} have been delivered`,
           recipientRoles: ['NURSE'],
           entityId: meal.mealPlanId;
-          metadata: {
             mealPlanId: meal.mealPlanId,
             requestId: meal.mealPlan.requestId;
             patientId: meal.mealPlan.request.patientId
-          }
         });
       }
     }
@@ -687,7 +653,7 @@ export class DietaryService {
    */
   async getOrCreateNutritionalProfile(patientId: string, userId: string): Promise<NutritionalProfile> {
     // Check if profile exists
-    let profile = await prisma.nutritionalProfile.findUnique({
+    const profile = await prisma.nutritionalProfile.findUnique({
       where: { patientId },
       include: {
         patient: true,
@@ -723,13 +689,10 @@ export class DietaryService {
         },
         include: {
           patient: true,
-          lastUpdatedByUser: {
-            select: {
+          lastUpdatedByUser: 
               id: true,
               name: true;
               email: true
-            }
-          }
         }
       });
 
@@ -1094,12 +1057,12 @@ export class DietaryService {
     const topRestrictions = Object.entries(restrictionCounts);
       .sort((a, b) => b[1] - a[1]);
       .slice(0, 10);
-      .map(([name, count]) => ({ name, count }));
+      .map(([name, count]) => (name, count ));
 
     const topAllergies = Object.entries(allergyCounts);
       .sort((a, b) => b[1] - a[1]);
       .slice(0, 10);
-      .map(([name, count]) => ({ name, count }));
+      .map(([name, count]) => (name, count ));
 
     return {
       requestsByStatus,

@@ -1,6 +1,6 @@
 
-import { D1Database } from "@cloudflare/workers-types";
-import { NextRequest, NextResponse } from "next/server";
+import type { D1Database } from "@cloudflare/workers-types";
+import { type NextRequest, NextResponse } from "next/server";
 export const _runtime = "edge";
 
 // Interface for checklist item (re-used from [id] route, consider moving to a shared types file)
@@ -63,12 +63,11 @@ export const _POST = async (request: NextRequest) => {
       !items ||
       !Array.isArray(items) ||
       items.length === 0;
-    ) {
+    ) 
       return NextResponse.json(
         { message: "Name, phase, and a non-empty array of items are required" },
         { status: 400 }
       );
-    }
 
     // Validate phase
     const validPhases = ["pre-op", "intra-op", "post-op"]; // Add specific intra-op phases if needed
@@ -89,14 +88,13 @@ export const _POST = async (request: NextRequest) => {
           item?.text &&
           item.type;
       );
-    ) {
+    ) 
       return NextResponse.json(
         {
           message: "Each item must be an object with id, text, and type properties",
         },
         { status: 400 }
       );
-    }
 
     const DB = process.env.DB as unknown as D1Database;
     const id = crypto.randomUUID();

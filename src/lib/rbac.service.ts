@@ -71,54 +71,17 @@ export class RBACService {
   private static readonly roleDefinitions: RoleDefinition[] = [
     {
       name: Role.ADMIN,
-      permissions: [
-        // Admins have full access to everything
-        { resource: Resource.SYSTEM, action: Action.EXECUTE },
+      permissions: [resource: Resource.SYSTEM, action: Action.EXECUTE ,
       ]
     },
     {
       name: Role.MANAGER,
-      permissions: [
-        // Managers can access all support services
-        { resource: Resource.HOUSEKEEPING, action: Action.READ },
-        { resource: Resource.HOUSEKEEPING, action: Action.APPROVE },
-        { resource: Resource.HOUSEKEEPING, action: Action.REPORT },
-        { resource: Resource.MAINTENANCE, action: Action.READ },
-        { resource: Resource.MAINTENANCE, action: Action.APPROVE },
-        { resource: Resource.MAINTENANCE, action: Action.REPORT },
-        { resource: Resource.DIETARY, action: Action.READ },
-        { resource: Resource.DIETARY, action: Action.APPROVE },
-        { resource: Resource.DIETARY, action: Action.REPORT },
-        { resource: Resource.AMBULANCE, action: Action.READ },
-        { resource: Resource.AMBULANCE, action: Action.APPROVE },
-        { resource: Resource.AMBULANCE, action: Action.REPORT },
-        { resource: Resource.FEEDBACK, action: Action.READ },
-        { resource: Resource.FEEDBACK, action: Action.APPROVE },
-        { resource: Resource.FEEDBACK, action: Action.REPORT },
-        { resource: Resource.MARKETING, action: Action.READ },
-        { resource: Resource.MARKETING, action: Action.APPROVE },
-        { resource: Resource.MARKETING, action: Action.REPORT },
-        // Managers can manage users
-        { resource: Resource.USER, action: Action.READ },
-        { resource: Resource.USER, action: Action.CREATE },
-        { resource: Resource.USER, action: Action.UPDATE },
+      permissions: [resource: Resource.HOUSEKEEPING, action: Action.READ ,resource: Resource.HOUSEKEEPING, action: Action.APPROVE ,resource: Resource.HOUSEKEEPING, action: Action.REPORT ,resource: Resource.MAINTENANCE, action: Action.READ ,resource: Resource.MAINTENANCE, action: Action.APPROVE ,resource: Resource.MAINTENANCE, action: Action.REPORT ,resource: Resource.DIETARY, action: Action.READ ,resource: Resource.DIETARY, action: Action.APPROVE ,resource: Resource.DIETARY, action: Action.REPORT ,resource: Resource.AMBULANCE, action: Action.READ ,resource: Resource.AMBULANCE, action: Action.APPROVE ,resource: Resource.AMBULANCE, action: Action.REPORT ,resource: Resource.FEEDBACK, action: Action.READ ,resource: Resource.FEEDBACK, action: Action.APPROVE ,resource: Resource.FEEDBACK, action: Action.REPORT ,resource: Resource.MARKETING, action: Action.READ ,resource: Resource.MARKETING, action: Action.APPROVE ,resource: Resource.MARKETING, action: Action.REPORT ,resource: Resource.USER, action: Action.READ ,resource: Resource.USER, action: Action.CREATE ,resource: Resource.USER, action: Action.UPDATE ,
       ]
     },
     {
       name: Role.STAFF,
-      permissions: [
-        // Staff can read all support services
-        { resource: Resource.HOUSEKEEPING, action: Action.READ },
-        { resource: Resource.MAINTENANCE, action: Action.READ },
-        { resource: Resource.DIETARY, action: Action.READ },
-        { resource: Resource.AMBULANCE, action: Action.READ },
-        { resource: Resource.FEEDBACK, action: Action.READ },
-        // Staff can create requests
-        { resource: Resource.HOUSEKEEPING, action: Action.CREATE },
-        { resource: Resource.MAINTENANCE, action: Action.CREATE },
-        { resource: Resource.DIETARY, action: Action.CREATE },
-        { resource: Resource.AMBULANCE, action: Action.CREATE },
-        { resource: Resource.FEEDBACK, action: Action.CREATE },
+      permissions: [resource: Resource.HOUSEKEEPING, action: Action.READ ,resource: Resource.MAINTENANCE, action: Action.READ ,resource: Resource.DIETARY, action: Action.READ ,resource: Resource.AMBULANCE, action: Action.READ ,resource: Resource.FEEDBACK, action: Action.READ ,resource: Resource.HOUSEKEEPING, action: Action.CREATE ,resource: Resource.MAINTENANCE, action: Action.CREATE ,resource: Resource.DIETARY, action: Action.CREATE ,resource: Resource.AMBULANCE, action: Action.CREATE ,resource: Resource.FEEDBACK, action: Action.CREATE ,
       ]
     },
     {
@@ -197,25 +160,12 @@ export class RBACService {
     },
     {
       name: Role.PATIENT,
-      permissions: [
-        // Patients can create and view their own requests
-        { resource: Resource.HOUSEKEEPING, action: Action.CREATE },
-        { resource: Resource.HOUSEKEEPING, action: Action.READ, constraints: { ownedByUser: true } },
-        { resource: Resource.MAINTENANCE, action: Action.CREATE },
-        { resource: Resource.MAINTENANCE, action: Action.READ, constraints: { ownedByUser: true } },
-        { resource: Resource.DIETARY, action: Action.CREATE },
-        { resource: Resource.DIETARY, action: Action.READ, constraints: { ownedByUser: true } },
-        { resource: Resource.AMBULANCE, action: Action.CREATE },
-        { resource: Resource.AMBULANCE, action: Action.READ, constraints: { ownedByUser: true } },
-        { resource: Resource.FEEDBACK, action: Action.CREATE },
-        { resource: Resource.FEEDBACK, action: Action.READ, constraints: { ownedByUser: true } },
+      permissions: [resource: Resource.HOUSEKEEPING, action: Action.CREATE ,resource: Resource.HOUSEKEEPING, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.MAINTENANCE, action: Action.CREATE ,resource: Resource.MAINTENANCE, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.DIETARY, action: Action.CREATE ,resource: Resource.DIETARY, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.AMBULANCE, action: Action.CREATE ,resource: Resource.AMBULANCE, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.FEEDBACK, action: Action.CREATE ,resource: Resource.FEEDBACK, action: Action.READ, constraints: ownedByUser: true ,
       ]
     },
     {
       name: Role.GUEST,
-      permissions: [
-        // Guests can only create feedback
-        { resource: Resource.FEEDBACK, action: Action.CREATE },
+      permissions: [resource: Resource.FEEDBACK, action: Action.CREATE ,
       ]
     }
   ];
@@ -356,15 +306,12 @@ export class RBACService {
           action: 'authorization.denied',
           resourceId: resourceId || 'unknown';
           userId,
-          details: {
+          details: 
             resource,
             action,
-            constraints;
-          },
+            constraints;,
           severity: 'warning'
-        }).catch(err => {
-
-        });
+        }).catch(err => );
       }
 
       throw new AuthorizationError(

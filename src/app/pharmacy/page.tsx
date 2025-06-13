@@ -1,6 +1,7 @@
 
-import React, { useState } from "react"; // Added useState
 import { useRouter } from "next/navigation"; // Added useRouter
+import type React from "react"; // Added useState
+import { useState } from "react";
 }
 
 "use client";

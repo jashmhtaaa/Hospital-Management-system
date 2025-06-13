@@ -1,8 +1,8 @@
 
-import { EventStore } from './event-store.ts';
-import { LockManager } from '@/lib/cache/redis';
+import type { LockManager } from '@/lib/cache/redis';
 import { logger } from '@/lib/core/logging';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
+import type { EventStore } from './event-store.ts';
 /**
  * Event Replay Service;
  *

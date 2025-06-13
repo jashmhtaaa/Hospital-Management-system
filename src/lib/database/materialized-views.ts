@@ -1,10 +1,10 @@
 
-import { EventStore } from '@/lib/event-sourcing/event-store';
-import { LockManager } from '@/lib/cache/redis';
-import { PrismaService } from '@/lib/prisma';
-import { RedisService } from '@/lib/cache/redis';
+import type { LockManager } from '@/lib/cache/redis';
+import type { RedisService } from '@/lib/cache/redis';
 import { logger } from '@/lib/core/logging';
+import type { EventStore } from '@/lib/event-sourcing/event-store';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
+import type { PrismaService } from '@/lib/prisma';
 /**
  * Materialized View Definition;
  */

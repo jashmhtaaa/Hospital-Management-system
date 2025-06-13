@@ -32,15 +32,11 @@ export class DepartmentService {
       include: {
         parent: true,
         children: true;
-        employees: {
-          select: {
             id: true,
             firstName: true;
             lastName: true,
             employeeId: true;
-            active: true
-          },
-        },
+            active: true,,
         positions: true
       },
     });
@@ -112,7 +108,7 @@ export class DepartmentService {
           },
         },
       }),
-      prisma.department.count({ where }),
+      prisma.department.count(where ),
     ]);
 
     return {

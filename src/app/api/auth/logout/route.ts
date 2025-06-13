@@ -1,8 +1,8 @@
-import { cookies } from "next/headers";
 import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
 
 
-import { sessionOptions, IronSessionData } from "@/lib/session";
+import { type IronSessionData, sessionOptions } from "@/lib/session";
 // app/api/auth/logout/route.ts
 export const _POST = async () => {
   try {

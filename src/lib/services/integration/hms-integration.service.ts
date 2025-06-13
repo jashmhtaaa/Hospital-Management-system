@@ -1,8 +1,8 @@
 
 import { AuditLogger } from '@/lib/audit';
-import { NotFoundError, AuthorizationError, ExternalServiceError } from '@/lib/errors';
-import { RBACService, Resource, Action } from '@/lib/rbac.service';
+import { AuthorizationError, ExternalServiceError, NotFoundError } from '@/lib/errors';
 import { prisma } from '@/lib/prisma';
+import { Action, RBACService, Resource } from '@/lib/rbac.service';
 }
 
 /**
@@ -43,7 +43,7 @@ export class HMSIntegrationService {
         action: 'integration.patient.info.request',
         resourceId: patientId;
         userId,
-        details: { patientId }
+        details: patientId 
       });
 
       // In a real implementation, this would call the HMS Patient Management API
@@ -59,13 +59,12 @@ export class HMSIntegrationService {
           gender: true;
           contactInformation: true;
           // Exclude sensitive medical information based on roles
-          ...(RBACService.hasPermission(userRoles, Resource.USER, Action.READ, { fullMedicalData: true });
-            ? {
+          ...(RBACService.hasPermission(userRoles, Resource.USER, Action.READ, fullMedicalData: true );
+            ? 
                 allergies: true,
                 diagnoses: true;
                 medications: true
-              }
-            : {});
+            : );
         }
       });
 
@@ -121,7 +120,7 @@ export class HMSIntegrationService {
         action: 'integration.location.info.request',
         resourceId: locationId;
         userId,
-        details: { locationId }
+        details: locationId 
       });
 
       // In a real implementation, this would call the HMS Location Management API
@@ -200,11 +199,10 @@ export class HMSIntegrationService {
         action: 'integration.notification.send.request',
         resourceId: recipientId;
         userId,
-        details: {
+        details: 
           recipientId,
           notificationType,
           title;
-        }
       });
 
       // In a real implementation, this would call the HMS Notification System API
@@ -273,7 +271,7 @@ export class HMSIntegrationService {
         action: 'integration.user.info.request',
         resourceId: targetUserId;
         userId,
-        details: { targetUserId }
+        details: targetUserId 
       });
 
       // In a real implementation, this would call the HMS User Management API
@@ -292,12 +290,11 @@ export class HMSIntegrationService {
           status: true;
           // Only include sensitive fields for self or admin
           ...(targetUserId === userId || userRoles.includes('admin');
-            ? {
+            ? 
                 lastLogin: true,
                 createdAt: true;
                 updatedAt: true
-              }
-            : {});
+            : );
         }
       });
 
@@ -434,11 +431,10 @@ export class HMSIntegrationService {
         action: 'integration.request.patient.link.request',
         resourceId: requestId;
         userId,
-        details: {
+        details: 
           serviceType,
           requestId,
           patientId;
-        }
       });
 
       // Verify patient exists
@@ -462,11 +458,10 @@ export class HMSIntegrationService {
         action: 'integration.request.patient.link.success',
         resourceId: requestId;
         userId,
-        details: {
+        details: 
           serviceType,
           requestId,
           patientId;
-        }
       });
 
       return request;
@@ -523,11 +518,10 @@ export class HMSIntegrationService {
         action: 'integration.request.location.link.request',
         resourceId: requestId;
         userId,
-        details: {
+        details: 
           serviceType,
           requestId,
           locationId;
-        }
       });
 
       // Verify location exists
@@ -551,11 +545,10 @@ export class HMSIntegrationService {
         action: 'integration.request.location.link.success',
         resourceId: requestId;
         userId,
-        details: {
+        details: 
           serviceType,
           requestId,
           locationId;
-        }
       });
 
       return request;

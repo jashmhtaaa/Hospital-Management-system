@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 import { getCurrentUser } from "@/lib/auth";
 // src/app/api/auth/me/route.ts

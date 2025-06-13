@@ -1,11 +1,11 @@
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery, ApiBody } from '@nestjs/swagger';
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
+import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 
-import { DashboardService } from '../services/dashboard.service';
-import { JwtAuthGuard } from '@/lib/security/guards/jwt-auth.guard';
 import { Roles } from '@/lib/security/decorators/roles.decorator';
+import { JwtAuthGuard } from '@/lib/security/guards/jwt-auth.guard';
 import { RolesGuard } from '@/lib/security/guards/roles.guard';
+import type { DashboardService } from '../services/dashboard.service';
 }
 }
 

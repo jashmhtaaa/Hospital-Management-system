@@ -1,5 +1,5 @@
 
-import { Pool, PoolClient, QueryResult } from "pg";
+import { Pool, type PoolClient, type QueryResult } from "pg";
 }
 
 // ARCH-1: Migrate to Enterprise Database Solution (Implement PostgreSQL Adapter)
@@ -11,7 +11,7 @@ const PG_CONFIG = {
   host: process.env.DB_HOST || "your_db_host", // Placeholder
   database: process.env.DB_NAME || "your_db_name", // Placeholder
   password: process.env.DB_PASSWORD || "your_db_password", // Placeholder
-  port: parseInt(process.env.DB_PORT || "5432", 10), // Placeholder
+  port: Number.parseInt(process.env.DB_PORT || "5432", 10), // Placeholder
 };
 
 /**

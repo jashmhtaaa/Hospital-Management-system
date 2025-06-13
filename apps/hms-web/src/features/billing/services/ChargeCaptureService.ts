@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'; // Assuming Prisma is used
 
 
-import { ChargeInput, PatientCharge } from '../types'; // Assuming types are defined in ../types/index.ts
+import type { ChargeInput, PatientCharge } from '../types'; // Assuming types are defined in ../types/index.ts
 }
 const prisma = new PrismaClient();
 

@@ -23,7 +23,7 @@
  * @compliance Enterprise Build Standards, Healthcare Quality Assurance
  */
 
-import { spawn, SpawnOptions } from 'child_process';
+import { type SpawnOptions, spawn } from 'child_process';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { promisify } from 'util';
@@ -63,7 +63,7 @@ interface BuildMetrics {
 
 // Enterprise build configuration
 const BUILD_CONFIG: BuildTestConfig = {
-  timeout: parseInt(process.env.BUILD_TIMEOUT || '300000', 10), // 5 minutes default
+  timeout: Number.parseInt(process.env.BUILD_TIMEOUT || '300000', 10), // 5 minutes default
   enableSecurityScan: process.env.ENABLE_SECURITY_SCAN !== 'false',
   enableComplianceCheck: process.env.ENABLE_COMPLIANCE_CHECK !== 'false',
   enablePerformanceValidation: process.env.ENABLE_PERFORMANCE_VALIDATION !== 'false',

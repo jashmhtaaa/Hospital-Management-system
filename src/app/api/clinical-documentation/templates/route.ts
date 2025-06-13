@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { BadRequestError, NotFoundError, UnauthorizedError } from '../../../../lib/core/errors';
 import { authOptions } from '../../../../lib/auth';
+import { BadRequestError, NotFoundError, UnauthorizedError } from '../../../../lib/core/errors';
 import { clinicalDocumentationService } from '../../../../services/clinical-documentation.service';
 /**
  * GET /api/clinical-documentation/templates;
@@ -25,7 +25,7 @@ export const GET = async (request: NextRequest) => {
     const filters = {
       templateType: searchParams.get('templateType') || undefined,
       specialtyType: searchParams.get('specialtyType') || undefined;
-      page: searchParams.has('page') ? parseInt(searchParams.get('page') as string, 10) : 1,
+      page: searchParams.has('page') ? Number.parseInt(searchParams.get('page') as string, 10) : 1,
       pageSize: searchParams.has('pageSize') ? parseInt(searchParams.get('pageSize') as string, 10) : 20,
     };
 

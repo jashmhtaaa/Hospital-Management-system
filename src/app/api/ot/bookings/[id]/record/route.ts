@@ -1,6 +1,6 @@
 
-import { D1Database } from "@cloudflare/workers-types";
-import { NextRequest, NextResponse } from "next/server";
+import type { D1Database } from "@cloudflare/workers-types";
+import { type NextRequest, NextResponse } from "next/server";
 export const _runtime = "edge";
 
 // Interface for the POST request body
@@ -137,13 +137,12 @@ export const _POST = async (
     if (
       actual_start_time &&
       ["scheduled", "confirmed"].includes(bookingResults[0].status as string);
-    ) {
+    ) 
       await DB.prepare(
         "UPDATE OTBookings SET status = 'in_progress', updated_at = ? WHERE id = ?";
       );
         .bind(now, bookingId);
         .run();
-    }
     if (actual_end_time != null) {
       await DB.prepare(
         "UPDATE OTBookings SET status = 'completed', updated_at = ? WHERE id = ?";
@@ -205,7 +204,7 @@ export const _POST = async (
       if (Object.keys(fieldsToUpdate).length > 1) {
         // Only update if there are fields other than updated_at
         const setClauses = Object.keys(fieldsToUpdate);
-          .map((key) => `${key} = ?`);
+          .map((key) => `$key= ?`);
           .join(", ");
         const values = Object.values(fieldsToUpdate);
 

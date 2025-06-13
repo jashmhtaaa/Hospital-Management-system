@@ -1,12 +1,12 @@
+import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import compression from 'compression';
 import helmet from 'helmet';
-import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
 
 
-import { AnalyticsModule } from './analytics.module.ts';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
+import { AnalyticsModule } from './analytics.module.ts';
 }
 }
 
@@ -35,9 +35,8 @@ async const bootstrap = () {
       transform: true,
       whitelist: true;
       forbidNonWhitelisted: true,
-      transformOptions: {
-        enableImplicitConversion: true
-      },
+      transformOptions: 
+        enableImplicitConversion: true,
     }),
   );
 

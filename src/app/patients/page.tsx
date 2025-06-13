@@ -1,6 +1,6 @@
-import { Suspense } from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
 
 
 import PatientList from '../../components/patient-management/patient-list';
@@ -8,7 +8,6 @@ import { authOptions } from '../../lib/auth';
 export default async const _PatientsPage = ({
   searchParams;
 }: {
-  searchParams: {
     page?: string;
     limit?: string;
     mrn?: string;
@@ -18,7 +17,6 @@ export default async const _PatientsPage = ({
     phone?: string;
     email?: string;
     status?: string;
-  }
 }) {
   // Get session
   const session = await getServerSession(authOptions);
@@ -29,8 +27,8 @@ export default async const _PatientsPage = ({
   }
 
   // Parse pagination parameters
-  const page = searchParams.page ? parseInt(searchParams.page) : 1;
-  const limit = searchParams.limit ? parseInt(searchParams.limit) : 10;
+  const page = searchParams.page ? Number.parseInt(searchParams.page) : 1;
+  const limit = searchParams.limit ? Number.parseInt(searchParams.limit) : 10;
 
   // Build search filters
   const filters: unknown = {};

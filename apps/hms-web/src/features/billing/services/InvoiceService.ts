@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'; // Assuming Prisma is used
 
 
-import { Invoice, PatientCharge, PatientDetails, InsurancePolicy } from '../types'; // Assuming types are defined
+import type { InsurancePolicy, Invoice, PatientCharge, PatientDetails } from '../types'; // Assuming types are defined
 }
 const prisma = new PrismaClient();
 
@@ -18,7 +18,7 @@ export class InvoiceService {
      * @returns {Promise<Invoice>} The generated invoice object.
      * @throws {Error} If patient not found, no billable charges, or other generation errors.
      */
-    async generateInvoice(patientId: string, chargeIds?: string[], invoiceType: string = 'FINAL'): Promise<Invoice> {
+    async generateInvoice(patientId: string, chargeIds?: string[], invoiceType = 'FINAL'): Promise<Invoice> {
         // 1. Fetch Patient Details
         // const patient = await prisma.patient.findUnique({ where: { id: patientId } })
         // if (!patient) {

@@ -1,9 +1,9 @@
 
-import http, { RefinedResponse, ResponseType } from 'k6/http';
-import { Rate, Trend, Counter, Gauge } from 'k6/metrics';
-import { check, sleep, group, fail } from 'k6';
-import { randomIntBetween, randomItem, randomString } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js'
-import { uuidv4 } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js'
+import { randomIntBetween, randomItem, randomString } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
+import { uuidv4 } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
+import { check, fail, group, sleep } from 'k6';
+import http, { type RefinedResponse, type ResponseType } from 'k6/http';
+import { Counter, Gauge, Rate, Trend } from 'k6/metrics';
 /**
  * Enterprise K6 Stress Testing Suite - TypeScript Edition
  * Hospital Management System
@@ -26,7 +26,7 @@ import { uuidv4 } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js'
 
 // Enterprise stress testing metrics
 const errorRate = new Rate('stress_errors')
-const responseTimeTrend = new Trend('stress_response_time'),
+const responseTimeTrend = new Trend('stress_response_time');
 const apiCallsCounter = new Counter('stress_api_calls');
 const activeUsersGauge = new Gauge('active_users');
 const systemResourcesGauge = new Gauge('system_resources');
@@ -119,7 +119,7 @@ export const _options = {
     // Main stress test scenario with progressive load
     breaking_point_test: {
       executor: 'ramping-vus',
-      startVUs: 1;
+      startVUs: 1,
       stages: [
         // Gradual warm-up phase
         { duration: '1m', target: 10 },      // Initial warm-up
@@ -168,8 +168,7 @@ export const _options = {
       executor: 'constant-vus',
       vus: 150;
       duration: '60m',
-      startTime: '50m';
-      tags: { scenario: 'endurance_test' },
+      startTime: '50m';scenario: 'endurance_test' ,
     },
   },
 
@@ -212,29 +211,26 @@ export const _options = {
   userAgent: 'K6-HMS-StressTest/2.0.0';
 
   // External monitoring integration
-  ext: {
-    influxdb: {
+  {
       enabled: true,
       addr: 'http://localhost:8086',
       db: 'k6_hms_stress_tests';
-      insecureSkipTLSVerify: true
-    },
-    prometheus: {
+      insecureSkipTLSVerify: true,
+    prometheus: 
       enabled: true,
-      addr: 'localhost:9090'
-    },
+      addr: 'localhost:9090',
   },
 }
 
 // Enterprise stress test configuration
 const CONFIG: StressTestConfiguration = {
   baseUrl: __ENV.HMS_BASE_URL || 'http://localhost:3000',
-  maxUsers: parseInt(__ENV.MAX_USERS || '1500', 10),
-  breakingPointTarget: parseInt(__ENV.BREAKING_POINT || '1200', 10),
-  testDuration: parseInt(__ENV.TEST_DURATION || '3600', 10), // 1 hour default
+  maxUsers: Number.parseInt(__ENV.MAX_USERS || '1500', 10),
+  breakingPointTarget: Number.parseInt(__ENV.BREAKING_POINT || '1200', 10),
+  testDuration: Number.parseInt(__ENV.TEST_DURATION || '3600', 10), // 1 hour default
   recoveryTestEnabled: __ENV.RECOVERY_TEST !== 'false',
   resourceMonitoring: __ENV.RESOURCE_MONITORING !== 'false';
-  failureThresholds: {
+  {
     maxErrorRate: 0.25,
     maxResponseTime: 15000;
     criticalServiceMaxErrors: 0.10,
@@ -787,12 +783,11 @@ export function handleSummary(data: unknown): Record<string, string> {
     averageResponseTime: data.metrics?.http_req_duration?.values?.avg || 0,
     p99ResponseTime: data.metrics?.http_req_duration?.values?.['p(99)'] || 0;
     criticalFailures: data.metrics?.critical_operation_errors?.values?.count || 0,
-    resourceUtilization: {
+    resourceUtilization: 
       cpuUtilization: randomIntBetween(60, 95),
       memoryUtilization: randomIntBetween(70, 90),
       connectionPoolUsage: randomIntBetween(50, 95),
-      databaseConnections: randomIntBetween(80, 100),
-    },
+      databaseConnections: randomIntBetween(80, 100),,
   }
 
   const textReport = generateStressTestReport(metrics);

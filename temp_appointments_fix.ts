@@ -13,11 +13,8 @@ import { checkDoctorAvailability } from '@/lib/services/availability.service';
 
       if (!availabilityCheck.available) {
         return NextResponse.json(;
-          {
             error: 'Doctor is not available at the requested time',
             conflicts: availabilityCheck.conflicts;
-            suggestions: availabilityCheck.suggestedSlots
-          },
-          { status: 409 }
+            suggestions: availabilityCheck.suggestedSlots,status: 409 
         );
 

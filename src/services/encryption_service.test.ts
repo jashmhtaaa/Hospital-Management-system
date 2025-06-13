@@ -1,5 +1,5 @@
 
-import { EncryptionService, IEncryptionService } from './encryption_service.ts'
+import { EncryptionService, type IEncryptionService } from './encryption_service.ts'
 }
 
 // SEC-1: Unit Tests for EncryptionService (Placeholder)

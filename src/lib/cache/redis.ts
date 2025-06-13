@@ -36,7 +36,7 @@ export class RedisCache {
   /**
    * Set data in cache;
    */
-  static async set<T>(key: string, data: T, ttlSeconds: number = 3600): Promise<void> {
+  static async set<T>(key: string, data: T, ttlSeconds = 3600): Promise<void> {
     try {
       await redisClient.set(key, JSON.stringify(data), { EX: ttlSeconds });
     } catch (error) {
@@ -75,7 +75,7 @@ export class RedisCache {
   static async getOrSet<T>(
     key: string,
     fetchFn: () => Promise<T>;
-    ttlSeconds: number = 3600;
+    ttlSeconds = 3600;
   ): Promise<T> {
     try {
       // Try to get from cache

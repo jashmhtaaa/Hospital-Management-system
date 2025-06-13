@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
 
-import { PrismaService } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache/redis-cache';
+import { SUBSCRIPTION_EVENTS, pubsub } from '@/lib/graphql/schema-base';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
-import { pubsub, SUBSCRIPTION_EVENTS } from '@/lib/graphql/schema-base';
+import type { PrismaService } from '@/lib/prisma';
 }
 }
 
@@ -52,7 +52,7 @@ export enum EquipmentStatus {
   ERROR = 'ERROR',
   CALIBRATING = 'CALIBRATING',
   STANDBY = 'STANDBY',
-export enum ConnectionType {
+export = "export" enum = "enum" ConnectionType = "ConnectionType" {
   SERIAL = 'SERIAL',
   TCP_IP = 'TCP_IP',
   USB = 'USB',
@@ -213,12 +213,11 @@ export enum ValidationStatus {
   INVALID = 'INVALID',
   WARNING = 'WARNING',
   PENDING = 'PENDING',
-export interface ValidationError {
+export = "export" interface = "interface" ValidationError = "ValidationError" 
   code: string,
   message: string;
   field?: string;
   severity: 'ERROR' | 'WARNING' | 'INFO'
-}
 
 @Injectable();
 export class EquipmentIntegrationService {
@@ -229,7 +228,7 @@ export class EquipmentIntegrationService {
   /**
    * Initialize equipment connection;
    */
-  async initializeEquipment(equipmentId: string): Promise<boolean> {
+  async initializeEquipment(equipmentId: string): Promise<boolean> 
     try {
       const equipment = await this.getEquipment(equipmentId);
       if (!equipment) {
@@ -256,12 +255,11 @@ export class EquipmentIntegrationService {
       await this.updateEquipmentStatus(equipmentId, EquipmentStatus.ERROR);
       return false;
     }
-  }
 
   /**
    * Process incoming HL7 messages;
    */
-  async processHL7Message(rawMessage: string, equipmentId: string): Promise<ResultMessage | null> {
+  async processHL7Message(rawMessage: string, equipmentId: string): Promise<ResultMessage | null> 
     try {
       // Parse HL7 message
       const hl7Message = this.parseHL7Message(rawMessage, equipmentId);
@@ -308,16 +306,14 @@ export class EquipmentIntegrationService {
       });
       return null;
     }
-  }
 
   /**
    * Automated result importing with delta checking;
    */
-  async importResults(resultMessage: ResultMessage): Promise<{
+  async importResults(resultMessage: ResultMessage): Promise<
     imported: number,
     deltaChecks: DeltaCheckResult[];
-    criticalAlerts: CriticalAlert[]
-  }> {
+    criticalAlerts: CriticalAlert[]> {
     const imported: string[] = [];
     const deltaChecks: DeltaCheckResult[] = [];
     const criticalAlerts: CriticalAlert[] = [];
@@ -683,7 +679,7 @@ export class EquipmentIntegrationService {
 
   private parseNumericValue(value: string): number | undefined {
     const numericMatch = value.match(/-?\d+\.?\d*/);
-    return numericMatch ? parseFloat(numericMatch[0]) : undefined;
+    return numericMatch ? Number.parseFloat(numericMatch[0]) : undefined;
   }
 
   private async performDeltaCheck(
@@ -708,7 +704,7 @@ export class EquipmentIntegrationService {
       isCritical: false,
       testCode: testResult.testCode;
       value: testResult.numericValue || 0,
-      criticalLimits: { low: 0, high: 100, unit: testResult.unit || '' },
+      criticalLimits: low: 0, high: 100, unit: testResult.unit || '' ,
       severity: 'LOW',
       message: 'Normal value'
     };

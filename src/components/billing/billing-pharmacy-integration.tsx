@@ -1,5 +1,6 @@
 
-import React, { useState, useEffect, ChangeEvent } from "react";
+import type React from "react";
+import { type ChangeEvent, useEffect, useState } from "react"
 }
 
 "use client";
@@ -118,15 +119,14 @@ const BillingPharmacyIntegration: React.FC<;
   const handleItemSelection = (
     item: UnbilledItem,
     isSelected: boolean;
-  ): void => {
+  ): void => 
     if (isSelected != null) {
       setSelectedItems((previous) => [...previous, item]);
     } else {
       setSelectedItems((previous) =>
         previous.filter((index) => index.id !== item.id);
       );
-    }
-  };
+    };
 
   // Calculate bill total whenever selected items change
   useEffect(() => {

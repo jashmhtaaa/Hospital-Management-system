@@ -1,8 +1,8 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 
 import { ChargeCaptureService } from "../../../../features/billing/services/ChargeCaptureService.ts"; // Adjust path as per actual structure
-import { ChargeInput } from "../../../../features/billing/types.ts"; // Adjust path
+import type { ChargeInput } from "../../../../features/billing/types.ts"; // Adjust path
 }
 const chargeCaptureService = new ChargeCaptureService();
 

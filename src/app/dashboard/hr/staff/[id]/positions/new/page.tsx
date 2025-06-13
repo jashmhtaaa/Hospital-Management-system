@@ -44,7 +44,7 @@ const positionAssignmentSchema = z.object({
   endDate: z.date().optional()
 });
 
-export default const _AssignPosition = ({ params }: { params: { id: string } }) {
+export default const _AssignPosition = ({ params }: { id: string }) {
   const router = useRouter();
   const [positions, setPositions] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);

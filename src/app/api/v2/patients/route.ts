@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
-import { patientManagementService, PatientCreateSchema } from '@/lib/core/patient-management.service';
+import { PatientCreateSchema, patientManagementService } from '@/lib/core/patient-management.service';
 }
 
 /**
@@ -41,13 +41,12 @@ export const GET = async (request: NextRequest) => {
       success: true,
       data: result;
       message: `Found ${result.total} patients`,
-      metadata: {
+      metadata: 
         currentPage: result.page,
         totalPages: result.totalPages;
         totalResults: result.total,
         hasNextPage: result.page < result.totalPages;
-        hasPreviousPage: result.page > 1
-      },
+        hasPreviousPage: result.page > 1,
     });
   } catch (error) {
 
@@ -57,8 +56,7 @@ export const GET = async (request: NextRequest) => {
           success: false,
           error: 'Invalid search parameters';
           details: error.errors
-        },
-        { status: 400 }
+        },status: 400 
       );
     }
 
@@ -91,13 +89,11 @@ export const POST = async (request: NextRequest) => {
         success: true,
         data: patient;
         message: 'Patient created successfully',
-        metadata: {
+        metadata: 
           patientId: patient.id,
           mrn: patient.mrn;
-          createdAt: patient.createdAt
-        },
-      },
-      { status: 201 }
+          createdAt: patient.createdAt,
+      },status: 201 
     );
   } catch (error) {
 
@@ -108,8 +104,7 @@ export const POST = async (request: NextRequest) => {
           error: 'Invalid patient data';
           details: error.errors,
           message: 'Please check the provided patient information'
-        },
-        { status: 400 }
+        },status: 400 
       );
     }
 

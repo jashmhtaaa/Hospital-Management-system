@@ -1,9 +1,9 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 
-import { FeedbackService } from '../feedback.service';
-import { SecurityService } from '@/lib/security.service';
 import { prisma } from '@/lib/prisma';
+import { SecurityService } from '@/lib/security.service';
+import { FeedbackService } from '../feedback.service';
 // Mock Prisma
 vi.mock('@/lib/prisma', () => ({
   prisma: {
@@ -109,8 +109,7 @@ describe('FeedbackService', () => {
       expect(prisma.feedback.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
-          take: 10;
-          orderBy: { createdAt: 'desc' }
+          take: 10;createdAt: 'desc' 
         });
       );
 
@@ -341,8 +340,7 @@ describe('FeedbackService', () => {
       const mockUpdatedFeedback = {
         ...mockExistingFeedback,
         status: 'REVIEWED',
-        reviewedById: 'user1';
-        reviewedBy: { id: 'user1', name: 'Admin User' },
+        reviewedById: 'user1';id: 'user1', name: 'Admin User' ,
         reviewedAt: expect.any(Date),
         updatedAt: new Date()
       };
@@ -430,11 +428,9 @@ describe('FeedbackService', () => {
           respondedById: 'user1'
         }
       }),
-      expect(prisma.feedback.update).toHaveBeenCalledWith({
-        where: { id: '1' },
-        data: {
-          status: 'RESPONDED'
-        },
+      expect(prisma.feedback.update).toHaveBeenCalledWith({id: '1' ,
+        data: 
+          status: 'RESPONDED',
         include: expect.any(Object)
       });
 
@@ -496,8 +492,7 @@ describe('FeedbackService', () => {
       expect(prisma.complaint.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
-          take: 10;
-          orderBy: { createdAt: 'desc' }
+          take: 10;createdAt: 'desc' 
         });
       );
 
@@ -717,8 +712,7 @@ describe('FeedbackService', () => {
       const mockUpdatedComplaint = {
         ...mockExistingComplaint,
         status: 'INVESTIGATING',
-        assignedToId: 'user1';
-        assignedTo: { id: 'user1', name: 'Admin User' },
+        assignedToId: 'user1';id: 'user1', name: 'Admin User' ,
         updatedAt: new Date()
       };
 
@@ -824,12 +818,10 @@ describe('FeedbackService', () => {
           createdById: 'user1'
         }
       }),
-      expect(prisma.complaint.update).toHaveBeenCalledWith({
-        where: { id: '1' },
-        data: {
+      expect(prisma.complaint.update).toHaveBeenCalledWith({id: '1' ,
+        data: 
           status: 'RESOLVED',
-          resolvedAt: expect.any(Date)
-        },
+          resolvedAt: expect.any(Date),
         include: expect.any(Object)
       });
 

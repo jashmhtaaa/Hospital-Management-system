@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 
 
-import { hashPassword, comparePassword } from './authUtils.ts'
+import { comparePassword, hashPassword } from './authUtils.ts'
 }
 
 // SEC-2: Unit tests for password hashing and verification functions

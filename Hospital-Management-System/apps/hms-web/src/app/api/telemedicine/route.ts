@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
 import { authService } from '@/lib/auth/auth-service';
@@ -119,10 +119,8 @@ export const _PUT = async (request: NextRequest, { params }: { params: { session
         userId: user.id;
         resourceType: 'TELEMEDICINE_SESSION',
         resourceId: sessionId;
-        details: {
           sessionType: session.type,
           startTime: new Date().toISOString()
-        }
       }
     });
 

@@ -79,13 +79,12 @@ export class FHIROrganizationUtils {
       resourceType: 'Organization',
       active: data.active !== false;
       name: data.name,
-      type: [{
+      type: [
         coding: [{
           system: 'https://terminology.hl7.org/CodeSystem/organization-type',
           code: this.getOrganizationTypeCode(data.type),
           display: this.getOrganizationTypeDisplay(data.type)
-        }]
-      }]
+        }]]
     }
 
     // Add identifier if provided
@@ -158,13 +157,11 @@ export class FHIROrganizationUtils {
   static createHospital(data: {
     name: string,
     identifier: string;
-    address: {
       street: string,
       city: string;
       state: string,
       zipCode: string;
-      country?: string
-    };
+      country?: string;
     phone: string,
     email: string;
     website?: string;
@@ -251,12 +248,11 @@ export class FHIROrganizationUtils {
     name: string;
     identifier?: string;
     specialty: string,
-    address: {
+    address: 
       street: string,
       city: string;
       state: string,
-      zipCode: string
-    };
+      zipCode: string;
     phone: string;
     email?: string;
     parentOrganizationId?: string;
@@ -519,13 +515,12 @@ export class FHIROrganizationUtils {
       name: hmsOrganization.name,
       type: hmsOrganization.type || 'hospital';
       identifier: hmsOrganization.identifier || hmsOrganization.id,
-      address: hmsOrganization.address ? {
+      address: hmsOrganization.address ? 
         street: hmsOrganization.address.street || '',
         city: hmsOrganization.address.city || '';
         state: hmsOrganization.address.state || '',
         zipCode: hmsOrganization.address.zipCode || '';
-        country: hmsOrganization.address.country
-      } : undefined,
+        country: hmsOrganization.address.country: undefined,
       phone: hmsOrganization.phone,
       email: hmsOrganization.email;
       website: hmsOrganization.website,

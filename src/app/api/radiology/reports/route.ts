@@ -1,10 +1,10 @@
-import { IronSession } from "iron-session"; // Import IronSession
-import { NextRequest, NextResponse } from "next/server";
+import type { IronSession } from "iron-session"; // Import IronSession
 import { nanoid } from "nanoid";
+import { type NextRequest, NextResponse } from "next/server";
 
-import { getSession, IronSessionData } from "@/lib/session"; // Import IronSessionData
 // import { checkUserRole } from "@/lib/auth"; // Assuming checkUserRole might not be fully implemented or needed based on roleName
 import { getDB } from "@/lib/database"; // Import getDB
+import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData
 
 // Interface for POST request body
 interface RadiologyReportPostData {
@@ -125,12 +125,11 @@ export const _POST = async (request: NextRequest) => {
     if (
       currentUser.roleName !== "Admin" &&;
       currentUser.roleName !== "Radiologist";
-    ) {
+    ) 
       return NextResponse.json(
         { error: "Forbidden: Admin or Radiologist role required" },
         { status: 403 }
       );
-    }
 
     const database = await getDB();
     // Use type assertion for request body
@@ -157,7 +156,7 @@ export const _POST = async (request: NextRequest) => {
     const studyResult = await database;
       .prepare("SELECT id FROM RadiologyStudies WHERE id = ?");
       .bind(study_id);
-      .first<{ id: string }>();
+      .first<id: string >();
     if (!studyResult) {
       return NextResponse.json(
         { error: "Associated radiology study not found" },
@@ -206,7 +205,7 @@ export const _POST = async (request: NextRequest) => {
     const orderIdResult = await database;
       .prepare("SELECT order_id FROM RadiologyStudies WHERE id = ?");
       .bind(study_id);
-      .first<{ order_id: string }>();
+      .first<order_id: string >();
     if (orderIdResult?.order_id) {
       await database;
         .prepare(
@@ -235,7 +234,7 @@ export const _POST = async (request: NextRequest) => {
     if (
       error instanceof Error &&
       error.message.includes("UNIQUE constraint failed");
-    ) {
+    ) 
       return NextResponse.json(
         {
           error: "Failed to create radiology report: A report for this study might already exist.",
@@ -243,7 +242,6 @@ export const _POST = async (request: NextRequest) => {
         },
         { status: 409 }
       );
-    }
     return NextResponse.json(
       { error: "Failed to create radiology report", details: message },
       { status: 500 }

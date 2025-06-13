@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
 import { auditLog } from '../../../../../lib/audit';
@@ -28,7 +28,7 @@ const interactionOverrideRepository = {
  */
 export const POST = async (
   req: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     // Get interaction ID from params
@@ -78,11 +78,10 @@ export const POST = async (
       resourceId: id,
       userId: userId;
       patientId: data.patientId,
-      details: {
+      details: 
         overrideId,
         reason: data.reason,
         prescriptionId: data.prescriptionId
-      }
     })
 
     // Return response
@@ -120,8 +119,8 @@ export const GET = async (req: NextRequest) => {
     const interactionId = url.searchParams.get('interactionId');
     const startDate = url.searchParams.get('startDate');
     const endDate = url.searchParams.get('endDate');
-    const page = parseInt(url.searchParams.get('page') || '1', 10);
-    const limit = parseInt(url.searchParams.get('limit') || '20', 10);
+    const page = Number.parseInt(url.searchParams.get('page') || '1', 10);
+    const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
 
     // Build filter criteria
     const filter: unknown = {};
@@ -145,12 +144,11 @@ export const GET = async (req: NextRequest) => {
       action: 'LIST_OVERRIDES',
       resourceType: 'DrugInteraction';
       userId: userId,
-      details: {
+      details: 
         filter,
         page,
         limit,
         resultCount: overrides.length
-      }
     });
 
     // Return response

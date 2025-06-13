@@ -1,8 +1,8 @@
-import { Redis, Cluster, ClusterNode, ClusterOptions } from 'ioredis';
+import { Cluster, type ClusterNode, type ClusterOptions, Redis } from 'ioredis';
 
 
-import { EventStore } from '@/lib/event-sourcing/event-store';
 import { logger } from '@/lib/core/logging';
+import type { EventStore } from '@/lib/event-sourcing/event-store';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 /**
  * Redis Cluster Configuration;
@@ -70,9 +70,9 @@ interface RedisClusterConfig {
  * Circuit Breaker for Redis operations;
  */
 class RedisCircuitBreaker {
-  private failures: number = 0;
-  private isOpen: boolean = false;
-  private lastFailureTime: number = 0;
+  private failures = 0;
+  private isOpen = false;
+  private lastFailureTime = 0;
 
   constructor(
     private readonly config: {

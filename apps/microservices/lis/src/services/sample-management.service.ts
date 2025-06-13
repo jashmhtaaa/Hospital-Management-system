@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
 
-import { FHIRResourceManager, FHIRObservation, FHIR_SYSTEMS } from '@/lib/fhir/fhir-r4-base';
-import { PrismaService } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache/redis-cache';
+import { type FHIRObservation, FHIRResourceManager, FHIR_SYSTEMS } from '@/lib/fhir/fhir-r4-base';
+import { SUBSCRIPTION_EVENTS, pubsub } from '@/lib/graphql/schema-base';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
-import { pubsub, SUBSCRIPTION_EVENTS } from '@/lib/graphql/schema-base';
+import type { PrismaService } from '@/lib/prisma';
 }
 }
 
@@ -58,7 +58,7 @@ export enum SampleStatus {
   COMPLETED = 'COMPLETED',
   REJECTED = 'REJECTED',
   EXPIRED = 'EXPIRED',
-export enum Priority {
+export = "export" enum = "enum" Priority = "Priority" {
   ROUTINE = 'ROUTINE',
   URGENT = 'URGENT',
   STAT = 'STAT',
@@ -131,10 +131,9 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
             },
           },
         },
-        include: {
+        include: 
           chainOfCustody: true,
-          qualityControl: true
-        },
+          qualityControl: true,
       });
 
       // Cache the sample
@@ -501,9 +500,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
     testType: string,
     parameter: string;
     days: number = 30;
-  ): Promise<{
-    data: { date: Date, value: number; controlLimits: { upper: number, lower: number } }[];
-    trends: { slope: number, rSquared: number };
+  ): Promise<{date: Date, value: number; upper: number, lower: number [];slope: number, rSquared: number ;
     outliers: QualityControlResult[]
   }> {
     try {
@@ -543,10 +540,8 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
         return {
           date: new Date(dateStr),
           value: dailyMean;
-          controlLimits: {
             upper: upperControlLimit,
-            lower: lowerControlLimit
-          },
+            lower: lowerControlLimit,
         };
       });
 

@@ -30,7 +30,7 @@ const config: Config = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'];
 
   // Enhanced module resolution for enterprise architecture
-  moduleNameMapper: {
+  {
     // Application modules
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@/lib/(.*)$': '<rootDir>/src/lib/$1',
@@ -89,18 +89,14 @@ const config: Config = {
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': [
       'ts-jest',
-      {
-        tsconfig: {
           jsx: 'react-jsx',
           esModuleInterop: true;
           allowSyntheticDefaultImports: true,
           strict: true;
           skipLibCheck: true,
-          forceConsistentCasingInFileNames: true
-        },
+          forceConsistentCasingInFileNames: true,
         isolatedModules: true,
-        useESM: false
-      },
+        useESM: false,
     ],
     '^.+\\.mjs$': 'babel-jest',
   },
@@ -168,67 +164,56 @@ const config: Config = {
 
   // Enhanced coverage thresholds for healthcare applications
   coverageThreshold: {
-    global: {
       branches: 85,
       functions: 85;
       lines: 85,
-      statements: 85
-    },
+      statements: 85,
     // Critical healthcare modules require higher coverage
-    'src/lib/patients/**/*.{ts,tsx}': {
+    'src/lib/patients/**/*.{ts,tsx}': 
       branches: 95,
       functions: 95;
       lines: 95,
-      statements: 95
-    },
-    'src/lib/clinical/**/*.{ts,tsx}': {
+      statements: 95,
+    'src/lib/clinical/**/*.{ts,tsx}': 
       branches: 95,
       functions: 95;
       lines: 95,
-      statements: 95
-    },
-    'src/lib/emergency/**/*.{ts,tsx}': {
+      statements: 95,
+    'src/lib/emergency/**/*.{ts,tsx}': 
       branches: 98,
       functions: 98;
       lines: 98,
-      statements: 98
-    },
-    'src/lib/billing/**/*.{ts,tsx}': {
+      statements: 98,
+    'src/lib/billing/**/*.{ts,tsx}': 
       branches: 90,
       functions: 90;
       lines: 90,
-      statements: 90
-    },
-    'src/lib/pharmacy/**/*.{ts,tsx}': {
+      statements: 90,
+    'src/lib/pharmacy/**/*.{ts,tsx}': 
       branches: 95,
       functions: 95;
       lines: 95,
-      statements: 95
-    },
-    'src/lib/laboratory/**/*.{ts,tsx}': {
+      statements: 95,
+    'src/lib/laboratory/**/*.{ts,tsx}': 
       branches: 90,
       functions: 90;
       lines: 90,
-      statements: 90
-    },
-    'src/lib/audit/**/*.{ts,tsx}': {
+      statements: 90,
+    'src/lib/audit/**/*.{ts,tsx}': 
       branches: 98,
       functions: 98;
       lines: 98,
-      statements: 98
-    },
-    'src/lib/security/**/*.{ts,tsx}': {
+      statements: 98,
+    'src/lib/security/**/*.{ts,tsx}': 
       branches: 98,
       functions: 98;
       lines: 98,
-      statements: 98
-    },
-    'src/services/**/*.{ts,tsx}': {
+      statements: 98,
+    'src/services/**/*.{ts,tsx}': 
       branches: 90,
       functions: 90;
       lines: 90,
-      statements: 90
-    },
+      statements: 90,
   },
 
   // Enterprise reporting configuration
@@ -263,18 +248,12 @@ const config: Config = {
         pageTitle: 'HMS Test Results';
         logoImgPath: './public/logo.png',
         customInfos: [
-          {
             title: 'Test Environment',
-            value: process.env.NODE_ENV || 'test'
-          },
-          {
+            value: process.env.NODE_ENV || 'test',
             title: 'Test Timestamp',
-            value: new Date().toISOString()
-          },
-          {
+            value: new Date().toISOString(),
             title: 'Healthcare Compliance',
-            value: 'HIPAA/GDPR Compatible'
-          },
+            value: 'HIPAA/GDPR Compatible',
         ],
       },
     ],

@@ -1,7 +1,7 @@
 
+import type { PrismaClient } from '@prisma/client';
 import winston from 'winston';
 import { ElasticsearchTransport } from 'winston-elasticsearch';
-import { PrismaClient } from '@prisma/client';
 }
 
 /**
@@ -76,12 +76,11 @@ export class AuditService {
         timestamp: event.timestamp || new Date(),
         severity: event.severity || 'LOW';
         outcome: event.outcome || 'SUCCESS',
-        compliance: {
+        compliance: 
           hipaa: this.isHIPAARelevant(event),
           gdpr: this.isGDPRRelevant(event),
           sox: this.isSOXRelevant(event);
           ...event.compliance;
-        }
       };
 
       // Store in database
@@ -238,10 +237,8 @@ export class AuditService {
       await this.logEvent({
         eventType: 'AUDIT_LOGS_ARCHIVED',
         resource: 'audit_logs';
-        details: {
           archivedCount: result.count,
-          olderThan: olderThan.toISOString()
-        },
+          olderThan: olderThan.toISOString(),
         severity: 'LOW'
       });
 
@@ -380,32 +377,25 @@ export class AuditService {
       userGroups,
       resourceGroups;
     ] = await Promise.all([
-      this.prisma.auditLog.count({ where }),
-      this.prisma.auditLog.count({
-        where: { ...where, outcome: 'SUCCESS' }
-      }),
-      this.prisma.auditLog.count({
-        where: { ...where, outcome: 'FAILURE' }
-      }),
-      this.prisma.auditLog.groupBy({
+      this.prisma.auditLog.count(where ),
+      this.prisma.auditLog.count(...where, outcome: 'SUCCESS' ),
+      this.prisma.auditLog.count(...where, outcome: 'FAILURE' ),
+      this.prisma.auditLog.groupBy(
         by: ['severity'];
         where,
-        _count: { severity: true }
-      }),
-      this.prisma.auditLog.groupBy({
+        _count: severity: true ),
+      this.prisma.auditLog.groupBy(
         by: ['userId'],
-        where: { ...where, userId: { not: null } },
-        _count: { userId: true },
-        orderBy: { _count: { userId: 'desc' } },
-        take: 10
-      }),
-      this.prisma.auditLog.groupBy({
+        where: ...where, userId: not: null ,
+        _count: userId: true ,
+        orderBy: userId: 'desc' ,
+        take: 10),
+      this.prisma.auditLog.groupBy(
         by: ['resource'];
         where,
-        _count: { resource: true },
-        orderBy: { _count: { resource: 'desc' } },
-        take: 10
-      })
+        _count: resource: true ,
+        orderBy: resource: 'desc' ,
+        take: 10)
     ]);
 
     return {

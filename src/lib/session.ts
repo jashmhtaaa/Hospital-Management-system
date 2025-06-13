@@ -1,8 +1,8 @@
-import { SessionOptions, getIronSession } from "iron-session";
+import { type SessionOptions, getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 
 
-import { User } from "@/types/user";
+import type { User } from "@/types/user";
 // Define and export the shape of the session data
 export interface IronSessionData {
   user?: User;
@@ -30,11 +30,8 @@ if (!sessionPassword || sessionPassword.length < 32) {
 export const sessionOptions: SessionOptions = {
   password: sessionPassword,
   cookieName: "hms-session";
-  // secure: true should be used in production (HTTPS) but can be false for localhost,
-  cookieOptions: {
     secure: process.env.NODE_ENV === "production",
-    maxAge: 60 * 60 * 24 * 7, // 1 week
-  },
+    maxAge: 60 * 60 * 24 * 7, // 1 week,
 };
 
 // Function to get the session in App Router Route Handlers or Server Components

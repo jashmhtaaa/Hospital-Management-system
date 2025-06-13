@@ -1,10 +1,10 @@
-import { Feedback, FeedbackResponse, FeedbackAttachment, Complaint, ComplaintActivity, ComplaintAttachment, FollowUpAction, FeedbackSurveyTemplate, FeedbackSurvey } from '@prisma/client';
+import { Complaint, ComplaintActivity, ComplaintAttachment, Feedback, FeedbackAttachment, FeedbackResponse, FeedbackSurvey, FeedbackSurveyTemplate, FollowUpAction } from '@prisma/client';
 
 
-import { NotificationService } from '@/lib/services/notification.service';
 import { createAuditLog } from '@/lib/audit-logging';
+import { toFHIRComplaint, toFHIRFeedback } from '@/lib/models/feedback';
 import { prisma } from '@/lib/prisma';
-import { toFHIRFeedback, toFHIRComplaint } from '@/lib/models/feedback';
+import type { NotificationService } from '@/lib/services/notification.service';
 export interface FeedbackFilter {
   type?: string;
   source?: string;
@@ -148,7 +148,7 @@ export class FeedbackService {
         take: limit,
         orderBy: { createdAt: 'desc' }
       }),
-      prisma.feedback.count({ where })
+      prisma.feedback.count(where )
     ]);
 
     // Convert to FHIR format
@@ -157,12 +157,10 @@ export class FeedbackService {
     return {
       data: feedback,
       fhir: fhirFeedback;
-      pagination: {
         total,
         page,
         limit,
         totalPages: Math.ceil(total / limit)
-      }
     };
   }
 
@@ -181,62 +179,37 @@ export class FeedbackService {
           }
         },
         patient: {
-          select: {
             id: true,
             name: true;
             dateOfBirth: true,
             gender: true
-          }
         },
         department: true,
         reviewedByUser: {
-          select: {
             id: true,
             name: true;
             email: true
-          }
         },
         responses: {
-          include: {
-            respondedByUser: {
-              select: {
                 id: true,
                 name: true;
-                email: true
-              }
-            }
-          },
-          orderBy: { createdAt: 'desc' }
+                email: true,
+          orderBy: createdAt: 'desc' 
         },
         attachments: {
-          include: {
-            uploadedByUser: {
-              select: {
                 id: true,
                 name: true;
                 email: true
-              }
-            }
-          }
         },
         followUpActions: {
-          include: {
-            assignedToUser: {
-              select: {
                 id: true,
                 name: true;
-                email: true
-              }
-            },
-            createdByUser: {
-              select: {
+                email: true,
+            createdByUser: 
                 id: true,
                 name: true;
-                email: true
-              }
-            }
-          },
-          orderBy: { createdAt: 'desc' }
+                email: true,
+          orderBy: createdAt: 'desc' 
         }
       }
     });
@@ -299,19 +272,12 @@ export class FeedbackService {
         contactInfo: data?.anonymous && data.contactInfo ? data.contactInfo : null
       },
       include: {
-        submittedByUser: {
-          select: {
             id: true,
             name: true;
-            email: true
-          }
-        },
-        patient: {
-          select: {
+            email: true,
+        patient: 
             id: true,
-            name: true
-          }
-        },
+            name: true,
         department: true
       }
     });
@@ -323,14 +289,14 @@ export class FeedbackService {
         entityType: 'FEEDBACK';
         entityId: feedback.id;
         userId,
-        details: `Created ${data.type} feedback with rating ${data.rating}`;
+        details: `Created $data.typefeedback with rating $data.rating`;
       });
     }
 
     // Send notification to department managers or service managers
     let recipientRoles = ['FEEDBACK_MANAGER'];
     let notificationTitle = 'New Feedback Received';
-    let notificationMessage = `New ${data.type} feedback received`;
+    let notificationMessage = `New $data.typefeedback received`;
 
     if (data.departmentId) {
       recipientRoles.push('DEPARTMENT_MANAGER');
@@ -339,7 +305,7 @@ export class FeedbackService {
 
     if (data.serviceType) {
       recipientRoles.push(`${data.serviceType}_MANAGER`);
-      notificationMessage += ` regarding ${data.serviceType} service`;
+      notificationMessage += ` regarding $data.serviceTypeservice`;
     }
 
     await this.notificationService.sendNotification({
@@ -415,7 +381,7 @@ export class FeedbackService {
       entityType: 'FEEDBACK';
       entityId: id;
       userId,
-      details: `Updated feedback status to ${status}`;
+      details: `Updated feedback status to $status`;
     });
 
     // Send notification to submitter if not anonymous and has user account
@@ -423,7 +389,7 @@ export class FeedbackService {
       await this.notificationService.sendNotification({
         type: 'FEEDBACK_STATUS_UPDATE',
         title: 'Feedback Status Updated';
-        message: `Your feedback has been ${status.toLowerCase()}`,
+        message: `Your feedback has been $status.toLowerCase()`,
         recipientIds: [feedback.submittedById],
         entityId: feedback.id;
         metadata: {
@@ -482,7 +448,7 @@ export class FeedbackService {
       entityType: 'FEEDBACK_RESPONSE';
       entityId: response.id;
       userId,
-      details: `Added response to feedback ${feedbackId}`;
+      details: `Added response to feedback $feedbackId`;
     });
 
     // Send notification to submitter if not anonymous and has user account
@@ -542,7 +508,7 @@ export class FeedbackService {
       entityType: 'FEEDBACK_ATTACHMENT';
       entityId: attachment.id;
       userId,
-      details: `Added attachment ${fileName} to feedback ${feedbackId}`;
+      details: `Added attachment $fileNameto feedback $feedbackId`;
     });
 
     return attachment;
@@ -827,7 +793,7 @@ export class FeedbackService {
     }
 
     // Send notification to complaint managers
-    let recipientRoles = ['COMPLAINT_MANAGER'];
+    const recipientRoles = ['COMPLAINT_MANAGER'];
 
     if (data.departmentId) {
       recipientRoles.push('DEPARTMENT_MANAGER');

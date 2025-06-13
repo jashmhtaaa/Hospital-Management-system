@@ -1,7 +1,7 @@
 
+import { execSync } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
-import { execSync } from 'child_process';
 /**
  * GDPR Compliance Validation Script - Enterprise TypeScript Version
  * Hospital Management System

@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client"; // Assuming Prisma is used
 
 
-import { Claim, Patient, TPA, ClaimStatusResponse } from "../types.ts"; // Adjust path as per actual structure
+import { type Claim, type ClaimStatusResponse, Patient, TPA } from "../types.ts"; // Adjust path as per actual structure
 }
 const prisma = new PrismaClient();
 

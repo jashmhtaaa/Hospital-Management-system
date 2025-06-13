@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
 
-import { AuditService } from '@/lib/security/audit.service';
-import { EncryptionService } from '@/lib/security/encryption.service';
-import { PrismaService } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache/redis-cache';
-import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 import { pubsub } from '@/lib/graphql/schema-base';
+import { metricsCollector } from '@/lib/monitoring/metrics-collector';
+import type { PrismaService } from '@/lib/prisma';
+import type { AuditService } from '@/lib/security/audit.service';
+import type { EncryptionService } from '@/lib/security/encryption.service';
 }
 }
 
@@ -121,7 +121,7 @@ export enum ActivityType {
   REHABILITATION = 'REHABILITATION',
   COUNSELING = 'COUNSELING',
   OTHER = 'OTHER',
-export interface ActivityTiming {
+export = "export" interface = "interface" ActivityTiming = "ActivityTiming" {
   type: 'RELATIVE' | 'ABSOLUTE' | 'PERIODIC' | 'EVENT_BASED',
   timing: string;
   window?: { start: string, end: string };
@@ -492,7 +492,7 @@ export enum QualityMeasureType {
   CUSTOM = 'CUSTOM',
   REGISTRY = 'REGISTRY',
   REGULATORY = 'REGULATORY',
-export enum QualityMeasureDomain {
+export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain" 
   PATIENT_SAFETY = 'PATIENT_SAFETY',
   CARE_COORDINATION = 'CARE_COORDINATION',
   CLINICAL_PROCESS_EFFECTIVENESS = 'CLINICAL_PROCESS_EFFECTIVENESS',
@@ -653,8 +653,7 @@ export class ClinicalPathwaysService {
   async getAllPathways(filters?: {
     status?: PathwayStatus;
     specialty?: string;
-    condition?: string;
-  }): Promise<ClinicalPathway[]> {
+    condition?: string;): Promise<ClinicalPathway[]> 
     try {
       // Try cache first
       const cacheKey = `pathways:${JSON.stringify(filters || {})}`;
@@ -686,11 +685,9 @@ export class ClinicalPathwaysService {
         condition: filters?.condition || 'ALL'
       });
 
-      return pathways as ClinicalPathway[];
-    } catch (error) {
+      return pathways as ClinicalPathway[];catch (error) 
 
       throw error;
-    }
   }
 
   /**
@@ -747,11 +744,10 @@ export class ClinicalPathwaysService {
         resourceType: 'CLINICAL_PATHWAY';
         resourceId: newPathway.id;
         userId,
-        details: {
+        details: 
           name: pathway.name,
           version: pathway.version;
-          condition: pathway.condition
-        },
+          condition: pathway.condition,
       });
 
       // Invalidate cache
@@ -808,12 +804,11 @@ export class ClinicalPathwaysService {
         resourceType: 'CLINICAL_PATHWAY';
         resourceId: id;
         userId,
-        details: {
+        details: 
           name: currentPathway.name,
           version: updates.version || currentPathway.version;
           previousStatus: currentPathway.status,
-          newStatus: updates.status || currentPathway.status
-        },
+          newStatus: updates.status || currentPathway.status,
       });
 
       // Update metadata with modification history
@@ -919,12 +914,11 @@ export class ClinicalPathwaysService {
         resourceType: 'PATIENT_PATHWAY';
         resourceId: patientPathway.id;
         userId,
-        details: {
+        details: 
           patientId,
           pathwayId,
           pathwayName: pathway.name;
-          encounterId,
-        },
+          encounterId,,
       });
 
       // Record metrics
@@ -1013,13 +1007,12 @@ export class ClinicalPathwaysService {
         resourceType: 'PATIENT_PATHWAY';
         resourceId: id;
         userId,
-        details: {
+        details: 
           patientId: currentPathway.patientId,
           pathwayId: currentPathway.pathwayId;
           pathwayName: currentPathway.pathwayName,
           previousStatus: currentPathway.status;
-          newStatus: updates.status || currentPathway.status
-        },
+          newStatus: updates.status || currentPathway.status,
       });
 
       // Publish event
@@ -1103,11 +1096,9 @@ export class ClinicalPathwaysService {
         resourceType: 'PATIENT_PATHWAY_ACTIVITY';
         resourceId: activityId,
         userId: data.completedBy;
-        details: {
           patientPathwayId,
           phaseId,
-          activityName: activity.activityName
-        },
+          activityName: activity.activityName,
       });
 
       // Record metrics
@@ -1176,13 +1167,12 @@ export class ClinicalPathwaysService {
         resourceType: 'PATIENT_PATHWAY_VARIANCE';
         resourceId: newVariance.id;
         userId,
-        details: {
+        details: 
           patientPathwayId,
           varianceType: variance.type,
           severity: variance.severity;
           phaseId: variance.phaseId,
-          activityId: variance.activityId
-        },
+          activityId: variance.activityId,
       });
 
       // Record metrics
@@ -1310,11 +1300,10 @@ export class ClinicalPathwaysService {
         resourceType: 'ORDER_SET';
         resourceId: newOrderSet.id;
         userId,
-        details: {
+        details: 
           name: orderSet.name,
           type: orderSet.type;
-          specialty: orderSet.specialty.join(','),
-        },
+          specialty: orderSet.specialty.join(','),,
       });
 
       // Invalidate cache

@@ -305,7 +305,7 @@ export const _validatePassword = (password: string): { valid: boolean, errors: s
 /**
  * Generate secure random password;
  */
-export const _generateSecurePassword = (length: number = 12): string {
+export const _generateSecurePassword = (length = 12): string {
   const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
   let password = '';
 
@@ -344,8 +344,7 @@ export const _requireAuth = (handler: Function) {
  * Middleware helper for role-based protection;
  */
 export const _requireRole = (requiredRole: string) {
-  return function(handler: Function) {
-    return async (request: NextRequest, context: unknown) => {
+  return (handler: Function) => async (request: NextRequest, context: unknown) => {
       const authResult = await checkUserRole(requiredRole, request);
 
       if (!authResult.success) {
@@ -363,15 +362,13 @@ export const _requireRole = (requiredRole: string) {
 
       return handler(request, context)
     };
-  };
 }
 
 /**
  * Middleware helper for permission-based protection;
  */
 export const _requirePermission = (permission: string) {
-  return function(handler: Function) {
-    return async (request: NextRequest, context: unknown) => {
+  return (handler: Function) => async (request: NextRequest, context: unknown) => {
       const authResult = await hasPermission(permission, request);
 
       if (!authResult.success) {
@@ -389,4 +386,3 @@ export const _requirePermission = (permission: string) {
 
       return handler(request, context)
     };
-  };

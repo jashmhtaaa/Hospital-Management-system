@@ -3,19 +3,19 @@ import React, { useState, useEffect } from "react";
 
 "use client";
 
-// import Image from "next/image"
-import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import {} from // Card,
 // CardContent,
 // CardHeader,
 // CardTitle
 "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 // import { Input } from "@/components/ui/input"
 // import { Label } from "@/components/ui/label"
 // import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 // import { hasPermission, deleteSession } from "@/lib/session"
 import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton
+// import Image from "next/image"
+import { useRouter } from "next/navigation";
 
 // FIX: Define interface for the user info API response
 interface UserInfo {
@@ -300,7 +300,6 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
           </Button>
         </div>
       </div>
-      {/* Main content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">;
         {/* Header Bar (Optional) */}
         <header className="bg-white border-b border-gray-200 p-4 flex items-center justify-between flex-shrink-0">;

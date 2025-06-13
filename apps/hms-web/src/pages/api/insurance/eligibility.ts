@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 
 import { EligibilityCheckService } from "../../../../features/insurance/services/EligibilityCheckService.ts"; // Adjust path

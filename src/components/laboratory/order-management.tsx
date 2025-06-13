@@ -1,22 +1,23 @@
-import React, { useState, useEffect, useCallback } from "react";
+// FIX: Removed unused PlusOutlined, SearchOutlined
+import { EyeOutlined, ReloadOutlined } from "@ant-design/icons";
 // FIX: Removed unused Input, Form, DatePickerProps, PlusOutlined, SearchOutlined
 import {
-  Card,
-  Table,
   Button,
+  Card,
+  DatePicker,
+  Modal,
   Select,
   Spin,
-  message,
-  Modal,
-  DatePicker,
+  Table,
   Tag,
+  message,
 } from "antd";
 // FIX: Import Dayjs types - RangePickerProps is sufficient for RangePicker
 import type { RangePickerProps } from "antd/es/date-picker";
-// FIX: Removed unused PlusOutlined, SearchOutlined
-import { ReloadOutlined, EyeOutlined } from "@ant-design/icons";
 import dayjs from "dayjs"; // FIX: Import dayjs
 import type { Dayjs } from "dayjs"; // FIX: Import Dayjs type
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -95,7 +96,7 @@ const OrderManagement: React.FC = () => {
       setLoading(true);
       const response = await fetch("/api/patients"); // Assuming this endpoint exists
       if (!response.ok) {
-        let errorMessage = "Failed to fetch patients";
+        const errorMessage = "Failed to fetch patients";
         try {
           // FIX: Type errorData
           const errorData: ApiErrorResponse = await response.json(),
@@ -127,7 +128,7 @@ const OrderManagement: React.FC = () => {
       setLoading(true);
       const response = await fetch("/api/laboratory/tests");
       if (!response.ok) {
-        let errorMessage = "Failed to fetch tests";
+        const errorMessage = "Failed to fetch tests";
         try {
           // FIX: Type errorData
           const errorData: ApiErrorResponse = await response.json(),
@@ -187,7 +188,7 @@ const OrderManagement: React.FC = () => {
 
       const response = await fetch(url);
       if (!response.ok) {
-        let errorMessage = "Failed to fetch orders";
+        const errorMessage = "Failed to fetch orders";
         try {
           // FIX: Type errorData
           const errorData: ApiErrorResponse = await response.json(),
@@ -221,7 +222,7 @@ const OrderManagement: React.FC = () => {
     try {
       const response = await fetch(`/api/laboratory/orders/${orderId}/items`);
       if (!response.ok) {
-        let errorMessage = "Failed to fetch order items";
+        const errorMessage = "Failed to fetch order items";
         try {
           // FIX: Type errorData
           const errorData: ApiErrorResponse = await response.json(),

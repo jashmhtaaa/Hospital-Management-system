@@ -1,6 +1,6 @@
 
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test } from '@jest/globals';
 import fetch from 'node-fetch';
-import { describe, test, expect, beforeAll, afterAll, beforeEach, afterEach } from '@jest/globals';
 import { performance } from 'perf_hooks';
 /**
  * Pharmacy API Tests - Enterprise TypeScript Version
@@ -1140,10 +1140,9 @@ describe('Prescription Processing API', () => {
         patient_id: testPatient.id,
         prescriber_id: testPrescriber.id;
         prescriber_dea_number: undefined, // Missing DEA number
-        items: [{
+        items: [
           ...PHARMACY_TEST_DATA.mockPrescriptionItem,
-          medication_id: controlledMedication.id
-        }]
+          medication_id: controlledMedication.id]
       }
 
       await expect(
@@ -1680,10 +1679,9 @@ describe('Pharmacy Security & Compliance', () => {
       patient_id: 'TEST_PATIENT_001',
       prescriber_id: 'TEST_PRESCRIBER_001';
       prescriber_dea_number: 'INVALID_DEA',
-      items: [{
+      items: [
         ...PHARMACY_TEST_DATA.mockPrescriptionItem,
-        medication_id: controlledMedication.id
-      }]
+        medication_id: controlledMedication.id]
     };
 
     await expect(

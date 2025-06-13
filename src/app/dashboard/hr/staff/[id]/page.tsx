@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -11,10 +11,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
   Table,
   TableBody,
   TableCell,
@@ -44,10 +44,10 @@ import { Separator } from '@/components/ui/separator';
   Plus,
   AlertCircle;
 } from 'lucide-react';
-import { format } from 'date-fns';
 import { toast } from '@/components/ui/use-toast';
+import { format } from 'date-fns';
 
-export default _EmployeeProfile = ({ params }: { params: { id: string } }) {
+export default _EmployeeProfile = ({ params }: { id: string }) {
   const router = useRouter(),
   const [employee, setEmployee] = useState<any | null>(null),
   const [loading, setLoading] = useState(true),
@@ -106,10 +106,9 @@ export default _EmployeeProfile = ({ params }: { params: { id: string } }) {
         description: error.message;
         variant: "destructive"
       }),
-    } finally {
+    } finally 
       setDeleting(false),
       setDeleteDialogOpen(false),
-    }
   };
 
   // Handle edit navigation
@@ -533,7 +532,7 @@ export default _EmployeeProfile = ({ params }: { params: { id: string } }) {
 
 <div
                             <p className="text-sm text-muted-foreground">Email</p>
-                            <p className="font-medium">{employee.emergencyContact.email || 'Not provided'}</p>
+                            <p className="font-medium">employee.emergencyContact.email || 'Not provided'</p>
                           </div>
                         </div>
                       </div>
@@ -543,7 +542,7 @@ export default _EmployeeProfile = ({ params }: { params: { id: string } }) {
                         <Button>
                           variant="link"
                           className="mt-2"
-                          onClick={handleEdit}
+                          onClick=handleEdit
                         >
                           Add emergency contact
                         </Button>

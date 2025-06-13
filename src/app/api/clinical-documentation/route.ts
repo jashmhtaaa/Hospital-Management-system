@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { BadRequestError, NotFoundError, UnauthorizedError } from '../../../lib/core/errors';
 import { authOptions } from '../../../lib/auth';
+import { BadRequestError, NotFoundError, UnauthorizedError } from '../../../lib/core/errors';
 import { clinicalDocumentationService } from '../../../services/clinical-documentation.service';
 /**
  * GET /api/clinical-documentation;

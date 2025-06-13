@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"; // FIX: Import NextRequest
+import { type NextRequest, NextResponse } from "next/server"; // FIX: Import NextRequest
 // src/app/api/ot/bookings/[id]/route.ts
 // import { getRequestContext } from "@cloudflare/next-on-pages"
 

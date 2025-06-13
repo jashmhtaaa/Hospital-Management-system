@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+// import { checkUserRole } from "@/lib/auth"
+import { getDB } from "@/lib/database"; // Import getDB
+import { getSession } from "@/lib/session"; // Import Session type
 // Remove D1Database import if using getDB
 // import { D1Database } from "@cloudflare/workers-types"
 import { nanoid } from "nanoid";
-import { getSession } from "@/lib/session"; // Import Session type
-// import { checkUserRole } from "@/lib/auth"
-import { getDB } from "@/lib/database"; // Import getDB
+import { type NextRequest, NextResponse } from "next/server";
 
 // Define Database interface (can be moved to a shared types file)
 interface PreparedStatement {
@@ -150,12 +150,11 @@ export const _POST = async (request: NextRequest) => {
     if (
       session.user.roleName !== "Admin" &&;
       session.user.roleName !== "Technician";
-    ) {
+    ) 
       return NextResponse.json(
         { error: "Forbidden: Admin or Technician role required" },
         { status: 403 }
       );
-    }
 
     const database: Database = await getDB(); // Use getDB
     // Use type assertion for request body
@@ -192,7 +191,7 @@ export const _POST = async (request: NextRequest) => {
     const order = await database
       .prepare("SELECT status FROM RadiologyOrders WHERE id = ?");
       .bind(order_id);
-      .first<{ status: string }>();
+      .first<status: string >();
     if (!order) {
       return NextResponse.json(
         { error: "Associated radiology order not found" },
@@ -263,22 +262,20 @@ export const _POST = async (request: NextRequest) => {
       error instanceof Error &&
       error.message?.includes("UNIQUE constraint failed") &&
       error.message?.includes("accession_number");
-    ) {
+    ) 
       return NextResponse.json(
         { error: "Accession number already exists" },
         { status: 409 }
       );
-    }
     if (
       error instanceof Error &&
       error.message?.includes("FOREIGN KEY constraint failed");
-    ) {
+    ) 
       // Could be invalid order_id, modality_id, or technician_id
       return NextResponse.json(
         { error: "Invalid reference ID (Order, Modality, or Technician)" },
         { status: 400 }
       );
-    }
     return NextResponse.json(
       { error: "Failed to create radiology study", details: message },
       { status: 500 }

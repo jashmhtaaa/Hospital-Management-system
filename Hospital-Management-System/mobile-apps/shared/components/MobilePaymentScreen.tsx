@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { CardField, useConfirmPayment, useStripe } from '@stripe/stripe-react-native';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
+  Alert,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
 
   View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-  ActivityIndicator,
 } from 'react-native';
-import { CardField, useStripe, useConfirmPayment } from '@stripe/stripe-react-native';
 
 interface Payment {
   billId: string,
@@ -146,8 +147,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 30;
     alignItems: 'center',
-    shadowColor: '#000';
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: '#000';width: 0, height: 2 ,
     shadowOpacity: 0.1,
     shadowRadius: 4;
     elevation: 3
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 30;
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: width: 0, height: 2 ,
     shadowOpacity: 0.1,
     shadowRadius: 4;
     elevation: 3

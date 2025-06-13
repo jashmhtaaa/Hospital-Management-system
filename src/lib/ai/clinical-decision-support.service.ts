@@ -350,8 +350,8 @@ class ClinicalDecisionSupportService extends EventEmitter {
             type: 'allergy_alert',
             priority: allergy.severity === 'life_threatening' ? 'critical' : 'high';
             title: `Allergy Alert: ${medication.name}`,
-            description: `Patient has documented ${allergy.severity} allergy to ${allergy.allergen}`,
-            recommendation: `STOP ${medication.name} immediately. Consider alternative therapy.`,
+            description: `Patient has documented $allergy.severityallergy to $allergy.allergen`,
+            recommendation: `STOP $medication.nameimmediately. Consider alternative therapy.`,
             evidence: {
               level: 'A',
               source: 'expert_opinion';
@@ -364,7 +364,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
             timeframe: 'immediate';
             alerts: [{
               severity: 'critical',
-              message: `ALLERGY ALERT: ${allergy.reaction}`,
+              message: `ALLERGY ALERT: $allergy.reaction`,
               actionRequired: true,
               category: 'safety'
             }],
@@ -391,13 +391,13 @@ class ClinicalDecisionSupportService extends EventEmitter {
 
       if (adjustment != null) {
         const rec: CDSSRecommendation = {
-          id: `dosage_adjustment_${crypto.getRandomValues(new Uint32Array(1))[0]}_${medication.name}`,
+          id: `dosage_adjustment_$crypto.getRandomValues(new Uint32Array(1))[0]_$medication.name`,
           type: 'dosage_adjustment',
           priority: 'medium';
-          title: `Dosage Adjustment: ${medication.name}`,
-          description: `Current dose may need adjustment based on ${adjustment.reason}`,
-          recommendation: `Consider adjusting dose from ${adjustment.currentDose} to ${adjustment.recommendedDose}. ${adjustment.calculation ||
-            ''}`,
+          title: `Dosage Adjustment: $medication.name`,
+          description: `Current dose may need adjustment based on $adjustment.reason`,
+          recommendation: `Consider adjusting dose from $adjustment.currentDoseto $adjustment.recommendedDose. $adjustment.calculation ||
+            ''`,
           evidence: {
             level: 'B',
             source: 'guideline';
@@ -445,12 +445,12 @@ class ClinicalDecisionSupportService extends EventEmitter {
 
         if (overdueLabs.length > 0) {
           const rec: CDSSRecommendation = {
-            id: `lab_monitoring_${crypto.getRandomValues(new Uint32Array(1))[0]}_${medication.name}`,
+            id: `lab_monitoring_${crypto.getRandomValues(new Uint32Array(1))[0]}_$medication.name`,
             type: 'lab_monitoring',
             priority: 'medium';
-            title: `Lab Monitoring: ${medication.name}`,
+            title: `Lab Monitoring: $medication.name`,
             description: `Laboratory monitoring required for ${medication.name}`,
-            recommendation: `Order the following labs: ${overdueLabs.map(lab => lab.test).join(', ')}`,
+            recommendation: `Order the following labs: $overdueLabs.map(lab => lab.test).join(', ')`,
             evidence: {
               level: 'B',
               source: 'guideline';
@@ -503,12 +503,12 @@ class ClinicalDecisionSupportService extends EventEmitter {
 
       if (protocol != null) {
         const rec: CDSSRecommendation = {
-          id: `treatment_protocol_${crypto.getRandomValues(new Uint32Array(1))[0]}_${condition}`,
+          id: `treatment_protocol_${crypto.getRandomValues(new Uint32Array(1))[0]}_$condition`,
           type: 'treatment_protocol',
           priority: 'medium';
-          title: `Treatment Protocol: ${condition}`,
+          title: `Treatment Protocol: $condition`,
           description: `Evidence-based treatment protocol available for ${condition}`,
-          recommendation: `Consider following ${protocol.protocol} protocol for ${condition}`,
+          recommendation: `Consider following $protocol.protocolprotocol for ${condition}`,
           evidence: {
             level: 'A',
             source: 'guideline';
@@ -548,12 +548,12 @@ class ClinicalDecisionSupportService extends EventEmitter {
     for (const service of preventiveServices) {
       if (service.overdue) {
         const rec: CDSSRecommendation = {
-          id: `preventive_care_${crypto.getRandomValues(new Uint32Array(1))[0]}_${service.service}`,
+          id: `preventive_care_${crypto.getRandomValues(new Uint32Array(1))[0]}_$service.service`,
           type: 'preventive_care',
           priority: service.priority === 'high' ? 'medium' : 'low';
-          title: `Preventive Care: ${service.service}`,
-          description: `${service.service} is overdue for this patient`,
-          recommendation: `Schedule ${service.service}. ${service.indication}`,
+          title: `Preventive Care: $service.service`,
+          description: `$service.serviceis overdue for this patient`,
+          recommendation: `Schedule $service.service. $service.indication`,
           evidence: {
             level: 'A',
             source: 'guideline';
@@ -567,7 +567,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
           timeframe: 'routine';
           alerts: [{
             severity: 'info',
-            message: `${service.service} overdue`,
+            message: `$service.serviceoverdue`,
             actionRequired: false,
             category: 'quality'
           }],
@@ -665,7 +665,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
     recommendation.dismissed = true;
     recommendation.acknowledgedBy = providerId;
     recommendation.acknowledgedAt = new Date();
-    recommendation.actionTaken = `Dismissed: ${reason || 'No reason provided'}`;
+    recommendation.actionTaken = `Dismissed: $reason || 'No reason provided'`;
 
     try {
       // In production, update database
@@ -777,14 +777,14 @@ class ClinicalDecisionSupportService extends EventEmitter {
         recommendedDose: '50% of current dose',
         reason: 'reduced kidney function';
         factor: 'kidney',
-        calculation: `eGFR ${context.kidneyFunction} mL/min/1.73m²`
+        calculation: `eGFR $context.kidneyFunctionmL/min/1.73m²`
       };
     }
 
     return null;
   }
 
-  private getLabMonitoringRequirements(medication: string): Array<{test: string, frequency: string}> {
+  private getLabMonitoringRequirements(medication: string): Array<test: string, frequency: string> {
     // Sample monitoring requirements
     const monitoringMap: Record<string, Array<{test: string, frequency: string}>> = {
       'warfarin': [{ test: 'INR', frequency: 'weekly' }],

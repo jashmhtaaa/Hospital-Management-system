@@ -1,8 +1,8 @@
-import { cookies } from "next/headers";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
 
-import { sessionOptions, IronSessionData } from "@/lib/session";
+import { type IronSessionData, sessionOptions } from "@/lib/session";
 // app/api/lab-orders/[labOrderId]/items/route.ts
 // import { LabOrderItem, LabOrderItemStatus } from "@/types/opd"
 import { z } from "zod";
@@ -15,7 +15,7 @@ const getLabOrderId = (pathname: string): number | null {
     // Pathname might be /api/lab-orders/123/items
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 2]; // Second to last part
-    const id = parseInt(idStr, 10);
+    const id = Number.parseInt(idStr, 10);
     return isNaN(id) ? null : id;
 }
 
@@ -66,7 +66,7 @@ export const _POST = async (request: Request) => {
         // 3. Check if lab order exists and belongs to the doctor
         const orderCheck = await DB.prepare("SELECT lab_order_id, doctor_id FROM LabOrders WHERE lab_order_id = ?");
                                    .bind(labOrderId);
-                                   .first<{ lab_order_id: number, doctor_id: number }>();
+                                   .first<lab_order_id: number, doctor_id: number >();
 
         if (!orderCheck) {
             return new Response(JSON.stringify({ error: "Lab Order not found" }), { status: 404 });

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import type React from "react";
+import { useState, useEffect } from "react";
 import {
 
 import { Card, CardContent } from "@/components/ui/card"; // Assuming Card and CardContent are correctly imported
@@ -13,7 +14,7 @@ import { Card, CardContent } from "@/components/ui/card"; // Assuming Card and C
   TableBody,
   TableCell,
 } from "@/components/ui/table"; // Assuming Table components are correctly imported
-import { Badge, BadgeProps } from "@/components/ui/badge"; // FIX: Import BadgeProps
+import { Badge, type BadgeProps } from "@/components/ui/badge"; // FIX: Import BadgeProps
 import { Button } from "@/components/ui/button"; // Assuming Button is correctly imported
   Select,
   SelectContent,
@@ -96,7 +97,7 @@ const BedManagementDashboard: React.FC = () => {
         const response = await fetch(`/api/ipd/beds?${parameters.toString()}`);
 
         if (!response.ok) {
-          let errorMessage = `Failed to fetch beds (status: ${response.status})`;
+          const errorMessage = `Failed to fetch beds (status: ${response.status})`;
           try {
             // FIX: Add type for errorData
             const errorData: ApiErrorResponse = await response.json(),
@@ -242,24 +243,21 @@ const BedManagementDashboard: React.FC = () => {
             Status
           </label>
           <Select>
-            value={filterStatus || "All"}
+            value=filterStatus || "All"
             onValueChange={(value) => handleFilterChange(value, "status")}
           >
             <SelectTrigger id="status-filter" className="w-[180px]">;
               <SelectValue placeholder="Select Status" />
             </SelectTrigger>
-            <SelectContent>
-              {statusOptions.map((status) => (
+            <SelectContent>statusOptions.map((status) => (
                 <SelectItem key={status} value={status}>;
                   {status}
                 </SelectItem>
-              ))}
+              ))
             </SelectContent>
           </Select>
         </div>
       </div>
-
-      {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">;
         <Card>
           <CardContent className="p-4">;
@@ -288,8 +286,6 @@ const BedManagementDashboard: React.FC = () => {
           </CardContent>
         </Card>
       </div>
-
-      {/* Bed Table */}
       <Card>
         <CardContent className="p-0">;
           {loading ? (

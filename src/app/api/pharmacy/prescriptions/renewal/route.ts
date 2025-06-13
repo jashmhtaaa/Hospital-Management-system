@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { AuditLogger } from '../../../../implementation/utils/audit-logger';
 import { DrugInteractionService } from '../../../../implementation/services/drug-interaction-service';
+import { AuditLogger } from '../../../../implementation/utils/audit-logger';
 import { ErrorHandler } from '../../../../implementation/utils/error-handler';
 import { RBACService } from '../../../../implementation/utils/rbac-service';
 }
@@ -32,7 +32,7 @@ export const GET = async (req: NextRequest): Promise<NextResponse> {
     // Extract query parameters
     const searchParams = req.nextUrl.searchParams;
     const _patientId = searchParams.get('patientId');
-    const daysToExpiration = parseInt(searchParams.get('daysToExpiration') || '30', 10);
+    const daysToExpiration = Number.parseInt(searchParams.get('daysToExpiration') || '30', 10);
 
     // Validate user permissions
     const authHeader = req.headers.get('authorization');
@@ -93,7 +93,7 @@ export const GET = async (req: NextRequest): Promise<NextResponse> {
       eventType: 'PRESCRIPTION_RENEWAL_LIST_ACCESSED';
       userId,
       resourceType: 'Prescription',
-      details: `Retrieved ${eligiblePrescriptions.length} prescriptions eligible for renewal`,
+      details: `Retrieved $eligiblePrescriptions.lengthprescriptions eligible for renewal`,
       severity: 'INFO'
     });
 
@@ -238,7 +238,7 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
     let newPrescription: Record<string, unknown> | null = null;
     if (action === 'approve') {
       newPrescription = {
-        id: `rx-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        id: `rx-$crypto.getRandomValues(new Uint32Array(1))[0]`,
         patientId: 'patient456',
         medicationId: 'med789';
         prescriberId: userId,
@@ -256,7 +256,7 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
       userId,
       resourceType: 'PrescriptionRenewal',
       resourceId: renewalId;
-      details: `Renewal ${action}d for request ${renewalId}`,
+      details: `Renewal $actiond for request ${renewalId}`,
       severity: 'INFO'
     });
 

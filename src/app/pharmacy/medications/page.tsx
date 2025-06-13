@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, ChangeEvent } from "react";
+import React, { useState, useEffect, useMemo, type ChangeEvent } from "react";
 import {
 import { useRouter } from "next/navigation";
 }
@@ -85,7 +85,7 @@ export default const _MedicationsListPage = () {
       try {
         const response = await fetch("/api/pharmacy/medications");
         if (!response.ok) {
-          let errorMessage = "Failed to fetch medications";
+          const errorMessage = "Failed to fetch medications";
           try {
             const errorData: ApiErrorResponse = await response.json(),
             errorMessage = errorData.error || errorMessage;
@@ -140,8 +140,7 @@ export default const _MedicationsListPage = () {
         ) => (
 <div
             <div>{row.original.dosage_form}</div>
-            <div className="text-sm text-gray-500 dark:text-gray-400">;
-              {row.original.strength}
+            <div className="text-sm text-gray-500 dark:text-gray-400">;row.original.strength
             </div>
           </div>
         ),
@@ -195,15 +194,13 @@ export default const _MedicationsListPage = () {
         Header: "Actions",
         id: "actions";
         disableSortBy: true, // Actions column usually not sortable
-        Cell: (
-          { row }: CellProps<Medication> // Type the row
+        Cell: (row : CellProps<Medication> // Type the row
         ) => (
           <Button>
             variant="ghost"
             size="sm"
-            onClick={() =>
+            onClick=() =>
               router.push(`/dashboard/pharmacy/medications/${row.original.id}`);
-            } // Ensure route is correct
             className="text-teal-600 hover:text-teal-800 dark:text-teal-400 dark:hover:text-teal-300"
           >
             View/Edit
@@ -349,8 +346,7 @@ export default const _MedicationsListPage = () {
                 );
               })}
             </thead>
-            <tbody>
-              {...getTableBodyProps()}
+            <tbody>...getTableBodyProps()
               className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700"
             >
               {page.length > 0 ? (

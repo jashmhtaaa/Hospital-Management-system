@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
 import { authService } from '@/lib/auth/auth-service';
@@ -10,7 +10,7 @@ class PaymentGateway {
   private static razorpayKeyId = process.env.RAZORPAY_KEY_ID;
   private static razorpayKeySecret = process.env.RAZORPAY_KEY_SECRET;
 
-  static async createPaymentIntent(amount: number, currency: string = 'USD', billId: string) {
+  static async createPaymentIntent(amount: number, currency = 'USD', billId: string) {
     const stripe = require('stripe')(this.stripeSecretKey);
 
     const paymentIntent = await stripe.paymentIntents.create({

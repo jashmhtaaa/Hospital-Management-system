@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
@@ -23,7 +23,7 @@ const updateEmployeeSchema = z.object({
 // GET /api/hr/staff/[id]
 export const _GET = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     const employee = await employeeService.getEmployeeById(params.id)
@@ -48,7 +48,7 @@ export const _GET = async (
 // PUT /api/hr/staff/[id]
 export const _PUT = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     const body = await request.json()
@@ -88,7 +88,7 @@ export const _PUT = async (
 // DELETE /api/hr/staff/[id] - Soft delete by setting active to false
 export const _DELETE = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     // Soft delete by setting active to false and recording termination date

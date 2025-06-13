@@ -102,10 +102,9 @@ export const _reducer = (state: State, action: Action): State => {
         ...state,
         toasts: state.toasts.map((t) =>
           t.id === toastId || toastId === undefined;
-            ? {
+            ? 
                 ...t,
                 open: false
-              }
             : t;
         ),
       };
@@ -190,7 +189,7 @@ export type {
   Toast,
 }; // Export types
 
-export {
-  type ToastProps,
-  type ToastActionElement,
+export type {
+  ToastProps,
+  ToastActionElement,
 } from "@/components/ui/toast";

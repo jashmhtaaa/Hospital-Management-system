@@ -175,7 +175,7 @@ export const ClinicalGuidelineSchema = z.object({
     considerations: z.string().optional()
   })),
 
-  decision_support_rules: z.array(z.object({
+  decision_support_rules: z.array(z.object(
     rule_id: z.string(),
     condition: z.string(),
     action: z.string(),
@@ -183,8 +183,7 @@ export const ClinicalGuidelineSchema = z.object({
   })),
 
   evidence_links: z.array(z.string()).default([]),
-  references: z.array(z.string()).default([])
-});
+  references: z.array(z.string()).default([]));
 
 export type ClinicalNote = z.infer<typeof ClinicalNoteSchema> & {
   id: string,
@@ -286,10 +285,9 @@ export class ElectronicHealthRecordsService {
   private clinicalGuidelines: Map<string, ClinicalGuideline> = new Map(),
   private templates: Map<string, any> = new Map(),
   private decisionSupport: Map<string, ClinicalDecisionSupport> = new Map(),
-  constructor() {
+  constructor() 
     this.initializeClinicalGuidelines();
     this.initializeNoteTemplates();
-  }
 
   /**
    * Initialize clinical guidelines;
@@ -545,7 +543,7 @@ export class ElectronicHealthRecordsService {
     }
 
     const amendmentId = uuidv4();
-    const amendmentNumber = `${originalNote.note_number}-AMEND-${originalNote.amendments.length + 1}`;
+    const amendmentNumber = `$originalNote.note_number-AMEND-$originalNote.amendments.length + 1`;
 
     const amendment: ClinicalNote = {
       ...originalNote,
@@ -769,7 +767,7 @@ export class ElectronicHealthRecordsService {
     if (condition.includes('bp') && note.vital_signs?.blood_pressure_systolic) {
       const match = condition.match(/bp >= (\d+)/);
       if (match != null) {
-        return note.vital_signs.blood_pressure_systolic >= parseInt(match[1]);
+        return note.vital_signs.blood_pressure_systolic >= Number.parseInt(match[1]);
       }
     }
 

@@ -1,10 +1,10 @@
 
-import jwt from 'jsonwebtoken';
 import { EventEmitter } from 'events';
 import { IncomingMessage } from 'http';
-import { PrismaClient } from '@prisma/client';
-import { WebSocket, WebSocketServer } from 'ws';
 import { parse } from 'url';
+import { PrismaClient } from '@prisma/client';
+import jwt from 'jsonwebtoken';
+import { WebSocket, WebSocketServer } from 'ws';
 }
 
 /**
@@ -162,11 +162,10 @@ export class NotificationService extends EventEmitter {
         ws,
         subscriptions: subscription,
         lastSeen: new Date(),
-        metadata: {
+        metadata: 
           userAgent: req.headers['user-agent'],
           ipAddress: req.socket.remoteAddress;
           platform: this.detectPlatform(req.headers['user-agent'] || '')
-        }
       };
 
       this.clients.set(clientId, client);
@@ -347,7 +346,7 @@ export class NotificationService extends EventEmitter {
       type: 'critical_result',
       priority: 'critical';
       title: 'Critical Lab Result',
-      message: `Critical result for ${testName}: ${value}`,
+      message: `Critical result for ${testName}: $value`,
       data: {
         patientId,
         testName,
@@ -367,7 +366,7 @@ export class NotificationService extends EventEmitter {
       type: 'vital_sign_alert',
       priority: 'high';
       title: 'Vital Sign Alert',
-      message: `Abnormal ${vitalSign}: ${value}`,
+      message: `Abnormal $vitalSign: $value`,
       data: {
         patientId,
         vitalSign,
@@ -456,7 +455,7 @@ export class NotificationService extends EventEmitter {
     // Check quiet hours
     if (subscription.preferences.quietHours) {
       const now = new Date();
-      const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+      const currentTime = `${now.getHours().toString().padStart(2, '0')}:$now.getMinutes().toString().padStart(2, '0')`;
       const { start, end } = subscription.preferences.quietHours;
 
       if (currentTime >= start && currentTime <= end && message.priority !== 'critical') {

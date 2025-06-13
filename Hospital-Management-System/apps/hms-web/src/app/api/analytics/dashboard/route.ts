@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
 import { authService } from '@/lib/auth/auth-service';
@@ -6,7 +6,7 @@ import { prisma } from '@/lib/prisma';
 
 // Advanced Analytics Engine
 class AdvancedAnalytics {
-  static async getHospitalMetrics(timeRange: string = '30d') {
+  static async getHospitalMetrics(timeRange = '30d') {
     const startDate = this.getStartDate(timeRange);
 
     // Patient metrics

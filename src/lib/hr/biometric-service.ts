@@ -120,13 +120,11 @@ export class BiometricService {
       data: {
         userId: null,
         eventType: 'BIOMETRIC_VERIFICATION';
-        details: {
           employeeId,
           templateType,
           isMatch,
           matchScore,
-          timestamp: new Date()
-        },
+          timestamp: new Date(),
       },
     });
 

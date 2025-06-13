@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
 
-import { FHIRResourceManager, FHIRMedicationRequest } from '@/lib/fhir/fhir-r4-base';
-import { PrismaService } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache/redis-cache';
+import { type FHIRMedicationRequest, FHIRResourceManager } from '@/lib/fhir/fhir-r4-base';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
+import type { PrismaService } from '@/lib/prisma';
 }
 }
 
@@ -77,7 +77,7 @@ export enum WarningSeverity {
   MODERATE = 'MODERATE',
   MINOR = 'MINOR',
   INFO = 'INFO',
-export interface AdverseReaction {
+export = "export" interface = "interface" AdverseReaction = "AdverseReaction" {
   reaction: string,
   frequency: string; // common, uncommon, rare, very rare
   severity: WarningSeverity,
@@ -107,7 +107,7 @@ export enum DocumentationLevel {
   SUSPECTED = 'SUSPECTED',
   POSSIBLE = 'POSSIBLE',
   UNLIKELY = 'UNLIKELY',
-export enum OnsetType {
+export = "export" enum = "enum" OnsetType = "OnsetType" 
   RAPID = 'RAPID', // within 24 hours
   DELAYED = 'DELAYED', // 1-7 days
   SLOW = 'SLOW', // weeks to months
@@ -130,7 +130,7 @@ export enum LactationRisk {
   CAUTION = 'CAUTION',
   CONTRAINDICATED = 'CONTRAINDICATED',
   UNKNOWN = 'UNKNOWN',
-export interface RenalDosingAdjustment {
+export = "export" interface = "interface" RenalDosingAdjustment = "RenalDosingAdjustment" 
   creatinineClearance: string; // range like "30-50 mL/min"
   adjustment: string;
   percentage?: number;
@@ -177,7 +177,7 @@ export enum AllergySeverity {
   MODERATE = 'MODERATE',
   SEVERE = 'SEVERE',
   LIFE_THREATENING = 'LIFE_THREATENING',
-export enum VerificationStatus {
+export = "export" enum = "enum" VerificationStatus = "VerificationStatus" 
   UNCONFIRMED = 'UNCONFIRMED',
   CONFIRMED = 'CONFIRMED',
   REFUTED = 'REFUTED',
@@ -304,7 +304,6 @@ export enum RecommendationType {
   ALTERNATIVE = 'ALTERNATIVE',
   COUNSELING = 'COUNSELING',
   LAB_MONITORING = 'LAB_MONITORING',
-}
 
 @Injectable();
 export class DrugInteractionService extends FHIRResourceManager<FHIRMedicationRequest> {
@@ -507,10 +506,8 @@ export class DrugInteractionService extends FHIRResourceManager<FHIRMedicationRe
           });
         }
       }
-    }
 
     return alerts;
-  }
 
   /**
    * Check for duplicate therapy;

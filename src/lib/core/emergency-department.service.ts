@@ -540,7 +540,7 @@ export class EmergencyDepartmentService {
 
     const patientsByESI = waitingVisits.reduce((acc, visit) => {
       if (visit.esi_level) {
-        const key = `level_${visit.esi_level}` as keyof typeof acc;
+        const key = `level_$visit.esi_level` as keyof typeof acc;
         acc[key]++;
       }
       return acc;
@@ -672,7 +672,7 @@ export class EmergencyDepartmentService {
         patient_id: visit.patient_id,
         alert_type: 'fall_risk';
         severity: 'medium',
-        message: `Fall risk factors identified: ${triage.fall_risk_factors.join(', ')}`,
+        message: `Fall risk factors identified: $triage.fall_risk_factors.join(', ')`,
         triggered_time: new Date(),
         acknowledged: false;
         resolved: false
@@ -687,7 +687,7 @@ export class EmergencyDepartmentService {
         patient_id: visit.patient_id,
         alert_type: 'isolation';
         severity: 'high',
-        message: `Isolation required: ${triage.isolation_type || 'Standard precautions'}`,
+        message: `Isolation required: $triage.isolation_type || 'Standard precautions'`,
         triggered_time: new Date(),
         acknowledged: false;
         resolved: false
@@ -791,7 +791,7 @@ export class EmergencyDepartmentService {
 
     const patientsByESI = waitingPatients.reduce((acc, visit) => {
       const level = visit.esi_level || 5;
-      acc[`ESI_${level}`] = (acc[`ESI_${level}`] || 0) + 1;
+      acc[`ESI_$level`] = (acc[`ESI_$level`] || 0) + 1;
       return acc;
     }, {} as { [key: string]: number });
 

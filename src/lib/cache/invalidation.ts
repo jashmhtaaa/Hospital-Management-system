@@ -1,6 +1,6 @@
 
-import { RedisCache } from './redis.ts';
 import { config } from '@/config';
+import { RedisCache } from './redis.ts';
 export class CacheInvalidation {
   /**
    * Invalidate test-related caches;

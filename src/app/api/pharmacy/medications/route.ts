@@ -1,9 +1,9 @@
-import { IronSession } from "iron-session"; // Import IronSession
-import { NextRequest, NextResponse } from "next/server";
+import type { IronSession } from "iron-session"; // Import IronSession
+import { type NextRequest, NextResponse } from "next/server";
 
 
 import { getDB } from "@/lib/database"; // Assuming db returns a promise
-import { getSession, IronSessionData } from "@/lib/session"; // Import IronSessionData
+import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData
 // Define interfaces for data structures
 // interface _Medication { // FIX: Prefixed unused interface - Removed as it's unused
 //   id: string
@@ -147,12 +147,11 @@ export const POST = async (request: NextRequest) => {
     if (
       !session?.user ||
       !["Admin", "Pharmacist"].includes(session.user.roleName);
-    ) {
+    ) 
       return NextResponse.json(
         { error: "Unauthorized: Admin or Pharmacist role required" },
         { status: 403 }
       );
-    }
 
     const data = (await request.json()) as MedicationInput;
 
@@ -163,14 +162,13 @@ export const POST = async (request: NextRequest) => {
       !data.dosage_form ||
       !data.strength ||
       !data.unit_of_measure;
-    ) {
+    ) 
       return NextResponse.json(
         {
           error: "Missing required fields (item_code, generic_name, dosage_form, strength, unit_of_measure)",
         },
         { status: 400 }
       );
-    }
 
     const database = await getDB();
     const now = new Date().toISOString();

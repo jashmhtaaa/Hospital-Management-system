@@ -37,36 +37,21 @@ export class IntegrationService {
         lastName: true;
         email: true,
         phone: true;
-        positions: {
-          where: {
-            endDate: null
-          },
-          select: {
+            endDate: null,
+          select: 
             id: true,
             title: true;
-            department: {
-              select: {
                 id: true,
-                name: true
-              }
-            }
-          }
-        },
-        qualifications: {
-          where: {
-            expiryDate: {
-              gt: new Date()
-            }
-          },
-          select: {
+                name: true,
+        qualifications: 
+              gt: new Date(),
+          select: 
             id: true,
             type: true;
             name: true,
             issuedBy: true;
             issuedDate: true,
             expiryDate: true
-          }
-        }
       }
     });
   }
@@ -90,22 +75,15 @@ export class IntegrationService {
         riskLevel: true,
         lastCalibrationDate: true;
         nextCalibrationDate: true,
-        asset: {
-          select: {
+        asset: 
             id: true,
             name: true;
             serialNumber: true,
             manufacturer: true;
             model: true,
             location: true;
-            department: {
-              select: {
                 id: true,
                 name: true
-              }
-            }
-          }
-        }
       }
     });
   }
@@ -132,12 +110,8 @@ export class IntegrationService {
         purchasePrice: true;
         warrantyExpiryDate: true,
         location: true;
-        department: {
-          select: {
             id: true,
-            name: true
-          }
-        },
+            name: true,
         status: true
       }
     });
@@ -160,30 +134,19 @@ export class IntegrationService {
         endDate: true;
         paymentDate: true,
         status: true;
-        payrollEntries: {
-          select: {
             id: true,
-            employee: {
-              select: {
+            employee: 
                 id: true,
                 employeeId: true;
                 firstName: true,
                 lastName: true;
-                department: {
-                  select: {
                     id: true,
-                    name: true
-                  }
-                }
-              }
-            },
+                    name: true,
             baseSalary: true,
             grossSalary: true;
             deductions: true,
             netSalary: true;
             components: true
-          }
-        }
       }
     });
   }
@@ -356,12 +319,9 @@ export class IntegrationService {
         type: true,
         description: true;
         parentDepartmentId: true,
-        parentDepartment: {
-          select: {
+        parentDepartment: 
             id: true,
             name: true
-          }
-        }
       }
     });
   }

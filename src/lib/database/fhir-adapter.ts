@@ -1,11 +1,11 @@
-import { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '@prisma/client';
 
 
-import { FHIRAppointment, FHIRAppointmentUtils } from '@/lib/fhir/appointment';
-import { FHIRBase } from '@/lib/fhir/types';
-import { FHIREncounter } from '@/lib/fhir/encounter';
-import { FHIRMedicationRequest } from '@/lib/fhir/medication';
-import { FHIRPatient, FHIRPatientUtils } from '@/lib/fhir/patient';
+import { type FHIRAppointment, FHIRAppointmentUtils } from '@/lib/fhir/appointment';
+import type { FHIREncounter } from '@/lib/fhir/encounter';
+import type { FHIRMedicationRequest } from '@/lib/fhir/medication';
+import { type FHIRPatient, FHIRPatientUtils } from '@/lib/fhir/patient';
+import type { FHIRBase } from '@/lib/fhir/types';
 }
 
 /**
@@ -89,7 +89,7 @@ export class FHIRDatabaseAdapter {
     }
 
     // Update version
-    const currentVersion = parseInt(existing.meta?.versionId || '1');
+    const currentVersion = Number.parseInt(existing.meta?.versionId || '1');
     resource.id = id;
     resource.meta = {
       ...resource.meta,
@@ -458,7 +458,7 @@ export class FHIRDatabaseAdapter {
         `, resourceType);
       ]);
 
-      const total = parseInt(totalResult[0]?.count || '0');
+      const total = Number.parseInt(totalResult[0]?.count || '0');
 
       return {
         resources: resources.map(r => r.content) as T[];

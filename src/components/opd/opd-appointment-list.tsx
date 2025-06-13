@@ -108,7 +108,7 @@ export default const _OPDAppointmentList = ({
         const response = await fetch(`/api/appointments?date=${formattedDate}`);
 
         if (!response.ok) {
-          let errorMessage = "Failed to fetch appointments";
+          const errorMessage = "Failed to fetch appointments";
           try {
             const errorData: ApiErrorResponse = await response.json(),
             errorMessage = errorData.error || errorMessage;
@@ -155,7 +155,7 @@ export default const _OPDAppointmentList = ({
       );
 
       if (!response.ok) {
-        let errorMessage = "Failed to check in patient";
+        const errorMessage = "Failed to check in patient";
         try {
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
@@ -169,7 +169,7 @@ export default const _OPDAppointmentList = ({
       setAppointments(
         appointments.map((appointment) =>
           appointment.id === appointmentId;
-            ? { ...appointment, status: "checked-in" }
+            ? ...appointment, status: "checked-in" 
             : appointment;
         );
       );
@@ -193,7 +193,7 @@ export default const _OPDAppointmentList = ({
       );
 
       if (!response.ok) {
-        let errorMessage = "Failed to cancel appointment";
+        const errorMessage = "Failed to cancel appointment";
         try {
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
@@ -207,7 +207,7 @@ export default const _OPDAppointmentList = ({
       setAppointments(
         appointments.map((appointment) =>
           appointment.id === appointmentId;
-            ? { ...appointment, status: "cancelled" }
+            ? ...appointment, status: "cancelled" 
             : appointment;
         );
       );

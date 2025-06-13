@@ -1,13 +1,13 @@
 
-import React, { useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react"; // Added import for icons
+import React, { useEffect } from "react";
 // UI components barrel file
 // This file exports all UI components to make imports cleaner
 
 // Define more specific props types using React's utility types
 
 // Button component Props
-interface ButtonProperties;
+type ButtonProperties= {};
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
   variant?: "default" | "destructive" | "outline" | "ghost" | "success";
@@ -407,7 +407,7 @@ export const TabsList = ({
 TabsList.displayName = "TabsList";
 
 // Define specific props type for TabsTrigger component
-interface TabsTriggerProperties;
+type TabsTriggerProperties= {};
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode,
   value: string;
@@ -502,7 +502,7 @@ export const Dialog = ({
 Dialog.displayName = "Dialog";
 
 // Define specific props type for DialogTrigger component
-interface DialogTriggerProperties;
+type DialogTriggerProperties= {};
   extends React.ComponentPropsWithoutRef<"button"> {
   children: React.ReactNode;
   asChild?: boolean;
@@ -547,7 +547,7 @@ export const DialogTrigger = ({
 DialogTrigger.displayName = "DialogTrigger";
 
 // Define specific props type for DialogContent component
-interface DialogContentProperties;
+type DialogContentProperties= {};
   extends React.ComponentPropsWithoutRef<"div"> {
   children: React.ReactNode;
   className?: string;
@@ -620,7 +620,7 @@ export const DialogHeader = ({
 DialogHeader.displayName = "DialogHeader";
 
 // Define specific props type for DialogTitle component
-interface DialogTitleProperties;
+type DialogTitleProperties= {};
   extends React.ComponentPropsWithoutRef<"h2"> {
   children: React.ReactNode;
   className?: string;
@@ -640,8 +640,8 @@ export const DialogTitle = React.forwardRef<HTMLHeadingElement, DialogTitlePrope
 DialogTitle.displayName = "DialogTitle";
 
 // Define specific props type for DialogDescription component
-interface DialogDescriptionProperties;
-  extends React.ComponentPropsWithoutRef<"p"> {
+type DialogDescriptionProperties= {};
+  extends React.ComponentPropsWithoutRef<"p"> 
   children: React.ReactNode;
   className?: string;
 export const DialogDescription = React.forwardRef<HTMLParagraphElement, DialogDescriptionProperties>(
@@ -666,8 +666,7 @@ interface DialogFooterProperties extends React.HTMLAttributes<HTMLDivElement> {
 export const DialogFooter = ({
   children,
   className = "",
-  ...properties;
-}: DialogFooterProperties) => {
+  ...properties;: DialogFooterProperties) => 
   return (
 <div
       className={`flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 ${className}`}
@@ -675,8 +674,7 @@ export const DialogFooter = ({
     >
       {children}
     </div>
-  )
-};
+  );
 DialogFooter.displayName = "DialogFooter";
 
 // Define specific props type for DatePicker component

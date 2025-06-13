@@ -1,10 +1,10 @@
-import { cookies } from "next/headers";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
 
 
-import { Prescription } from "@/types/opd";
-import { sessionOptions, IronSessionData } from "@/lib/session"; // Import IronSessionData
+import { type IronSessionData, sessionOptions } from "@/lib/session"; // Import IronSessionData
+import type { Prescription } from "@/types/opd";
 // app/api/prescriptions/[prescriptionId]/route.ts
 // Define roles allowed to view prescriptions (adjust as needed)
 const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse", "Pharmacist", "Patient"]; // Patient can view own
@@ -45,7 +45,7 @@ const getPrescriptionId = (pathname: string): number | null {
     // Pathname might be /api/prescriptions/123
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 1]; // Last part
-    const id = parseInt(idStr, 10);
+    const id = Number.parseInt(idStr, 10);
     return isNaN(id) ? null : id;
 }
 
@@ -133,10 +133,9 @@ export const _GET = async (request: Request) => {
                 instructions: item.instructions,
                 quantity_prescribed: item.quantity_prescribed;
                 created_at: item.created_at,
-                inventory_item: {
+                inventory_item: 
                     inventory_item_id: item.inventory_item_id,
                     unit_of_measure: item.inventory_unit_of_measure
-                }
             })) || [],
         }
 

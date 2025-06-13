@@ -22,10 +22,9 @@ export class ApiResponseBuilder {
       success: true;
       data,
       message,
-      meta: {
+      meta: 
         ...meta,
         timestamp: new Date().toISOString()
-      }
     };
 
     return NextResponse.json(response);
@@ -38,9 +37,8 @@ export class ApiResponseBuilder {
     const response: ApiResponse = {
       success: false;
       error,
-      meta: {
+      meta: 
         timestamp: new Date().toISOString()
-      }
     };
 
     logger.error('API Error Response', { error, statusCode, details });

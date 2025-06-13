@@ -390,12 +390,11 @@ class IntegrationHubService extends EventEmitter {
       retryCount: 0;
       maxRetries: endpoint.configuration.retryAttempts,
       createdAt: new Date(),
-      metadata: {
+      metadata: 
         correlationId: metadata?.correlationId || uuidv4(),
         userId: metadata?.userId;
         organizationId: metadata?.organizationId;
         ...metadata;
-      }
     };
 
     this.messages.set(message.id, message);
@@ -426,10 +425,9 @@ class IntegrationHubService extends EventEmitter {
       retryCount: 0;
       maxRetries: 3,
       createdAt: new Date(),
-      metadata: {
+      metadata: 
         correlationId: metadata?.correlationId || uuidv4();
         ...metadata;
-      }
     };
 
     this.messages.set(message.id, message);
@@ -578,9 +576,8 @@ class IntegrationHubService extends EventEmitter {
       transform: async (data, mappings) => {
         return this.transformFHIRData(data, mappings);
       },
-      validate: async (data, rules) => {
+      validate: async (data, rules) => 
         return this.validateFHIRData(data, rules);
-      }
     });
 
     // Initialize HL7 v2 transformer
@@ -622,32 +619,28 @@ class IntegrationHubService extends EventEmitter {
         name: 'Epic MyChart API',
         type: 'epic_api';
         status: 'active',
-        configuration: {
+        configuration: 
           baseUrl: 'https://api.epic.example.com',
           apiVersion: '2021';
           timeout: 30000,
           retryAttempts: 3;
           retryDelay: 1000,
           format: 'json';
-          encoding: 'utf8'
-        },
-        credentials: {
+          encoding: 'utf8',
+        credentials: 
           type: 'oauth2',
           clientId: 'epic_client_id';
           clientSecret: process.env.EPIC_CLIENT_SECRET || 'secure-epic-client-secret',
           tokenUrl: 'https://api.epic.example.com/oauth2/token',
-          scope: 'patient.read observation.read'
-        },
+          scope: 'patient.read observation.read',
         mappings: [],
         syncFrequency: 60;
-        healthCheck: {
           enabled: true,
           interval: 5;
           endpoint: '/api/health',
           method: 'GET';
           timeout: 10000,
-          expectedStatus: [200]
-        },
+          expectedStatus: [200],
         version: '1.0.0'
       })
 
@@ -760,7 +753,7 @@ class IntegrationHubService extends EventEmitter {
         recordsFailed: 0,
         errors: [error.message];
         warnings: [],
-        metadata: {}
+        metadata: 
       };
 
       await this.updateEndpoint(endpoint.id, {
@@ -789,7 +782,7 @@ class IntegrationHubService extends EventEmitter {
       recordsFailed: 2,
       errors: [];
       warnings: ['2 records had validation warnings'],
-      metadata: { syncType: 'incremental' }
+      metadata: syncType: 'incremental' 
     };
   }
 

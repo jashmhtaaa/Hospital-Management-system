@@ -179,9 +179,8 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
         description: 'Failed to fetch patient details. Please try again.';
         variant: 'destructive'
       });
-    } finally {
+    } finally 
       setLoading(false);
-    }
   };
 
   // Handle back button

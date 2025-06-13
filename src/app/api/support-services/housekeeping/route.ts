@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
-import { HousekeepingService } from '@/lib/services/support-services/housekeeping/housekeeping.service';
-import { SecurityService } from '@/lib/security.service';
 import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
+import { SecurityService } from '@/lib/security.service';
+import { HousekeepingService } from '@/lib/services/support-services/housekeeping/housekeeping.service';
 // Initialize service
 const housekeepingService = new HousekeepingService();
 
@@ -43,7 +43,7 @@ export const _GET = async (request: NextRequest) => {
         requestType: searchParams.get('requestType') || undefined;
         fromDate: searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
         toDate: searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined;
-        page: parseInt(searchParams.get('page') || '1'),
+        page: Number.parseInt(searchParams.get('page') || '1'),
         limit: parseInt(searchParams.get('limit') || '10')
       };
 

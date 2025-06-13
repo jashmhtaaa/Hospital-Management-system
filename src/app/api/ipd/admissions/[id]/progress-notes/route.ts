@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 
 import { getDB } from "@/lib/database"; // Using mock DB
@@ -68,9 +68,8 @@ export const _GET = async (
       isDoctor &&
       admission.primary_doctor_id !== session.user?.userId &&;
       !canViewAll;
-    ) {
+    ) 
       forbidden = true;
-    }
     // More restrictive check: Only allow if user is Doctor, Nurse, Admin, or has specific view permission
     if (!isDoctor && !isNurse && !isAdmin && !canViewOwn) {
       forbidden = true;
@@ -199,14 +198,13 @@ export const _POST = async (
       isDoctor &&
       admission.primary_doctor_id !== session.user?.userId &&;
       !canCreateAll;
-    ) {
+    ) 
       return NextResponse.json(
         {
           error: "You are not authorized to add progress notes for this patient"
         },
         { status: 403 }
       );
-    }
 
     // Insert new progress note using db.query
     // Mock query doesn-	 return last_row_id

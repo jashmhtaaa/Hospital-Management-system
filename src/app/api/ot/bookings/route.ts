@@ -1,6 +1,6 @@
 
-import { D1Database } from "@cloudflare/workers-types";
-import { NextRequest, NextResponse } from "next/server";
+import type { D1Database } from "@cloudflare/workers-types";
+import { type NextRequest, NextResponse } from "next/server";
 export const _runtime = "edge";
 
 // Interface for the POST request body
@@ -120,12 +120,11 @@ export const _POST = async (request: NextRequest) => {
       !lead_surgeon_id ||
       !scheduled_start_time ||
       !scheduled_end_time;
-    ) {
+    ) 
       return NextResponse.json(
         { message: "Missing required booking fields" },
         { status: 400 }
       );
-    }
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
@@ -182,11 +181,9 @@ export const _POST = async (request: NextRequest) => {
       .all();
 
     return results && results.length > 0;
-      ? NextResponse.json(results[0], { status: 201 });
+      ? NextResponse.json(results[0], status: 201 );
       : // Fallback if select fails
-        NextResponse.json(
-          { message: "Booking created, but failed to fetch details" },
-          { status: 201 }
+        NextResponse.json(message: "Booking created, but failed to fetch details" ,status: 201 
         ),
   } catch (error: unknown) {
     // FIX: Remove explicit any

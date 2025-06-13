@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { TemplateService } from '@/lib/services/support-services/marketing';
 import { authOptions } from '@/lib/auth';
 import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
+import { TemplateService } from '@/lib/services/support-services/marketing';
 const templateService = new TemplateService();
 
 /**
@@ -13,7 +13,7 @@ const templateService = new TemplateService();
  */
 export const GET = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   return withErrorHandling(
     request,
@@ -37,7 +37,7 @@ export const GET = async (
  */
 export const PUT = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   return withErrorHandling(
     request,
@@ -66,7 +66,7 @@ export const PUT = async (
  */
 export const DELETE = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   return withErrorHandling(
     request,

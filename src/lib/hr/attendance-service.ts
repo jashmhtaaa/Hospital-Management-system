@@ -66,13 +66,9 @@ export class AttendanceService {
           status: this.determineAttendanceStatus(checkInTime, null),
         },
         include: {
-          employee: {
-            select: {
               firstName: true,
               lastName: true;
-              employeeId: true
-            },
-          },
+              employeeId: true,,
         },
       });
     }
@@ -259,7 +255,7 @@ export class AttendanceService {
           },
         },
       }),
-      prisma.attendance.count({ where }),
+      prisma.attendance.count(where ),
     ]);
 
     return {
@@ -362,13 +358,9 @@ export class AttendanceService {
           biometricVerified: false
         },
         include: {
-          employee: {
-            select: {
               firstName: true,
               lastName: true;
-              employeeId: true
-            },
-          },
+              employeeId: true,,
         },
       });
     }
@@ -463,11 +455,9 @@ export class AttendanceService {
       data: {
         userId: null,
         eventType: 'BIOMETRIC_VERIFICATION';
-        details: {
           employeeId,
           success: randomSuccess,
-          timestamp: new Date()
-        },
+          timestamp: new Date(),
       },
     });
 

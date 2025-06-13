@@ -1,14 +1,14 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { FHIRMapper } from '../../models/fhir-mappers';
-import { PharmacyDomain } from '../../models/domain-models';
 import { auditLog } from '../../../../lib/audit';
-import { encryptionService } from '../../../../lib/security.service';
 import { errorHandler } from '../../../../lib/error-handler';
-import { getMedicationById, getPrescriptionById } from '../../../../lib/services/pharmacy/pharmacy.service';
+import { encryptionService } from '../../../../lib/security.service';
 import { getPatientById } from '../../../../lib/services/patient/patient.service';
+import { getMedicationById, getPrescriptionById } from '../../../../lib/services/pharmacy/pharmacy.service';
 import { validateDispensingRequest } from '../../../../lib/validation/pharmacy-validation';
+import type { PharmacyDomain } from '../../models/domain-models';
+import { FHIRMapper } from '../../models/fhir-mappers';
 }
 
 /**
@@ -79,8 +79,8 @@ export const GET = async (req: NextRequest) => {
     const status = url.searchParams.get('status');
     const startDate = url.searchParams.get('startDate');
     const endDate = url.searchParams.get('endDate');
-    const page = parseInt(url.searchParams.get('page') || '1', 10);
-    const limit = parseInt(url.searchParams.get('limit') || '20', 10);
+    const page = Number.parseInt(url.searchParams.get('page') || '1', 10);
+    const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
 
     // Build filter criteria
     const filter: unknown = {};
@@ -123,12 +123,11 @@ export const GET = async (req: NextRequest) => {
       action: 'LIST',
       resourceType: 'MedicationDispense';
       userId: userId,
-      details: {
+      details: 
         filter,
         page,
         limit,
         resultCount: paginatedRecords.length
-      }
     });
 
     // Return response
@@ -237,12 +236,10 @@ export const POST = async (req: NextRequest) => {
         resourceType: 'MedicationDispense';
         userId: userId,
         patientId: prescription.patientId;
-        details: {
           medicationId: prescription.medicationId,
           prescriptionId: data.prescriptionId;
           quantity: data.quantityDispensed,
           witnessId: data.witnessId
-        }
       });
     }
 

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react"; // FIX: Add useCallback
+import type React from "react"; // FIX: Add useCallback
+import { useState, useEffect, useCallback } from "react";
 import {
 import { useParams, useRouter } from "next/navigation";
 }
@@ -310,9 +311,8 @@ const RadiologyReportDetail: React.FC = () => {
             </div>
             {report.status === "final" && (
 <div
-                <strong>Verified By:</strong> {report.verified_by_name || "N/A"}{" "}
-                {report.verified_datetime;
-                  ? `on ${new Date(report.verified_datetime).toLocaleString()}`
+                <strong>Verified By:</strong> report.verified_by_name || "N/A"" "report.verified_datetime;
+                  ? `on $new Date(report.verified_datetime).toLocaleString()`
                   : ""}
               </div>
             )}

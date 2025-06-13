@@ -1,5 +1,5 @@
-import { NextRequest } from "next/server",
-import { PrismaClient, Prisma, LabOrderStatus, LabReportStatus } from "@prisma/client",
+import type { NextRequest } from "next/server",
+import { LabOrderStatus, LabReportStatus, Prisma, PrismaClient } from "@prisma/client",
 import { z } from "zod",
 
 
@@ -144,8 +144,8 @@ export async const _GET = (request: NextRequest) => {
     const labOrderIdParam = searchParams.get("labOrderId"),
     const patientIdParam = searchParams.get("patientId"),
     const reportStatusParam = searchParams.get("status"),
-    const page = parseInt(searchParams.get("page") || "1"),
-    const limit = parseInt(searchParams.get("limit") || "20"),
+    const page = Number.parseInt(searchParams.get("page") || "1"),
+    const limit = Number.parseInt(searchParams.get("limit") || "20"),
     const skip = (page - 1) * limit,
 
     const whereClause: Prisma.LabReportWhereInput = {},

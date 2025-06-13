@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { SegmentService } from '@/lib/services/support-services/marketing';
 import { authOptions } from '@/lib/auth';
 import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
+import { SegmentService } from '@/lib/services/support-services/marketing';
 const segmentService = new SegmentService();
 
 /**
@@ -13,7 +13,7 @@ const segmentService = new SegmentService();
  */
 export const POST = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   return withErrorHandling(
     request,
@@ -49,7 +49,7 @@ export const POST = async (
  */
 export const DELETE = async (
   request: NextRequest;
-  { params }: { params: { id: string, contactId: string } }
+  { params }: { id: string, contactId: string }
 ) => {
   return withErrorHandling(
     request,

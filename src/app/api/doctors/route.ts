@@ -1,10 +1,10 @@
-import { cookies } from "next/headers";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
 
-import { sessionOptions, IronSessionData } from "@/lib/session"; // FIX: Added IronSessionData import
+import { type IronSessionData, sessionOptions } from "@/lib/session"; // FIX: Added IronSessionData import
 // import { User } from "@/types/user"
-import { Doctor } from "@/types/doctor";
+import type { Doctor } from "@/types/doctor";
 import { z } from "zod";
 
 // Define roles allowed to view doctor lists (adjust as needed)
@@ -58,12 +58,8 @@ export const _GET = async (request: Request) => {
         user_id: doc.user_id,
         specialty: doc.specialty;
         qualifications: doc.qualifications;
-        // license_number: doc.license_number, // Add if needed
-        user: {
             fullName: doc.full_name,
             email: doc.email;
-            // Add other user fields if necessary
-        }
         // created_at, updated_at excluded for brevity
     }));
 

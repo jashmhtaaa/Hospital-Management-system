@@ -1,8 +1,8 @@
-import { QueryResult } from "pg";
+import type { QueryResult } from "pg";
 
 
-import { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts";
-import { PatientRepository, IPatientRepository, Patient, PatientInputData } from './patient_repository.ts';
+import type { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts";
+import { type IPatientRepository, type Patient, type PatientInputData, PatientRepository } from './patient_repository.ts';
 }
 
 // ARCH-3: Unit Tests for PatientRepository

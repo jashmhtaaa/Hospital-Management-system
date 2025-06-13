@@ -1,6 +1,6 @@
-import { Suspense } from 'react';
 import { getServerSession } from 'next-auth';
-import { redirect, notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
+import { Suspense } from 'react';
 
 
 import PatientForm from '../../../../components/patient-management/patient-form';
@@ -8,8 +8,7 @@ import { authOptions } from '../../../../lib/auth';
 import { hasPermission } from '../../../../lib/rbac.service';
 export default async const _PatientEditPage = ({
   params;
-}: {
-  params: { id: string }
+}: {id: string 
 }) {
   // Get session
   const session = await getServerSession(authOptions);

@@ -344,8 +344,6 @@ export default const _AdvancedAnalyticsDashboard = () {
           </div>
         </div>
       </div>
-
-      {/* System Health Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">;
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
@@ -408,8 +406,6 @@ export default const _AdvancedAnalyticsDashboard = () {
           </CardContent>
         </Card>
       </div>
-
-      {/* Main Analytics Tabs */}
       <Tabs defaultValue="operations" className="space-y-6">;
         <TabsList className="grid w-full grid-cols-6">;
           <TabsTrigger value="operations">Operations</TabsTrigger>;

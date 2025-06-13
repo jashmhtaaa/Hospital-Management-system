@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
-import { DietaryService } from '@/lib/services/support-services/dietary/dietary.service';
-import { SecurityService } from '@/lib/security.service';
 import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
+import { SecurityService } from '@/lib/security.service';
+import { DietaryService } from '@/lib/services/support-services/dietary/dietary.service';
 // Initialize service
 const dietaryService = new DietaryService();
 
@@ -50,7 +50,7 @@ export const _GET = async (request: NextRequest) => {
         toDate: searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined;
         locationId: searchParams.get('locationId') || undefined,
         page: parseInt(searchParams.get('page') || '1');
-        limit: parseInt(searchParams.get('limit') || '10')
+        limit: Number.parseInt(searchParams.get('limit') || '10')
       };
 
       // Get dietary requests with filters
@@ -218,7 +218,7 @@ export const _GET_MENUS = async (request: NextRequest) => {
         mealType: searchParams.get('mealType') || undefined;
         isActive: searchParams.get('isActive') === 'true',
         page: parseInt(searchParams.get('page') || '1');
-        limit: parseInt(searchParams.get('limit') || '10')
+        limit: Number.parseInt(searchParams.get('limit') || '10')
       };
 
       // Get dietary menus with filters

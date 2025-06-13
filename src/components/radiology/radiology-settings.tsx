@@ -17,9 +17,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 } from "@/components/ui/table";
 import { Loader2, Plus } from "lucide-react";
 import CreateProcedureTypeModal, {
-  ProcedureTypeFormData,
+  type ProcedureTypeFormData,
 } from './create-procedure-type-modal.ts'; // Assuming modal exports form data type
-import CreateModalityModal, { ModalityFormData } from './create-modality-modal.ts'; // Assuming modal exports form data type
+import CreateModalityModal, { type ModalityFormData } from './create-modality-modal.ts'; // Assuming modal exports form data type
 
 // Define interfaces
 interface ProcedureType {

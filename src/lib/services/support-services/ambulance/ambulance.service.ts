@@ -1,11 +1,11 @@
-import { Ambulance, AmbulanceCrew, AmbulanceTrip, AmbulanceMaintenance, AmbulanceInventory } from '@prisma/client';
+import { Ambulance, AmbulanceCrew, AmbulanceInventory, AmbulanceMaintenance, AmbulanceTrip } from '@prisma/client';
 
 
-import { NotificationService } from '@/lib/services/notification.service';
-import { calculateRoute, estimateArrivalTime } from '@/lib/services/support-services/ambulance/routing.service';
 import { createAuditLog } from '@/lib/audit-logging';
-import { prisma } from '@/lib/prisma';
 import { toFHIRAmbulance, toFHIRAmbulanceTrip } from '@/lib/models/ambulance';
+import { prisma } from '@/lib/prisma';
+import type { NotificationService } from '@/lib/services/notification.service';
+import { calculateRoute, estimateArrivalTime } from '@/lib/services/support-services/ambulance/routing.service';
 export interface AmbulanceFilter {
   status?: string;
   vehicleType?: string;
@@ -93,7 +93,7 @@ export class AmbulanceService {
         take: limit,
         orderBy: { registrationNumber: 'asc' }
       }),
-      prisma.ambulance.count({ where })
+      prisma.ambulance.count(where )
     ]);
 
     // Convert to FHIR format
@@ -102,12 +102,10 @@ export class AmbulanceService {
     return {
       data: ambulances,
       fhir: fhirAmbulances;
-      pagination: {
         total,
         page,
         limit,
         totalPages: Math.ceil(total / limit)
-      }
     };
   }
 
@@ -131,25 +129,16 @@ export class AmbulanceService {
           }
         },
         trips: {
-          where: {
-            status: {
-              in: ['SCHEDULED', 'EN_ROUTE_TO_PICKUP', 'ARRIVED_AT_PICKUP', 'EN_ROUTE_TO_DESTINATION', 'ARRIVED_AT_DESTINATION']
-            }
-          },
-          include: {
+              in: ['SCHEDULED', 'EN_ROUTE_TO_PICKUP', 'ARRIVED_AT_PICKUP', 'EN_ROUTE_TO_DESTINATION', 'ARRIVED_AT_DESTINATION'],
+          include: 
             patient: true,
             pickupLocation: true;
-            dropLocation: true
-          },
-          orderBy: { scheduledTime: 'asc' }
+            dropLocation: true,
+          orderBy: scheduledTime: 'asc' 
         },
         maintenanceRecords: {
-          where: {
-            status: {
-              in: ['SCHEDULED', 'IN_PROGRESS']
-            }
-          },
-          orderBy: { scheduledDate: 'asc' }
+              in: ['SCHEDULED', 'IN_PROGRESS'],
+          orderBy: scheduledDate: 'asc' 
         }
       }
     });
@@ -258,10 +247,9 @@ export class AmbulanceService {
         message: `Ambulance ${ambulance.registrationNumber} is now under maintenance`,
         recipientRoles: ['MAINTENANCE_MANAGER', 'AMBULANCE_COORDINATOR'],
         entityId: ambulance.id,
-        metadata: {
+        metadata: 
           ambulanceId: ambulance.id,
           registrationNumber: ambulance.registrationNumber
-        }
       });
     }
 
@@ -327,7 +315,7 @@ export class AmbulanceService {
         take: limit,
         orderBy: { scheduledTime: 'desc' }
       }),
-      prisma.ambulanceTrip.count({ where })
+      prisma.ambulanceTrip.count(where )
     ]);
 
     // Convert to FHIR format
@@ -336,12 +324,10 @@ export class AmbulanceService {
     return {
       data: trips,
       fhir: fhirTrips;
-      pagination: {
         total,
         page,
         limit,
         totalPages: Math.ceil(total / limit)
-      }
     };
   }
 
@@ -362,24 +348,16 @@ export class AmbulanceService {
           }
         },
         requestedByUser: {
-          select: {
             id: true,
             name: true;
             email: true
-          }
         },
         pickupLocation: true,
         dropLocation: true;
-        crew: {
-          include: {
-            user: {
-              select: {
+        {
                 id: true,
                 name: true;
                 email: true
-              }
-            }
-          }
         },
         route: true
       }
@@ -1243,17 +1221,8 @@ export class AmbulanceService {
         id: true,
         registrationNumber: true;
         vehicleType: true,
-        _count: {
-          select: {
-            trips: {
-              where: {
-                createdAt: {
+        _count: 
                   gte: startDate
-                }
-              }
-            }
-          }
-        }
       }
     });
 

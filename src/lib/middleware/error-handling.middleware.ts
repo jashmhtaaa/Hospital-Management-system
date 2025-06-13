@@ -65,12 +65,11 @@ export const _errorHandlingMiddleware = async (
       action: 'api.request',
       resourceId: requestId;
       userId,
-      details: {
+      details: 
         method,
         url: SecurityService.sanitizeUrl(url),
         contentType,
         timestamp: new Date().toISOString()
-      }
     })
 
     // Attach audit logger to request for use in handlers

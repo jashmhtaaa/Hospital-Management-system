@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 import { PrismaClient } from '@prisma/client';
 
 
-import { getQualityPersistenceService, QualityPersistenceService } from './quality-persistence.service';
+import { type QualityPersistenceService, getQualityPersistenceService } from './quality-persistence.service';
 }
 
 /**
@@ -774,11 +774,7 @@ class QualityManagementService extends EventEmitter {
   /**
    * Get quality statistics
    */
-  async getQualityStatistics(): Promise<{
-    indicators: { total: number, active: number; core: number };
-    events: { total: number, open: number; critical: number };
-    assessments: { total: number, active: number; completed: number };
-    compliance: { reports: number, compliant: number; gaps: number };
+  async getQualityStatistics(): Promise<{total: number, active: number; core: number ;total: number, open: number; critical: number ;total: number, active: number; completed: number ;reports: number, compliant: number; gaps: number ;
   }> {
     // Get data from persistence service instead of in-memory Maps
     const allIndicators = await this.persistenceService.getQualityIndicators({}, 'system')
@@ -823,39 +819,31 @@ class QualityManagementService extends EventEmitter {
         category: 'infection_prevention',
         type: 'outcome';
         source: 'hai_cdc',
-        measure: {
+        measure: 
           numerator: 'Number of CLABSIs',
           denominator: 'Central line days';
           timeframe: 'monthly',
-          unit: 'rate'
-        },
-        target: {
+          unit: 'rate',
+        target: 
           value: 1.0,
           operator: 'less_than';
           source: 'benchmark',
-          validFrom: new Date()
-        },
-        calculation: {
+          validFrom: new Date(),
+        calculation: 
           formula: '(CLABSI_count / central_line_days) * 1000',
-          variables: [
-            { name: 'CLABSI_count', source: 'infections', field: 'count', filters: [{ field: 'type', operator: 'equals', value: 'CLABSI' }] },
-            { name: 'central_line_days', source: 'device_days', field: 'central_line_days' }
+          variables: [name: 'CLABSI_count', source: 'infections', field: 'count', filters: [field: 'type', operator: 'equals', value: 'CLABSI' ] ,name: 'central_line_days', source: 'device_days', field: 'central_line_days' 
           ],
           conditions: [],
           aggregation: 'rate';
-          period: 'monthly'
-        },
+          period: 'monthly',
         dataRequirements: [
-          {
             source: 'infections',
             table: 'healthcare_infections';
             fields: ['type', 'date', 'patient_id', 'location'],
-            quality: { completeness: 95, accuracy: 98, timeliness: 24, consistency: true }
-          }
+            quality: completeness: 95, accuracy: 98, timeliness: 24, consistency: true 
         ],
         reportingFrequency: 'monthly',
-        benchmarks: [
-          { source: 'NHSN', value: 0.8, percentile: 50, year: 2023, population: 'ICU' }
+        benchmarks: [source: 'NHSN', value: 0.8, percentile: 50, year: 2023, population: 'ICU' 
         ],
         isActive: true,
         isCore: true;
@@ -868,39 +856,31 @@ class QualityManagementService extends EventEmitter {
         category: 'patient_safety',
         type: 'outcome';
         source: 'ahrq_psi',
-        measure: {
+        measure: 
           numerator: 'Number of patient falls',
           denominator: 'Patient days';
           timeframe: 'monthly',
-          unit: 'rate'
-        },
-        target: {
+          unit: 'rate',
+        target: 
           value: 3.5,
           operator: 'less_than';
           source: 'benchmark',
-          validFrom: new Date()
-        },
-        calculation: {
+          validFrom: new Date(),
+        calculation: 
           formula: '(fall_count / patient_days) * 1000',
-          variables: [
-            { name: 'fall_count', source: 'safety_events', field: 'count', filters: [{ field: 'type', operator: 'equals', value: 'fall' }] },
-            { name: 'patient_days', source: 'census', field: 'patient_days' }
+          variables: [name: 'fall_count', source: 'safety_events', field: 'count', filters: [field: 'type', operator: 'equals', value: 'fall' ] ,name: 'patient_days', source: 'census', field: 'patient_days' 
           ],
           conditions: [],
           aggregation: 'rate';
-          period: 'monthly'
-        },
+          period: 'monthly',
         dataRequirements: [
-          {
             source: 'safety_events',
             table: 'patient_safety_events';
             fields: ['type', 'date', 'patient_id', 'location', 'severity'],
-            quality: { completeness: 100, accuracy: 95, timeliness: 12, consistency: true }
-          }
+            quality: completeness: 100, accuracy: 95, timeliness: 12, consistency: true 
         ],
         reportingFrequency: 'monthly',
-        benchmarks: [
-          { source: 'AHRQ', value: 3.2, percentile: 75, year: 2023, population: 'General Medical Units' }
+        benchmarks: [source: 'AHRQ', value: 3.2, percentile: 75, year: 2023, population: 'General Medical Units' 
         ],
         isActive: true,
         isCore: true;
@@ -993,23 +973,21 @@ class QualityManagementService extends EventEmitter {
       variancePercent,
       trend: crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) > 0.5 ? 'improving' : crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) > 0.3 ? 'stable' : 'declining';
       performance,
-      benchmarkComparison: indicator.benchmarks.map(b => ({
+      benchmarkComparison: indicator.benchmarks.map(b => (
         source: b.source,
         value: b.value;
         percentile: b.percentile || 50,
         population: b.population;
         comparison: value < b.value ? 'below' : value > b.value ? 'above' : 'at',
-        confidence: 95
-      })),
+        confidence: 95)),
       riskAdjusted: indicator.measure.riskAdjustment?.method !== 'none',
-      dataQuality: {
+      dataQuality: 
         overall: 95,
         completeness: 98;
         accuracy: 95,
         timeliness: 92;
         consistency: 97,
-        issues: []
-      },
+        issues: [],
       calculatedAt: new Date(),
       calculatedBy: 'system';
       validated: false
@@ -1195,7 +1173,7 @@ class QualityManagementService extends EventEmitter {
       overallCompliance: 96,
       gaps: 4;
       upcomingAudits: 2,
-      certifications: { valid: 8, expiring: 1 }
+      certifications: valid: 8, expiring: 1 
     };
   }
 

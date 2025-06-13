@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
 
-import { FHIRResourceManager, FHIRPatient, FHIR_SYSTEMS } from '@/lib/fhir/fhir-r4-base';
-import { PrismaService } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache/redis-cache';
+import { type FHIRPatient, FHIRResourceManager, FHIR_SYSTEMS } from '@/lib/fhir/fhir-r4-base';
+import { SUBSCRIPTION_EVENTS, pubsub } from '@/lib/graphql/schema-base';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
-import { pubsub, SUBSCRIPTION_EVENTS } from '@/lib/graphql/schema-base';
+import type { PrismaService } from '@/lib/prisma';
 }
 }
 
@@ -93,7 +93,7 @@ export enum BiologicalSex {
   FEMALE = 'FEMALE',
   INTERSEX = 'INTERSEX',
   UNKNOWN = 'UNKNOWN',
-export interface ContactInformation {
+export = "export" interface = "interface" ContactInformation = "ContactInformation" {
   primaryPhone?: string;
   secondaryPhone?: string;
   email?: string;
@@ -108,7 +108,7 @@ export enum ContactMethod {
   MAIL = 'MAIL',
   PORTAL = 'PORTAL',
   IN_PERSON = 'IN_PERSON',
-export interface ContactTime {
+export = "export" interface = "interface" ContactTime = "ContactTime" 
   preferredTime: 'MORNING' | 'AFTERNOON' | 'EVENING' | 'ANYTIME',
   timeZone: string;
   availableDays: string[];
@@ -202,7 +202,7 @@ export enum EducationLevel {
   DOCTORATE = 'DOCTORATE',
   PROFESSIONAL = 'PROFESSIONAL',
   UNKNOWN = 'UNKNOWN',
-export interface ClinicalProfile {
+export = "export" interface = "interface" ClinicalProfile = "ClinicalProfile" 
   primaryPhysician?: string;
   allergies: AllergyInformation[],
   medications: MedicationInformation[];
@@ -245,7 +245,7 @@ export enum AllergySeverity {
   SEVERE = 'SEVERE',
   LIFE_THREATENING = 'LIFE_THREATENING',
   FATAL = 'FATAL',
-export enum AllergyStatus {
+export = "export" enum = "enum" AllergyStatus = "AllergyStatus" 
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
   RESOLVED = 'RESOLVED',
@@ -255,7 +255,7 @@ export enum VerificationStatus {
   UNCONFIRMED = 'UNCONFIRMED',
   REFUTED = 'REFUTED',
   ENTERED_IN_ERROR = 'ENTERED_IN_ERROR',
-export interface MedicationInformation {
+export = "export" interface = "interface" MedicationInformation = "MedicationInformation" 
   id: string,
   name: string;
   genericName?: string;
@@ -278,7 +278,7 @@ export enum MedicationStatus {
   DISCONTINUED = 'DISCONTINUED',
   ON_HOLD = 'ON_HOLD',
   NEVER_TAKEN = 'NEVER_TAKEN',
-export interface AdherenceInformation {
+export = "export" interface = "interface" AdherenceInformation = "AdherenceInformation" 
   adherenceRate: number; // 0-100%
   lastAssessment: Date,
   barriers: string[];
@@ -534,7 +534,7 @@ export enum AssistanceLevel {
   MODERATE_ASSISTANCE = 'MODERATE_ASSISTANCE',
   MAXIMAL_ASSISTANCE = 'MAXIMAL_ASSISTANCE',
   TOTAL_DEPENDENCE = 'TOTAL_DEPENDENCE',
-export interface CognitiveStatus {
+export = "export" interface = "interface" CognitiveStatus = "CognitiveStatus" 
   mentalStatus: string;
   mmseScore?: number; // Mini-Mental State Examination
   mocaScore?: number; // Montreal Cognitive Assessment
@@ -780,7 +780,7 @@ export enum AccessLevel {
   APPOINTMENT_SCHEDULING = 'APPOINTMENT_SCHEDULING',
   EMERGENCY_ONLY = 'EMERGENCY_ONLY',
   NO_ACCESS = 'NO_ACCESS',
-export interface PatientPreferences {
+export = "export" interface = "interface" PatientPreferences = "PatientPreferences" 
   communicationPreferences: CommunicationPreferences,
   appointmentPreferences: AppointmentPreferences;
   treatmentPreferences: TreatmentPreferences,
@@ -926,7 +926,7 @@ export enum AlertPriority {
   HIGH = 'HIGH',
   CRITICAL = 'CRITICAL',
   EMERGENCY = 'EMERGENCY',
-export enum AlertCategory {
+export = "export" enum = "enum" AlertCategory = "AlertCategory" 
   SAFETY = 'SAFETY',
   CLINICAL = 'CLINICAL',
   ADMINISTRATIVE = 'ADMINISTRATIVE',
@@ -944,7 +944,7 @@ export enum DisplayLocation {
   REGISTRATION = 'REGISTRATION',
   BILLING = 'BILLING',
   ALL_MODULES = 'ALL_MODULES',
-export interface AlertAction {
+export = "export" interface = "interface" AlertAction = "AlertAction" 
   action: string,
   description: string;
   required: boolean;
@@ -1007,7 +1007,7 @@ export enum FlagSeverity {
   WARNING = 'WARNING',
   ALERT = 'ALERT',
   CRITICAL = 'CRITICAL',
-export interface RiskAssessment {
+export = "export" interface = "interface" RiskAssessment = "RiskAssessment" 
   id: string,
   assessmentType: RiskAssessmentType;
   riskScore: number,
@@ -1040,7 +1040,7 @@ export enum RiskAssessmentType {
   BLEEDING_RISK = 'BLEEDING_RISK',
   CONTRAST_ALLERGY = 'CONTRAST_ALLERGY',
   OTHER = 'OTHER',
-export enum RiskLevel {
+export = "export" enum = "enum" RiskLevel = "RiskLevel" 
   MINIMAL = 'MINIMAL',
   LOW = 'LOW',
   MODERATE = 'MODERATE',
@@ -1107,7 +1107,7 @@ export enum CarePlanStatus {
   COMPLETED = 'COMPLETED',
   ENTERED_IN_ERROR = 'ENTERED_IN_ERROR',
   UNKNOWN = 'UNKNOWN',
-export enum CarePlanIntent {
+export = "export" enum = "enum" CarePlanIntent = "CarePlanIntent" 
   PROPOSAL = 'PROPOSAL',
   PLAN = 'PLAN',
   ORDER = 'ORDER',
@@ -1590,7 +1590,7 @@ export enum ConsentStatus {
   REJECTED = 'REJECTED',
   INACTIVE = 'INACTIVE',
   ENTERED_IN_ERROR = 'ENTERED_IN_ERROR',
-export enum ConsentScope {
+export = "export" enum = "enum" ConsentScope = "ConsentScope" 
   PATIENT_PRIVACY = 'PATIENT_PRIVACY',
   RESEARCH = 'RESEARCH',
   TREATMENT = 'TREATMENT',
@@ -1713,7 +1713,7 @@ export enum AuditAction {
   UPDATE = 'UPDATE',
   DELETE = 'DELETE',
   EXECUTE = 'EXECUTE',
-export enum AuditOutcome {
+export = "export" enum = "enum" AuditOutcome = "AuditOutcome" 
   SUCCESS = 'SUCCESS',
   MINOR_FAILURE = 'MINOR_FAILURE',
   SERIOUS_FAILURE = 'SERIOUS_FAILURE',
@@ -1767,7 +1767,6 @@ export enum PatientStatus {
   MERGED = 'MERGED',
   DECEASED = 'DECEASED',
   UNKNOWN = 'UNKNOWN',
-}
 
 @Injectable();
 export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
@@ -1834,18 +1833,16 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
         analytics,
         consents: [],
         privacySettings: this.getDefaultPrivacySettings(),
-        auditTrail: [{
+        auditTrail: [
           id: `audit-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
           type: AuditEventType.CREATE,
           action: AuditAction.CREATE;
           recorded: new Date(),
           outcome: AuditOutcome.SUCCESS;
           purposeOfEvent: ['Patient Registration'],
-          agent: [];
-          source: { observer: sourceSystem || 'HMS', type: ['Hospital Management System'] },
+          agent: [];observer: sourceSystem || 'HMS', type: ['Hospital Management System'] ,
           entity: [],
-          context: {},
-        }],
+          context: ,],
         status: PatientStatus.ACTIVE,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -1888,7 +1885,7 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
   /**
    * AI-powered predictive analytics for patient outcomes;
    */
-  async generatePredictiveAnalytics(patientId: string): Promise<PredictiveModel[]> {
+  async generatePredictiveAnalytics(patientId: string): Promise<PredictiveModel[]> 
     try {
       const patient = await this.getEnhancedPatient(patientId);
       if (!patient) {
@@ -1944,12 +1941,11 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
 
       throw error;
     }
-  }
 
   /**
    * Real-time patient monitoring with alert generation;
    */
-  async monitorPatientStatus(patientId: string): Promise<PatientAlert[]> {
+  async monitorPatientStatus(patientId: string): Promise<PatientAlert[]> 
     try {
       const patient = await this.getEnhancedPatient(patientId);
       if (!patient) {
@@ -2004,7 +2000,6 @@ export class AdvancedPatientService extends FHIRResourceManager<FHIRPatient> {
 
       throw error;
     }
-  }
 
   // Private helper methods
   private async generateMRN(): Promise<string> {

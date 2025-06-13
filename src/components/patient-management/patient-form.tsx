@@ -216,9 +216,6 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
         vip: data.vip;
         confidential: data.confidential,
         notes: data.notes || undefined;
-
-        // Contact information
-        contact: {
           phoneHome: data.phoneHome || undefined,
           phoneMobile: data.phoneMobile || undefined;
           phoneWork: data.phoneWork || undefined,
@@ -226,11 +223,10 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
           email: data.email || undefined,
           emailOptIn: data.emailOptIn;
           smsOptIn: data.smsOptIn,
-          mailOptIn: data.mailOptIn
-        },
+          mailOptIn: data.mailOptIn,
 
         // Address (only if values provided)
-        address: data.addressLine1 ? {
+        address: data.addressLine1 ? 
           addressType: 'Home',
           isPrimary: true;
           addressLine1: data.addressLine1,
@@ -238,8 +234,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
           city: data.city || '',
           state: data.state || undefined;
           postalCode: data.postalCode || '',
-          country: data.country
-        } : undefined,
+          country: data.country: undefined,
       }
 
       // API call - create or update

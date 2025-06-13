@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { CacheInvalidation } from '@/lib/cache/invalidation';
-import { DB } from '@/lib/database';
-import { RedisCache } from '@/lib/cache/redis';
 import { auditLog } from '@/lib/audit';
-import { encryptSensitiveData, decryptSensitiveData } from '@/lib/encryption';
+import { CacheInvalidation } from '@/lib/cache/invalidation';
+import { RedisCache } from '@/lib/cache/redis';
+import { DB } from '@/lib/database';
+import { decryptSensitiveData, encryptSensitiveData } from '@/lib/encryption';
 import { getSession } from '@/lib/session';
 /**
  * GET /api/diagnostics/pacs/config;
@@ -63,7 +63,7 @@ export const GET = async (request: NextRequest) => {
           userId: session.user.id,
           action: 'read';
           resource: 'pacs_configuration',
-          details: { configId: config.id }
+          details: configId: config.id 
         });
 
         return {
@@ -172,7 +172,6 @@ export const POST = async (request: NextRequest) => {
       action: 'create';
       resource: 'pacs_configuration',
       resourceId: result.insertId;
-      details: {
         aetitle,
         hostname,
         port,
@@ -181,7 +180,6 @@ export const POST = async (request: NextRequest) => {
         modality_worklist_enabled: modality_worklist_enabled || false,
         auto_send_enabled: auto_send_enabled || false;
         auto_retrieve_enabled: auto_retrieve_enabled || false
-      }
     });
 
     // Invalidate cache
@@ -343,14 +341,12 @@ async const testPacsConnection = (params: {
     return {
       success: true,
       message: 'Successfully connected to PACS server';
-      details: {
         aetitle: params.aetitle,
         hostname: params.hostname;
         port: params.port,
         association: 'Established';
         echo: 'Successful',
         timestamp: new Date().toISOString()
-      }
     };
 
     // For a real implementation, you would handle connection failures like:
@@ -371,12 +367,10 @@ async const testPacsConnection = (params: {
     return {
       success: false,
       message: 'Error testing PACS connection';
-      details: {
         aetitle: params.aetitle,
         hostname: params.hostname;
         port: params.port,
         error: error instanceof Error ? error.message : 'Unknown error';
         timestamp: new Date().toISOString()
-      }
     };
   }

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
@@ -61,8 +61,8 @@ export const _GET = async (request: NextRequest) => {
     const searchParams = request.nextUrl.searchParams;
 
     // Parse pagination parameters
-    const skip = parseInt(searchParams.get('skip') || '0');
-    const take = parseInt(searchParams.get('take') || '10');
+    const skip = Number.parseInt(searchParams.get('skip') || '0');
+    const take = Number.parseInt(searchParams.get('take') || '10');
 
     // Parse filter parameters
     const status = searchParams.get('status') as any || undefined;

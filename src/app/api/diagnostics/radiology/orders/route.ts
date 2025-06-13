@@ -1,13 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { CacheInvalidation } from '@/lib/cache/invalidation';
-import { DB } from '@/lib/database';
-import { RedisCache } from '@/lib/cache/redis';
 import { auditLog } from '@/lib/audit';
-import { encryptSensitiveData, decryptSensitiveData } from '@/lib/encryption';
-import { getSession } from '@/lib/session';
+import { CacheInvalidation } from '@/lib/cache/invalidation';
+import { RedisCache } from '@/lib/cache/redis';
+import { DB } from '@/lib/database';
+import { decryptSensitiveData, encryptSensitiveData } from '@/lib/encryption';
 import { notifyUsers } from '@/lib/notifications';
+import { getSession } from '@/lib/session';
 /**
  * GET /api/diagnostics/radiology/orders;
  * Get radiology orders with optional filtering;
@@ -29,8 +29,8 @@ export const GET = async (request: NextRequest) => {
     const orderedAfter = searchParams.get('orderedAfter');
     const orderedBefore = searchParams.get('orderedBefore');
     const search = searchParams.get('search');
-    const page = parseInt(searchParams.get('page') || '1');
-    const pageSize = parseInt(searchParams.get('pageSize') || '20');
+    const page = Number.parseInt(searchParams.get('page') || '1');
+    const pageSize = Number.parseInt(searchParams.get('pageSize') || '20');
 
     // Cache key
     const cacheKey = `diagnostic:radiology:orders:${patientId ||;
@@ -141,7 +141,7 @@ export const GET = async (request: NextRequest) => {
           userId: session.user.id,
           action: 'read';
           resource: 'radiology_orders',
-          details: { patientId, status, priority, modality, page, pageSize }
+          details: patientId, status, priority, modality, page, pageSize 
         });
 
         return {
@@ -299,14 +299,12 @@ export const POST = async (request: NextRequest) => {
       action: 'create';
       resource: 'radiology_orders',
       resourceId: result.insertId;
-      details: {
         orderNumber,
         accessionNumber,
         patientId,
         modality,
         procedureCode,
         priority: priority || 'routine'
-      }
     });
 
     // Create order tracking entry
@@ -407,7 +405,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const id = parseInt(params.id);
+    const id = Number.parseInt(params.id);
     if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
@@ -501,7 +499,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     const updateFields: string[] = [];
     const updateParams: unknown[] = [];
     let statusChanged = false;
-    let _oldStatus = existingOrder.status;
+    const _oldStatus = existingOrder.status;
     let trackingNote = null;
 
     // Only orderer or admin can change these fields if order is still in 'ordered' status
@@ -624,7 +622,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       if (!validTransitions[existingOrder.status].includes(status)) {
         return NextResponse.json({
           error: `Invalid status transition from ${existingOrder.status} to ${status}`;
-        }, { status: 400 });
+        }, status: 400 );
       }
 
       updateFields.push('status = ?');
@@ -736,12 +734,10 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
         action: 'update';
         resource: 'radiology_orders',
         resourceId: id;
-        details: {
           ...body,
           statusChanged,
           _oldStatus: statusChanged ? _oldStatus : undefined,
           newStatus: statusChanged ? status : undefined
-        }
       });
 
       // Create tracking entry if status changed or tracking note exists
@@ -885,7 +881,7 @@ export const _GET_TRACKING = async (request: NextRequest, { params }: { params: 
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const id = parseInt(params.id);
+    const id = Number.parseInt(params.id);
     if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
@@ -919,7 +915,7 @@ export const _GET_TRACKING = async (request: NextRequest, { params }: { params: 
           userId: session.user.id,
           action: 'read';
           resource: 'radiology_order_tracking',
-          details: { orderId: id }
+          details: orderId: id 
         });
 
         return result.results;

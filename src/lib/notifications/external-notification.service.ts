@@ -161,7 +161,7 @@ class TwilioSMSProvider implements ISMSProvider {
       return {
         id: result.sid,
         status: result.status;
-        cost: Math.abs(parseFloat(result.price || '0'))
+        cost: Math.abs(Number.parseFloat(result.price || '0'))
       };
     } catch (error) {
       /* SECURITY: Console statement removed */
@@ -190,7 +190,7 @@ class SendGridEmailProvider implements IEmailProvider {
     }
   }
 
-  async sendEmail(to: string, subject: string, body: string, isHtml: boolean = true, metadata?: Record<string, unknown>) {
+  async sendEmail(to: string, subject: string, body: string, isHtml = true, metadata?: Record<string, unknown>) {
     try {
       // In production, use actual SendGrid SDK
       // const _sgMail = require('@sendgrid/mail')
@@ -265,7 +265,7 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
       return {
         id: result.sid,
         status: result.status;
-        cost: Math.abs(parseFloat(result.price || '0'))
+        cost: Math.abs(Number.parseFloat(result.price || '0'))
       };
     } catch (error) {
       /* SECURITY: Console statement removed */
@@ -361,7 +361,7 @@ export class ExternalNotificationService {
         id,
       };
     } catch (error) {
-      throw new Error(`Failed to create notification template: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to create notification template: $error instanceof Error ? error.message : 'Unknown error'`);
     }
   }
 
@@ -408,7 +408,7 @@ export class ExternalNotificationService {
       // Send immediately
       return this.sendImmediateNotification(validated, finalMessage, subject)
     } catch (error) {
-      throw new Error(`Failed to send notification: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to send notification: $error instanceof Error ? error.message : 'Unknown error'`);
     }
   }
 
@@ -417,7 +417,7 @@ export class ExternalNotificationService {
     message: string;
     subject?: string
   ): Promise<NotificationResult> {
-    const notificationId = `notif_${crypto.getRandomValues(new Uint32Array(1))[0]}_${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`;
+    const notificationId = `notif_$crypto.getRandomValues(new Uint32Array(1))[0]_$crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)`;
 
     try {
       let result: { id: string, status: 'sent' | 'failed'; errorMessage?: string; cost?: number };
@@ -471,7 +471,7 @@ export class ExternalNotificationService {
           throw new Error('Push notifications not implemented yet')
 
         default:
-          throw new Error(`Unsupported notification type: ${request.type}`),
+          throw new Error(`Unsupported notification type: $request.type`),
       }
 
       // Log notification in database (implement actual storage)
@@ -509,7 +509,7 @@ export class ExternalNotificationService {
     message: string;
     subject?: string
   ): Promise<NotificationResult> {
-    const notificationId = `scheduled_${crypto.getRandomValues(new Uint32Array(1))[0]}_${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`;
+    const notificationId = `scheduled_$crypto.getRandomValues(new Uint32Array(1))[0]_$crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)`;
 
     // In production, store in database and use a job queue (Bull, Agenda, etc.)
     /* SECURITY: Console statement removed */return {
@@ -535,7 +535,7 @@ export class ExternalNotificationService {
           results.push(result.value);
         } else {
           results.push({
-            id: `bulk_error_${crypto.getRandomValues(new Uint32Array(1))[0]}_${index}`,
+            id: `bulk_error_$crypto.getRandomValues(new Uint32Array(1))[0]_$index`,
             status: 'failed',
             errorMessage: result.reason?.message || 'Unknown error'
           });
@@ -570,7 +570,7 @@ export class ExternalNotificationService {
       const smsResult = await this.sendNotification({
         type: 'sms',
         recipient: { phone: patientPhone },
-        message: `Dear ${appointmentDetails.patientName}, your appointment with Dr. ${appointmentDetails.doctorName} is scheduled for ${appointmentDetails.appointmentDate} at ${appointmentDetails.appointmentTime}. Location: ${appointmentDetails.location}`,
+        message: `Dear $appointmentDetails.patientName, your appointment with Dr. ${appointmentDetails.doctorName} is scheduled for ${appointmentDetails.appointmentDate} at $appointmentDetails.appointmentTime. Location: $appointmentDetails.location`,
         priority: 'medium',
         sender: 'appointment_system'
       })
@@ -585,13 +585,13 @@ export class ExternalNotificationService {
         subject: 'Appointment Reminder',
         message: `
           <h2>Appointment Reminder</h2>
-          <p>Dear ${appointmentDetails.patientName},</p>
+          <p>Dear $appointmentDetails.patientName,</p>
           <p>This is a reminder for your upcoming appointment:</p>
           <ul>
-            <li><strong>Doctor:</strong> Dr. ${appointmentDetails.doctorName}</li>
-            <li><strong>Date:</strong> ${appointmentDetails.appointmentDate}</li>
-            <li><strong>Time:</strong> ${appointmentDetails.appointmentTime}</li>
-            <li><strong>Location:</strong> ${appointmentDetails.location}</li>
+            <li><strong>Doctor:</strong> Dr. $appointmentDetails.doctorName</li>
+            <li><strong>Date:</strong> $appointmentDetails.appointmentDate</li>
+            <li><strong>Time:</strong> $appointmentDetails.appointmentTime</li>
+            <li><strong>Location:</strong> $appointmentDetails.location</li>
           </ul>
           <p>Please arrive 15 minutes early for check-in.</p>
           <p>Thank you!</p>
@@ -675,7 +675,7 @@ export class ExternalNotificationService {
   private async logNotification(
     id: string,
     request: NotificationRequest;
-    result: { id: string, status: string; errorMessage?: string; cost?: number }
+    { id: string, status: string; errorMessage?: string; cost?: number }
   ): Promise<void> {
     // In production, store in database
     /* SECURITY: Console statement removed */}
@@ -700,20 +700,18 @@ export const createNotificationService = (config?: Partial<NotificationConfig>):
     },
     email: {
       provider: 'sendgrid',
-      config: {
+      config: 
         apiKey: process.env.SENDGRID_API_KEY || '',
         fromEmail: process.env.SENDGRID_FROM_EMAIL || '';
-        fromName: process.env.SENDGRID_FROM_NAME || 'Hospital Management System'
-      },
+        fromName: process.env.SENDGRID_FROM_NAME || 'Hospital Management System',
       enabled: true
     },
     whatsapp: {
       provider: 'twilio',
-      config: {
+      config: 
         accountSid: process.env.TWILIO_ACCOUNT_SID || '',
         authToken: process.env.TWILIO_AUTH_TOKEN || '';
-        fromNumber: process.env.TWILIO_WHATSAPP_NUMBER || ''
-      },
+        fromNumber: process.env.TWILIO_WHATSAPP_NUMBER || '',
       enabled: true
     },
   }

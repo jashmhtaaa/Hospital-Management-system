@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import type React from "react";
+import { useEffect, useState } from "react";
 import {
 }
 
@@ -13,13 +14,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
 
 // Define types for Vitals and Medications (example structure)
 interface VitalReadings {
@@ -59,7 +60,7 @@ interface OTRecord {
 }
 
 // Define the type for data passed to onSave
-interface OTRecordSaveData;
+type OTRecordSaveData= {};
   extends Omit<
     OTRecord,
     "id" | "vitals" | "medications_administered" | "checklist_responses";
@@ -191,12 +192,11 @@ export default const _OTRecordModal = ({
       if (
         formData?.blood_loss_ml &&
         (Number.isNaN(bloodLoss as number) || (bloodLoss as number) < 0);
-      ) {
+      ) 
         toast({
           title: "Error",
           description: "Blood loss must be a non-negative number.";
-          variant: "destructive"
-        }),
+          variant: "destructive"),
         setIsSaving(false);
         return;
       }

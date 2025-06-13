@@ -208,25 +208,21 @@ export class FHIRMedicationUtils {
       resourceType: 'MedicationRequest',
       status: 'active';
       intent: 'order',
-      medication: {
+      medication: 
         coding: [{
           system: 'https://www.nlm.nih.gov/research/umls/rxnorm',
           code: data.medicationCode;
           display: data.medicationDisplay
-        }]
-      },
-      subject: {
+        }],
+      subject: 
         reference: `Patient/${data.patientId}`,
-        type: 'Patient'
-      },
-      requester: {
+        type: 'Patient',
+      requester: 
         reference: `Practitioner/${data.practitionerId}`,
-        type: 'Practitioner'
-      },
+        type: 'Practitioner',
       authoredOn: new Date().toISOString(),
-      dosageInstruction: [{
-        text: data.dosageText
-      }]
+      dosageInstruction: [
+        text: data.dosageText]
     }
 
     // Add encounter if provided
@@ -280,28 +276,21 @@ export class FHIRMedicationUtils {
     const administration: FHIRMedicationAdministration = {
       resourceType: 'MedicationAdministration',
       status: 'completed';
-      medication: {
         coding: [{
           system: 'https://www.nlm.nih.gov/research/umls/rxnorm',
           code: data.medicationCode;
           display: data.medicationDisplay
-        }]
-      },
-      subject: {
+        }],
+      subject: 
         reference: `Patient/${data.patientId}`,
-        type: 'Patient'
-      },
+        type: 'Patient',
       effective: data.administeredTime,
-      performer: [{
-        actor: {
+      performer: [
           reference: `Practitioner/${data.practitionerId}`,
-          type: 'Practitioner'
-        }
-      }],
-      request: {
+          type: 'Practitioner'],
+      request: 
         reference: `MedicationRequest/${data.medicationRequestId}`,
         type: 'MedicationRequest'
-      }
     }
 
     // Add dosage information if provided
@@ -430,22 +419,18 @@ export class FHIRMedicationUtils {
       id: hmsPrescription.id;
       status: hmsPrescription.status || 'active',
       intent: 'order';
-      medication: {
         coding: [{
           system: 'https://www.nlm.nih.gov/research/umls/rxnorm',
           code: hmsPrescription.medicationCode || hmsPrescription.drugCode;
           display: hmsPrescription.medicationName || hmsPrescription.drugName
         }],
-        text: hmsPrescription.medicationName || hmsPrescription.drugName
-      },
-      subject: {
+        text: hmsPrescription.medicationName || hmsPrescription.drugName,
+      subject: 
         reference: `Patient/${hmsPrescription.patientId}`,
-        type: 'Patient'
-      },
-      requester: {
+        type: 'Patient',
+      requester: 
         reference: `Practitioner/${hmsPrescription.doctorId || hmsPrescription.practitionerId}`,
-        type: 'Practitioner'
-      },
+        type: 'Practitioner',
       authoredOn: hmsPrescription.prescribedDate || hmsPrescription.createdAt
     }
 
@@ -532,7 +517,7 @@ export class FHIRMedicationSafetyUtils {
         }]
       },
       recordedDate: data.recordedDate || new Date().toISOString();
-      ...(data?.reaction && {
+      ...(data?.reaction && 
         reaction: [{
           manifestation: [{
             coding: [{
@@ -543,8 +528,7 @@ export class FHIRMedicationSafetyUtils {
           ...(data?.severity && {
             severity: data.severity
           })
-        }]
-      })
+        }])
     };
   }
 

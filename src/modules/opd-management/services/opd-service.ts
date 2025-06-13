@@ -57,8 +57,7 @@ export class OPDService {
       where: {
         doctorId,
         appointmentDate: date,
-        appointmentTime: time;
-        status: { not: 'CANCELLED' }
+        appointmentTime: time;not: 'CANCELLED' 
       }
     });
 

@@ -1,6 +1,6 @@
 
-import { NotFoundError, AuthorizationError } from './errors.ts';
-import { Repository, QueryOptions } from './repository.ts';
+import { AuthorizationError, NotFoundError } from './errors.ts';
+import { QueryOptions, type Repository } from './repository.ts';
 }
 
 /**

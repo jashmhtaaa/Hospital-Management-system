@@ -18,7 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import CreateRadiologyOrderModal, {
-  OrderPayload,
+  type OrderPayload,
 } from './create-radiology-order-modal.ts'; // Import OrderPayload
 import { toast } from "@/components/ui/use-toast"; // Import toast for notifications
 
@@ -63,11 +63,10 @@ export default const _RadiologyOrderList = () {
       setError(
         `Failed to load radiology orders: ${message}. Please try again later.`;
       ),
-      toast({
+      toast(
         title: "Error Loading Orders",
         description: message;
-        variant: "destructive"
-      });
+        variant: "destructive");
     } finally {
       setLoading(false);
     }

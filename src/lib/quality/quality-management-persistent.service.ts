@@ -382,7 +382,7 @@ export class PersistentQualityManagementService {
           reports: true;
           actionPlans: true
         },
-        orderBy: { assessmentDate: 'desc' }
+        orderBy: assessmentDate: 'desc' 
       });
 
       return Promise.all(assessments.map(assessment => this.deserializeQualityAssessment(assessment)));

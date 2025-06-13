@@ -14,7 +14,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports
-import { Edit, Trash2, Activity, WifiOff } from "lucide-react";
+import { Activity, Edit, Trash2, WifiOff } from "lucide-react";
 
 // Mock data structure - replace with actual API response type
 interface Theatre {

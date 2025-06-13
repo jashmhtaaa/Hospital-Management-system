@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
-import { Suspense } from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
 
 
 import { DocumentList } from '../../components/clinical-documentation/document-list';
@@ -14,8 +14,7 @@ const DEFAULT_PATIENT_ID = 'pat_123456';
 
 export default async const _ClinicalDocumentationPage = ({
   searchParams;
-}: {
-  searchParams: { patientId?: string }
+}: {patientId?: string 
 }) {
   // Get session
   const session = await getServerSession(authOptions);

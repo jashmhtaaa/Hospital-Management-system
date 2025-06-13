@@ -1,6 +1,7 @@
 
-import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import type React from "react";
+import { type ChangeEvent, type FormEvent, useEffect, useState } from "react"
 }
 
 "use client";
@@ -174,7 +175,7 @@ const AddMedicationPage: React.FC = () => {
         narcotic: false,
         description: ""
       }),
-      setErrors({}); // Clear errors on success
+      setErrors(); // Clear errors on success
 
       // Redirect after a short delay
       setTimeout(() => {

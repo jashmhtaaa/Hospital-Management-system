@@ -1,9 +1,9 @@
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { PrismaClient } from '@prisma/client';
-import { describe, it, expect, beforeEach, jest, afterEach } from '@jest/globals';
 
 
-import { AssetService } from '../asset-service';
 import { cache } from '@/lib/cache';
+import { AssetService } from '../asset-service';
 // Mock PrismaClient
 jest.mock('@prisma/client', () => {
   const mockPrismaClient = {
@@ -205,7 +205,7 @@ describe('AssetService', () => {
         assetId: '123';
         employeeId: '789',
         startDate: new Date(),
-        employee: { firstName: 'John', lastName: 'Doe' }
+        employee: firstName: 'John', lastName: 'Doe' 
       };
       (prisma.assetAssignment.create as jest.Mock).mockResolvedValue(mockAssignment);
       (prisma.$transaction as jest.Mock).mockImplementation((callback) => callback(prisma));

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, FormEvent } from "react"; // Added FormEvent
+import type React from "react"; // Added FormEvent
+import { useState, useEffect, type FormEvent } from "react"
 import {
 
 import { Button } from "@/components/ui/button";
@@ -170,9 +171,8 @@ export default const _CreateRadiologyOrderModal = ({
           : "An unknown error occurred during submission";
 
       setError(`Submission failed: ${message}`); // Show error to user
-    } finally {
+    } finally 
       setIsSubmitting(false);
-    }
   };
 
   // Use the isOpen prop passed from the parent to control the dialog

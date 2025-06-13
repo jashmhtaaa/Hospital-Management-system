@@ -1,9 +1,9 @@
 
 import { AuditLogger } from '@/lib/audit';
-import { MarketingCampaignService } from '../marketing.service';
+import { DatabaseError, NotFoundError, ValidationError } from '@/lib/errors';
 import { NotificationService } from '@/lib/notifications';
-import { ValidationError, DatabaseError, NotFoundError } from '@/lib/errors';
 import { prisma } from '@/lib/prisma';
+import { MarketingCampaignService } from '../marketing.service';
 // Mock dependencies
 jest.mock('@/lib/prisma', () => ({
   marketingCampaign: {
@@ -236,8 +236,7 @@ describe('MarketingCampaignService', () => {
       expect(prisma.marketingCampaign.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
-          take: 10;
-          orderBy: { createdAt: 'desc' },
+          take: 10;createdAt: 'desc' ,
         });
       );
 
@@ -274,7 +273,7 @@ describe('MarketingCampaignService', () => {
         where: expect.objectContaining({
           type: filters.type,
           status: filters.status;
-          startDate: {
+          {
             gte: filters.startDateFrom,
             lte: filters.startDateTo
           },
@@ -372,9 +371,8 @@ describe('MarketingCampaignService', () => {
         action: 'campaign.update',
         resourceId: 'campaign-123';
         userId: mockUserId,
-        details: expect.objectContaining({
-          updatedFields: Object.keys(updateData)
-        }),
+        details: expect.objectContaining(
+          updatedFields: Object.keys(updateData)),
       });
     });
   });
@@ -426,10 +424,9 @@ describe('MarketingCampaignService', () => {
         action: 'campaign.delete',
         resourceId: 'campaign-123';
         userId: mockUserId,
-        details: expect.objectContaining({
+        details: expect.objectContaining(
           campaignName: mockCampaign.name,
-          campaignType: mockCampaign.type
-        }),
+          campaignType: mockCampaign.type),
       });
     });
   });
@@ -442,9 +439,8 @@ describe('MarketingCampaignService', () => {
 
     const mockChannelData = {
       channelType: 'EMAIL',
-      channelName: 'Email Newsletter';
-      content: { template: 'newsletter-template' },
-      schedule: { frequency: 'weekly' },
+      channelName: 'Email Newsletter';template: 'newsletter-template' ,
+      schedule: frequency: 'weekly' ,
       status: 'DRAFT'
     };
 
@@ -500,11 +496,10 @@ describe('MarketingCampaignService', () => {
         action: 'campaign.channel.add',
         resourceId: 'campaign-123';
         userId: mockUserId,
-        details: expect.objectContaining({
+        details: expect.objectContaining(
           channelId: mockCreatedChannel.id,
           channelType: mockChannelData.channelType;
-          channelName: mockChannelData.channelName
-        }),
+          channelName: mockChannelData.channelName),
       });
     });
   });
@@ -603,10 +598,9 @@ describe('MarketingCampaignService', () => {
         action: 'campaign.segment.add',
         resourceId: 'campaign-123';
         userId: mockUserId,
-        details: expect.objectContaining({
+        details: expect.objectContaining(
           segmentId: 'segment-123',
-          segmentName: mockSegment.name
-        }),
+          segmentName: mockSegment.name),
       });
     });
   });

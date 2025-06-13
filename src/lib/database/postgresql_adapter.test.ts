@@ -1,7 +1,7 @@
-import { Pool, PoolClient, QueryResult } from "pg";
+import { Pool, type PoolClient, QueryResult } from "pg";
 
 
-import { PostgresqlAdapter, IDatabaseAdapter } from './postgresql_adapter.ts'
+import { type IDatabaseAdapter, PostgresqlAdapter } from './postgresql_adapter.ts'
 }
 
 // ARCH-1: Unit Tests for PostgresqlAdapter
@@ -122,7 +122,7 @@ describe("PostgresqlAdapter", () => {
       it("should attempt rollback and throw if COMMIT fails", async () => {
         currentMockPoolClient.query;
           .mockRejectedValueOnce(new Error("COMMIT failed")) // For COMMIT
-          .mockResolvedValueOnce({} as QueryResult); // For ROLLBACK
+          .mockResolvedValueOnce(as QueryResult); // For ROLLBACK
         await expect(adapter.commitTransaction(currentMockPoolClient as PoolClient)).rejects.toThrow("COMMIT failed"),
         expect(currentMockPoolClient.query).toHaveBeenCalledWith("COMMIT"),
         expect(currentMockPoolClient.query).toHaveBeenCalledWith("ROLLBACK"),

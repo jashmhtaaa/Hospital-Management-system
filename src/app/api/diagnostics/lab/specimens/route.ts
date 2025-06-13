@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { CacheInvalidation } from '@/lib/cache/invalidation';
-import { DB } from '@/lib/database';
-import { RedisCache } from '@/lib/cache/redis';
 import { auditLog } from '@/lib/audit';
 import { generateBarcodeData } from '@/lib/barcode';
+import { CacheInvalidation } from '@/lib/cache/invalidation';
+import { RedisCache } from '@/lib/cache/redis';
+import { DB } from '@/lib/database';
 import { getSession } from '@/lib/session';
 /**
  * GET /api/diagnostics/lab/specimens;
@@ -28,8 +28,8 @@ export const GET = async (request: NextRequest) => {
     const collectedAfter = searchParams.get('collectedAfter');
     const collectedBefore = searchParams.get('collectedBefore');
     const search = searchParams.get('search');
-    const page = parseInt(searchParams.get('page') || '1');
-    const pageSize = parseInt(searchParams.get('pageSize') || '20');
+    const page = Number.parseInt(searchParams.get('page') || '1');
+    const pageSize = Number.parseInt(searchParams.get('pageSize') || '20');
 
     // Cache key
     const cacheKey = `diagnostic:lab:specimens:${patientId ||;
@@ -301,7 +301,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const id = parseInt(params.id);
+    const id = Number.parseInt(params.id);
     if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
@@ -344,7 +344,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     const updateFields: string[] = [];
     const updateParams: unknown[] = [];
     let _statusChanged = false;
-    let _oldStatus = existingSpecimen.status;
+    const _oldStatus = existingSpecimen.status;
     let trackingNote = null;
 
     if (specimenType !== undefined) {
@@ -537,7 +537,7 @@ export const _GET_TRACKING = async (request: NextRequest, { params }: { params: 
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const id = parseInt(params.id);
+    const id = Number.parseInt(params.id);
     if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
@@ -605,7 +605,7 @@ export const _POST_ALIQUOT = async (request: NextRequest, { params }: { params: 
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const id = parseInt(params.id);
+    const id = Number.parseInt(params.id);
     if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
@@ -709,14 +709,14 @@ export const _POST_ALIQUOT = async (request: NextRequest, { params }: { params: 
         id,
         parentSpecimen.storage_location || 'Laboratory',
         parentSpecimen.status,
-        `Aliquot ${specimenId} created from this specimen`,
+        `Aliquot $specimenIdcreated from this specimen`,
         session.user.id;
       ]
     );
 
     // Invalidate cache
     await CacheInvalidation.invalidatePattern('diagnostic:lab:specimens:*');
-    await CacheInvalidation.invalidatePattern(`diagnostic:lab:specimen:${id}:*`);
+    await CacheInvalidation.invalidatePattern(`diagnostic:lab:specimen:$id:*`);
 
     // Get the created aliquot
     const createdAliquot = await DB.query(

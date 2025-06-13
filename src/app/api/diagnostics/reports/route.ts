@@ -1,14 +1,14 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { CacheInvalidation } from '@/lib/cache/invalidation';
-import { DB } from '@/lib/database';
-import { RedisCache } from '@/lib/cache/redis';
 import { auditLog } from '@/lib/audit';
-import { encryptSensitiveData, decryptSensitiveData } from '@/lib/encryption';
+import { CacheInvalidation } from '@/lib/cache/invalidation';
+import { RedisCache } from '@/lib/cache/redis';
+import { DB } from '@/lib/database';
+import { decryptSensitiveData, encryptSensitiveData } from '@/lib/encryption';
 import { generateFhirResource } from '@/lib/fhir';
-import { getSession } from '@/lib/session';
 import { notifyUsers } from '@/lib/notifications';
+import { getSession } from '@/lib/session';
 /**
  * GET /api/diagnostics/reports;
  * Get diagnostic reports with optional filtering;
@@ -31,8 +31,8 @@ export const GET = async (request: NextRequest) => {
     const authorId = searchParams.get('authorId');
     const search = searchParams.get('search');
     const format = searchParams.get('format') || 'json'; // json or fhir
-    const page = parseInt(searchParams.get('page') || '1');
-    const pageSize = parseInt(searchParams.get('pageSize') || '20');
+    const page = Number.parseInt(searchParams.get('page') || '1');
+    const pageSize = Number.parseInt(searchParams.get('pageSize') || '20');
 
     // Cache key
     const cacheKey = `diagnostic:reports:${patientId ||;
@@ -144,7 +144,7 @@ export const GET = async (request: NextRequest) => {
           userId: session.user.id,
           action: 'read';
           resource: 'diagnostic_reports',
-          details: { patientId, reportType, status, page, pageSize, format }
+          details: patientId, reportType, status, page, pageSize, format 
         });
 
         return {
@@ -311,13 +311,11 @@ export const POST = async (request: NextRequest) => {
       action: 'create';
       resource: 'diagnostic_reports',
       resourceId: reportId;
-      details: {
         patientId,
         reportType,
         title,
         status: status || 'draft',
         criticalFindings: criticalFindings || false
-      }
     });
 
     // If critical findings are present, notify relevant parties
@@ -413,7 +411,7 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const id = parseInt(params.id);
+    const id = Number.parseInt(params.id);
     if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
@@ -478,8 +476,7 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
           userId: session.user.id,
           action: 'read';
           resource: 'diagnostic_reports',
-          resourceId: id;
-          details: { id, format }
+          resourceId: id;id, format 
         });
 
         return formattedReport;
@@ -509,7 +506,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const id = parseInt(params.id);
+    const id = Number.parseInt(params.id);
     if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
@@ -561,8 +558,8 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     const updateFields: string[] = [];
     const updateParams: unknown[] = [];
     let statusChanged = false;
-    let _oldStatus = existingReport.status;
-    let criticalStatusChanged = false;
+    const _oldStatus = existingReport.status;
+    const criticalStatusChanged = false;
 
     if (title !== undefined) {
       updateFields.push('title = ?');
@@ -597,7 +594,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       if (!validTransitions[existingReport.status].includes(status)) {
         return NextResponse.json({
           error: `Invalid status transition from ${existingReport.status} to ${status}`;
-        }, { status: 400 });
+        }, status: 400 );
       }
 
       updateFields.push('status = ?');
@@ -670,13 +667,11 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
         action: 'update';
         resource: 'diagnostic_reports',
         resourceId: id;
-        details: {
           ...body,
           statusChanged,
           _oldStatus: statusChanged ? _oldStatus : undefined,
           newStatus: statusChanged ? status : undefined;
           criticalStatusChanged;
-        }
       });
 
       // Handle multimedia attachments if provided
@@ -804,7 +799,7 @@ export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params 
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const id = parseInt(params.id);
+    const id = Number.parseInt(params.id);
     if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
@@ -833,7 +828,7 @@ export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params 
         error: 'Critical findings already acknowledged',
         acknowledgedBy: report.critical_findings_acknowledged_by;
         acknowledgedAt: report.critical_findings_acknowledged_at
-      }, { status: 409 });
+      }, status: 409 );
     }
 
     // Update report to acknowledge critical findings
@@ -854,10 +849,8 @@ export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params 
       action: 'acknowledge';
       resource: 'diagnostic_reports_critical',
       resourceId: id;
-      details: {
         reportId: id,
         acknowledgementNotes: acknowledgementNotes || null
-      }
     });
 
     // Create acknowledgement record with notes if provided

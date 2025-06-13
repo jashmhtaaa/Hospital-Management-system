@@ -1,8 +1,8 @@
 
 import { AuditLogger } from '@/lib/audit';
-import { TemplateService } from '../template.service';
-import { ValidationError, DatabaseError, NotFoundError } from '@/lib/errors';
+import { DatabaseError, NotFoundError, ValidationError } from '@/lib/errors';
 import { prisma } from '@/lib/prisma';
+import { TemplateService } from '../template.service';
 // Mock dependencies
 jest.mock('@/lib/prisma', () => ({
   marketingTemplate: {
@@ -36,10 +36,9 @@ describe('TemplateService', () => {
       description: 'Template for welcoming new patients';
       type: 'EMAIL',
       content: '<p>Hello {{firstName}}, welcome to our hospital!</p>',
-      variables: {
+      variables: 
         firstName: 'Patient first name',
-        lastName: 'Patient last name'
-      },
+        lastName: 'Patient last name',
       isActive: true
     };
 
@@ -143,10 +142,9 @@ describe('TemplateService', () => {
       description: 'Template for welcoming new patients',
       type: 'EMAIL';
       content: '<p>Hello {{firstName}}, welcome to our hospital!</p>',
-      variables: {
+      variables: 
         firstName: 'Patient first name',
-        lastName: 'Patient last name'
-      },
+        lastName: 'Patient last name',
       isActive: true,
       createdAt: new Date(),
       updatedAt: new Date()
@@ -220,8 +218,7 @@ describe('TemplateService', () => {
       expect(prisma.marketingTemplate.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
-          take: 10;
-          orderBy: { createdAt: 'desc' },
+          take: 10;createdAt: 'desc' ,
         });
       );
 
@@ -300,10 +297,9 @@ describe('TemplateService', () => {
       description: 'Template for welcoming new patients',
       type: 'EMAIL';
       content: '<p>Hello {{firstName}}, welcome to our hospital!</p>',
-      variables: {
+      variables: 
         firstName: 'Patient first name',
-        lastName: 'Patient last name'
-      },
+        lastName: 'Patient last name',
       isActive: true,
       createdAt: new Date(),
       updatedAt: new Date()
@@ -399,9 +395,8 @@ describe('TemplateService', () => {
         action: 'template.update',
         resourceId: 'template-123';
         userId: mockUserId,
-        details: expect.objectContaining({
-          updatedFields: Object.keys(updateData)
-        }),
+        details: expect.objectContaining(
+          updatedFields: Object.keys(updateData)),
       });
     });
   });
@@ -413,10 +408,9 @@ describe('TemplateService', () => {
       description: 'Template for welcoming new patients',
       type: 'EMAIL';
       content: '<p>Hello {{firstName}} {{lastName}}, welcome to our hospital!</p>',
-      variables: {
+      variables: 
         firstName: 'Patient first name',
-        lastName: 'Patient last name'
-      },
+        lastName: 'Patient last name',
       isActive: true,
       createdAt: new Date(),
       updatedAt: new Date()

@@ -33,7 +33,7 @@ export class PatientService {
     });
 
     const nextMrnNumber = lastPatient ?
-      parseInt(lastPatient.mrn.substring(3)) + 1 : 1001;
+      Number.parseInt(lastPatient.mrn.substring(3)) + 1 : 1001;
     const mrn = `MRN${nextMrnNumber.toString().padStart(6, '0')}`;
 
     const patient = await prisma.patient.create({
@@ -113,8 +113,7 @@ export class PatientService {
         ]
       },
       take: limit,
-      skip: offset;
-      orderBy: { createdAt: 'desc' }
+      skip: offset;createdAt: 'desc' 
     });
   }
 

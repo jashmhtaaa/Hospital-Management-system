@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 // src/app/api/portal/patient/auth/route.ts
 // import { getRequestContext } from "@cloudflare/next-on-pages"; // Import when ready to use D1
 

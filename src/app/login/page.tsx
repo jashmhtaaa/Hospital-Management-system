@@ -1,6 +1,7 @@
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation"; // Use next/navigation for App Router
+import type React from "react";
+import { useEffect, useState } from "react";
 
 
 import { Button } from "@/components/ui/button";

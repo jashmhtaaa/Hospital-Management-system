@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 
 import { DB } from "@/lib/database";
@@ -40,8 +40,8 @@ export const _GET = async (request: NextRequest) => {
     const categoryId = searchParams.get("categoryId");
     const isActive = searchParams.get("isActive");
     const name = searchParams.get("name");
-    const page = parseInt(searchParams.get("page") || "1");
-    const pageSize = parseInt(searchParams.get("pageSize") || "20");
+    const page = Number.parseInt(searchParams.get("page") || "1");
+    const pageSize = Number.parseInt(searchParams.get("pageSize") || "20");
 
     // Calculate offset for pagination
     const offset = (page - 1) * pageSize;
@@ -321,7 +321,7 @@ export const _POST = async (request: NextRequest) => {
 // GET /api/diagnostics/lab/test-panels/:id - Get a specific test panel
 export const _GET_BY_ID = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     const session = await getSession();
@@ -399,7 +399,7 @@ export const _GET_BY_ID = async (
 // PUT /api/diagnostics/lab/test-panels/:id - Update a test panel
 export const _PUT = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     const session = await getSession();
@@ -617,7 +617,7 @@ export const _PUT = async (
 // DELETE /api/diagnostics/lab/test-panels/:id - Delete a test panel
 export const DELETE = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     const session = await getSession();

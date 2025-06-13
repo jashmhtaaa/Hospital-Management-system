@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 
 import { getDB } from "@/lib/database"; // Using mock DB
@@ -198,7 +198,7 @@ export const _POST = async (request: NextRequest) => {
           !["Pathologist", "Lab Manager", "Admin"].includes(
             session.user.roleName;
           );
-        ) {
+        ) 
           // Adjust roles as needed
           return NextResponse.json(
             {
@@ -206,7 +206,6 @@ export const _POST = async (request: NextRequest) => {
             },
             { status: 403 }
           );
-        }
         updates.push("verified_by = ?", "verified_at = CURRENT_TIMESTAMP");
         parameters.push(session.user.userId);
       }

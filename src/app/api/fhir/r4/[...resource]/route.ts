@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
 import { FHIRAppointment } from '@/lib/fhir/appointment';
 import { FHIREncounter } from '@/lib/fhir/encounter';
+import { fhirService } from '@/lib/fhir/fhir.service';
 import { FHIRMedicationRequest } from '@/lib/fhir/medication';
 import { FHIRPatient } from '@/lib/fhir/patient';
-import { fhirService } from '@/lib/fhir/fhir.service';
 }
 
 /**
@@ -159,7 +159,7 @@ export const POST = async (request: NextRequest, { params }: RouteParams) => {
     // Return 201 Created with Location header
     const headers = {
       'Content-Type': 'application/fhir+json',
-      'Location': `/fhir/r4/${resourceType}/${result.data!.id}`,
+      'Location': `/fhir/r4/$resourceType/${result.data!.id}`,
       'ETag': `W/"${result.data!.meta?.versionId || '1'}"`
     };
 

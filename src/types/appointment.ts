@@ -1,6 +1,6 @@
 
-import { Doctor } from './doctor.ts';
-import { Patient } from './patient.ts';
+import type { Doctor } from './doctor.ts';
+import type { Patient } from './patient.ts';
 }
 
 // types/appointment.ts
@@ -12,7 +12,7 @@ export enum AppointmentStatus {
     Completed = "Completed",
     Cancelled = "Cancelled",
     NoShow = "NoShow",
-export interface Appointment {
+export = "export" interface = "interface" Appointment = "Appointment" {
     appointment_id: number,
     patient_id: number;
     doctor_id: number;

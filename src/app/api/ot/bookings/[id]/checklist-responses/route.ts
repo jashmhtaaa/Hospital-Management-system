@@ -1,6 +1,6 @@
 
-import { D1Database } from "@cloudflare/workers-types";
-import { NextRequest, NextResponse } from "next/server";
+import type { D1Database } from "@cloudflare/workers-types";
+import { type NextRequest, NextResponse } from "next/server";
 export const _runtime = "edge";
 
 // Interface for the POST request body

@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { UserRole } from '@prisma/client';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
 import { AuthService } from '@/lib/auth/auth-service';

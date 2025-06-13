@@ -1,6 +1,6 @@
 
-import { D1Database } from "@cloudflare/workers-types";
-import { NextRequest, NextResponse } from "next/server";
+import type { D1Database } from "@cloudflare/workers-types";
+import { type NextRequest, NextResponse } from "next/server";
 export const _runtime = "edge";
 
 // Interface for the POST request body
@@ -86,10 +86,9 @@ export const _POST = async (request: NextRequest) => {
       .all();
 
     return results && results.length > 0;
-      ? NextResponse.json(results[0], { status: 201 });
+      ? NextResponse.json(results[0], status: 201 );
       : // Fallback if select fails immediately after insert
         NextResponse.json(
-          {
             id,
             name,
             location,
@@ -97,9 +96,7 @@ export const _POST = async (request: NextRequest) => {
             equipment,
             status: "available",
             created_at: now;
-            updated_at: now
-          },
-          { status: 201 }
+            updated_at: now,status: 201 
         ),
   } catch (error: unknown) {
     // FIX: Remove explicit any

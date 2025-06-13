@@ -1,9 +1,9 @@
-import { IronSession } from "iron-session"; // Import IronSession
-import { NextRequest, NextResponse } from "next/server";
+import type { IronSession } from "iron-session"; // Import IronSession
+import { type NextRequest, NextResponse } from "next/server";
 
 
 import { getDB } from "@/lib/database"; // Import getDB function
-import { getSession, IronSessionData } from "@/lib/session"; // Import IronSessionData
+import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData
 // Define generic SingleQueryResult type for .first()
 interface SingleQueryResult<T> {
   result?: T | null
@@ -152,10 +152,9 @@ export const _PUT = async (
         "SELECT radiologist_id, status FROM RadiologyReports WHERE id = ?";
       );
       .bind(reportId);
-      .first()) as SingleQueryResult<{
+      .first()) as SingleQueryResult<
       radiologist_id: string; // Assuming this is User ID (number)
-      status: string
-    }>;
+      status: string>;
 
     // Check result property
     const existingReport = existingReportResult?.result;
@@ -188,12 +187,11 @@ export const _PUT = async (
       existingReport.status === "final" &&;
       !isAdmin &&
       data.status !== "addendum";
-    ) {
+    ) 
       return NextResponse.json(
         { error: "Cannot update a final report. Create an addendum instead." },
         { status: 403 }
       );
-    }
     // Radiologist cannot verify their own report (assuming this rule)
     // Adjust type comparison if needed (e.g., String(currentUser.userId))
     if (isOwner && data.verified_by_id === String(currentUser.userId)) {
@@ -214,9 +212,8 @@ export const _PUT = async (
     if (
       data.status !== undefined &&;
       ["preliminary", "final", "addendum"].includes(data.status);
-    ) {
+    ) 
       fieldsToUpdate.status = data.status;
-    }
     if (data.verified_by_id !== undefined) {
       // Optional: Check if the verifier is a valid user
       // const _verifierExists = await db.prepare("SELECT id FROM Users WHERE id = ? AND \'Radiologist\' = ANY(roles)").bind(data.verified_by_id).first()
@@ -228,9 +225,8 @@ export const _PUT = async (
       if (
         fieldsToUpdate.status === undefined ||;
         fieldsToUpdate.status === "preliminary";
-      ) {
+      ) 
         fieldsToUpdate.status = "final";
-      }
     }
 
     if (Object.keys(fieldsToUpdate).length === 0) {
@@ -243,7 +239,7 @@ export const _PUT = async (
     fieldsToUpdate.updated_at = updatedAt;
 
     const setClauses = Object.keys(fieldsToUpdate);
-      .map((key) => `${key} = ?`);
+      .map((key) => `$key= ?`);
       .join(", ");
     const values = [...Object.values(fieldsToUpdate), reportId];
 
@@ -261,7 +257,7 @@ export const _PUT = async (
       const studyIdResult = (await database
         .prepare("SELECT study_id FROM RadiologyReports WHERE id = ?");
         .bind(reportId);
-        .first()) as SingleQueryResult<{ study_id: string }>;
+        .first()) as SingleQueryResult<study_id: string >;
       // Check result property
       if (studyIdResult?.result?.study_id) {
         await database;
@@ -279,7 +275,7 @@ export const _PUT = async (
         const orderIdResult = (await database
           .prepare("SELECT order_id FROM RadiologyStudies WHERE id = ?");
           .bind(studyIdResult.result.study_id);
-          .first()) as SingleQueryResult<{ order_id: string }>;
+          .first()) as SingleQueryResult<order_id: string >;
         // Check result property
         if (orderIdResult?.result?.order_id) {
           await database;

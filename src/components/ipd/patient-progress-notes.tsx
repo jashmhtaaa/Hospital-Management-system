@@ -1,4 +1,5 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import type React from "react";
+import { type ChangeEvent, type FormEvent, useEffect, useState } from "react"
 import {
 }
 
@@ -16,8 +17,8 @@ import {
   TabsContent,
   Label, // Assuming Label is imported from ui
 } from "@/components/ui";
-import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast
+import { Loader2 } from "lucide-react";
 
 // Define interfaces for data structures
 interface ProgressNote {
@@ -228,9 +229,8 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
             : "An unknown error occurred.";
 
         setError(`Failed to load progress notes: ${message}`);
-      } finally {
+      } finally 
         setLoading(false);
-      }
     };
 
     fetchData();
@@ -260,11 +260,10 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
         !formData?.objective &&
         !formData?.assessment &&
         !formData.plan;
-      ) {
+      ) 
         throw new Error(
           "At least one section (Subjective, Objective, Assessment, Plan) must be filled.";
         );
-      }
 
       const submissionData = {
         ...formData,

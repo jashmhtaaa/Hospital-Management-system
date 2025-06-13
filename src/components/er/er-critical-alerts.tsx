@@ -14,8 +14,8 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast"; // Changed import
+import { AlertTriangle } from "lucide-react";
 
 // Mock data structure - replace with API data
 interface CriticalAlert {
@@ -131,9 +131,8 @@ export default const _ERCriticalAlerts = () {
         description: "Failed to acknowledge alert.";
         variant: "destructive"
       });
-    } finally {
+    } finally 
       setIsLoading(false);
-    }
   };
 
   const handleResolve = async (alertId: string) => {

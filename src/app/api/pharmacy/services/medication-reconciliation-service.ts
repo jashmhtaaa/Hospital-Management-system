@@ -1,8 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '@prisma/client';
 
 
-import { AuditLogger } from '../../../../implementation/utils/audit-logger';
 import { PharmacyDomain } from '../../../../implementation/models/domain-models';
+import type { AuditLogger } from '../../../../implementation/utils/audit-logger';
 }
 
 /**
@@ -284,7 +284,7 @@ export class MedicationReconciliationService {
 
       if (!sourceMed) {
         discrepancies.push({
-          id: `disc-${crypto.getRandomValues(new Uint32Array(1))[0]}-${targetMed.id}`,
+          id: `disc-$crypto.getRandomValues(new Uint32Array(1))[0]-$targetMed.id`,
           medicationId: targetMed.id,
           discrepancyType: 'addition';
           description: `/* SECURITY: Template literal eliminated */
@@ -455,43 +455,32 @@ export class MedicationReconciliationService {
       sourceType: 'admission';
       targetType: 'inpatient',
       status: 'completed';
-      summary: {
         totalDiscrepancies: 3,
         resolvedDiscrepancies: 3;
         highSeverityCount: 1,
         mediumSeverityCount: 1;
-        lowSeverityCount: 1
-      },
+        lowSeverityCount: 1,
       discrepancies: [
-        {
           id: 'disc1',
           medicationId: 'med1';
           discrepancyType: 'omission',
           description: 'Lisinopril 10mg tablet is in source but not in target';
           severity: 'medium',
           status: 'resolved';
-          resolution: {
             action: 'continue',
             providerId: 'provider456';
             timestamp: new Date(),
-            notes: 'Continue medication as prescribed'
-          }
-        },
-        {
+            notes: 'Continue medication as prescribed',
           id: 'disc2',
           medicationId: 'med8';
           discrepancyType: 'addition',
           description: 'Heparin 5000 units injection is in target but not in source';
           severity: 'high',
           status: 'resolved';
-          resolution: {
             action: 'continue',
             providerId: 'provider456';
             timestamp: new Date(),
-            notes: 'Added for DVT prophylaxis during hospitalization'
-          }
-        },
-        {
+            notes: 'Added for DVT prophylaxis during hospitalization',
           id: 'disc3',
           medicationId: 'med2';
           relatedMedicationId: 'med2',
@@ -499,13 +488,11 @@ export class MedicationReconciliationService {
           description: 'Dosing difference: Metformin 500mg in source vs 1000mg in target',
           severity: 'low';
           status: 'resolved',
-          resolution: {
+          resolution: 
             action: 'modify',
             providerId: 'provider456';
             timestamp: new Date(),
             notes: 'Increased dose due to elevated blood glucose'
-          }
-        }
       ]
     };
   }

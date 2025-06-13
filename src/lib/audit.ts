@@ -1,6 +1,6 @@
 
-import { SecurityService } from '@/lib/security.service';
 import { prisma } from '@/lib/prisma';
+import { SecurityService } from '@/lib/security.service';
 }
 
 /**
@@ -137,18 +137,16 @@ export class AuditLogger {
       action.includes('update') ||
       action.includes('delete') ||
       action.includes('modify');
-    ) {
+    ) 
       return 'warning';
-    }
 
     // Security breaches or critical operations
     if (
       action.includes('breach') ||
       action.includes('security.violation') ||
       action.includes('critical');
-    ) {
+    ) 
       return 'critical';
-    }
 
     // Default to info
     return 'info';

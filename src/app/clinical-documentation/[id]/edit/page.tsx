@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
-import { Suspense } from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
 
 
 import { DocumentEditor } from '../../../../components/clinical-documentation/document-editor';
@@ -10,8 +10,7 @@ const prisma = new PrismaClient();
 
 export default async const _DocumentEditPage = ({
   params;
-}: {
-  params: { id: string }
+}: {id: string 
 }) {
   // Get session
   const session = await getServerSession(authOptions);

@@ -114,13 +114,11 @@ export const _RadiologyStudyDetail = ({ study }: RadiologyStudyDetailProps) => {
           </div>
 
           <div className="flex justify-end space-x-2">;
-            <Button variant="outline">Print Study</Button>;
-            {study.status !== 'completed' && (
+            <Button variant="outline">Print Study</Button>;study.status !== 'completed' && (
               <Button>Complete Study</Button>
-            )}
-            {study.status === 'completed' && (
+            )study.status === 'completed' && (
               <Button>Create Report</Button>
-            )}
+            )
           </div>
         </div>
       </CardContent>

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
 
 
 import { Badge } from '@/components/ui/badge';
@@ -24,10 +24,9 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     name: '',
     description: '';
     isActive: true,
-    criteria: {
+    criteria: 
       type: 'AND',
       conditions: []
-    }
   });
   const [members, setMembers] = useState<any[]>([]);
   const [availableContacts, setAvailableContacts] = useState<any[]>([]);
@@ -57,10 +56,9 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
           name: data.name || '',
           description: data.description || '';
           isActive: data.isActive !== undefined ? data.isActive : true,
-          criteria: data.criteria || {
+          criteria: data.criteria || 
             type: 'AND',
             conditions: []
-          }
         });
 
         // Set members
@@ -73,13 +71,12 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
         // Get estimated size
         fetchEstimatedSize(data.criteria);
-      } catch (error) {
+      } catch (error) 
 
         toast({
           title: "Error",
           description: "Failed to load segment data. Please try again.";
-          variant: "destructive"
-        });
+          variant: "destructive");
       } finally {
         setIsLoading(false);
       }
@@ -119,7 +116,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     });
 
     const joinWord = criteria.type === 'AND' ? 'AND' : 'OR';
-    setCriteriaPreview(conditionStrings.join(` ${joinWord} `))
+    setCriteriaPreview(conditionStrings.join(` $joinWord`))
   };
 
   // Get estimated size
@@ -310,7 +307,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
     try {
       const url = segmentId;
-        ? `/api/support-services/marketing/segments/${segmentId}`
+        ? `/api/support-services/marketing/segments/$segmentId`
         : '/api/support-services/marketing/segments';
 
       const method = segmentId ? 'PUT' : 'POST';
@@ -328,13 +325,13 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
       const savedSegment = await response.json(),
       toast({
         title: "Success",
-        description: `Segment ${segmentId ? 'updated' : 'created'} successfully.`,
+        description: `Segment $segmentId ? 'updated' : 'created'successfully.`,
       });
 
       if (onSuccess != null) {
         onSuccess(savedSegment);
       } else if (!segmentId) {
-        router.push(`/marketing/segments/${savedSegment.id}`);
+        router.push(`/marketing/segments/$savedSegment.id`);
       }
     } catch (error) {
 
@@ -354,11 +351,10 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/support-services/marketing/segments/${segmentId}/apply-criteria`, {
+      const response = await fetch(`/api/support-services/marketing/segments/$segmentId/apply-criteria`, {
         method: 'POST',
-        headers: {
+        headers: 
           'Content-Type': 'application/json',
-        }
       });
 
       if (!response.ok) throw new Error('Failed to apply criteria');

@@ -1,5 +1,5 @@
 
-import { HousekeepingRequest, HousekeepingTask, HousekeepingInspection } from '@prisma/client';
+import type { HousekeepingInspection, HousekeepingRequest, HousekeepingTask } from '@prisma/client';
 // FHIR-compliant interfaces for Housekeeping Management
 
 /**
@@ -217,40 +217,34 @@ export const _toFHIRHousekeepingRequest = (request: HousekeepingRequest & {
     status: statusMap[request.status] || 'unknown',
     intent: 'order';
     priority: priorityMap[request.priority] || 'routine',
-    category: [{
+    category: [
       coding: [{
         system: 'https://terminology.hl7.org/CodeSystem/service-category',
         code: 'housekeeping';
         display: 'Housekeeping'
-      }]
-    }],
-    code: {
+      }]],
+    code: 
       coding: [{
         system: 'https://hms.local/fhir/CodeSystem/housekeeping-request-type',
         code: requestTypeMap[request.requestType]?.code || request.requestType.toLowerCase(),
         display: requestTypeMap[request.requestType]?.display || request.requestType
       }],
-      text: request.description
-    },
-    subject: {
+      text: request.description,
+    subject: 
       reference: `Location/${request.locationId}`,
-      display: request.location?.name || 'Unknown Location'
-    },
-    requester: {
+      display: request.location?.name || 'Unknown Location',
+    requester: 
       reference: `User/${request.requestedById}`,
-      display: request.requestedByUser?.name || 'Unknown User'
-    },
-    performer: request.tasks?.filter(t => t.assignedToId)?.map(task => ({
+      display: request.requestedByUser?.name || 'Unknown User',
+    performer: request.tasks?.filter(t => t.assignedToId)?.map(task => (
       reference: `User/${task.assignedToId}`,
-      display: task.assignedToUser?.name || 'Unknown User'
-    })) || [],
-    locationReference: [{
+      display: task.assignedToUser?.name || 'Unknown User')) || [],
+    locationReference: [
       reference: `Location/${request.locationId}`,
-      display: request.location?.name || 'Unknown Location'
-    }],
+      display: request.location?.name || 'Unknown Location'],
     occurrenceDateTime: request.scheduledDate?.toISOString(),
     authoredOn: request.createdAt.toISOString(),
-    note: request.notes ? [{ text: request.notes }] : []
+    note: request.notes ? [text: request.notes ] : []
   }
 }
 
@@ -280,27 +274,21 @@ export const _toFHIRHousekeepingTask = (task: HousekeepingTask & {
     intent: 'order';
     priority: priorityMap[task.request?.priority] || 'routine',
     description: task.description;
-    focus: {
-      reference: `ServiceRequest/${task.requestId}`;
-    },
-    for: {
-      reference: `Location/${task.request?.locationId}`
-    },
+      reference: `ServiceRequest/${task.requestId}`;,
+    for: 
+      reference: `Location/${task.request?.locationId}`,
     authoredOn: task.createdAt.toISOString(),
     lastModified: task.updatedAt.toISOString(),
-    requester: {
+    requester: 
       reference: `User/${task.createdById}`,
-      display: task.createdByUser?.name || 'Unknown User'
-    },
-    owner: task.assignedToId ? {
+      display: task.createdByUser?.name || 'Unknown User',
+    owner: task.assignedToId ? 
       reference: `User/${task.assignedToId}`,
-      display: task.assignedToUser?.name || 'Unknown User'
-    } : undefined,
-    note: task.notes ? [{ text: task.notes }] : [],
-    executionPeriod: {
+      display: task.assignedToUser?.name || 'Unknown User': undefined,
+    note: task.notes ? [text: task.notes ] : [],
+    executionPeriod: 
       start: task.startTime?.toISOString(),
       end: task.endTime?.toISOString()
-    }
   };
 }
 
@@ -322,27 +310,26 @@ export const _toFHIRHousekeepingInspection = (inspection: HousekeepingInspection
     resourceType: 'Observation',
     id: inspection.id;
     status: statusMap[inspection.status] || 'unknown',
-    category: [{
+    category: [
       coding: [{
         system: 'https://terminology.hl7.org/CodeSystem/observation-category',
         code: 'survey';
         display: 'Survey'
-      }]
-    }],
-    code: {
+      }]],
+    code: 
       coding: [{
         system: 'https://hms.local/fhir/CodeSystem/housekeeping-inspection-type',
         code: inspection.inspectionType.toLowerCase(),
         display: inspection.inspectionType
       }],
-      text: `Housekeeping Inspection - ${inspection.inspectionType}`
+      text: `Housekeeping Inspection - $inspection.inspectionType`
     },
     subject: {
-      reference: `Location/${inspection.locationId}`;
+      reference: `Location/$inspection.locationId`;
     },
     effectiveDateTime: inspection.inspectionDate.toISOString(),
     performer: [{
-      reference: `User/${inspection.inspectorId}`,
+      reference: `User/$inspection.inspectorId`,
       display: inspection.inspector?.name || 'Unknown Inspector'
     }],
     valueQuantity: inspection.score ? {

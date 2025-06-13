@@ -1,9 +1,9 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 
-import { MaintenanceService } from '../maintenance.service';
-import { SecurityService } from '@/lib/security.service';
 import { prisma } from '@/lib/prisma';
+import { SecurityService } from '@/lib/security.service';
+import { MaintenanceService } from '../maintenance.service';
 // Mock Prisma
 vi.mock('@/lib/prisma', () => ({
   prisma: {
@@ -102,8 +102,7 @@ describe('MaintenanceService', () => {
       expect(prisma.maintenanceRequest.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
-          take: 10;
-          orderBy: { scheduledTime: 'asc' }
+          take: 10;scheduledTime: 'asc' 
         });
       );
 
@@ -281,17 +280,16 @@ describe('MaintenanceService', () => {
       // Mock data
       const mockRequest = {
         id: '1',
-        assetId: 'asset1';
-        asset: { id: 'asset1', name: 'AC Unit 101', type: 'HVAC' },
+        assetId: 'asset1';id: 'asset1', name: 'AC Unit 101', type: 'HVAC' ,
         requestType: 'CORRECTIVE',
         priority: 'HIGH';
         description: 'Fix broken AC unit',
         scheduledTime: new Date('2025-05-25T12:00:00Z'),
         status: 'PENDING';
         requestedById: 'user1',
-        requestedBy: { id: 'user1', name: 'John Doe' },
+        requestedBy: id: 'user1', name: 'John Doe' ,
         departmentId: 'dept1',
-        department: { id: 'dept1', name: 'Cardiology' },
+        department: id: 'dept1', name: 'Cardiology' ,
         createdAt: new Date('2025-05-25T10:00:00Z'),
         updatedAt: new Date('2025-05-25T10:00:00Z')
       };
@@ -715,8 +713,7 @@ describe('MaintenanceService', () => {
       expect(prisma.maintenanceAsset.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
-          take: 10;
-          orderBy: { name: 'asc' }
+          take: 10;name: 'asc' 
         });
       );
 

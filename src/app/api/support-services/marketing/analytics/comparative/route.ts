@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { AnalyticsService } from '@/lib/services/support-services/marketing';
 import { authOptions } from '@/lib/auth';
 import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
+import { AnalyticsService } from '@/lib/services/support-services/marketing';
 const analyticsService = new AnalyticsService();
 
 /**

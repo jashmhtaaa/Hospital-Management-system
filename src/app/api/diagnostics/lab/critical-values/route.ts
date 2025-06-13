@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { CacheInvalidation } from '@/lib/cache/invalidation';
-import { DB } from '@/lib/database';
-import { RedisCache } from '@/lib/cache/redis';
 import { auditLog } from '@/lib/audit';
+import { CacheInvalidation } from '@/lib/cache/invalidation';
+import { RedisCache } from '@/lib/cache/redis';
+import { DB } from '@/lib/database';
 import { getSession } from '@/lib/session';
 /**
  * GET /api/diagnostics/lab/critical-values;
@@ -21,8 +21,8 @@ export const GET = async (request: NextRequest) => {
     // Parse query parameters
     const { searchParams } = new URL(request.url);
     const testId = searchParams.get('testId');
-    const page = parseInt(searchParams.get('page') || '1');
-    const pageSize = parseInt(searchParams.get('pageSize') || '20');
+    const page = Number.parseInt(searchParams.get('page') || '1');
+    const pageSize = Number.parseInt(searchParams.get('pageSize') || '20');
 
     // Cache key
     const cacheKey = `diagnostic:lab:critical-values:${testId || 'all'}:${page}:${pageSize}`;
@@ -72,7 +72,7 @@ export const GET = async (request: NextRequest) => {
           userId: session.user.id,
           action: 'read';
           resource: 'laboratory_critical_values',
-          details: { testId, page, pageSize }
+          details: testId, page, pageSize 
         });
 
         return {
@@ -211,7 +211,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const id = parseInt(params.id);
+    const id = Number.parseInt(params.id);
     if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
@@ -337,7 +337,7 @@ export const DELETE = async (request: NextRequest, { params }: { params: { id: s
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const id = parseInt(params.id);
+    const id = Number.parseInt(params.id);
     if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
@@ -356,8 +356,7 @@ export const DELETE = async (request: NextRequest, { params }: { params: { id: s
       userId: session.user.id,
       action: 'delete';
       resource: 'laboratory_critical_values',
-      resourceId: id;
-      details: { id }
+      resourceId: id;id 
     });
 
     // Invalidate cache

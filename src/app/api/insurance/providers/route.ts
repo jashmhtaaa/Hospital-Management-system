@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 // import { v4 as uuidv4 } from "uuid"; // Unused import
 
 // Define interface for Insurance Provider data

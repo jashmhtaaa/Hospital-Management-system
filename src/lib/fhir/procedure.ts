@@ -101,23 +101,17 @@ export class FHIRProcedureUtils {
     const procedure: FHIRProcedure = {
       resourceType: 'Procedure',
       status: data.status || 'completed';
-      code: {
         coding: [{
           system: 'https://snomed.info/sct',
           code: data.procedureCode;
           display: data.procedureDisplay
-        }]
-      },
-      subject: {
+        }],
+      subject: 
         reference: `Patient/${data.patientId}`,
-        type: 'Patient'
-      },
-      performer: [{
-        actor: {
+        type: 'Patient',
+      performer: [
           reference: `Practitioner/${data.practitionerId}`,
-          type: 'Practitioner'
-        }
-      }]
+          type: 'Practitioner']
     }
 
     // Add category if provided
@@ -145,7 +139,7 @@ export class FHIRProcedureUtils {
     } else if (data.performedPeriod) {
       procedure.performed = {
         start: data.performedPeriod.start;
-        ...(data.performedPeriod?.end && { end: data.performedPeriod.end })
+        ...(data.performedPeriod?.end && end: data.performedPeriod.end )
       };
     }
 
@@ -215,10 +209,9 @@ export class FHIRProcedureUtils {
       procedureDisplay: data.procedureDisplay,
       category: 'surgical';
       status: data.endTime ? 'completed' : 'in-progress',
-      performedPeriod: {
+      performedPeriod: 
         start: data.startTime,
-        end: data.endTime
-      },
+        end: data.endTime,
       locationId: data.operatingRoomId,
       notes: data.operativeNotes
     });

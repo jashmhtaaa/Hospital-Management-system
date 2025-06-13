@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import type React from "react";
+import { useEffect, useState } from "react";
 }
 
 "use client";
@@ -183,7 +184,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
 
   const handleAdministerMedication = async (
     scheduleItem: MedicationScheduleItem;
-  ): Promise<void> => {
+  ): Promise<void> => 
     if (!admissionId) {
       /* SECURITY: Console statement removed */
       return
@@ -230,20 +231,16 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       setMedicationSchedule((previousSchedule) =>
         previousSchedule.map((item) =>
           item.id === scheduleItem.id;
-            ? { ...item, status: "administered" }
+            ? ...item, status: "administered" 
             : item;
         );
-      );
-
-      /* SECURITY: Console statement removed */
-    } catch (error_) {
+      );catch (error_) {
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
       /* SECURITY: Console statement removed */
-    } finally {
+    } finally 
       setLoading(false);
-    }
   };
 
   const getDosageForScheduleItem = (prescriptionItemId: string): string => {

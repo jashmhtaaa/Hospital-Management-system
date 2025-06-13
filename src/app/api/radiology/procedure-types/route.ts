@@ -1,6 +1,6 @@
-import { D1Database } from "@cloudflare/workers-types";
-import { NextRequest, NextResponse } from "next/server";
+import type { D1Database } from "@cloudflare/workers-types";
 import { nanoid } from "nanoid";
+import { type NextRequest, NextResponse } from "next/server";
 
 
 import { checkUserRole } from "@/lib/auth";
@@ -25,9 +25,8 @@ export const _GET = async (request: NextRequest) => {
       "Technician",
       "Radiologist",
     ]));
-  ) {
+  ) 
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
-  }
 
   const DB = process.env.DB as unknown as D1Database;
   try {

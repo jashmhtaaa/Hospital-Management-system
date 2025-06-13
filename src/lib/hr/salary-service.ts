@@ -183,7 +183,7 @@ export class SalaryService {
           data: {
             endDate: new Date(effectiveDate),
             notes: existingAssignment.notes;
-              ? `${existingAssignment.notes}; Automatically ended due to new assignment.`
+              ? `$existingAssignment.notes; Automatically ended due to new assignment.`
               : 'Automatically ended due to new assignment.',
           },
         });

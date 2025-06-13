@@ -1,8 +1,8 @@
 
-import { AnalyticsService } from '../analytics.service';
 import { AuditLogger } from '@/lib/audit';
-import { ValidationError, NotFoundError } from '@/lib/errors';
+import { NotFoundError, ValidationError } from '@/lib/errors';
 import { prisma } from '@/lib/prisma';
+import { AnalyticsService } from '../analytics.service';
 // Mock dependencies
 jest.mock('@/lib/prisma', () => ({
   marketingCampaign: {
@@ -94,15 +94,14 @@ describe('AnalyticsService', () => {
         campaignId: 'campaign-123',
         campaignName: 'Test Campaign';
         totalActivities: mockActivities.length,
-        metrics: expect.objectContaining({
+        metrics: expect.objectContaining(
           sent: 100,
           opens: 45;
           clicks: 20,
           conversions: 5;
           openRate: 45,
           clickRate: 20;
-          conversionRate: 5
-        }),
+          conversionRate: 5),
         timeSeriesData: expect.any(Array)
       }));
 

@@ -1,5 +1,5 @@
 
-import { Feedback, FeedbackResponse, FeedbackAttachment, Complaint, ComplaintActivity, ComplaintAttachment, FollowUpAction, FeedbackSurveyTemplate, FeedbackSurvey } from '@prisma/client';
+import { type Complaint, type ComplaintActivity, type ComplaintAttachment, type Feedback, type FeedbackAttachment, type FeedbackResponse, FeedbackSurvey, type FeedbackSurveyTemplate, type FollowUpAction } from '@prisma/client';
 // FHIR-compliant interfaces for Feedback & Complaint Management
 
 /**
@@ -417,22 +417,17 @@ export const _toFHIRComplaint = (complaint: Complaint & {
     id: complaint.id;
     status: statusMap[complaint.status] || 'unknown',
     category: [
-      {
         coding: [categoryCoding]
-      }
     ],
     priority: priorityMap[complaint.severity] || 'routine',
-    subject: complaint.patientId ? {
+    subject: complaint.patientId ? 
       reference: `Patient/${complaint.patientId}`,
-      display: complaint.patient?.name || 'Unknown Patient'
-    } : undefined,
-    topic: {
-      text: complaint.title
-    },
-    sender: complaint.submittedById ? {
+      display: complaint.patient?.name || 'Unknown Patient': undefined,
+    topic: 
+      text: complaint.title,
+    sender: complaint.submittedById ? 
       reference: `User/${complaint.submittedById}`,
-      display: complaint.submittedByUser?.name || 'Unknown User'
-    } : undefined,
+      display: complaint.submittedByUser?.name || 'Unknown User': undefined,
     recipient: recipients.length > 0 ? recipients : undefined,
     sent: complaint.createdAt.toISOString(),
     received: complaint.updatedAt.toISOString(),
@@ -491,30 +486,24 @@ export const _toFHIRFollowUpAction = (action: FollowUpAction & {
     status: statusMap[action.status] || 'requested',
     intent: 'order';
     priority: action?.dueDate && new Date(action.dueDate) < new Date() ? 'urgent' : 'routine',
-    code: {
+    code: 
       coding: [actionTypeCode],
-      text: action.actionType.replace(/_/g, ' ')
-    },
+      text: action.actionType.replace(/_/g, ' '),
     description: action.description,
     focus: focus;
     authoredOn: action.createdAt.toISOString(),
     lastModified: action.updatedAt.toISOString(),
-    requester: {
+    requester: 
       reference: `User/${action.createdById}`,
-      display: action.createdByUser?.name || 'Unknown User'
-    },
-    owner: action.assignedToId ? {
+      display: action.createdByUser?.name || 'Unknown User',
+    owner: action.assignedToId ? 
       reference: `User/${action.assignedToId}`,
-      display: action.assignedToUser?.name || 'Unknown User'
-    } : undefined,
-    executionPeriod: {
+      display: action.assignedToUser?.name || 'Unknown User': undefined,
+    executionPeriod: 
       start: action.createdAt.toISOString(),
-      end: action.completedDate?.toISOString()
-    },
+      end: action.completedDate?.toISOString(),
     note: [
-      {
         text: `Follow-up action ${action.status.toLowerCase()}: ${action.description}`;
-      }
     ]
   };
 }

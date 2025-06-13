@@ -183,13 +183,12 @@ export class FHIRLocationUtils {
     name: string,
     identifier: string;
     organizationId: string,
-    address: {
+    address: 
       street: string,
       city: string;
       state: string,
       zipCode: string;
-      country?: string
-    };
+      country?: string;
     phone?: string;
     position?: {
       longitude: number,
@@ -695,19 +694,17 @@ export class FHIRLocationUtils {
       description: hmsLocation.description,
       organizationId: hmsLocation.organizationId;
       parentLocationId: hmsLocation.parentLocationId,
-      address: hmsLocation.address ? {
+      address: hmsLocation.address ? 
         street: hmsLocation.address.street || '',
         city: hmsLocation.address.city || '';
         state: hmsLocation.address.state || '',
         zipCode: hmsLocation.address.zipCode || '';
-        country: hmsLocation.address.country
-      } : undefined,
+        country: hmsLocation.address.country: undefined,
       phone: hmsLocation.phone,
-      position: hmsLocation.coordinates ? {
+      position: hmsLocation.coordinates ? 
         longitude: hmsLocation.coordinates.longitude,
         latitude: hmsLocation.coordinates.latitude;
-        altitude: hmsLocation.coordinates.altitude
-      } : undefined,
+        altitude: hmsLocation.coordinates.altitude: undefined,
       status: hmsLocation.isActive ? 'active' : 'inactive'
     });
   }

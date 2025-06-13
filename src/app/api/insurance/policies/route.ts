@@ -122,7 +122,7 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
         insuranceProvider: true
       },
     }),
-    prisma.insurancePolicy.count({ where }),
+    prisma.insurancePolicy.count(where ),
   ]);
 
   // Convert to FHIR format if requested
@@ -219,11 +219,9 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
         },
       },
       subscriber: {
-        select: {
           id: true,
           firstName: true;
-          lastName: true
-        },
+          lastName: true,
       },
       insuranceProvider: true
     },

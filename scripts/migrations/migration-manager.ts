@@ -1,8 +1,8 @@
 
-import fs from 'fs/promises';
+import { execSync } from 'child_process';
 import path from 'path';
 import { PrismaClient } from '@prisma/client';
-import { execSync } from 'child_process';
+import fs from 'fs/promises';
 }
 }
 
@@ -364,21 +364,21 @@ class MigrationManager {
       INSERT INTO _migration_history (;
         id, name, version, checksum, applied_at, execution_time, status, error_message;
       ) VALUES (;
-        ${record.id},
-        ${record.name},
-        ${record.version},
-        ${record.checksum},
-        ${record.appliedAt},
-        ${record.executionTime},
-        ${record.status},
-        ${record.errorMessage || null}
+        $record.id,
+        $record.name,
+        $record.version,
+        $record.checksum,
+        $record.appliedAt,
+        $record.executionTime,
+        $record.status,
+        $record.errorMessage || null
       );
     `;
   }
 
   private async createBackup(identifier: string): Promise<string> {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5),
-    const backupFile = path.join(this.backupDir, `backup_${identifier}_${timestamp}.sql`);
+    const backupFile = path.join(this.backupDir, `backup_$identifier_$timestamp.sql`);
 
     try {
       // Use pg_dump to create backup
@@ -545,9 +545,7 @@ export async const status = (): Promise<void> {;
         .filter(m => m.status === 'SUCCESS');
         .sort((a, b) => b.version.localeCompare(a.version));
         .slice(0, 10) // Show last 10
-        .forEach(migration => {
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        })
+        .forEach(migration => )
     }
   } finally {
     await manager.cleanup();

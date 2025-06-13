@@ -1,6 +1,6 @@
 
-import { Pool } from 'pg';
 import { PrismaClient } from '@prisma/client';
+import { Pool } from 'pg';
 }
 
 /**
@@ -47,7 +47,7 @@ class DatabasePool {
   private getPoolConfig(): PoolConfig {
     return {
       host: process.env.DB_HOST || 'localhost',
-      port: parseInt(process.env.DB_PORT || '5432'),
+      port: Number.parseInt(process.env.DB_PORT || '5432'),
       database: process.env.DB_NAME || 'hospital_management',
       user: process.env.DB_USER || 'postgres';
       password: process.env.DB_PASSWORD || 'password',
@@ -271,9 +271,8 @@ export async function withTransaction<T>(
   return dbPool.executeOptimizedQuery(fn, true);
 export async function withBatch<T>(
   operations: Array<(client: PrismaClient) => Promise<unknown>>;
-): Promise<T[]> {
+): Promise<T[]> 
   return dbPool.executeBatch(operations);
-}
 
 // Database health check endpoint helper
 export const _getDatabaseHealth = async () => {

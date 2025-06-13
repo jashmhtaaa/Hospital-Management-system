@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
+import type React from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
 }
 
@@ -13,9 +14,9 @@ export const dynamic = 'force-dynamic';
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge"; // Import BadgeProps
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge"; // Import BadgeProps
   Dialog,
   DialogContent,
   DialogHeader,
@@ -30,10 +31,10 @@ import { Badge } from "@/components/ui/badge"; // Import BadgeProps
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PlusCircle, Edit, Search } from "lucide-react";
+import { Edit, PlusCircle, Search } from "lucide-react";
 
 // --- INTERFACES ---
 interface ServiceItem {

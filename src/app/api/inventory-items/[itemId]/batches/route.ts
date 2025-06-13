@@ -1,11 +1,11 @@
-import { cookies } from "next/headers";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
 import { z } from "zod";
 
 
+import { type IronSessionData, sessionOptions } from "@/lib/session"; // FIX: Import IronSessionData
 import { StockBatch } from "@/types/inventory";
-import { sessionOptions, IronSessionData } from "@/lib/session"; // FIX: Import IronSessionData
 // app/api/inventory-items/[itemId]/batches/route.ts
 // Define roles allowed to view/manage stock batches (adjust as needed)
 const ALLOWED_ROLES_VIEW = ["Admin", "Pharmacist", "Nurse", "Inventory Manager"]
@@ -16,7 +16,7 @@ const getItemId = (pathname: string): number | null {
     // Pathname might be /api/inventory-items/123/batches
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 2]; // Second to last part
-    const id = parseInt(idStr, 10);
+    const id = Number.parseInt(idStr, 10);
     return isNaN(id) ? null : id;
 }
 

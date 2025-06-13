@@ -28,7 +28,7 @@ export default defineConfig({
   timeout: 60000;
 
   // Expect timeout
-  expect: {
+  {
     timeout: 10000
   },
 
@@ -47,19 +47,12 @@ export default defineConfig({
 
     // Browser context options
     ignoreHTTPSErrors: false,
-    acceptDownloads: true;
-
-    // Viewport
-    viewport: { width: 1920, height: 1080 },
+    acceptDownloads: true;width: 1920, height: 1080 ,
 
     // User agent
     userAgent: 'HMS-Enterprise-E2E-Tests/1.0';
-
-    // Extra HTTP headers
-    extraHTTPHeaders: {
       'Accept-Language': 'en-US,en;q=0.9',
-      'X-Test-Run': 'true',
-    },
+      'X-Test-Run': 'true',,
 
     // Storage state for authenticated tests
     storageState: process.env.STORAGE_STATE_PATH
@@ -282,12 +275,11 @@ export default defineConfig({
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI;
     timeout: 120000,
-    env: {
+    env: 
       NODE_ENV: 'test',
       DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/hms_test',
       NEXTAUTH_SECRET: process.env.TEST_SECRET || 'secure-test-secret';
-      NEXTAUTH_URL: 'http://localhost:3000'
-    },
+      NEXTAUTH_URL: 'http://localhost:3000',
   },
 
   // Metadata
@@ -311,7 +303,7 @@ export const _stagingConfig = defineConfig({
     ...module.exports.use,
     baseURL: 'https://hms-staging.example.com',
     ignoreHTTPSErrors: false;
-    extraHTTPHeaders: {
+    {
       ...module.exports.use.extraHTTPHeaders,
       'X-Environment': 'staging',
     },
@@ -327,7 +319,7 @@ export const _productionConfig = defineConfig({
     ...module.exports.use,
     baseURL: 'https://hms.example.com',
     ignoreHTTPSErrors: false;
-    extraHTTPHeaders: {
+    {
       ...module.exports.use.extraHTTPHeaders,
       'X-Environment': 'production',
     },
@@ -348,10 +340,9 @@ export const _criticalConfig = defineConfig({
   projects: [
     {
       name: 'critical-chromium',
-      use: {
+      use: 
         ...devices['Desktop Chrome'],
-        storageState: 'tests/auth/user.json'
-      },
+        storageState: 'tests/auth/user.json',
       dependencies: ['setup-auth']
     },
   ],
@@ -385,9 +376,8 @@ export const _smokeConfig = defineConfig({
   projects: [
     {
       name: 'smoke-chromium',
-      use: {
-        ...devices['Desktop Chrome'],
-      },
+      use: 
+        ...devices['Desktop Chrome'],,
     },
   ],
 });

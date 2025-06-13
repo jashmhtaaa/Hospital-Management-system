@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { CacheInvalidation } from '@/lib/cache/invalidation';
-import { DB } from '@/lib/database';
-import { RedisCache } from '@/lib/cache/redis';
 import { auditLog } from '@/lib/audit';
-import { getSession } from '@/lib/session';
+import { CacheInvalidation } from '@/lib/cache/invalidation';
+import { RedisCache } from '@/lib/cache/redis';
+import { DB } from '@/lib/database';
 import { notifyUsers } from '@/lib/notifications';
+import { getSession } from '@/lib/session';
 /**
  * GET /api/diagnostics/lab/results/critical-alerts;
  * Get critical result alerts;
@@ -23,8 +23,8 @@ export const GET = async (request: NextRequest) => {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
     const assignedTo = searchParams.get('assignedTo');
-    const page = parseInt(searchParams.get('page') || '1');
-    const pageSize = parseInt(searchParams.get('pageSize') || '20');
+    const page = Number.parseInt(searchParams.get('page') || '1');
+    const pageSize = Number.parseInt(searchParams.get('pageSize') || '20');
 
     // Cache key
     const cacheKey = `diagnostic:lab:critical-alerts:${status ||;
@@ -116,7 +116,7 @@ export const GET = async (request: NextRequest) => {
           userId: session.user.id,
           action: 'read';
           resource: 'laboratory_critical_alerts',
-          details: { status, assignedTo, page, pageSize }
+          details: status, assignedTo, page, pageSize 
         });
 
         return {
@@ -294,7 +294,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const id = parseInt(params.id);
+    const id = Number.parseInt(params.id);
     if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }

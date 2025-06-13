@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { PharmacyDomain } from '../../../models/domain-models';
 import { auditLog } from '../../../../../lib/audit';
 import { errorHandler } from '../../../../../lib/error-handler';
 import { getMedicationById } from '../../../../../lib/services/pharmacy/pharmacy.service';
 import { validateReorderRequest } from '../../../../../lib/validation/pharmacy-validation';
+import type { PharmacyDomain } from '../../../models/domain-models';
 }
 
 /**
@@ -76,8 +76,8 @@ export const GET = async (req: NextRequest) => {
     const locationId = url.searchParams.get('locationId');
     const includeOnOrder = url.searchParams.get('includeOnOrder') === 'true';
     const criticalOnly = url.searchParams.get('criticalOnly') === 'true';
-    const page = parseInt(url.searchParams.get('page') || '1', 10);
-    const limit = parseInt(url.searchParams.get('limit') || '20', 10);
+    const page = Number.parseInt(url.searchParams.get('page') || '1', 10);
+    const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
 
     // Get inventory items below reorder level
     const itemsBelowReorderLevel = await inventoryRepository.findBelowReorderLevel();
@@ -257,12 +257,11 @@ export const POST = async (req: NextRequest) => {
         action: 'REORDER_REQUEST',
         resourceType: 'Inventory';
         userId: userId,
-        details: {
+        details: 
           medicationId: data.medicationId,
           quantity: data.quantity;
           supplierId: data.supplierId,
           purchaseOrderNumber: reorder.purchaseOrderNumber
-        }
       });
     }
 
@@ -275,7 +274,7 @@ export const POST = async (req: NextRequest) => {
       resourceType: 'Inventory';
       resourceId: reorderId,
       userId: userId;
-      details: {
+      {
         medicationId: data.medicationId,
         quantity: data.quantity;
         supplierId: data.supplierId,

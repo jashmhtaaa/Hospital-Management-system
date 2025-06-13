@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
 import { auditLog } from '../../../../../lib/audit';
@@ -101,12 +101,11 @@ export const GET = async (req: NextRequest) => {
         action: 'EXPORT_REPORT',
         resourceType: 'MedicationAdministration';
         userId: userId,
-        details: {
+        details: 
           reportType,
           format,
           criteria,
           recordCount: report.data.length
-        }
       });
 
       // Return CSV response
@@ -125,12 +124,11 @@ export const GET = async (req: NextRequest) => {
         action: 'GENERATE_REPORT',
         resourceType: 'MedicationAdministration';
         userId: userId,
-        details: {
+        details: 
           reportType,
           format,
           criteria,
           recordCount: report.data.length
-        }
       });
 
       // Return JSON response
@@ -154,12 +152,11 @@ const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
     documentedAdministrations: 0,
     highAlertMedications: 0;
     controlledSubstances: 0,
-    administrationsByShift: {
+    administrationsByShift: 
       morning: 0,
       afternoon: 0;
-      night: 0
-    },
-    administrationsByRoute: {}
+      night: 0,
+    administrationsByRoute: 
   };
 
   // Calculate metrics

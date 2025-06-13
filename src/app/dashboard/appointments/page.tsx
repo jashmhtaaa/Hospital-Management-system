@@ -18,7 +18,7 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { PlusCircle, Search } from "lucide-react";
-import { Appointment } from "@/types/appointment";
+import type { Appointment } from "@/types/appointment";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 import { format } from "date-fns"; // For date formatting
@@ -58,9 +58,8 @@ export default const _AppointmentsPage = () {
           description: message;
           variant: "destructive"
         });
-      } finally {
+      } finally 
         setIsLoading(false);
-      }
     };
 
     fetchAppointments();

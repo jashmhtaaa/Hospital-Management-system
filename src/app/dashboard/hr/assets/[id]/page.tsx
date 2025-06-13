@@ -48,7 +48,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
 import { toast } from '@/components/ui/use-toast';
 
-export default const _AssetDetail = ({ params }: { params: { id: string } }) {
+export default const _AssetDetail = ({ params }: { id: string }) {
   const router = useRouter();
   const [asset, setAsset] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
@@ -79,9 +79,8 @@ export default const _AssetDetail = ({ params }: { params: { id: string } }) {
           description: err.message;
           variant: "destructive"
         });
-      } finally {
+      } finally 
         setLoading(false);
-      }
     };
 
     fetchAsset();

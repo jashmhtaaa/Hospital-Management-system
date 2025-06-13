@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
 
-import { FHIRResourceManager, FHIRObservation, FHIR_SYSTEMS } from '@/lib/fhir/fhir-r4-base';
-import { PrismaService } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache/redis-cache';
+import { type FHIRObservation, FHIRResourceManager, FHIR_SYSTEMS } from '@/lib/fhir/fhir-r4-base';
+import { SUBSCRIPTION_EVENTS, pubsub } from '@/lib/graphql/schema-base';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
-import { pubsub, SUBSCRIPTION_EVENTS } from '@/lib/graphql/schema-base';
+import type { PrismaService } from '@/lib/prisma';
 }
 }
 
@@ -262,7 +262,7 @@ export enum SkinColor {
   CYANOTIC = 'CYANOTIC',
   JAUNDICED = 'JAUNDICED',
   MOTTLED = 'MOTTLED',
-export interface ChestPainCharacteristics {
+export = "export" interface = "interface" ChestPainCharacteristics = "ChestPainCharacteristics" {
   onset: Date,
   quality: string;
   location: string,
@@ -376,7 +376,7 @@ export enum PatientStatus {
   ADMITTED = 'ADMITTED',
   TRANSFERRED = 'TRANSFERRED',
   LEFT_WITHOUT_TREATMENT = 'LEFT_WITHOUT_TREATMENT',
-export interface CapacityMetrics {
+export = "export" interface = "interface" CapacityMetrics = "CapacityMetrics" 
   totalBeds: number,
   occupiedBeds: number;
   availableBeds: number,
@@ -510,7 +510,7 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
   /**
    * Real-time capacity and bed management;
    */
-  async getEDCapacityMetrics(): Promise<CapacityMetrics> {
+  async getEDCapacityMetrics(): Promise<CapacityMetrics> 
     try {
       // Try cache first
       const cached = await cacheService.getCachedResult('ed_capacity:', 'current');
@@ -563,12 +563,9 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
       // Check for capacity alerts
       await this.checkCapacityAlerts(metrics);
 
-      return metrics;
-    } catch (error) {
+      return metrics;catch (error) 
 
       throw error;
-    }
-  }
 
   /**
    * Intelligent bed assignment with priority queuing;
@@ -577,7 +574,7 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
     patientId: string;
     preferredArea?: EDArea,
     requiredSpecialtyBed?: string;
-  ): Promise<BedAssignment | null> {
+  ): Promise<BedAssignment | null> 
     try {
       const patient = await this.getPatient(patientId);
       if (!patient) {
@@ -621,11 +618,9 @@ export class TriageManagementService extends FHIRResourceManager<FHIRObservation
         triageLevel: patient.triageData?.triageLevel || 'UNKNOWN'
       });
 
-      return assignment;
-    } catch (error) {
+      return assignment;catch (error) 
 
       throw error;
-    }
   }
 
   /**

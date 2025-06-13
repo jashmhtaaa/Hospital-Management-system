@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { DrugInteractionService } from '../../../services/drug-interaction-service';
-import { PharmacyDomain } from '../../../models/domain-models';
 import { auditLog } from '../../../../../lib/audit';
 import { errorHandler } from '../../../../../lib/error-handler';
 import { getMedicationById } from '../../../../../lib/services/pharmacy/pharmacy.service';
 import { validateDrugDrugInteractionRequest } from '../../../../../lib/validation/pharmacy-validation';
+import type { PharmacyDomain } from '../../../models/domain-models';
+import { DrugInteractionService } from '../../../services/drug-interaction-service';
 }
 
 /**
@@ -68,11 +68,10 @@ export const POST = async (req: NextRequest) => {
       action: 'CHECK_DRUG_DRUG',
       resourceType: 'DrugInteraction';
       userId: userId,
-      details: {
+      details: 
         medicationIds: data.medicationIds,
         interactionCount: interactions.length;
         includeMonographs: data.includeMonographs || false
-      }
     });
 
     // Return response

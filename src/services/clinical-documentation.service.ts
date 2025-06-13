@@ -1,8 +1,8 @@
-import { PrismaClient, ClinicalDocument, DocumentSection, DocumentSignature, DocumentAmendment } from '@prisma/client';
+import { type ClinicalDocument, type DocumentAmendment, type DocumentSection, type DocumentSignature, PrismaClient } from '@prisma/client';
 
 
-import { BadRequestError, NotFoundError } from '../lib/core/errors';
 import { auditLog } from '../lib/audit';
+import { BadRequestError, NotFoundError } from '../lib/core/errors';
 import { validatePermission } from '../lib/rbac.service';
 const prisma = new PrismaClient();
 

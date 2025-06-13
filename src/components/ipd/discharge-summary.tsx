@@ -13,6 +13,5 @@ export default const _DischargeSummary = ({ admissionId }: DischargeSummaryPrope
   return (
 <div
       <p>Discharge Summary for Admission ID: {admissionId}</p>
-      {/* Placeholder content */}
     </div>
   );

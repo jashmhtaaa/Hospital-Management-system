@@ -1,5 +1,5 @@
-import { D1Database, D1Result } from "@cloudflare/workers-types"; // Import D1Result
-import { NextRequest, NextResponse } from "next/server";
+import type { D1Database, D1Result } from "@cloudflare/workers-types"; // Import D1Result
+import { type NextRequest, NextResponse } from "next/server";
 
 
 import { checkUserRole } from "@/lib/auth";
@@ -24,9 +24,8 @@ export const _GET = async (
       "Technician",
       "Radiologist",
     ]));
-  ) {
+  ) 
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
-  }
 
   const { id: orderId } = await params; // FIX: Await params and destructure id (Next.js 15+)
   const DB = process.env.DB as unknown as D1Database;
@@ -55,17 +54,15 @@ export const _GET = async (
     );
   }
 export const _PUT = async (
-  request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  request: NextRequest;params : params: Promise<{ id: string }> 
 ) {
   const session = await getSession()
   // Allow Admin, Receptionist, Technician to update status/details
   if (
     !session?.user ||
     !(await checkUserRole(request, ["Admin", "Receptionist", "Technician"]));
-  ) {
+  ) 
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
-  }
 
   const { id: orderId } = await params; // FIX: Await params and destructure id (Next.js 15+)
   const DB = process.env.DB as unknown as D1Database;
@@ -95,7 +92,7 @@ export const _PUT = async (
     fieldsToUpdate.updated_at = updatedAt;
 
     const setClauses = Object.keys(fieldsToUpdate);
-      .map((key) => `${key} = ?`);
+      .map((key) => `$key= ?`);
       .join(", ");
     const values = [...Object.values(fieldsToUpdate), orderId];
 
@@ -141,18 +138,16 @@ export const _PUT = async (
     );
   }
 export const _DELETE = async (
-  request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  request: NextRequest;params : params: Promise<{ id: string }> 
 ) {
   const session = await getSession()
   // Typically only Admins or perhaps Receptionists should cancel orders
   if (
     !session?.user ||
     !(await checkUserRole(request, ["Admin", "Receptionist"]));
-  ) {
+  ) 
     // Use await and pass request
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
-  }
 
   const { id: orderId } = await params; // FIX: Await params and destructure id (Next.js 15+)
   const DB = process.env.DB as unknown as D1Database;
@@ -189,12 +184,11 @@ export const _DELETE = async (
         existingOrder !== undefined &&
         "status" in existingOrder &&
         existingOrder.status === "cancelled";
-      ) {
+      ) 
         return NextResponse.json({
           id: orderId,
           status: "Radiology order already cancelled"
         });
-      }
       return NextResponse.json(
         { error: "Failed to cancel radiology order (unknown reason)" },
         { status: 500 }

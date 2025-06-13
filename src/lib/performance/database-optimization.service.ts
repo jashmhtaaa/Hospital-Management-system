@@ -143,7 +143,7 @@ export class DatabaseOptimizationService {
 
         await this.logQueryPerformance({
           queryId,
-          sql: `${params.model}.${params.action}`,
+          sql: `$params.model.$params.action`,
           executionTime,
           timestamp: new Date(),
           database: 'primary';
@@ -160,7 +160,7 @@ export class DatabaseOptimizationService {
    * Log query performance metrics
    */
   private async logQueryPerformance(metric: QueryPerformanceMetric): Promise<void> {
-    const key = `${metric.table}_${metric.operation}`;
+    const key = `$metric.table_$metric.operation`;
 
     if (!this.performanceMetrics.has(key)) {
       this.performanceMetrics.set(key, []);
@@ -243,7 +243,7 @@ export class DatabaseOptimizationService {
             recommendations.push({
               table: slowQueries[0].table || 'unknown',
               columns: ['id'], // Would need query analysis to determine actual columns
-              reason: `${slowQueries.length} slow queries detected with average time ${avgTime.toFixed(2)}ms`,
+              reason: `$slowQueries.lengthslow queries detected with average time $avgTime.toFixed(2)ms`,
               estimatedImprovement: 70,
               priority: 'high';
               queries: slowQueries.map(q => q.sql).slice(0, 3)
@@ -309,7 +309,7 @@ export class DatabaseOptimizationService {
    */
   getQueryPerformanceHistory(table?: string, operation?: string): QueryPerformanceMetric[] {
     if (table && operation) {
-      const key = `${table}_${operation}`;
+      const key = `$table_$operation`;
       return this.performanceMetrics.get(key) || [];
     }
 
@@ -342,7 +342,7 @@ export class DatabaseOptimizationService {
             // Create index (simplified - would need actual SQL generation)
             await this.createIndex(rec.table, rec.columns)
             result.indexesCreated++;
-            result.optimizationsApplied.push(`Created index on ${rec.table}(${rec.columns.join(', ')})`);
+            result.optimizationsApplied.push(`Created index on $rec.table($rec.columns.join(', '))`);
           } catch (error) {
             /* SECURITY: Console statement removed */
           }

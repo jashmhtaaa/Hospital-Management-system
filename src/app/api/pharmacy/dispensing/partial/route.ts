@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { PharmacyDomain } from '../../../models/domain-models';
 import { auditLog } from '../../../../../lib/audit';
 import { errorHandler } from '../../../../../lib/error-handler';
 import { getMedicationById, getPrescriptionById } from '../../../../../lib/services/pharmacy/pharmacy.service';
 import { validatePartialDispensingRequest } from '../../../../../lib/validation/pharmacy-validation';
+import type { PharmacyDomain } from '../../../models/domain-models';
 }
 
 /**
@@ -126,8 +126,7 @@ export const POST = async (req: NextRequest) => {
           alreadyDispensed: totalDispensed,
           requested: data.quantityDispensed;
           maxAllowed: totalPrescribed - totalDispensed
-        },
-        { status: 400 }
+        },status: 400 
       );
     }
 

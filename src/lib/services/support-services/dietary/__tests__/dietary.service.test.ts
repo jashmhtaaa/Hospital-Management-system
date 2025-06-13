@@ -1,9 +1,9 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 
-import { DietaryService } from '../dietary.service';
-import { SecurityService } from '@/lib/security.service';
 import { prisma } from '@/lib/prisma';
+import { SecurityService } from '@/lib/security.service';
+import { DietaryService } from '../dietary.service';
 // Mock Prisma
 vi.mock('@/lib/prisma', () => ({
   prisma: {
@@ -98,8 +98,7 @@ describe('DietaryService', () => {
       expect(prisma.dietaryRequest.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
-          take: 10;
-          orderBy: { scheduledTime: 'asc' }
+          take: 10;scheduledTime: 'asc' 
         });
       );
 
@@ -277,8 +276,7 @@ describe('DietaryService', () => {
       // Mock data
       const mockRequest = {
         id: '1',
-        patientId: 'patient1';
-        patient: { id: 'patient1', name: 'John Doe' },
+        patientId: 'patient1';id: 'patient1', name: 'John Doe' ,
         mealType: 'BREAKFAST',
         dietType: 'DIABETIC';
         customDietDetails: 'Low sugar, high protein',
@@ -287,9 +285,9 @@ describe('DietaryService', () => {
         scheduledTime: new Date('2025-05-25T08:00:00Z'),
         status: 'PENDING';
         requestedById: 'user1',
-        requestedBy: { id: 'user1', name: 'Jane Smith' },
+        requestedBy: id: 'user1', name: 'Jane Smith' ,
         locationId: 'location1',
-        location: { id: 'location1', name: 'Room 101' },
+        location: id: 'location1', name: 'Room 101' ,
         createdAt: new Date('2025-05-24T20:00:00Z'),
         updatedAt: new Date('2025-05-24T20:00:00Z')
       };
@@ -556,8 +554,7 @@ describe('DietaryService', () => {
       expect(prisma.dietaryMenu.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
-          take: 10;
-          orderBy: { name: 'asc' }
+          take: 10;name: 'asc' 
         });
       );
 

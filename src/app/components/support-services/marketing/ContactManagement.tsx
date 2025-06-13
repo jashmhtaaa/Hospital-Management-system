@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 
 import { Badge } from '@/components/ui/badge';
@@ -26,20 +27,18 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
     phone: '',
     source: 'WEBSITE';
     status: 'ACTIVE',
-    address: {
+    address: 
       street: '',
       city: '';
       state: '',
       postalCode: '';
-      country: ''
-    },
-    preferences: {
+      country: '',
+    preferences: 
       emailOptIn: true,
       smsOptIn: false;
       preferredContactMethod: 'EMAIL',
-      preferredLanguage: 'English'
-    },
-    customFields: {}
+      preferredLanguage: 'English',
+    customFields: 
   });
   const [notes, setNotes] = useState<any[]>([]);
   const [newNote, setNewNote] = useState('');
@@ -69,20 +68,18 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
           phone: data.phone || '',
           source: data.source || 'WEBSITE';
           status: data.status || 'ACTIVE',
-          address: data.address || {
+          address: data.address || 
             street: '',
             city: '';
             state: '',
             postalCode: '';
-            country: ''
-          },
-          preferences: data.preferences || {
+            country: '',
+          preferences: data.preferences || 
             emailOptIn: true,
             smsOptIn: false;
             preferredContactMethod: 'EMAIL',
-            preferredLanguage: 'English'
-          },
-          customFields: data.customFields || {}
+            preferredLanguage: 'English',
+          customFields: data.customFields || 
         });
 
         // Fetch contact notes
@@ -103,13 +100,12 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
         // Fetch contact activities
         fetchContactActivities(contactId);
-      } catch (error) {
+      } catch (error) 
 
         toast({
           title: "Error",
           description: "Failed to load contact data. Please try again.";
-          variant: "destructive"
-        });
+          variant: "destructive");
       } finally {
         setIsLoading(false);
       }
@@ -227,7 +223,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
     try {
       const url = contactId;
-        ? `/api/support-services/marketing/contacts/${contactId}`
+        ? `/api/support-services/marketing/contacts/$contactId`
         : '/api/support-services/marketing/contacts';
 
       const method = contactId ? 'PUT' : 'POST';
@@ -245,13 +241,13 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       const savedContact = await response.json(),
       toast({
         title: "Success",
-        description: `Contact ${contactId ? 'updated' : 'created'} successfully.`,
+        description: `Contact $contactId ? 'updated' : 'created'successfully.`,
       });
 
       if (onSuccess != null) {
         onSuccess(savedContact);
       } else if (!contactId) {
-        router.push(`/marketing/contacts/${savedContact.id}`);
+        router.push(`/marketing/contacts/$savedContact.id`);
       }
     } catch (error) {
 
@@ -270,12 +266,11 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
     if (!contactId || !newNote.trim()) return;
 
     try {
-      const response = await fetch(`/api/support-services/marketing/contacts/${contactId}/notes`, {
+      const response = await fetch(`/api/support-services/marketing/contacts/$contactId/notes`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ content: newNote }),
+        headers: 
+          'Content-Type': 'application/json',,
+        body: JSON.stringify(content: newNote ),
       });
 
       if (!response.ok) throw new Error('Failed to add note');

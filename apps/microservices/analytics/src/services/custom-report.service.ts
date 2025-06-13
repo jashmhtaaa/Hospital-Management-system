@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
 
-import { AuditService } from '@/lib/security/audit.service';
-import { EncryptionService } from '@/lib/security/encryption.service';
-import { PrismaService } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache/redis-cache';
-import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 import { pubsub } from '@/lib/graphql/schema-base';
+import { metricsCollector } from '@/lib/monitoring/metrics-collector';
+import type { PrismaService } from '@/lib/prisma';
+import type { AuditService } from '@/lib/security/audit.service';
+import type { EncryptionService } from '@/lib/security/encryption.service';
 }
 }
 
@@ -60,7 +60,7 @@ export enum ReportType {
   SCORECARD = 'SCORECARD',
   COMPARATIVE = 'COMPARATIVE',
   CUSTOM = 'CUSTOM',
-export enum ReportDataSource {
+export = "export" enum = "enum" ReportDataSource = "ReportDataSource" {
   CLINICAL = 'CLINICAL',
   FINANCIAL = 'FINANCIAL',
   BILLING = 'BILLING',
@@ -179,7 +179,7 @@ export enum VisualizationType {
   CARD = 'CARD',
   TEXT = 'TEXT',
   CUSTOM = 'CUSTOM',
-export interface ComponentField {
+export = "export" interface = "interface" ComponentField = "ComponentField" 
   id: string,
   name: string;
   displayName: string,
@@ -983,8 +983,7 @@ export class CustomReportService {
     category?: ReportCategory;
     type?: ReportType;
     status?: string;
-    createdBy?: string;
-  }): Promise<ReportTemplate[]> {
+    createdBy?: string;): Promise<ReportTemplate[]> 
     try {
       // Try cache first
       const cacheKey = `reportTemplates:${JSON.stringify(filters || {})}`;
@@ -1017,11 +1016,9 @@ export class CustomReportService {
         status: filters?.status || 'ACTIVE'
       });
 
-      return templates as ReportTemplate[];
-    } catch (error) {
+      return templates as ReportTemplate[];catch (error) 
 
       throw error;
-    }
   }
 
   /**
@@ -1262,7 +1259,7 @@ export class CustomReportService {
       await Promise.all(
         template.components;
           .filter(component => component.visible);
-          .map(async (component) => {
+          .map(async (component) => 
             try {
               // Apply filters to component query
               const componentFilters = this.applyFiltersToComponent(
@@ -1308,7 +1305,6 @@ export class CustomReportService {
 
               reportStatus = 'PARTIAL';
               warningMessages.push(`Error in component ${component.name}: ${error.message}`);
-            }
           });
       );
 
@@ -1364,7 +1360,7 @@ export class CustomReportService {
           templateName: template.name,
           status: reportStatus;
           parameters: JSON.stringify(options.parameters || {}),
-          filters: JSON.stringify(options.filters || {}),
+          filters: JSON.stringify(options.filters || ),
         },
       });
 
@@ -1472,12 +1468,11 @@ export class CustomReportService {
         resourceType: 'REPORT';
         resourceId: templateId;
         userId,
-        details: {
+        details: 
           templateName: template.name,
           format: options.format;
           parameters: JSON.stringify(options.parameters || {}),
-          filters: JSON.stringify(options.filters || {}),
-        },
+          filters: JSON.stringify(options.filters || ),,
       });
 
       // Record metrics
@@ -1551,12 +1546,11 @@ export class CustomReportService {
         resourceType: 'REPORT';
         resourceId: templateId;
         userId,
-        details: {
+        details: 
           templateName: template.name,
           frequency: schedule.frequency;
           recipients: JSON.stringify(schedule.recipients),
-          outputFormats: schedule.outputFormats.join(','),
-        },
+          outputFormats: schedule.outputFormats.join(','),,
       });
 
       // Invalidate cache
@@ -1652,10 +1646,9 @@ export class CustomReportService {
         action: 'CREATED',
         actionBy: userId;
         actionDate: new Date(),
-        details: {
+        details: 
           reportType: report.reportType,
-          status: report.status
-        },
+          status: report.status,
       };
 
       // Create report
@@ -1675,12 +1668,11 @@ export class CustomReportService {
         resourceType: 'REGULATORY_REPORT';
         resourceId: newReport.id;
         userId,
-        details: {
+        details: 
           name: report.name,
           reportType: report.reportType;
           reportCode: report.reportCode,
-          dueDate: report.dueDate
-        },
+          dueDate: report.dueDate,
       });
 
       // Record metrics
@@ -1752,12 +1744,11 @@ export class CustomReportService {
         resourceType: 'QUERY';
         resourceId: nlQuery.id;
         userId,
-        details: {
+        details: 
           query,
           dataSource: options.dataSource,
           resultCount: queryResults.data.length;
-          executionTime: nlQuery.executionTime
-        },
+          executionTime: nlQuery.executionTime,
       });
 
       // Record metrics
@@ -1830,11 +1821,10 @@ export class CustomReportService {
         resourceType: 'QUERY';
         resourceId: queryId;
         userId,
-        details: {
+        details: 
           rating: feedback.rating,
           comments: feedback.comments;
-          correctedQuery: feedback.correctedQuery
-        },
+          correctedQuery: feedback.correctedQuery,
       });
 
       // Record metrics
@@ -1890,10 +1880,10 @@ export class CustomReportService {
     // Here we just simulate component data
 
     // Simulate data based on component type
-    let data: unknown[] = [];
+    const data: unknown[] = [];
     let columns: ColumnMetadata[] = [];
-    let totalRowCount = 0;
-    let aggregations = {};
+    const totalRowCount = 0;
+    const aggregations = {};
 
     try {
       switch (component.type) {
@@ -1905,7 +1895,7 @@ export class CustomReportService {
             role: field.role;
             format: field.format,
             description: field.description;
-            statistics: {
+            {
               min: null,
               max: null;
               avg: null,
@@ -2128,9 +2118,7 @@ export class CustomReportService {
     return `https://example.com/reports/${filename.replace(/\s+/g, '_')}.${format.toLowerCase()}`
   }
 
-  private validateReportSchedule(schedule: unknown): void {
-    // Implementation for schedule validation
-  }
+  private validateReportSchedule(schedule: unknown): void 
 
   private calculateNextRunDate(schedule: ReportSchedule): Date {
     // Implementation to calculate next run date based on schedule
@@ -2163,15 +2151,13 @@ export class CustomReportService {
     return nextRun;
   }
 
-  private validateRegulatoryReport(report: unknown): void {
-    // Implementation for report validation
-  }
+  private validateRegulatoryReport(report: unknown): void 
 
   private async processNaturalLanguageQuery(
     query: string;
     dataSource?: string,
     context?: Record<string, any>
-  ): Promise<any> {
+  ): Promise<any> 
     // This would be implemented with NLP and AI to translate natural language to structured query
     // For now, return a simple interpretation
     return {
@@ -2191,9 +2177,8 @@ export class CustomReportService {
       ],
       limit: 10
     };
-  }
 
-  private async executeProcessedQuery(processedQuery: unknown): Promise<any> {
+  private async executeProcessedQuery(processedQuery: unknown): Promise<any> 
     // This would execute the structured query against the data source
     // For now, return sample data
     return {
@@ -2221,9 +2206,8 @@ export class CustomReportService {
         },
       ],
     };
-  }
 
-  private determineQueryType(processedQuery: unknown): 'EXPLORATORY' | 'ANALYTICAL' | 'COMPARATIVE' | 'TREND' | 'UNKNOWN' {
+  private determineQueryType(processedQuery: unknown): 'EXPLORATORY' | 'ANALYTICAL' | 'COMPARATIVE' | 'TREND' | 'UNKNOWN' 
     // Determine query type based on structure
     if (processedQuery?.groupBy && processedQuery.groupBy.length > 0) {
       return 'ANALYTICAL';
@@ -2236,9 +2220,8 @@ export class CustomReportService {
     }
 
     return 'UNKNOWN';
-  }
 
-  private async findRelatedQueries(query: string): Promise<string[]> {
+  private async findRelatedQueries(query: string): Promise<string[]> 
     // Find related queries based on similarity
     // This would be implemented with vector similarity search
     return [
@@ -2246,10 +2229,5 @@ export class CustomReportService {
       'What are the values for each category last month?',
       'Compare category values year over year',
     ];
-  }
 
-  private async learnFromCorrectedQuery(queryId: string, correctedQuery: string): Promise<void> {
-    // Implementation to improve NLP model from corrected queries
-    // This would typically be used to train or fine-tune the model
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  }
+  private async learnFromCorrectedQuery(queryId: string, correctedQuery: string): Promise<void> 

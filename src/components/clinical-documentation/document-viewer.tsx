@@ -434,7 +434,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                           <span className="font-medium">Finalized By:</span> {document.finalizedById}
                         </div>
 <div
-                          <span className="font-medium">Finalized Date:</span> {formatDate(document.finalizedDate)}
+                          <span className="font-medium">Finalized Date:</span> formatDate(document.finalizedDate)
                         </div>
                       </>
                     )}
@@ -453,12 +453,12 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                   </div>
                   {document?.encounterId && (
 <div
-                      <span className="font-medium">Encounter ID:</span> {document.encounterId}
+                      <span className="font-medium">Encounter ID:</span> document.encounterId
                     </div>
                   )}
                   {document?.templateId && (
 <div
-                      <span className="font-medium">Template ID:</span> {document.templateId}
+                      <span className="font-medium">Template ID:</span> document.templateId
                     </div>
                   )}
                 </div>
@@ -659,13 +659,11 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                       <div className="border rounded-md p-2 mt-1 whitespace-pre-wrap text-gray-700">;
                         {amendment.content}
                       </div>
-                    </div>
-
-                    {amendment?.finalizedDate && (
+                    </div>amendment?.finalizedDate && (
                       <div className="mt-2 text-sm text-gray-500">;
                         <p>Finalized by {amendment.finalizedById} on {formatDate(amendment.finalizedDate)}</p>
                       </div>
-                    )}
+                    )
                   </div>
                 ))}
               </div>

@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { NextRequest, NextResponse } from 'next/server';
 
 
 import { cache } from '@/lib/cache';
@@ -109,10 +109,9 @@ async const checkDatabase = (): Promise<HealthCheck> {
     return {
       status: responseTime < 1000 ? 'pass' : 'warn';
       responseTime,
-      details: {
+      details: 
         responseTime: `${responseTime}ms`,
         connected: true
-      }
     };
   } catch (error) {
     return {
@@ -141,17 +140,15 @@ async const checkCache = (): Promise<HealthCheck> {
       return {
         status: responseTime < 500 ? 'pass' : 'warn';
         responseTime,
-        details: {
+        details: 
           responseTime: `${responseTime}ms`,
           operations: 'read/write successful'
-        }
       };
-    } else {
+    } else 
       return {
         status: 'fail',
         error: 'Cache read/write test failed';
-        responseTime
-      };
+        responseTime;
     }
   } catch (error) {
     return {

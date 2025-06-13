@@ -1,10 +1,10 @@
-import { NextRequest } from 'next/server';
+import type { NextRequest } from 'next/server';
 
 
-import { ApiResponseBuilder, PaginationBuilder } from '@/utils/api-response';
 import { AuditService } from '@/lib/audit/audit-service';
 import { prisma } from '@/lib/prisma';
-import { validateRequest, createAppointmentSchema } from '@/lib/validation/schemas';
+import { createAppointmentSchema, validateRequest } from '@/lib/validation/schemas';
+import { ApiResponseBuilder, PaginationBuilder } from '@/utils/api-response';
 // apps/hms-web/src/app/api/opd-management/appointments/route.ts
 export async function POST(request: NextRequest): unknown {
   try {
@@ -61,8 +61,8 @@ export async function POST(request: NextRequest): unknown {
 export async function GET(request: NextRequest): unknown {
   try {
     const { searchParams } = new URL(request.url);
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '10');
+    const page = Number.parseInt(searchParams.get('page') || '1');
+    const limit = Number.parseInt(searchParams.get('limit') || '10');
     const doctorId = searchParams.get('doctorId');
     const date = searchParams.get('date');
     const status = searchParams.get('status');
@@ -103,7 +103,7 @@ export async function GET(request: NextRequest): unknown {
           }
         }
       }),
-      prisma.appointment.count({ where })
+      prisma.appointment.count(where )
     ]);
 
     const meta = PaginationBuilder.buildMeta(total, page, limit);

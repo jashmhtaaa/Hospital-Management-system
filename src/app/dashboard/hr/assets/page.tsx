@@ -118,9 +118,8 @@ export default const _AssetManagement = () {
           description: err.message;
           variant: "destructive"
         });
-      } finally {
+      } finally 
         setLoading(false);
-      }
     };
 
     if (activeTab === 'all' || activeTab === 'maintenance') {

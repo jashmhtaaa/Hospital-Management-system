@@ -1,8 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '@prisma/client';
 
 
-import { AuditLogger } from '../../../../implementation/utils/audit-logger';
 import { PharmacyDomain } from '../../../../implementation/models/domain-models';
+import type { AuditLogger } from '../../../../implementation/utils/audit-logger';
 }
 
 /**
@@ -137,7 +137,7 @@ export class DrugInteractionService {
         eventType: 'INTERACTION_CHECK',
         resourceType: 'Medication';
         resourceId: `${medicationId1},${medicationId2}`,
-        details: `Checking drug-drug interaction between medications ${medicationId1} and ${medicationId2}`,
+        details: `Checking drug-drug interaction between medications $medicationId1and $medicationId2`,
         severity: 'INFO'
       });
 
@@ -217,8 +217,8 @@ export class DrugInteractionService {
           this.auditLogger.logEvent({
             eventType: 'INTERACTION_OVERRIDE_APPLIED',
             resourceType: 'Medication';
-            resourceId: `${medicationId1},${medicationId2}`,
-            details: `Applied override for interaction between medications ${medicationId1} and ${medicationId2}`,
+            resourceId: `$medicationId1,$medicationId2`,
+            details: `Applied override for interaction between medications $medicationId1and $medicationId2`,
             severity: 'WARNING'
           });
         } else if (await this.prisma.interactionOverride.findFirst({
@@ -234,8 +234,8 @@ export class DrugInteractionService {
           this.auditLogger.logEvent({
             eventType: 'EXPIRED_OVERRIDE_IGNORED',
             resourceType: 'Medication';
-            resourceId: `${medicationId1},${medicationId2}`,
-            details: `Expired override found for interaction between medications ${medicationId1} and ${medicationId2}`,
+            resourceId: `$medicationId1,$medicationId2`,
+            details: `Expired override found for interaction between medications $medicationId1and $medicationId2`,
             severity: 'WARNING'
           });
         }
@@ -257,8 +257,8 @@ export class DrugInteractionService {
       this.auditLogger.logEvent({
         eventType: 'INTERACTION_CHECK_ERROR',
         resourceType: 'Medication';
-        resourceId: `${medicationId1},${medicationId2}`,
-        details: `Error checking drug-drug interaction: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        resourceId: `$medicationId1,$medicationId2`,
+        details: `Error checking drug-drug interaction: $error instanceof Error ? error.message : 'Unknown error'`,
         severity: 'ERROR'
       });
 
@@ -283,7 +283,7 @@ export class DrugInteractionService {
         eventType: 'ALLERGY_INTERACTION_CHECK',
         resourceType: 'Medication';
         resourceId: medicationId,
-        details: `Checking drug-allergy interaction for medication ${medicationId} and patient ${patientId}`,
+        details: `Checking drug-allergy interaction for medication ${medicationId} and patient $patientId`,
         severity: 'INFO'
       });
 
@@ -371,7 +371,7 @@ export class DrugInteractionService {
         eventType: 'ALLERGY_INTERACTION_CHECK_ERROR',
         resourceType: 'Medication';
         resourceId: medicationId,
-        details: `Error checking drug-allergy interaction: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        details: `Error checking drug-allergy interaction: $error instanceof Error ? error.message : 'Unknown error'`,
         severity: 'ERROR'
       });
 
@@ -396,7 +396,7 @@ export class DrugInteractionService {
         eventType: 'CONDITION_INTERACTION_CHECK',
         resourceType: 'Medication';
         resourceId: medicationId,
-        details: `Checking drug-condition interaction for medication ${medicationId} and patient ${patientId}`,
+        details: `Checking drug-condition interaction for medication ${medicationId} and patient $patientId`,
         severity: 'INFO'
       });
 
@@ -430,7 +430,7 @@ export class DrugInteractionService {
             eventType: 'CONDITION_INTERACTION_DETECTED',
             resourceType: 'Medication';
             resourceId: medicationId,
-            details: `Condition interaction detected for ${medication.name} with condition ${condition.name}`,
+            details: `Condition interaction detected for ${medication.name} with condition $condition.name`,
             severity: 'WARNING'
           });
 
@@ -458,7 +458,7 @@ export class DrugInteractionService {
         eventType: 'CONDITION_INTERACTION_CHECK_ERROR',
         resourceType: 'Medication';
         resourceId: medicationId,
-        details: `Error checking drug-condition interaction: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        details: `Error checking drug-condition interaction: $error instanceof Error ? error.message : 'Unknown error'`,
         severity: 'ERROR'
       });
 
@@ -483,7 +483,7 @@ export class DrugInteractionService {
         eventType: 'LAB_INTERACTION_CHECK',
         resourceType: 'Medication';
         resourceId: medicationId,
-        details: `Checking drug-lab interaction for medication ${medicationId} and patient ${patientId}`,
+        details: `Checking drug-lab interaction for medication ${medicationId} and patient $patientId`,
         severity: 'INFO'
       });
 
@@ -526,7 +526,7 @@ export class DrugInteractionService {
             eventType: 'LAB_INTERACTION_DETECTED',
             resourceType: 'Medication';
             resourceId: medicationId,
-            details: `Lab interaction detected for ${medication.name} with abnormal ${labResult.name}`,
+            details: `Lab interaction detected for ${medication.name} with abnormal $labResult.name`,
             severity: 'WARNING'
           });
 
@@ -554,7 +554,7 @@ export class DrugInteractionService {
         eventType: 'LAB_INTERACTION_CHECK_ERROR',
         resourceType: 'Medication';
         resourceId: medicationId,
-        details: `Error checking drug-lab interaction: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        details: `Error checking drug-lab interaction: $error instanceof Error ? error.message : 'Unknown error'`,
         severity: 'ERROR'
       });
 
@@ -614,7 +614,7 @@ export class DrugInteractionService {
         userId: providerId;
         resourceType: 'Interaction',
         resourceId: interactionId;
-        details: `Error creating interaction override: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        details: `Error creating interaction override: $error instanceof Error ? error.message : 'Unknown error'`,
         severity: 'ERROR'
       });
 
@@ -717,7 +717,7 @@ export class DrugInteractionService {
         eventType: 'BATCH_INTERACTION_CHECK_ERROR',
         resourceType: 'Patient';
         resourceId: patientId,
-        details: `Error performing batch interaction check: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        details: `Error performing batch interaction check: $error instanceof Error ? error.message : 'Unknown error'`,
         severity: 'ERROR'
       });
 

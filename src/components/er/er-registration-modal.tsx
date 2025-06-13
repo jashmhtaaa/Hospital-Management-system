@@ -48,10 +48,8 @@ const registrationSchema = z;
     (data) =>
       !!data.searchMrn ||
       (!!data?.firstName && !!data?.lastName && !!data?.dob && !!data.sex),
-    {
       message: "Either search for an existing patient or provide full details for a new patient.",
       path: ["firstName"], // Attach error to a relevant field
-    }
   );
 
 type RegistrationFormValues = z.infer<typeof registrationSchema>;

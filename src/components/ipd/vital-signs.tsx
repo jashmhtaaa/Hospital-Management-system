@@ -1,4 +1,5 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import type React from "react";
+import { type ChangeEvent, type FormEvent, useEffect, useState } from "react"
 import {
 }
 
@@ -18,8 +19,8 @@ import {
   Input,
   Label,
 } from "@/components/ui";
-import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast
+import { Loader2 } from "lucide-react";
 
 // Define interfaces for data structures
 interface VitalSignRecord {
@@ -177,9 +178,8 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
             : "An unknown error occurred.";
 
         setError(`Failed to load vital signs: ${message}`);
-      } finally {
+      } finally 
         setLoading(false);
-      }
     };
 
     fetchData();

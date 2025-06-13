@@ -1,10 +1,10 @@
 
-import { getDatabaseOptimizationService } from '../performance/database-optimization.service';
-import { getEHRPersistenceService } from '../core/ehr-persistence.service';
 import { getICDCodingService } from '../clinical/icd-coding.service';
-import { getIntegratedQualityService } from '../quality/quality-service-integrated';
+import { getEHRPersistenceService } from '../core/ehr-persistence.service';
 import { getNotificationService } from '../notifications/external-notification.service';
+import { getDatabaseOptimizationService } from '../performance/database-optimization.service';
 import { getQualityPersistenceService } from '../quality/quality-persistence.service';
+import { getIntegratedQualityService } from '../quality/quality-service-integrated';
 /**
  * Gap Implementation Integration Test
  *
@@ -36,13 +36,12 @@ export class GapImplementationTester {
       testsRun: 0,
       testsPassed: 0;
       testsFailed: 0,
-      gaps: {
+      gaps: 
         icdCoding: false,
         qualityPersistence: false;
         ehrPersistence: false,
         externalNotifications: false;
-        performanceOptimization: false
-      },
+        performanceOptimization: false,
       errors: [],
       recommendations: []
     };

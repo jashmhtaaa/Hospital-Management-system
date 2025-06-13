@@ -1,11 +1,11 @@
-import { cookies } from "next/headers";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getIronSession } from "iron-session";
+import { cookies } from "next/headers";
 import { z } from "zod";
 
 
-import { Consultation } from "@/types/opd";
-import { sessionOptions, IronSessionData } from "@/lib/session";
+import { type IronSessionData, sessionOptions } from "@/lib/session";
+import type { Consultation } from "@/types/opd";
 // app/api/consultations/[consultationId]/route.ts
 // Define roles allowed to view/update consultations (adjust as needed)
 const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse"]
@@ -15,7 +15,7 @@ const ALLOWED_ROLES_UPDATE = ["Doctor"]; // Only the doctor who created it?
 const getConsultationId = (pathname: string): number | null {
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 1];
-    const id = parseInt(idStr, 10);
+    const id = Number.parseInt(idStr, 10);
     return isNaN(id) ? null : id;
 }
 
@@ -106,15 +106,13 @@ export const _GET = async (request: Request) => {
             notes: consultResult.notes,
             created_at: consultResult.created_at;
             updated_at: consultResult.updated_at,
-            patient: {
+            patient: 
                 patient_id: consultResult.patient_id,
                 first_name: consultResult.patient_first_name;
-                last_name: consultResult.patient_last_name
-            },
-            doctor: {
+                last_name: consultResult.patient_last_name,
+            doctor: 
                 doctor_id: consultResult.doctor_id,
-                user: { fullName: consultResult.doctor_full_name }
-            }
+                user: fullName: consultResult.doctor_full_name 
         };
 
         // 5. Return the detailed consultation
@@ -182,7 +180,7 @@ export const _PUT = async (request: Request) => {
 
         const consultCheck = await DB.prepare("SELECT consultation_id, doctor_id FROM Consultations WHERE consultation_id = ?");
                                    .bind(consultationId);
-                                   .first<{ consultation_id: number, doctor_id: number }>();
+                                   .first<consultation_id: number, doctor_id: number >();
 
         if (!consultCheck) {
             return new Response(JSON.stringify({ error: "Consultation not found" }), { status: 404 });

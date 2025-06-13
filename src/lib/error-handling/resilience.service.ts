@@ -50,7 +50,7 @@ export class BaseError extends Error {
     type: ErrorType;
     severity: ErrorSeverity = ErrorSeverity.MEDIUM,
     context: Record<string, unknown> = {},
-    retryable: boolean = false
+    retryable = false
   ) {
     super(message);
     this.name = this.constructor.name;
@@ -135,10 +135,10 @@ interface ContextualLogger {
 // Circuit Breaker Implementation
 export class CircuitBreaker extends EventEmitter {
   private state: CircuitBreakerState = CircuitBreakerState.CLOSED
-  private failureCount: number = 0;
+  private failureCount = 0;
   private lastFailureTime?: Date;
-  private successCount: number = 0;
-  private totalRequests: number = 0;
+  private successCount = 0;
+  private totalRequests = 0;
   private config: CircuitBreakerConfig;
   private name: string;
 
@@ -297,7 +297,7 @@ export class RetryHandler {
         }
 
         return result;
-      } catch (error) {
+      } catch (error) 
         lastError = error as Error;
 
         if (!this.shouldRetry(error as Error, attempt)) {
@@ -322,7 +322,6 @@ export class RetryHandler {
             }
           );
           await this.sleep(delay);
-        }
       }
     }
 

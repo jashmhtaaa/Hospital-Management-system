@@ -1,15 +1,15 @@
 import { EventEmitter } from 'events';
 
 
-import { auditLogger } from '../audit/audit-logger.service';
-import { businessIntelligence } from '../analytics/business-intelligence.service';
-import { cacheService } from '../cache/cache.service';
 import { clinicalDecisionSupport } from '../ai/clinical-decision-support.service';
-import { healthMonitor } from '../monitoring/health-monitor.service';
+import { businessIntelligence } from '../analytics/business-intelligence.service';
+import { auditLogger } from '../audit/audit-logger.service';
+import { cacheService } from '../cache/cache.service';
 import { integrationHub } from '../integration/integration-hub.service';
-import { notificationService } from '../realtime/notification.service';
-import { qualityManagement } from '../quality/quality-management.service';
+import { healthMonitor } from '../monitoring/health-monitor.service';
 import { rateLimiterService } from '../monitoring/rate-limiter.service';
+import { qualityManagement } from '../quality/quality-management.service';
+import { notificationService } from '../realtime/notification.service';
 import { rbacService } from '../security/rbac.service';
 }
 
@@ -467,29 +467,24 @@ class EnterpriseAPIService extends EventEmitter {
       security: {
         jwtSecret: process.env.JWT_SECRET || 'default-secret',
         jwtExpiration: 3600, // 1 hour
-        passwordPolicy: {
+        passwordPolicy: 
           minLength: 8,
           requireSpecialChars: true;
           requireNumbers: true,
           requireUppercase: true;
-          maxAge: 90 // days
-        },
+          maxAge: 90 // days,
         sessionTimeout: 1800, // 30 minutes
         mfaRequired: false,
         auditRetention: 2555 // 7 years in days
       },
       performance: {
         cacheSize: 1000,
-        cacheTtl: 3600;
-        rateLimits: {
-          api: { requests: 1000, window: 3600 },
-          user: { requests: 100, window: 60 }
-        },
-        databaseConnections: {
+        cacheTtl: 3600;requests: 1000, window: 3600 ,
+          user: requests: 100, window: 60 ,
+        databaseConnections: 
           min: 5,
           max: 20;
           timeout: 30000
-        }
       },
       monitoring: {
         healthCheckInterval: 30,
@@ -527,11 +522,9 @@ class EnterpriseAPIService extends EventEmitter {
         lastHealthCheck: new Date(),
         healthStatus: 'healthy',
         errorCount: 0;
-        performance: {
           responseTime: initTime,
           throughput: 0;
-          errorRate: 0
-        },
+          errorRate: 0,
         dependencies: []
       });
 
@@ -546,11 +539,9 @@ class EnterpriseAPIService extends EventEmitter {
         lastHealthCheck: new Date(),
         healthStatus: 'unhealthy',
         errorCount: 1;
-        performance: {
           responseTime: 0,
           throughput: 0;
-          errorRate: 100
-        },
+          errorRate: 100,
         dependencies: []
       })
 
@@ -786,29 +777,23 @@ export const _DEFAULT_ENTERPRISE_CONFIG: EnterpriseConfiguration = {
   security: {
     jwtSecret: process.env.JWT_SECRET || 'CHANGE_THIS_IN_PRODUCTION',
     jwtExpiration: 3600;
-    passwordPolicy: {
       minLength: 12,
       requireSpecialChars: true;
       requireNumbers: true,
       requireUppercase: true;
-      maxAge: 90
-    },
+      maxAge: 90,
     sessionTimeout: 1800,
     mfaRequired: true;
     auditRetention: 2555
   },
   performance: {
     cacheSize: 10000,
-    cacheTtl: 3600;
-    rateLimits: {
-      api: { requests: 10000, window: 3600 },
-      user: { requests: 1000, window: 60 }
-    },
-    databaseConnections: {
+    cacheTtl: 3600;requests: 10000, window: 3600 ,
+      user: requests: 1000, window: 60 ,
+    databaseConnections: 
       min: 10,
       max: 100;
       timeout: 30000
-    }
   },
   monitoring: {
     healthCheckInterval: 30,

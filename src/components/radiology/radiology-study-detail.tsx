@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactNode, useCallback } from "react"; // FIX: Add useCallback
+import React, { useState, useEffect, type ReactNode, useCallback } from "react"; // FIX: Add useCallback
 import {
 import { useParams, useRouter } from "next/navigation";
 }
@@ -16,7 +16,7 @@ import { Badge } from "@/components/ui/badge";
 // FIX: Remove unused Edit, Trash2
 import { Loader2, ArrowLeft, FileText } from "lucide-react";
 import CreateRadiologyReportModal, {
-  ReportFormData as ModalReportFormData,
+  type ReportFormData as ModalReportFormData,
 } from './create-radiology-report-modal.ts'; // Import the form data type
 // import RadiologyReportsList from './RadiologyReportsList.ts'; // Assuming this exists
 
@@ -104,10 +104,9 @@ interface StudyDetails {
           number_of_images: 2
         };
         setStudy(mockStudy);
-      } else {
+      } else 
         setError("Radiology study not found."),
         setStudy(undefined);
-      }
     } catch (error_) {
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";

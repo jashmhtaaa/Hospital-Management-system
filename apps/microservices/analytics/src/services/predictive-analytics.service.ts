@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
 
-import { AuditService } from '@/lib/security/audit.service';
-import { EncryptionService } from '@/lib/security/encryption.service';
-import { PrismaService } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache/redis-cache';
-import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 import { pubsub } from '@/lib/graphql/schema-base';
+import { metricsCollector } from '@/lib/monitoring/metrics-collector';
+import type { PrismaService } from '@/lib/prisma';
+import type { AuditService } from '@/lib/security/audit.service';
+import type { EncryptionService } from '@/lib/security/encryption.service';
 }
 }
 
@@ -73,14 +73,14 @@ export enum ModelCategory {
   OPERATIONAL = 'OPERATIONAL',
   FINANCIAL = 'FINANCIAL',
   CUSTOM = 'CUSTOM',
-export interface ModelFeature {
+export = "export" interface = "interface" ModelFeature = "ModelFeature" {
   name: string,
   description: string;
   dataType: 'numeric' | 'categorical' | 'text' | 'date' | 'boolean' | 'image',
   source: string;
   importance?: number; // 0-100
   transformations: string[],
-  statistics: {
+  statistics: 
     min?: number;
     max?: number;
     mean?: number;
@@ -88,8 +88,7 @@ export interface ModelFeature {
     stdDev?: number;
     uniqueValues?: number;
     missingPercentage: number;
-    distribution?: Record<string, number>
-  };
+    distribution?: Record<string, number>;
   engineeringNotes?: string;
 export enum Algorithm {
   LOGISTIC_REGRESSION = 'LOGISTIC_REGRESSION',
@@ -115,7 +114,7 @@ export enum Algorithm {
   ONE_CLASS_SVM = 'ONE_CLASS_SVM',
   CNN = 'CNN',
   CUSTOM = 'CUSTOM',
-export interface PerformanceMetrics {
+export = "export" interface = "interface" PerformanceMetrics = "PerformanceMetrics" 
   classificationMetrics?: {
     accuracy: number,
     precision: number;
@@ -128,8 +127,7 @@ export interface PerformanceMetrics {
     confusionMatrix: number[][];
     rocCurve?: { fpr: number[], tpr: number[] };
     prCurve?: { precision: number[], recall: number[] };
-    calibrationCurve?: { predicted: number[], actual: number[] }
-  };
+    calibrationCurve?: { predicted: number[], actual: number[] };
   regressionMetrics?: {
     mse: number,
     rmse: number;
@@ -190,7 +188,7 @@ export enum ModelStatus {
   MONITORING = 'MONITORING',
   ARCHIVED = 'ARCHIVED',
   ERROR = 'ERROR',
-export enum DeploymentStatus {
+export = "export" enum = "enum" DeploymentStatus = "DeploymentStatus" {
   NOT_DEPLOYED = 'NOT_DEPLOYED',
   DEPLOYING = 'DEPLOYING',
   DEPLOYED = 'DEPLOYED',
@@ -756,12 +754,11 @@ export class PredictiveAnalyticsService {
         resourceType: 'PREDICTIVE_MODEL';
         resourceId: newModel.id;
         userId,
-        details: {
+        details: 
           name: model.name,
           type: model.type;
           category: model.category,
-          algorithm: model.algorithm
-        },
+          algorithm: model.algorithm,
       });
 
       // Invalidate cache
@@ -820,11 +817,10 @@ export class PredictiveAnalyticsService {
         resourceType: 'PREDICTIVE_MODEL';
         resourceId: id;
         userId,
-        details: {
+        details: 
           name: currentModel.name,
           previousStatus: currentModel.status;
-          newStatus: updates.status || currentModel.status
-        },
+          newStatus: updates.status || currentModel.status,
       });
 
       // Update version history if version changed
@@ -904,12 +900,11 @@ export class PredictiveAnalyticsService {
         resourceType: 'PREDICTIVE_MODEL';
         resourceId: id;
         userId,
-        details: {
+        details: 
           name: model.name,
           dataSource: trainingConfig.dataSource;
           startDate: trainingConfig.startDate,
-          endDate: trainingConfig.endDate
-        },
+          endDate: trainingConfig.endDate,
       });
 
       // Record metrics
@@ -996,9 +991,8 @@ export class PredictiveAnalyticsService {
           ModelStatus.DEPLOYED,
           ModelStatus.MONITORING,
         ].includes(model.status);
-      ) {
+      ) 
         throw new Error(`Model ${id} is not in a deployable state. Current status: ${model.status}`);
-      }
 
       // Update model status
       await this.updateModel(
@@ -1006,13 +1000,11 @@ export class PredictiveAnalyticsService {
         {
           status: ModelStatus.DEPLOYING,
           deploymentStatus: DeploymentStatus.DEPLOYING;
-          mlOpsInfo: {
             ...model.mlOpsInfo,
             environment: deploymentConfig.environment,
             resources: deploymentConfig.resources || model.mlOpsInfo.resources;
             scaling: deploymentConfig.scaling || model.mlOpsInfo.scaling,
-            monitoring: deploymentConfig.monitoring || model.mlOpsInfo.monitoring
-          },
+            monitoring: deploymentConfig.monitoring || model.mlOpsInfo.monitoring,
         },
         userId;
       );
@@ -1023,12 +1015,11 @@ export class PredictiveAnalyticsService {
         resourceType: 'PREDICTIVE_MODEL';
         resourceId: id;
         userId,
-        details: {
+        details: 
           name: model.name,
           environment: deploymentConfig.environment;
           resources: deploymentConfig.resources,
-          scaling: deploymentConfig.scaling
-        },
+          scaling: deploymentConfig.scaling,
       });
 
       // Record metrics
@@ -1138,10 +1129,9 @@ export class PredictiveAnalyticsService {
         recommendedInterventions: prediction.recommendedInterventions || [];
         modelId,
         modelVersion: model.version,
-        explanations: prediction.explanations || {
+        explanations: prediction.explanations || 
           method: 'FEATURE_IMPORTANCE',
-          localExplanation: []
-        },
+          localExplanation: [],
         historicalPredictions: await this.getHistoricalReadmissionPredictions(patientId, options.encounterId),
       };
 
@@ -1196,7 +1186,7 @@ export class PredictiveAnalyticsService {
   async predictLengthOfStay(
     patientId: string,
     encounterId: string;
-    options: {
+    {
       modelId?: string;
       includeInterventions?: boolean;
       useCache?: boolean;
@@ -1261,10 +1251,9 @@ export class PredictiveAnalyticsService {
         resourceImplications: prediction.resourceImplications || [];
         modelId,
         modelVersion: model.version,
-        explanations: prediction.explanations || {
+        explanations: prediction.explanations || 
           method: 'FEATURE_IMPORTANCE',
-          localExplanation: []
-        },
+          localExplanation: [],
         historicalPredictions: await this.getHistoricalLOSPredictions(patientId, encounterId),
       };
 
@@ -1638,7 +1627,7 @@ export class PredictiveAnalyticsService {
   async recordClinicalValidation(
     predictionType: 'readmission' | 'length_of_stay' | 'cost',
     predictionId: string;
-    validation: {
+    {
       agreement: boolean;
       notes?: string;
     },
@@ -1688,10 +1677,9 @@ export class PredictiveAnalyticsService {
         resourceType: 'PREDICTION';
         resourceId: predictionId;
         userId,
-        details: {
+        details: 
           predictionType,
-          agreement: validation.agreement
-        },
+          agreement: validation.agreement,
       });
 
       // Record metrics
@@ -1771,10 +1759,9 @@ export class PredictiveAnalyticsService {
         modelName: model.name,
         modelType: model.type;
         modelCategory: model.category,
-        timeRange: {
+        timeRange: 
           startDate,
-          endDate,
-        },
+          endDate,,
         predictionsCount: predictions.length,
         outcomeAvailable: predictions.filter(p => p.outcome !== undefined).length;
         validationAvailable: predictions.filter(p => p.validation !== undefined).length;
@@ -2117,7 +2104,6 @@ export class PredictiveAnalyticsService {
       riskOfExtendedStay: predictedLOS > 7 ? 75 : 30;
       optimizedLOS,
       factors: [
-        {
           name: 'Diagnosis Complexity',
           category: 'CLINICAL';
           value: 'High',
@@ -2125,9 +2111,7 @@ export class PredictiveAnalyticsService {
           trend: 'STABLE',
           description: 'Patient has complex medical condition';
           actionable: false,
-          source: 'Diagnosis'
-        },
-        {
+          source: 'Diagnosis',
           name: 'Discharge Planning',
           category: 'ADMINISTRATIVE';
           value: 'Delayed',
@@ -2135,9 +2119,7 @@ export class PredictiveAnalyticsService {
           trend: 'WORSENING',
           description: 'Discharge planning not initiated early';
           actionable: true,
-          source: 'Care Management'
-        },
-        {
+          source: 'Care Management',
           name: 'Post-Acute Care Availability',
           category: 'SOCIAL';
           value: 'Limited',
@@ -2145,11 +2127,9 @@ export class PredictiveAnalyticsService {
           trend: 'STABLE',
           description: 'Limited SNF bed availability in region';
           actionable: true,
-          source: 'Care Management'
-        },
+          source: 'Care Management',
       ],
       interventions: [
-        {
           id: `los-intervention-${crypto.getRandomValues(new Uint32Array(1))[0]}-1`,
           name: 'Early Discharge Planning',
           description: 'Initiate discharge planning on admission';
@@ -2158,9 +2138,7 @@ export class PredictiveAnalyticsService {
           expectedLOSReduction: 1.5,
           confidence: 'HIGH';
           implementationTimeframe: 'IMMEDIATE',
-          priority: 'HIGH'
-        },
-        {
+          priority: 'HIGH',
           id: `los-intervention-${crypto.getRandomValues(new Uint32Array(1))[0]}-2`,
           name: 'SNF Pre-Booking',
           description: 'Pre-book SNF bed for anticipated needs';
@@ -2169,11 +2147,9 @@ export class PredictiveAnalyticsService {
           expectedLOSReduction: 1.0,
           confidence: 'MODERATE';
           implementationTimeframe: 'TODAY',
-          priority: 'MEDIUM'
-        },
+          priority: 'MEDIUM',
       ],
       dischargeBarriers: [
-        {
           id: `barrier-${crypto.getRandomValues(new Uint32Array(1))[0]}-1`,
           name: 'Insurance Authorization',
           category: 'ADMINISTRATIVE';
@@ -2182,33 +2158,22 @@ export class PredictiveAnalyticsService {
           estimatedDelayDays: 2,
           status: 'ACTIVE';
           resolutionPlan: 'Expedite authorization request',
-          responsibleParty: 'Case Manager'
-        },
+          responsibleParty: 'Case Manager',
       ],
       resourceImplications: [
-        {
           resourceType: 'Nurse Hours',
           expectedUtilization: predictedLOS * 24;
           unit: 'hours',
-          costEstimate: predictedLOS * 24 * 75
-        },
-        {
+          costEstimate: predictedLOS * 24 * 75,
           resourceType: 'Bed Days',
           expectedUtilization: predictedLOS;
           unit: 'days',
-          costEstimate: predictedLOS * 2500
-        },
+          costEstimate: predictedLOS * 2500,
       ],
-      explanations: {
+      explanations: 
         method: 'FEATURE_IMPORTANCE',
-        localExplanation: [
-          { feature: 'Diagnosis Complexity', contribution: 2.1, baseValue: 4.2 },
-          { feature: 'Discharge Planning', contribution: 1.8, baseValue: 4.2 },
-          { feature: 'Post-Acute Care Availability', contribution: 1.5, baseValue: 4.2 },
-          { feature: 'Age', contribution: 0.8, baseValue: 4.2 },
-          { feature: 'Insurance Type', contribution: 0.6, baseValue: 4.2 },
-        ],
-      },
+        localExplanation: [feature: 'Diagnosis Complexity', contribution: 2.1, baseValue: 4.2 ,feature: 'Discharge Planning', contribution: 1.8, baseValue: 4.2 ,feature: 'Post-Acute Care Availability', contribution: 1.5, baseValue: 4.2 ,feature: 'Age', contribution: 0.8, baseValue: 4.2 ,feature: 'Insurance Type', contribution: 0.6, baseValue: 4.2 ,
+        ],,
     };
   }
 
@@ -2218,7 +2183,7 @@ export class PredictiveAnalyticsService {
     const days = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
 
     const intervals = [];
-    let currentDate = new Date(startDate);
+    const currentDate = new Date(startDate);
 
     // Base census value that will fluctuate
     const baseCensus = 80 + Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 20);
@@ -2263,19 +2228,16 @@ export class PredictiveAnalyticsService {
         confidenceInterval: [Math.max(40, predictedCensus - 10), Math.min(130, predictedCensus + 10)],
         occupancyRate: (predictedCensus / bedCapacity) * 100,
         bedDemand: predictedCensus;
-        staffingDemand: {
           nurses: Math.ceil(predictedCensus / 4),
           physicians: Math.ceil(predictedCensus / 15),
           techs: Math.ceil(predictedCensus / 8),
-          others: Math.ceil(predictedCensus / 10)
-        },
+          others: Math.ceil(predictedCensus / 10),
         bedCapacity,
-        staffingCapacity: {
+        staffingCapacity: 
           nurses: Math.ceil(bedCapacity / 4),
           physicians: Math.ceil(bedCapacity / 15),
           techs: Math.ceil(bedCapacity / 8),
-          others: Math.ceil(bedCapacity / 10)
-        },
+          others: Math.ceil(bedCapacity / 10),
         resourceUtilization: (predictedCensus / bedCapacity) * 100,
         overflow: Math.max(0, predictedCensus - bedCapacity),
         status,
@@ -2509,21 +2471,15 @@ export class PredictiveAnalyticsService {
       } : undefined,
       explanations: {
         method: 'SHAP',
-        globalExplanation: {
+        globalExplanation: 
           featureImportance: [
             { feature: 'Length of Stay', importance: 0.40 },
             { feature: 'Diagnosis Complexity', importance: 0.25 },
             { feature: 'ICU Time', importance: 0.15 },
             { feature: 'Medication Regimen', importance: 0.10 },
             { feature: 'Age', importance: 0.05 },
-          ],
-        },
-        localExplanation: [
-          { feature: 'Length of Stay', contribution: 8000, baseValue: 12000 },
-          { feature: 'Diagnosis Complexity', contribution: 5000, baseValue: 12000 },
-          { feature: 'ICU Time', contribution: 3000, baseValue: 12000 },
-          { feature: 'Medication Regimen', contribution: 2000, baseValue: 12000 },
-          { feature: 'Age', contribution: 1000, baseValue: 12000 },
+          ],,
+        localExplanation: [feature: 'Length of Stay', contribution: 8000, baseValue: 12000 ,feature: 'Diagnosis Complexity', contribution: 5000, baseValue: 12000 ,feature: 'ICU Time', contribution: 3000, baseValue: 12000 ,feature: 'Medication Regimen', contribution: 2000, baseValue: 12000 ,feature: 'Age', contribution: 1000, baseValue: 12000 ,
         ],
       },
     };

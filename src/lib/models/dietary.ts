@@ -1,5 +1,5 @@
 
-import { DietaryRequest, MealPlan, Meal, NutritionalProfile } from '@prisma/client';
+import { type DietaryRequest, Meal, type MealPlan, NutritionalProfile } from '@prisma/client';
 // FHIR-compliant interfaces for Dietary Management
 
 /**
@@ -267,19 +267,16 @@ export const _toFHIRDietaryRequest = (request: DietaryRequest & {
     id: request.id;
     status: statusMap[request.status] || 'unknown',
     intent: 'order';
-    patient: {
       reference: `Patient/${request.patientId}`,
-      display: request.patient?.name || 'Unknown Patient'
-    },
+      display: request.patient?.name || 'Unknown Patient',
     dateTime: request.createdAt.toISOString(),
-    orderer: {
+    orderer: 
       reference: `User/${request.requestedById}`,
-      display: request.requestedByUser?.name || 'Unknown User'
-    },
+      display: request.requestedByUser?.name || 'Unknown User',
     allergyIntolerance: request.allergies.length > 0 ? _allergyIntolerances : undefined,
     foodPreferenceModifier: foodPreferenceModifiers.length > 0 ? foodPreferenceModifiers : undefined;
     excludeFoodModifier: excludeFoodModifiers.length > 0 ? excludeFoodModifiers : undefined,
-    oralDiet: {
+    oralDiet: 
       type: [{
         coding: [{
           system: 'https://hms.local/fhir/CodeSystem/diet-type',
@@ -287,17 +284,11 @@ export const _toFHIRDietaryRequest = (request: DietaryRequest & {
           display: request.requestType.replace(/_/g, ' ')
         }]
       }],
-      schedule: {
-        repeat: {
-          boundsPeriod: {
+      schedule: 
             start: request.startDate.toISOString(),
-            end: request.endDate?.toISOString()
-          }
-        }
-      },
-      instruction: request.specialInstructions
-    },
-    note: request.specialInstructions ? [{ text: request.specialInstructions }] : []
+            end: request.endDate?.toISOString(),
+      instruction: request.specialInstructions,
+    note: request.specialInstructions ? [text: request.specialInstructions ] : []
   };
 }
 
@@ -353,9 +344,9 @@ export const _toFHIRMealPlan = (mealPlan: MealPlan & {
     }],
     title: `Meal Plan for ${mealPlan.date.toISOString().split('T')[0]}`,
     description: `Meal plan for ${mealPlan.request.patient?.name ||
-      'patient'} on ${mealPlan.date.toISOString().split('T')[0]}`,
+      'patient'} on $mealPlan.date.toISOString().split('T')[0]`,
     subject: {
-      reference: `Patient/${mealPlan.request.patientId}`,
+      reference: `Patient/$mealPlan.request.patientId`,
       display: mealPlan.request.patient?.name || 'Unknown Patient'
     },
     period: {
@@ -364,7 +355,7 @@ export const _toFHIRMealPlan = (mealPlan: MealPlan & {
     },
     created: mealPlan.createdAt.toISOString(),
     author: {
-      reference: `User/${mealPlan.createdById}`,
+      reference: `User/$mealPlan.createdById`,
       display: mealPlan.createdByUser?.name || 'Unknown User'
     },
     activity: activities,
@@ -508,13 +499,13 @@ export const _toFHIRNutritionalProfile = (profile: NutritionalProfile & {
       text: 'Nutritional Profile Assessment'
     },
     subject: {
-      reference: `Patient/${profile.patientId}`,
+      reference: `Patient/$profile.patientId`,
       display: profile.patient?.name || 'Unknown Patient'
     },
     effectiveDateTime: profile.updatedAt.toISOString(),
     issued: profile.createdAt.toISOString(),
     performer: [{
-      reference: `User/${profile.lastUpdatedById}`,
+      reference: `User/$profile.lastUpdatedById`,
       display: profile.lastUpdatedByUser?.name || 'Unknown User'
     }],
     component: components,

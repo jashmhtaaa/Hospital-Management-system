@@ -11,8 +11,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast"; // Added useToast
 
 // Define Patient interface (assuming structure based on usage)
@@ -225,8 +225,7 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
-          {patients.map((patient) => (
+        <TableBody>patients.map((patient) => (
             <TableRow>
               key={patient.id}
               className={
@@ -273,7 +272,7 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
                 </div>
               </TableCell>
             </TableRow>
-          ))}
+          ))
         </TableBody>
       </Table>
     </div>

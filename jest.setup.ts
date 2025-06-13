@@ -1,7 +1,7 @@
 
 import '@testing-library/jest-dom';
+import { TextDecoder, TextEncoder } from 'util';
 import fetch from 'node-fetch';
-import { TextEncoder, TextDecoder } from 'util';
 /**
  * Enterprise Jest Setup Configuration - TypeScript Edition
  * Hospital Management System
@@ -336,27 +336,27 @@ jest.mock('@/lib/audit', () => ({
   logPatientAccess: jest.fn().mockResolvedValue(undefined),
   logSecurityEvent: jest.fn().mockResolvedValue(undefined),
   logHIPAAEvent: jest.fn().mockResolvedValue(undefined),
-  generateAuditReport: jest.fn().mockResolvedValue({ events: [], summary: {} }),
+  generateAuditReport: jest.fn().mockResolvedValue(events: [], summary: ),
 }))
 
 // Enhanced Security Service Mock
 jest.mock('@/lib/security', () => ({
   encrypt: jest.fn().mockImplementation((data: string) => `encrypted_${data}`),
   decrypt: jest.fn().mockImplementation((data: string) => data.replace('encrypted_', '')),
-  hash: jest.fn().mockImplementation((data: string) => `hashed_${data}`),
+  hash: jest.fn().mockImplementation((data: string) => `hashed_$data`),
   verify: jest.fn().mockImplementation((data: string, hash: string) =>
-    hash === `hashed_${data}`
+    hash === `hashed_$data`
   ),
   sanitizeInput: jest.fn().mockImplementation((input: string) => input.trim()),
   validateCSRF: jest.fn().mockResolvedValue(true),
   generateSecureToken: jest.fn().mockReturnValue('secure-token'),
-  hashSensitiveData: jest.fn().mockImplementation((data: string) => `sha256_${data}`),
+  hashSensitiveData: jest.fn().mockImplementation((data: string) => `sha256_$data`),
 }))
 
 // Encryption Service Mock
 jest.mock('@/services/encryption_service', () => ({
   EncryptionService: {
-    encrypt: jest.fn().mockImplementation((data: string) => `encrypted_${data}`),
+    encrypt: jest.fn().mockImplementation((data: string) => `encrypted_$data`),
     decrypt: jest.fn().mockImplementation((data: string) => data.replace('encrypted_', '')),
     encryptPHI: jest.fn().mockImplementation((phi: unknown) => ({ ...phi, encrypted: true })),
     decryptPHI: jest.fn().mockImplementation((phi: unknown) => ({ ...phi, encrypted: false })),
@@ -730,12 +730,12 @@ expect.extend({
 
     if (hasAllFields != null) {
       return {
-        message: () => `Expected ${received} not to be a valid HIPAA log`,
+        message: () => `Expected $receivednot to be a valid HIPAA log`,
         pass: true
       };
     } else {
       return {
-        message: () => `Expected ${received} to have all required HIPAA fields: ${required.join(', ')}`,
+        message: () => `Expected $receivedto have all required HIPAA fields: $required.join(', ')`,
         pass: false
       };
     }
@@ -749,12 +749,12 @@ expect.extend({
 
     if (hasAuditFields != null) {
       return {
-        message: () => `Expected ${received} not to have valid audit trail`,
+        message: () => `Expected $receivednot to have valid audit trail`,
         pass: true
       };
     } else {
       return {
-        message: () => `Expected ${received} to have audit trail fields (createdAt, updatedAt, createdBy)`,
+        message: () => `Expected $receivedto have audit trail fields (createdAt, updatedAt, createdBy)`,
         pass: false
       };
     }
@@ -767,12 +767,12 @@ expect.extend({
 
     if (isEncrypted != null) {
       return {
-        message: () => `Expected ${received} not to be encrypted`,
+        message: () => `Expected $receivednot to be encrypted`,
         pass: true
       };
     } else {
       return {
-        message: () => `Expected ${received} to be encrypted`,
+        message: () => `Expected $receivedto be encrypted`,
         pass: false
       };
     }
@@ -787,12 +787,12 @@ expect.extend({
 
     if (meetsStandards != null) {
       return {
-        message: () => `Expected ${received} not to meet healthcare standards`,
+        message: () => `Expected $receivednot to meet healthcare standards`,
         pass: true
       }
     } else {
       return {
-        message: () => `Expected ${received} to meet healthcare standards (proper ID, timestamps, masked PII)`,
+        message: () => `Expected $receivedto meet healthcare standards (proper ID, timestamps, masked PII)`,
         pass: false
       };
     }

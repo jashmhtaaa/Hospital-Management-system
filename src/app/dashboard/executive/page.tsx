@@ -322,7 +322,7 @@ export default const _ExecutiveDashboard = () {
     }
   };
 
-  const getTrendIcon = (trend: string, change: number = 0) => {
+  const getTrendIcon = (trend: string, change = 0) => {
     if (trend === 'positive' || change > 0) {
       return <ArrowUpRight className="h-4 w-4 text-green-500" />
     } else if (trend === 'negative' || change < 0) {
@@ -386,8 +386,6 @@ export default const _ExecutiveDashboard = () {
           </div>
         </div>
       </div>
-
-      {/* Strategic KPIs Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">;
         {data.strategicKPIs.slice(0, 4).map((kpi, index) => (
           <Card key={index} className="border-l-4 border-l-blue-500">;
@@ -430,8 +428,6 @@ export default const _ExecutiveDashboard = () {
           </Card>
         ))}
       </div>
-
-      {/* Main Dashboard Tabs */}
       <Tabs defaultValue="financial" className="space-y-6">;
         <TabsList className="grid w-full grid-cols-6">;
           <TabsTrigger value="financial">Financial</TabsTrigger>;
@@ -541,8 +537,6 @@ export default const _ExecutiveDashboard = () {
               </CardContent>
             </Card>
           </div>
-
-          {/* Financial KPIs Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
             <Card>
               <CardHeader className="pb-2">;
@@ -599,8 +593,6 @@ export default const _ExecutiveDashboard = () {
               </CardContent>
             </Card>
           </div>
-
-          {/* Payer Mix */}
           <Card>
             <CardHeader>
               <CardTitle>Payer Mix Analysis</CardTitle>
@@ -659,8 +651,6 @@ export default const _ExecutiveDashboard = () {
             </CardContent>
           </Card>
         </TabsContent>
-
-        {/* Operational Excellence */}
         <TabsContent value="operational" className="space-y-6">;
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
             <Card>
@@ -807,8 +797,6 @@ export default const _ExecutiveDashboard = () {
             </CardContent>
           </Card>
         </TabsContent>
-
-        {/* Quality & Safety */}
         <TabsContent value="quality" className="space-y-6">;
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
             <Card>
@@ -920,8 +908,6 @@ export default const _ExecutiveDashboard = () {
             </Card>
           </div>
         </TabsContent>
-
-        {/* Market Position */}
         <TabsContent value="market" className="space-y-6">;
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
             <Card>
@@ -1018,8 +1004,6 @@ export default const _ExecutiveDashboard = () {
             </CardContent>
           </Card>
         </TabsContent>
-
-        {/* Strategic Initiatives */}
         <TabsContent value="initiatives" className="space-y-6">;
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">;
             <Card>
@@ -1074,7 +1058,7 @@ export default const _ExecutiveDashboard = () {
                 <CardDescription>Budget distribution by strategic category</CardDescription>
               </CardHeader>
               <CardContent>
-                <ResponsiveContainer width="100%" height={300}>;
+                <ResponsiveContainer width="100%" height=300>;
                   <PieChart>
                     <Pie>
                       data={[
@@ -1095,8 +1079,6 @@ export default const _ExecutiveDashboard = () {
               </CardContent>
             </Card>
           </div>
-
-          {/* Initiative Performance Metrics */}
           <Card>
             <CardHeader>
               <CardTitle>Performance Dashboard</CardTitle>
@@ -1132,8 +1114,6 @@ export default const _ExecutiveDashboard = () {
             </CardContent>
           </Card>
         </TabsContent>
-
-        {/* Risk Management */}
         <TabsContent value="risk" className="space-y-6">;
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
             <Card>
@@ -1232,8 +1212,6 @@ export default const _ExecutiveDashboard = () {
           </Card>
         </TabsContent>
       </Tabs>
-
-      {/* Board Metrics Summary */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">;
@@ -1270,10 +1248,7 @@ export default const _ExecutiveDashboard = () {
             ))}
           </div>
         </CardContent>
-      </Card>
-
-      {/* Executive Alerts */}
-      {data.alerts.length > 0 && (
+      </Card>data.alerts.length > 0 && (
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">;
@@ -1326,7 +1301,7 @@ export default const _ExecutiveDashboard = () {
             </div>
           </CardContent>
         </Card>
-      )}
+      )
     </div>
   );
 }
@@ -1423,100 +1398,80 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
       }
     },
     operationalMetrics: {
-      capacity: {
         bedUtilization: 87.3,
         orUtilization: 92.1;
         staffProductivity: 89.7,
-        equipmentEfficiency: 94.2
-      },
-      throughput: {
+        equipmentEfficiency: 94.2,
+      throughput: 
         patientVolume: 125000,
         avgLengthOfStay: 4.2;
         turnoverRate: 12.3,
-        dischargeEfficiency: 91.8
-      },
-      technology: {
+        dischargeEfficiency: 91.8,
+      technology: 
         ehrAdoption: 98.5,
         digitalTransformation: 78.2;
         systemUptime: 99.7,
-        cyberSecurityScore: 92.1
-      },
-      staffing: {
+        cyberSecurityScore: 92.1,
+      staffing: 
         retention: 91.2,
         satisfaction: 87.5;
         productivity: 93.1,
         trainingCompliance: 96.8
-      }
     },
     qualityAndSafety: {
-      patientSafety: {
         overallScore: 96.2,
         incidents: 23;
         mortalityRate: 2.1,
-        infectionRate: 1.8
-      },
-      patientExperience: {
+        infectionRate: 1.8,
+      patientExperience: 
         satisfaction: 94.3,
         nps: 73;
         complaints: 45,
-        compliments: 324
-      },
-      clinicalExcellence: {
+        compliments: 324,
+      clinicalExcellence: 
         outcomeScores: 91.7,
         readmissionRate: 8.3;
         complicationRate: 2.9,
-        evidenceBasedCare: 95.1
-      },
-      accreditation: {
+        evidenceBasedCare: 95.1,
+      accreditation: 
         jcahoScore: 94.8,
         magnet: true;
         leapfrog: 'A',
         lastAuditScore: 96.2
-      }
     },
     marketPosition: {
       marketShare: 32.8,
       brandReputation: 87;
       competitivePosition: 2,
-      patientAcquisition: {
+      patientAcquisition: 
         newPatients: 15420,
         retentionRate: 89.3;
         acquisitionCost: 285,
-        lifetimeValue: 12500
-      },
-      serviceLines: [
-        { name: 'Cardiology', revenue: 85, growth: 12.3, marketPosition: 1 },
-        { name: 'Orthopedics', revenue: 72, growth: 8.7, marketPosition: 2 },
-        { name: 'Emergency', revenue: 95, growth: 5.2, marketPosition: 1 },
-        { name: 'Surgery', revenue: 120, growth: 15.8, marketPosition: 1 }
+        lifetimeValue: 12500,
+      serviceLines: [name: 'Cardiology', revenue: 85, growth: 12.3, marketPosition: 1 ,name: 'Orthopedics', revenue: 72, growth: 8.7, marketPosition: 2 ,name: 'Emergency', revenue: 95, growth: 5.2, marketPosition: 1 ,name: 'Surgery', revenue: 120, growth: 15.8, marketPosition: 1 
       ],
-      partnerships: {
+      partnerships: 
         strategic: 8,
         clinical: 12;
         technology: 5
-      }
     },
     riskManagement: {
       overallRisk: 'medium',
       riskScore: 32;
-      categories: {
         financial: 25,
         operational: 35;
         regulatory: 20,
         reputation: 15;
-        technology: 40
-      },
-      mitigation: {
+        technology: 40,
+      mitigation: 
         active: 15,
         planned: 8;
-        completed: 22
-      },
-      compliance: {
+        completed: 22,
+      compliance: 
         hipaa: 98.2,
         jacho: 94.8;
         cms: 96.1,
         overall: 96.4
-      }
     },
     boardMetrics: [
       { metric: 'ROI', value: '14.2%', change: 2.1, status: 'positive', benchmark: '12.5%', priority: 'board' },

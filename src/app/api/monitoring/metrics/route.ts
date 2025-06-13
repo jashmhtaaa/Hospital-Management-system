@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
@@ -24,7 +24,7 @@ export const _GET = async (request: NextRequest) => {
 
     if (metric != null) {
       // Return specific metric
-      const timeWindowSeconds = timeWindow ? parseInt(timeWindow) : undefined;
+      const timeWindowSeconds = timeWindow ? Number.parseInt(timeWindow) : undefined;
       const metrics = metricsCollector.getMetrics(metric, timeWindowSeconds);
 
       return NextResponse.json({

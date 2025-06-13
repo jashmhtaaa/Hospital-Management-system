@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, ArrowLeft, Trash2, FilePlus } from "lucide-react";
 import CreateRadiologyStudyModal, {
-  StudyPayload,
+  type StudyPayload,
 } from './create-radiology-study-modal.ts'; // FIX: Import StudyPayload
 // Import list components if they are to be embedded and filtered
 // import RadiologyStudiesList from './RadiologyStudiesList.ts'
@@ -68,9 +68,8 @@ interface RadiologyOrder {
           // FIX: Type the error data using type assertion
           const errorData = (await response;
             .json();
-            .catch(() => ({ error: "Failed to parse error response" }))) as {
-            error?: string
-          };
+            .catch(() => (error: "Failed to parse error response" ))) as 
+            error?: string;
           throw new Error(errorData.error || "Failed to fetch order details");
         }
       }
@@ -109,9 +108,8 @@ interface RadiologyOrder {
         // FIX: Type the error data using type assertion
         const errorData = (await response;
           .json();
-          .catch(() => ({ error: "Failed to parse error response" }))) as {
-          error?: string
-        };
+          .catch(() => (error: "Failed to parse error response" ))) as 
+          error?: string;
         throw new Error(errorData.error || "Failed to create radiology study");
       }
 
@@ -140,9 +138,8 @@ interface RadiologyOrder {
         // FIX: Type the error data using type assertion
         const errorData = (await response;
           .json();
-          .catch(() => ({ error: "Failed to parse error response" }))) as {
-          error?: string
-        };
+          .catch(() => (error: "Failed to parse error response" ))) as 
+          error?: string;
         throw new Error(errorData.error || "Failed to cancel order");
       }
       /* SECURITY: Console statement removed */

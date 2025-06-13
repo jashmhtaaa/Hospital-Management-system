@@ -1,9 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
 
 
-import { FHIRPatient } from '@/lib/fhir/patient';
 import { FHIRPatientIntegration } from '@/lib/fhir/fhir-integration';
+import { FHIRPatient } from '@/lib/fhir/patient';
 }
 
 /**
@@ -51,31 +51,29 @@ export const PatientCreateSchema = z.object({
       subscriberName: z.string(),
       relationshipToSubscriber: z.enum(['self', 'spouse', 'child', 'other']),
     }),
-    secondary: z.object({
+    secondary: z.object(
       planName: z.string(),
       policyNumber: z.string(),
       groupNumber: z.string().optional(),
       subscriberId: z.string(),
       subscriberName: z.string(),
       relationshipToSubscriber: z.enum(['self', 'spouse', 'child', 'other']),
-    }).optional(),
-  }),
+    }).optional(),),
 
   // Medical Information
-  allergies: z.array(z.object({
+  allergies: z.array(z.object(
     allergen: z.string(),
     reaction: z.string(),
     severity: z.enum(['mild', 'moderate', 'severe']),
   })).default([]),
 
-  medications: z.array(z.object({
+  medications: z.array(z.object(
     name: z.string(),
     dosage: z.string(),
     frequency: z.string(),
-    prescribedBy: z.string()
-  })).default([]),
+    prescribedBy: z.string())).default([]),
 
-  medicalHistory: z.array(z.object({
+  medicalHistory: z.array(z.object(
     condition: z.string(),
     diagnosedDate: z.string(),
     status: z.enum(['active', 'resolved', 'chronic']),
@@ -84,13 +82,11 @@ export const PatientCreateSchema = z.object({
   // Preferences
   preferredLanguage: z.string().default('en'),
   preferredProvider: z.string().optional(),
-  communicationPreferences: z.object({
+  communicationPreferences: z.object(
     phone: z.boolean().default(true),
     email: z.boolean().default(true),
     sms: z.boolean().default(false),
-    portal: z.boolean().default(true)
-  }).default({}),
-});
+    portal: z.boolean().default(true)).default(),);
 
 export const PatientUpdateSchema = PatientCreateSchema.partial();
 
@@ -139,7 +135,6 @@ export class PatientManagementService {
   constructor(fhirEnabled = true) {
     this.prisma = new PrismaClient();
     this.fhirEnabled = fhirEnabled;
-  }
 
   /**
    * Generate unique Medical Record Number (MRN)

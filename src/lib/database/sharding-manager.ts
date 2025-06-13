@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 
 
-import { ConfigService } from '@/lib/core/config.service';
-import { RedisService } from '@/lib/cache/redis';
+import type { RedisService } from '@/lib/cache/redis';
+import type { ConfigService } from '@/lib/core/config.service';
 import { logger } from '@/lib/core/logging';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 /**
@@ -624,7 +624,7 @@ export class ShardingManager {
           entityName;
         });
 
-        return parseInt(cachedIndex, 10);
+        return Number.parseInt(cachedIndex, 10);
       }
 
       // Track cache miss metrics

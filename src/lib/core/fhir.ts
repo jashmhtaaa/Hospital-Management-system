@@ -334,31 +334,23 @@ export const _convertToFHIRInvoice = (invoice: unknown): FHIRInvoice {
     } : undefined,
     lineItem: invoice.items.map((item: unknown, index: number) => ({
       sequence: index + 1,
-      chargeItem: {
-        reference: `ChargeItem/${item.id}`,
-      },
+      chargeItem: 
+        reference: `ChargeItem/${item.id}`,,
       priceComponent: [
-        {
           type: 'base',
-          amount: {
+          amount: 
             value: item.unitPrice,
-            currency: 'USD'
-          },
-        },
-        ...(item.discount > 0 ? [{
+            currency: 'USD',,
+        ...(item.discount > 0 ? [
           type: 'discount',
-          amount: {
+          amount: 
             value: -item.discount,
-            currency: 'USD'
-          },
-        }] : []),
-        ...(item.tax > 0 ? [{
+            currency: 'USD',] : []),
+        ...(item.tax > 0 ? [
           type: 'tax',
-          amount: {
+          amount: 
             value: item.tax,
-            currency: 'USD'
-          },
-        }] : []),
+            currency: 'USD',] : []),
       ],
     })),
     totalNet: {
@@ -399,7 +391,7 @@ export const _convertToFHIRClaim = (claim: unknown): FHIRClaim {
       },
     ],
     status: statusMap[claim.status] || 'draft',
-    type: {
+    {
       coding: [
         {
           system: 'https://terminology.hl7.org/CodeSystem/claim-type',
@@ -429,43 +421,37 @@ export const _convertToFHIRClaim = (claim: unknown): FHIRClaim {
       {
         sequence: 1,
         focal: true;
-        coverage: {
-          reference: `Coverage/${claim.insurancePolicyId}`,
-        },
+          reference: `Coverage/${claim.insurancePolicyId}`,,
       },
     ],
     diagnosis: claim.diagnoses.map((diagnosis: unknown, index: number) => ({
       sequence: index + 1,
-      diagnosis: {
+      diagnosis: 
         coding: [
           {
             system: 'https://hl7.org/fhir/sid/icd-10',
             code: diagnosis.code;
             display: diagnosis.description
           },
-        ],
-      },
+        ],,
     })),
     item: claim.items.map((item: unknown, index: number) => ({
       sequence: index + 1,
-      productOrService: {
+      productOrService: 
         coding: [
           {
             system: 'https://www.ama-assn.org/go/cpt',
             code: item.serviceItem.cptCode;
             display: item.serviceItem.name
           },
-        ],
-      },
+        ],,
       servicedDate: item.serviceDate,
-      unitPrice: {
+      unitPrice: 
         value: item.unitPrice,
-        currency: 'USD'
-      },
-      net: {
+        currency: 'USD',
+      net: 
         value: item.totalPrice,
-        currency: 'USD'
-      },
+        currency: 'USD',
     })),
     total: {
       value: claim.totalAmount,
@@ -486,38 +472,30 @@ export const _convertToFHIRCoverage = (coverage: unknown): FHIRCoverage {
       },
     ],
     status: coverage.status === 'active' ? 'active' : 'cancelled',
-    type: {
       coding: [
         {
           system: 'https://terminology.hl7.org/CodeSystem/v3-ActCode',
           code: coverage.type;
           display: coverage.typeName
         },
-      ],
-    },
-    subscriber: {
-      reference: `Patient/${coverage.subscriberId}`,
-    },
-    beneficiary: {
-      reference: `Patient/${coverage.patientId}`,
-    },
-    relationship: {
+      ],,
+    subscriber: 
+      reference: `Patient/${coverage.subscriberId}`,,
+    beneficiary: 
+      reference: `Patient/${coverage.patientId}`,,
+    relationship: 
       coding: [
         {
           system: 'https://terminology.hl7.org/CodeSystem/subscriber-relationship',
           code: coverage.relationship;
           display: coverage.relationshipName
         },
-      ],
-    },
-    period: {
+      ],,
+    period: 
       start: coverage.startDate,
-      end: coverage.endDate
-    },
+      end: coverage.endDate,
     payor: [
-      {
-        reference: `Organization/${coverage.insuranceProviderId}`,
-      },
+        reference: `Organization/${coverage.insuranceProviderId}`,,
     ],
     class: [
       {

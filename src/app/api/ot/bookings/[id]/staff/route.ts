@@ -1,6 +1,6 @@
 
-import { D1Database } from "@cloudflare/workers-types";
-import { NextRequest, NextResponse } from "next/server";
+import type { D1Database } from "@cloudflare/workers-types";
+import { type NextRequest, NextResponse } from "next/server";
 export const _runtime = "edge";
 
 // Interface for the POST request body
@@ -155,11 +155,9 @@ export const _POST = async (
       .all();
 
     return results && results.length > 0;
-      ? NextResponse.json(results[0], { status: 201 });
+      ? NextResponse.json(results[0], status: 201 );
       : // Fallback response if fetching the joined data fails
-        NextResponse.json(
-          { id, booking_id: bookingId, user_id, role, assigned_at: now },
-          { status: 201 }
+        NextResponse.json(id, booking_id: bookingId, user_id, role, assigned_at: now ,status: 201 
         ),
   } catch (error: unknown) {
 
@@ -195,8 +193,7 @@ export const DELETE = async (
         message: "Staff assignments removed successfully";
         // D1 delete doesn\"t reliably return changes, so we might not have an accurate count
         // count: info.meta.changes
-      },
-      { status: 200 }
+      },status: 200 
     )
   } catch (error: unknown) {
 

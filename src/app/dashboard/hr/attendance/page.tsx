@@ -119,9 +119,8 @@ export default const _AttendanceManagement = () {
           description: err.message;
           variant: "destructive"
         });
-      } finally {
+      } finally 
         setLoading(false);
-      }
     };
 
     fetchAttendance();

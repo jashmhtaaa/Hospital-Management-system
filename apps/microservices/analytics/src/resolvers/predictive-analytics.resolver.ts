@@ -1,11 +1,11 @@
-import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 
+import { Roles } from '@/lib/security/decorators/roles.decorator';
 import { GqlAuthGuard } from '@/lib/security/guards/gql-auth.guard';
 import { GqlRolesGuard } from '@/lib/security/guards/gql-roles.guard';
-import { PredictiveAnalyticsService } from '../services/predictive-analytics.service';
-import { Roles } from '@/lib/security/decorators/roles.decorator';
+import type { PredictiveAnalyticsService } from '../services/predictive-analytics.service';
 }
 }
 

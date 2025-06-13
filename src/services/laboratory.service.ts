@@ -1,10 +1,10 @@
-import * as z from 'zod';
 import { PrismaClient } from '@prisma/client';
+import * as z from 'zod';
 
 
+import { NotificationService } from '../lib/notifications';
 import { AuditService } from './audit_log_service.ts';
 import { EncryptionService } from './encryption_service.ts';
-import { NotificationService } from '../lib/notifications';
 const prisma = new PrismaClient();
 
 // Define schema for lab test
@@ -199,7 +199,7 @@ export class LaboratoryService {
     const _sequentialNumber = (sampleCount + 1).toString().padStart(4, '0');
 
     // Combine to create Sample ID: TYPE-YYMMDD-XXXX
-    const sampleId = `${sampleTypeCode}-/* SECURITY: Template literal eliminated */
+    const sampleId = `$sampleTypeCode-/* SECURITY: Template literal eliminated */
 
     return sampleId
   }
@@ -225,7 +225,7 @@ export class LaboratoryService {
       const test = await prisma.labTest.create({
         data: {
           ...validatedTest,
-          price: validatedTest.price ? parseFloat(validatedTest.price.toString()) : null
+          price: validatedTest.price ? Number.parseFloat(validatedTest.price.toString()) : null
         }
       });
 
@@ -319,7 +319,7 @@ export class LaboratoryService {
         where: { id: testId },
         data: {
           ...validatedTest,
-          price: validatedTest.price ? parseFloat(validatedTest.price.toString()) : null
+          price: validatedTest.price ? Number.parseFloat(validatedTest.price.toString()) : null
         }
       });
 
@@ -669,11 +669,11 @@ export class LaboratoryService {
         const criticalRange = parameter.criticalRanges[0]
 
         if (criticalRange?.lowerCritical &&
-          validatedResult.resultValueNumeric < parseFloat(criticalRange.lowerCritical)) {
+          validatedResult.resultValueNumeric < Number.parseFloat(criticalRange.lowerCritical)) {
           isCritical = true;
           flags = flags || 'CL'; // Critical Low
         } else if (criticalRange?.upperCritical &&
-          validatedResult.resultValueNumeric > parseFloat(criticalRange.upperCritical)) {
+          validatedResult.resultValueNumeric > Number.parseFloat(criticalRange.upperCritical)) {
           isCritical = true;
           flags = flags || 'CH'; // Critical High
         }
@@ -687,9 +687,9 @@ export class LaboratoryService {
         if (refRange?.lowerLimit && refRange.upperLimit) {
           referenceRange = referenceRange || `${refRange.lowerLimit}-${refRange.upperLimit}`;
 
-          if (refRange?.lowerLimit && validatedResult.resultValueNumeric < parseFloat(refRange.lowerLimit)) {
+          if (refRange?.lowerLimit && validatedResult.resultValueNumeric < Number.parseFloat(refRange.lowerLimit)) {
             flags = flags || 'L'; // Low
-          } else if (refRange?.upperLimit && validatedResult.resultValueNumeric > parseFloat(refRange.upperLimit)) {
+          } else if (refRange?.upperLimit && validatedResult.resultValueNumeric > Number.parseFloat(refRange.upperLimit)) {
             flags = flags || 'H'; // High
           }
         } else if (refRange.textualRange) {
@@ -1091,15 +1091,10 @@ export class LaboratoryService {
             gte: startDate
           } : undefined;
         },
-        include: {
-          order: {
-            select: {
+        include: 
               orderNumber: true,
-              orderDateTime: true
-            }
-          }
-        },
-        orderBy: { performedDateTime: 'asc' }
+              orderDateTime: true,
+        orderBy: performedDateTime: 'asc' 
       });
 
       // Log audit
@@ -1116,8 +1111,8 @@ export class LaboratoryService {
         const refRange = parameter.referenceRanges[0];
         if (refRange?.lowerLimit && refRange.upperLimit) {
           referenceRanges = {
-            lower: parseFloat(refRange.lowerLimit),
-            upper: parseFloat(refRange.upperLimit)
+            lower: Number.parseFloat(refRange.lowerLimit),
+            upper: Number.parseFloat(refRange.upperLimit)
           };
         }
       }

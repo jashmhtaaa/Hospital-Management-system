@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { PharmacyDomain } from '../../../models/domain-models';
 import { auditLog } from '../../../../../lib/audit';
 import { errorHandler } from '../../../../../lib/error-handler';
 import { getMedicationById, getPrescriptionById } from '../../../../../lib/services/pharmacy/pharmacy.service';
+import type { PharmacyDomain } from '../../../models/domain-models';
 }
 
 /**
@@ -64,13 +64,13 @@ export const GET = async (req: NextRequest) => {
 
     // Get query parameters
     const url = new URL(req.url);
-    const overdueThreshold = parseInt(url.searchParams.get('overdueThreshold') || '30', 10); // Default to 30 minutes
+    const overdueThreshold = Number.parseInt(url.searchParams.get('overdueThreshold') || '30', 10); // Default to 30 minutes
     const locationId = url.searchParams.get('locationId');
     const patientId = url.searchParams.get('patientId');
     const unitId = url.searchParams.get('unitId');
     const criticalOnly = url.searchParams.get('criticalOnly') === 'true';
-    const page = parseInt(url.searchParams.get('page') || '1', 10);
-    const limit = parseInt(url.searchParams.get('limit') || '20', 10);
+    const page = Number.parseInt(url.searchParams.get('page') || '1', 10);
+    const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
 
     // Get current time
     const now = new Date();
@@ -295,7 +295,7 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
     // Every X hours
     const match = frequency.match(/every\s+(\d+)\s+hours/i);
     if (match && match[1]) {
-      const hours = parseInt(match[1], 10);
+      const hours = Number.parseInt(match[1], 10);
       const time = new Date(start);
       time.setMinutes(0, 0, 0);
       time.setHours(Math.ceil(time.getHours() / hours) * hours);

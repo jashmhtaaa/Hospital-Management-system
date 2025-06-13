@@ -1,5 +1,5 @@
 
-import { migrate, rollback, status, MigrationManager } from './migrations/migration-manager.ts';
+import { MigrationManager, migrate, rollback, status } from './migrations/migration-manager.ts';
 }
 }
 

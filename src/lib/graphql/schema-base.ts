@@ -332,7 +332,7 @@ export const _baseResolvers = {
           return ast.value;
         case 'IntValue':
         case 'FloatValue':
-          return parseFloat(ast.value),
+          return Number.parseFloat(ast.value),
         case 'ObjectValue':
           return ast.fields.reduce((obj: unknown, field: unknown) => {
             obj[field.name.value] = field.value;
@@ -401,7 +401,7 @@ export const _baseResolvers = {
         filename,
         mimetype,
         encoding,
-        url: `/uploads/${filename}`,
+        url: `/uploads/$filename`,
         size: 1024, // Would be actual file size
         uploadedAt: new Date(),
         uploadedBy: context.user?.id || 'system'
@@ -421,7 +421,7 @@ export const _baseResolvers = {
   Subscription: {
     notifications: {
       subscribe: (parent, { userId }, context) => {
-        const eventName = userId ? `NOTIFICATION_${userId}` : 'NOTIFICATION_GLOBAL';
+        const eventName = userId ? `NOTIFICATION_$userId` : 'NOTIFICATION_GLOBAL';
         return pubsub.asyncIterator([eventName]);
       },
     },
@@ -502,16 +502,16 @@ export class GraphQLUtils {
           where[field] = { endsWith: value, mode: 'insensitive' };
           break;
         case 'GREATER_THAN':
-          where[field] = { gt: parseFloat(value) };
+          where[field] = { gt: Number.parseFloat(value) };
           break;
         case 'LESS_THAN':
-          where[field] = { lt: parseFloat(value) };
+          where[field] = { lt: Number.parseFloat(value) };
           break;
         case 'GREATER_THAN_OR_EQUAL':
-          where[field] = { gte: parseFloat(value) };
+          where[field] = { gte: Number.parseFloat(value) };
           break;
         case 'LESS_THAN_OR_EQUAL':
-          where[field] = { lte: parseFloat(value) };
+          where[field] = { lte: Number.parseFloat(value) };
           break;
         case 'IN':
           where[field] = { in: value.split(',') };

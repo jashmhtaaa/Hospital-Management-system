@@ -1,26 +1,26 @@
 
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ApolloDriver, type ApolloDriverConfig } from '@nestjs/apollo';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
-import { Module } from '@nestjs/common';
 
 
 
 
 
 import { CacheModule } from '@/lib/cache/cache.module';
-import { CustomReportController } from './controllers/custom-report.controller.ts';
-import { CustomReportResolver } from './resolvers/custom-report.resolver.ts';
-import { CustomReportService } from './services/custom-report.service.ts';
-import { DashboardController } from './controllers/dashboard.controller.ts';
-import { DashboardResolver } from './resolvers/dashboard.resolver.ts';
-import { DashboardService } from './services/dashboard.service.ts';
 import { MonitoringModule } from '@/lib/monitoring/monitoring.module';
-import { PredictiveAnalyticsController } from './controllers/predictive-analytics.controller.ts';
-import { PredictiveAnalyticsResolver } from './resolvers/predictive-analytics.resolver.ts';
-import { PredictiveAnalyticsService } from './services/predictive-analytics.service.ts';
 import { PrismaModule } from '@/lib/prisma/prisma.module';
 import { SecurityModule } from '@/lib/security/security.module';
+import { CustomReportController } from './controllers/custom-report.controller.ts';
+import { DashboardController } from './controllers/dashboard.controller.ts';
+import { PredictiveAnalyticsController } from './controllers/predictive-analytics.controller.ts';
+import { CustomReportResolver } from './resolvers/custom-report.resolver.ts';
+import { DashboardResolver } from './resolvers/dashboard.resolver.ts';
+import { PredictiveAnalyticsResolver } from './resolvers/predictive-analytics.resolver.ts';
+import { CustomReportService } from './services/custom-report.service.ts';
+import { DashboardService } from './services/dashboard.service.ts';
+import { PredictiveAnalyticsService } from './services/predictive-analytics.service.ts';
 }
 }
 

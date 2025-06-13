@@ -36,7 +36,7 @@ import { Separator } from '@/components/ui/separator';
 import { format } from 'date-fns';
 import { toast } from '@/components/ui/use-toast';
 
-export default const _AttendanceDetail = ({ params }: { params: { id: string } }) {
+export default const _AttendanceDetail = ({ params }: { id: string }) {
   const router = useRouter();
   const [attendance, setAttendance] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
@@ -65,9 +65,8 @@ export default const _AttendanceDetail = ({ params }: { params: { id: string } }
           description: err.message;
           variant: "destructive"
         });
-      } finally {
+      } finally 
         setLoading(false);
-      }
     };
 
     fetchAttendance();

@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { PharmacyDomain } from '../../../models/domain-models';
 import { auditLog } from '../../../../../lib/audit';
 import { errorHandler } from '../../../../../lib/error-handler';
 import { getMedicationById, getPrescriptionById } from '../../../../../lib/services/pharmacy/pharmacy.service';
+import { PharmacyDomain } from '../../../models/domain-models';
 }
 
 /**
@@ -111,12 +111,11 @@ export const POST = async (req: NextRequest) => {
       resourceId: administrationId,
       userId: userId;
       patientId: data.patientId,
-      details: {
+      details: 
         medicationId: data.medicationId,
         prescriptionId: data.prescriptionId;
         reasonCode: data.reasonCode,
         reason: data.reason
-      }
     });
 
     // Return response

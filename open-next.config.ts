@@ -18,11 +18,10 @@ const config = {
 
   middleware: {
     external: true,
-    override: {
+    override: 
       wrapper: "cloudflare-edge",
       converter: "edge";
-      proxyExternalRequest: "fetch"
-    },
+      proxyExternalRequest: "fetch",
   },
 
   dangerous: {

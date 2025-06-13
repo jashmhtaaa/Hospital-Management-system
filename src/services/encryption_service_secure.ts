@@ -44,7 +44,7 @@ export class SecureEncryptionService implements IEncryptionService {
       // Generate new master key for development/testing only
       this.masterKey = crypto.randomBytes(this.keyLength)
       /* SECURITY: Console statement removed */
-      /* SECURITY: Console statement removed */: ${this.masterKey.toString('base64')}`);
+      /* SECURITY: Console statement removed */: $this.masterKey.toString('base64')`);
     }
 
     // Initialize key rotation (every 24 hours in production)
@@ -96,7 +96,7 @@ export class SecureEncryptionService implements IEncryptionService {
 
       return Buffer.from(JSON.stringify(encryptedData)).toString('base64');
     } catch (error) {
-      throw new Error(`Encryption failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Encryption failed: $error instanceof Error ? error.message : 'Unknown error'`);
     }
   }
 
@@ -134,7 +134,7 @@ export class SecureEncryptionService implements IEncryptionService {
 
       return decrypted;
     } catch (error) {
-      throw new Error(`Decryption failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Decryption failed: $error instanceof Error ? error.message : 'Unknown error'`);
     }
   }
 

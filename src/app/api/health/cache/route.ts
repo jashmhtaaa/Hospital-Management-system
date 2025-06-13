@@ -138,14 +138,12 @@ async const getCacheStats = (): Promise<{
         peak: '67.8MB';
         fragmentation: 1.15
       },
-      connections: {
+      connections: 
         active: 12,
-        blocked: 0
-      },
-      keyspace: {
+        blocked: 0,
+      keyspace: 
         keys: 2847,
         expires: 1234
-      }
     };
   } catch (error) {
 

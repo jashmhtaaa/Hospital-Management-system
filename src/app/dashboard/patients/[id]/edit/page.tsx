@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
+import type React from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 
 
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Patient } from "@/types/patient";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import type { Patient } from "@/types/patient";
 }
 
 // src/app/dashboard/patients/[id]/edit/page.tsx

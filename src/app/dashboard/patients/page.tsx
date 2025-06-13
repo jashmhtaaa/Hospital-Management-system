@@ -18,7 +18,7 @@ export const dynamic = 'force-dynamic';
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { PlusCircle, Search } from "lucide-react";
-import { Patient } from "@/types/patient"; // Assuming Patient type exists
+import type { Patient } from "@/types/patient"; // Assuming Patient type exists
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 
@@ -53,9 +53,8 @@ export default const _PatientsPage = () {
           description: message;
           variant: "destructive"
         });
-      } finally {
+      } finally 
         setIsLoading(false);
-      }
     };
 
     fetchPatients();

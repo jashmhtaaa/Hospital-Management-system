@@ -101,7 +101,7 @@ export const _MaintenanceDashboard = () => {
     const asset = searchParams.get('asset') || '';
     const priority = searchParams.get('priority') || '';
     const type = searchParams.get('type') || '';
-    const page = parseInt(searchParams.get('page') || '1');
+    const page = Number.parseInt(searchParams.get('page') || '1');
 
     setActiveTab(tab),
     setFilterStatus(status);
@@ -188,9 +188,8 @@ export const _MaintenanceDashboard = () => {
           description: "Failed to load maintenance requests. Please try again.";
           variant: "destructive"
         });
-      } finally {
+      } finally 
         setIsLoading(false);
-      }
     };
 
     fetchRequests();
@@ -319,7 +318,7 @@ export const _MaintenanceDashboard = () => {
   // Render priority badge
   const renderPriorityBadge = (priority: string) => {
     const color = priorityColors[priority] || 'bg-gray-500';
-    let icon = priority === 'EMERGENCY' ? <AlertTriangle className="h-3 w-3 mr-1" /> : null;
+    const icon = priority === 'EMERGENCY' ? <AlertTriangle className="h-3 w-3 mr-1" /> : null;
 
     return (
       <Badge className={`${color} flex items-center`}>;
@@ -489,8 +488,7 @@ export const _MaintenanceDashboard = () => {
               </CardContent>
             </Card>
           ) : (
-            <div className="space-y-4">;
-              {requests.map((request) => (
+            <div className="space-y-4">;requests.map((request) => (
                 <Card key={request.id} className="hover:shadow-md transition-shadow">;
                   <CardHeader className="pb-2">;
                     <div className="flex justify-between items-start">;
@@ -550,9 +548,7 @@ export const _MaintenanceDashboard = () => {
                     </Button>
                   </CardFooter>
                 </Card>
-              ))}
-
-              {totalPages > 1 && (
+              ))totalPages > 1 && (
                 <Pagination>
                   currentPage={currentPage}
                   totalPages={totalPages}
@@ -560,7 +556,7 @@ export const _MaintenanceDashboard = () => {
                 />
               )}
             </div>
-          )}
+          )
         </TabsContent>
       </Tabs>
     </div>

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
@@ -24,8 +24,8 @@ export const _GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
 
-    const skip = parseInt(searchParams.get('skip') || '0');
-    const take = parseInt(searchParams.get('take') || '10');
+    const skip = Number.parseInt(searchParams.get('skip') || '0');
+    const take = Number.parseInt(searchParams.get('take') || '10');
     const search = searchParams.get('search') || undefined;
     const parentId = searchParams.get('parentId') || undefined;
     const hierarchy = searchParams.get('hierarchy') === 'true';

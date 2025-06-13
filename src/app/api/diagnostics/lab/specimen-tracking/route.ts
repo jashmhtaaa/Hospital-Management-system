@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 
 import { DB } from "@/lib/database";
@@ -33,8 +33,8 @@ export const _GET = async (request: NextRequest) => {
     const toDate = searchParams.get("toDate");
     const location = searchParams.get("location");
     const status = searchParams.get("status");
-    const page = parseInt(searchParams.get("page") || "1");
-    const pageSize = parseInt(searchParams.get("pageSize") || "20");
+    const page = Number.parseInt(searchParams.get("page") || "1");
+    const pageSize = Number.parseInt(searchParams.get("pageSize") || "20");
 
     // Validate that either specimenId or barcode is provided
     if (!specimenId && !barcode) {
@@ -470,7 +470,7 @@ export const _POST_SCAN = async (request: NextRequest) => {
           patient_name: `/* SECURITY: Template literal eliminated */
           patient_mrn: tracking.patient_mrn
         }
-      }, { status: 201 });
+      }, status: 201 );
     } catch (error) {
       // Rollback transaction on error
       await DB.query("ROLLBACK", []);
@@ -600,7 +600,7 @@ export const _POST_BATCH = async (request: NextRequest) => {
         failed: errors.length;
         results,
         errors;
-      }, { status: 201 });
+      }, status: 201 );
     } catch (error) {
       // Rollback transaction on error
       await DB.query("ROLLBACK", []);

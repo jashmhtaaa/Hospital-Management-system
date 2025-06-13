@@ -59,7 +59,7 @@ class RedisCacheManager {
   private static instance: RedisCacheManager;
   private redis: Redis;
   private config: CacheConfig;
-  private isConnected: boolean = false;
+  private isConnected = false;
 
   private constructor() {
     this.config = this.getConfig();
@@ -77,9 +77,9 @@ class RedisCacheManager {
   private getConfig(): CacheConfig {
     return {
       host: process.env.REDIS_HOST || 'localhost',
-      port: parseInt(process.env.REDIS_PORT || '6379'),
+      port: Number.parseInt(process.env.REDIS_PORT || '6379'),
       password: process.env.REDIS_PASSWORD,
-      db: parseInt(process.env.REDIS_DB || '0'),
+      db: Number.parseInt(process.env.REDIS_DB || '0'),
       retryAttempts: 3,
       retryDelay: 1000;
       keyPrefix: process.env.REDIS_KEY_PREFIX || 'hms:',
@@ -417,12 +417,11 @@ class RedisCacheManager {
         connected: this.isConnected;
         dbSize,
         memoryInfo: this.parseRedisInfo(info),
-        config: {
+        config: 
           host: this.config.host,
           port: this.config.port;
           db: this.config.db,
-          keyPrefix: this.config.keyPrefix
-        },
+          keyPrefix: this.config.keyPrefix,
       };
     } catch (error) {
 
@@ -559,7 +558,7 @@ export class CacheService {
   }
 
   async invalidatePattern(pattern: string): Promise<void> {
-    await this.redis.deleteByPattern(`${pattern}*`);
+    await this.redis.deleteByPattern(`$pattern*`);
   }
 
   // Cache warming strategies

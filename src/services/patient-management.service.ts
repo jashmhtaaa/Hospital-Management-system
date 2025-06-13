@@ -1,12 +1,12 @@
+import { EmergencyContact, type Patient, PatientAddress, PatientIdentification, PatientInsurance, PrismaClient } from '@prisma/client';
 import * as z from 'zod';
-import { PrismaClient, Patient, PatientAddress, PatientIdentification, EmergencyContact, PatientInsurance } from '@prisma/client';
 
 
+import { FhirService } from '../lib/fhir/fhir-r4-base';
+import { NotificationService } from '../lib/notifications';
 import { AuditService } from './audit_log_service.ts';
 import { AuthService } from './auth_service.ts';
 import { EncryptionService } from './encryption_service.ts';
-import { FhirService } from '../lib/fhir/fhir-r4-base';
-import { NotificationService } from '../lib/notifications';
 const prisma = new PrismaClient();
 
 // Define schema for patient creation/update

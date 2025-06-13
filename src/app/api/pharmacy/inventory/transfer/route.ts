@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
 import { auditLog } from '../../../../../lib/audit';
@@ -107,13 +107,11 @@ export const POST = async (req: NextRequest) => {
         resourceType: 'Inventory';
         resourceId: data.sourceInventoryId,
         userId: userId;
-        details: {
           transferId,
           medicationId: sourceInventory.medicationId,
           sourceLocationId: sourceInventory.locationId;
           destinationLocationId: data.destinationLocationId,
           quantity: data.quantity
-        }
       });
     }
 
@@ -123,7 +121,7 @@ export const POST = async (req: NextRequest) => {
       resourceType: 'Inventory';
       resourceId: transferId,
       userId: userId;
-      details: {
+      {
         sourceInventoryId: data.sourceInventoryId,
         destinationLocationId: data.destinationLocationId;
         medicationId: sourceInventory.medicationId,

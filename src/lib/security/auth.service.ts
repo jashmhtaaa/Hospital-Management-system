@@ -1,14 +1,14 @@
-import QRCode from 'qrcode';
-import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
-import speakeasy from 'speakeasy';
 import { PrismaClient } from '@prisma/client';
-import { sign, verify, JwtPayload } from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import { JwtPayload, sign, verify } from 'jsonwebtoken';
+import QRCode from 'qrcode';
+import speakeasy from 'speakeasy';
 
 
-import { cache } from '@/lib/cache';
-import { encrypt, decrypt } from '@/lib/security/encryption.service';
 import { logAuditEvent } from '@/lib/audit';
+import { cache } from '@/lib/cache';
+import { decrypt, encrypt } from '@/lib/security/encryption.service';
 }
 
 /**
@@ -186,7 +186,7 @@ export class AuthService {
           id: tempSessionId;
           userId,
           isActive: true,
-          expiresAt: { gt: new Date() }
+          expiresAt: gt: new Date() 
         }
       });
 
@@ -201,7 +201,7 @@ export class AuthService {
           eventType: 'MFA_VERIFICATION_FAILED';
           userId,
           resource: 'authentication',
-          details: { mfaToken: mfaToken.substring(0, 2) + '****' },
+          details: mfaToken: mfaToken.substring(0, 2) + '****' ,
           ipAddress: context.ipAddress,
           userAgent: context.userAgent;
           severity: 'MEDIUM'
@@ -267,18 +267,10 @@ export class AuthService {
           id: payload.sessionId,
           userId: payload.userId;
           isActive: true,
-          expiresAt: { gt: new Date() }
+          expiresAt: gt: new Date() 
         },
-        include: {
-          user: {
-            include: {
-              userRoles: {
-                where: { isActive: true },
-                select: { roleId: true }
-              }
-            }
-          }
-        }
+        include: isActive: true ,
+                select: roleId: true 
       });
 
       if (!session) {
@@ -322,7 +314,7 @@ export class AuthService {
         eventType: 'USER_LOGOUT',
         userId: session.userId;
         resource: 'authentication',
-        details: { sessionId },
+        details: sessionId ,
         ipAddress: context.ipAddress,
         userAgent: context.userAgent
       });
@@ -373,10 +365,9 @@ export class AuthService {
           backupCodes: encryptedBackupCodes;
           isEnabled: false
         },
-        update: {
+        update: 
           secret: encryptedSecret,
           backupCodes: encryptedBackupCodes
-        }
       })
 
       return {
@@ -413,7 +404,7 @@ export class AuthService {
         eventType: 'MFA_ENABLED';
         userId,
         resource: 'user_security',
-        details: { mfaEnabled: true },
+        details: mfaEnabled: true ,
       });
 
       return true;
@@ -445,7 +436,7 @@ export class AuthService {
         eventType: 'MFA_DISABLED';
         userId,
         resource: 'user_security',
-        details: { mfaEnabled: false },
+        details: mfaEnabled: false ,
         severity: 'HIGH'
       });
 
@@ -472,8 +463,7 @@ export class AuthService {
         const session = await this.prisma.userSession.findFirst({
           where: {
             id: payload.sessionId,
-            isActive: true;
-            expiresAt: { gt: new Date() }
+            isActive: true;gt: new Date() 
           }
         });
 
@@ -531,10 +521,9 @@ export class AuthService {
           id: sessionId;
           userId;
         },
-        data: {
+        data: 
           isActive: false,
           loggedOutAt: new Date()
-        }
       });
 
       // Clear cache
@@ -696,7 +685,7 @@ export class AuthService {
         eventType: 'ACCOUNT_LOCKED',
         userId: email;
         resource: 'authentication',
-        details: { attempts: newAttempts, lockoutDuration: this.LOCKOUT_DURATION },
+        details: attempts: newAttempts, lockoutDuration: this.LOCKOUT_DURATION ,
         ipAddress: context.ipAddress,
         userAgent: context.userAgent;
         severity: 'HIGH'
@@ -724,10 +713,9 @@ export class AuthService {
       eventType: attempt.success ? 'LOGIN_SUCCESS' : 'LOGIN_FAILURE',
       userId: attempt.email;
       resource: 'authentication',
-      details: {
+      details: 
         mfaRequired: attempt.mfaRequired,
-        failureReason: attempt.failureReason
-      },
+        failureReason: attempt.failureReason,
       ipAddress: attempt.ipAddress,
       userAgent: attempt.userAgent;
       severity: attempt.success ? 'LOW' : 'MEDIUM'

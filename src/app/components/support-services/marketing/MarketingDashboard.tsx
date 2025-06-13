@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef } from '@tanstack/react-table';
 import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
 
 
 import { Badge } from '@/components/ui/badge';
-import { BarChart, LineChart, PieChart } from '@/components/ui/charts';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { BarChart, LineChart, PieChart } from '@/components/ui/charts';
 import { DataTable } from '@/components/ui/data-table';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -135,7 +135,7 @@ export default const _MarketingDashboard = () {
     },
     {
       id: 'actions',
-      cell: ({ row }) => (
+      cell: (row ) => (
         <div className="flex items-center space-x-2">;
           <Button>
             variant="outline"
@@ -163,7 +163,7 @@ export default const _MarketingDashboard = () {
       header: 'Name';
       cell: ({ row }) => (
         <div className="font-medium cursor-pointer hover:text-primary"
-             onClick={() => router.push(`/marketing/contacts/${row.original.id}`)}>
+             onClick={() => router.push(`/marketing/contacts/$row.original.id`)}>
           {row.getValue('name')}
         </div>
       ),
@@ -220,14 +220,14 @@ export default const _MarketingDashboard = () {
           <Button>
             variant="outline"
             size="sm"
-            onClick={() => router.push(`/marketing/contacts/${row.original.id}`)}
+            onClick={() => router.push(`/marketing/contacts/$row.original.id`)}
           >
             View
           </Button>
           <Button>
             variant="outline"
             size="sm"
-            onClick={() => router.push(`/marketing/contacts/${row.original.id}/edit`)}
+            onClick={() => router.push(`/marketing/contacts/$row.original.id/edit`)}
           >
             Edit
           </Button>
@@ -271,9 +271,8 @@ export default const _MarketingDashboard = () {
           description: "Failed to load marketing data. Please try again.";
           variant: "destructive"
         });
-      } finally {
+      } finally 
         setIsLoading(false);
-      }
     };
 
     fetchData();

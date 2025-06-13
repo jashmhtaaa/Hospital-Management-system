@@ -1,8 +1,8 @@
-import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
-import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 
 
 import { Button } from '@/components/ui/button';
@@ -60,7 +60,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
       type: "EMAIL",
       status: "DRAFT";
       goals: [],
-      targetAudience: {},
+      targetAudience: ,
     },
   });
 
@@ -86,7 +86,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
           startDate: new Date(data.startDate),
           endDate: data.endDate ? new Date(data.endDate) : undefined;
           budget: data.budget || undefined,
-          targetAudience: data.targetAudience || {},
+          targetAudience: data.targetAudience || ,
           goals: data.goals || []
         });
 
@@ -94,13 +94,12 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
         if (data?.segments && data.segments.length > 0) {
           setSelectedSegments(data.segments.map((s: unknown) => s.segment))
         }
-      } catch (error) {
+      } catch (error) 
 
         toast({
           title: "Error",
           description: "Failed to load campaign data. Please try again.";
-          variant: "destructive"
-        });
+          variant: "destructive");
       } finally {
         setIsLoading(false);
       }
@@ -132,7 +131,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
     try {
       const url = campaignId;
-        ? `/api/support-services/marketing/campaigns/${campaignId}`
+        ? `/api/support-services/marketing/campaigns/$campaignId`
         : '/api/support-services/marketing/campaigns';
 
       const method = campaignId ? 'PUT' : 'POST';
@@ -150,13 +149,13 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
       const savedCampaign = await response.json(),
       toast({
         title: "Success",
-        description: `Campaign ${campaignId ? 'updated' : 'created'} successfully.`,
+        description: `Campaign $campaignId ? 'updated' : 'created'successfully.`,
       });
 
       if (onSuccess != null) {
         onSuccess(savedCampaign);
       } else {
-        router.push(`/marketing/campaigns/${savedCampaign.id}`);
+        router.push(`/marketing/campaigns/$savedCampaign.id`);
       }
     } catch (error) {
 
@@ -190,12 +189,11 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
     if (!campaignId) return;
 
     try {
-      const response = await fetch(`/api/support-services/marketing/campaigns/${campaignId}/segments`, {
+      const response = await fetch(`/api/support-services/marketing/campaigns/$campaignId/segments`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ segmentId }),
+        headers: 
+          'Content-Type': 'application/json',,
+        body: JSON.stringify(segmentId ),
       });
 
       if (!response.ok) throw new Error('Failed to add segment');
@@ -395,7 +393,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
                           type="number"
                           placeholder="Enter budget amount"
                           {...field}
-                          onChange={(e) => field.onChange(e.target.value ? parseFloat(e.target.value) : undefined)}
+                          onChange={(e) => field.onChange(e.target.value ? Number.parseFloat(e.target.value) : undefined)}
                         />
                       </FormControl>
                       <FormDescription>

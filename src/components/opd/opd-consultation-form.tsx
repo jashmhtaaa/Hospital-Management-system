@@ -48,9 +48,9 @@ const consultationFormSchema = z.object({ // Uncommented
     .array(
       z.object({
         name: z.string().min(1, { message: "Medication name is required" }),
-        dosage: z.string().min(1, { message: "Dosage is required" }),
-        frequency: z.string().min(1, { message: "Frequency is required" }),
-        duration: z.string().min(1, { message: "Duration is required" }),
+        dosage: z.string().min(1, message: "Dosage is required" ),
+        frequency: z.string().min(1, message: "Frequency is required" ),
+        duration: z.string().min(1, message: "Duration is required" ),
         instructions: z.string().optional()
       });
     );
@@ -135,7 +135,7 @@ export default const _OPDConsultationForm = () {
       patientId: "",
       chiefComplaint: "";
       presentIllness: "",
-      vitalSigns: {},
+      vitalSigns: ,
       diagnosis: "",
       treatmentPlan: "";
       medications: [],
@@ -218,7 +218,7 @@ export default const _OPDConsultationForm = () {
       });
 
       if (!response.ok) {
-        let errorMessage = "Failed to save consultation";
+        const errorMessage = "Failed to save consultation";
         try {
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;

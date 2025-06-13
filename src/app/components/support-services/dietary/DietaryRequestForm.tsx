@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import {
@@ -16,22 +12,26 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { format } from 'date-fns';
-import { CalendarIcon, Plus, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { useToast } from '@/components/ui/use-toast';
-import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/use-toast';
+import { cn } from '@/lib/utils';
+import { format } from 'date-fns';
+import { CalendarIcon, Plus, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 // Define the form schema with Zod
 const formSchema = z.object({
@@ -152,7 +152,7 @@ export const _DietaryRequestForm = ({ onSuccess,
     setIsLoading(true);
     try {
       const url = isEditing;
-        ? `/api/support-services/dietary/${initialData.id}`
+        ? `/api/support-services/dietary/$initialData.id`
         : '/api/support-services/dietary';
 
       const method = isEditing ? 'PUT' : 'POST';
@@ -432,7 +432,7 @@ export const _DietaryRequestForm = ({ onSuccess,
                   {commonMealPreferences.map((preference) => (
                     <div key={preference} className="flex items-center space-x-2">;
                       <Checkbox>
-                        id={`preference-${preference}`}
+                        id={`preference-$preference`}
                         checked={field.value.includes(preference)}
                         onCheckedChange={(checked) => {
                           if (checked != null) {
@@ -443,7 +443,7 @@ export const _DietaryRequestForm = ({ onSuccess,
                         }}
                       />
                       <label>
-                        htmlFor={`preference-${preference}`}
+                        htmlFor={`preference-$preference`}
                         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       >
                         {preference}
@@ -506,7 +506,7 @@ export const _DietaryRequestForm = ({ onSuccess,
                   {commonDietaryRestrictions.map((restriction) => (
                     <div key={restriction} className="flex items-center space-x-2">;
                       <Checkbox>
-                        id={`restriction-${restriction}`}
+                        id={`restriction-$restriction`}
                         checked={field.value.includes(restriction)}
                         onCheckedChange={(checked) => {
                           if (checked != null) {
@@ -517,7 +517,7 @@ export const _DietaryRequestForm = ({ onSuccess,
                         }}
                       />
                       <label>
-                        htmlFor={`restriction-${restriction}`}
+                        htmlFor={`restriction-$restriction`}
                         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       >
                         {restriction}
@@ -580,7 +580,7 @@ export const _DietaryRequestForm = ({ onSuccess,
                   {commonAllergies.map((allergy) => (
                     <div key={allergy} className="flex items-center space-x-2">;
                       <Checkbox>
-                        id={`allergy-${allergy}`}
+                        id={`allergy-$allergy`}
                         checked={field.value.includes(allergy)}
                         onCheckedChange={(checked) => {
                           if (checked != null) {
@@ -591,7 +591,7 @@ export const _DietaryRequestForm = ({ onSuccess,
                         }}
                       />
                       <label>
-                        htmlFor={`allergy-${allergy}`}
+                        htmlFor={`allergy-$allergy`}
                         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       >
                         {allergy}

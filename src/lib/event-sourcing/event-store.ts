@@ -1,10 +1,10 @@
-import { Kafka, Producer, Consumer } from 'kafkajs';
+import { type Consumer, Kafka, type Producer } from 'kafkajs';
 
 
-import { EncryptionService } from '@/lib/security/encryption.service';
-import { PrismaService } from '@/lib/prisma';
 import { logger } from '@/lib/core/logging';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
+import type { PrismaService } from '@/lib/prisma';
+import type { EncryptionService } from '@/lib/security/encryption.service';
 /**
  * Event interface for domain events;
  */
@@ -52,7 +52,7 @@ export class KafkaEventStore implements EventStore {
     private readonly prisma: PrismaService;
     private readonly encryptionService: EncryptionService,
     brokers: string[] = process.env.KAFKA_BROKERS?.split(',') || ['localhost:9092'],
-    clientId: string = 'hms-event-store';
+    clientId = 'hms-event-store';
     private readonly encryptSensitiveData: boolean = process.env.ENCRYPT_EVENTS === 'true';
   ) {
     this.kafka = new Kafka({
@@ -135,22 +135,18 @@ export class KafkaEventStore implements EventStore {
         })
 
         // Then send to Kafka (for event streaming to other services)
-        await transaction.send({
+        await transaction.send(
           topic,
           messages: [
-            {
               key: event.aggregateId,
               value: JSON.stringify(processedEvent),
-              headers: {
+              headers: 
                 eventType: event.type,
                 aggregateType: event.aggregateType;
                 version: String(event.version),
                 timestamp: event.timestamp.toISOString(),
                 correlationId: event.metadata.correlationId || uuidv4()
-              }
-            }
-          ]
-        })
+          ])
 
         // Commit the transaction
         await transaction.commit();
@@ -196,9 +192,8 @@ export class KafkaEventStore implements EventStore {
           aggregateId,
           aggregateType;
         },
-        orderBy: {
+        orderBy: 
           version: 'asc'
-        }
       });
 
       // Track metrics
@@ -289,10 +284,9 @@ export class KafkaEventStore implements EventStore {
         sessionTimeout: 30000,
         heartbeatInterval: 3000;
         maxInFlightRequests: 5,
-        retry: {
+        retry: 
           initialRetryTime: 300,
           retries: 10
-        }
       });
 
       await consumer.connect();
@@ -640,7 +634,7 @@ export class KafkaEventStore implements EventStore {
       version: dbEvent.version,
       timestamp: dbEvent.timestamp;
       data: dbEvent.data,
-      metadata: dbEvent.metadata || {}
+      metadata: dbEvent.metadata || 
     };
   }
 }

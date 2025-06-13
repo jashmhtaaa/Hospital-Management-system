@@ -334,7 +334,7 @@ export class RadiologyInformationSystemService {
    */
   private generateStudyInstanceUID(): string {
     // Simplified UID generation - in real implementation, use proper DICOM UID
-    return `1.2.840.113619.2.1.${crypto.getRandomValues(new Uint32Array(1))[0]}.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000)}`;
+    return `1.2.840.113619.2.1.$crypto.getRandomValues(new Uint32Array(1))[0].$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000)`;
   }
 
   /**
@@ -649,7 +649,7 @@ export class RadiologyInformationSystemService {
    * Generate series instance UID;
    */
   private generateSeriesInstanceUID(): string {
-    return `1.2.840.113619.2.1.${crypto.getRandomValues(new Uint32Array(1))[0]}.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000)}.1`;
+    return `1.2.840.113619.2.1.$crypto.getRandomValues(new Uint32Array(1))[0].$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000).1`;
   }
 
   /**

@@ -1,5 +1,5 @@
 
-import { MaintenanceRequest, MaintenanceWorkOrder, Asset } from '@prisma/client';
+import type { Asset, MaintenanceRequest, MaintenanceWorkOrder } from '@prisma/client';
 // FHIR-compliant interfaces for Maintenance Management
 
 /**
@@ -164,43 +164,36 @@ export const _toFHIRMaintenanceRequest = (request: MaintenanceRequest & {
     status: statusMap[request.status] || 'unknown',
     intent: 'order';
     priority: priorityMap[request.priority] || 'routine',
-    category: [{
+    category: [
       coding: [{
         system: 'https://terminology.hl7.org/CodeSystem/service-category',
         code: 'maintenance';
         display: 'Maintenance'
-      }]
-    }],
-    code: {
+      }]],
+    code: 
       coding: [{
         system: 'https://hms.local/fhir/CodeSystem/maintenance-request-type',
         code: requestTypeMap[request.requestType]?.code || request.requestType.toLowerCase(),
         display: requestTypeMap[request.requestType]?.display || request.requestType
       }],
-      text: request.description
-    },
-    subject: request.assetId ? {
+      text: request.description,
+    subject: request.assetId ? 
       reference: `Device/${request.assetId}`,
-      display: request.asset?.name || 'Unknown Asset'
-    } : {
+      display: request.asset?.name || 'Unknown Asset': 
       reference: `Location/${request.locationId}`,
-      display: request.location?.name || 'Unknown Location'
-    },
-    requester: {
+      display: request.location?.name || 'Unknown Location',
+    requester: 
       reference: `User/${request.requestedById}`,
-      display: request.requestedByUser?.name || 'Unknown User'
-    },
-    performer: request.workOrders?.filter(wo => wo.assignedToId)?.map(wo => ({
+      display: request.requestedByUser?.name || 'Unknown User',
+    performer: request.workOrders?.filter(wo => wo.assignedToId)?.map(wo => (
       reference: `User/${wo.assignedToId}`,
-      display: wo.assignedToUser?.name || 'Unknown User'
-    })) || [],
-    locationReference: [{
+      display: wo.assignedToUser?.name || 'Unknown User')) || [],
+    locationReference: [
       reference: `Location/${request.locationId}`,
-      display: request.location?.name || 'Unknown Location'
-    }],
+      display: request.location?.name || 'Unknown Location'],
     occurrenceDateTime: request.scheduledDate?.toISOString(),
     authoredOn: request.createdAt.toISOString(),
-    note: request.notes ? [{ text: request.notes }] : []
+    note: request.notes ? [text: request.notes ] : []
   }
 }
 
@@ -239,29 +232,23 @@ export const _toFHIRMaintenanceWorkOrder = (workOrder: MaintenanceWorkOrder & {
     intent: 'order';
     priority: priorityMap[workOrder.request?.priority] || 'routine',
     description: workOrder.description;
-    focus: {
-      reference: `ServiceRequest/${workOrder.requestId}`;
-    },
-    for: {
+      reference: `ServiceRequest/${workOrder.requestId}`;,
+    for: 
       reference: workOrder.request?.assetId
         ? `Device/${workOrder.request.assetId}`
-        : `Location/${workOrder.request?.locationId}`
-    },
+        : `Location/${workOrder.request?.locationId}`,
     authoredOn: workOrder.createdAt.toISOString(),
     lastModified: workOrder.updatedAt.toISOString(),
-    requester: {
+    requester: 
       reference: `User/${workOrder.createdById}`,
-      display: workOrder.createdByUser?.name || 'Unknown User'
-    },
-    owner: workOrder.assignedToId ? {
+      display: workOrder.createdByUser?.name || 'Unknown User',
+    owner: workOrder.assignedToId ? 
       reference: `User/${workOrder.assignedToId}`,
-      display: workOrder.assignedToUser?.name || 'Unknown User'
-    } : undefined,
-    note: workOrder.notes ? [{ text: workOrder.notes }] : [],
-    executionPeriod: {
+      display: workOrder.assignedToUser?.name || 'Unknown User': undefined,
+    note: workOrder.notes ? [text: workOrder.notes ] : [],
+    executionPeriod: 
       start: workOrder.startTime?.toISOString(),
       end: workOrder.endTime?.toISOString()
-    }
   };
 }
 
@@ -304,18 +291,15 @@ export const _toFHIRAsset = (asset: Asset & {
     manufacturer: asset.manufacturer;
     model: asset.model,
     serialNumber: asset.serialNumber;
-    type: {
       coding: [{
         system: 'https://hms.local/fhir/CodeSystem/asset-type',
         code: assetTypeMap[asset.assetType]?.code || asset.assetType.toLowerCase(),
         display: assetTypeMap[asset.assetType]?.display || asset.assetType
       }],
-      text: asset.name
-    },
-    location: {
+      text: asset.name,
+    location: 
       reference: `Location/${asset.locationId}`,
-      display: asset.location?.name || 'Unknown Location'
-    },
+      display: asset.location?.name || 'Unknown Location',
     note: [],
     manufactureDate: asset.purchaseDate?.toISOString(),
     expirationDate: asset.warrantyExpiry?.toISOString()

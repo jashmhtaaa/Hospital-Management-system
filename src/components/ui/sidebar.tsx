@@ -105,10 +105,9 @@ const SidebarProvider = React.forwardRef<;
         if (
           event.key === SIDEBAR_KEYBOARD_SHORTCUT &&
           (event.metaKey || event.ctrlKey);
-        ) {
+        ) 
           event.preventDefault(),
           toggleSidebar();
-        }
       }
 
       window.addEventListener("keydown", handleKeyDown);

@@ -106,9 +106,8 @@ export default const _PayrollManagement = () {
           description: err.message;
           variant: "destructive"
         });
-      } finally {
+      } finally 
         setLoading(false);
-      }
     };
 
     if (activeTab === 'periods') {

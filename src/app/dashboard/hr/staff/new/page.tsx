@@ -84,23 +84,19 @@ export default const _NewEmployee = () {
       birthDate: undefined;
       email: '',
       phone: '';
-      address: {
         line: [''],
         city: '';
         state: '',
         postalCode: '';
-        country: ''
-      },
+        country: '',
       joiningDate: new Date(),
       departmentId: '';
       userId: '',
       photo: '';
-      emergencyContact: {
         name: '',
         relationship: '';
         phone: '',
-        email: ''
-      },
+        email: '',
     },
   });
 
@@ -378,7 +374,7 @@ export default const _NewEmployee = () {
                           <FormControl>
                             <Button>
                               variant={"outline"}
-                              className={`w-full pl-3 text-left font-normal ${!field?.value && "text-muted-foreground"}`}
+                              className={`w-full pl-3 text-left font-normal $!field?.value && "text-muted-foreground"`}
                             >
                               {field.value ? (
                                 format(field.value, "PPP");

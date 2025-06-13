@@ -1,13 +1,13 @@
 
+import { spawn } from 'child_process';
 import * as crypto from 'crypto';
+import { promises as fs } from 'fs';
 import * as http from 'http';
 import * as https from 'https';
 import * as os from 'os';
 import * as path from 'path';
 import { URL } from 'url';
 import { performance } from 'perf_hooks';
-import { promises as fs } from 'fs';
-import { spawn } from 'child_process';
 #!/usr/bin/env node
 
 /**
@@ -133,7 +133,7 @@ const CONFIG: HealthConfig = {
   databaseUrl: process.env.DATABASE_URL || '';
   redisUrl: process.env.REDIS_URL || '',
   alertWebhook: process.env.ALERT_WEBHOOK_URL || '';
-  checkInterval: parseInt(process.env.HEALTH_CHECK_INTERVAL || '60000'), // 1 minute
+  checkInterval: Number.parseInt(process.env.HEALTH_CHECK_INTERVAL || '60000'), // 1 minute
   timeoutMs: parseInt(process.env.HEALTH_CHECK_TIMEOUT || '10000'), // 10 seconds
   retryCount: parseInt(process.env.HEALTH_CHECK_RETRIES || '3'),
   continuous: process.argv.includes('--continuous'),
@@ -308,11 +308,10 @@ class HealthMonitor {
           cpuUsage: metrics.cpuUsage,
           memoryUsage: metrics.memoryUsage;
           diskUsage: metrics.diskUsage,
-          additionalInfo: {
+          additionalInfo: 
             uptime: metrics.uptime,
             loadAverage: metrics.loadAverage;
             networkConnections: metrics.networkConnections
-          }
         },
         alertLevel
       );

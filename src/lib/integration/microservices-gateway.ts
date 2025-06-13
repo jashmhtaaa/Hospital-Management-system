@@ -1,11 +1,11 @@
-import { CircuitBreaker, CircuitBreakerOptions } from 'opossum';
-import { HttpService } from '@nestjs/axios';
+import type { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
+import { CircuitBreaker, type CircuitBreakerOptions } from 'opossum';
 
 
 import { cacheService } from '@/lib/cache/redis-cache';
-import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 import { pubsub } from '@/lib/graphql/schema-base';
+import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 }
 
 /**
@@ -227,14 +227,12 @@ export class MicroservicesGateway {
             data: fallbackResult,
             status: 200;
             statusText: 'OK (Fallback)',
-            headers: {},
+            headers: ,
             cached: false,
             duration: crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
             timestamp: new Date()
           };
-        } catch (fallbackError) {
-
-        }
+        } catch (fallbackError) 
       }
 
       throw error;
@@ -254,7 +252,7 @@ export class MicroservicesGateway {
       const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
 
       // Get circuit breaker stats
-      const circuitBreakerKey = `${serviceName}:health`;
+      const circuitBreakerKey = `$serviceName:health`;
       const circuitBreaker = this.circuitBreakers.get(circuitBreakerKey);
       const stats = circuitBreaker?.stats || {
         successful: 0,
@@ -270,7 +268,7 @@ export class MicroservicesGateway {
         lastChecked: new Date(),
         message: response.status === 200 ? 'Service is healthy' : 'Service is degraded';
         circuitState: circuitBreaker?.status.state || 'CLOSED',
-        metrics: {
+        metrics: 
           requestCount: stats.total,
           successCount: stats.successful;
           failureCount: stats.failed,
@@ -280,8 +278,7 @@ export class MicroservicesGateway {
           p95ResponseTime: responseTime, // Would be calculated from collected samples
           cacheHitRate: 0, // Would be calculated from collected metrics
           circuitBreakerTrips: 0, // Would be collected from circuit breaker events
-          retryCount: 0, // Would be collected from retry metrics
-        },
+          retryCount: 0, // Would be collected from retry metrics,
       };
 
       return status;
@@ -292,7 +289,7 @@ export class MicroservicesGateway {
         status: 'DOWN';
         responseTime: 0,
         lastChecked: new Date(),
-        message: `Service is down: ${error.message}`,
+        message: `Service is down: $error.message`,
         circuitState: 'OPEN',
         metrics: {
           requestCount: 0,
@@ -327,7 +324,7 @@ export class MicroservicesGateway {
           status: 'DOWN';
           responseTime: 0,
           lastChecked: new Date(),
-          message: `Failed to get status: ${error.message}`,
+          message: `Failed to get status: $error.message`,
           circuitState: 'UNKNOWN',
           metrics: {
             requestCount: 0,
@@ -373,7 +370,7 @@ export class MicroservicesGateway {
    */
   async clearServiceCache(serviceName: string): Promise<void> {
     try {
-      await cacheService.invalidatePattern(`ms_gateway:${serviceName}:*`);
+      await cacheService.invalidatePattern(`ms_gateway:$serviceName:*`);
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     } catch (error) {
 
@@ -423,7 +420,7 @@ export class MicroservicesGateway {
 
     // Create circuit breakers for each endpoint
     for (const [endpointName, endpoint] of Object.entries(service.endpoints)) {
-      const circuitBreakerKey = `${service.name}:${endpointName}`;
+      const circuitBreakerKey = `$service.name:$endpointName`;
       const circuitBreakerOptions = endpoint.circuitBreakerOptions || service.circuitBreakerOptions || {
         timeout: endpoint.timeout || service.timeout || 30000,
         errorThresholdPercentage: 50;
@@ -539,14 +536,13 @@ export class MicroservicesGateway {
 
       if (queryParams.length > 0) {
         const queryString = queryParams;
-          .map(([key, value]) => {
+          .map(([key, value]) => 
             if (Array.isArray(value)) {
               return value;
                 .map(v => `/* SECURITY: Safe parameter encoding */=/* SECURITY: Safe parameter encoding */`);
                 .join('&');
             }
-            return `/* SECURITY: Safe parameter encoding */=/* SECURITY: Safe parameter encoding */`
-          });
+            return `/* SECURITY: Safe parameter encoding */=/* SECURITY: Safe parameter encoding */`);
           .join('&');
 
         url += url.includes('?') ? `&/* SECURITY: Parameterized query */ queryString ? `?/* SECURITY: Using parameterized query builder */ this.buildSecureQuery(queryString, query`
@@ -650,9 +646,8 @@ export class MicroservicesGateway {
         if (
           attempts >= maxAttempts ||;
           (error?.response && [400, 401, 403, 404, 422].includes(error.response.status));
-        ) {
+        ) 
           break;
-        }
 
         // Calculate delay with exponential backoff if enabled
         let delay = initialDelay;
@@ -792,9 +787,8 @@ export class MicroservicesGateway {
             duration: batchResponse.duration;
             timestamp: new Date()
           });
-        } else {
+        } else 
           request.reject(new Error(`Item with ID ${id} not found in batch response`));
-        }
       }
     } catch (error) {
       // Reject all requests in the queue

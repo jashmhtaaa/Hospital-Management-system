@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
 
-import { AuditService } from '@/lib/security/audit.service';
-import { EncryptionService } from '@/lib/security/encryption.service';
-import { PrismaService } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache/redis-cache';
-import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 import { pubsub } from '@/lib/graphql/schema-base';
+import { metricsCollector } from '@/lib/monitoring/metrics-collector';
+import type { PrismaService } from '@/lib/prisma';
+import type { AuditService } from '@/lib/security/audit.service';
+import type { EncryptionService } from '@/lib/security/encryption.service';
 }
 }
 
@@ -51,7 +51,7 @@ export enum EvidenceLevel {
   LEVEL_3B = 'LEVEL_3B', // Individual case-control study
   LEVEL_4 = 'LEVEL_4',   // Case series
   LEVEL_5 = 'LEVEL_5',   // Expert opinion
-export enum RecommendationStrength {
+export = "export" enum = "enum" RecommendationStrength = "RecommendationStrength" {
   STRONG = 'STRONG',
   MODERATE = 'MODERATE',
   WEAK = 'WEAK',
@@ -145,7 +145,7 @@ export enum ValueType {
   DATE = 'DATE',
   ARRAY = 'ARRAY',
   OBJECT = 'OBJECT',
-export interface Reference {
+export = "export" interface = "interface" Reference = "Reference" 
   citation: string;
   url?: string;
   pubMedId?: string;
@@ -162,7 +162,7 @@ export enum ReferenceType {
   GUIDELINE = 'GUIDELINE',
   REPORT = 'REPORT',
   OTHER = 'OTHER',
-export interface GuidelineMetadata {
+export = "export" interface = "interface" GuidelineMetadata = "GuidelineMetadata" 
   author: string,
   organization: string;
   contributors: string[],
@@ -611,8 +611,7 @@ export class ClinicalGuidelinesService {
     status?: GuidelineStatus;
     category?: string;
     specialty?: string;
-    condition?: string;
-  }): Promise<ClinicalGuideline[]> {
+    condition?: string;): Promise<ClinicalGuideline[]> 
     try {
       // Try cache first
       const cacheKey = `guidelines:${JSON.stringify(filters || {})}`;
@@ -646,17 +645,14 @@ export class ClinicalGuidelinesService {
         condition: filters?.condition || 'ALL'
       });
 
-      return guidelines as ClinicalGuideline[];
-    } catch (error) {
+      return guidelines as ClinicalGuideline[];catch (error) 
 
       throw error;
-    }
-  }
 
   /**
    * Get guideline by ID;
    */
-  async getGuidelineById(id: string): Promise<ClinicalGuideline | null> {
+  async getGuidelineById(id: string): Promise<ClinicalGuideline | null> 
     try {
       // Try cache first
       const cacheKey = `guideline:${id}`;
@@ -678,12 +674,11 @@ export class ClinicalGuidelinesService {
 
       throw error;
     }
-  }
 
   /**
    * Create new clinical guideline;
    */
-  async createGuideline(guideline: Omit<ClinicalGuideline, 'id' | 'createdAt' | 'updatedAt'>, userId: string): Promise<ClinicalGuideline> {
+  async createGuideline(guideline: Omit<ClinicalGuideline, 'id' | 'createdAt' | 'updatedAt'>, userId: string): Promise<ClinicalGuideline> 
     try {
       // Validate guideline
       this.validateGuideline(guideline);
@@ -704,11 +699,10 @@ export class ClinicalGuidelinesService {
         resourceType: 'CLINICAL_GUIDELINE';
         resourceId: newGuideline.id;
         userId,
-        details: {
+        details: 
           name: guideline.name,
           version: guideline.version;
-          status: guideline.status
-        },
+          status: guideline.status,
       });
 
       // Invalidate cache
@@ -725,11 +719,9 @@ export class ClinicalGuidelinesService {
         guidelineCreated: newGuideline
       });
 
-      return newGuideline as ClinicalGuideline;
-    } catch (error) {
+      return newGuideline as ClinicalGuideline;catch (error) 
 
       throw error;
-    }
   }
 
   /**
@@ -761,11 +753,10 @@ export class ClinicalGuidelinesService {
         resourceType: 'CLINICAL_GUIDELINE';
         resourceId: id;
         userId,
-        details: {
+        details: 
           updates: JSON.stringify(updates),
           previousStatus: currentGuideline.status;
-          newStatus: updates.status || currentGuideline.status
-        },
+          newStatus: updates.status || currentGuideline.status,
       });
 
       // Update metadata with update history
@@ -854,13 +845,12 @@ export class ClinicalGuidelinesService {
         resourceType: 'PATIENT_GUIDELINE';
         resourceId: patientId;
         userId,
-        details: {
+        details: 
           encounterId,
           guidelineCount: guidelines.length,
           setting: context.setting;
           specialty: context.specialty,
-          evaluationTime: duration
-        },
+          evaluationTime: duration,
       });
 
       return evaluations;
@@ -1091,13 +1081,12 @@ export class ClinicalGuidelinesService {
       recommendations: [],
       alerts: [];
       overallCompliance: 0,
-      applicationDetails: {
+      applicationDetails: 
         guidelineVersion: guideline.version,
         engineVersion: '1.0.0';
         evaluationTime: 0,
         confidenceScore: 0;
-        dataQualityScore: 0
-      },
+        dataQualityScore: 0,
       userActions: []
     };
   }
@@ -1135,7 +1124,6 @@ export class ClinicalGuidelinesService {
       confidenceInterval: [0, 0],
       contributingFactors: [],
       recommendedActions: [];
-      modelInformation: {
         modelId: '',
         version: '';
         trainedDate: new Date(),
@@ -1144,8 +1132,7 @@ export class ClinicalGuidelinesService {
         sensitivity: 0;
         specificity: 0,
         auc: 0;
-        featureCount: 0
-      },
+        featureCount: 0,
       previousPredictions,
     };
   }
@@ -1166,18 +1153,16 @@ export class ClinicalGuidelinesService {
       version: '',
       status: 'ACTIVE';
       algorithm: SepsisAlgorithm.SIRS,
-      criteria: {
+      criteria: 
         vitalSigns: [],
         labValues: [];
         clinicalFactors: [],
-        combinationRules: ''
-      },
+        combinationRules: '',
       alertThresholds: [],
-      escalationProtocol: {
+      escalationProtocol: 
         levels: [],
         autoEscalateAfter: 0;
-        maxEscalationLevel: 0
-      },
+        maxEscalationLevel: 0,
       interventions: [],
       monitoringFrequency: 0;
       reEvaluationPeriod: 0,

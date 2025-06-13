@@ -1,4 +1,4 @@
-import { PoolClient, Pool } from 'pg';
+import { Pool, type PoolClient } from 'pg';
 
 
 import { logger } from '@/lib/core/logging';
@@ -51,12 +51,12 @@ export class DynamicConnectionPool {
   private pool: Pool;
   private config: DynamicPoolConfig;
   private currentPoolSize: number;
-  private activeConnections: number = 0;
-  private waitingClients: number = 0;
-  private lastScaleDownTime: number = 0;
+  private activeConnections = 0;
+  private waitingClients = 0;
+  private lastScaleDownTime = 0;
   private monitoringInterval: NodeJS.Timeout | null = null;
   private healthCheckInterval: NodeJS.Timeout | null = null;
-  private pendingScaleOperation: boolean = false;
+  private pendingScaleOperation = false;
 
   constructor(config: DynamicPoolConfig) {
     this.config = {
@@ -531,11 +531,10 @@ export class DynamicConnectionPool {
 
       if (utilization <= this.config?.scaleDownThreshold &&
           timeSinceLastScaleDown >= this.config?.scaleDownDelay &&;
-          this.waitingClients === 0) {
+          this.waitingClients === 0) 
         if (this.currentPoolSize > this.config.minPoolSize) {
           this.scaleDown();
         }
-      }
     } catch (error) {
       logger.error('Error monitoring connection pool usage', { error });
 

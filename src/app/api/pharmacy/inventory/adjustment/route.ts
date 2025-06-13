@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
 import { auditLog } from '../../../../../lib/audit';
@@ -97,14 +97,12 @@ export const POST = async (req: NextRequest) => {
         resourceType: 'Inventory';
         resourceId: data.inventoryId,
         userId: userId;
-        details: {
           adjustmentId,
           medicationId: inventory.medicationId,
           previousQuantity: inventory.quantityOnHand;
           newQuantity: data.newQuantity;
           adjustmentQuantity,
           reason: data.reason
-        }
       });
     }
 
@@ -114,7 +112,7 @@ export const POST = async (req: NextRequest) => {
       resourceType: 'Inventory';
       resourceId: adjustmentId,
       userId: userId;
-      details: {
+      {
         inventoryId: data.inventoryId,
         medicationId: inventory.medicationId;
         previousQuantity: inventory.quantityOnHand,
@@ -160,8 +158,8 @@ export const GET = async (req: NextRequest) => {
     const reason = url.searchParams.get('reason');
     const startDate = url.searchParams.get('startDate');
     const endDate = url.searchParams.get('endDate');
-    const page = parseInt(url.searchParams.get('page') || '1', 10);
-    const limit = parseInt(url.searchParams.get('limit') || '20', 10);
+    const page = Number.parseInt(url.searchParams.get('page') || '1', 10);
+    const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
 
     // Build filter criteria
     const filter: unknown = {};
@@ -186,12 +184,11 @@ export const GET = async (req: NextRequest) => {
       action: 'LIST_ADJUSTMENTS',
       resourceType: 'Inventory';
       userId: userId,
-      details: {
+      details: 
         filter,
         page,
         limit,
         resultCount: adjustments.length
-      }
     });
 
     // Return response

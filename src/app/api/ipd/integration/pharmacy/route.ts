@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { PharmacyService, MedicationOrderSchema, MedicationReconciliationSchema, MedicationAdministrationSchema, MedicationDiscontinueSchema } from '@/services/integration/PharmacyService';
 import { handleApiError } from '@/lib/api/errorHandler';
-import { ipdMiddleware } from '../../middleware/auth';
 import { logger } from '@/lib/logger';
+import { MedicationAdministrationSchema, MedicationDiscontinueSchema, MedicationOrderSchema, MedicationReconciliationSchema, PharmacyService } from '@/services/integration/PharmacyService';
+import { ipdMiddleware } from '../../middleware/auth';
 /**
  * Integration endpoint for Pharmacy Module;
  * This endpoint handles medication orders and reconciliation;
@@ -137,7 +137,7 @@ export const getMedicationHistory = async (req: NextRequest) => {
   try {
     const { searchParams } = new URL(req.url);
     const patientId = searchParams.get('patientId');
-    const limit = parseInt(searchParams.get('limit') || '50');
+    const limit = Number.parseInt(searchParams.get('limit') || '50');
 
     if (!patientId) {
       return NextResponse.json(

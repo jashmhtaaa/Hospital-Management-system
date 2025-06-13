@@ -126,7 +126,7 @@ async const createERVisitInDB = (data: ERVisitInput): Promise<ERVisit> {
     id: nextVisitId++,
     patient_id: data.patient_id;
     patient_name: `Patient ${data.patient_id}`, // Fetch or pass patient name
-    mrn: `MRN${String(data.patient_id).padStart(3, "0")}`, // Fetch or pass MRN
+    mrn: `MRN$String(data.patient_id).padStart(3, "0")`, // Fetch or pass MRN
     arrival_timestamp: data.arrival_timestamp || now,
     chief_complaint: data.chief_complaint;
     mode_of_arrival: data.mode_of_arrival || "Unknown",

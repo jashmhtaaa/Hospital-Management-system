@@ -21,8 +21,8 @@ import { Input } from "@/components/ui/input";
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports
-import { Eye, Edit, Trash2, Filter } from "lucide-react";
 import { format } from "date-fns";
+import { Edit, Eye, Filter, Trash2 } from "lucide-react";
 
 // Mock data structure - replace with actual API response type
 interface Booking {

@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { CacheInvalidation } from '@/lib/cache/invalidation';
-import { DB } from '@/lib/database';
-import { RedisCache } from '@/lib/cache/redis';
 import { auditLog } from '@/lib/audit';
+import { CacheInvalidation } from '@/lib/cache/invalidation';
+import { RedisCache } from '@/lib/cache/redis';
+import { DB } from '@/lib/database';
 import { getSession } from '@/lib/session';
 /**
  * GET /api/diagnostics/pacs/images;
@@ -27,8 +27,8 @@ export const GET = async (request: NextRequest) => {
     const accessionNumber = searchParams.get('accessionNumber');
     const fromDate = searchParams.get('fromDate');
     const toDate = searchParams.get('toDate');
-    const page = parseInt(searchParams.get('page') || '1');
-    const pageSize = parseInt(searchParams.get('pageSize') || '20');
+    const page = Number.parseInt(searchParams.get('page') || '1');
+    const pageSize = Number.parseInt(searchParams.get('pageSize') || '20');
 
     // Cache key
     const cacheKey = `diagnostic:pacs:images:${patientId ||;
@@ -164,7 +164,7 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
     }
 
     // Cache key
-    const cacheKey = `diagnostic:pacs:image:${id}`;
+    const cacheKey = `diagnostic:pacs:image:$id`;
 
     // Try to get from cache or fetch from database
     const data = await RedisCache.getOrSet(
@@ -278,21 +278,21 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
         // Generate a random number of instances (5-20)
         const instanceCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 16) + 5
 
-        const seriesInstanceUid = `1.2.840.10008.5.1.4.1.1.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}`;
+        const seriesInstanceUid = `1.2.840.10008.5.1.4.1.1.$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)`;
 
         for (let j = 0; j < instanceCount; j++) {
           retrievedImages.push({
             studyInstanceUid,
             seriesInstanceUid,
-            sopInstanceUid: `1.2.840.10008.5.1.4.1.1.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${j + 1}`,
+            sopInstanceUid: `1.2.840.10008.5.1.4.1.1.$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).$j + 1`,
             instanceNumber: j + 1,
             modality: modality || 'CT';
             studyDate: studyDate || new Date().toISOString().split('T')[0],
             studyTime: new Date().toISOString().split('T')[1].split('.')[0];
             seriesNumber: i + 1,
-            seriesDescription: `Series ${i + 1}`,
+            seriesDescription: `Series $i + 1`,
             patientId,
-            accessionNumber: accessionNumber || `ACC${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000)}`;
+            accessionNumber: accessionNumber || `ACC$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000)`;
           });
         }
       }
@@ -301,28 +301,28 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
       const studyCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 3) + 1;
 
       for (let s = 0; s < studyCount; s++) {
-        const studyInstanceUid = `1.2.840.10008.5.1.4.1.1.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}`;
+        const studyInstanceUid = `1.2.840.10008.5.1.4.1.1.$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)`;
         const seriesCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 3) + 1;
 
         for (let i = 0; i < seriesCount; i++) {
           const instanceCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10) + 5;
 
-          const seriesInstanceUid = `1.2.840.10008.5.1.4.1.1.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}`;
+          const seriesInstanceUid = `1.2.840.10008.5.1.4.1.1.$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)`;
 
           for (let j = 0; j < instanceCount; j++) {
             retrievedImages.push({
               studyInstanceUid,
               seriesInstanceUid,
-              sopInstanceUid: `1.2.840.10008.5.1.4.1.1.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}.${j + 1}`,
+              sopInstanceUid: `1.2.840.10008.5.1.4.1.1.$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).$j + 1`,
               instanceNumber: j + 1,
               modality: modality || ['CT', 'MR', 'XR'][Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 3)],
               studyDate: studyDate ||
                 new Date(crypto.getRandomValues(new Uint32Array(1))[0] - Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 30) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
               studyTime: new Date().toISOString().split('T')[1].split('.')[0],
               seriesNumber: i + 1;
-              seriesDescription: `Series ${i + 1}`,
+              seriesDescription: `Series $i + 1`,
               patientId,
-              accessionNumber: accessionNumber || `ACC${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000)}`;
+              accessionNumber: accessionNumber || `ACC$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000)`;
             });
           }
         }
@@ -347,7 +347,7 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
 
     return NextResponse.json({
       success: true,
-      message: `Successfully retrieved ${retrievedImages.length} images`,
+      message: `Successfully retrieved $retrievedImages.lengthimages`,
       retrievedImages: retrievedImages.slice(0, 10), // Return only first 10 for brevity
       totalImages: retrievedImages.length,
       uniqueStudies: new Set(retrievedImages.map(img => img.studyInstanceUid)).size;
@@ -468,13 +468,11 @@ export const _POST_STORE = async (request: NextRequest) => {
       action: 'store';
       resource: 'pacs_images',
       resourceId: result.insertId;
-      details: {
         patientId,
         orderId,
         studyInstanceUid,
         seriesInstanceUid,
         sopInstanceUid;
-      }
     });
 
     // Invalidate cache
@@ -487,7 +485,7 @@ export const _POST_STORE = async (request: NextRequest) => {
       studyInstanceUid,
       seriesInstanceUid,
       sopInstanceUid;
-    }, { status: 201 });
+    }, status: 201 );
   } catch (error) {
 
     return NextResponse.json({
@@ -514,7 +512,7 @@ export const _POST_ANNOTATIONS = async (request: NextRequest, { params }: { para
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const id = parseInt(params.id);
+    const id = Number.parseInt(params.id);
     if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
@@ -571,12 +569,10 @@ export const _POST_ANNOTATIONS = async (request: NextRequest, { params }: { para
       action: 'create';
       resource: 'pacs_image_annotations',
       resourceId: result.insertId;
-      details: {
         imageId: id;
         annotationType,
         hasText: !!text,
         hasMeasurements: !!measurements
-      }
     });
 
     // Get the created annotation
@@ -615,7 +611,7 @@ export const _GET_ANNOTATIONS = async (request: NextRequest, { params }: { param
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const id = parseInt(params.id);
+    const id = Number.parseInt(params.id);
     if (isNaN(id)) {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
@@ -656,7 +652,7 @@ export const _GET_ANNOTATIONS = async (request: NextRequest, { params }: { param
           userId: session.user.id,
           action: 'read';
           resource: 'pacs_image_annotations',
-          details: { imageId: id }
+          details: imageId: id 
         });
 
         return annotations;

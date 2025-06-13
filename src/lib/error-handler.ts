@@ -193,9 +193,9 @@ export class ErrorHandler {
       // Remove any potential dates of birth
       .replace(/\b(?:dob|date\s+of\s+birth)\s*[:=]?\s*[\w\/-]+/gi, '[REDACTED]');
       // Remove any potential email addresses
-      .replace(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g, '[REDACTED]');
+      .replace(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]2,\b/g, '[REDACTED]');
       // Remove any potential phone numbers
-      .replace(/\b(?:\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}\b/g, '[REDACTED]');
+      .replace(/\b(?:\+\d1,2\s?)?\(?\d3\)?[\s.-]?\d3[\s.-]?\d4\b/g, '[REDACTED]');
       // Remove any potential addresses
       .replace(/\b\d+\s+[A-Za-z\s,]+(?:street|st|avenue|ave|road|rd|boulevard|blvd|drive|dr|lane|ln|court|ct|plaza|plz|square|sq|parkway|pkwy)\b/gi, '[REDACTED]');
 

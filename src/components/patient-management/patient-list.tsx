@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import type React from 'react';
+import { useState, useEffect } from 'react';
 import {
 import { useRouter } from 'next/navigation';
   Table,
@@ -182,7 +183,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
 
   // Handle limit change
   const handleLimitChange = (value: string) => {
-    setLimit(parseInt(value));
+    setLimit(Number.parseInt(value));
     setPage(1); // Reset to first page
     searchPatients()
   };

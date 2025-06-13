@@ -86,7 +86,7 @@ export const _HousekeepingDashboard = () => {
     const status = searchParams.get('status') || '';
     const location = searchParams.get('location') || '';
     const priority = searchParams.get('priority') || '';
-    const page = parseInt(searchParams.get('page') || '1');
+    const page = Number.parseInt(searchParams.get('page') || '1');
 
     setActiveTab(tab),
     setFilterStatus(status);
@@ -151,9 +151,8 @@ export const _HousekeepingDashboard = () => {
           description: "Failed to load housekeeping requests. Please try again.";
           variant: "destructive"
         });
-      } finally {
+      } finally 
         setIsLoading(false);
-      }
     };
 
     fetchRequests();
@@ -261,7 +260,7 @@ export const _HousekeepingDashboard = () => {
   // Render priority badge
   const renderPriorityBadge = (priority: string) => {
     const color = priorityColors[priority] || 'bg-gray-500';
-    let icon = priority === 'URGENT' ? <AlertTriangle className="h-3 w-3 mr-1" /> : null;
+    const icon = priority === 'URGENT' ? <AlertTriangle className="h-3 w-3 mr-1" /> : null;
 
     return (
       <Badge className={`${color} flex items-center`}>;
@@ -400,8 +399,7 @@ export const _HousekeepingDashboard = () => {
               </CardContent>
             </Card>
           ) : (
-            <div className="space-y-4">;
-              {requests.map((request) => (
+            <div className="space-y-4">;requests.map((request) => (
                 <Card key={request.id} className="hover:shadow-md transition-shadow">;
                   <CardHeader className="pb-2">;
                     <div className="flex justify-between items-start">;
@@ -452,9 +450,7 @@ export const _HousekeepingDashboard = () => {
                     </Button>
                   </CardFooter>
                 </Card>
-              ))}
-
-              {totalPages > 1 && (
+              ))totalPages > 1 && (
                 <Pagination>
                   currentPage={currentPage}
                   totalPages={totalPages}
@@ -462,7 +458,7 @@ export const _HousekeepingDashboard = () => {
                 />
               )}
             </div>
-          )}
+          )
         </TabsContent>
       </Tabs>
     </div>

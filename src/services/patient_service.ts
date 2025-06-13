@@ -1,7 +1,7 @@
 
-import { IAuditLogService } from './audit_log_service.ts'; // Import AuditLogService interface
-import { IEncryptionService } from './encryption_service.ts';
-import { IPatientRepository, Patient, PatientInputData } from "../repositories/patient_repository.ts";
+import type { IPatientRepository, Patient, PatientInputData } from "../repositories/patient_repository.ts";
+import type { IAuditLogService } from './audit_log_service.ts'; // Import AuditLogService interface
+import type { IEncryptionService } from './encryption_service.ts';
 }
 
 // ARCH-2: Implement Service Layer Abstraction (Initial Services)

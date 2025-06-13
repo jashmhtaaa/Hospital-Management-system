@@ -1,5 +1,5 @@
-import { NextRequest } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
+import type { NextRequest } from "next/server";
 import { z } from "zod";
 
 

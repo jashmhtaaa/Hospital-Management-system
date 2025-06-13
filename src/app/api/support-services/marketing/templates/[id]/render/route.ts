@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { TemplateService } from '@/lib/services/support-services/marketing';
 import { authOptions } from '@/lib/auth';
 import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
+import { TemplateService } from '@/lib/services/support-services/marketing';
 const templateService = new TemplateService();
 
 /**
@@ -13,7 +13,7 @@ const templateService = new TemplateService();
  */
 export const POST = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   return withErrorHandling(
     request,

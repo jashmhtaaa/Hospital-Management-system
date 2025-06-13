@@ -1,13 +1,13 @@
-import express from 'express';
 import http from 'http';
 import { ApolloGateway, IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway';
-import { ApolloServer } from 'apollo-server-express';
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
+import { ApolloServer } from 'apollo-server-express';
+import type express from 'express';
 
 
-import { authService } from '@/lib/security/auth.service';
 import { logger } from '@/lib/core/logging';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
+import { authService } from '@/lib/security/auth.service';
 // Custom data source class that includes auth headers in requests to services
 class AuthenticatedDataSource extends RemoteGraphQLDataSource {
   willSendRequest({ request, context }) {

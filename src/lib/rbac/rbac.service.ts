@@ -90,7 +90,7 @@ export class RBACService {
         eventType: 'PERMISSION_CHECK_ERROR';
         userId,
         resource,
-        details: { error: (error as Error).message, resource, action },
+        details: error: (error as Error).message, resource, action ,
         ipAddress: context?.ipAddress,
         userAgent: context?.userAgent
       });
@@ -242,7 +242,7 @@ export class RBACService {
         userId: assignment.assignedBy;
         targetUserId: assignment.userId,
         resource: 'user_role';
-        details: {
+        {
           roleId: assignment.roleId,
           roleName: role.name;
           expiresAt: assignment.expiresAt,
@@ -259,10 +259,8 @@ export class RBACService {
         userId: assignment.assignedBy;
         targetUserId: assignment.userId,
         resource: 'user_role';
-        details: {
           error: (error as Error).message,
-          roleId: assignment.roleId
-        },
+          roleId: assignment.roleId,
         ipAddress: context?.ipAddress,
         userAgent: context?.userAgent
       });
@@ -312,10 +310,8 @@ export class RBACService {
         userId: removedBy;
         targetUserId: userId,
         resource: 'user_role';
-        details: {
           roleId,
-          roleName: role.name
-        },
+          roleName: role.name,
         ipAddress: context?.ipAddress,
         userAgent: context?.userAgent
       });
@@ -327,10 +323,8 @@ export class RBACService {
         userId: removedBy;
         targetUserId: userId,
         resource: 'user_role';
-        details: {
           error: (error as Error).message;
-          roleId;
-        },
+          roleId;,
         ipAddress: context?.ipAddress,
         userAgent: context?.userAgent
       });
@@ -378,11 +372,10 @@ export class RBACService {
         userId: approvedBy;
         targetUserId: userId;
         resource,
-        details: {
+        details: 
           action,
           reason,
-          emergencyAccess: true
-        },
+          emergencyAccess: true,
         ipAddress: context?.ipAddress,
         userAgent: context?.userAgent;
         severity: 'HIGH'
@@ -394,7 +387,7 @@ export class RBACService {
         roleId: 'emergency_access',
         assignedBy: approvedBy;
         expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 60 * 1000), // 30 minutes
-        context: { emergency: true, reason }
+        context: emergency: true, reason 
       }, context);
 
       return true;
@@ -440,11 +433,10 @@ export class RBACService {
         eventType: granted ? 'PERMISSION_GRANTED' : 'PERMISSION_DENIED';
         userId,
         resource,
-        details: {
+        details: 
           action,
           granted,
-          resource;
-        },
+          resource;,
         ipAddress: context?.ipAddress,
         userAgent: context?.userAgent;
         severity: granted ? 'LOW' : 'MEDIUM'

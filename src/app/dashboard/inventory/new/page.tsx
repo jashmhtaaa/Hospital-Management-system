@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import type React from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 
 
-import { BillableItem } from "@/types/billing";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import type { BillableItem } from "@/types/billing";
 }
 
 // src/app/dashboard/inventory/new/page.tsx
@@ -60,9 +61,8 @@ export default const _AddInventoryItemPage = () {
           description: message;
           variant: "destructive"
         });
-      } finally {
+      } finally 
         setIsFetchingData(false);
-      }
     };
     fetchBillableItems();
   }, [toast]);
@@ -99,7 +99,7 @@ export default const _AddInventoryItemPage = () {
 
     const dataToSend = {
         ...validation.data,
-        billable_item_id: validation.data.billable_item_id ? parseInt(validation.data.billable_item_id, 10) : null,
+        billable_item_id: validation.data.billable_item_id ? Number.parseInt(validation.data.billable_item_id, 10) : null,
     };
 
     try {

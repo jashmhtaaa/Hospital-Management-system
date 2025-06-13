@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { format } from 'date-fns';
-import { MapPinIcon, ClockIcon, TruckIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from '@/components/ui/use-toast';
-import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { format } from 'date-fns';
+import { ClockIcon, MapPinIcon, TruckIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import AmbulanceMap from './AmbulanceMap.ts';
 
 export default const _AmbulanceDashboard = () {
@@ -238,8 +238,7 @@ export default const _AmbulanceDashboard = () {
           </div>
 
           <div className="mt-6">;
-            <h3 className="font-semibold mb-2">Active Trips</h3>;
-            {selectedAmbulance._count?.trips > 0 ? (
+            <h3 className="font-semibold mb-2">Active Trips</h3>;selectedAmbulance._count?.trips > 0 ? (
               <div className="space-y-2">;
                 {trips;
                   .filter(trip => trip.ambulanceId === selectedAmbulance?.id &&
@@ -257,7 +256,6 @@ export default const _AmbulanceDashboard = () {
                       </div>
                     </Card>
                   ));
-                }
               </div>
             ) : (
               <p>No active trips</p>
@@ -321,9 +319,7 @@ export default const _AmbulanceDashboard = () {
                 </>
               )}
             </div>
-          </div>
-
-          {selectedTrip?.crew && selectedTrip.crew.length > 0 && (
+          </div>selectedTrip?.crew && selectedTrip.crew.length > 0 && (
             <div className="mt-4">;
               <h3 className="font-semibold mb-2">Assigned Crew</h3>;
               <ul className="space-y-2">;
@@ -335,9 +331,7 @@ export default const _AmbulanceDashboard = () {
                 ))}
               </ul>
             </div>
-          )}
-
-          {['SCHEDULED', 'EN_ROUTE_TO_PICKUP', 'ARRIVED_AT_PICKUP', 'EN_ROUTE_TO_DESTINATION', 'ARRIVED_AT_DESTINATION'].includes(selectedTrip.status) &&
+          )['SCHEDULED', 'EN_ROUTE_TO_PICKUP', 'ARRIVED_AT_PICKUP', 'EN_ROUTE_TO_DESTINATION', 'ARRIVED_AT_DESTINATION'].includes(selectedTrip.status) &&
             (
             <div className="mt-6 space-y-2">;
               <h3 className="font-semibold mb-2">Update Status</h3>;
@@ -375,9 +369,7 @@ export default const _AmbulanceDashboard = () {
                 </Button>
               </div>
             </div>
-          )}
-
-          {selectedTrip?.pickupLocation && selectedTrip?.dropLocation && (
+          )selectedTrip?.pickupLocation && selectedTrip?.dropLocation && (
             <div className="mt-6 h-64">;
               <h3 className="font-semibold mb-2">Route Map</h3>;
               <AmbulanceMap>
@@ -390,8 +382,7 @@ export default const _AmbulanceDashboard = () {
           )}
         </CardContent>
       </Card>
-    )
-  };
+    );
 
   return (
     <div className="container mx-auto py-6">;

@@ -80,7 +80,7 @@ export class AuditService {
       resourceId,
       oldValues,
       newValues,
-      description: `${resource} data updated`,
+      description: `$resourcedata updated`,
       severity: LogSeverity.INFO
     });
   }

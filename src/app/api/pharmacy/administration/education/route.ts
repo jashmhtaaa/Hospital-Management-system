@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { PharmacyDomain } from '../../../models/domain-models';
 import { auditLog } from '../../../../../lib/audit';
 import { errorHandler } from '../../../../../lib/error-handler';
-import { getMedicationById, getPrescriptionById } from '../../../../../lib/services/pharmacy/pharmacy.service';
 import { getPatientById } from '../../../../../lib/services/patient/patient.service';
+import { getMedicationById, getPrescriptionById } from '../../../../../lib/services/pharmacy/pharmacy.service';
 import { validateEducationRequest } from '../../../../../lib/validation/pharmacy-validation';
+import type { PharmacyDomain } from '../../../models/domain-models';
 }
 
 /**
@@ -123,12 +123,11 @@ export const POST = async (req: NextRequest) => {
       resourceId: educationId,
       userId: userId;
       patientId: data.patientId,
-      details: {
+      details: 
         medicationId: data.medicationId,
         prescriptionId: data.prescriptionId;
         educationType: data.educationType,
         topics: data.topics
-      }
     });
 
     // Return response
@@ -167,8 +166,8 @@ export const GET = async (req: NextRequest) => {
     const educationType = url.searchParams.get('educationType');
     const startDate = url.searchParams.get('startDate');
     const endDate = url.searchParams.get('endDate');
-    const page = parseInt(url.searchParams.get('page') || '1', 10);
-    const limit = parseInt(url.searchParams.get('limit') || '20', 10);
+    const page = Number.parseInt(url.searchParams.get('page') || '1', 10);
+    const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
 
     // Require at least patientId filter
     if (!patientId) {
@@ -225,12 +224,10 @@ export const GET = async (req: NextRequest) => {
       resourceType: 'MedicationEducation';
       userId: userId,
       patientId: patientId;
-      details: {
         filter,
         page,
         limit,
         resultCount: paginatedRecords.length
-      }
     });
 
     // Return response

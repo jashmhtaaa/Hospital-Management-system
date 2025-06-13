@@ -1,6 +1,7 @@
 
-import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import type React from "react";
+import { type ChangeEvent, type FormEvent, useEffect, useState } from "react"
 }
 
 "use client";
@@ -30,7 +31,7 @@ interface InventoryFormData {
   notes: string
 }
 
-interface InventorySubmitData;
+type InventorySubmitData= {};
   extends Omit<
     InventoryFormData,
     "purchase_price" | "selling_price" | "initial_quantity";
@@ -148,9 +149,8 @@ const AddInventoryPage: React.FC = () => {
     if (
       formData?.purchase_price &&
       (Number.isNaN(purchasePrice) || purchasePrice <= 0);
-    ) {
+    ) 
       newErrors.purchase_price = "Purchase price must be a positive number";
-    }
 
     const sellingPrice = Number.parseFloat(formData.selling_price);
     if (formData?.selling_price && (Number.isNaN(sellingPrice) || sellingPrice <= 0)) {
@@ -161,10 +161,9 @@ const AddInventoryPage: React.FC = () => {
     if (
       formData?.initial_quantity &&
       (Number.isNaN(initialQuantity) || initialQuantity <= 0);
-    ) {
+    ) 
       newErrors.initial_quantity =;
         "Initial quantity must be a positive integer";
-    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0

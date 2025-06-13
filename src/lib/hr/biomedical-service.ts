@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 
 
-import { Device, DeviceDefinition } from '@/lib/hr/types';
 import { cache } from '@/lib/cache';
+import { type Device, DeviceDefinition } from '@/lib/hr/types';
 const prisma = new PrismaClient();
 
 /**
@@ -518,7 +518,7 @@ export class BiomedicalService {
       serialNumber: equipment.serialNumber,
       modelNumber: equipment.modelNumber;
       manufactureDate: equipment.manufactureDate?.toISOString(),
-      type: {
+      type: 
         coding: [
           {
             system: 'https://hospital.example.org/equipment-types',
@@ -526,13 +526,10 @@ export class BiomedicalService {
             display: equipment.type
           },
         ],
-        text: equipment.type
-      },
+        text: equipment.type,
       note: equipment.notes
         ? [
-            {
-              text: equipment.notes
-            },
+              text: equipment.notes,
           ]
         : undefined,
       safety: [], // Added for FHIR R5 compliance
@@ -616,7 +613,6 @@ export class BiomedicalService {
       },
       modelNumber: data.modelNumber,
       description: data.description;
-      type: {
         coding: [
           {
             system: 'https://hospital.example.org/equipment-types',
@@ -624,8 +620,7 @@ export class BiomedicalService {
             display: data.type
           },
         ],
-        text: data.type
-      },
+        text: data.type,
       safety: [], // Added for FHIR R5 compliance
       property: [], // Added for FHIR R5 compliance
     };

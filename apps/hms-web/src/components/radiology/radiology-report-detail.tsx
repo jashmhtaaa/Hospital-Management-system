@@ -100,13 +100,11 @@ export const _RadiologyReportDetail = ({ report }: RadiologyReportDetailProps) =
           </div>
 
           <div className="flex justify-end space-x-2">;
-            <Button variant="outline">Print Report</Button>;
-            {report.status !== 'final' && (
+            <Button variant="outline">Print Report</Button>;report.status !== 'final' && (
               <Button>Finalize Report</Button>
-            )}
-            {report.status === 'final' && (
+            )report.status === 'final' && (
               <Button>Amend Report</Button>
-            )}
+            )
           </div>
         </div>
       </CardContent>

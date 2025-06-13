@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { PharmacyDomain } from '../../../../models/domain-models';
 import { auditLog } from '../../../../../../lib/audit';
 import { errorHandler } from '../../../../../../lib/error-handler';
 import { getMedicationById, getPrescriptionById } from '../../../../../../lib/services/pharmacy/pharmacy.service';
+import type { PharmacyDomain } from '../../../../models/domain-models';
 }
 
 /**
@@ -52,7 +52,7 @@ const administrationRepository: PharmacyDomain.MedicationAdministrationRepositor
  */
 export const GET = async (
   req: NextRequest;
-  { params }: { params: { patientId: string } }
+  { params }: { patientId: string }
 ) => {
   try {
     // Check authorization
@@ -150,11 +150,9 @@ export const GET = async (
       resourceType: 'MedicationAdministration';
       userId: userId,
       patientId: patientId;
-      details: {
         count: schedule.length,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString()
-      }
     });
 
     // Return response
@@ -239,7 +237,7 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
     // Every X hours
     const match = frequency.match(/every\s+(\d+)\s+hours/i);
     if (match && match[1]) {
-      const hours = parseInt(match[1], 10);
+      const hours = Number.parseInt(match[1], 10);
       const time = new Date(start);
       time.setMinutes(0, 0, 0);
       time.setHours(Math.ceil(time.getHours() / hours) * hours);

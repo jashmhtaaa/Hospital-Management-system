@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
-import { hasPermission, getCurrentUser } from "@/lib/auth"; // Assuming auth helpers exist
+import { getCurrentUser, hasPermission } from "@/lib/auth"; // Assuming auth helpers exist
 // import { getRequestContext } from "@cloudflare/next-on-pages"; // Cloudflare specific
 
 // Mock data store for service items (replace with actual DB interaction)
@@ -164,35 +164,32 @@ export const _POST = async (request: NextRequest) => {
       !itemData.item_name ||
       !itemData.category ||
       itemData.unit_price === undefined;
-    ) {
+    ) 
       return NextResponse.json(
         {
           error: "Missing required fields (item_code, item_name, category, unit_price)",
         },
         { status: 400 }
       );
-    }
 
     // Validate data types and formats
     if (
       typeof itemData.item_code !== "string" ||
       itemData.item_code.length > 50;
-    ) {
+    ) 
       return NextResponse.json(
         { error: "Invalid item_code format" },
         { status: 400 }
       );
-    }
 
     if (
       typeof itemData.item_name !== "string" ||
       itemData.item_name.length > 255;
-    ) {
+    ) 
       return NextResponse.json(
         { error: "Invalid item_name format" },
         { status: 400 }
       );
-    }
 
     if (typeof itemData.unit_price !== "number" || itemData.unit_price < 0) {
       return NextResponse.json(

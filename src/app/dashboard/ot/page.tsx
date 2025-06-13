@@ -6,18 +6,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 "use client";
 export const dynamic = 'force-dynamic';
 
+import OTBookingList from "@/components/ot/ot-booking-list";
+import OTBookingModal from "@/components/ot/ot-booking-modal";
+import OTChecklistTemplateList from "@/components/ot/ot-checklist-template-list";
+import OTChecklistTemplateModal from "@/components/ot/ot-checklist-template-modal";
+import OTDashboardStats from "@/components/ot/ot-dashboard-stats";
+import OTSurgeryTypeList from "@/components/ot/ot-surgery-type-list";
+import OTSurgeryTypeModal from "@/components/ot/ot-surgery-type-modal";
+import OTTheatreList from "@/components/ot/ot-theatre-list";
+import OTTheatreModal from "@/components/ot/ot-theatre-modal";
 // import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
-import OTTheatreList from "@/components/ot/ot-theatre-list";
-import OTBookingList from "@/components/ot/ot-booking-list";
-import OTSurgeryTypeList from "@/components/ot/ot-surgery-type-list";
-import OTChecklistTemplateList from "@/components/ot/ot-checklist-template-list";
-import OTDashboardStats from "@/components/ot/ot-dashboard-stats";
-import OTBookingModal from "@/components/ot/ot-booking-modal";
-import OTTheatreModal from "@/components/ot/ot-theatre-modal";
-import OTSurgeryTypeModal from "@/components/ot/ot-surgery-type-modal";
-import OTChecklistTemplateModal from "@/components/ot/ot-checklist-template-modal";
 
 export default const _OTDashboardPage = () {
   const [activeTab, setActiveTab] = useState("dashboard");

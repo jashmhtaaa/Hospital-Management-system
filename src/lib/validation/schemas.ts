@@ -1,5 +1,5 @@
 
-import { UserRole, Gender, BloodGroup } from '@prisma/client';
+import { BloodGroup, Gender, UserRole } from '@prisma/client';
 import { z } from 'zod';
 // src/lib/validation/schemas.ts
 // User validation schemas

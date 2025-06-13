@@ -149,9 +149,8 @@ export default const _OTPatientSurgeries = ({
         month: "short";
         day: "numeric"
       });
-    } catch {
+    } catch 
       return "Invalid Date";
-    }
   };
 
   const formatTime = (dateString: string) => {

@@ -116,7 +116,7 @@ export class SecurityService {
       // Verify signature (simplified for example)
       const expectedSignature = crypto
         .createHmac('sha256', this.JWT_SECRET);
-        .update(`${headerB64}.${payloadB64}`);
+        .update(`$headerB64.$payloadB64`);
         .digest('base64url');
 
       if (signature !== expectedSignature) {

@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { HMSIntegrationService } from '@/lib/services/integration/hms-integration.service';
 import { errorHandlingMiddleware } from '@/lib/middleware/error-handling.middleware';
+import { HMSIntegrationService } from '@/lib/services/integration/hms-integration.service';
 /**
  * Integration API for Support Services;
  *
@@ -15,7 +15,7 @@ import { errorHandlingMiddleware } from '@/lib/middleware/error-handling.middlew
  */
 export const GET = async (
   request: NextRequest;
-  { params }: { params: { patientId: string } }
+  { params }: { patientId: string }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
@@ -42,7 +42,7 @@ export const GET = async (
  */
 export const GET = async (
   request: NextRequest;
-  { params }: { params: { locationId: string } }
+  { params }: { locationId: string }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
@@ -85,9 +85,7 @@ export const POST = async (request: NextRequest) => {
           error: {
             code: 'VALIDATION_ERROR',
             message: 'Missing required fields';
-            details: {
               required: ['recipientId', 'type', 'title', 'message']
-            }
           }
         },
         { status: 400 }
@@ -134,9 +132,7 @@ export const POST = async (request: NextRequest) => {
           error: {
             code: 'VALIDATION_ERROR',
             message: 'Missing required fields';
-            details: {
               required: ['reportType', 'reportData']
-            }
           }
         },
         { status: 400 }
@@ -164,7 +160,7 @@ export const POST = async (request: NextRequest) => {
  */
 export const POST = async (
   request: NextRequest;
-  { params }: { params: { serviceType: string, requestId: string } }
+  { params }: { serviceType: string, requestId: string }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
@@ -183,9 +179,7 @@ export const POST = async (
           error: {
             code: 'VALIDATION_ERROR',
             message: 'Missing required fields';
-            details: {
               required: ['patientId']
-            }
           }
         },
         { status: 400 }
@@ -203,9 +197,7 @@ export const POST = async (
           error: {
             code: 'VALIDATION_ERROR',
             message: 'Invalid service type';
-            details: {
               validServiceTypes
-            }
           }
         },
         { status: 400 }
@@ -234,7 +226,7 @@ export const POST = async (
  */
 export const POST = async (
   request: NextRequest;
-  { params }: { params: { serviceType: string, requestId: string } }
+  { params }: { serviceType: string, requestId: string }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
@@ -253,9 +245,7 @@ export const POST = async (
           error: {
             code: 'VALIDATION_ERROR',
             message: 'Missing required fields';
-            details: {
               required: ['locationId']
-            }
           }
         },
         { status: 400 }
@@ -273,9 +263,7 @@ export const POST = async (
           error: {
             code: 'VALIDATION_ERROR',
             message: 'Invalid service type';
-            details: {
               validServiceTypes
-            }
           }
         },
         { status: 400 }

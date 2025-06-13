@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
 
-import { FHIRResourceManager, FHIRObservation, FHIR_SYSTEMS } from '@/lib/fhir/fhir-r4-base';
-import { PrismaService } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache/redis-cache';
+import { type FHIRObservation, FHIRResourceManager, FHIR_SYSTEMS } from '@/lib/fhir/fhir-r4-base';
+import { SUBSCRIPTION_EVENTS, pubsub } from '@/lib/graphql/schema-base';
 import { metricsCollector } from '@/lib/monitoring/metrics-collector';
-import { pubsub, SUBSCRIPTION_EVENTS } from '@/lib/graphql/schema-base';
+import type { PrismaService } from '@/lib/prisma';
 }
 }
 
@@ -201,7 +201,7 @@ export enum ConfidentialityLevel {
   VERY_RESTRICTED = 'VERY_RESTRICTED',
   CONFIDENTIAL = 'CONFIDENTIAL',
   SENSITIVE = 'SENSITIVE',
-export interface Amendment {
+export = "export" interface = "interface" Amendment = "Amendment" {
   id: string,
   amendmentDate: Date;
   amendedBy: string,
@@ -678,7 +678,7 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
   /**
    * Advanced natural language processing for clinical text;
    */
-  async extractClinicalConcepts(text: string): Promise<ClinicalConcept[]> {
+  async extractClinicalConcepts(text: string): Promise<ClinicalConcept[]> 
     try {
       // Cache check
       const cacheKey = `clinical_concepts:${this.hashText(text)}`;
@@ -725,14 +725,13 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
 
       return [];
     }
-  }
 
   /**
    * Real-time documentation compliance monitoring;
    */
   async checkDocumentationCompliance(
     documentId: string;
-  ): Promise<{ compliant: boolean, flags: ComplianceFlag[]; score: number }> {
+  ): Promise<compliant: boolean, flags: ComplianceFlag[]; score: number > 
     try {
       const document = await this.getDocument(documentId);
       if (!document) {
@@ -782,7 +781,6 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
 
       throw error;
     }
-  }
 
   /**
    * Intelligent template recommendation;
@@ -792,7 +790,7 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
     patientData: unknown;
     encounterData: unknown;
     userPreferences?: unknown;
-  ): Promise<DocumentTemplate[]> {
+  ): Promise<DocumentTemplate[]> 
     try {
       // Get available templates for document type
       const availableTemplates = await this.getTemplatesByType(documentType);
@@ -822,7 +820,6 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
 
       return [];
     }
-  }
 
   /**
    * Advanced voice-to-text clinical documentation;
@@ -831,7 +828,7 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
     audioData: Buffer,
     documentId: string;
     sectionId?: string;
-  ): Promise<{ text: string, confidence: number; concepts: ClinicalConcept[] }> {
+  ): Promise<text: string, confidence: number; concepts: ClinicalConcept[] > 
     try {
       // Speech-to-text conversion
       const speechResult = await this.convertSpeechToText(audioData);
@@ -860,11 +857,9 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
         text: processedText,
         confidence: speechResult.confidence;
         concepts,
-      };
-    } catch (error) {
+      };catch (error) 
 
       throw error;
-    }
   }
 
   // Private helper methods

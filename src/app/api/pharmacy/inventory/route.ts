@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { FHIRMapper } from '../../models/fhir-mappers';
-import { PharmacyDomain } from '../../models/domain-models';
 import { auditLog } from '../../../../lib/audit';
-import { encryptionService } from '../../../../lib/security.service';
 import { errorHandler } from '../../../../lib/error-handler';
+import { encryptionService } from '../../../../lib/security.service';
 import { validateInventoryRequest } from '../../../../lib/validation/pharmacy-validation';
+import { PharmacyDomain } from '../../models/domain-models';
+import { FHIRMapper } from '../../models/fhir-mappers';
 }
 
 /**
@@ -51,8 +51,8 @@ export const GET = async (req: NextRequest) => {
     const medicationId = url.searchParams.get('medicationId');
     const belowReorderLevel = url.searchParams.get('belowReorderLevel') === 'true';
     const includeZeroStock = url.searchParams.get('includeZeroStock') === 'true';
-    const page = parseInt(url.searchParams.get('page') || '1', 10);
-    const limit = parseInt(url.searchParams.get('limit') || '20', 10);
+    const page = Number.parseInt(url.searchParams.get('page') || '1', 10);
+    const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
 
     // Build filter criteria
     const filter: unknown = {};
@@ -76,12 +76,11 @@ export const GET = async (req: NextRequest) => {
       action: 'LIST',
       resourceType: 'Inventory';
       userId: userId,
-      details: {
+      details: 
         filter,
         page,
         limit,
         resultCount: paginatedItems.length
-      }
     });
 
     // Return response
@@ -159,12 +158,10 @@ export const POST = async (req: NextRequest) => {
       resourceType: 'Inventory';
       resourceId: inventoryItemId,
       userId: userId;
-      details: {
         medicationId: data.medicationId,
         locationId: data.locationId;
         quantity: data.quantityOnHand,
         isControlled: data.isControlled || false
-      }
     });
 
     // Return response

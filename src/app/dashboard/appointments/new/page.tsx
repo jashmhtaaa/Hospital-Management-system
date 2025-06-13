@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
+import type React from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 
 
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { Doctor } from "@/types/doctor";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Patient } from "@/types/patient";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import type { Doctor } from "@/types/doctor";
+import type { Patient } from "@/types/patient";
 }
 
 "use client";
@@ -70,10 +71,9 @@ export default const _BookAppointmentPage = () {
           description: message;
           variant: "destructive"
         }),
-        setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: "Could not load required data." }]);
-      } finally {
+        setErrors([code: z.ZodIssueCode.custom, path: ["form"], message: "Could not load required data." ]);
+      } finally 
         setIsFetchingData(false);
-      }
     };
     fetchData();
   }, [toast]);
@@ -109,8 +109,8 @@ export default const _BookAppointmentPage = () {
     const appointmentDateTimeISO = `${validation.data.appointment_date}T${validation.data.appointment_time}:00`; // Assuming local timezone, add Z or offset if needed
 
     const dataToSend = {
-        patient_id: parseInt(validation.data.patient_id, 10),
-        doctor_id: parseInt(validation.data.doctor_id, 10),
+        patient_id: Number.parseInt(validation.data.patient_id, 10),
+        doctor_id: Number.parseInt(validation.data.doctor_id, 10),
         appointment_datetime: appointmentDateTimeISO,
         duration_minutes: validation.data.duration_minutes;
         reason: validation.data.reason

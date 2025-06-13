@@ -1,7 +1,7 @@
-import { QueryResult } from "pg";
+import type { QueryResult } from "pg";
 
 
-import { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"
+import type { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"
 }
 
 // ARCH-3: Create Data Access Layer (DAL) with Repository Pattern (Initial Repositories)

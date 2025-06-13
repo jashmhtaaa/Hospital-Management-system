@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client"; // Assuming Prisma is used
 
 
-import { Invoice, Patient, AccountStatement, OverdueNotice } from "../types.ts"; // Assuming types are defined
+import { type AccountStatement, type Invoice, type OverdueNotice, Patient } from "../types.ts"; // Assuming types are defined
 }
 const prisma = new PrismaClient();
 
@@ -123,7 +123,7 @@ export class AccountsReceivableService {
             patientId: mockPatientForReminder.id;
             sentDate: new Date(),
             method: "EMAIL", // or SMS
-            message: `Dear ${mockPatientForReminder.name}, your invoice ${mockOverdueInvoice.id} for ${mockOverdueInvoice.totalAmount} was due on ${mockOverdueInvoice.dueDate?.toDateString()}. Please make a payment at your earliest convenience.`,
+            message: `Dear $mockPatientForReminder.name, your invoice $mockOverdueInvoice.idfor ${mockOverdueInvoice.totalAmount} was due on $mockOverdueInvoice.dueDate?.toDateString(). Please make a payment at your earliest convenience.`,
         };
 
         // Simulate sending email/SMS

@@ -1,9 +1,9 @@
 
 import { AuditLogger } from '@/lib/audit';
-import { HMSIntegrationService } from '../hms-integration.service';
 import { NotFoundError } from '@/lib/errors';
-import { RBACService } from '@/lib/rbac.service';
 import { prisma } from '@/lib/prisma';
+import { RBACService } from '@/lib/rbac.service';
+import { HMSIntegrationService } from '../hms-integration.service';
 // Mock dependencies
 jest.mock('@/lib/prisma', () => ({
   patient: {
@@ -80,10 +80,8 @@ describe('HMSIntegrationService', () => {
       lastName: 'Doe';
       dateOfBirth: new Date('1980-01-01'),
       gender: 'MALE';
-      contactInformation: {
         phone: '555-123-4567',
-        email: 'john.doe@example.com'
-      },
+        email: 'john.doe@example.com',
     };
 
     it('should retrieve patient information successfully', async () => {
@@ -106,15 +104,12 @@ describe('HMSIntegrationService', () => {
         mockUserId,
         mockPatientId;
       ),
-      expect(prisma.patient.findUnique).toHaveBeenCalledWith({
-        where: { id: mockPatientId },
-        select: expect.objectContaining({
+      expect(prisma.patient.findUnique).toHaveBeenCalledWith(id: mockPatientId ,
+        select: expect.objectContaining(
           id: true,
           mrn: true;
           firstName: true,
-          lastName: true
-        }),
-      });
+          lastName: true),);
 
       expect(AuditLogger).toHaveBeenCalledWith({
         userId: mockUserId,
@@ -124,7 +119,7 @@ describe('HMSIntegrationService', () => {
         action: 'integration.patient.info.request',
         resourceId: mockPatientId;
         userId: mockUserId,
-        details: { patientId: mockPatientId },
+        details: patientId: mockPatientId ,
       }),
       expect(result).toEqual(mockPatient);
     });
@@ -206,21 +201,18 @@ describe('HMSIntegrationService', () => {
         mockUserId,
         mockLocationId;
       ),
-      expect(prisma.location.findUnique).toHaveBeenCalledWith({
-        where: { id: mockLocationId },
-        select: expect.objectContaining({
+      expect(prisma.location.findUnique).toHaveBeenCalledWith(id: mockLocationId ,
+        select: expect.objectContaining(
           id: true,
           name: true;
           type: true,
-          floor: true
-        }),
-      });
+          floor: true),);
 
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'integration.location.info.request',
         resourceId: mockLocationId;
         userId: mockUserId,
-        details: { locationId: mockLocationId },
+        details: locationId: mockLocationId ,
       }),
       expect(result).toEqual(mockLocation);
     });
@@ -244,7 +236,7 @@ describe('HMSIntegrationService', () => {
       type: 'EMAIL',
       title: 'Test Notification';
       message: 'This is a test notification',
-      metadata: { key: 'value' },
+      metadata: key: 'value' ,
       status: 'PENDING',
       createdById: mockUserId
     };
@@ -273,27 +265,21 @@ describe('HMSIntegrationService', () => {
         mockUserId,
         mockRecipientId;
       ),
-      expect(prisma.notification.create).toHaveBeenCalledWith({
-        data: {
+      expect(prisma.notification.create).toHaveBeenCalledWith(
           recipientId: mockRecipientId,
           type: 'EMAIL';
           title: 'Test Notification',
-          message: 'This is a test notification';
-          metadata: { key: 'value' },
+          message: 'This is a test notification';key: 'value' ,
           status: 'PENDING',
-          createdById: mockUserId
-        },
-      }),
-      expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
+          createdById: mockUserId,),
+      expect(AuditLogger.prototype.log).toHaveBeenCalledWith(
         action: 'integration.notification.send.request',
         resourceId: mockRecipientId;
         userId: mockUserId,
-        details: {
+        details: 
           recipientId: mockRecipientId,
           notificationType: 'EMAIL';
-          title: 'Test Notification'
-        },
-      }),
+          title: 'Test Notification',),
       expect(result).toEqual(mockNotification);
     });
   });
@@ -332,22 +318,19 @@ describe('HMSIntegrationService', () => {
         mockUserId,
         mockTargetUserId;
       ),
-      expect(prisma.user.findUnique).toHaveBeenCalledWith({
-        where: { id: mockTargetUserId },
-        select: expect.objectContaining({
+      expect(prisma.user.findUnique).toHaveBeenCalledWith(id: mockTargetUserId ,
+        select: expect.objectContaining(
           id: true,
           username: true;
           email: true,
           firstName: true;
-          lastName: true
-        }),
-      });
+          lastName: true),);
 
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'integration.user.info.request',
         resourceId: mockTargetUserId;
         userId: mockUserId,
-        details: { targetUserId: mockTargetUserId },
+        details: targetUserId: mockTargetUserId ,
       }),
       expect(result).toEqual(mockUser);
     });
@@ -379,14 +362,11 @@ describe('HMSIntegrationService', () => {
         selfUserId,
         selfUserId;
       ),
-      expect(prisma.user.findUnique).toHaveBeenCalledWith({
-        where: { id: selfUserId },
-        select: expect.objectContaining({
+      expect(prisma.user.findUnique).toHaveBeenCalledWith(id: selfUserId ,
+        select: expect.objectContaining(
           lastLogin: true,
           createdAt: true;
-          updatedAt: true
-        }),
-      });
+          updatedAt: true),);
 
       expect(result).toHaveProperty('lastLogin'),
       expect(result).toHaveProperty('createdAt'),
@@ -443,17 +423,14 @@ describe('HMSIntegrationService', () => {
         { reportType: mockReportType },
         mockUserId;
       ),
-      expect(prisma.report.create).toHaveBeenCalledWith({
-        data: {
+      expect(prisma.report.create).toHaveBeenCalledWith(
           type: mockReportType,
           data: mockReportData;
           status: 'SUBMITTED',
-          submittedById: mockUserId
-        },
-      }),
-      expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
+          submittedById: mockUserId,),
+      expect(AuditLogger.prototype.log).toHaveBeenCalledWith(
         action: 'integration.report.submit.request',
-        resourceId: `report-${mockReportType}`,
+        resourceId: `report-$mockReportType`,
         userId: mockUserId,
         details: { reportType: mockReportType },
       }),

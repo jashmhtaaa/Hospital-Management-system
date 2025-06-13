@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 // import { getRequestContext } from "@cloudflare/next-on-pages"; // Cloudflare specific
 
 // Define interface for ER Visit data

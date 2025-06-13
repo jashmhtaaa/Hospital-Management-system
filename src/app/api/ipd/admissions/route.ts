@@ -46,12 +46,8 @@ export const GET = async (request: NextRequest) => {
             value === "active" ||;
             value === "discharged" ||;
             value === "cancelled";
-          ) {
-            filters[filterKey] = value;
-          } else {
-            // Optionally handle invalid status value, e.g., ignore or return error
-
-          }
+          ) 
+            filters[filterKey] = value;else 
         } else {
           filters[filterKey] = value;
         }

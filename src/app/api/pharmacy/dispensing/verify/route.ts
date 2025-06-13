@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 
-import { PharmacyDomain } from '../../../models/domain-models';
 import { auditLog } from '../../../../../lib/audit';
 import { errorHandler } from '../../../../../lib/error-handler';
 import { getMedicationById, getPrescriptionById } from '../../../../../lib/services/pharmacy/pharmacy.service';
 import { validateDispensingVerificationRequest } from '../../../../../lib/validation/pharmacy-validation';
+import type { PharmacyDomain } from '../../../models/domain-models';
 }
 
 /**
@@ -90,8 +90,7 @@ export const POST = async (req: NextRequest) => {
           error: 'Medication barcode does not match prescription',
           expected: medication.barcode;
           received: data.medicationBarcode
-        },
-        { status: 400 }
+        },status: 400 
       );
     }
 
@@ -102,8 +101,7 @@ export const POST = async (req: NextRequest) => {
           error: 'Patient barcode does not match prescription',
           expected: prescription.patientId;
           received: data.patientBarcode
-        },
-        { status: 400 }
+        },status: 400 
       );
     }
 
@@ -139,7 +137,7 @@ export const POST = async (req: NextRequest) => {
       resourceType: 'MedicationDispense';
       userId: userId,
       patientId: prescription.patientId;
-      details: {
+      {
         medicationId: prescription.medicationId,
         prescriptionId: data.prescriptionId;
         dispensingId: data.dispensingId
@@ -151,7 +149,7 @@ export const POST = async (req: NextRequest) => {
       {
         success: true,
         message: 'Dispensing verification successful';
-        verification: {
+        {
           id: verification.id,
           verifiedAt: verification.verifiedAt
         }

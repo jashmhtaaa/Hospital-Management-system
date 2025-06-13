@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 
@@ -22,7 +22,7 @@ const calibrationSchema = z.object({
 // POST handler for recording calibration
 export const _POST = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     // Parse request body
@@ -66,7 +66,7 @@ export const _POST = async (
 // GET handler for listing calibration records
 export const _GET = async (
   request: NextRequest;
-  { params }: { params: { id: string } }
+  { params }: { id: string }
 ) => {
   try {
     const calibrationRecords = await biomedicalService.getCalibrationRecords(params.id);

@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
 
-import { AuditService } from '@/lib/security/audit.service';
-import { EncryptionService } from '@/lib/security/encryption.service';
-import { PrismaService } from '@/lib/prisma';
 import { cacheService } from '@/lib/cache/redis-cache';
-import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 import { pubsub } from '@/lib/graphql/schema-base';
+import { metricsCollector } from '@/lib/monitoring/metrics-collector';
+import type { PrismaService } from '@/lib/prisma';
+import type { AuditService } from '@/lib/security/audit.service';
+import type { EncryptionService } from '@/lib/security/encryption.service';
 }
 }
 
@@ -52,17 +52,15 @@ export enum DashboardType {
   QUARTERLY = 'QUARTERLY',
   ANNUAL = 'ANNUAL',
   CUSTOM = 'CUSTOM',
-export interface LayoutConfig {
+export = "export" interface = "interface" LayoutConfig = "LayoutConfig" {
   columns: number,
   rowHeight: number;
   compactType: 'vertical' | 'horizontal' | null,
   preventCollision: boolean;
-  layouts: {
     lg: LayoutItem[],
     md: LayoutItem[];
     sm: LayoutItem[],
-    xs: LayoutItem[]
-  };
+    xs: LayoutItem[];
 export interface LayoutItem {
   i: string; // widget id
   x: number,
@@ -117,7 +115,7 @@ export enum DataSource {
   HR = 'HR',
   CUSTOM = 'CUSTOM',
   INTEGRATED = 'INTEGRATED',
-export enum VisualizationType {
+export = "export" enum = "enum" VisualizationType = "VisualizationType" 
   BAR = 'BAR',
   LINE = 'LINE',
   PIE = 'PIE',
@@ -640,7 +638,7 @@ export enum KPIType {
   LAGGING = 'LAGGING',
   DIAGNOSTIC = 'DIAGNOSTIC',
   PREDICTIVE = 'PREDICTIVE',
-export interface KPITarget {
+export = "export" interface = "interface" KPITarget = "KPITarget" 
   id: string,
   value: number;
   period: string,
@@ -654,8 +652,7 @@ export interface KPITarget {
   benchmark?: {
     source: string;
     percentile?: number;
-    comparator?: 'TOP_QUARTILE' | 'MEDIAN' | 'MEAN' | 'CUSTOM'
-  };
+    comparator?: 'TOP_QUARTILE' | 'MEDIAN' | 'MEAN' | 'CUSTOM';
 export interface KPIThreshold {
   id: string,
   name: string;
@@ -950,8 +947,7 @@ export class RealTimeDashboardService {
     category?: DashboardCategory;
     type?: DashboardType;
     status?: string;
-    owner?: string;
-  }): Promise<Dashboard[]> {
+    owner?: string;): Promise<Dashboard[]> 
     try {
       // Try cache first
       const cacheKey = `dashboards:${JSON.stringify(filters || {})}`;
@@ -984,11 +980,9 @@ export class RealTimeDashboardService {
         status: filters?.status || 'ACTIVE'
       });
 
-      return dashboards as Dashboard[];
-    } catch (error) {
+      return dashboards as Dashboard[];catch (error) 
 
       throw error;
-    }
   }
 
   /**
@@ -1055,11 +1049,10 @@ export class RealTimeDashboardService {
         resourceType: 'DASHBOARD';
         resourceId: newDashboard.id;
         userId,
-        details: {
+        details: 
           name: dashboard.name,
           category: dashboard.category;
-          type: dashboard.type
-        },
+          type: dashboard.type,
       });
 
       // Invalidate cache
@@ -1116,11 +1109,10 @@ export class RealTimeDashboardService {
         resourceType: 'DASHBOARD';
         resourceId: id;
         userId,
-        details: {
+        details: 
           name: currentDashboard.name,
           previousVersion: currentDashboard.metadata.version;
-          newVersion: updates.metadata?.version || currentDashboard.metadata.version
-        },
+          newVersion: updates.metadata?.version || currentDashboard.metadata.version,
       });
 
       // Update metadata with version history
@@ -1231,11 +1223,10 @@ export class RealTimeDashboardService {
               totalRows: 0,
               executionTime: 0;
               dataStatus: 'ERROR',
-              error: {
+              error: 
                 code: 'WIDGET_DATA_ERROR',
                 message: error.message;
-                details: error.stack
-              },
+                details: error.stack,
               cachedResult: false,
               timestamp: new Date(),
               updateTrigger: options.refreshType
@@ -1327,11 +1318,10 @@ export class RealTimeDashboardService {
         resourceId: newWidget.id,
         parentResourceId: dashboardId;
         userId,
-        details: {
+        details: 
           widgetName: widget.name,
           widgetType: widget.type;
-          visualization: widget.visualization
-        },
+          visualization: widget.visualization,
       });
 
       // Invalidate cache
@@ -1412,11 +1402,10 @@ export class RealTimeDashboardService {
         resourceId: widgetId,
         parentResourceId: dashboardId;
         userId,
-        details: {
+        details: 
           widgetName: updatedWidget.name,
           previousVisualization: currentWidget.visualization;
-          newVisualization: updates.visualization || currentWidget.visualization
-        },
+          newVisualization: updates.visualization || currentWidget.visualization,
       });
 
       // Invalidate cache
@@ -1474,11 +1463,10 @@ export class RealTimeDashboardService {
         resourceType: 'KPI';
         resourceId: newKPI.id;
         userId,
-        details: {
+        details: 
           name: kpi.name,
           category: kpi.category;
-          type: kpi.type
-        },
+          type: kpi.type,
       });
 
       // Record metrics
@@ -1707,11 +1695,10 @@ export class RealTimeDashboardService {
         resourceType: 'CLINICAL_QUALITY_DASHBOARD';
         resourceId: newDashboard.id;
         userId,
-        details: {
+        details: 
           name: dashboard.name,
           specialty: dashboard.specialty;
-          measureCount: dashboard.measures.length
-        },
+          measureCount: dashboard.measures.length,
       });
 
       // Record metrics
@@ -1764,11 +1751,10 @@ export class RealTimeDashboardService {
         resourceType: 'FINANCIAL_DASHBOARD';
         resourceId: newDashboard.id;
         userId,
-        details: {
+        details: 
           name: dashboard.name,
           timeframe: dashboard.timeframe;
-          kpiCount: dashboard.kpis.length
-        },
+          kpiCount: dashboard.kpis.length,
       });
 
       // Record metrics
@@ -1821,12 +1807,11 @@ export class RealTimeDashboardService {
         resourceType: 'OPERATIONAL_DASHBOARD';
         resourceId: newDashboard.id;
         userId,
-        details: {
+        details: 
           name: dashboard.name,
           department: dashboard.department;
           timeframe: dashboard.timeframe,
-          kpiCount: dashboard.kpis.length
-        },
+          kpiCount: dashboard.kpis.length,
       });
 
       // Record metrics
@@ -1895,11 +1880,10 @@ export class RealTimeDashboardService {
         !filter.affects ||
         filter.affects.length === 0 ||;
         filter.affects.includes(widget.id);
-      ) {
+      ) 
         if (filterState[filter.id] !== undefined) {
           relevantFilters[filter.field] = filterState[filter.id];
         }
-      }
     });
 
     // Add widget-specific filters
@@ -1937,7 +1921,7 @@ export class RealTimeDashboardService {
     const data: unknown[] = [];
     let totalRows = 0;
     let aggregations = {};
-    let error = null;
+    const error = null;
 
     try {
       // Simulate different data for different widget types
@@ -2010,11 +1994,7 @@ export class RealTimeDashboardService {
 
         case WidgetType.METRIC:
           // For demonstration purposes, generate sample metric data
-          columns.push(
-            { name: 'value', label: 'Value', dataType: 'number', role: 'measure' },
-            { name: 'previousValue', label: 'Previous Value', dataType: 'number', role: 'measure' },
-            { name: 'change', label: 'Change', dataType: 'number', role: 'measure' },
-            { name: 'changePercent', label: 'Change %', dataType: 'number', role: 'measure' }
+          columns.push(name: 'value', label: 'Value', dataType: 'number', role: 'measure' ,name: 'previousValue', label: 'Previous Value', dataType: 'number', role: 'measure' ,name: 'change', label: 'Change', dataType: 'number', role: 'measure' ,name: 'changePercent', label: 'Change %', dataType: 'number', role: 'measure' 
           ),
 
           const value = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000);
@@ -2034,12 +2014,7 @@ export class RealTimeDashboardService {
 
         case WidgetType.PREDICTION:
           // For demonstration purposes, generate sample prediction data
-          columns.push(
-            { name: 'date', label: 'Date', dataType: 'date', role: 'dimension' },
-            { name: 'actual', label: 'Actual', dataType: 'number', role: 'measure' },
-            { name: 'forecast', label: 'Forecast', dataType: 'number', role: 'measure' },
-            { name: 'lower', label: 'Lower Bound', dataType: 'number', role: 'measure' },
-            { name: 'upper', label: 'Upper Bound', dataType: 'number', role: 'measure' }
+          columns.push(name: 'date', label: 'Date', dataType: 'date', role: 'dimension' ,name: 'actual', label: 'Actual', dataType: 'number', role: 'measure' ,name: 'forecast', label: 'Forecast', dataType: 'number', role: 'measure' ,name: 'lower', label: 'Lower Bound', dataType: 'number', role: 'measure' ,name: 'upper', label: 'Upper Bound', dataType: 'number', role: 'measure' 
           ),
 
           const today = new Date();

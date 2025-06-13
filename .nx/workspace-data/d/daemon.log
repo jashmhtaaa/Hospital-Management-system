@@ -56,3 +56,14 @@ Error: Could not find ".modules.yaml" at "/workspace/Hospital-Management-System/
 [NX Daemon Server] - 2025-06-07T12:51:19.283Z - [WATCHER]: Stopping the watcher for /workspace/Hospital-Management-System (outputs)
  WARN  The "workspaces" field in package.json is not supported by pnpm. Create a "pnpm-workspace.yaml" file instead.
  WARN  The "workspaces" field in package.json is not supported by pnpm. Create a "pnpm-workspace.yaml" file instead.
+[NX Daemon Server] - 2025-06-12T22:02:07.796Z - Started listening on: /tmp/c15382f0b6b7f434a2eb/d.sock
+[NX Daemon Server] - 2025-06-12T22:02:07.857Z - [WATCHER]: Subscribed to changes within: /root/Hospital-Management-System (native)
+[NX Daemon Server] - 2025-06-12T22:02:07.860Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2025-06-12T22:02:07.861Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2025-06-12T22:02:07.867Z - [REQUEST]: Responding to the client. Shutdown initiated
+[NX Daemon Server] - 2025-06-12T22:02:07.867Z - Done responding to the client Shutdown initiated
+[NX Daemon Server] - 2025-06-12T22:02:07.868Z - Handled FORCE_SHUTDOWN. Handling time: 0. Response time: 2.
+[NX Daemon Server] - 2025-06-12T22:02:07.868Z - Closed a connection. Number of open connections: 1
+[NX Daemon Server] - 2025-06-12T22:02:07.869Z - [WATCHER]: Stopping the watcher for /root/Hospital-Management-System (sources)
+[NX Daemon Server] - 2025-06-12T22:02:07.870Z - Closed a connection. Number of open connections: 0
+[NX Daemon Server] - 2025-06-12T22:02:07.871Z - [WATCHER]: Stopping the watcher for /root/Hospital-Management-System (outputs)

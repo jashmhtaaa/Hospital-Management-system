@@ -1,10 +1,10 @@
-import { MaintenanceRequest, MaintenanceWorkOrder, Asset, MaintenanceSchedule, MaintenanceInventory, MaintenanceVendor } from '@prisma/client';
+import { Asset, MaintenanceInventory, MaintenanceRequest, MaintenanceSchedule, MaintenanceVendor, MaintenanceWorkOrder } from '@prisma/client';
 
 
-import { NotificationService } from '@/lib/services/notification.service';
 import { createAuditLog } from '@/lib/audit-logging';
+import { toFHIRAsset, toFHIRMaintenanceRequest } from '@/lib/models/maintenance';
 import { prisma } from '@/lib/prisma';
-import { toFHIRMaintenanceRequest, toFHIRAsset } from '@/lib/models/maintenance';
+import type { NotificationService } from '@/lib/services/notification.service';
 export interface MaintenanceRequestFilter {
   status?: string;
   locationId?: string;
@@ -82,7 +82,7 @@ export class MaintenanceService {
         take: limit,
         orderBy: { createdAt: 'desc' }
       }),
-      prisma.maintenanceRequest.count({ where })
+      prisma.maintenanceRequest.count(where )
     ]);
 
     // Convert to FHIR format if requested
@@ -91,12 +91,10 @@ export class MaintenanceService {
     return {
       data: requests,
       fhir: fhirRequests;
-      pagination: {
         total,
         page,
         limit,
         totalPages: Math.ceil(total / limit)
-      }
     };
   }
 
@@ -161,13 +159,9 @@ export class MaintenanceService {
       include: {
         location: true,
         asset: true;
-        requestedByUser: {
-          select: {
             id: true,
             name: true;
             email: true
-          }
-        }
       }
     });
 
@@ -207,25 +201,14 @@ export class MaintenanceService {
       include: {
         location: true,
         asset: true;
-        requestedByUser: {
-          select: {
             id: true,
             name: true;
-            email: true
-          }
-        },
-        workOrders: {
-          include: {
-            assignedToUser: {
-              select: {
+            email: true,
+        workOrders: 
                 id: true,
                 name: true;
-                email: true
-              }
-            },
+                email: true,
             parts: true
-          }
-        }
       }
     });
 
@@ -296,24 +279,13 @@ export class MaintenanceService {
       include: {
         location: true,
         asset: true;
-        requestedByUser: {
-          select: {
             id: true,
             name: true;
-            email: true
-          }
-        },
-        workOrders: {
-          include: {
-            assignedToUser: {
-              select: {
+            email: true,
+        workOrders: 
                 id: true,
                 name: true;
                 email: true
-              }
-            }
-          }
-        }
       }
     });
 
@@ -334,11 +306,10 @@ export class MaintenanceService {
         recipientRoles: ['MAINTENANCE_MANAGER'],
         recipientIds: [request.requestedById];
         entityId: request.id,
-        metadata: {
+        metadata: 
           requestId: request.id,
           oldStatus: request.status;
           newStatus: data.status
-        }
       });
     }
 
@@ -395,13 +366,9 @@ export class MaintenanceService {
         materialCost: data.materialCost
       },
       include: {
-        assignedToUser: {
-          select: {
             id: true,
             name: true;
             email: true
-          }
-        }
       }
     });
 

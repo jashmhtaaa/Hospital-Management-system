@@ -1,4 +1,4 @@
-import React, { SelectHTMLAttributes, forwardRef } from 'react';
+import React, { type SelectHTMLAttributes, forwardRef } from 'react';
 
 
 import { cn } from '@/lib/utils';

@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
 import {
+  Button,
   Table,
-  TableHeader,
-  TableRow,
-  TableHead,
   TableBody,
   TableCell,
-  Button,
+  TableHead,
+  TableHeader,
+  TableRow,
   // Badge, // FIX: Removed unused import
 } from "@/components/ui"
+import type React from "react";
+import { useEffect, useState } from "react";
 
 // FIX: Define an interface for the patient data structure
 interface Inpatient {

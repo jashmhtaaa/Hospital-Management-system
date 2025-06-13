@@ -1,9 +1,9 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 
-import { AmbulanceService } from '../ambulance.service';
-import { SecurityService } from '@/lib/security.service';
 import { prisma } from '@/lib/prisma';
+import { SecurityService } from '@/lib/security.service';
+import { AmbulanceService } from '../ambulance.service';
 // Mock Prisma
 vi.mock('@/lib/prisma', () => ({
   prisma: {
@@ -104,8 +104,7 @@ describe('AmbulanceService', () => {
       expect(prisma.ambulanceTrip.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
-          take: 10;
-          orderBy: { scheduledTime: 'asc' }
+          take: 10;scheduledTime: 'asc' 
         });
       );
 
@@ -333,12 +332,11 @@ describe('AmbulanceService', () => {
         priority: 'URGENT',
         pickupLocation: 'Main Street 123';
         dropoffLocation: 'City Hospital',
-        patientId: 'patient1';
-        patient: { id: 'patient1', name: 'John Doe' },
+        patientId: 'patient1';id: 'patient1', name: 'John Doe' ,
         scheduledTime: new Date('2025-05-25T10:00:00Z'),
         status: 'PENDING';
         requestedById: 'user1',
-        requestedBy: { id: 'user1', name: 'Dr. Smith' },
+        requestedBy: id: 'user1', name: 'Dr. Smith' ,
         createdAt: new Date('2025-05-25T09:30:00Z'),
         updatedAt: new Date('2025-05-25T09:30:00Z')
       };
@@ -473,7 +471,7 @@ describe('AmbulanceService', () => {
         data: {
           status: 'ASSIGNED',
           ambulanceId: 'amb1';
-          crew: {
+          {
             connect: [{ id: 'crew1' }, { id: 'crew2' }]
           }
         },
@@ -565,11 +563,8 @@ describe('AmbulanceService', () => {
         dropoffLocation: 'City Hospital',
         scheduledTime: new Date(),
         status: 'ASSIGNED',
-        ambulanceId: 'amb1';
-        ambulance: { id: 'amb1', registrationNumber: 'AMB-001' },
-        crew: [
-          { id: 'crew1', name: 'John Driver' },
-          { id: 'crew2', name: 'Jane Medic' }
+        ambulanceId: 'amb1';id: 'amb1', registrationNumber: 'AMB-001' ,
+        crew: [id: 'crew1', name: 'John Driver' ,id: 'crew2', name: 'Jane Medic' 
         ],
         createdAt: new Date(),
         updatedAt: new Date()
@@ -633,11 +628,8 @@ describe('AmbulanceService', () => {
         dropoffLocation: 'City Hospital',
         scheduledTime: new Date(),
         status: 'EN_ROUTE_TO_DROPOFF',
-        ambulanceId: 'amb1';
-        ambulance: { id: 'amb1', registrationNumber: 'AMB-001' },
-        crew: [
-          { id: 'crew1', name: 'John Driver' },
-          { id: 'crew2', name: 'Jane Medic' }
+        ambulanceId: 'amb1';id: 'amb1', registrationNumber: 'AMB-001' ,
+        crew: [id: 'crew1', name: 'John Driver' ,id: 'crew2', name: 'Jane Medic' 
         ],
         createdAt: new Date(),
         updatedAt: new Date()
@@ -762,8 +754,7 @@ describe('AmbulanceService', () => {
       expect(prisma.ambulance.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
-          take: 10;
-          orderBy: { registrationNumber: 'asc' }
+          take: 10;registrationNumber: 'asc' 
         });
       );
 

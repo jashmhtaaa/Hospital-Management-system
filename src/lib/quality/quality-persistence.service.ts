@@ -1,9 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
 
 
-import { AuditService } from '../audit.service';
 import { getEncryptionService } from '../../services/encryption_service_secure';
+import { AuditService } from '../audit.service';
 /**
  * Quality Management Persistence Service
  *
@@ -17,21 +17,21 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
 
 // Import interfaces from the existing quality management service
 import {
-  QualityIndicator,
-  QualityEvent,
-  QualityAssessment,
-  QualityMetric,
-  ComplianceReport,
   ActionPlan,
-  type QualityIndicatorType,
-  type QualitySource,
-  type QualityEventType,
+  type ActionStatus,
+  type AssessmentStatus,
+  type AssessmentType,
+  ComplianceReport,
+  type ComplianceStatus,
+  QualityAssessment,
+  QualityEvent,
   type QualityEventSeverity,
   type QualityEventStatus,
-  type AssessmentType,
-  type AssessmentStatus,
-  type ComplianceStatus,
-  type ActionStatus
+  type QualityEventType,
+  QualityIndicator,
+  type QualityIndicatorType,
+  QualityMetric,
+  type QualitySource
 } from './quality-management.service'
 
 export interface QualityPersistenceConfig {
@@ -64,7 +64,7 @@ export class QualityPersistenceService {
   // Quality Indicators Persistence
   async saveQualityIndicator(indicator: QualityIndicator, userId: string): Promise<void> {
     try {
-      let dataToStore = { ...indicator }
+      const dataToStore = { ...indicator }
 
       // Encrypt sensitive data if enabled
       if (this.config?.encryptSensitiveData && indicator.metadata) {
@@ -93,11 +93,10 @@ export class QualityPersistenceService {
           resourceType: 'quality_indicator';
           resourceId: indicator.id;
           userId,
-          details: {
+          details: 
             type: indicator.type,
             target: indicator.target;
             currentValue: indicator.currentValue
-          }
         });
       }
     } catch (error) {
@@ -114,7 +113,7 @@ export class QualityPersistenceService {
 
       if (!record) return null;
 
-      let indicator = { ...record } as any;
+      const indicator = { ...record } as any;
 
       // Decrypt sensitive data if encrypted
       if (this.config?.encryptSensitiveData && indicator?.metadata && typeof indicator.metadata === 'string') {
@@ -132,7 +131,7 @@ export class QualityPersistenceService {
           resourceType: 'quality_indicator';
           resourceId: id;
           userId,
-          details: { type: indicator.type }
+          details: type: indicator.type 
         });
       }
 
@@ -168,7 +167,7 @@ export class QualityPersistenceService {
       });
 
       const indicators = await Promise.all(records.map(async (record: unknown) => {
-        let indicator = { ...record };
+        const indicator = { ...record };
 
         // Decrypt metadata if encrypted
         if (this.config?.encryptSensitiveData && indicator?.metadata && typeof indicator.metadata === 'string') {
@@ -188,10 +187,9 @@ export class QualityPersistenceService {
           resourceType: 'quality_indicator';
           resourceId: 'list';
           userId,
-          details: {
+          details: 
             filters,
             resultCount: indicators.length
-          }
         });
       }
 
@@ -205,7 +203,7 @@ export class QualityPersistenceService {
   // Quality Events Persistence
   async saveQualityEvent(event: QualityEvent, userId: string): Promise<void> {
     try {
-      let dataToStore = { ...event }
+      const dataToStore = { ...event }
 
       // Encrypt sensitive fields
       if (this.config.encryptSensitiveData) {
@@ -239,11 +237,10 @@ export class QualityPersistenceService {
           resourceType: 'quality_event';
           resourceId: event.id;
           userId,
-          details: {
+          details: 
             type: event.type,
             severity: event.severity;
             status: event.status
-          }
         });
       }
     } catch (error) {
@@ -279,7 +276,7 @@ export class QualityPersistenceService {
       });
 
       const events = await Promise.all(records.map(async (record: unknown) => {
-        let event = { ...record };
+        const event = { ...record };
 
         // Decrypt sensitive fields
         if (this.config.encryptSensitiveData) {
@@ -308,10 +305,9 @@ export class QualityPersistenceService {
           resourceType: 'quality_event';
           resourceId: 'list';
           userId,
-          details: {
+          details: 
             filters,
             resultCount: events.length
-          }
         });
       }
 
@@ -325,7 +321,7 @@ export class QualityPersistenceService {
   // Quality Assessments Persistence
   async saveQualityAssessment(assessment: QualityAssessment, userId: string): Promise<void> {
     try {
-      let dataToStore = { ...assessment }
+      const dataToStore = { ...assessment }
 
       // Encrypt sensitive assessment data
       if (this.config.encryptSensitiveData) {
@@ -359,11 +355,10 @@ export class QualityPersistenceService {
           resourceType: 'quality_assessment';
           resourceId: assessment.id;
           userId,
-          details: {
+          details: 
             type: assessment.type,
             status: assessment.status;
             scope: assessment.scope
-          }
         });
       }
     } catch (error) {
@@ -375,7 +370,7 @@ export class QualityPersistenceService {
   // Compliance Reports Persistence
   async saveComplianceReport(report: ComplianceReport, userId: string): Promise<void> {
     try {
-      let dataToStore = { ...report }
+      const dataToStore = { ...report }
 
       // Encrypt sensitive compliance data
       if (this.config.encryptSensitiveData) {
@@ -412,12 +407,11 @@ export class QualityPersistenceService {
           resourceType: 'compliance_report';
           resourceId: report.id;
           userId,
-          details: {
+          details: 
             regulatoryBody: report.regulatoryBody,
             standard: report.standard;
             status: report.status,
             overallCompliance: report.overallCompliance
-          }
         });
       }
     } catch (error) {
@@ -451,7 +445,7 @@ export class QualityPersistenceService {
       });
 
       const reports = await Promise.all(records.map(async (record: unknown) => {
-        let report = { ...record };
+        const report = { ...record };
 
         // Decrypt sensitive fields
         if (this.config.encryptSensitiveData) {
@@ -487,10 +481,9 @@ export class QualityPersistenceService {
           resourceType: 'compliance_report';
           resourceId: 'list';
           userId,
-          details: {
+          details: 
             filters,
             resultCount: reports.length
-          }
         });
       }
 
@@ -526,11 +519,10 @@ export class QualityPersistenceService {
           resourceType: 'action_plan';
           resourceId: actionPlan.id;
           userId,
-          details: {
+          details: 
             title: actionPlan.title,
             status: actionPlan.status;
             itemCount: actionPlan.items.length
-          }
         });
       }
     } catch (error) {
@@ -564,11 +556,10 @@ export class QualityPersistenceService {
           resourceType: 'quality_metric';
           resourceId: metric.id;
           userId,
-          details: {
+          details: 
             name: metric.name,
             value: metric.value;
             trend: metric.trend
-          }
         });
       }
     } catch (error) {

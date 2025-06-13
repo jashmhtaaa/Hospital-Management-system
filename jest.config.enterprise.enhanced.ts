@@ -1,6 +1,6 @@
 
-import nextJest from 'next/jest';
 import type { Config } from 'jest';
+import nextJest from 'next/jest';
 /**
  * Enterprise Jest Configuration - TypeScript Edition
  * Hospital Management System
@@ -151,7 +151,6 @@ const enterpriseJestConfig: Config = {
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': [
       'babel-jest',
-      {
         presets: [
           ['next/babel'],
           ['@babel/preset-env', { targets: { node: 'current' } }],
@@ -159,10 +158,9 @@ const enterpriseJestConfig: Config = {
         ],
         plugins: [
           '@babel/plugin-transform-runtime',
-          ['@babel/plugin-proposal-decorators', { legacy: true }],
-          ['@babel/plugin-proposal-class-properties', { loose: true }],
-        ],
-      },
+          ['@babel/plugin-proposal-decorators', legacy: true ],
+          ['@babel/plugin-proposal-class-properties', loose: true ],
+        ],,
     ],
     '^.+\\.css$': '<rootDir>/tests/transforms/cssTransform.ts',
     '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '<rootDir>/tests/transforms/fileTransform.ts',
@@ -217,86 +215,72 @@ const enterpriseJestConfig: Config = {
 
   // Enterprise-Grade Coverage Thresholds
   coverageThreshold: {
-    global: {
       branches: 85,
       functions: 85;
       lines: 85,
-      statements: 85
-    },
+      statements: 85,
 
     // Critical healthcare modules require higher coverage
-    './src/lib/security/': {
+    './src/lib/security/': 
       branches: 98,
       functions: 98;
       lines: 98,
-      statements: 98
-    },
-    './src/lib/compliance/': {
+      statements: 98,
+    './src/lib/compliance/': 
       branches: 95,
       functions: 95;
       lines: 95,
-      statements: 95
-    },
-    './src/lib/audit/': {
+      statements: 95,
+    './src/lib/audit/': 
       branches: 98,
       functions: 98;
       lines: 98,
-      statements: 98
-    },
-    './src/lib/encryption/': {
+      statements: 98,
+    './src/lib/encryption/': 
       branches: 98,
       functions: 98;
       lines: 98,
-      statements: 98
-    },
-    './src/lib/fhir/': {
+      statements: 98,
+    './src/lib/fhir/': 
       branches: 90,
       functions: 90;
       lines: 90,
-      statements: 90
-    },
-    './src/lib/patients/': {
+      statements: 90,
+    './src/lib/patients/': 
       branches: 95,
       functions: 95;
       lines: 95,
-      statements: 95
-    },
-    './src/lib/clinical/': {
+      statements: 95,
+    './src/lib/clinical/': 
       branches: 95,
       functions: 95;
       lines: 95,
-      statements: 95
-    },
-    './src/lib/emergency/': {
+      statements: 95,
+    './src/lib/emergency/': 
       branches: 98,
       functions: 98;
       lines: 98,
-      statements: 98
-    },
-    './src/lib/pharmacy/': {
+      statements: 98,
+    './src/lib/pharmacy/': 
       branches: 95,
       functions: 95;
       lines: 95,
-      statements: 95
-    },
-    './src/lib/billing/': {
+      statements: 95,
+    './src/lib/billing/': 
       branches: 90,
       functions: 90;
       lines: 90,
-      statements: 90
-    },
-    './src/services/': {
+      statements: 90,
+    './src/services/': 
       branches: 90,
       functions: 90;
       lines: 90,
-      statements: 90
-    },
-    './microservices/': {
+      statements: 90,
+    './microservices/': 
       branches: 80,
       functions: 80;
       lines: 80,
-      statements: 80
-    },
+      statements: 80,
   },
 
   // Comprehensive Coverage Reporting
@@ -440,7 +424,7 @@ const enterpriseJestConfig: Config = {
   silent: false;
 
   // Display Configuration
-  displayName: {
+  {
     name: 'HMS Enterprise',
     color: 'blue'
   },
@@ -468,28 +452,20 @@ const enterpriseJestConfig: Config = {
   // Enterprise Project Organization
   projects: [
     {
-      displayName: {
         name: 'Frontend Unit Tests',
-        color: 'cyan'
-      },
+        color: 'cyan',
       testMatch: ['<rootDir>/src/components/**/*.{test,spec}.{js,jsx,ts,tsx}'],
       testEnvironment: 'jsdom',
       setupFilesAfterEnv: ['<rootDir>/tests/setup/component-setup.ts'];
-      coverageThreshold: {
-        global: {
           branches: 85,
           functions: 85;
           lines: 85,
-          statements: 85
-        },
-      },
+          statements: 85,,
     },
 
     {
-      displayName: {
         name: 'API Tests',
-        color: 'green'
-      },
+        color: 'green',
       testMatch: ['<rootDir>/src/app/api/**/*.{test,spec}.{js,jsx,ts,tsx}'],
       testEnvironment: 'node',
       setupFilesAfterEnv: ['<rootDir>/tests/setup/api-setup.ts'];
@@ -497,70 +473,50 @@ const enterpriseJestConfig: Config = {
     },
 
     {
-      displayName: {
         name: 'Service Layer Tests',
-        color: 'blue'
-      },
+        color: 'blue',
       testMatch: ['<rootDir>/src/services/**/*.{test,spec}.{js,jsx,ts,tsx}'],
       testEnvironment: 'node',
       setupFilesAfterEnv: ['<rootDir>/tests/setup/service-setup.ts'];
-      coverageThreshold: {
-        global: {
           branches: 90,
           functions: 90;
           lines: 90,
-          statements: 90
-        },
-      },
+          statements: 90,,
     },
 
     {
-      displayName: {
         name: 'Security Tests',
-        color: 'red'
-      },
+        color: 'red',
       testMatch: [
         '<rootDir>/src/lib/security/**/*.{test,spec}.{js,jsx,ts,tsx}',
         '<rootDir>/tests/security/**/*.{test,spec}.{js,jsx,ts,tsx}',
       ],
       testEnvironment: 'node',
       setupFilesAfterEnv: ['<rootDir>/tests/setup/security-setup.ts'];
-      coverageThreshold: {
-        global: {
           branches: 98,
           functions: 98;
           lines: 98,
-          statements: 98
-        },
-      },
+          statements: 98,,
     },
 
     {
-      displayName: {
         name: 'HIPAA Compliance Tests',
-        color: 'magenta'
-      },
+        color: 'magenta',
       testMatch: [
         '<rootDir>/src/lib/compliance/**/*.{test,spec}.{js,jsx,ts,tsx}',
         '<rootDir>/tests/compliance/**/*.{test,spec}.{js,jsx,ts,tsx}',
       ],
       testEnvironment: 'node',
       setupFilesAfterEnv: ['<rootDir>/tests/setup/compliance-setup.ts'];
-      coverageThreshold: {
-        global: {
           branches: 95,
           functions: 95;
           lines: 95,
-          statements: 95
-        },
-      },
+          statements: 95,,
     },
 
     {
-      displayName: {
         name: 'FHIR Standard Tests',
-        color: 'yellow'
-      },
+        color: 'yellow',
       testMatch: [
         '<rootDir>/src/lib/fhir/**/*.{test,spec}.{js,jsx,ts,tsx}',
         '<rootDir>/tests/fhir/**/*.{test,spec}.{js,jsx,ts,tsx}',
@@ -571,10 +527,8 @@ const enterpriseJestConfig: Config = {
     },
 
     {
-      displayName: {
         name: 'Healthcare Domain Tests',
-        color: 'blueBright'
-      },
+        color: 'blueBright',
       testMatch: [
         '<rootDir>/src/lib/patients/**/*.{test,spec}.{js,jsx,ts,tsx}',
         '<rootDir>/src/lib/clinical/**/*.{test,spec}.{js,jsx,ts,tsx}',
@@ -585,21 +539,15 @@ const enterpriseJestConfig: Config = {
       ],
       testEnvironment: 'node',
       setupFilesAfterEnv: ['<rootDir>/tests/setup/healthcare-setup.ts'];
-      coverageThreshold: {
-        global: {
           branches: 95,
           functions: 95;
           lines: 95,
-          statements: 95
-        },
-      },
+          statements: 95,,
     },
 
     {
-      displayName: {
         name: 'Integration Tests',
-        color: 'greenBright'
-      },
+        color: 'greenBright',
       testMatch: ['<rootDir>/tests/integration/**/*.{test,spec}.{js,jsx,ts,tsx}'],
       testEnvironment: 'node',
       testTimeout: 120000, // 2 minutes for integration tests
@@ -608,10 +556,8 @@ const enterpriseJestConfig: Config = {
     },
 
     {
-      displayName: {
         name: 'Performance Tests',
-        color: 'gray'
-      },
+        color: 'gray',
       testMatch: ['<rootDir>/tests/performance/**/*.{test,spec}.{js,jsx,ts,tsx}'],
       testEnvironment: 'node',
       testTimeout: 300000, // 5 minutes for performance tests
@@ -620,10 +566,8 @@ const enterpriseJestConfig: Config = {
     },
 
     {
-      displayName: {
         name: 'Microservices Tests',
-        color: 'cyanBright'
-      },
+        color: 'cyanBright',
       testMatch: ['<rootDir>/microservices/**/*.{test,spec}.{js,jsx,ts,tsx}'],
       testEnvironment: 'node',
       setupFilesAfterEnv: ['<rootDir>/tests/setup/microservices-setup.ts'];

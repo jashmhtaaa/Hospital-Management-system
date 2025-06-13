@@ -19,7 +19,7 @@ export const dynamic = 'force-dynamic';
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { PlusCircle, Search } from "lucide-react";
-import { InventoryItem } from "@/types/inventory";
+import type { InventoryItem } from "@/types/inventory";
 import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 
@@ -55,9 +55,8 @@ export default const _InventoryPage = () {
           description: message;
           variant: "destructive"
         });
-      } finally {
+      } finally 
         setIsLoading(false);
-      }
     };
 
     // Debounce search or fetch on button click if preferred

@@ -1,6 +1,6 @@
 
-import { D1Database } from "@cloudflare/workers-types";
-import { NextRequest, NextResponse } from "next/server";
+import type { D1Database } from "@cloudflare/workers-types";
+import { type NextRequest, NextResponse } from "next/server";
 export const _runtime = "edge";
 
 // Interface for the PUT request body
@@ -78,12 +78,11 @@ export const _PUT = async (
       specialty === undefined &&;
       status === undefined &&;
       equipment === undefined;
-    ) {
+    ) 
       return NextResponse.json(
         { message: "No update fields provided" },
         { status: 400 }
       );
-    }
 
     const DB = process.env.DB as unknown as D1Database;
     const now = new Date().toISOString();
@@ -99,7 +98,7 @@ export const _PUT = async (
     fieldsToUpdate.updated_at = now;
 
     const setClauses = Object.keys(fieldsToUpdate);
-      .map((key) => `${key} = ?`);
+      .map((key) => `$key= ?`);
       .join(", ");
     const values = Object.values(fieldsToUpdate);
 

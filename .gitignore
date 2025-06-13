@@ -128,3 +128,4 @@ prisma/migrations/migration_lock.toml
 # Backup files
 *.backup
 *.bak
+core

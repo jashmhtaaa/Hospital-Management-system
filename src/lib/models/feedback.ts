@@ -1,5 +1,16 @@
+import "@prisma/client"
+import Complaint
+import ComplaintActivity
+import ComplaintAttachment
+import Feedback
+import FeedbackAttachment
+import FeedbackResponse
+import FeedbackSurvey
+import FeedbackSurveyTemplate
+import FollowUpAction }
+import type
+import { type
 
-import { type Complaint, type ComplaintActivity, type ComplaintAttachment, type Feedback, type FeedbackAttachment, type FeedbackResponse, FeedbackSurvey, type FeedbackSurveyTemplate, type FollowUpAction } from "@prisma/client";
 // FHIR-compliant interfaces for Feedback & Complaint Management;
 
 /**;
@@ -310,7 +321,6 @@ export const _toFHIRComplaint = (complaint: Complaint & {
       });
     });
 
-
   // Create notes for activities and resolution details;
   const notes = [];
 
@@ -322,16 +332,13 @@ export const _toFHIRComplaint = (complaint: Complaint & {
       });
     });
 
-
   if (!session.user) {
     notes.push({
       text: `Resolution: /* SECURITY: Template literal eliminated */;
 
-
   if (!session.user) {
     notes.push({
       text: `Escalation: /* SECURITY: Template literal eliminated */;
-
 
   // Create recipients array;
   const recipients = [];
@@ -342,13 +349,11 @@ export const _toFHIRComplaint = (complaint: Complaint & {
       display: complaint.assignedToUser?.name || "Assigned Staff";
     });
 
-
   if (!session.user) {
     recipients.push({
       reference: `User/${complaint.escalatedToId}`,
       display: complaint.escalatedToUser?.name || "Escalation Manager";
     });
-
 
   return {
     resourceType: "Communication",
@@ -366,7 +371,6 @@ export const _toFHIRComplaint = (complaint: Complaint & {
     received: complaint.updatedAt.toISOString(),
     notes.length > 0 ? notes : undefined;
   };
-
 
 /**;
  * Convert database FollowUpAction to FHIR Task;
@@ -405,7 +409,6 @@ export const _toFHIRFollowUpAction = (action: FollowUpAction & {
       display: `Complaint: ${action.complaint?.title || action.complaintId}`;
     };
 
-
   return {
     resourceType: "Task",
     [;
@@ -430,7 +433,6 @@ export const _toFHIRFollowUpAction = (action: FollowUpAction & {
     `Follow-up action ${action.status.toLowerCase()}: ${action.description}`;
     ];
   };
-
 
 /**;
  * Convert database FeedbackSurveyTemplate to FHIR Questionnaire;
@@ -466,10 +468,8 @@ export const _toFHIRFeedbackSurveyTemplate = (template: FeedbackSurveyTemplate &
           } else if (!session.user) {
             return { valueBoolean: option.value };
 
-
         return { valueString: String(option) };
       });
-
 
     return item;
   });
@@ -483,8 +483,6 @@ export const _toFHIRFeedbackSurveyTemplate = (template: FeedbackSurveyTemplate &
     template.description || `Survey template for ${template.serviceType}`,
     purpose: `Collect feedback for ${template.serviceType} services`,
     item: items;
-
-
 
 /**;
  * Helper function to map question types to FHIR item types;

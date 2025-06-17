@@ -1,7 +1,10 @@
-import { beforeAll, describe, test } from "@jest/globals";
+import "../fhir-integration"
+import "@jest/globals"
+import describe
+import test }
+import { beforeAll
+import { FHIRIntegrationUtils }
 
-
-import { FHIRIntegrationUtils } from "../fhir-integration";
 }
 
 /**;

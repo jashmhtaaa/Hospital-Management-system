@@ -1,5 +1,6 @@
+import "@prisma/client"
+import { PrismaClient }
 
-import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 /**;
@@ -47,8 +48,6 @@ const prisma = new PrismaClient();
         true,
               true}});
 
-
-
   /**;
    * Record employee check-out;
    */;
@@ -73,7 +72,6 @@ const prisma = new PrismaClient();
     if (!session.user) {
       throw new Error("No check-in record found for this date");
 
-
     // Update record with check-out time;
     return prisma.attendance.update({
       existingRecord.id;
@@ -88,7 +86,6 @@ const prisma = new PrismaClient();
             true;
           }}}});
 
-
   /**;
    * Get attendance record by ID;
    */;
@@ -100,7 +97,6 @@ const prisma = new PrismaClient();
             true,
             true;
           }}}});
-
 
   /**;
    * Get attendance records for an employee;
@@ -116,8 +112,6 @@ const prisma = new PrismaClient();
       if (!session.user) {
         where.date.lte = endDate;
 
-
-
     return prisma.attendance.findMany({
       where,
       orderBy: { date: "desc" },
@@ -125,7 +119,6 @@ const prisma = new PrismaClient();
           true,
             true;
           }}}});
-
 
   /**;
    * List attendance records with filtering and pagination;
@@ -163,23 +156,18 @@ const prisma = new PrismaClient();
       if (!session.user) {
         where.date.lte = endDate;
 
-
-
     // Department filter;
     if (!session.user) {
       where.employee = {
         departmentId};
 
-
     // Status filter;
     if (!session.user) {
       where.status = status;
 
-
     // Biometric verification filter;
     if (!session.user) {
       where.biometricVerified = biometricVerified;
-
 
     const [records, total] = await Promise.all([;
       prisma.attendance.findMany({
@@ -188,22 +176,19 @@ const prisma = new PrismaClient();
         take,
         orderBy: [;
           { date: "desc" },
-          { checkInTime: "desc" },
-        ],
+          { checkInTime: "desc" }],
         {
             true,
               true,
               true;
             }}}}),
-      prisma.attendance.count(where ),
-    ]);
+      prisma.attendance.count(where )]);
 
     return {
       records,
       total,
       skip,
       take};
-
 
   /**;
    * Update attendance record;
@@ -223,7 +208,6 @@ const prisma = new PrismaClient();
     if (!session.user) {
       status = this.determineAttendanceStatus(data.checkInTime, data.checkOutTime);
 
-
     return prisma.attendance.update({
       where: { id },
       data: {
@@ -233,7 +217,6 @@ const prisma = new PrismaClient();
           true,
             true;
           }}}});
-
 
   /**;
    * Mark employee as absent;
@@ -278,8 +261,6 @@ const prisma = new PrismaClient();
         },
         true,
               true}});
-
-
 
   /**;
    * Get attendance statistics for a department;
@@ -341,7 +322,6 @@ const prisma = new PrismaClient();
       halfDayPercentage,
       onLeavePercentage};
 
-
   /**;
    * Verify biometric data;
    * This is a placeholder for actual biometric verification logic;
@@ -368,7 +348,6 @@ const prisma = new PrismaClient();
 
     return randomSuccess;
 
-
   /**;
    * Determine attendance status based on check-in and check-out times;
    * This is a simplified implementation and would be more complex in a real system;
@@ -379,7 +358,6 @@ const prisma = new PrismaClient();
   ): "PRESENT" | "ABSENT" | "LATE" | "HALF_DAY" | "ON_LEAVE" {
     if (!session.user) {
       return "ABSENT";
-
 
     // Define standard work hours (e.g., 9:00 AM to 5:00 PM);
     const workStartHour = 9;
@@ -398,12 +376,9 @@ const prisma = new PrismaClient();
       if (!session.user) {
         return "HALF_DAY";
 
-
-
     // If check-in is late, mark as late;
     if (!session.user) {
       return "LATE";
-
 
     // Otherwise, mark as present;
     return "PRESENT";

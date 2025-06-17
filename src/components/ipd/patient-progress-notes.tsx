@@ -1,6 +1,13 @@
-import type React from "react";
-import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
+import "react"
+import ChangeEvent
+import FormEvent
+import React
+import type
+import useEffect
+import useState }
 import {
+import { type
+
 }
 
 "use client";
@@ -18,7 +25,8 @@ import {
   Label, // Assuming Label is imported from ui;
 } from "@/components/ui";
 import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast;
-import { Loader2 } from "lucide-react";
+import "lucide-react"
+import { Loader2 }
 
 // Define interfaces for data structures;
 interface ProgressNote {
@@ -152,7 +160,34 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       setError(undefined);
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         // Simulate API call;
@@ -161,7 +196,34 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
         //   let _errorMsg = "Failed to fetch progress notes";
         //   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         //       const _errorData: ApiErrorResponse = await response.json();
@@ -202,8 +264,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
             "doc_102",
             "Johnson",
             created_at: [0] - 86_400_000).toISOString();
-          },
-        ];
+          }];
 
         setPatientInfo(mockPatientInfo),
         setProgressNotes();
@@ -245,7 +306,34 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
 
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Basic validation;
@@ -258,7 +346,6 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
         note_date: new Date().toISOString();
         // doctor_id: session?.user?.id // Get from session;
 
-
       // Simulate API call;
       // const _response = await fetch(`/api/ipd/admissions/${admissionId}/progress-notes`, {
       //   method: "POST";
@@ -269,7 +356,34 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       //   let _errorMsg = "Failed to create progress note";
       //   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       //       const _errorData: ApiErrorResponse = await response.json();
@@ -318,7 +432,34 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
     if (!session.user)eturn "N/A";
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const "numeric",

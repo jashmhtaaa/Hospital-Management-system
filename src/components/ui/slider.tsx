@@ -1,9 +1,10 @@
+import "@/lib/utils"
+import "@radix-ui/react-slider"
+import "react"
+import * as SliderPrimitive
+import * as React
+import { cn }
 
-import * as SliderPrimitive from "@radix-ui/react-slider";
-import * as React from "react";
-
-
-import { cn } from "@/lib/utils";
 }
 
 "use client";

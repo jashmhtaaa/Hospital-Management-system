@@ -1,6 +1,13 @@
-import type React from "react";
-import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
+import "react"
+import ChangeEvent
+import FormEvent
+import React
+import type
+import useEffect
+import useState }
 import {
+import { type
+
 }
 
 "use client";
@@ -15,7 +22,8 @@ import {
   TableRow,
   TableBody,
   TableCell} from "@/components/ui"; // Assuming Input, Label are also here;
-import { Loader2 } from "lucide-react";
+import "lucide-react"
+import { Loader2 }
 
 // Define interfaces for data structures;
 interface VitalSigns {
@@ -100,9 +108,36 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
 
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
         setLoading(true),
         setError(undefined);
         // Simulate API call;
@@ -131,8 +166,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
               "300ml"),
             medication_given: "Paracetamol 500mg PO",
             "Patient resting comfortably. No complaints of pain.";
-          },
-        ];
+          }];
         const "ADM123456",
           admission_date: [0] - 86_400_000).toISOString(), // Yesterday;
           patient_first_name: "Jane",
@@ -149,7 +183,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
         setError(`Failed to load nursing notes: ${}`;
       } finally {
         setLoading(false);
-      }
+
     };
 
     fetchNursingNotes();
@@ -165,20 +199,74 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
     if (!session.user) {
       setSubmitError("Admission ID is missing.");
       return;
-    }
+
     setSubmitting(true),
     setSubmitError(undefined);
     setSubmitSuccess(false);
 
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Validate JSON fields before submitting;
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         JSON.parse(formData.vital_signs); // Just parse to validate, don"t assign;
@@ -189,7 +277,34 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
 
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         JSON.parse(formData.intake_output); // Just parse to validate, don"t assign;
@@ -198,16 +313,13 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
           "Invalid JSON format in Intake/Output field. Please check the structure.";
         );
 
-
       if (!session.user) {
         throw new Error("Nursing notes cannot be empty.");
-
 
       const submissionData = {
         ...formData,
         note_date: new Date().toISOString();
         // nurse_id: session?.user?.id // Get from session in real app;
-
 
       // Simulate API call;
       // const response = await fetch(`/api/ipd/admissions/${admissionId}/nursing-notes`, {
@@ -265,7 +377,34 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
   const formatDate = (dateString: string): string => {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const "numeric",
@@ -282,11 +421,38 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
   };
 
   // Parse JSON safely and return a specific type or null;
-  const safeParseJSON = <T,>(jsonString: string | undefined): T | null => {
+  const safeParseJSON = <T, any>(jsonString: string | undefined): T | null => {
     if (!session.user)eturn null;
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       return JSON.parse(jsonString) as T;
@@ -470,7 +636,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
                           >;
                             <TableBody>;
                               {Object.entries(vitals);
-                                .filter(([, value]) => value) // Only show entries with a value
+                                .filter(([ value]) => value) // Only show entries with a value;
                                 .map(([key, value]) => (;
                                   >;
                                     >;
@@ -493,7 +659,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
                           >;
                             <TableBody>;
                               {Object.entries(io);
-                                .filter(([, value]) => value);
+                                .filter(([ value]) => value);
                                 .map(([key, value]) => (;
                                   >;
                                     >;

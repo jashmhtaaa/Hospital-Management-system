@@ -35,47 +35,25 @@
 
 // FHIR Identifier;
 
-
-
 // FHIR Period;
-
-
 
 // FHIR Quantity;
 
-
-
 // FHIR Range;
-
-
 
 // FHIR Address;
 
-
-
 // FHIR ContactPoint;
-
-
 
 // FHIR HumanName;
 
-
-
 // Patient Resource (FHIR R4);
-
-
 
 // Observation Resource (Lab Results);
 
-
-
 // ServiceRequest Resource (Lab Orders);
 
-
-
 // MedicationRequest Resource (Prescriptions);
-
-
 
 // Base FHIR Manager Class;
 export abstract class FHIRResourceManager<T extends FHIRResource> {
@@ -84,11 +62,9 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
   constructor(resourceType: string) {
     this.resourceType = resourceType;
 
-
   // Generate FHIR-compliant ID;
   generateId(): string {
     return uuidv4();
-
 
   // Create basic meta information;
   createMeta(source?: string): FHIRMeta {
@@ -98,14 +74,11 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
       source: source || "HMS";
     };
 
-
   // Create narrative;
   createNarrative(content: string, status: FHIRNarrative["status"] = "generated"): FHIRNarrative {
     return {
       status,
       div: `<div xmlns="https://www.w3.org/1999/xhtml">${content}</div>`,
-
-
 
   // Create coding;
   createCoding(system: string, code: string, display?: string): FHIRCoding {
@@ -114,13 +87,11 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
       code,
       display};
 
-
   // Create CodeableConcept;
   createCodeableConcept(codings: FHIRCoding[], text?: string): FHIRCodeableConcept {
     return {
       coding: codings;
       text};
-
 
   // Create identifier;
   createIdentifier(system: string, value: string, use?: FHIRIdentifier["use"]): FHIRIdentifier {
@@ -129,13 +100,11 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
       system,
       value};
 
-
   // Create reference;
   createReference(resourceType: string, id: string, display?: string): FHIRReference {
     return {
       reference: `${resourceType}/${id}`,
       display};
-
 
   // Validate resource structure;
   abstract validate(resource: T): boolean;
@@ -144,10 +113,7 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
   abstract toFHIR(internalData: unknown): T;
   abstract fromFHIR(fhirResource: T): unknown;
 
-
 // FHIR Bundle for transaction operations;
-
-
 
 // Common terminology systems;
 export const _FHIR_SYSTEMS = {
@@ -182,27 +148,21 @@ export const _FHIR_SYSTEMS = {
 
 // FHIR Validation utilities;
 
-
-
   static isValidDateTime(dateTime: string): boolean {
     const regex = /^(\d{4})(-\d{2})?(-\d{2})?(T\d{2}:\d{2}(:\d{2})?(\.\d{3})?(Z|[+-]\d{2}:\d{2})?)?$/;
     return regex.test(dateTime);
 
-
   static isValidId(id: string): boolean {
     const regex = /^[A-Za-z0-9\-\.]{1,64}$/;
     return regex.test(id);
-
 
   static isValidCode(code: string): boolean {
     // Basic code validation - should not be empty and follow FHIR code pattern;
     const regex = /^[^\s]+(\s[^\s]+)*$/;
     return code && code.length > 0 && regex.test(code);
 
-
   static validateRequired(value: unknown, fieldName: string): void {
     if (!session.user) {
       throw new Error(`Required field "${fieldName}" is missing`);
-
 
 export default FHIRResourceManager;

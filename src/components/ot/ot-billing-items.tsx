@@ -1,7 +1,16 @@
-import React, { useState, useEffect } from "react";
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "react"
+import CardContent
+import CardHeader
+import CardTitle }
+import React
+import useEffect }
 import {
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button }
+import { Card
+import { useState
+
 }
 
 "use client";
@@ -12,9 +21,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { format } from "date-fns";
-import { Calculator } from "lucide-react";
+import "@/components/ui/badge"
+import "date-fns"
+import "lucide-react"
+import { Badge }
+import { Calculator }
+import { format }
 
 // This component integrates OT module with Billing module;
 // It shows surgery-related billing items for a patient;
@@ -84,9 +96,36 @@ export default const _OTBillingItems = ({
     const fetchOTBillingItems = async () => {
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         setLoading(true),
         setError(undefined);
 
@@ -110,8 +149,7 @@ export default const _OTBillingItems = ({
             date: "2025-04-28T09:00:00Z",
             "Consumables",
             "billed",
-            "INV-001",
-        ];
+            "INV-001"];
         setBillingItems(mockData),
         setLoading(false);
       } catch (error_: unknown) {
@@ -122,7 +160,7 @@ export default const _OTBillingItems = ({
             : "An unknown error occurred";
         setError(messageText),
         setLoading(false);
-      }
+
     };
 
     if (!session.user) {

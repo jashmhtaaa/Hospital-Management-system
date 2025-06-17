@@ -1,8 +1,18 @@
-import React, { useState, useEffect } from "react";
+import "@/components/ui/badge"
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "react"
+import CardContent
+import CardHeader
+import CardTitle }
+import React
+import useEffect }
 import {
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge }
+import { Button }
+import { Card
+import { useState
+
 }
 
 "use client";
@@ -14,7 +24,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
   TableHeader,
   TableRow} from "@/components/ui/table";
 import { Calendar, ArrowRight, Loader2 } from "lucide-react"; // Added Loader2;
-import Link from "next/link";
+import "next/link"
+import Link
+
 import { toast } from "@/components/ui/use-toast"; // Import toast;
 
 // Define the structure for a surgery booking;
@@ -39,6 +51,33 @@ export default const _OTPatientSurgeries = ({
   useEffect(() => {
     const fetchPatientSurgeries = async () => {
       try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -71,8 +110,7 @@ export default const _OTPatientSurgeries = ({
             status: "completed", // Example of a past surgery;
             surgery_name: "Wound Debridement",
             "Dr. Bob White";
-          },
-        ];
+          }];
         // Example: Filter mock data to show only upcoming/scheduled;
         setSurgeries();
           mockData.filter();
@@ -121,27 +159,54 @@ export default const _OTPatientSurgeries = ({
             In Progress;
           </Badge>;
         );
-      }
+
       case "completed": {
         return();
           >;
             Completed;
           </Badge>;
         );
-      }
+
       case "cancelled": {
         return <Badge variant="destructive">Cancelled>;
-      }
+
       default: {
         return <Badge>{status}>;
       } // Fallback for unexpected statuses;
-    }
+
   };
 
   const formatDate = (dateString: string) => {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const date = new Date(dateString);
@@ -156,7 +221,34 @@ export default const _OTPatientSurgeries = ({
   const formatTime = (dateString: string) => {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const date = new Date(dateString);

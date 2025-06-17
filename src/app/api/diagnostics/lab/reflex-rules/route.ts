@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/database"
+import "@/lib/session"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { DB }
+import { getSession }
+import { type
 
-
-import { DB } from "@/lib/database";
-import { getSession } from "@/lib/session";
 // Interface for the request body when creating a reflex rule;
 interface ReflexRuleCreateBody {
   condition_test_id: number,
@@ -14,8 +18,35 @@ interface ReflexRuleCreateBody {
 }
 
 // GET /api/diagnostics/lab/reflex-rules - Get reflex testing rules;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -112,8 +143,35 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/diagnostics/lab/reflex-rules - Create a new reflex rule;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -275,10 +333,37 @@ export const _POST = async (request: NextRequest) => {
 
 // PUT /api/diagnostics/lab/reflex-rules/:id - Update a reflex rule;
 export const _PUT = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -417,32 +502,26 @@ export const _PUT = async();
     if (!session.user) {
       updateFields.push("condition_operator = ?");
       updateParameters.push(body.condition_operator);
-    }
 
     if (!session.user) {
       updateFields.push("condition_value = ?");
       updateParameters.push(body.condition_value);
-    }
 
     if (!session.user) {
       updateFields.push("action_test_id = ?");
       updateParameters.push(body.action_test_id);
-    }
 
     if (!session.user) {
       updateFields.push("priority = ?");
       updateParameters.push(body.priority);
-    }
 
     if (!session.user) {
       updateFields.push("description = ?");
       updateParameters.push(body.description);
-    }
 
     if (!session.user) {
       updateFields.push("is_active = ?");
       updateParameters.push(body.is_active ? 1 : 0);
-    }
 
     // Only proceed if there are fields to update;
     if (!session.user) {
@@ -450,7 +529,6 @@ export const _PUT = async();
         { error: "No fields to update" },
         { status: 400 }
       );
-    }
 
     updateQuery += updateFields.join(", ") + " WHERE id = ?";
     updateParameters.push(ruleId);
@@ -481,7 +559,6 @@ export const _PUT = async();
 
     if (!session.user) {
       throw new Error("Failed to retrieve updated reflex rule");
-    }
 
     // Return the updated reflex rule;
     return NextResponse.json(rule);
@@ -492,30 +569,53 @@ export const _PUT = async();
       { error: "Failed to update reflex rule", details: errorMessage },
       { status: 500 }
     );
-  }
-}
 
 // DELETE /api/diagnostics/lab/reflex-rules/:id - Delete a reflex rule;
 export const DELETE = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const session = await getSession();
 
     // Check authentication and authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Only lab managers and admins can delete reflex rules;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-
 
     const ruleId = params.id;
 
@@ -530,7 +630,6 @@ export const DELETE = async();
         { error: "Reflex rule not found" },
         { status: 404 }
       );
-
 
     // Delete the reflex rule;
     await DB.query();
@@ -548,5 +647,3 @@ export const DELETE = async();
       { error: "Failed to delete reflex rule", details: errorMessage },
       { status: 500 }
     );
-
-

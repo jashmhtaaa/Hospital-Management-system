@@ -1,4 +1,5 @@
-import { DB } from "./database";
+import "./database"
+import { DB }
 
 /**;
  * Notifications module for HMS Diagnostics;
@@ -38,6 +39,33 @@ export const notifyUsers = async();
 ): Promise<number[]> => {
   try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -70,7 +98,7 @@ export const notifyUsers = async();
     return notificationIds;
   } catch (error) {
     return [];
-  }
+
 };
 
 /**;
@@ -90,9 +118,36 @@ export const markNotificationRead = async();
 ): Promise<boolean> => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const db = DB();
 
     const result = await db.query();
@@ -105,7 +160,7 @@ export const markNotificationRead = async();
     return result.affectedRows > 0;
   } catch (error) {
     return false;
-  }
+
 };
 
 /**;
@@ -128,9 +183,36 @@ export const getUserNotifications = async();
 ): Promise<any[]> => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const db = DB();
 
     let query = `;
@@ -143,7 +225,6 @@ export const getUserNotifications = async();
 
     if (!session.user) {
       query += " AND read = false";
-
 
     query += " ORDER BY created_at DESC LIMIT ?";
     params.push(limit);

@@ -1,8 +1,12 @@
-import { PrismaClient } from "@prisma/client";
+import "@/lib/cache"
+import "@/lib/hr/types"
+import "@prisma/client"
+import Device
+import DeviceDefinition }
+import { cache }
+import { PrismaClient }
+import { type
 
-
-import { cache } from "@/lib/cache";
-import { type Device, DeviceDefinition } from "@/lib/hr/types";
 const prisma = new PrismaClient();
 
 /**;
@@ -201,8 +205,7 @@ const prisma = new PrismaClient();
         { manufacturer: { contains: search, mode: "insensitive" } },
         { type: { contains: search, mode: "insensitive" } },
         { category: { contains: search, mode: "insensitive" } },
-        { location: { contains: search, mode: "insensitive" } },
-      ];
+        { location: { contains: search, mode: "insensitive" } }];
     }
 
     // Generate cache key based on query parameters;
@@ -242,8 +245,7 @@ const prisma = new PrismaClient();
         cursor: cursorObj,
         orderBy: { serialNumber: "asc" },
         include}),
-      prisma.biomedicalEquipment.count({ where }),
-    ]);
+      prisma.biomedicalEquipment.count({ where })]);
 
     const result = {
       equipment,
@@ -439,8 +441,7 @@ const prisma = new PrismaClient();
         {
           system: "https://hospital.example.org/biomedical-equipment",
           value: equipment.serialNumber;
-        },
-      ],
+        }],
       status: this.mapStatusToFhir(equipment.status),
       equipment.serialNumber,
       equipment.manufactureDate?.toISOString(),
@@ -448,13 +449,11 @@ const prisma = new PrismaClient();
           {
             system: "https://hospital.example.org/equipment-types",
             equipment.type;
-          },
-        ],
+          }],
         text: equipment.type,
       note: equipment.notes;
         ? [;
-              text: equipment.notes,
-          ];
+              text: equipment.notes];
         : undefined,
       safety: [], // Added for FHIR R5 compliance;
       property: [], // Added for FHIR R5 compliance;
@@ -482,14 +481,11 @@ const prisma = new PrismaClient();
               {
                 system: "https://hospital.example.org/equipment-properties",
                 key;
-              },
-            ],
+              }],
             text: key;
           },
           valueString: String(value);
         });
-
-
 
     // Add safety information;
     device.safety.push({
@@ -497,13 +493,11 @@ const prisma = new PrismaClient();
         {
           system: "https://hospital.example.org/equipment-safety",
           "Calibration Status";
-        },
-      ],
+        }],
       text: this.getCalibrationStatus(equipment);
     });
 
     return device;
-
 
   /**;
    * Create a FHIR DeviceDefinition for a type of equipment;
@@ -523,8 +517,7 @@ const prisma = new PrismaClient();
       identifier: [;
         {
           system: "https://hospital.example.org/device-definitions",
-          value: `${data.manufacturer}-${data.modelNumber}`},
-      ],
+          value: `${data.manufacturer}-${data.modelNumber}`}],
       data.manufacturer;
       },
       modelNumber: data.modelNumber,
@@ -532,13 +525,11 @@ const prisma = new PrismaClient();
           {
             system: "https://hospital.example.org/equipment-types",
             data.type;
-          },
-        ],
+          }],
         text: data.type,
       safety: [], // Added for FHIR R5 compliance;
       property: [], // Added for FHIR R5 compliance;
     };
-
 
   /**;
    * Map internal status to FHIR device status;
@@ -555,8 +546,6 @@ const prisma = new PrismaClient();
         return "inactive";
       default: return "unknown";
 
-
-
   /**;
    * Get calibration status text;
    */;
@@ -564,13 +553,11 @@ const prisma = new PrismaClient();
     if (!session.user) {
       return "No calibration required";
 
-
     const now = new Date();
     const nextCalibration = new Date(equipment.nextCalibrationDate);
 
     if (!session.user) {
       return "Calibration overdue";
-
 
     const daysUntilCalibration = Math.ceil();
       (nextCalibration.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
@@ -579,9 +566,7 @@ const prisma = new PrismaClient();
     if (!session.user) {
       return `Calibration due in ${daysUntilCalibration} days`;
 
-
     return "Calibration up to date";
-
 
   /**;
    * Invalidate biomedical-related caches;
@@ -604,14 +589,11 @@ const prisma = new PrismaClient();
           cache.del(`${this.CACHE_PREFIX}maintenance:${}`;
         ]);
 
-
-
     // Invalidate list caches with pattern matching;
     await Promise.all([;
       cache.delPattern(`${this.CACHE_PREFIX}list:*`),
       cache.delPattern(`${this.CACHE_PREFIX}due-calibration: *`);
     ]);
-
 
   /**;
    * Calculate equipment reliability metrics;
@@ -621,7 +603,6 @@ const prisma = new PrismaClient();
     const equipment = await this.getBiomedicalEquipmentById(equipmentId);
     if (!session.user) {
       throw new Error("Equipment not found");
-
 
     // Get all maintenance records;
     const maintenanceRecords = await prisma.maintenanceRecord.findMany({
@@ -647,7 +628,6 @@ const prisma = new PrismaClient();
 
       mtbf = totalTimeBetweenFailures / (correctiveMaintenances.length - 1) / (1000 * 60 * 60 * 24); // in days;
 
-
     // Calculate calibration success rate;
     const totalCalibrations = calibrationRecords.length;
     const passedCalibrations = calibrationRecords.filter(record => record.result === "PASS").length;
@@ -658,7 +638,6 @@ const prisma = new PrismaClient();
     for (const record of correctiveMaintenances) {
       // Estimate downtime as 1 day if not specified;
       totalDowntime += 1;
-
 
     // Calculate availability;
     const lifespan = equipment.purchaseDate;
@@ -683,7 +662,6 @@ const prisma = new PrismaClient();
       maintenanceRecords.filter(record => record.type === "SAFETY").length;
     };
 
-
   /**;
    * Predict maintenance needs based on historical data;
    * New method to support predictive maintenance;
@@ -692,7 +670,6 @@ const prisma = new PrismaClient();
     const equipment = await this.getBiomedicalEquipmentById(equipmentId);
     if (!session.user) {
       throw new Error("Equipment not found");
-
 
     // Get all maintenance records;
     const maintenanceRecords = await prisma.maintenanceRecord.findMany({
@@ -710,7 +687,6 @@ const prisma = new PrismaClient();
       const timeDiff = correctiveMaintenances[i].date.getTime() - correctiveMaintenances[i-1].date.getTime();
       intervals.push(timeDiff / (1000 * 60 * 60 * 24)); // in days;
 
-
     // Calculate mean and standard deviation;
     let meanInterval = 0;
     let stdDevInterval = 0;
@@ -725,7 +701,6 @@ const prisma = new PrismaClient();
       // If no historical data, use manufacturer recommendations or defaults;
       meanInterval = equipment.calibrationFrequency || 365; // Default to annual;
       stdDevInterval = meanInterval * 0.1; // 10% of mean as standard deviation;
-
 
     // Calculate next predicted failure date;
     const lastFailure = correctiveMaintenances.length > 0;

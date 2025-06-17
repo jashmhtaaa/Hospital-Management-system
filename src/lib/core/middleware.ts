@@ -1,9 +1,15 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "./errors.ts"
+import "./logging.ts"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import ValidationError }
+import { AppError
+import { logger }
+import { type
+import { z }
 
-
-import { AppError, ValidationError } from "./errors.ts";
-import { logger } from "./logging.ts";
 }
 
 /**;
@@ -17,8 +23,35 @@ import { logger } from "./logging.ts";
  * @returns Middleware function;
  */;
 export function validateRequestBody<T>(schema: z.ZodType<T>) {
-  return async (req: NextRequest) => {
+  return async (req: any) => {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -40,12 +73,39 @@ export function validateRequestBody<T>(schema: z.ZodType<T>) {
  * @returns Middleware function;
  */;
 export function validateQueryParams<T>(schema: z.ZodType<T>) {
-  return (req: NextRequest) => {
+  return (req: any) => {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
       const url = new URL(req.url);
       const queryParams: Record<string, string> = {};
 
@@ -57,11 +117,10 @@ export function validateQueryParams<T>(schema: z.ZodType<T>) {
     } catch (error) {
       if (!session.user) {
         throw new ValidationError("Invalid query parameters", error.errors);
-      }
+
       throw new ValidationError("Could not parse query parameters");
-    }
+
   };
-}
 
 /**;
  * Middleware for handling errors in API routes;
@@ -69,14 +128,41 @@ export function validateQueryParams<T>(schema: z.ZodType<T>) {
  * @returns Wrapped handler with error handling;
  */;
 export const _withErrorHandling = (;
-  handler: (req: NextRequest, ...args: unknown[]) => Promise>;
+  handler: (req: any, ...args: unknown[]) => Promise>;
 ) {
-  return async (req: NextRequest, ...args: unknown[]) => {
+  return async (req: any, ...args: unknown[]) => {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       return await handler(req, ...args);
     } catch (error) {
       logger.error("API error", {
@@ -92,7 +178,6 @@ export const _withErrorHandling = (;
             error.details;
           },status: error.statusCode ;
         );
-      }
 
       // For unexpected errors, don"t expose details in production;
       const isProd = process.env.NODE_ENV === "production";
@@ -103,9 +188,8 @@ export const _withErrorHandling = (;
         },
         { status: 500 }
       );
-    }
+
   };
-}
 
 /**;
  * Middleware for requiring authentication;
@@ -113,9 +197,9 @@ export const _withErrorHandling = (;
  * @returns Wrapped handler with authentication check;
  */;
 export const _withAuth = (;
-  handler: (req: NextRequest, ...args: unknown[]) => Promise>;
+  handler: (req: any, ...args: unknown[]) => Promise>;
 ) {
-  return async (req: NextRequest, ...args: unknown[]) => {
+  return async (req: any, ...args: unknown[]) => {
     // In a real implementation, this would check session/token;
     // For now, we"ll assume authentication is handled by Next.js middleware;
     const session = req.headers.get("x-session");
@@ -126,10 +210,8 @@ export const _withAuth = (;
         { status: 401 }
       );
 
-
     return handler(req, ...args);
   };
-
 
 /**;
  * Middleware for requiring specific permissions;
@@ -139,9 +221,9 @@ export const _withAuth = (;
  */;
 export const _withPermissions = (;
   permissions: string[],
-  handler: (req: NextRequest, ...args: unknown[]) => Promise>;
+  handler: (req: any, ...args: unknown[]) => Promise>;
 ) {
-  return async (req: NextRequest, ...args: unknown[]) => {
+  return async (req: any, ...args: unknown[]) => {
     // In a real implementation, this would check user permissions;
     // For now, we"ll assume a simple role-based check;
     const userRole = req.headers.get("x-user-role");
@@ -151,7 +233,6 @@ export const _withPermissions = (;
         { error: "Forbidden", code: "FORBIDDEN' },
         { status: 403 }
       );
-
 
     return handler(req, ...args);
   };

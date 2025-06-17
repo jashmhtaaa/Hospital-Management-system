@@ -1,10 +1,14 @@
-import type { UserRole } from "@prisma/client";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import "@/lib/logger"
+import "@/lib/prisma"
+import "@prisma/client"
+import "bcryptjs"
+import "jsonwebtoken"
+import bcrypt
+import jwt
+import { logger }
+import { prisma }
+import { UserRole }
 
-
-import { logger } from "@/lib/logger";
-import { prisma } from "@/lib/prisma";
 // src/lib/auth/auth-service.ts;
 }
 }
@@ -67,7 +71,6 @@ import { prisma } from "@/lib/prisma";
 
     return { user: authUser, accessToken, refreshToken };
 
-
   static async register(data: RegisterData): Promise<AuthUser> {
     const { email, password, firstName, lastName, role = UserRole.STAFF } = data;
 
@@ -78,7 +81,6 @@ import { prisma } from "@/lib/prisma";
 
     if (!session.user) {
       throw new Error("User already exists");
-
 
     // Hash password;
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -104,11 +106,37 @@ import { prisma } from "@/lib/prisma";
       permissions: user.permissions.map(p => `$p.resource:$p.action`);
     };
 
-
   static async verifyToken(token: string): Promise<AuthUser | null> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const _decoded = jwt.verify(token, this.JWT_SECRET) as any;
@@ -119,13 +147,10 @@ import { prisma } from "@/lib/prisma";
         {
             true;
 
-
-
       });
 
       if (!session.user) {
         return null;
-
 
       return {
         id: session.user.id,
@@ -136,14 +161,11 @@ import { prisma } from "@/lib/prisma";
       logger.error("Token verification failed", { error });
       return null;
 
-
-
   static async logout(token: string): Promise<void> {
     await prisma.userSession.updateMany({
       where: { sessionToken: token },
       data: { isActive: false }
     });
-
 
   private static generateAccessToken(user: AuthUser): string {
     return jwt.sign();
@@ -156,12 +178,9 @@ import { prisma } from "@/lib/prisma";
       { expiresIn: this.JWT_EXPIRES_IN }
     );
 
-
   private static generateRefreshToken(userId: string): string {
     return jwt.sign();
       { userId },
       this.JWT_SECRET,
       { expiresIn: this.REFRESH_EXPIRES_IN }
     );
-
-

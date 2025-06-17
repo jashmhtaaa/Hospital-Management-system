@@ -1,4 +1,5 @@
 import {
+
   Button,
   Card,
   Form,
@@ -9,18 +10,24 @@ import {
   Switch,
   Table,
   message} from "antd";
-import type React from "react";
-import { useEffect, useState } from "react";
+import "react"
+import React
+import type
+import useState }
+import { useEffect
+
   PlusOutlined,
   SearchOutlined,
   ReloadOutlined,
   EyeOutlined} from "@ant-design/icons";
-import type {
-  FormProps,
+import { FormProps
+
   TableColumnsType,
   TablePaginationConfig,
-  TableProps} from "antd";
-import type { FilterValue, SorterResult } from "antd/es/table/interface";
+  TableProps } from "antd";
+import "antd/es/table/interface"
+import SorterResult }
+import { FilterValue
 
 const { Option } = Select;
 
@@ -98,6 +105,33 @@ const TestCatalogManagement: React.FC = () => {
   const fetchCategories = async (): Promise<void> => {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -105,6 +139,33 @@ const TestCatalogManagement: React.FC = () => {
       if (!session.user) {
         const errorMessage = "Failed to fetch categories";
         try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -133,16 +194,42 @@ const TestCatalogManagement: React.FC = () => {
     setLoading(true);
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       let url = "/api/laboratory/tests";
       const queryParameters = new URLSearchParams();
 
       // Add category filter from state;
       if (!session.user) {
         queryParameters.append("categoryId", categoryFilter);
-      }
 
       // Add pagination, sort, filter params from table state if needed by API;
       queryParameters.append("page", `${}`;
@@ -160,27 +247,52 @@ const TestCatalogManagement: React.FC = () => {
           "sortOrder",
           currentSorter.order === "ascend" ? "asc" : "desc";
         );
-      }
 
       if (!session.user) {
         url += `?${queryParameters.toString()}`;
-      }
 
       const response = await fetch(url);
       if (!session.user) {
         const errorMessage = "Failed to fetch tests";
         try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorData.message || errorMessage;
         } catch {
           /* Ignore */;
-        }
+
         throw new Error(errorMessage);
-      }
+
       const data: TestsApiResponse = await response.json(),
 
       let fetchedData: Test[] = data.results || [];
@@ -195,14 +307,13 @@ const TestCatalogManagement: React.FC = () => {
             (test?.description &&;
               test.description.toLowerCase().includes(searchLower));
         );
-      }
 
       setTests(fetchedData);
       // FIX: Update table pagination correctly, avoid assigning boolean;
       setTableParameters((previous) => {
         const newPagination: TablePaginationConfig | undefined =;
           previous.pagination;
-            ? 
+            ? ;
                 ...previous.pagination,
                 current: parameters.pagination?.current ?? 1,
                 data.totalCount ?? fetchedData.length;
@@ -220,7 +331,7 @@ const TestCatalogManagement: React.FC = () => {
       message.error(`Failed to load laboratory tests: ${}`;
     } finally {
       setLoading(false);
-    }
+
   };
 
   // Load data on component mount;
@@ -269,7 +380,34 @@ const TestCatalogManagement: React.FC = () => {
   ) => {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const priceNumber = Number.parseFloat(values.price);
@@ -301,7 +439,34 @@ const TestCatalogManagement: React.FC = () => {
         const errorMessage = `Failed to add test (status: ${response.status})`;
         try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
           const errorData: ApiErrorResponse = await response.json(),
@@ -310,7 +475,6 @@ const TestCatalogManagement: React.FC = () => {
           /* Ignore */;
 
         throw new Error(errorMessage);
-
 
       message.success("Test added successfully"),
       setIsModalVisible(false);
@@ -393,8 +557,7 @@ const TestCatalogManagement: React.FC = () => {
       ),
       filters: [;
         { text: "Active", value: true },
-        { text: "Inactive", value: false },
-      ],
+        { text: "Inactive", value: false }],
       filteredValue: tableParameters.filters?.is_active || undefined;
       // onFilter: (value, record) => record.is_active === (value as boolean), // Use server-side filtering if API supports it;
     },
@@ -409,8 +572,7 @@ const TestCatalogManagement: React.FC = () => {
         >View;
                   </Button>);
         // Add Edit/Delete buttons here if needed;
-      )},
-  ];
+      )}];
 
   // View test details;
   const handleViewTest = (test: Test): void => {
@@ -586,8 +748,7 @@ const TestCatalogManagement: React.FC = () => {
             name="sample_type";
             label="Sample Type";
             rules={[;
-              { required: true, message: "Please input the sample type!" },
-            ]}
+              { required: true, message: "Please input the sample type!" }]}
           >;
             <Input placeholder="e.g., Blood, Urine, Serum" />;
           </Form.Item>;
@@ -598,8 +759,7 @@ const TestCatalogManagement: React.FC = () => {
               { required: true, message: "Please input the price!" },
               {
                 pattern: /^\d+(\.\d{1,2})?$/,
-                message: "Please enter a valid price (e.g., 10.50)"},
-            ]}
+                message: "Please enter a valid price (e.g., 10.50)"}]}
           >;
             <Input prefix="$" />;
           </Form.Item>;
@@ -616,8 +776,7 @@ const TestCatalogManagement: React.FC = () => {
               {
                 pattern: /^\d+$/,
                 message: "Please enter a valid number of minutes";
-              },
-            ]}
+              }]}
           >;
             <Input type="number" min={1} />;
           </Form.Item>;

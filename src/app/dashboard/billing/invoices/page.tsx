@@ -1,6 +1,12 @@
-import Link from "next/link";
-import React, { useState, useEffect, useCallback } from "react";
+import "next/link"
+import "react"
+import Link
+import React
+import useCallback }
+import useEffect
 import {
+import { useState
+
 }
 
 "use client";
@@ -14,11 +20,19 @@ export const dynamic = "force-dynamic";
   TableHeader,
   TableRow} from "@/components/ui/table";
 import { Badge, type BadgeProps } from "@/components/ui/badge"; // Import BadgeProps;
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Skeleton } from "@/components/ui/skeleton";
+import "@/components/ui/button"
+import "@/components/ui/input"
+import "@/components/ui/skeleton"
+import "lucide-react"
+import PlusCircle
+import Search }
+import { Button }
+import { Eye
+import { Input }
+import { Skeleton }
+
 import { format } from "date-fns"; // For date formatting;
-import { Eye, PlusCircle, Search } from "lucide-react";
+
 
 // --- INTERFACES ---;
 interface Invoice {
@@ -75,9 +89,36 @@ export default const _InvoicesListPage = () {
     setError(null);
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Simulate API call;
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
       await ; // Simulate delay;

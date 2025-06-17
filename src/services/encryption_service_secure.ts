@@ -1,5 +1,6 @@
+import "crypto"
+import * as crypto
 
-import * as crypto from "crypto";
 /**;
  * Production-ready Encryption Service for Healthcare Data;
  * Implements AES-256-GCM encryption with secure key management;
@@ -53,6 +54,33 @@ interface EncryptedData {
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -89,6 +117,33 @@ interface EncryptedData {
     }
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -138,7 +193,6 @@ interface EncryptedData {
     }
 
     return result;
-  }
 
   /**;
    * Decrypts specific fields in an object;
@@ -150,28 +204,78 @@ interface EncryptedData {
       if (!session.user) {
         try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
           result[field] = await this.decrypt(result[field], field);
           // Try to parse as JSON if it was originally an object;
           try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
             result[field] = JSON.parse(result[field]);
           } catch {
             // Keep as string if not valid JSON;
-          }
+
         } catch (error) {
           /* SECURITY: Console statement removed */// Keep encrypted value if decryption fails;
-        }
-      }
-    }
 
     return result;
-  }
 
   /**;
    * Validates encrypted data structure;
@@ -187,14 +291,40 @@ interface EncryptedData {
       typeof data.timestamp === "number";
     );
 
-
   /**;
    * Validates integrity of encrypted text;
    */;
   validateIntegrity(encryptedText: string): boolean {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const encryptedData: EncryptedData = JSON.parse();
@@ -203,8 +333,6 @@ interface EncryptedData {
       return this.validateEncryptedData(encryptedData);
     } catch {
       return false;
-
-
 
   /**;
    * Rotates encryption keys;
@@ -231,7 +359,34 @@ interface EncryptedData {
     this.keyRotationInterval = setInterval(async () => {
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         await this.rotateKeys();
@@ -239,7 +394,6 @@ interface EncryptedData {
         /* SECURITY: Console statement removed */;
 
     }, rotationInterval);
-
 
   /**;
    * Cleanup resources;
@@ -251,8 +405,6 @@ interface EncryptedData {
 
     this.keyCache.clear();
     this.masterKey.fill(0); // Zero out key from memory;
-
-
 
 // Singleton instance for application use;
 let encryptionServiceInstance: SecureEncryptionService | null = null;

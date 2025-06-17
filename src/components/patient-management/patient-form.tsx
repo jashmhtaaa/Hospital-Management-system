@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import "next/navigation"
+import "react"
+import React
 import {
-import { useRouter } from "next/navigation";
+import { useRouter }
+import { useState }
+
   Form,
   FormControl,
   FormDescription,
@@ -20,9 +24,13 @@ import { useRouter } from "next/navigation";
   AccordionContent,
   AccordionItem,
   AccordionTrigger} from "../ui/accordion";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { Checkbox } from "../ui/checkbox";
+import "../ui/button"
+import "../ui/checkbox"
+import "../ui/input"
+import { Button }
+import { Checkbox }
+import { Input }
+
   Select,
   SelectContent,
   SelectItem,
@@ -41,11 +49,16 @@ import { Checkbox } from "../ui/checkbox";
   User,
   X;
 } from "lucide-react";
-import { format } from "date-fns";
-import { useToast } from "../../hooks/use-toast";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import "../../hooks/use-toast"
+import "@hookform/resolvers/zod"
+import "date-fns"
+import "react-hook-form"
+import "zod"
+import * as z
+import { format }
+import { useForm }
+import { useToast }
+import { zodResolver }
 
 // Define form schema;
 const patientFormSchema = z.object({
@@ -171,9 +184,36 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
       // Format the request data;
       const requestData = {
         firstName: data.firstName,
@@ -220,12 +260,10 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
             "Content-Type": "application/json"},
           body: JSON.stringify(requestData);
         });
-      }
 
       if (!session.user) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to save patient");
-      }
 
       const patient = await response.json();
 
@@ -245,7 +283,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
       });
     } finally {
       setIsSubmitting(false);
-    }
+
   };
 
   // Handle cancel;

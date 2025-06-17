@@ -1,11 +1,24 @@
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import "@/components/ui/button"
+import "@/components/ui/label"
+import "@/components/ui/select"
+import "@/hooks/use-toast"
+import "next/image"
+import "next/navigation"
+import "react"
+import Image
+import React
+import SelectContent
+import SelectItem
+import SelectTrigger
+import SelectValue }
+import useEffect }
+import { Button }
+import { Label }
+import { Select
+import { useRouter }
+import { useState
+import { useToast }
 
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
 }
 
 // src/app/select-role/page.tsx;
@@ -47,9 +60,36 @@ export default const _SelectRolePage = () {
     setIsLoading(true);
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
       // This might involve an API call or just updating client-side state/session;
       // await updateSessionRole(selectedRole);

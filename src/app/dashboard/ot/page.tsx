@@ -1,23 +1,45 @@
-import React, { useState, /* useEffect, */ useCallback } from "react";
+import "@/components/ui/tabs"
+import "react"
+import */
+import /*
+import React
+import TabsContent
+import TabsList
+import TabsTrigger }
+import useCallback }
+import useEffect
+import { Tabs
+import { useState
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 }
 
 "use client";
 export const dynamic = "force-dynamic";
 
-import OTBookingList from "@/components/ot/ot-booking-list";
-import OTBookingModal from "@/components/ot/ot-booking-modal";
-import OTChecklistTemplateList from "@/components/ot/ot-checklist-template-list";
-import OTChecklistTemplateModal from "@/components/ot/ot-checklist-template-modal";
-import OTDashboardStats from "@/components/ot/ot-dashboard-stats";
-import OTSurgeryTypeList from "@/components/ot/ot-surgery-type-list";
-import OTSurgeryTypeModal from "@/components/ot/ot-surgery-type-modal";
-import OTTheatreList from "@/components/ot/ot-theatre-list";
-import OTTheatreModal from "@/components/ot/ot-theatre-modal";
+import "@/components/ot/ot-booking-list"
+import "@/components/ot/ot-booking-modal"
+import "@/components/ot/ot-checklist-template-list"
+import "@/components/ot/ot-checklist-template-modal"
+import "@/components/ot/ot-dashboard-stats"
+import "@/components/ot/ot-surgery-type-list"
+import "@/components/ot/ot-surgery-type-modal"
+import "@/components/ot/ot-theatre-list"
+import "@/components/ot/ot-theatre-modal"
+import OTBookingList
+import OTBookingModal
+import OTChecklistTemplateList
+import OTChecklistTemplateModal
+import OTDashboardStats
+import OTSurgeryTypeList
+import OTSurgeryTypeModal
+import OTTheatreList
+import OTTheatreModal
+
 // import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
+import "@/components/ui/button"
+import "lucide-react"
+import { Button }
+import { PlusCircle }
 
 export default const _OTDashboardPage = () {
   const [activeTab, setActiveTab] = useState("dashboard");

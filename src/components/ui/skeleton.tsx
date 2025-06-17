@@ -1,5 +1,6 @@
+import "@/lib/utils"
+import { cn }
 
-import { cn } from "@/lib/utils";
 const Skeleton = ({
   className,
   ...props;

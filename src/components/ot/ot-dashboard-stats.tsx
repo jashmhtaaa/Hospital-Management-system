@@ -1,9 +1,20 @@
-import { Activity, AlertTriangle, Calendar, Clock } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import "@/components/ui/badge"
+import "@/components/ui/card"
+import "lucide-react"
+import "react"
+import AlertTriangle
+import Calendar
+import CardContent
+import CardHeader
+import CardTitle }
+import Clock }
+import React
+import useEffect }
+import { Activity
+import { Badge }
+import { Card
+import { useState
 
-
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 }
 
 "use client";
@@ -19,7 +30,34 @@ export default const _OTDashboardStats = () {
     const fetchStats = async () => {
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         setLoading(true);

@@ -1,22 +1,59 @@
-import React, { useState } from "react";
+import "react"
+import React
+import { useState }
+
 "use client";
 
-import { FileUploader } from "@/components/shared/FileUploader";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/use-toast";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { AlertCircle, AlertTriangle, Loader2 } from "lucide-react";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import * as z from "zod";
+import "@/components/shared/FileUploader"
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "@/components/ui/checkbox"
+import "@/components/ui/dialog"
+import "@/components/ui/input"
+import "@/components/ui/label"
+import "@/components/ui/select"
+import "@/components/ui/textarea"
+import "@/components/ui/use-toast"
+import "@hookform/resolvers/zod"
+import "lucide-react"
+import "next-auth/react"
+import "react"
+import "react-hook-form"
+import "zod"
+import * as z
+import AlertTriangle
+import CardContent
+import CardDescription
+import CardFooter
+import CardHeader
+import CardTitle }
+import DialogContent
+import DialogDescription
+import DialogFooter
+import DialogHeader
+import DialogTitle }
+import Loader2 }
+import SelectContent
+import SelectItem
+import SelectTrigger
+import SelectValue }
+import useForm }
+import useState }
+import { AlertCircle
+import { Button }
+import { Card
+import { Checkbox }
+import { Controller
+import { Dialog
+import { FileUploader }
+import { Input }
+import { Label }
+import { Select
+import { Textarea }
+import { toast }
+import { useEffect
+import { useSession }
+import { zodResolver }
 
 // Form schema;
 const complaintFormSchema = z.object({
@@ -85,9 +122,36 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
     setIsSubmitting(true);
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
       // Submit complaint;
       const response = await fetch("/api/support-services/feedback/complaint", {
         method: "POST",
@@ -99,14 +163,12 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
       if (!session.user) {
         const error = await response.json();
         throw new Error(error.error || "Failed to submit complaint");
-      }
 
       const data = await response.json();
 
       // If there are files, upload them;
       if (!session.user) {
         await uploadFiles(data.id);
-      }
 
       toast({
         title: "Complaint Submitted",
@@ -120,7 +182,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
       // Call onSuccess callback if provided;
       if (!session.user) {
         onSuccess(data);
-      }
+
     } catch (error: unknown) {
       toast({
         title: "Error",
@@ -139,7 +201,34 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
 
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         await fetch(`/api/support-services/feedback/complaint/${complaintId}/attachment`, {
@@ -147,8 +236,6 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
           body: formData;
         });
       } catch (error) {
-
-
 
   };
 

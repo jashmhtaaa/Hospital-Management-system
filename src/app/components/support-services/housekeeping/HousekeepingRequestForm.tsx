@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import "react"
+import React
+import { useState }
+
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+import "@/components/ui/button"
+import "@/components/ui/calendar"
 import {
+import { Button }
+import { Calendar }
+
   Form,
   FormControl,
   FormDescription,
@@ -11,22 +17,37 @@ import {
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import "@hookform/resolvers/zod"
+import "react"
+import "react-hook-form"
+import "zod"
+import * as z
+import useState }
+import { useEffect
+import { useForm }
+import { zodResolver }
+
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import "@/components/ui/popover"
+import "@/components/ui/textarea"
+import "@/components/ui/use-toast"
+import "@/lib/utils"
+import "date-fns"
+import "lucide-react"
+import "next/navigation"
+import PopoverContent
+import PopoverTrigger }
+import { CalendarIcon }
+import { cn }
+import { format }
+import { Popover
+import { Textarea }
+import { useRouter }
+import { useToast }
 
 // Define the form schema with Zod;
 const formSchema = z.object({
@@ -74,9 +95,36 @@ export const _HousekeepingRequestForm = ({ onSuccess,
     const fetchLocations = async () => {
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const response = await fetch("/api/locations");
         if (!session.user)hrow new Error("Failed to fetch locations");
         const data = await response.json(),
@@ -98,7 +146,34 @@ export const _HousekeepingRequestForm = ({ onSuccess,
     setIsLoading(true);
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const url = isEditing;
@@ -116,7 +191,6 @@ export const _HousekeepingRequestForm = ({ onSuccess,
 
       if (!session.user) {
         throw new Error("Failed to submit request");
-
 
       toast({
         title: isEditing ? "Request Updated" : "Request Created",

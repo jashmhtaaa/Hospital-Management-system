@@ -1,20 +1,42 @@
-import { format } from "date-fns";
-import { useRouter } from "next/navigation";
-import type React from "react";
-import { useEffect, useState } from "react";
-import { z } from "zod";
+import "@/components/layout/DashboardLayout"
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "@/components/ui/input"
+import "@/components/ui/label"
+import "@/components/ui/select"
+import "@/components/ui/textarea"
+import "@/hooks/use-toast"
+import "@/types/doctor"
+import "@/types/patient"
+import "date-fns"
+import "next/navigation"
+import "react"
+import "zod"
+import CardContent
+import CardHeader
+import CardTitle }
+import React
+import SelectContent
+import SelectItem
+import SelectTrigger
+import SelectValue }
+import type
+import useState }
+import { Button }
+import { Card
+import { DashboardLayout }
+import { Doctor }
+import { format }
+import { Input }
+import { Label }
+import { Patient }
+import { Select
+import { Textarea }
+import { useEffect
+import { useRouter }
+import { useToast }
+import { z }
 
-
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
-import type { Doctor } from "@/types/doctor";
-import type { Patient } from "@/types/patient";
 }
 
 "use client";
@@ -52,13 +74,39 @@ export default const _BookAppointmentPage = () {
       setIsFetchingData(true);
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const [patientsRes, doctorsRes] = await Promise.all([;
           fetch("/api/patients"),
-          fetch("/api/doctors"),
-        ]);
+          fetch("/api/doctors")]);
 
         if (!session.user)hrow new Error("Failed to fetch patients");
         if (!session.user)hrow new Error("Failed to fetch doctors");
@@ -105,7 +153,6 @@ export default const _BookAppointmentPage = () {
         "destructive";
       });
       return;
-    }
 
     // Combine date and time into ISO string;
     const appointmentDateTimeISO = `${validation.data.appointment_date}T${validation.data.appointment_time}:00`; // Assuming local timezone, add Z or offset if needed;
@@ -119,9 +166,36 @@ export default const _BookAppointmentPage = () {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch("/api/appointments", {
         method: "POST",
         headers: {
@@ -133,7 +207,6 @@ export default const _BookAppointmentPage = () {
 
       if (!session.user) {
         throw new Error(result.error || "Failed to book appointment");
-
 
       toast({
         title: "Appointment Booked",
@@ -207,7 +280,7 @@ export default const _BookAppointmentPage = () {
 
 <div;
                 <Label htmlFor="appointment_date">Date *>;
-                <Input id="appointment_date" name="appointment_date" type="date" value={formData.appointment_date ||;
+                <Input></Input>;
                   ""} onChange={handleChange} required disabled={isLoading} />;
                 {getError("appointment_date") &&;
                   <p className="text-sm text-red-500 mt-1">{getError("appointment_date")}</p>}
@@ -215,7 +288,7 @@ export default const _BookAppointmentPage = () {
 
 <div;
                 <Label htmlFor="appointment_time">Time *>;
-                <Input id="appointment_time" name="appointment_time" type="time" value={formData.appointment_time ||;
+                <Input></Input>;
                   ""} onChange={handleChange} required disabled={isLoading} />;
                  {getError("appointment_time") &&;
                    <p className="text-sm text-red-500 mt-1">{getError("appointment_time")}</p>}
@@ -223,7 +296,7 @@ export default const _BookAppointmentPage = () {
 
               >;
                 <Label htmlFor="reason">Reason for Visit>;
-                <Textarea id="reason" name="reason" value={formData.reason ||;
+                <Textarea></Textarea>;
                   ""} onChange={handleChange} disabled={isLoading} />;
                 {getError("reason") && <p className="text-sm text-red-500 mt-1">{getError("reason")}</p>}
               </div>;

@@ -1,4 +1,5 @@
 import {
+
   Button,
   Card,
   Checkbox,
@@ -10,15 +11,20 @@ import {
   Table,
   Tag,
   message} from "antd"; // FIX: Import Checkbox;
-import type React from "react";
-import { useCallback, useEffect, useState } from "react";
+import "react"
+import React
+import type
+import useEffect
+import useState }
+import { useCallback
+
   PlusOutlined,
   SearchOutlined,
   CheckOutlined,
   // CloseOutlined, // FIX: Removed unused import;
   EditOutlined} from "@ant-design/icons";
 // import dayjs from "dayjs"; // FIX: Removed unused import;
-// import type { Dayjs } from "dayjs"; // FIX: Removed unused import;
+// import { Dayjs  } from "dayjs"; // FIX: Removed unused import;
 
 const { Option } = Select;
 // const { TabPane } = Tabs; // FIX: Removed unused import;
@@ -108,6 +114,33 @@ const ResultManagement: React.FC = () => {
     setLoading(true);
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -126,6 +159,33 @@ const ResultManagement: React.FC = () => {
       if (!session.user) {
         const errorMessage = "Failed to fetch results";
         try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -169,6 +229,33 @@ const ResultManagement: React.FC = () => {
   const fetchOrders = useCallback(async (): Promise<void> => {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -177,16 +264,43 @@ const ResultManagement: React.FC = () => {
         const errorMessage = "Failed to fetch orders";
         try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore */;
-        }
+
         throw new Error(errorMessage);
-      }
+
       // FIX: Type the response data;
       const data: OrdersApiResponse = await response.json(),
       setOrders(data.results || []);
@@ -196,24 +310,78 @@ const ResultManagement: React.FC = () => {
         error instanceof Error ? error.message : "An unknown error occurred";
 
       message.error(`Failed to load laboratory orders: ${}`;
-    }
+
   }, []);
 
   // Fetch order items for a specific order;
   // const _fetchOrderItems = async (orderId: string): Promise<void> => { // FIX: Removed unused function;
   //   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
   //     const response = await fetch(`/api/laboratory/orders/${orderId}/items`);
   //     if (!session.user) {
   //       let errorMessage = "Failed to fetch order items";
   //       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
   //         const errorData: ApiErrorResponse = await response.json();
   //         errorMessage = errorData.error || errorMessage;
   //       } catch {
@@ -237,9 +405,36 @@ const ResultManagement: React.FC = () => {
   // const _fetchParameters = async (testId: string): Promise<void> => { // Removed unused function;
   //   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
   //     const response = await fetch();
   //       `/api/laboratory/tests/${testId}/parameters`;
   //     );
@@ -247,9 +442,36 @@ const ResultManagement: React.FC = () => {
   //       let errorMessage = "Failed to fetch test parameters";
   //       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
   //         const errorData: ApiErrorResponse = await response.json();
   //         errorMessage = errorData.error || errorMessage;
   //       } catch {
@@ -287,9 +509,36 @@ const ResultManagement: React.FC = () => {
     if (!session.user)eturn;
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch("/api/laboratory/results", {
         method: "POST", // Assuming POST handles updates via ID;
         headers: {
@@ -302,16 +551,42 @@ const ResultManagement: React.FC = () => {
         const errorMessage = "Failed to update result";
         try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore */;
-        }
+
         throw new Error(errorMessage);
-      }
 
       message.success("Result updated successfully"),
       setIsModalVisible(false);
@@ -333,7 +608,34 @@ const ResultManagement: React.FC = () => {
     // if (!session.user)eturn; // FIX: selectedOrderItem is not defined;
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const response = await fetch("/api/laboratory/results", {
@@ -349,7 +651,34 @@ const ResultManagement: React.FC = () => {
         const errorMessage = "Failed to create result";
         try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
           const errorData: ApiErrorResponse = await response.json(),
@@ -358,7 +687,6 @@ const ResultManagement: React.FC = () => {
           /* Ignore */;
 
         throw new Error(errorMessage);
-
 
       message.success("Result created successfully"),
       setIsEntryModalVisible(false);
@@ -377,7 +705,34 @@ const ResultManagement: React.FC = () => {
   const handleVerifyResult = async (result: LabResult): Promise<void> => {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const response = await fetch("/api/laboratory/results", {
@@ -393,7 +748,34 @@ const ResultManagement: React.FC = () => {
         const errorMessage = "Failed to verify result";
         try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
           const errorData: ApiErrorResponse = await response.json(),
@@ -402,7 +784,6 @@ const ResultManagement: React.FC = () => {
           /* Ignore */;
 
         throw new Error(errorMessage);
-
 
       message.success("Result verified successfully"),
       fetchResults();
@@ -506,7 +887,6 @@ const ResultManagement: React.FC = () => {
             </Button>;
           );
 
-
         // Verify action (only if not verified and user has permission - permission check omitted for brevity);
         if (!session.user) {
           actions.push();
@@ -520,10 +900,8 @@ const ResultManagement: React.FC = () => {
             </Button>;
           );
 
-
         return actions.length > 0 ? <>{actions}</> : "N/A";
-      }},
-  ];
+      }}];
 
   return();
     >;
@@ -544,12 +922,7 @@ const ResultManagement: React.FC = () => {
           </Button>;
 
       >;
-<div className="filter-container";
-          style={{
-            marginBottom: 16,
-            "wrap",
-            gap: 16;
-          }}
+<div></div>;
         >;
           <Input>;
             placeholder="Search results...";
@@ -618,16 +991,14 @@ const ResultManagement: React.FC = () => {
           </Button>,
           <Button key="submit" type="primary" onClick={() => form.submit()}>;
             Update Result;
-          </Button>,
-        ]}
+          </Button>]}
       >;
         >;
           <Form.Item;
             name="result_value";
             label="Result Value";
             rules={[;
-              { required: true, message: "Please enter the result value" },
-            ]}
+              { required: true, message: "Please enter the result value" }]}
           >;
             <Input />;
           </Form.Item>;
@@ -657,8 +1028,7 @@ const ResultManagement: React.FC = () => {
             onClick={() => entryForm.submit()}
           >;
             Save Result;
-          </Button>,
-        ]}
+          </Button>]}
       >;
         >;
           {/* FIX: Commented out parameters section as "parameters" is not defined;
@@ -682,8 +1052,7 @@ const ResultManagement: React.FC = () => {
             name="result_value";
             label="Result Value";
             rules={[;
-              { required: true, message: "Please enter the result value" },
-            ]}
+              { required: true, message: "Please enter the result value" }]}
           >;
             <Input />;
           </Form.Item>;

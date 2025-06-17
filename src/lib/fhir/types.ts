@@ -1,5 +1,3 @@
-
-
 /**;
  * FHIR R4 Base Types and Interfaces;
  * Implementation based on HL7 FHIR R4 specification;

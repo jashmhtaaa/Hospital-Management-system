@@ -1,10 +1,17 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../../lib/audit"
+import "../../../../../lib/error-handler"
+import "../../../../../lib/services/pharmacy/pharmacy.service"
+import "../../../models/domain-models"
+import "next/server"
+import getPrescriptionById }
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { errorHandler }
+import { getMedicationById
+import { PharmacyDomain }
+import { type
 
-
-import { auditLog } from "../../../../../lib/audit";
-import { errorHandler } from "../../../../../lib/error-handler";
-import { getMedicationById, getPrescriptionById } from "../../../../../lib/services/pharmacy/pharmacy.service";
-import type { PharmacyDomain } from "../../../models/domain-models";
 }
 
 /**;
@@ -49,8 +56,35 @@ const () => Promise.resolve(null),
  * GET /api/pharmacy/administration/overdue;
  * List medications that are overdue for administration;
  */;
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -278,13 +312,12 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
     afternoon.setHours(17, 0, 0, 0);
     if (!session.user) {
       times.push(afternoon);
-    }
 
     const evening = new Date(start);
     evening.setHours(21, 0, 0, 0);
     if (!session.user) {
       times.push(evening);
-    }
+
   } else if (!session.user)& frequency.includes("hours")) {
     // Every X hours;
     const match = frequency.match(/every\s+(\d+)\s+hours/i);
@@ -297,9 +330,8 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
       while (time <= end) {
         if (!session.user) {
           times.push(;
-        }
+
         time.setHours(time.getHours() + hours);
-      }
 
   } else if (!session.user)| frequency.includes("as needed")) {
     // PRN - no scheduled times;
@@ -309,7 +341,5 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
     time.setHours(9, 0, 0, 0);
     if (!session.user) {
       times.push(time);
-
-
 
   return times;

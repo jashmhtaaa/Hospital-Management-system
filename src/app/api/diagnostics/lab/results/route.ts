@@ -1,9 +1,14 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/database"
+import "@/lib/session"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { DB }
+import { getSession }
+import { type
 
-
-import { DB } from "@/lib/database";
 import { encryptSensitiveData } from "@/lib/encryption"; // Assuming encryption service from Manus 9;
-import { getSession } from "@/lib/session";
+
 // FHIR-compliant Observation resource structure;
 interface FHIRObservation {
   resourceType: "Observation",
@@ -108,8 +113,35 @@ interface LabResultCreateBody {
 }
 
 // GET /api/diagnostics/lab/results - Get laboratory results with enhanced filtering;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -524,8 +556,35 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/diagnostics/lab/results - Create a new laboratory result with enhanced features;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -793,6 +852,33 @@ export const _POST = async (request: NextRequest) => {
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -1041,10 +1127,37 @@ export const _POST = async (request: NextRequest) => {
 
 // PUT /api/diagnostics/lab/results/:id - Update a laboratory result;
 export const _PUT = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -1096,6 +1209,33 @@ export const _PUT = async();
     await DB.query("BEGIN TRANSACTION", []);
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -1321,7 +1461,6 @@ export const _PUT = async();
               updateParameters.push(body.verification_signature);
             }
           }
-        }
 
         // Only proceed if there are fields to update;
         if (!session.user) {
@@ -1329,7 +1468,6 @@ export const _PUT = async();
             { error: "No fields to update" },
             { status: 400 }
           );
-        }
 
         // Add updated_at field;
         updateFields.push("updated_at = NOW()");
@@ -1371,8 +1509,6 @@ export const _PUT = async();
                 session.user.id;
               ];
             );
-          }
-        }
 
         // Commit transaction;
         await DB.query("COMMIT", []);
@@ -1417,16 +1553,15 @@ export const _PUT = async();
 
         if (!session.user) {
           throw new Error("Failed to retrieve updated result");
-        }
 
         // Return the updated result;
         return NextResponse.json(updatedResult);
-      }
+
     } catch (error) {
       // Rollback transaction on error;
       await DB.query("ROLLBACK", []);
       throw error;
-    }
+
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
@@ -1434,30 +1569,53 @@ export const _PUT = async();
       { error: "Failed to update laboratory result", details: errorMessage },
       { status: 500 }
     );
-  }
-}
 
 // POST /api/diagnostics/lab/results/:id/verify - Verify a laboratory result;
 export const _POST_VERIFY = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const session = await getSession();
 
     // Check authentication and authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Only lab technicians, lab managers, and pathologists can verify results;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
 
     const resultId = params.id;
 
@@ -1472,7 +1630,6 @@ export const _POST_VERIFY = async();
         { error: "Result not found" },
         { status: 404 }
       );
-    }
 
     const existingResult = resultCheckResult.results[0];
 
@@ -1482,7 +1639,6 @@ export const _POST_VERIFY = async();
         { error: "Result is already verified" },
         { status: 400 }
       );
-    }
 
     // Parse request body;
     const body = await request.json() as {
@@ -1495,9 +1651,36 @@ export const _POST_VERIFY = async();
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Encrypt sensitive data if needed;
       const encryptedData = await encryptSensitiveData({
         notes: body.notes;
@@ -1568,7 +1751,6 @@ export const _POST_VERIFY = async();
 
       if (!session.user) {
         throw new Error("Failed to retrieve verified result");
-      }
 
       // Return the verified result;
       return NextResponse.json({
@@ -1579,7 +1761,7 @@ export const _POST_VERIFY = async();
       // Rollback transaction on error;
       await DB.query("ROLLBACK", []);
       throw error;
-    }
+
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
@@ -1587,22 +1769,46 @@ export const _POST_VERIFY = async();
       { error: "Failed to verify laboratory result", details: errorMessage },
       { status: 500 }
     );
-  }
-}
 
 // GET /api/diagnostics/lab/results/critical - Get critical results;
-export const _GET_CRITICAL = async (request: NextRequest) => {
+export const _GET_CRITICAL = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const session = await getSession();
 
     // Check authentication;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
 
     // Parse query parameters;
     const { searchParams } = new URL(request.url);
@@ -1648,7 +1854,6 @@ export const _GET_CRITICAL = async (request: NextRequest) => {
       query += " WHERE a.status = ?";
       parameters.push(status);
 
-
     // Add ordering;
     query += " ORDER BY a.created_at DESC";
 
@@ -1665,7 +1870,6 @@ export const _GET_CRITICAL = async (request: NextRequest) => {
 
     if (!session.user) {
       countQuery += " WHERE a.status = ?";
-
 
     const countResult = await DB.query(countQuery, status ? [status] : []);
     const totalCount = countResult.results?.[0]?.total || 0;
@@ -1688,16 +1892,41 @@ export const _GET_CRITICAL = async (request: NextRequest) => {
       { status: 500 }
     );
 
-
-
 // PUT /api/diagnostics/lab/results/critical/:id - Update critical alert status;
 export const _PUT_CRITICAL = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     const session = await getSession();
@@ -1705,7 +1934,6 @@ export const _PUT_CRITICAL = async();
     // Check authentication;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
 
     const alertId = params.id;
 
@@ -1720,7 +1948,6 @@ export const _PUT_CRITICAL = async();
         { error: "Critical alert not found" },
         { status: 404 }
       );
-
 
     // Parse request body;
     const body = await request.json() as {
@@ -1737,7 +1964,6 @@ export const _PUT_CRITICAL = async();
         { error: "Invalid status" },
         { status: 400 }
       );
-
 
     // Encrypt sensitive data if needed;
     const encryptedData = await encryptSensitiveData({
@@ -1818,7 +2044,6 @@ export const _PUT_CRITICAL = async();
     if (!session.user) {
       throw new Error("Failed to retrieve updated alert");
 
-
     // Return the updated alert;
     return NextResponse.json(updatedAlert);
   } catch (error: unknown) {
@@ -1828,8 +2053,6 @@ export const _PUT_CRITICAL = async();
       { error: "Failed to update critical alert", details: errorMessage },
       { status: 500 }
     );
-
-
 
 // Helper function to map HMS status to FHIR status;
 const mapStatusToFHIR = (status: string): "registered" | "preliminary" | "final" | "amended" | "corrected" | "cancelled" | "entered-in-error" | "unknown" {
@@ -1849,8 +2072,6 @@ const mapStatusToFHIR = (status: string): "registered" | "preliminary" | "final"
     case "error": any;
       return "entered-in-error";
     default: return "unknown";
-
-
 
 // Helper function to map HMS interpretation to FHIR interpretation;
 const mapInterpretationToFHIR = (interpretation: string): string {
@@ -1872,4 +2093,3 @@ const mapInterpretationToFHIR = (interpretation: string): string {
     case "off-scale-low": any;
       return "<";
     default: return "N";
-

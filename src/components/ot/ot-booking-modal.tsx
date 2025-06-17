@@ -1,6 +1,10 @@
-import type React from "react";
-import { useEffect, useState } from "react";
+import "react"
+import React
+import type
+import useState }
 import {
+import { useEffect
+
 }
 
 "use client";
@@ -12,16 +16,22 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import "@/components/ui/button"
+import "@/components/ui/input"
+import "@/components/ui/label"
+import { Button }
+import { Input }
+import { Label }
+
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
+import "@/components/ui/textarea"
+import "@/components/ui/use-toast"
+import { Textarea }
+import { useToast }
 
 // Define the Booking type based on usage;
 interface Booking {
@@ -56,30 +66,25 @@ interface OTBookingModalProperties {
 const mockPatients = [;
   { id: "patient-1", name: "John Smith (MRN001)" },
   { id: "patient-2", name: "Sarah Johnson (MRN002)" },
-  { id: "patient-3", name: "Michael Brown (MRN003)" },
-];
+  { id: "patient-3", name: "Michael Brown (MRN003)" }];
 
 const mockSurgeryTypes = [;
   { id: "st-1", name: "Appendectomy" },
   { id: "st-2", name: "Cholecystectomy (Laparoscopic)" },
-  { id: "st-3", name: "Knee Arthroscopy" },
-];
+  { id: "st-3", name: "Knee Arthroscopy" }];
 
 const mockTheatres = [;
   { id: "theatre-1", name: "OT-1" },
   { id: "theatre-2", name: "OT-2" },
-  { id: "theatre-3", name: "OT-3" },
-];
+  { id: "theatre-3", name: "OT-3" }];
 
 const mockSurgeons = [;
   { id: "user-1", name: "Dr. Alice Brown" },
-  { id: "user-2", name: "Dr. Bob White" },
-];
+  { id: "user-2", name: "Dr. Bob White" }];
 
 const mockAnesthesiologists = [;
   { id: "user-3", name: "Dr. Charlie Green" },
-  { id: "user-4", name: "Dr. Diana Black" },
-];
+  { id: "user-4", name: "Dr. Diana Black" }];
 
 export default const _OTBookingModal = ({
   trigger,
@@ -140,6 +145,33 @@ export default const _OTBookingModal = ({
     event.preventDefault(),
     setIsSaving(true);
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -242,7 +274,7 @@ export default const _OTBookingModal = ({
                 value={formData.surgery_type_id}
                 onValueChange={(value) => {}
                   handleSelectChange("surgery_type_id", value);
-                }
+
                 required;
               >;
                 >;
@@ -267,7 +299,7 @@ export default const _OTBookingModal = ({
                 value={formData.theatre_id}
                 onValueChange={(value) => {}
                   handleSelectChange("theatre_id", value);
-                }
+
                 required;
               >;
                 >;
@@ -292,7 +324,7 @@ export default const _OTBookingModal = ({
                 value={formData.lead_surgeon_id}
                 onValueChange={(value) => {}
                   handleSelectChange("lead_surgeon_id", value);
-                }
+
                 required;
               >;
                 >;
@@ -317,7 +349,7 @@ export default const _OTBookingModal = ({
                 value={formData.anesthesiologist_id}
                 onValueChange={(value) => {}
                   handleSelectChange("anesthesiologist_id", value);
-                }
+
               >;
                 >;
                   <SelectValue placeholder="Select Anesthesiologist (Optional)" />;

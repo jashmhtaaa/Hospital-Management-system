@@ -1,6 +1,8 @@
+import "graphql-subscriptions"
+import "graphql-tag"
+import { gql }
+import { PubSub }
 
-import { PubSub } from "graphql-subscriptions";
-import { gql } from "graphql-tag";
 }
 
 /**;
@@ -166,18 +168,15 @@ export const _baseTypeDefs = gql`;
     IS_NULL;
     IS_NOT_NULL;
 
-
   # Error handling;
   type Error {
     code: String!,
     String,
     details: JSON;
 
-
   type MutationResponse {
     success: Boolean!,
     String;
-
 
   # Real-time notifications;
   type Notification {
@@ -187,14 +186,12 @@ export const _baseTypeDefs = gql`;
     DateTime!,
     Boolean!;
 
-
   enum NotificationType {
     INFO;
     WARNING;
     ERROR;
     SUCCESS;
     ALERT;
-
 
   # File upload;
   type FileUpload {
@@ -204,20 +201,17 @@ export const _baseTypeDefs = gql`;
     DateTime!,
     uploadedBy: String!;
 
-
   # System health;
   type HealthStatus {
     service: String!,
     DateTime!,
     details: JSON;
 
-
   enum HealthStatusType {
     HEALTHY;
     DEGRADED;
     UNHEALTHY;
     UNKNOWN;
-
 
   # Base queries (will be extended by each module);
   type Query {
@@ -230,7 +224,6 @@ export const _baseTypeDefs = gql`;
     # Current user context;
     me: User;
 
-
   # Base mutations (will be extended by each module);
   type Mutation {
     # File upload;
@@ -238,7 +231,6 @@ export const _baseTypeDefs = gql`;
 
     # Mark notification as read;
     markNotificationRead(id: ID!): MutationResponse!;
-
 
   # Base subscriptions (will be extended by each module);
   type Subscription {
@@ -248,13 +240,11 @@ export const _baseTypeDefs = gql`;
     # System health updates;
     healthUpdates: HealthStatus!;
 
-
   # System info;
   type SystemInfo {
     version: String!,
     Int!,
     [String!]!;
-
 
   # User type (basic structure);
   type User implements Node {
@@ -318,8 +308,7 @@ export const _baseResolvers = {
         {
           service: "fhir-server",
           new Date(),
-          details: { resources: 1250 }},
-      ];
+          details: { resources: 1250 }}];
     },
 
     process.env.npm_package_version || "1.0.0",
@@ -331,8 +320,7 @@ export const _baseResolvers = {
         "MICROSERVICES_ARCHITECTURE",
         "ADVANCED_CACHING",
         "AUDIT_LOGGING",
-        "ROLE_BASED_ACCESS",
-      ]}),
+        "ROLE_BASED_ACCESS"]}),
 
     me: async (parent, args, context) => {
       return context.user || null;
@@ -381,7 +369,6 @@ export const _baseResolvers = {
 
     };
 
-
   static createConnection<T>(;
     items: T[],
     number;
@@ -402,7 +389,6 @@ export const _baseResolvers = {
         startCursor: edges.length > 0 ? edges[0].cursor : null,
         totalCount;
       }};
-
 
   static buildFilters(filters: unknown[]): unknown {
     const where: unknown = {};
@@ -432,11 +418,9 @@ export const _baseResolvers = {
 
     return where;
 
-
   static buildOrderBy(sort: unknown[]): unknown {
     return sort?.map((s) => ({
       [s.field]: s.direction.toLowerCase()})) || [];
-
 
   // Real-time notification utilities;
   static async publishNotification();
@@ -463,7 +447,6 @@ export const _baseResolvers = {
 
     return notification;
 
-
   static async publishHealthUpdate(service: string, status: string, details?: unknown) {
     const healthUpdate = {
       service,
@@ -473,7 +456,6 @@ export const _baseResolvers = {
 
     await pubsub.publish("HEALTH_UPDATE", { healthUpdates: healthUpdate });
     return healthUpdate;
-
 
   // FHIR integration utilities;
   static fhirToGraphQL(fhirResource: unknown, resourceType: string) {
@@ -488,9 +470,7 @@ export const _baseResolvers = {
     if (!session.user) {
       graphqlResource.updatedAt = new Date(fhirResource.meta.lastUpdated);
 
-
     return graphqlResource;
-
 
   static graphqlToFHIR(graphqlData: unknown, resourceType: string) {
     // Convert GraphQL data to FHIR format;

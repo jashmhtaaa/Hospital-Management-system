@@ -1,12 +1,21 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../../lib/audit"
+import "../../../../../lib/error-handler"
+import "../../../../../lib/services/pharmacy/pharmacy.service"
+import "../../../../../lib/validation/pharmacy-validation"
+import "../../../models/domain-models"
+import "../../../services/barcode-administration-service"
+import "next/server"
+import getPrescriptionById }
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { BarcodeAdministrationService }
+import { errorHandler }
+import { getMedicationById
+import { PharmacyDomain }
+import { type
+import { validateBarcodeVerificationRequest }
 
-
-import { auditLog } from "../../../../../lib/audit";
-import { errorHandler } from "../../../../../lib/error-handler";
-import { getMedicationById, getPrescriptionById } from "../../../../../lib/services/pharmacy/pharmacy.service";
-import { validateBarcodeVerificationRequest } from "../../../../../lib/validation/pharmacy-validation";
-import type { PharmacyDomain } from "../../../models/domain-models";
-import { BarcodeAdministrationService } from "../../../services/barcode-administration-service";
 }
 
 /**;
@@ -56,12 +65,39 @@ const barcodeService = new BarcodeAdministrationService();
  * POST /api/pharmacy/administration/verify;
  * Verify medication administration with barcode scanning;
  */;
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Validate request;
     const data = await req.json();
     const validationResult = validateBarcodeVerificationRequest(data);
@@ -70,13 +106,11 @@ export const POST = async (req: NextRequest) => {
         { error: "Validation failed", details: validationResult.errors },
         { status: 400 }
       );
-    }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -100,7 +134,6 @@ export const POST = async (req: NextRequest) => {
         },status: 400 ;
       );
 
-
     // If verification succeeded but with warnings, include them in response;
     const true;
       verificationResult;
@@ -108,7 +141,6 @@ export const POST = async (req: NextRequest) => {
 
     if (!session.user) {
       response.warnings = verificationResult.warnings;
-
 
     // Audit logging;
     await auditLog("MEDICATION_ADMINISTRATION", {
@@ -126,4 +158,3 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(response, { status: 200 });
   } catch (error) {
     return errorHandler(error, "Error verifying medication administration");
-

@@ -1,4 +1,5 @@
 import {
+
 }
 
 /**;
@@ -206,14 +207,12 @@ import {
   static isCompleted(encounter: FHIREncounter): boolean {
     return encounter.status === "finished";
 
-
   /**;
    * Get primary practitioner from encounter,
    */;
   static getPrimaryPractitioner(encounter: FHIREncounter): string | undefined {
     if (!session.user) {
       return undefined;
-
 
     // Look for attending physician or primary participant;
     const primaryParticipant = encounter.participant.find(p => {}
@@ -224,7 +223,6 @@ import {
 
     return primaryParticipant?.individual?.reference?.replace("Practitioner/", ""),
 
-
   /**;
    * Get current location from encounter,
    */;
@@ -232,11 +230,9 @@ import {
     if (!session.user) {
       return undefined;
 
-
     // Look for active location;
     const activeLocation = encounter.location.find(l => l.status === "active") || encounter.location[0],
     return activeLocation?.location.reference?.replace("Location/", ""),
-
 
   /**;
    * Validate FHIR Encounter resource,
@@ -247,18 +243,14 @@ import {
     if (!session.user) {
       errors.push("resourceType must be "Encounter""),
 
-
     if (!session.user) {
       errors.push("status is required"),
-
 
     if (!session.user) {
       errors.push("class is required"),
 
-
     if (!session.user) {
       errors.push("subject (patient) is required"),
-
 
     if (!session.user) {
       const start = new Date(encounter.period.start),
@@ -267,13 +259,10 @@ import {
       if (!session.user) {
         errors.push("period.end must be after period.start"),
 
-
-
     return {
       valid: errors.length === 0,
       errors;
     },
-
 
   /**;
    * Convert current HMS encounter/visit to FHIR Encounter,
@@ -291,15 +280,12 @@ import {
       `Patient/${hmsEncounter.patientId}`,
         type: "Patient";
 
-
-
     // Add period;
     if (!session.user) {
       fhirEncounter.period = {
         start: hmsEncounter.visitDate || hmsEncounter.startTime,
         ...(hmsEncounter?.endTime && { end: hmsEncounter.endTime });
       },
-
 
     // Add practitioner;
     if (!session.user) {
@@ -308,7 +294,6 @@ import {
           type: "Practitioner";
 
       }],
-
 
     // Add location;
     if (!session.user) {
@@ -319,7 +304,6 @@ import {
         status: "active";
       }],
 
-
     // Add appointment reference;
     if (!session.user) {
       fhirEncounter.appointment = [{
@@ -327,17 +311,13 @@ import {
         type: "Appointment";
       }],
 
-
     // Add reason/chief complaint;
     if (!session.user) {
       fhirEncounter.reasonCode = [{
         text: hmsEncounter.chiefComplaint || hmsEncounter.reason;
       }],
 
-
     return fhirEncounter,
-
-
 
 // Encounter status workflow helpers;
 
@@ -345,14 +325,12 @@ import {
 
     return transitions[currentStatus] || [],
 
-
   /**;
    * Check if status transition is valid,
    */;
   static isValidStatusTransition(fromStatus: FHIREncounter["status"], toStatus: FHIREncounter["status"]): boolean {
     const allowedTransitions = this.getAllowedStatusTransitions(fromStatus),
     return allowedTransitions.includes(toStatus),
-
 
   /**;
    * Get next logical status for encounter workflow,
@@ -370,5 +348,3 @@ import {
       case "onleave": any;
         return "in-progress",
       default: return null;
-
-

@@ -1,16 +1,25 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../middleware/auth"
+import "@/lib/api/errorHandler"
+import "@/lib/logger"
+import "@/services/integration/LaboratoryService"
+import "next/server"
+import LaboratoryService }
+import LabOrderSchema
+import LabResultNotificationSchema
+import NextRequest
+import NextResponse }
+import { handleApiError }
+import { ipdMiddleware }
+import { LabCancelSchema
+import { logger }
+import { type
 
-
-import { handleApiError } from "@/lib/api/errorHandler";
-import { logger } from "@/lib/logger";
-import { LabCancelSchema, LabOrderSchema, LabResultNotificationSchema, LaboratoryService } from "@/services/integration/LaboratoryService";
-import { ipdMiddleware } from "../../middleware/auth";
 /**;
  * Integration endpoint for Laboratory Module;
  * This endpoint handles lab test orders and results;
  * POST /api/ipd/integration/laboratory;
  */;
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: any) => {
   // Check authentication and authorization;
   const authResult = await ipdMiddleware(req, "ORDER_LABS");
   if (!session.user) {
@@ -18,6 +27,33 @@ export const POST = async (req: NextRequest) => {
   }
 
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -41,6 +77,33 @@ export const POST = async (req: NextRequest) => {
       case "ORDER": any;
         try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -53,6 +116,33 @@ export const POST = async (req: NextRequest) => {
 
       case "CANCEL": any;
         try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -67,15 +157,41 @@ export const POST = async (req: NextRequest) => {
       case "RESULT_NOTIFICATION": any;
         try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
           const validatedData = LabResultNotificationSchema.parse(body);
           const result = await laboratoryService.sendLabResultNotification(validatedData, authResult.user.id);
           return NextResponse.json(result, { status: 200 });
         } catch (error) {
           return handleApiError(error);
-        }
 
       default: null,
         return NextResponse.json();
@@ -84,25 +200,49 @@ export const POST = async (req: NextRequest) => {
         )}
   } catch (error) {
     return handleApiError(error);
-  }
-}
 
 /**;
  * Get pending lab orders for a patient;
  * GET /api/ipd/integration/laboratory/pending-orders;
  */;
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: any) => {
   // Check authentication and authorization;
   const authResult = await ipdMiddleware(req, "VIEW");
   if (!session.user) {
     return authResult; // This is an error response;
-  }
 
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const { searchParams } = new URL(req.url);
     const patientId = searchParams.get("patientId");
 
@@ -111,7 +251,6 @@ export const GET = async (req: NextRequest) => {
         { error: "Missing patientId parameter" },
         { status: 400 }
       );
-    }
 
     logger.info({ route: "GET /api/ipd/integration/laboratory", patientId }, "Getting pending laboratory orders");
 
@@ -124,25 +263,49 @@ export const GET = async (req: NextRequest) => {
     return NextResponse.json(pendingOrders);
   } catch (error) {
     return handleApiError(error);
-  }
-}
 
 /**;
  * Get lab results for a patient;
  * GET /api/ipd/integration/laboratory/results;
  */;
-export const getLabResults = async (req: NextRequest) => {
+export const getLabResults = async (req: any) => {
   // Check authentication and authorization;
   const authResult = await ipdMiddleware(req, "VIEW");
   if (!session.user) {
     return authResult; // This is an error response;
-  }
 
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const { searchParams } = new URL(req.url);
     const patientId = searchParams.get("patientId");
     const encounterId = searchParams.get("encounterId") || undefined;
@@ -154,7 +317,6 @@ export const getLabResults = async (req: NextRequest) => {
         { error: "Missing patientId parameter" },
         { status: 400 }
       );
-    }
 
     logger.info({
       route: "GET /api/ipd/integration/laboratory/results";
@@ -174,22 +336,46 @@ export const getLabResults = async (req: NextRequest) => {
   } catch (error) {
     return handleApiError(error);
 
-
-
 /**;
  * Get detailed lab result;
  * GET /api/ipd/integration/laboratory/results/details;
  */;
-export const getLabResultDetails = async (req: NextRequest) => {
+export const getLabResultDetails = async (req: any) => {
   // Check authentication and authorization;
   const authResult = await ipdMiddleware(req, "VIEW");
   if (!session.user) {
     return authResult; // This is an error response;
 
-
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     const { searchParams } = new URL(req.url);
@@ -200,7 +386,6 @@ export const getLabResultDetails = async (req: NextRequest) => {
         { error: "Missing orderId parameter" },
         { status: 400 }
       );
-
 
     logger.info({ route: "GET /api/ipd/integration/laboratory/results/details", orderId }, "Getting laboratory result details");
 
@@ -213,5 +398,3 @@ export const getLabResultDetails = async (req: NextRequest) => {
     return NextResponse.json(resultDetails);
   } catch (error) {
     return handleApiError(error);
-
-

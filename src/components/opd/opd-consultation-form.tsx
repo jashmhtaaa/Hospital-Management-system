@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"; // Added useState, useEffect;
 import {
+
 import { useRouter } from "next/navigation"; // Added useRouter;
 }
 
@@ -16,11 +17,21 @@ import { useRouter } from "next/navigation"; // Added useRouter;
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "@/components/ui/input"
+import "@/components/ui/tabs"
+import "@/components/ui/textarea"
+import CardContent }
+import TabsContent
+import TabsList
+import TabsTrigger }
+import { Button }
+import { Card
+import { Input }
+import { Tabs
+import { Textarea }
+
 import { zodResolver } from "@hookform/resolvers/zod"; // Uncommented;
 import { useForm } from "react-hook-form"; // Uncommented;
 import * as z from "zod"; // Uncommented;
@@ -107,8 +118,7 @@ const fetchPatientsQueue = async (): Promise<Patient[]> => {
   // Return mock data for testing;
   return [;
     { id: "pat1", name: "John Doe", age: 45, gender: "Male", tokenNumber: 101 },
-    { id: "pat2", name: "Jane Smith", age: 32, gender: "Female", tokenNumber: 102 },
-  ];
+    { id: "pat2", name: "Jane Smith", age: 32, gender: "Female", tokenNumber: 102 }];
 };
 
 export default const _OPDConsultationForm = () {
@@ -141,14 +151,40 @@ export default const _OPDConsultationForm = () {
       setLoadingPermissions(true);
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
         const [prescribePerm, orderTestsPerm, patientsData] = await Promise.all([;
           checkPermission("opd.prescribe"),
           checkPermission("opd.order_tests"),
-          fetchPatientsQueue(),
-        ]);
+          fetchPatientsQueue()]);
         setCanPrescribe(prescribePerm),
         setCanOrderTests(orderTestsPerm);
         setPatients(patientsData);
@@ -157,7 +193,7 @@ export default const _OPDConsultationForm = () {
         toast({ title: "Error", description: "Failed to load initial data.", variant: "destructive" });
       } finally {
         setLoadingPermissions(false);
-      }
+
     };
     fetchData();
   }, [toast]); // Added toast dependency;
@@ -184,8 +220,7 @@ export default const _OPDConsultationForm = () {
     const currentMedications = form.getValues().medications || [];
     form.setValue("medications", [
       ...currentMedications,
-      { name: "", dosage: "", frequency: "", duration: "", instructions: "" },
-    ]);
+      { name: "", dosage: "", frequency: "", duration: "", instructions: "" }]);
   };
 
   // Remove medication field;
@@ -204,9 +239,36 @@ export default const _OPDConsultationForm = () {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch("/api/opd-visits", { // Updated API endpoint based on file structure;
         method: "POST",
         headers: {
@@ -218,7 +280,34 @@ export default const _OPDConsultationForm = () {
         const errorMessage = "Failed to save consultation";
         try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
           const errorData: ApiErrorResponse = await response.json(),
@@ -227,7 +316,6 @@ export default const _OPDConsultationForm = () {
           /* Ignore */;
 
         throw new Error(errorMessage);
-
 
       const result: ConsultationApiResponse = await response.json(); // Assuming API returns { consultationId: string }
 
@@ -253,7 +341,6 @@ export default const _OPDConsultationForm = () {
 
   if (!session.user) {
     return <div className="flex justify-center p-4">Loading permissions...>;
-
 
   return();
 >;

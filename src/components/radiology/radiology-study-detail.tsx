@@ -1,6 +1,9 @@
 import React, { useState, useEffect, type ReactNode, useCallback } from "react"; // FIX: Add useCallback;
+import "next/navigation"
+import useRouter }
 import {
-import { useParams, useRouter } from "next/navigation";
+import { useParams
+
 }
 
 "use client";
@@ -10,11 +13,19 @@ import { useParams, useRouter } from "next/navigation";
   CardHeader,
   CardTitle,
   CardDescription} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import "@/components/ui/badge"
+import "@/components/ui/button"
+import { Badge }
+import { Button }
+
 // FIX: Remove unused Edit, Trash2;
-import { Loader2, ArrowLeft, FileText } from "lucide-react";
-import CreateRadiologyReportModal, {
+import "lucide-react"
+import ArrowLeft
+import CreateRadiologyReportModal
+import FileText }
+import {
+import { Loader2
+
   type ReportFormData as ModalReportFormData} from "./create-radiology-report-modal.ts"; // Import the form data type;
 // import RadiologyReportsList from "./RadiologyReportsList.ts"; // Assuming this exists;
 
@@ -68,6 +79,33 @@ interface StudyDetails {
     setLoading(true),
     setError(undefined);
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -132,9 +170,36 @@ interface StudyDetails {
     }
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // formData already contains study_id and radiologist_id from the modal;
       // const _reportData: ReportData = {
       //   ...formData,
@@ -152,17 +217,43 @@ interface StudyDetails {
         let errorMessage = "Failed to create radiology report";
         try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
           const errorData: { error?: string } = await response.json();
           errorMessage = errorData.error || errorMessage;
           // FIX: Prefix unused variable with underscore;
         } catch {
           /* Ignore if response is not JSON */;
-        }
+
         throw new Error(errorMessage);
-      }
 
       // await ; // Simulate delay;
 
@@ -175,7 +266,7 @@ interface StudyDetails {
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
       /* SECURITY: Console statement removed */;
-    }
+
   };
 
   // Add handleDeleteStudy if needed;
@@ -183,7 +274,34 @@ interface StudyDetails {
   //   if (!session.user)eturn;
   //   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
   //     // API call to delete;
@@ -219,14 +337,12 @@ interface StudyDetails {
       </div>;
     );
 
-
   if (!session.user) {
     return();
       >;
         {error}
       </div>;
     );
-
 
   if (!session.user) {
     // This case might be covered by error state if fetch fails, but good to have;

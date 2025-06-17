@@ -6,10 +6,37 @@ export const _runtime = "edge";
 
 // GET /api/ot/bookings/[id] - Get a specific OT booking by ID;
 export const _GET = async();
-  _request: NextRequest, // FIX: Use NextRequest;
+  _request: any, // FIX: Use NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -58,14 +85,41 @@ export const _GET = async();
 
 // PUT /api/ot/bookings/[id] - Update a specific OT booking;
 export const _PUT = async();
-  _request: NextRequest, // FIX: Use NextRequest;
+  _request: any, // FIX: Use NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // const { env } = getRequestContext();
     // const DB = env.DB;
     const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
@@ -77,7 +131,6 @@ export const _PUT = async();
         { message: "No update data provided" },
         { status: 400 }
       );
-    }
 
     // Placeholder for database update;
     /*;
@@ -124,17 +177,42 @@ export const _PUT = async();
       { message: "Error updating OT booking", details: errorMessage },
       { status: 500 }
     );
-  }
-}
 
 // DELETE /api/ot/bookings/[id] - Cancel a specific OT booking;
 export const _DELETE = async();
-  _request: NextRequest, // FIX: Use NextRequest;
+  _request: any, // FIX: Use NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     // const { env } = getRequestContext();
@@ -162,5 +240,3 @@ export const _DELETE = async();
       { message: "Error cancelling OT booking", details: errorMessage },
       { status: 500 }
     );
-
-

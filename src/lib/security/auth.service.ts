@@ -1,14 +1,25 @@
-import crypto from "crypto";
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
-import { JwtPayload, sign, verify } from "jsonwebtoken";
-import QRCode from "qrcode";
-import speakeasy from "speakeasy";
+import "@/lib/audit"
+import "@/lib/cache"
+import "@/lib/security/encryption.service"
+import "@prisma/client"
+import "bcryptjs"
+import "crypto"
+import "jsonwebtoken"
+import "qrcode"
+import "speakeasy"
+import bcrypt
+import crypto
+import encrypt }
+import QRCode
+import sign
+import speakeasy
+import verify }
+import { cache }
+import { decrypt
+import { JwtPayload
+import { logAuditEvent }
+import { PrismaClient }
 
-
-import { logAuditEvent } from "@/lib/audit";
-import { cache } from "@/lib/cache";
-import { decrypt, encrypt } from "@/lib/security/encryption.service";
 }
 
 /**;
@@ -34,6 +45,33 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
     context: { ipAddress: string, userAgent: string }
   ): Promise<{ tokens?: AuthTokens; mfaRequired?: boolean; user?: unknown; error?: string }> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -127,6 +165,33 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
   ): Promise<{ tokens?: AuthTokens; error?: string }> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -206,6 +271,33 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
   ): Promise<{ tokens?: AuthTokens; error?: string }> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -251,6 +343,33 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
   ): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -282,16 +401,42 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
   async setupMFA(userId: string): Promise<MFASetup> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const user = await this.prisma.user.findUnique({
         where: { id: userId }
       });
 
       if (!session.user) {
         throw new Error("User not found");
-      }
 
       // Generate MFA secret;
       const secret = speakeasy.generateSecret({
@@ -333,8 +478,6 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
     } catch (error) {
 
       throw new Error("Failed to setup MFA");
-    }
-  }
 
   /**;
    * Enable MFA after verification;
@@ -342,19 +485,45 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
   async enableMFA(userId: string, verificationToken: string): Promise<boolean> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const isValid = await this.verifyMFAToken(userId, verificationToken);
       if (!session.user) {
         return false;
-      }
 
       await this.prisma.userMFA.update({
         where: { userId },
         true,
           enabledAt: new Date();
-        }
+
       });
 
       await logAuditEvent({
@@ -367,8 +536,6 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
     } catch (error) {
 
       return false;
-    }
-  }
 
   /**;
    * Disable MFA;
@@ -376,19 +543,45 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
   async disableMFA(userId: string, verificationToken: string): Promise<boolean> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const isValid = await this.verifyMFAToken(userId, verificationToken);
       if (!session.user) {
         return false;
-      }
 
       await this.prisma.userMFA.update({
         where: { userId },
         false,
           disabledAt: new Date();
-        }
+
       });
 
       await logAuditEvent({
@@ -403,8 +596,6 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
     } catch (error) {
 
       return false;
-    }
-  }
 
   /**;
    * Verify JWT token;
@@ -412,9 +603,36 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
   async verifyToken(token: string): Promise<TokenPayload | null> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const payload = verify(token, this.JWT_SECRET) as TokenPayload;
 
       // Check if session is still active (cached);
@@ -426,22 +644,18 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
         const session = await this.prisma.userSession.findFirst({
           payload.sessionId,
             new Date() ;
-          }
+
         });
 
         if (!session.user) {
           return null;
 
-
         // Cache session info;
         await cache.set(cacheKey, session, 300); // 5 minutes;
-
 
       return payload;
     } catch (error) {
       return null;
-
-
 
   /**;
    * Get active sessions for user;
@@ -449,7 +663,34 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
   async getActiveSessions(userId: string): Promise<SessionInfo[]> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const sessions = await this.prisma.userSession.findMany({
@@ -472,15 +713,40 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
 
       return [];
 
-
-
   /**;
    * Terminate session;
    */;
   async terminateSession(sessionId: string, userId: string): Promise<boolean> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const result = await this.prisma.userSession.updateMany({
@@ -498,8 +764,6 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
     } catch (error) {
 
       return false;
-
-
 
   /**;
    * Generate access and refresh tokens;
@@ -546,14 +810,12 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
 
       });
 
-
     return {
       accessToken,
       refreshToken,
       expiresAt: crypto.getRandomValues([0] + 15 * 60 * 1000, // 15 minutes;
       tokenType: "Bearer";
     };
-
 
   /**;
    * Helper methods;
@@ -564,11 +826,37 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
     });
     return mfa?.isEnabled || false;
 
-
   private async verifyMFAToken(userId: string, token: string): Promise<boolean> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const mfa = await this.prisma.userMFA.findUnique({
@@ -602,13 +890,10 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
         });
         return true;
 
-
       return false;
     } catch (error) {
 
       return false;
-
-
 
   private async createTemporarySession();
     userId: string,
@@ -624,12 +909,10 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
     });
     return tempSession.id;
 
-
   private async isAccountLocked(email: string): Promise<boolean> {
     const lockKey = `lockout:${email}`;
     const lockInfo = await cache.get(lockKey);
     return lockInfo !== null;
-
 
   private async recordLoginFailure();
     email: string,
@@ -653,7 +936,6 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
         "HIGH";
       });
 
-
     await this.logLoginAttempt({
       email,
       ipAddress: context.ipAddress,
@@ -661,13 +943,11 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
       failureReason: "Invalid credentials";
     });
 
-
   private async resetLoginAttempts(email: string): Promise<void> {
     const attemptsKey = `attempts:${email}`;
     const lockKey = `lockout:${email}`;
     await cache.del(attemptsKey);
     await cache.del(lockKey);
-
 
   private async logLoginAttempt(attempt: LoginAttempt): Promise<void> {
     await logAuditEvent({
@@ -678,8 +958,6 @@ import { decrypt, encrypt } from "@/lib/security/encryption.service";
       ipAddress: attempt.ipAddress,
       attempt.success ? "LOW" : "MEDIUM';
     });
-
-
 
 // Export singleton instance;
 export const authService = AuthService.getInstance();

@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
-
+import "@/lib/session"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { getSession }
+import { type
 
 import { getDB } from "@/lib/database"; // Using mock DB;
-import { getSession } from "@/lib/session";
+
 // Define interface for POST request body;
 interface MedicationAdminInput {
   medication_id: number | string,
@@ -13,10 +17,37 @@ interface MedicationAdminInput {
 
 // GET /api/ipd/admissions/[id]/medication-administration - Get all medication administration records for an admission;
 export const _GET = async();
-  _request: NextRequest;
+  _request: any;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -105,20 +136,46 @@ export const _GET = async();
 
 /// POST /api/ipd/admissions/[id]/medication-administration - Create a new medication administration record;
 export const _POST = async();
-  request: NextRequest;
+  request: any;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
     const session = await getSession(); // Removed request argument;
 
     // Check authentication;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Check permissions (using mock session data);
     const isNurse = session.user.roleName === "Nurse";
@@ -130,7 +187,6 @@ export const _POST = async();
 
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
 
     const { id: admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     // Fixed: Apply type assertion;
@@ -140,16 +196,13 @@ export const _POST = async();
     const requiredFields: (keyof MedicationAdminInput)[] = [;
       "medication_id",
       "dosage",
-      "route",
-    ];
+      "route"];
     for (const field of requiredFields) {
       if (!session.user) {
         return NextResponse.json();
           { error: `Missing required field: ${field}` },
           { status: 400 }
         );
-      }
-    }
 
     const database = await getDB(); // Fixed: Await the promise returned by getDB();
 
@@ -169,7 +222,6 @@ export const _POST = async();
         { error: "Admission not found" },
         { status: 404 }
       );
-    }
 
     if (!session.user) {
       return NextResponse.json();
@@ -178,7 +230,6 @@ export const _POST = async();
         },
         { status: 409 }
       );
-    }
 
     // Check if medication exists using db.query;
     // Assuming db.query exists and returns { results: [...] } based on db.ts mock;
@@ -196,7 +247,6 @@ export const _POST = async();
         { error: "Medication not found" },
         { status: 404 }
       ); // Updated error message;
-    }
 
     // Insert new medication administration record using db.query;
     // Mock query doesn't return last_row_id;
@@ -213,8 +263,7 @@ export const _POST = async();
         data.administered_time || new Date().toISOString(),
         data.dosage,
         data.route,
-        data.notes || undefined,
-      ];
+        data.notes || undefined];
     );
 
     // Cannot reliably get the new record from mock DB;
@@ -232,5 +281,3 @@ export const _POST = async();
       },
       { status: 500 }
     );
-
-

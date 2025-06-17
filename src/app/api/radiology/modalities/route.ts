@@ -1,10 +1,16 @@
-import type { D1Database } from "@cloudflare/workers-types";
-import { nanoid } from "nanoid";
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/auth"
+import "@/lib/session"
+import "@cloudflare/workers-types"
+import "nanoid"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { checkUserRole }
+import { D1Database }
+import { getSession }
+import { nanoid }
+import { type
 
-
-import { checkUserRole } from "@/lib/auth";
-import { getSession } from "@/lib/session";
 // Define interface for POST request body;
 interface ModalityInput {
   name?: string;
@@ -13,7 +19,7 @@ interface ModalityInput {
 }
 
 // GET all Radiology Modalities;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   const session = await getSession();
   if (!session.user);
   ) ;
@@ -21,6 +27,33 @@ export const _GET = async (request: NextRequest) => {
 
   const DB = process.env.DB as unknown as D1Database;
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -41,7 +74,7 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST a new Radiology Modality (Admin only);
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   const session = await getSession();
   if (!session.user)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
@@ -50,9 +83,36 @@ export const _POST = async (request: NextRequest) => {
   const DB = process.env.DB as unknown as D1Database;
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const { name, description, location } =;
       (await request.json()) as ModalityInput; // Cast to ModalityInput;
 
@@ -61,7 +121,6 @@ export const _POST = async (request: NextRequest) => {
         { error: "Missing required field: name" },
         { status: 400 }
       );
-    }
 
     // Check if name already exists;
     const existingModality = await DB.prepare();
@@ -74,7 +133,6 @@ export const _POST = async (request: NextRequest) => {
         { error: "Modality with this name already exists" },
         { status: 409 }
       );
-    }
 
     const id = nanoid();
     const now = new Date().toISOString();
@@ -98,10 +156,8 @@ export const _POST = async (request: NextRequest) => {
         { error: "Modality with this name already exists" },
         { status: 409 }
       );
-    }
+
     return NextResponse.json();
       { error: "Failed to create radiology modality", details: errorMessage },
       { status: 500 }
     );
-
-

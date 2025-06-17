@@ -1,6 +1,11 @@
-import type React from "react";
-import { useCallback, useEffect, useState } from "react";
+import "react"
+import React
+import type
+import useEffect
+import useState }
 import {
+import { useCallback
+
 }
 
 "use client";
@@ -14,8 +19,11 @@ export const dynamic = "force-dynamic";
   TableHeader,
   TableRow} from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge"; // Import BadgeProps;
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import "@/components/ui/button"
+import "@/components/ui/input"
+import { Button }
+import { Input }
+
   Dialog,
   DialogContent,
   DialogHeader,
@@ -28,10 +36,16 @@ import { Input } from "@/components/ui/input";
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Edit, PlusCircle, Search } from "lucide-react";
+import "@/components/ui/checkbox"
+import "@/components/ui/label"
+import "@/components/ui/skeleton"
+import "lucide-react"
+import PlusCircle
+import Search }
+import { Checkbox }
+import { Edit
+import { Label }
+import { Skeleton }
 
 // --- INTERFACES ---;
 interface ServiceItem {
@@ -117,6 +131,33 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
     event.preventDefault(),
     setIsSubmitting(true);
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -227,7 +268,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
             checked={formData.is_discountable}
             onCheckedChange={(checked) => {}
               handleSelectChange("is_discountable", checked as boolean);
-            }
+
           />;
           <Label htmlFor="is_discountable">Discountable</Label>;
         </div>;
@@ -238,7 +279,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
             checked={formData.is_active}
             onCheckedChange={(checked) => {}
               handleSelectChange("is_active", checked as boolean);
-            }
+
           />;
           <Label htmlFor="is_active">Active</Label>;
         </div>;
@@ -273,9 +314,36 @@ export default const _ServiceItemsPage = () {
     setError(null); // Clear previous errors before fetching;
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch("/api/billing/service-items");
       if (!session.user) {
         throw as ServiceItemsApiResponse;
@@ -291,7 +359,7 @@ export default const _ServiceItemsPage = () {
       setServiceItems([]); // Clear items on error;
     } finally {
       setIsLoading(false);
-    }
+
   }, []);
 
   useEffect(() => {
@@ -307,7 +375,34 @@ export default const _ServiceItemsPage = () {
 
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const response = await fetch(url, {
@@ -320,7 +415,34 @@ export default const _ServiceItemsPage = () {
         let errorMessage = `Failed to ${editingItem ? "update" : "create"} service item`;
         try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
           // FIX: Cast error response JSON to defined type;
@@ -334,7 +456,6 @@ export default const _ServiceItemsPage = () {
           errorMessage = `HTTP error! status: ${response.status}`;
 
         throw new Error(errorMessage);
-
 
       // Refresh list and close modal on success;
       await fetchServiceItems(),

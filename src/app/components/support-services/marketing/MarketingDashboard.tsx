@@ -1,17 +1,43 @@
-import type { ColumnDef } from "@tanstack/react-table";
-import { useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import "@/components/ui/badge"
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "@/components/ui/charts"
+import "@/components/ui/data-table"
+import "@/components/ui/input"
+import "@/components/ui/select"
+import "@/components/ui/tabs"
+import "@/components/ui/use-toast"
+import "@tanstack/react-table"
+import "next/navigation"
+import "react"
+import CardContent
+import CardDescription
+import CardHeader
+import CardTitle }
+import LineChart
+import PieChart }
+import React
+import SelectContent
+import SelectItem
+import SelectTrigger
+import SelectValue }
+import TabsContent
+import TabsList
+import TabsTrigger }
+import useEffect }
+import { Badge }
+import { BarChart
+import { Button }
+import { Card
+import { ColumnDef }
+import { DataTable }
+import { Input }
+import { Select
+import { Tabs
+import { toast }
+import { useRouter }
+import { useState
 
-
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, LineChart, PieChart } from "@/components/ui/charts";
-import { DataTable } from "@/components/ui/data-table";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toast } from "@/components/ui/use-toast";
 // Define column types for campaign table;
 type Campaign = {
   id: string,
@@ -54,7 +80,7 @@ export default const _MarketingDashboard = () {
     {
       accessorKey: "name",
       ({ row }) => (;
-        <div className="font-medium cursor-pointer hover:text-primary";
+        <div></div>;
              onClick={() => router.push(`/marketing/campaigns/${}`}>;
           {row.getValue("name")}
         </div>;
@@ -128,15 +154,14 @@ export default const _MarketingDashboard = () {
             Edit;
           </Button>;
         </div>;
-      )},
-  ];
+      )}];
 
   // Define columns for contact table;
   const contactColumns: ColumnDef<Contact>[] = [;
     {
       accessorKey: "name",
       ({ row }) => (;
-        <div className="font-medium cursor-pointer hover:text-primary";
+        <div></div>;
              onClick={() => router.push(`/marketing/contacts/$row.original.id`)}>;
           {row.getValue("name")}
         </div>;
@@ -167,7 +192,6 @@ export default const _MarketingDashboard = () {
             variant = "destructive";
             break;
 
-
         return <Badge variant={variant}>{status}>;
       }},
     {
@@ -195,8 +219,7 @@ export default const _MarketingDashboard = () {
             Edit;
           </Button>;
         </div>;
-      )},
-  ];
+      )}];
 
   // Fetch data on component mount;
   useEffect(() => {
@@ -204,7 +227,34 @@ export default const _MarketingDashboard = () {
       setIsLoading(true);
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         // Fetch campaigns;
@@ -248,10 +298,8 @@ export default const _MarketingDashboard = () {
     if (!session.user) {
       return false;
 
-
     if (!session.user)includes(searchQuery.toLowerCase())) {
       return false;
-
 
     return true;
   });
@@ -261,11 +309,9 @@ export default const _MarketingDashboard = () {
     if (!session.user) {
       return false;
 
-
     if (!session.user)includes(searchQuery.toLowerCase()) &&
         !contact.email.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false;
-
 
     return true;
   });
@@ -285,8 +331,7 @@ export default const _MarketingDashboard = () {
       {
         label: "Conversions",
         data: [12, 19, 3, 5, 2],
-        backgroundColor: "rgba(153, 102, 255, 0.5)"},
-    ]};
+        backgroundColor: "rgba(153, 102, 255, 0.5)"}]};
 
   const contactGrowthData = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
@@ -295,8 +340,7 @@ export default const _MarketingDashboard = () {
         label: "New Contacts",
         data: [12, 19, 3, 5, 2, 3],
         borderColor: "rgb(75, 192, 192)",
-        backgroundColor: "rgba(75, 192, 192, 0.5)"},
-    ]};
+        backgroundColor: "rgba(75, 192, 192, 0.5)"}]};
 
   const contactSourceData = {
     labels: ["Website", "Referral", "Social Media", "Event", "Other"],
@@ -309,11 +353,9 @@ export default const _MarketingDashboard = () {
           "rgba(54, 162, 235, 0.5)",
           "rgba(255, 206, 86, 0.5)",
           "rgba(75, 192, 192, 0.5)",
-          "rgba(153, 102, 255, 0.5)",
-        ],
+          "rgba(153, 102, 255, 0.5)"],
         borderWidth: 1;
-      },
-    ]};
+      }]};
 
   return();
     >;

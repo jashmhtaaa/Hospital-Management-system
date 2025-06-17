@@ -1,18 +1,53 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/audit"
+import "@/lib/barcode"
+import "@/lib/cache/invalidation"
+import "@/lib/cache/redis"
+import "@/lib/database"
+import "@/lib/session"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { CacheInvalidation }
+import { DB }
+import { generateBarcodeData }
+import { getSession }
+import { RedisCache }
+import { type
 
-
-import { auditLog } from "@/lib/audit";
-import { generateBarcodeData } from "@/lib/barcode";
-import { CacheInvalidation } from "@/lib/cache/invalidation";
-import { RedisCache } from "@/lib/cache/redis";
-import { DB } from "@/lib/database";
-import { getSession } from "@/lib/session";
 /**;
  * GET /api/diagnostics/lab/specimens;
  * Get laboratory specimens with optional filtering;
  */;
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -159,8 +194,35 @@ export const GET = async (request: NextRequest) => {
  * POST /api/diagnostics/lab/specimens;
  * Create a new laboratory specimen;
  */;
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -301,8 +363,35 @@ export const POST = async (request: NextRequest) => {
  * PUT /api/diagnostics/lab/specimens/:id;
  * Update a laboratory specimen;
  */;
-export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const PUT = async (request: any, { params }: { params: { id: string } }) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -532,22 +621,47 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
  * GET /api/diagnostics/lab/specimens/:id/tracking;
  * Get tracking history for a specimen;
  */;
-export const _GET_TRACKING = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_TRACKING = async (request: any, { params }: { params: { id: string } }) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Authentication;
     const session = await getSession();
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     const id = Number.parseInt(params.id);
     if (!session.user) {
       return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
-    }
 
     // Cache key;
     const cacheKey = `diagnostic:lab:specimen:${id}:tracking`;
@@ -560,7 +674,6 @@ export const _GET_TRACKING = async (request: NextRequest, { params }: { params: 
         const specimenCheck = await DB.query("SELECT id FROM laboratory_specimens WHERE id = ?", [id]);
         if (!session.user) {
           throw new Error("Specimen not found");
-        }
 
         // Get tracking history;
         const query = `;
@@ -592,34 +705,56 @@ export const _GET_TRACKING = async (request: NextRequest, { params }: { params: 
       error: "Failed to fetch specimen tracking",
       details: error instanceof Error ? error.message : "Unknown error";
     }, { status: 500 });
-  }
-}
 
 /**;
  * POST /api/diagnostics/lab/specimens/:id/aliquot;
  * Create an aliquot from a parent specimen;
  */;
-export const _POST_ALIQUOT = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _POST_ALIQUOT = async (request: any, { params }: { params: { id: string } }) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Authentication;
     const session = await getSession();
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
 
     const id = Number.parseInt(params.id);
     if (!session.user) {
       return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
-    }
 
     // Parse request body;
     const body = await request.json();
@@ -634,13 +769,11 @@ export const _POST_ALIQUOT = async (request: NextRequest, { params }: { params: 
     // Validate required fields;
     if (!session.user) {
       return NextResponse.json({ error: "Container type, volume, and volume units are required" }, { status: 400 });
-    }
 
     // Check if parent specimen exists;
     const parentCheck = await DB.query("SELECT * FROM laboratory_specimens WHERE id = ?", [id]);
     if (!session.user) {
       return NextResponse.json({ error: "Parent specimen not found" }, { status: 404 });
-    }
 
     const parentSpecimen = parentCheck.results[0];
 
@@ -649,7 +782,6 @@ export const _POST_ALIQUOT = async (request: NextRequest, { params }: { params: 
       return NextResponse.json({
         error: "Cannot create aliquot: Parent specimen must be received, processing, or stored";
       }, { status: 400 });
-    }
 
     // Generate unique specimen ID for aliquot;
     const specimenId = `AL/* SECURITY: Template literal eliminated */;
@@ -755,23 +887,47 @@ export const _POST_ALIQUOT = async (request: NextRequest, { params }: { params: 
       details: error instanceof Error ? error.message : "Unknown error";
     }, { status: 500 });
 
-
-
 /**;
  * POST /api/diagnostics/lab/specimens/barcode;
  * Generate barcode for a specimen;
  */;
-export const _POST_BARCODE = async (request: NextRequest) => {
+export const _POST_BARCODE = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     // Authentication;
     const session = await getSession();
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
 
     // Parse request body;
     const body = await request.json();
@@ -781,12 +937,10 @@ export const _POST_BARCODE = async (request: NextRequest) => {
     if (!session.user) {
       return NextResponse.json({ error: "Specimen ID is required" }, { status: 400 });
 
-
     // Check if specimen exists;
     const specimenCheck = await DB.query("SELECT * FROM laboratory_specimens WHERE id = ?", [specimenId]);
     if (!session.user) {
       return NextResponse.json({ error: "Specimen not found" }, { status: 404 });
-
 
     const specimen = specimenCheck.results[0];
 
@@ -804,7 +958,6 @@ export const _POST_BARCODE = async (request: NextRequest) => {
       // Invalidate cache;
       await CacheInvalidation.invalidatePattern("diagnostic:lab:specimens:*");
       await CacheInvalidation.invalidatePattern(`diagnostic:lab:specimen:${specimenId}:*`);
-
 
     // Generate barcode image (base64);
     const barcodeImage = await generateBarcodeImage(barcodeId, specimen.specimen_id);
@@ -827,8 +980,6 @@ export const _POST_BARCODE = async (request: NextRequest) => {
       error: "Failed to generate barcode",
       details: error instanceof Error ? error.message : "Unknown error";
     }, { status: 500 });
-
-
 
 // Helper function to generate barcode image;
 async const generateBarcodeImage = (barcodeId: string, specimenId: string): Promise<string> {

@@ -1,5 +1,6 @@
+import "@radix-ui/react-collapsible"
+import * as CollapsiblePrimitive
 
-import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 }
 
 "use client";

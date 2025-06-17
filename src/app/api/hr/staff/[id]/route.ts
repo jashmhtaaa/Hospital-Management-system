@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/hr/employee-service"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { employeeService }
+import { type
+import { z }
 
-
-import { employeeService } from "@/lib/hr/employee-service";
 // Schema for employee update;
 const updateEmployeeSchema = z.object({
   firstName: z.string().optional(),
@@ -22,10 +26,37 @@ const updateEmployeeSchema = z.object({
 
 // GET /api/hr/staff/[id];
 export const _GET = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -51,14 +82,41 @@ export const _GET = async();
 
 // PUT /api/hr/staff/[id];
 export const _PUT = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const body = await request.json();
 
     // Validate request body;
@@ -76,7 +134,6 @@ export const _PUT = async();
         { error: "Validation error", details: error.errors },
         { status: 400 }
       );
-    }
 
     // Handle not found errors;
     if (!session.user) {
@@ -84,25 +141,49 @@ export const _PUT = async();
         { error: "Employee not found" },
         { status: 404 }
       );
-    }
 
     return NextResponse.json();
       { error: "Failed to update employee", details: error.message },
       { status: 500 }
     );
-  }
-}
 
 // DELETE /api/hr/staff/[id] - Soft delete by setting active to false;
 export const _DELETE = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Soft delete by setting active to false and recording termination date;
     const employee = await employeeService.updateEmployee(params.id, {
       active: false,
@@ -119,10 +200,7 @@ export const _DELETE = async();
         { status: 404 }
       );
 
-
     return NextResponse.json();
       { error: "Failed to delete employee", details: error.message },
       { status: 500 }
     );
-
-

@@ -1,19 +1,44 @@
-import { useRouter } from "next/navigation";
-import type React from "react";
-import { useEffect, useState } from "react";
+import "@/components/ui/badge"
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "@/components/ui/editor"
+import "@/components/ui/input"
+import "@/components/ui/label"
+import "@/components/ui/select"
+import "@/components/ui/switch"
+import "@/components/ui/tabs"
+import "@/components/ui/textarea"
+import "@/components/ui/use-toast"
+import "next/navigation"
+import "react"
+import CardContent
+import CardDescription
+import CardHeader
+import CardTitle }
+import React
+import SelectContent
+import SelectItem
+import SelectTrigger
+import SelectValue }
+import TabsContent
+import TabsList
+import TabsTrigger }
+import type
+import useState }
+import { Badge }
+import { Button }
+import { Card
+import { Editor }
+import { Input }
+import { Label }
+import { Select
+import { Switch }
+import { Tabs
+import { Textarea }
+import { toast }
+import { useEffect
+import { useRouter }
 
-
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Editor } from "@/components/ui/editor";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/use-toast";
 interface TemplateEditorProps {
   templateId?: string;
   onSuccess?: (template: unknown) => void;
@@ -41,6 +66,33 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
       setIsLoading(true);
       try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -190,13 +242,39 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
       });
       setRenderedContent(content);
       return;
-    }
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch(`/api/support-services/marketing/templates/${templateId}/render`, {
         method: "POST",
         headers: {
@@ -213,7 +291,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
         title: "Error",
         "destructive";
       });
-    }
+
   };
 
   // Handle form submission;
@@ -223,9 +301,36 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const url = templateId;
         ? `/api/support-services/marketing/templates/$templateId`;
         : "/api/support-services/marketing/templates";
@@ -495,7 +600,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
                 <Label>Preview Result</Label>;
                 >;
                   {renderedContent ? (;
-                    <div /* SECURITY: dangerouslySetInnerHTML replaced with safe text rendering */;
+                    <div></div>;
       children={renderedContent} />;
                   ) : (;
                     <p className="text-muted-foreground">Click "Generate Preview" to see the rendered template>;
@@ -525,6 +630,5 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
       </CardContent>;
     </Card>;
   );
-
 
 })

@@ -1,12 +1,21 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
-import { z } from "zod";
+import "@/lib/session"
+import "@/types/opd"
+import "@opennextjs/cloudflare"
+import "iron-session"
+import "next/headers"
+import "zod"
+import OPDVisit
+import OPDVisitStatus
+import OPDVisitType }
+import type
+import { cookies }
+import { getCloudflareContext }
+import { getIronSession }
+import { IronSessionData }
+import { sessionOptions }
+import { type
+import { z }
 
-
-import type { IronSessionData } from "@/lib/session";
-import { sessionOptions } from "@/lib/session";
-import { type OPDVisit, OPDVisitStatus, type OPDVisitType } from "@/types/opd";
 // app/api/opd-visits/[visitId]/route.ts;
 // Define the expected shape of the database query result;
 interface OPDVisitQueryResult {
@@ -56,6 +65,33 @@ export const _GET = async (request: Request) => {
     }
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -138,9 +174,36 @@ export const _PUT = async (request: Request) => {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const body = await request.json();
         const validation = UpdateVisitSchema.safeParse(body);
 
@@ -148,7 +211,6 @@ export const _PUT = async (request: Request) => {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" }});
-        }
 
         const updateData = validation.data;
 
@@ -157,7 +219,6 @@ export const _PUT = async (request: Request) => {
              return new Response(JSON.stringify({ message: "No update data provided" }), {
                 status: 200, // Or 304 Not Modified;
                 headers: { "Content-Type": "application/json" }});
-        }
 
         const { env } = await getCloudflareContext();
         const { DB } = env;
@@ -170,7 +231,6 @@ export const _PUT = async (request: Request) => {
             return new Response(JSON.stringify({ error: "OPD Visit not found" }), {
                 status: 404,
                 headers: { "Content-Type": "application/json" }});
-        }
 
         // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
@@ -182,7 +242,7 @@ export const _PUT = async (request: Request) => {
             if (!session.user) { // Allow null values to be set
                 query += `, ${key} = ?`;
                 queryParams.push(value);
-            }
+
         });
 
         query += " WHERE opd_visit_id = ?";
@@ -193,7 +253,6 @@ export const _PUT = async (request: Request) => {
 
         if (!session.user) {
             throw new Error("Failed to update OPD visit");
-        }
 
         // 5. Return success response;
         return new Response(JSON.stringify({ message: "OPD Visit updated successfully" }), {
@@ -206,8 +265,6 @@ export const _PUT = async (request: Request) => {
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
             status: 500,
             headers: { "Content-Type": "application/json" }});
-
-
 
 // DELETE handler - Typically visits are cancelled (status update) rather than deleted;
 // Implement if hard deletion is truly required, but use with caution.;

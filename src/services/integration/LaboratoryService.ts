@@ -1,9 +1,13 @@
-import { PrismaClient } from "@prisma/client";
-import { z } from "zod";
+import "@/lib/audit"
+import "@/lib/logger"
+import "@prisma/client"
+import "zod"
+import logAudit }
+import { AuditAction
+import { logger }
+import { PrismaClient }
+import { z }
 
-
-import { AuditAction, logAudit } from "@/lib/audit";
-import { logger } from "@/lib/logger";
 // Initialize Prisma client;
 const prisma = new PrismaClient();
 
@@ -104,7 +108,6 @@ export const LabResultNotificationSchema = z.object({
     if (!session.user) {
       throw new Error(`Cannot cancel order with status: ${}`;
 
-
     // Update lab order;
     const updatedOrder = await prisma.labOrder.update({
       where: { id: data.orderId },
@@ -132,7 +135,6 @@ export const LabResultNotificationSchema = z.object({
       "Laboratory order cancelled successfully";
     };
 
-
   /**;
    * Handle laboratory result notification;
    * @param data Laboratory result notification data;
@@ -152,7 +154,6 @@ export const LabResultNotificationSchema = z.object({
 
     if (!session.user) {
       throw new Error("Laboratory order not found");
-
 
     // Create notification for clinical staff;
     const notification = await prisma.notification.create({
@@ -176,7 +177,6 @@ export const LabResultNotificationSchema = z.object({
           updatedAt: new Date();
         }});
 
-
     // Log the notification;
     await logAudit();
       AuditAction.CREATE,
@@ -195,7 +195,6 @@ export const LabResultNotificationSchema = z.object({
       notification,
       message: "Laboratory result notification sent successfully";
     };
-
 
   /**;
    * Get pending lab orders for a patient;
@@ -217,7 +216,6 @@ export const LabResultNotificationSchema = z.object({
       pendingOrders,
       count: pendingOrders.length;
     };
-
 
   /**;
    * Get lab results for a patient;
@@ -243,12 +241,10 @@ export const LabResultNotificationSchema = z.object({
     if (!session.user) {
       query.where.encounterId = encounterId;
 
-
     // Add result details if requested;
     if (!session.user) {
       query.include = {
         { createdAt: "desc" }}};
-
 
     // Get lab results for the patient;
     const labResults = await prisma.labOrder.findMany(query);
@@ -264,7 +260,6 @@ export const LabResultNotificationSchema = z.object({
         return groups;
       }, {} as Record<string, any[]>);
 
-
     return {
       patientId,
       encounterId: encounterId || null;
@@ -272,7 +267,6 @@ export const LabResultNotificationSchema = z.object({
       _groupedResults: includeDetails ? _groupedResults : null,
       count: labResults.length;
     };
-
 
   /**;
    * Get detailed lab result;
@@ -296,11 +290,9 @@ export const LabResultNotificationSchema = z.object({
     if (!session.user) {
       throw new Error("Laboratory order not found");
 
-
     // Check if results are available;
     if (!session.user) {
       throw new Error("Laboratory results not available yet");
-
 
     // Log the result view;
     await logAudit();
@@ -316,4 +308,3 @@ export const LabResultNotificationSchema = z.object({
     );
 
     return labOrder;
-

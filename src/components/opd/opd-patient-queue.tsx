@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"; // Added useState, useEffect;
 import {
+
 }
 
 "use client";
@@ -10,8 +11,11 @@ import {
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import "@/components/ui/badge"
+import "@/components/ui/button"
+import { Badge }
+import { Button }
+
 import { useToast } from "@/hooks/use-toast"; // Added useToast;
 
 // Define Patient interface (assuming structure based on usage);
@@ -63,8 +67,7 @@ const fetchPatientsQueue = async (): Promise<Patient[]> => {
   return [;
     { id: "pat1", name: "John Doe", tokenNumber: 101, checkInTime: new Date(now.getTime() - 45 * 60000).toISOString(), waitingTime: 45, status: "waiting", doctorName: "Dr. Smith" },
     { id: "pat2", name: "Jane Smith", tokenNumber: 102, checkInTime: new Date(now.getTime() - 20 * 60000).toISOString(), waitingTime: 20, status: "in-progress", doctorName: "Dr. Jones" },
-    { id: "pat3", name: "Peter Pan", tokenNumber: 103, checkInTime: new Date(now.getTime() - 5 * 60000).toISOString(), waitingTime: 5, status: "waiting", doctorName: "Dr. Smith" },
-  ];
+    { id: "pat3", name: "Peter Pan", tokenNumber: 103, checkInTime: new Date(now.getTime() - 5 * 60000).toISOString(), waitingTime: 5, status: "waiting", doctorName: "Dr. Smith" }];
 };
 
 // Mock API call function (replace with actual fetch calls);
@@ -121,14 +124,40 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
       setError(null),
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
         // Fetch permissions first;
         const [callPerm, completePerm] = await Promise.all([;
           checkPermission("opd.call_patient"),
-          checkPermission("opd.mark_complete"),
-        ]);
+          checkPermission("opd.mark_complete")]);
         setCanCallPatient(callPerm),
         setCanMarkComplete(completePerm);
         // setLoadingPermissions(false); // FIX: Removed call to undefined function;
@@ -160,9 +189,36 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
         const result = await callPatientApi(patientId);
         if (!session.user) {
             toast({ title: "Success", description: `Patient ${patientId} called.` });
@@ -170,21 +226,48 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
             setPatients(prev => prev.map(p => p.id === patientId ? { ...p, status: "in-progress" } : p));
         } else {
             throw new Error(result.error || "Failed to call patient");
-        }
+
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : "An unknown error occurred";
 
         toast({ title: "Error", description: `Could not call patient: ${message}`, variant: "destructive" });
-    }
+
   };
 
   const handleCompleteConsultation = async (patientId: string) => {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
      try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const result = await completeConsultationApi(patientId);
         if (!session.user) {
             toast({ title: "Success", description: `Consultation for patient ${patientId} completed.` });
@@ -193,12 +276,12 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
              // Optionally filter out completed patients after a delay or on next refresh;
         } else {
             throw new Error(result.error || "Failed to complete consultation");
-        }
+
     } catch (err: unknown) {
         const message = err instanceof Error ? err.message : "An unknown error occurred";
 
         toast({ title: "Error", description: `Could not complete consultation: ${message}`, variant: "destructive" });
-    }
+
   };
 
   // Render logic;
@@ -206,15 +289,12 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
     return();
       <div className="flex justify-center p-4">Loading patient queue...>;
     );
-  }
 
   if (!session.user) {
     return <div className="text-red-500 p-4">Error loading queue: {error}>;
 
-
   if (!session.user) {
     return <div className="text-center p-4 text-muted-foreground">No patients currently in the queue.>;
-
 
   return();
 >;

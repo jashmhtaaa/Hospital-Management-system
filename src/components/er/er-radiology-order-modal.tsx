@@ -1,10 +1,17 @@
-import * as z from "zod";
-import React, { useState, useEffect } from "react";
+import "@/components/ui/button"
+import "@hookform/resolvers/zod"
+import "react"
+import "react-hook-form"
+import "zod"
+import * as z
+import React
+import useEffect }
 import {
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Button }
+import { useForm }
+import { useState
+import { zodResolver }
 
-import { Button } from "@/components/ui/button";
 }
 
 // src/components/er/ERRadiologyOrderModal.tsx;
@@ -22,7 +29,9 @@ import { Button } from "@/components/ui/button";
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import "@/components/ui/input"
+import { Input }
+
   Select,
   SelectContent,
   SelectItem,
@@ -62,8 +71,7 @@ const availableProcedureTypes = [;
   { id: "proc_us_abd", name: "Ultrasound Abdomen Complete" },
   { id: "proc_xray_kub", name: "X-Ray KUB" },
   { id: "proc_ct_abd_pel_w", name: "CT Abdomen/Pelvis w/ Contrast" },
-  { id: "proc_mri_brain_wo", name: "MRI Brain w/o Contrast" },
-];
+  { id: "proc_mri_brain_wo", name: "MRI Brain w/o Contrast" }];
 
 export default const _ERRadiologyOrderModal = ({
   isOpen,
@@ -96,9 +104,36 @@ export default const _ERRadiologyOrderModal = ({
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
       const response = await fetch("/api/radiology/orders", {
         method: "POST",
@@ -114,7 +149,34 @@ export default const _ERRadiologyOrderModal = ({
         let errorMessage = "Failed to create radiology order";
         try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
           const errorData: { error?: string } = await response.json(); // FIX: Add type for errorData;
@@ -123,7 +185,6 @@ export default const _ERRadiologyOrderModal = ({
           // Ignore if response is not JSON;
 
         throw new Error(errorMessage);
-
 
       const newOrder: { id: string } = await response.json(); // FIX: Add basic type for newOrder;
 
@@ -155,8 +216,6 @@ export default const _ERRadiologyOrderModal = ({
       });
     } finally {
       setIsLoading(false);
-
-
 
   return();
     >;

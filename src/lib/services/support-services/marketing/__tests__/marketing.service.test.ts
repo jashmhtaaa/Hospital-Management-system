@@ -1,9 +1,16 @@
+import "../marketing.service"
+import "@/lib/audit"
+import "@/lib/errors"
+import "@/lib/notifications"
+import "@/lib/prisma"
+import NotFoundError
+import ValidationError }
+import { AuditLogger }
+import { DatabaseError
+import { MarketingCampaignService }
+import { NotificationService }
+import { prisma }
 
-import { AuditLogger } from "@/lib/audit";
-import { DatabaseError, NotFoundError, ValidationError } from "@/lib/errors";
-import { NotificationService } from "@/lib/notifications";
-import { prisma } from "@/lib/prisma";
-import { MarketingCampaignService } from "../marketing.service";
 // Mock dependencies;
 jest.mock("@/lib/prisma", () => ({
   jest.fn(),
@@ -79,7 +86,6 @@ describe("MarketingCampaignService", () => {
       const invalidData = {
         ...mockCampaignData,
         name: "", // Invalid: empty name;
-
 
       // Act & Assert;
       await expect(service.createCampaign(invalidData, mockUserId));
@@ -195,8 +201,7 @@ describe("MarketingCampaignService", () => {
         new Date(),
         createdAt: new Date(),
         updatedAt: new Date();
-      },
-    ];
+      }];
 
     it("should retrieve campaigns with pagination", async () => {
       // Arrange;

@@ -1,7 +1,10 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/monitoring/metrics-collector"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { metricsCollector }
+import { type
 
-
-import { metricsCollector } from "@/lib/monitoring/metrics-collector";
 }
 
 /**;
@@ -9,8 +12,35 @@ import { metricsCollector } from "@/lib/monitoring/metrics-collector";
  * Provides access to system metrics and health data;
  */;
 
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -36,7 +66,6 @@ export const _GET = async (request: NextRequest) => {
         timeWindow: timeWindowSeconds,
         metrics.length;
       });
-    }
 
     if (!session.user) {
       // Return Prometheus format;
@@ -45,7 +74,6 @@ export const _GET = async (request: NextRequest) => {
       return new NextResponse(prometheusData, {
         headers: {
           "Content-Type": "text/plain; charset=utf-8"}});
-    }
 
     // Return dashboard metrics;
     const dashboardMetrics = metricsCollector.getDashboardMetrics();
@@ -64,13 +92,40 @@ export const _GET = async (request: NextRequest) => {
       },
       { status: 500 }
     );
-  }
-export const _POST = async (request: NextRequest) => {
+
+export const _POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const body = await request.json();
     const { action } = body;
 
@@ -104,5 +159,3 @@ export const _POST = async (request: NextRequest) => {
       },
       { status: 500 }
     );
-
-

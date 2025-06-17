@@ -1,14 +1,25 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../../lib/audit"
+import "../../../../../lib/error-handler"
+import "../../../../../lib/services/laboratory/laboratory.service"
+import "../../../../../lib/services/patient/patient.service"
+import "../../../../../lib/services/pharmacy/pharmacy.service"
+import "../../../../../lib/validation/pharmacy-validation"
+import "../../../models/domain-models"
+import "../../../services/drug-interaction-service"
+import "next/server"
+import getPatientConditions }
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { DrugInteractionService }
+import { errorHandler }
+import { getMedicationById }
+import { getPatientAllergies
+import { getPatientLabResults }
+import { PharmacyDomain }
+import { type
+import { validateBatchInteractionCheckRequest }
 
-
-import { auditLog } from "../../../../../lib/audit";
-import { errorHandler } from "../../../../../lib/error-handler";
-import { getPatientLabResults } from "../../../../../lib/services/laboratory/laboratory.service";
-import { getPatientAllergies, getPatientConditions } from "../../../../../lib/services/patient/patient.service";
-import { getMedicationById } from "../../../../../lib/services/pharmacy/pharmacy.service";
-import { validateBatchInteractionCheckRequest } from "../../../../../lib/validation/pharmacy-validation";
-import type { PharmacyDomain } from "../../../models/domain-models";
-import { DrugInteractionService } from "../../../services/drug-interaction-service";
 }
 
 /**;
@@ -37,8 +48,35 @@ const interactionService = new DrugInteractionService();
  * POST /api/pharmacy/interactions/batch-check;
  * Perform comprehensive batch interaction checking;
  */;
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -72,13 +110,11 @@ export const POST = async (req: NextRequest) => {
       if (!session.user) {
         const patientAllergies = await getPatientAllergies(data.patientId);
         allergies = patientAllergies.map(a => a.allergen);
-      }
 
       // Fetch patient conditions if not provided;
       if (!session.user) {
         const patientConditions = await getPatientConditions(data.patientId);
         conditions = patientConditions.map(c => c.code);
-      }
 
       // Fetch patient lab results if not provided;
       if (!session.user) {
@@ -88,8 +124,6 @@ export const POST = async (req: NextRequest) => {
           lr.unit,
           lr.abnormalFlag;
         }));
-      }
-    }
 
     // Perform batch interaction checks;
     const results = await interactionService.batchCheckInteractions({
@@ -123,4 +157,3 @@ export const POST = async (req: NextRequest) => {
     }, { status: 200 });
   } catch (error) {
     return errorHandler(error, "Error performing batch interaction check");
-

@@ -1,9 +1,17 @@
-import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
-import { PrismaClient } from "@prisma/client";
+import "../employee-service"
+import "@/lib/cache"
+import "@jest/globals"
+import "@prisma/client"
+import beforeEach
+import describe
+import expect
+import it
+import jest }
+import { afterEach
+import { cache }
+import { EmployeeService }
+import { PrismaClient }
 
-
-import { cache } from "@/lib/cache";
-import { EmployeeService } from "../employee-service";
 // Mock PrismaClient;
 jest.mock("@prisma/client", () => {
   const mockPrismaClient = {
@@ -179,15 +187,13 @@ describe("EmployeeService", () => {
           [{ position: { code: "NURSE" } }]}},
         {
           checkInTime: new Date("2024-05-20T08:00:00Z"),
-          [{ position: { code: "DOCTOR" } }]}},
-      ];
+          [{ position: { code: "DOCTOR" } }]}}];
 
       const mockCurrentStaff = [;
         {
           positions: [{ position: { code: "NURSE" } }]},
         {
-          positions: [{ position: { code: "DOCTOR" } }]},
-      ];
+          positions: [{ position: { code: "DOCTOR" } }]}];
 
       (prisma.attendance.findMany as jest.Mock).mockResolvedValue(mockAttendance);
       (prisma.employee.findMany as jest.Mock).mockResolvedValue(mockCurrentStaff);
@@ -256,8 +262,7 @@ describe("EmployeeService", () => {
         {
           endDate: new Date("2025-06-15"),
           "John",
-            { name: "Cardiology" }}},
-      ];
+            { name: "Cardiology" }}}];
 
       (prisma.qualification.findMany as jest.Mock).mockResolvedValue(mockQualifications);
 

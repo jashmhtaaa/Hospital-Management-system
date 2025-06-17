@@ -1,7 +1,10 @@
+import "@prisma/client"
+import "winston"
+import "winston-elasticsearch"
+import winston
+import { ElasticsearchTransport }
+import { PrismaClient }
 
-import type { PrismaClient } from "@prisma/client";
-import winston from "winston";
-import { ElasticsearchTransport } from "winston-elasticsearch";
 }
 
 /**;
@@ -29,6 +32,33 @@ import { ElasticsearchTransport } from "winston-elasticsearch";
    */;
   async logEvent(event: AuditEvent): Promise<void> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -76,6 +106,33 @@ import { ElasticsearchTransport } from "winston-elasticsearch";
   async queryLogs(query: AuditQuery): Promise<AuditReport> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -115,8 +172,6 @@ import { ElasticsearchTransport } from "winston-elasticsearch";
     } catch (error) {
 
       throw new Error("Audit query failed");
-    }
-  }
 
   /**;
    * Generate compliance report;
@@ -133,7 +188,6 @@ import { ElasticsearchTransport } from "winston-elasticsearch";
       // Note: Prisma doesn"t support direct JSON field queries like this;
       // This would need to be implemented differently in production;
     });
-  }
 
   /**;
    * Get user activity report;
@@ -149,7 +203,6 @@ import { ElasticsearchTransport } from "winston-elasticsearch";
 
     const report = await this.queryLogs(query);
     return report.events;
-  }
 
   /**;
    * Get security events;
@@ -178,12 +231,10 @@ import { ElasticsearchTransport } from "winston-elasticsearch";
         limit: 1000;
       });
       events.push(...report.events);
-    }
 
     return events.sort((a, b) => {}
       (b.timestamp?.getTime() || 0) - (a.timestamp?.getTime() || 0);
     );
-  }
 
   /**;
    * Archive old audit logs;
@@ -191,13 +242,40 @@ import { ElasticsearchTransport } from "winston-elasticsearch";
   async archiveLogs(olderThan: Date): Promise<number> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // In production, this would move logs to cold storage;
       const result = await this.prisma.auditLog.deleteMany({
         { lt: olderThan }
-        }
+
       });
 
       await this.logEvent({
@@ -212,8 +290,6 @@ import { ElasticsearchTransport } from "winston-elasticsearch";
 
       throw new Error("Audit log archival failed");
 
-
-
   /**;
    * Real-time audit event streaming (for security monitoring);
    */;
@@ -224,7 +300,6 @@ import { ElasticsearchTransport } from "winston-elasticsearch";
     // This would integrate with a real-time messaging system like Redis Pub/Sub;
     // For now, return a no-op unsubscribe function;
     return () => {};
-
 
   /**;
    * Private helper methods;
@@ -242,7 +317,6 @@ import { ElasticsearchTransport } from "winston-elasticsearch";
 
     });
 
-
   private async logToSystem(event: AuditEvent): Promise<void> {
     this.logger.info("AUDIT_EVENT", {
       ...event,
@@ -250,7 +324,6 @@ import { ElasticsearchTransport } from "winston-elasticsearch";
       service: "hms-audit",
       environment: process.env.NODE_ENV || "development";
     });
-
 
   private setupLogger(): void {
     const transports: winston.transport[] = [;
@@ -279,13 +352,11 @@ import { ElasticsearchTransport } from "winston-elasticsearch";
         });
       );
 
-
     this.logger = winston.createLogger({
       level: "info",
       format: winston.format.json(),
       transports;
     });
-
 
   private isHIPAARelevant(event: AuditEvent): boolean {
     const phiResources = [;
@@ -302,7 +373,6 @@ import { ElasticsearchTransport } from "winston-elasticsearch";
       event.resource.includes(resource);
     );
 
-
   private isGDPRRelevant(event: AuditEvent): boolean {
     const piiActions = ["read", "update", "delete", "export"];
     const piiResources = ["patient", "staff", "user"];
@@ -310,7 +380,6 @@ import { ElasticsearchTransport } from "winston-elasticsearch";
     return piiResources.some(resource => {}
       event.resource.includes(resource);
     ) && piiActions.includes(event.action || "");
-
 
   private isSOXRelevant(event: AuditEvent): boolean {
     const financialResources = [;
@@ -323,7 +392,6 @@ import { ElasticsearchTransport } from "winston-elasticsearch";
     return financialResources.some(resource => {}
       event.resource.includes(resource);
     );
-
 
   private async generateSummary(where: unknown): Promise<AuditReport["summary"]> {
     const [;
@@ -371,7 +439,6 @@ import { ElasticsearchTransport } from "winston-elasticsearch";
       }));
     };
 
-
   private formatAuditEvent(dbEvent: unknown): AuditEvent {
     return {
       eventType: dbEvent.eventType,
@@ -384,7 +451,6 @@ import { ElasticsearchTransport } from "winston-elasticsearch";
       compliance: dbEvent.compliance;
     };
 
-
   private async sendCritical/* SECURITY: Alert removed */: Promise<void> {
     // Implement critical alert logic;
     // This could send emails, SMS, Slack notifications, etc.;
@@ -392,12 +458,9 @@ import { ElasticsearchTransport } from "winston-elasticsearch";
     // Example: Log to dedicated critical events log;
     this.logger.error("CRITICAL_AUDIT_EVENT', event);
 
-
-
 // Export convenience function;
 export const _logAuditEvent = async (event: AuditEvent): Promise<void> {
   return AuditService.getInstance().logEvent(event);
-
 
 // Export singleton instance;
 export const auditService = AuditService.getInstance();

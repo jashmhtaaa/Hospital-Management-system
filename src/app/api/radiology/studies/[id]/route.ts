@@ -1,7 +1,11 @@
-import type { IronSession } from "iron-session"; // Import IronSession;
-import { type NextRequest, NextResponse } from "next/server";
+import { IronSession  } from "iron-session"; // Import IronSession;
+import "@/lib/database"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { getDB }
+import { type
 
-import { getDB } from "@/lib/database";
 import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData;
 // import { checkUserRole } from "@/lib/auth";
 
@@ -73,10 +77,37 @@ interface RadiologyStudyPutData {
 
 // GET a specific Radiology Study by ID;
 export const _GET = async();
-  _request: NextRequest, // Renamed to _request as it"s unused;
+  _request: any, // Renamed to _request as it"s unused;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ): Promise<NextResponse> {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -142,10 +173,37 @@ export const _GET = async();
 
 // PUT (update) a specific Radiology Study (Technician or Admin);
 export const _PUT = async();
-  request: NextRequest;
+  request: any;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ): Promise<NextResponse> {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -215,6 +273,33 @@ export const _PUT = async();
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -235,7 +320,7 @@ export const _PUT = async();
             { error: "Radiology study not found" },
             { status: 404 }
           );
-        }
+
         // No changes were made, maybe the data was the same;
         // Return the existing/updated study data;
         const currentStudy = await database;
@@ -246,9 +331,8 @@ export const _PUT = async();
           currentStudy || {
             id: studyId,
             message: "Radiology study update processed (no changes detected)";
-          }
+
         );
-      }
 
       // If status is updated to \"completed\", \"reported\" or \"verified\", update the parent order status;
       if (!session.user);
@@ -273,8 +357,6 @@ export const _PUT = async();
               newOrderStatus;
             );
             .run();
-        }
-      }
 
       // Fetch the updated study to return;
       const updatedStudy = await database;
@@ -285,7 +367,7 @@ export const _PUT = async();
         updatedStudy || {
           id: studyId,
           message: "Radiology study updated successfully";
-        }
+
       );
     } catch (databaseError) {
       // Handle specific DB errors like UNIQUE constraint;
@@ -298,7 +380,7 @@ export const _PUT = async();
         ); // 409 Conflict;
       // Re-throw other DB errors to be caught by the outer catch block;
       throw databaseError;
-    }
+
   } catch (error: unknown) {
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
@@ -307,19 +389,44 @@ export const _PUT = async();
       { error: "Failed to update radiology study", details: message },
       { status: 500 }
     );
-  }
-}
 
 // DELETE a specific Radiology Study (Admin only - consider status update instead);
 export const DELETE = async();
-  _request: NextRequest, // Renamed to _request as it"s unused;
+  _request: any, // Renamed to _request as it"s unused;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ): Promise<NextResponse> {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const session: IronSession<IronSessionData> = await getSession(); // Call without request;
     // Use roleName for check;
     if (!session.user) {
@@ -327,7 +434,6 @@ export const DELETE = async();
         { error: "Unauthorized: Admin role required" },
         { status: 403 }
       );
-    }
 
     const { id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
@@ -335,7 +441,6 @@ export const DELETE = async();
         { error: "Study ID is required" },
         { status: 400 }
       );
-    }
 
     const database: Database = await getDB(); // Use defined Database interface;
 
@@ -352,7 +457,6 @@ export const DELETE = async();
         { status: 400 }
       );
 
-
     // Option 1: Soft delete (recommended);
     // const _cancelledAt = new Date().toISOString();
     // const info = await db.prepare("UPDATE RadiologyStudies SET status = ?, updated_at = ? WHERE id = ?");
@@ -360,7 +464,7 @@ export const DELETE = async();
     //                   .run();
 
     // Option 2: Hard delete (use with caution);
-    const info = await database
+    const info = await database;
       .prepare("DELETE FROM RadiologyStudies WHERE id = ?");
       .bind(studyId);
       .run();
@@ -371,7 +475,6 @@ export const DELETE = async();
         { error: "Radiology study not found or already deleted" },
         { status: 404 }
       );
-
 
     return NextResponse.json({
       id: studyId,
@@ -386,5 +489,3 @@ export const DELETE = async();
       { error: "Failed to delete radiology study", details: message },
       { status: 500 }
     );
-
-

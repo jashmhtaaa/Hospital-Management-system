@@ -77,4 +77,3 @@ export const _getStats = async () => {
   // Get recent access list from cookie or default to empty array;
 ;
     recentAccess: recentAccessList;
-

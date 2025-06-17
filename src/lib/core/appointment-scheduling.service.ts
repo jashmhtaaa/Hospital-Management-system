@@ -1,5 +1,6 @@
+import "zod"
+import { z }
 
-import { z } from "zod";
 }
 
 /**;
@@ -351,6 +352,33 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
 
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -519,6 +547,33 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
       for (const childId of childAppointments) {
         try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -575,7 +630,6 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
 
     this.appointments.set(appointmentId, appointment);
     return appointment;
-  }
 
   /**;
    * Complete appointment;
@@ -584,11 +638,9 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     const appointment = this.appointments.get(appointmentId);
     if (!session.user) {
       throw new Error("Appointment not found");
-    }
 
     if (!session.user) {
       throw new Error("Appointment must be in progress to complete");
-    }
 
     appointment.status = "completed";
     appointment.actual_end_time = new Date();
@@ -598,13 +650,11 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
       appointment.actual_duration = Math.round();
         (appointment.actual_end_time.getTime() - appointment.actual_start_time.getTime()) / (1000 * 60);
       );
-    }
 
     appointment.updated_at = new Date();
 
     this.appointments.set(appointmentId, appointment);
     return appointment;
-  }
 
   /**;
    * Schedule reminders for appointment;
@@ -636,7 +686,6 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
 
     reminders.push(reminder24h, reminder2h);
     this.reminders.set(appointment.id, reminders);
-  }
 
   /**;
    * Add patient to waitlist;
@@ -655,7 +704,6 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
 
     this.waitlist.set(waitlistEntry.id, waitlistEntry);
     return waitlistEntry;
-  }
 
   /**;
    * Process waitlist when appointments become available;
@@ -694,9 +742,6 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
         // Remove slot from available slots;
         const slotIndex = availableSlots.indexOf(suitableSlot);
         availableSlots.splice(slotIndex, 1);
-      }
-
-
 
   /**;
    * Convert time string to minutes;
@@ -704,7 +749,6 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
   private timeToMinutes(time: string): number {
     const [hours, minutes] = time.split(":").map(Number),
     return hours * 60 + minutes;
-
 
   /**;
    * Get appointments with filters;
@@ -727,26 +771,20 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.patient_id === searchFilters.patient_id);
 
-
     if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.provider_id === searchFilters.provider_id);
-
 
     if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.status === searchFilters.status);
 
-
     if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.appointment_type === searchFilters.appointment_type);
-
 
     if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.scheduled_date >= searchFilters.date_from!);
 
-
     if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.scheduled_date <= searchFilters.date_to!);
-
 
     // Sort by appointment date and time;
     filteredAppointments.sort((a, b) => {
@@ -763,7 +801,6 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
 
     return { appointments, total, totalPages };
 
-
   /**;
    * Get appointment statistics;
    */;
@@ -776,7 +813,6 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
 
     if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.scheduled_date <= dateTo);
-
 
     const totalAppointments = filteredAppointments.length;
     const scheduled = filteredAppointments.filter(appt => appt.status === "scheduled").length;
@@ -827,7 +863,6 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
       most_common_appointment_types: mostCommonAppointmentTypes;
     };
 
-
   /**;
    * Set provider schedule;
    */;
@@ -850,7 +885,6 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     this.providerSchedules.set(validatedData.provider_id, filteredSchedules);
     return schedule;
 
-
   /**;
    * Get today"s appointments for a provider;
    */;
@@ -858,8 +892,6 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     const today = new Date().toISOString().split("T")[0];
     return this.getAppointmentsByProvider(providerId, today);
       .sort((a, b) => a.scheduled_time.localeCompare(b.scheduled_time));
-
-
 
 // Export singleton instance;
 export const _appointmentSchedulingService = new AppointmentSchedulingService();

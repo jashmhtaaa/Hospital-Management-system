@@ -1,10 +1,16 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/middleware/error-handling.middleware"
+import "@/lib/security.service"
+import "@/lib/services/support-services/ambulance/ambulance.service"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { AmbulanceService }
+import { SecurityService }
+import { type
+import { withErrorHandling }
+import { z }
 
-
-import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
-import { SecurityService } from "@/lib/security.service";
-import { AmbulanceService } from "@/lib/services/support-services/ambulance/ambulance.service";
 // Initialize service;
 const ambulanceService = new AmbulanceService();
 
@@ -39,7 +45,7 @@ const updateTripRequestSchema = z.object({
 });
 
 // GET /api/support-services/ambulance/trips;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -66,7 +72,7 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/support-services/ambulance/trips;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -90,7 +96,7 @@ export const _POST = async (request: NextRequest) => {
 }
 
 // GET /api/support-services/ambulance/trips/:id;
-export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -108,7 +114,7 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
 }
 
 // PATCH /api/support-services/ambulance/trips/:id;
-export const _PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _PATCH = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -132,7 +138,7 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
 }
 
 // DELETE /api/support-services/ambulance/trips/:id;
-export const _DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _DELETE = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -149,7 +155,7 @@ export const _DELETE = async (request: NextRequest, { params }: { params: { id: 
 }
 
 // POST /api/support-services/ambulance/trips/:id/assign;
-export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _ASSIGN = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -178,7 +184,7 @@ export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: 
 }
 
 // POST /api/support-services/ambulance/trips/:id/status;
-export const _UPDATE_STATUS = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _UPDATE_STATUS = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -209,7 +215,7 @@ export const _UPDATE_STATUS = async (request: NextRequest, { params }: { params:
 }
 
 // GET /api/support-services/ambulance/vehicles;
-export const _GET_VEHICLES = async (request: NextRequest) => {
+export const _GET_VEHICLES = async (request: any) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -234,7 +240,7 @@ export const _GET_VEHICLES = async (request: NextRequest) => {
 }
 
 // GET /api/support-services/ambulance/crews;
-export const _GET_CREWS = async (request: NextRequest) => {
+export const _GET_CREWS = async (request: any) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -259,7 +265,7 @@ export const _GET_CREWS = async (request: NextRequest) => {
 }
 
 // GET /api/support-services/ambulance/analytics;
-export const _GET_ANALYTICS = async (request: NextRequest) => {
+export const _GET_ANALYTICS = async (request: any) => {
   return withErrorHandling();
     request,
     async (req) => {

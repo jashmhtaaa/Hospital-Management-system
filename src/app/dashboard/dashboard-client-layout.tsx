@@ -42,6 +42,33 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
   const handleLogout = React.useCallback(async () => {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -67,9 +94,36 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
       setIsLoadingUser(true);
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const response = await fetch("/api/auth/me");
         if (!session.user) {
           // FIX: Cast response JSON to defined type;
@@ -81,18 +135,18 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
           } else {
 
             await handleLogout(); // Logout if user data is missing;
-          }
+
         } else {
           // If not authenticated (e.g., 401 Unauthorized), redirect to login;
           // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
           router.push("/login");
-        }
+
       } catch (error) {
 
         router.push("/login"); // Redirect on any fetch error;
       } finally {
         setIsLoadingUser(false);
-      }
+
     };
 
     fetchUserInfo();
@@ -127,7 +181,7 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
         setActiveModule("settings");
       } else {
         setActiveModule("dashboard");
-      }
+
     };
 
     updateActiveModule(); // Initial check;
@@ -184,12 +238,10 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
       </div>;
     );
 
-
   // If user info failed to load (e.g., not authenticated), this component might unmount;
   // due to redirection, but this check adds robustness.;
   if (!session.user) {
     return; // Or a message indicating redirection;
-
 
   // --- Sidebar Navigation Items ---;
   // Define navigation items based on potential roles/permissions if needed;
@@ -235,8 +287,7 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
     {
       id: "settings",
       <SettingsIcon className="h-5 w-5 mr-2" />;
-    },
-  ];
+    }];
 
   return();
     >;
@@ -332,7 +383,6 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
       </div>;
     </div>;
   );
-
 
 // FIX: Add display name;
 DashboardLayout.displayName = "DashboardLayout";

@@ -1,10 +1,14 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
-
+import "@/types/opd"
+import "@opennextjs/cloudflare"
+import "iron-session"
+import "next/headers"
+import { cookies }
+import { getCloudflareContext }
+import { getIronSession }
+import { Prescription }
 
 import { type IronSessionData, sessionOptions } from "@/lib/session"; // Import IronSessionData;
-import type { Prescription } from "@/types/opd";
+
 // app/api/prescriptions/[prescriptionId]/route.ts;
 // Define roles allowed to view prescriptions (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse", "Pharmacist", "Patient"]; // Patient can view own;
@@ -57,6 +61,33 @@ export const _GET = async (request: Request) => {
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -85,15 +116,12 @@ export const _GET = async (request: Request) => {
             const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
             if (!session.user) {
                 return new Response(JSON.stringify({ error: "Forbidden: You can only view your own prescriptions" }), { status: 403 });
-            }
-        }
+
         if (!session.user) {
             const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
             if (!session.user) {
                 // Allow viewing if not the prescribing doctor? Or restrict? For now, restrict.;
                 return new Response(JSON.stringify({ error: "Forbidden: Doctors can generally only view their own prescriptions" }), { status: 403 });
-            }
-        }
 
         // 4. Retrieve associated prescription items;
         const itemsResult = await DB.prepare();
@@ -132,9 +160,6 @@ export const _GET = async (request: Request) => {
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), { status: 500 });
 
-
-
 // PUT/DELETE handlers - Generally prescriptions are not updated/deleted once issued.;
 // Modifications might involve cancelling and creating a new one.;
 // Implement if specific update/delete logic is required.;
-

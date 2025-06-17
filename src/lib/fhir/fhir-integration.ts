@@ -1,9 +1,19 @@
+import "./appointment.ts"
+import "./encounter.ts"
+import "./fhir.service.ts"
+import "./medication.ts"
+import "./patient.ts"
+import FHIRAppointment
+import FHIRAppointmentUtils }
+import FHIREncounter
+import FHIREncounterUtils }
+import FHIRMedicationRequest
+import FHIRMedicationUtils }
+import FHIRPatient
+import FHIRPatientUtils }
+import { fhirService }
+import { type
 
-import { type FHIRAppointment, FHIRAppointmentUtils } from "./appointment.ts";
-import { type FHIREncounter, FHIREncounterUtils } from "./encounter.ts";
-import { fhirService } from "./fhir.service.ts";
-import { type FHIRMedicationRequest, FHIRMedicationUtils } from "./medication.ts";
-import { type FHIRPatient, FHIRPatientUtils } from "./patient.ts";
 }
 
 /**;
@@ -75,7 +85,6 @@ import { type FHIRPatient, FHIRPatientUtils } from "./patient.ts";
       total: result.data.total || 0;
     };
 
-
   private static convertFHIRToHMS(fhirPatient: FHIRPatient): unknown {
     const officialName = fhirPatient.name?.find(n => n.use === "official") || fhirPatient.name?.[0];
 
@@ -89,8 +98,6 @@ import { type FHIRPatient, FHIRPatientUtils } from "./patient.ts";
       createdAt: fhirPatient.meta?.lastUpdated ? new Date(fhirPatient.meta.lastUpdated) : new Date(),
       updatedAt: fhirPatient.meta?.lastUpdated ? new Date(fhirPatient.meta.lastUpdated) : new Date();
     };
-
-
 
 /**;
  * FHIR Integration Hook for Appointment Operations;
@@ -106,12 +113,10 @@ import { type FHIRPatient, FHIRPatientUtils } from "./patient.ts";
     if (!session.user) {
       throw new Error(`FHIR Appointment creation failed: ${}`;
 
-
     return {
       hmsAppointment: this.convertFHIRToHMS(result.data!),
       fhirAppointment: result.data!;
     };
-
 
   /**;
    * Update appointment status with FHIR workflow compliance;
@@ -125,7 +130,6 @@ import { type FHIRPatient, FHIRPatientUtils } from "./patient.ts";
 
     if (!session.user) {
       throw new Error("Appointment not found");
-
 
     const fhirAppointment = result.data;
 

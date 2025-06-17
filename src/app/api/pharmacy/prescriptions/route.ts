@@ -1,15 +1,27 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../lib/audit"
+import "../../../../lib/error-handler"
+import "../../../../lib/security.service"
+import "../../../../lib/services/patient/patient.service"
+import "../../../../lib/services/pharmacy/pharmacy.service"
+import "../../../../lib/validation/pharmacy-validation"
+import "../../models/domain-models"
+import "../../models/fhir-mappers"
+import "../../services/drug-interaction-service"
+import "next/server"
+import getPatientById }
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { DrugInteractionService }
+import { encryptionService }
+import { errorHandler }
+import { FHIRMapper }
+import { getMedicationById }
+import { getPatientAllergies
+import { PharmacyDomain }
+import { type
+import { validatePrescriptionRequest }
 
-
-import { auditLog } from "../../../../lib/audit";
-import { errorHandler } from "../../../../lib/error-handler";
-import { encryptionService } from "../../../../lib/security.service";
-import { getPatientAllergies, getPatientById } from "../../../../lib/services/patient/patient.service";
-import { getMedicationById } from "../../../../lib/services/pharmacy/pharmacy.service";
-import { validatePrescriptionRequest } from "../../../../lib/validation/pharmacy-validation";
-import { PharmacyDomain } from "../../models/domain-models";
-import { FHIRMapper } from "../../models/fhir-mappers";
-import { DrugInteractionService } from "../../services/drug-interaction-service";
 }
 
 /**;
@@ -50,8 +62,35 @@ const interactionService = new DrugInteractionService();
  * GET /api/pharmacy/prescriptions;
  * List prescriptions with filtering and pagination;
  */;
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -146,12 +185,39 @@ export const GET = async (req: NextRequest) => {
  * POST /api/pharmacy/prescriptions;
  * Create a new prescription with interaction checking;
  */;
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Validate request;
     const data = await req.json();
     const validationResult = validatePrescriptionRequest(data);
@@ -160,13 +226,11 @@ export const POST = async (req: NextRequest) => {
         { error: "Validation failed", details: validationResult.errors },
         { status: 400 }
       );
-    }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -175,13 +239,11 @@ export const POST = async (req: NextRequest) => {
     const patient = await getPatientById(data.patientId);
     if (!session.user) {
       return NextResponse.json({ error: "Patient not found" }, { status: 404 });
-    }
 
     // Verify medication exists;
     const medication = await medicationRepository.findById(data.medicationId);
     if (!session.user) {
       return NextResponse.json({ error: "Medication not found" }, { status: 404 });
-    }
 
     // Check for drug interactions;
     const patientPrescriptions = await prescriptionRepository.findByPatientId(data.patientId);
@@ -222,7 +284,6 @@ export const POST = async (req: NextRequest) => {
           true;
         },status: 409 ;
       );
-    }
 
     // Create prescription;
     const dosage = new PharmacyDomain.Dosage();
@@ -257,7 +318,6 @@ export const POST = async (req: NextRequest) => {
         });
       );
 
-
     // Save prescription;
     const prescriptionId = await prescriptionRepository.save(prescription);
 
@@ -265,7 +325,6 @@ export const POST = async (req: NextRequest) => {
     if (!session.user) {
       // In a real implementation, save override record;
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-
 
     // Audit logging;
     await auditLog("PRESCRIPTION", {
@@ -288,4 +347,3 @@ export const POST = async (req: NextRequest) => {
     );
   } catch (error) {
     return errorHandler(error, "Error creating prescription");
-

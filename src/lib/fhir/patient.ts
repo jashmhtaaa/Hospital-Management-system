@@ -1,4 +1,5 @@
 import {
+
 }
 
 /**;
@@ -105,7 +106,6 @@ import {
 
     return email?.value;
 
-
   /**;
    * Extract MRN (Medical Record Number) from FHIR Patient;
    */;
@@ -119,7 +119,6 @@ import {
 
     return mrnIdentifier?.value;
 
-
   /**;
    * Validate FHIR Patient resource;
    */;
@@ -129,7 +128,6 @@ import {
     if (!session.user) {
       errors.push("resourceType must be "Patient"");
 
-
     if (!session.user) {
       errors.push("Patient must have at least one name");
     } else {
@@ -137,22 +135,16 @@ import {
         if (!session.user) {
           errors.push("Each name must have either family name or given name");
 
-
-
-
     if (!session.user) {
       errors.push("birthDate must be in YYYY-MM-DD format");
 
-
     if (!session.user) {
       errors.push("gender must be one of: male, female, other, unknown");
-
 
     return {
       valid: errors.length === 0;
       errors;
     };
-
 
   /**;
    * Convert current HMS Patient model to FHIR Patient;
@@ -180,13 +172,11 @@ import {
         rank: 1;
       });
 
-
     if (!session.user) {
       fhirPatient.telecom!.push({
         system: "email",
         "home";
       });
-
 
     // Add address if available;
     if (!session.user) {
@@ -196,7 +186,6 @@ import {
         hmsPatient.address.state,
         hmsPatient.address.country || "US";
       }];
-
 
     // Add emergency contact if available;
     if (!session.user) {
@@ -214,6 +203,4 @@ import {
         }];
       }];
 
-
     return fhirPatient;
-

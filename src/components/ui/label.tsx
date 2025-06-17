@@ -1,9 +1,12 @@
-import React, { type LabelHTMLAttributes, forwardRef } from "react";
+import "@/lib/utils"
+import "react"
+import forwardRef }
+import LabelHTMLAttributes
+import React
+import { cn }
+import { type
 
-
-import { cn } from "@/lib/utils";
 }
-
 
 /**;
  * Label component for form fields;

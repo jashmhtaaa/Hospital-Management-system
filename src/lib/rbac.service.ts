@@ -1,6 +1,8 @@
+import "@/lib/audit"
+import "@/lib/errors"
+import { AuditLogger }
+import { AuthorizationError }
 
-import { AuditLogger } from "@/lib/audit";
-import { AuthorizationError } from "@/lib/errors";
 }
 
 /**;
@@ -67,45 +69,39 @@ interface RoleDefinition {
     },
     {
       name: Role.MANAGER,
-      permissions: [resource: Resource.HOUSEKEEPING, action: Action.READ ,resource: Resource.HOUSEKEEPING, action: Action.APPROVE ,resource: Resource.HOUSEKEEPING, action: Action.REPORT ,resource: Resource.MAINTENANCE, action: Action.READ ,resource: Resource.MAINTENANCE, action: Action.APPROVE ,resource: Resource.MAINTENANCE, action: Action.REPORT ,resource: Resource.DIETARY, action: Action.READ ,resource: Resource.DIETARY, action: Action.APPROVE ,resource: Resource.DIETARY, action: Action.REPORT ,resource: Resource.AMBULANCE, action: Action.READ ,resource: Resource.AMBULANCE, action: Action.APPROVE ,resource: Resource.AMBULANCE, action: Action.REPORT ,resource: Resource.FEEDBACK, action: Action.READ ,resource: Resource.FEEDBACK, action: Action.APPROVE ,resource: Resource.FEEDBACK, action: Action.REPORT ,resource: Resource.MARKETING, action: Action.READ ,resource: Resource.MARKETING, action: Action.APPROVE ,resource: Resource.MARKETING, action: Action.REPORT ,resource: Resource.USER, action: Action.READ ,resource: Resource.USER, action: Action.CREATE ,resource: Resource.USER, action: Action.UPDATE ,
-      ];
+      permissions: [resource: Resource.HOUSEKEEPING, action: Action.READ ,resource: Resource.HOUSEKEEPING, action: Action.APPROVE ,resource: Resource.HOUSEKEEPING, action: Action.REPORT ,resource: Resource.MAINTENANCE, action: Action.READ ,resource: Resource.MAINTENANCE, action: Action.APPROVE ,resource: Resource.MAINTENANCE, action: Action.REPORT ,resource: Resource.DIETARY, action: Action.READ ,resource: Resource.DIETARY, action: Action.APPROVE ,resource: Resource.DIETARY, action: Action.REPORT ,resource: Resource.AMBULANCE, action: Action.READ ,resource: Resource.AMBULANCE, action: Action.APPROVE ,resource: Resource.AMBULANCE, action: Action.REPORT ,resource: Resource.FEEDBACK, action: Action.READ ,resource: Resource.FEEDBACK, action: Action.APPROVE ,resource: Resource.FEEDBACK, action: Action.REPORT ,resource: Resource.MARKETING, action: Action.READ ,resource: Resource.MARKETING, action: Action.APPROVE ,resource: Resource.MARKETING, action: Action.REPORT ,resource: Resource.USER, action: Action.READ ,resource: Resource.USER, action: Action.CREATE ,resource: Resource.USER, action: Action.UPDATE ];
     },
     {
       name: Role.STAFF,
-      permissions: [resource: Resource.HOUSEKEEPING, action: Action.READ ,resource: Resource.MAINTENANCE, action: Action.READ ,resource: Resource.DIETARY, action: Action.READ ,resource: Resource.AMBULANCE, action: Action.READ ,resource: Resource.FEEDBACK, action: Action.READ ,resource: Resource.HOUSEKEEPING, action: Action.CREATE ,resource: Resource.MAINTENANCE, action: Action.CREATE ,resource: Resource.DIETARY, action: Action.CREATE ,resource: Resource.AMBULANCE, action: Action.CREATE ,resource: Resource.FEEDBACK, action: Action.CREATE ,
-      ];
+      permissions: [resource: Resource.HOUSEKEEPING, action: Action.READ ,resource: Resource.MAINTENANCE, action: Action.READ ,resource: Resource.DIETARY, action: Action.READ ,resource: Resource.AMBULANCE, action: Action.READ ,resource: Resource.FEEDBACK, action: Action.READ ,resource: Resource.HOUSEKEEPING, action: Action.CREATE ,resource: Resource.MAINTENANCE, action: Action.CREATE ,resource: Resource.DIETARY, action: Action.CREATE ,resource: Resource.AMBULANCE, action: Action.CREATE ,resource: Resource.FEEDBACK, action: Action.CREATE ];
     },
     {
       name: Role.HOUSEKEEPING,
       [;
         // Housekeeping staff can manage housekeeping requests;
         { resource: Resource.HOUSEKEEPING, action: Action.UPDATE },
-        { resource: Resource.HOUSEKEEPING, action: Action.ASSIGN },
-      ];
+        { resource: Resource.HOUSEKEEPING, action: Action.ASSIGN }];
     },
     {
       name: Role.MAINTENANCE,
       [;
         // Maintenance staff can manage maintenance requests;
         { resource: Resource.MAINTENANCE, action: Action.UPDATE },
-        { resource: Resource.MAINTENANCE, action: Action.ASSIGN },
-      ];
+        { resource: Resource.MAINTENANCE, action: Action.ASSIGN }];
     },
     {
       name: Role.DIETARY,
       [;
         // Dietary staff can manage dietary requests;
         { resource: Resource.DIETARY, action: Action.UPDATE },
-        { resource: Resource.DIETARY, action: Action.ASSIGN },
-      ];
+        { resource: Resource.DIETARY, action: Action.ASSIGN }];
     },
     {
       name: Role.AMBULANCE,
       [;
         // Ambulance staff can manage ambulance requests;
         { resource: Resource.AMBULANCE, action: Action.UPDATE },
-        { resource: Resource.AMBULANCE, action: Action.ASSIGN },
-      ];
+        { resource: Resource.AMBULANCE, action: Action.ASSIGN }];
     },
     {
       name: Role.MARKETING,
@@ -131,8 +127,7 @@ interface RoleDefinition {
         { resource: Resource.TEMPLATE, action: Action.CREATE },
         { resource: Resource.TEMPLATE, action: Action.UPDATE },
         { resource: Resource.TEMPLATE, action: Action.DELETE },
-        { resource: Resource.ANALYTICS, action: Action.READ },
-      ];
+        { resource: Resource.ANALYTICS, action: Action.READ }];
     },
     {
       name: Role.FEEDBACK,
@@ -140,18 +135,15 @@ interface RoleDefinition {
         // Feedback staff can manage feedback;
         { resource: Resource.FEEDBACK, action: Action.READ },
         { resource: Resource.FEEDBACK, action: Action.UPDATE },
-        { resource: Resource.FEEDBACK, action: Action.ASSIGN },
-      ];
+        { resource: Resource.FEEDBACK, action: Action.ASSIGN }];
     },
     {
       name: Role.PATIENT,
-      permissions: [resource: Resource.HOUSEKEEPING, action: Action.CREATE ,resource: Resource.HOUSEKEEPING, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.MAINTENANCE, action: Action.CREATE ,resource: Resource.MAINTENANCE, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.DIETARY, action: Action.CREATE ,resource: Resource.DIETARY, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.AMBULANCE, action: Action.CREATE ,resource: Resource.AMBULANCE, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.FEEDBACK, action: Action.CREATE ,resource: Resource.FEEDBACK, action: Action.READ, constraints: ownedByUser: true ,
-      ];
+      permissions: [resource: Resource.HOUSEKEEPING, action: Action.CREATE ,resource: Resource.HOUSEKEEPING, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.MAINTENANCE, action: Action.CREATE ,resource: Resource.MAINTENANCE, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.DIETARY, action: Action.CREATE ,resource: Resource.DIETARY, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.AMBULANCE, action: Action.CREATE ,resource: Resource.AMBULANCE, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.FEEDBACK, action: Action.CREATE ,resource: Resource.FEEDBACK, action: Action.READ, constraints: ownedByUser: true ];
     },
     {
       name: Role.GUEST,
-      permissions: [resource: Resource.FEEDBACK, action: Action.CREATE ,
-      ];
+      permissions: [resource: Resource.FEEDBACK, action: Action.CREATE ];
     }
   ];
 
@@ -346,5 +338,3 @@ interface RoleDefinition {
       for (const inheritedRole of roleDef.inherits) {
         this.addPermissionsForRole(inheritedRole, permissions);
       }
-
-

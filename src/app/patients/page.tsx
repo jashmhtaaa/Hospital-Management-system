@@ -1,10 +1,14 @@
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-import { Suspense } from "react";
+import "../../components/patient-management/patient-list"
+import "../../lib/auth"
+import "next-auth"
+import "next/navigation"
+import "react"
+import PatientList
+import { authOptions }
+import { getServerSession }
+import { redirect }
+import { Suspense }
 
-
-import PatientList from "../../components/patient-management/patient-list";
-import { authOptions } from "../../lib/auth";
 export default async const _PatientsPage = ({
   searchParams;
 }: {
@@ -44,9 +48,36 @@ export default async const _PatientsPage = ({
   let initialData;
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
     // Build query parameters;
     const params = new URLSearchParams();
     params.append("page", page.toString());
@@ -61,16 +92,15 @@ export default async const _PatientsPage = ({
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/patients?${params.toString()}`, {
       cache: "no-store",
       `next-auth.session-token=${session.user.id}`;
-      }
+
     });
 
     if (!session.user) {
       initialData = await response.json();
-    }
+
   } catch (error) {
 
     // Will let client-side handling take over;
-
 
   return();
     >;

@@ -1,4 +1,8 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "next/server"
+import NextRequest
+import NextResponse }
+import { type
+
 // import { v4 as uuidv4 } from "uuid"; // Unused import;
 
 // Define interface for Pre-Authorization data;
@@ -42,8 +46,7 @@ const mockPreAuths: PreAuthorization[] = [;
     "Awaiting review.",
     created_at: [0] - 2 * 24 * 60 * 60 * 1000).toISOString(),
     updated_at: [0] - 2 * 24 * 60 * 60 * 1000).toISOString();
-  },
-];
+  }];
 let nextPreAuthId = 3;
 
 // Define interface for pre-authorization creation input;
@@ -175,8 +178,35 @@ async const createPreAuthorizationInDB = (;
  * GET /api/insurance/pre-authorizations;
  * Retrieves a list of pre-authorization requests, potentially filtered.;
  */;
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -194,7 +224,7 @@ export const GET = async (request: NextRequest) => {
     let errorMessage = "An unknown error occurred";
     if (!session.user) {
       errorMessage = error.message;
-    }
+
     return NextResponse.json();
       {
         error: "Failed to fetch pre-authorization requests",
@@ -202,19 +232,44 @@ export const GET = async (request: NextRequest) => {
       },
       { status: 500 }
     );
-  }
-}
 
 /**;
  * POST /api/insurance/pre-authorizations;
  * Creates a new pre-authorization request.;
  */;
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const body = await request.json();
     // Apply type assertion;
     const preAuthData = body as PreAuthorizationInput;
@@ -226,7 +281,6 @@ export const POST = async (request: NextRequest) => {
           error: "Missing required fields (patient_insurance_id, requested_procedure)"},
         { status: 400 }
       );
-
 
     // Simulate creating the pre-authorization request in the database;
     const newPreAuth = await createPreAuthorizationInDB(preAuthData);
@@ -245,7 +299,5 @@ export const POST = async (request: NextRequest) => {
       },
       { status: 500 }
     );
-
-
 
 // Note: GET by ID, PUT, and DELETE handlers should be in the [id]/route.ts file.;

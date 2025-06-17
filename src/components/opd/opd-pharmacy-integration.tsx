@@ -1,6 +1,11 @@
+import "react"
+import FormEvent
+import React
+import type
+import useEffect
+import useState }
+import { ChangeEvent
 
-import type React from "react";
-import { ChangeEvent, type FormEvent, useEffect, useState } from "react";
 }
 
 "use client";
@@ -74,6 +79,33 @@ const OPDPharmacyIntegration: React.FC = () => {
     const fetchActivePatient = async (): Promise<void> => {
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -95,6 +127,33 @@ const OPDPharmacyIntegration: React.FC = () => {
     // Fetch medications for prescribing;
     const fetchMedications = async (): Promise<void> => {
       try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -125,8 +184,7 @@ const OPDPharmacyIntegration: React.FC = () => {
             id: "med_005",
             "Prilosec",
             "Capsule";
-          },
-        ];
+          }];
         setMedications(simulatedMedications);
       } catch (error) {
 
@@ -141,12 +199,39 @@ const OPDPharmacyIntegration: React.FC = () => {
         // Check activePatient.id directly;
         setLoading(false); // Set loading false if no patient yet;
         return;
-      }
+
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         // Simulate fetching prescriptions for the active patient;
         // const _response = await fetch(`/api/pharmacy/prescriptions?patientId=${}`;
         // if (!session.user)hrow new Error("Failed to fetch prescriptions");
@@ -167,8 +252,7 @@ const OPDPharmacyIntegration: React.FC = () => {
                 medication: "Cetirizine 10mg",
                 "OD",
                 duration: "7 days";
-              },
-            ]},
+              }]},
           {
             id: "presc_002",
             "pending",
@@ -177,16 +261,14 @@ const OPDPharmacyIntegration: React.FC = () => {
                 medication: "Amoxicillin 250mg",
                 "BID",
                 duration: "7 days";
-              },
-            ]},
-        ];
+              }]}];
         setPrescriptions(simulatedPrescriptions);
       } catch (error) {
 
         // Handle error appropriately;
       } finally {
         setLoading(false);
-      }
+
     };
 
     fetchActivePatient(),
@@ -197,7 +279,6 @@ const OPDPharmacyIntegration: React.FC = () => {
     } else {
       // If activePatient is fetched async, fetchPrescriptions might need to be called in its .then() or based on state change;
       setLoading(false); // Set loading false if no patient yet;
-    }
 
     // Dependency array needs careful consideration. Fetching prescriptions depends on activePatient.;
   }, [activePatient]); // Re-run if activePatient changes;
@@ -211,7 +292,7 @@ const OPDPharmacyIntegration: React.FC = () => {
         "";
       };
       setSelectedMedications([...selectedMedications, newMed]);
-    }
+
   };
 
   const handleRemoveMedication = (index: number): void => {
@@ -228,7 +309,7 @@ const OPDPharmacyIntegration: React.FC = () => {
     // Ensure the field exists on the object before assignment (though TS should catch this);
     if (!session.user) {
       updatedMeds[index][field] = value; // Removed "as any";
-    }
+
     setSelectedMedications(updatedMeds);
   };
 
@@ -238,15 +319,41 @@ const OPDPharmacyIntegration: React.FC = () => {
     if (!session.user) {
       /* SECURITY: Console statement removed */;
       return;
-    }
 
     setLoading(true);
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Prepare prescription items with proper types;
       const items: PrescriptionItemInput[] = selectedMedications.map((med) => {
         const quantity = Number.parseInt(med.quantity);
@@ -268,7 +375,6 @@ const OPDPharmacyIntegration: React.FC = () => {
         items,
         // source: "opd", // Add if API expects it;
         // source_id: "opd_visit_12345" // Add actual OPD visit ID if API expects it;
-
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
@@ -319,7 +425,6 @@ const OPDPharmacyIntegration: React.FC = () => {
         Loading patient data...;
       </div>;
     );
-
 
   return();
     >;

@@ -1,20 +1,26 @@
-import { getServerSession } from "next-auth";
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/auth"
+import "@/lib/middleware/error-handling.middleware"
+import "@/lib/services/support-services/marketing"
+import "next-auth"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { authOptions }
+import { getServerSession }
+import { TemplateService }
+import { type
+import { withErrorHandling }
 
-
-import { authOptions } from "@/lib/auth";
-import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
-import { TemplateService } from "@/lib/services/support-services/marketing";
 const templateService = new TemplateService();
 
 /**;
  * GET /api/support-services/marketing/templates;
  * Get all templates with optional filtering;
  */;
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: any) => {
   return withErrorHandling();
     request,
-    async (req: NextRequest) => {
+    async (req: any) => {
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
@@ -47,10 +53,10 @@ export const GET = async (request: NextRequest) => {
  * POST /api/support-services/marketing/templates;
  * Create a new template;
  */;
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   return withErrorHandling();
     request,
-    async (req: NextRequest) => {
+    async (req: any) => {
       const session = await getServerSession(authOptions);
       const data = await req.json();
 

@@ -1,13 +1,24 @@
-import http from "http";
-import { ApolloGateway, IntrospectAndCompose, RemoteGraphQLDataSource } from "@apollo/gateway";
-import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
-import { ApolloServer } from "apollo-server-express";
-import type express from "express";
+import http
 
+import "@/lib/core/logging"
+import "@/lib/monitoring/metrics-collector"
+import "@/lib/security/auth.service"
+import "@apollo/gateway"
+import "apollo-server-core"
+import "apollo-server-express"
+import "express"
+import "http"
+import express
+import IntrospectAndCompose
+import RemoteGraphQLDataSource }
+import type
+import { ApolloGateway
+import { ApolloServer }
+import { ApolloServerPluginDrainHttpServer }
+import { authService }
+import { logger }
+import { metricsCollector }
 
-import { logger } from "@/lib/core/logging";
-import { metricsCollector } from "@/lib/monitoring/metrics-collector";
-import { authService } from "@/lib/security/auth.service";
 // Custom data source class that includes auth headers in requests to services;
 class AuthenticatedDataSource extends RemoteGraphQLDataSource {
   willSendRequest({ request, context }) {
@@ -142,6 +153,33 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
       if (!session.user) {
         try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -153,7 +191,6 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
             error: error.message;
           });
         }
-      }
 
       return {
         authToken,
@@ -193,10 +230,9 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
                 hasErrors: response.errors?.length > 0,
                 context.correlationId;
               });
-            }
+
           };
-        }
-      }
+
     ],
     introspection: process.env.NODE_ENV !== "production";
     // Cache control directives;

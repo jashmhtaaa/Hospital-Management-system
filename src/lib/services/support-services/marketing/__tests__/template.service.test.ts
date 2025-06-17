@@ -1,8 +1,14 @@
+import "../template.service"
+import "@/lib/audit"
+import "@/lib/errors"
+import "@/lib/prisma"
+import NotFoundError
+import ValidationError }
+import { AuditLogger }
+import { DatabaseError
+import { prisma }
+import { TemplateService }
 
-import { AuditLogger } from "@/lib/audit";
-import { DatabaseError, NotFoundError, ValidationError } from "@/lib/errors";
-import { prisma } from "@/lib/prisma";
-import { TemplateService } from "../template.service";
 // Mock dependencies;
 jest.mock("@/lib/prisma", () => ({
   jest.fn(),
@@ -179,8 +185,7 @@ describe("TemplateService", () => {
         isActive: true,
         createdAt: new Date(),
         updatedAt: new Date();
-      },
-    ];
+      }];
 
     it("should retrieve templates with pagination", async () => {
       // Arrange;
@@ -207,8 +212,7 @@ describe("TemplateService", () => {
           expect.objectContaining({
             id: mockTemplates[1].id,
             name: mockTemplates[1].name;
-          }),
-        ]),
+          })]),
         2,
           10,
           totalPages: 1;
@@ -234,8 +238,7 @@ describe("TemplateService", () => {
         filters.type,
           expect.arrayContaining([;
             { name: { contains: filters.search, mode: "insensitive" } },
-            { description: { contains: filters.search, mode: "insensitive" } },
-          ])})});
+            { description: { contains: filters.search, mode: "insensitive" } }])})});
 
       expect(prisma.marketingTemplate.findMany).toHaveBeenCalledWith();
         expect.objectContaining({

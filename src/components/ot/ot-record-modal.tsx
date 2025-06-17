@@ -1,6 +1,10 @@
-import type React from "react";
-import { useEffect, useState } from "react";
+import "react"
+import React
+import type
+import useState }
 import {
+import { useEffect
+
 }
 
 "use client";
@@ -12,14 +16,28 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "@/components/ui/checkbox"
+import "@/components/ui/input"
+import "@/components/ui/label"
+import "@/components/ui/tabs"
+import "@/components/ui/textarea"
+import "@/components/ui/use-toast"
+import CardContent
+import CardHeader
+import CardTitle }
+import TabsContent
+import TabsList
+import TabsTrigger }
+import { Button }
+import { Card
+import { Checkbox }
+import { Input }
+import { Label }
+import { Tabs
+import { Textarea }
+import { useToast }
 
 // Define types for Vitals and Medications (example structure);
 interface VitalReadings {
@@ -105,8 +123,7 @@ export default const _OTRecordModal = ({
         { id: "3", text: "Consent verified", checked: false },
         { id: "4", text: "Allergies checked", checked: false },
         { id: "5", text: "Equipment checked", checked: false },
-        { id: "6", text: "Team briefing completed", checked: false },
-      ];
+        { id: "6", text: "Team briefing completed", checked: false }];
   );
 
   const [isSaving, setIsSaving] = useState(false);
@@ -145,8 +162,7 @@ export default const _OTRecordModal = ({
           { id: "3", text: "Consent verified", checked: false },
           { id: "4", text: "Allergies checked", checked: false },
           { id: "5", text: "Equipment checked", checked: false },
-          { id: "6", text: "Team briefing completed", checked: false },
-        ];
+          { id: "6", text: "Team briefing completed", checked: false }];
       );
     }
   }, [existingRecord, isOpen]);
@@ -169,9 +185,36 @@ export default const _OTRecordModal = ({
     setIsSaving(true);
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
       const bloodLoss = formData.blood_loss_ml;
         ? Number.parseInt(formData.blood_loss_ml.toString(), 10);
         : undefined;
@@ -182,7 +225,6 @@ export default const _OTRecordModal = ({
           "destructive"),
         setIsSaving(false);
         return;
-      }
 
       const formData.procedure_notes,
         formData.anesthesia_notes,
@@ -227,14 +269,14 @@ export default const _OTRecordModal = ({
       let errorMessage = "Failed to save operation record.";
       if (!session.user) {
         errorMessage = error.message;
-      }
+
       toast({
         title: "Error",
         "destructive";
       });
     } finally {
       setIsSaving(false);
-    }
+
   };
 
   return();

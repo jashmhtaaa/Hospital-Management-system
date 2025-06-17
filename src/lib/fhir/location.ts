@@ -1,4 +1,5 @@
 import {
+
 }
 
 /**;
@@ -548,16 +549,13 @@ import {
     if (!session.user) {
       errors.push("Either name or identifier should be provided");
 
-
     // Validate status;
     if (!session.user) {
       errors.push("status must be one of: active, suspended, inactive");
 
-
     // Validate mode;
     if (!session.user) {
       errors.push("mode must be either instance or kind");
-
 
     // Validate position coordinates;
     if (!session.user) {
@@ -570,13 +568,10 @@ import {
       if (!session.user) {
         errors.push("latitude must be between -90 and 90");
 
-
-
     return {
       valid: errors.length === 0;
       errors;
     };
-
 
   /**;
    * Convert HMS location to FHIR Location;
@@ -596,7 +591,6 @@ import {
       status: hmsLocation.isActive ? "active" : "inactive";
     });
 
-
   /**;
    * Get locations by type;
    */;
@@ -610,13 +604,11 @@ import {
       );
     );
 
-
   /**;
    * Get available locations;
    */;
   static getAvailableLocations(locations: FHIRLocation[]): FHIRLocation[] {
     return locations.filter(location => this.isAvailable(location));
-
 
   /**;
    * Get child locations;
@@ -625,7 +617,6 @@ import {
     return locations.filter(location => {}
       this.getParentLocationId(location) === parentId;
     );
-
 
   /**;
    * Get location hierarchy;
@@ -645,7 +636,6 @@ import {
 
     return rootLocations.map(location => buildHierarchy(location));
 
-
   /**;
    * Search locations by text;
    */;
@@ -663,7 +653,6 @@ import {
              description.includes(searchLower);
     });
 
-
   /**;
    * Get locations by organization;
    */;
@@ -671,7 +660,6 @@ import {
     return locations.filter(location => {}
       this.getManagingOrganizationId(location) === organizationId;
     );
-
 
   /**;
    * Find nearest locations by coordinates;
@@ -695,7 +683,6 @@ import {
 
     return locationsWithDistance.map(item => item.location);
 
-
   /**;
    * Calculate distance between two coordinates (Haversine formula);
    */;
@@ -709,14 +696,11 @@ import {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
 
-
   /**;
    * Convert degrees to radians;
    */;
   private static toRadians(degrees: number): number {
     return degrees * (Math.PI / 180);
-
-
 
 // Common location types and codes;
 
@@ -783,20 +767,17 @@ import {
   static getAllRoomTypes(): Array<{ code: string, display: string }> {
     return Object.values(this.ROOM_TYPES);
 
-
   /**;
    * Get all bed types;
    */;
   static getAllBedTypes(): Array<{ code: string, display: string }> {
     return Object.values(this.BED_TYPES);
 
-
   /**;
    * Get room type by code;
    */;
   static getRoomTypeByCode(code: string): { code: string, display: string } | undefined {
     return Object.values(this.ROOM_TYPES).find(type => type.code === code);
-
 
   /**;
    * Check if location is critical care area;
@@ -811,7 +792,6 @@ import {
       this.ROOM_TYPES.OPERATING_ROOM.code;
     ];
     return criticalCodes.includes(code);
-
 
   /**;
    * Get locations by category;
@@ -839,4 +819,3 @@ import {
         this.HOSPITAL_AREAS.PSYCHIATRIC_WARD;
       ];
     };
-

@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/fhir/fhir.service"
+import "@/lib/fhir/types"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { FHIRBundle }
+import { fhirService }
+import { type
 
-
-import { fhirService } from "@/lib/fhir/fhir.service";
-import type { FHIRBundle } from "@/lib/fhir/types";
 }
 
 /**;
@@ -14,8 +18,35 @@ import type { FHIRBundle } from "@/lib/fhir/types";
 /**;
  * POST /fhir/r4 - Process FHIR Bundle (batch or transaction);
  */;
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -65,7 +96,6 @@ export const POST = async (request: NextRequest) => {
           headers: { "Content-Type": "application/fhir+json" }
         }
       );
-    }
 
     return NextResponse.json(result.data, {
       headers: { "Content-Type": "application/fhir+json" }
@@ -83,10 +113,8 @@ export const POST = async (request: NextRequest) => {
       {
         status: 500,
         headers: { "Content-Type": "application/fhir+json" }
-      }
+
     );
-  }
-}
 
 /**;
  * GET /fhir/r4 - FHIR Capability Statement;
@@ -94,7 +122,34 @@ export const POST = async (request: NextRequest) => {
 export const GET = async () => {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     const capabilityStatement = {
@@ -154,7 +209,6 @@ export const GET = async () => {
         interaction: [code: "batch" ,code: "transaction" ,code: "search-system" ;
         ]];
 
-
     return NextResponse.json(capabilityStatement, {
       headers: { "Content-Type": "application/fhir+json" }
     });
@@ -173,8 +227,6 @@ export const GET = async () => {
         headers: { "Content-Type": "application/fhir+json" }
 
     );
-
-
 
 /**;
  * OPTIONS /fhir/r4 - CORS preflight;

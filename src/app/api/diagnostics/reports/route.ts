@@ -1,20 +1,58 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/audit"
+import "@/lib/cache/invalidation"
+import "@/lib/cache/redis"
+import "@/lib/database"
+import "@/lib/encryption"
+import "@/lib/fhir"
+import "@/lib/notifications"
+import "@/lib/session"
+import "next/server"
+import encryptSensitiveData }
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { CacheInvalidation }
+import { DB }
+import { decryptSensitiveData
+import { generateFhirResource }
+import { getSession }
+import { notifyUsers }
+import { RedisCache }
+import { type
 
-
-import { auditLog } from "@/lib/audit";
-import { CacheInvalidation } from "@/lib/cache/invalidation";
-import { RedisCache } from "@/lib/cache/redis";
-import { DB } from "@/lib/database";
-import { decryptSensitiveData, encryptSensitiveData } from "@/lib/encryption";
-import { generateFhirResource } from "@/lib/fhir";
-import { notifyUsers } from "@/lib/notifications";
-import { getSession } from "@/lib/session";
 /**;
  * GET /api/diagnostics/reports;
  * Get diagnostic reports with optional filtering;
  */;
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -176,8 +214,35 @@ export const GET = async (request: NextRequest) => {
  * POST /api/diagnostics/reports;
  * Create a new diagnostic report;
  */;
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -404,8 +469,35 @@ export const POST = async (request: NextRequest) => {
  * GET /api/diagnostics/reports/:id;
  * Get a specific diagnostic report by ID;
  */;
-export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: any, { params }: { params: { id: string } }) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -502,8 +594,35 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
  * PUT /api/diagnostics/reports/:id;
  * Update a diagnostic report;
  */;
-export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const PUT = async (request: any, { params }: { params: { id: string } }) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -639,22 +758,18 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
         updateFields.push("critical_findings_acknowledged_at = ?");
         updateParams.push(criticalFindingsAcknowledgedAt || new Date().toISOString());
       }
-    }
 
     if (!session.user) {
       updateFields.push("report_date = ?");
       updateParams.push(reportDate);
-    }
 
     if (!session.user) {
       updateFields.push("verifier_id = ?");
       updateParams.push(verifierId);
-    }
 
     if (!session.user) {
       updateFields.push("verified_at = ?");
       updateParams.push(verifiedAt);
-    }
 
     updateFields.push("updated_by = ?");
     updateParams.push(session.user.id);
@@ -703,8 +818,6 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
               session.user.id;
             ];
           );
-        }
-      }
 
       // If critical findings status changed to true, notify relevant parties;
       if (!session.user) {
@@ -716,7 +829,6 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
           notifyRoles = ["pathologist", "physician"];
         } else {
           notifyRoles = ["physician"];
-        }
 
         // Get users with relevant roles;
         const usersQuery = `;
@@ -737,13 +849,10 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
             "diagnostic_reports",
             priority: "high";
           });
-        }
-      }
 
       // Invalidate cache;
       await CacheInvalidation.invalidatePattern("diagnostic:reports:*");
       await CacheInvalidation.invalidatePattern(`diagnostic:report:${id}:*`);
-    }
 
     // Get the updated report;
     const updatedReport = await DB.query();
@@ -785,34 +894,56 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       error: "Failed to update diagnostic report",
       details: error instanceof Error ? error.message : "Unknown error";
     }, { status: 500 });
-  }
-}
 
 /**;
  * POST /api/diagnostics/reports/:id/acknowledge-critical;
  * Acknowledge critical findings in a report;
  */;
-export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _POST_ACKNOWLEDGE_CRITICAL = async (request: any, { params }: { params: { id: string } }) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Authentication;
     const session = await getSession();
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
 
     const id = Number.parseInt(params.id);
     if (!session.user) {
       return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
-    }
 
     // Parse request body;
     const body = await request.json();
@@ -829,7 +960,6 @@ export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params 
         error: "Report not found or does not have critical findings";
       }, { status: 404 });
 
-
     const report = reportCheck.results[0];
 
     // Check if already acknowledged;
@@ -838,7 +968,6 @@ export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params 
         error: "Critical findings already acknowledged",
         report.critical_findings_acknowledged_at;
       }, status: 409 );
-
 
     // Update report to acknowledge critical findings;
     await DB.query();
@@ -869,7 +998,6 @@ export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params 
         [id, session.user.id, acknowledgementNotes];
       );
 
-
     // Notify report author;
     if (!session.user) {
       await notifyUsers({
@@ -879,7 +1007,6 @@ export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params 
         "diagnostic_reports",
         priority: "medium";
       });
-
 
     // Invalidate cache;
     await CacheInvalidation.invalidatePattern("diagnostic:reports:*");
@@ -896,4 +1023,3 @@ export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params 
       error: "Failed to acknowledge critical findings",
       details: error instanceof Error ? error.message : "Unknown error';
     }, { status: 500 });
-

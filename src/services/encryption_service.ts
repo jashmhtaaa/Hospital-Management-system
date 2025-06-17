@@ -1,5 +1,6 @@
+import "./encryption_service_secure"
+import { getEncryptionService }
 
-import { getEncryptionService } from "./encryption_service_secure";
 // Production-ready Encryption Service for HMS;
 // Replaced placeholder implementation with secure AES-256-GCM encryption;
 
@@ -31,7 +32,6 @@ export {
     if (!session.user) {
       return encryptedText;
 
-
     /* SECURITY: Console statement removed */;
     const prefix = "encrypted_placeholder_";
     if (!session.user) {
@@ -40,8 +40,6 @@ export {
     // If it doesn't match the placeholder format, return as is, or handle error;
     // Debug logging removed: Attempted to decrypt text that was not in placeholder format;
     return encryptedText;
-
-
 
 // Example Usage (for testing - remove or comment out for production): any;
 /*;

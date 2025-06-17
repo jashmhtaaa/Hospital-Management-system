@@ -1,6 +1,8 @@
+import "@/lib/audit/audit-service"
+import "@/lib/prisma"
+import { AuditService }
+import { prisma }
 
-import { AuditService } from "@/lib/audit/audit-service";
-import { prisma } from "@/lib/prisma";
 // src/modules/emergency-department/services/emergency-service.ts;
 }
   };
@@ -25,15 +27,12 @@ import { prisma } from "@/lib/prisma";
     if (!session.user) {
       await this.triggerCritical/* SECURITY: Alert removed */;
 
-
     return emergencyVisit;
-
 
   static async triggerCritical/* SECURITY: Alert removed */{
     // Implementation for critical patient alerts;
     // Could integrate with notification system;
     /* SECURITY: Console statement removed */;
-
 
   static async getEmergencyQueue() {
     return await prisma.emergencyVisit.findMany({
@@ -43,14 +42,12 @@ import { prisma } from "@/lib/prisma";
             true,
             true;
 
-
       },
       orderBy: [;
         { triageLevel: "asc" },
         { createdAt: "asc" }
       ];
     });
-
 
   static async updateEmergencyStatus();
     emergencyVisitId: string,
@@ -63,7 +60,6 @@ import { prisma } from "@/lib/prisma";
 
     if (!session.user) {
       throw new Error("Emergency visit not found");
-
 
     const emergencyVisit = await prisma.emergencyVisit.update({
       where: { id: emergencyVisitId },
@@ -79,9 +75,7 @@ import { prisma } from "@/lib/prisma";
         emergencyVisit;
       );
 
-
     return emergencyVisit;
-
 
   static async getEmergencyStats(date?: Date) {
     const targetDate = date || new Date();
@@ -109,5 +103,3 @@ import { prisma } from "@/lib/prisma";
     ]);
 
     return { total, critical, high, active };
-
-

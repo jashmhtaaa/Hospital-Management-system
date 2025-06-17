@@ -1,4 +1,5 @@
 import {
+
   Button,
   Card,
   Form,
@@ -10,15 +11,24 @@ import {
   Table,
   Tag,
   message} from "antd";
-import type React from "react";
-import { type ChangeEvent, useCallback, useEffect, useState } from "react";
+import "react"
+import ChangeEvent
+import React
+import type
+import useCallback
+import useEffect
+import useState }
+import { type
+
   SearchOutlined,
   BarcodeOutlined,
   PrinterOutlined,
   CheckOutlined,
   CloseOutlined} from "@ant-design/icons";
-import type { ColumnsType } from "antd/es/table";
-import moment from "moment";
+import "antd/es/table"
+import "moment"
+import moment
+import { ColumnsType }
 
 const { Option } = Select;
 
@@ -65,6 +75,33 @@ const SampleManagement: React.FC = () => {
   const fetchSamples = useCallback(async (): Promise<void> => {
     setLoading(true);
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -121,8 +158,7 @@ const SampleManagement: React.FC = () => {
           collected_by_user_id: "nurse01",
           "improper_labeling",
           [0] - 21_600_000).toISOString();
-        },
-      ];
+        }];
 
       // Apply filters locally for mock data;
       if (!session.user) {
@@ -177,9 +213,36 @@ const SampleManagement: React.FC = () => {
     if (!session.user)eturn;
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Simulate API call;
       // const _response = await fetch(`/api/laboratory/samples/${selectedSample.id}`, {
       //   method: "PUT", // Or PATCH;
@@ -202,7 +265,7 @@ const SampleManagement: React.FC = () => {
         err instanceof Error ? err.message : "An unknown error occurred."; // Use err;
       // Debug logging removed // Use err;
       message.error(`Failed to update sample: ${}`;
-    }
+
   };
 
   // Generic function to update sample status;
@@ -212,9 +275,36 @@ const SampleManagement: React.FC = () => {
   ): Promise<void> => {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Simulate API call;
       // const _response = await fetch(`/api/laboratory/samples/${sample.id}/status`, {
       //   method: "PUT";
@@ -235,7 +325,7 @@ const SampleManagement: React.FC = () => {
         err instanceof Error ? err.message : "An unknown error occurred."; // Use err;
       // Debug logging removed // Use err;
       message.error(`Failed to update status: ${}`;
-    }
+
   };
 
   const handleCollectSample = (sample: Sample): void => {
@@ -345,7 +435,7 @@ const SampleManagement: React.FC = () => {
             );
 
             break;
-          }
+
           case "collected": {
             actions.push();
               <Button>;
@@ -370,7 +460,7 @@ const SampleManagement: React.FC = () => {
             );
 
             break;
-          }
+
           case "received": {
             // Add action for "Process" or similar if needed;
 
@@ -378,10 +468,8 @@ const SampleManagement: React.FC = () => {
 
           // No default;
 
-
         return <Space size="small">{actions}>;
-      }},
-  ];
+      }}];
 
   return();
     >;
@@ -455,8 +543,7 @@ const SampleManagement: React.FC = () => {
             name="barcode";
             label="Barcode";
             rules={[;
-              { required: true, message: "Please enter or scan barcode" },
-            ]}
+              { required: true, message: "Please enter or scan barcode" }]}
           >;
             <Input>;
               placeholder="Scan or enter barcode";
@@ -496,8 +583,7 @@ const SampleManagement: React.FC = () => {
             name="rejection_reason";
             label="Rejection Reason";
             rules={[;
-              { required: true, message: "Please provide rejection reason" },
-            ]}
+              { required: true, message: "Please provide rejection reason" }]}
           >;
             >;
               <Option value="insufficient_volume">Insufficient Volume>;

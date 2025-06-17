@@ -1,9 +1,10 @@
+import "@/lib/utils"
+import "@radix-ui/react-progress"
+import "react"
+import * as ProgressPrimitive
+import * as React
+import { cn }
 
-import * as ProgressPrimitive from "@radix-ui/react-progress";
-import * as React from "react";
-
-
-import { cn } from "@/lib/utils";
 }
 
 "use client";

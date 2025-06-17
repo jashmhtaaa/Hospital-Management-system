@@ -1,8 +1,11 @@
+import "@/lib/prisma"
+import "next/server"
+import "zod"
 import {
-import { NextRequest } from "next/server";
-import { z } from "zod";
+import { NextRequest }
+import { prisma }
+import { z }
 
-import { prisma } from "@/lib/prisma";
   withErrorHandling,
   validateBody,
   validateQuery,
@@ -10,13 +13,19 @@ import { prisma } from "@/lib/prisma";
   createSuccessResponse,
   createPaginatedResponse;
 } from "@/lib/core/middleware";
-import { ValidationError, NotFoundError, BusinessLogicError } from "@/lib/core/errors";
+import "@/lib/core/errors"
+import BusinessLogicError }
+import NotFoundError
+import { ValidationError
+
   claimStatusSchema,
   icd10CodeSchema,
   cptCodeSchema;
 } from "@/lib/core/validation";
-import { convertToFHIRClaim } from "@/lib/core/fhir";
-import { logger } from "@/lib/core/logging";
+import "@/lib/core/fhir"
+import "@/lib/core/logging"
+import { convertToFHIRClaim }
+import { logger }
 
 // Schema for claim creation;
 const createClaimSchema = z.object({
@@ -53,7 +62,7 @@ const claimQuerySchema = z.object({
   format: z.enum(["json", "fhir"]).optional().default("json")});
 
 // GET handler for retrieving all claims with filtering and pagination;
-export const _GET = withErrorHandling(async (req: NextRequest) => {
+export const _GET = withErrorHandling(async (req: any) => {
   // Validate query parameters;
   const query = validateQuery(claimQuerySchema)(req);
 
@@ -68,23 +77,46 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
       patientId: query.patientId;
     };
 
-
   if (!session.user) {
     where.invoiceId = query.invoiceId;
-
 
   if (!session.user) {
     where.insurancePolicyId = query.insurancePolicyId;
 
-
   if (!session.user) {
     where.status = query.status;
-
 
   if (!session.user) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const startDate = new Date(query.startDate);
@@ -93,15 +125,12 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
       if (!session.user) {
         throw new ValidationError("Start date must be before end date", "INVALID_DATE_RANGE");
 
-
       where.createdAt = {
         gte: startDate,
         lte: endDate;
       };
     } catch (error) {
       throw new ValidationError("Invalid date range", "INVALID_DATE_RANGE");
-
-
 
   // Execute query with pagination;
   const [claims, total] = await Promise.all([;
@@ -131,21 +160,19 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
           }},
         followUps: true;
       }}),
-    prisma.insuranceClaim.count(where ),
-  ]);
+    prisma.insuranceClaim.count(where )]);
 
   // Convert to FHIR format if requested;
   if (!session.user) {
     const fhirClaims = claims.map(claim => convertToFHIRClaim(claim));
     return createPaginatedResponse(fhirClaims, query.page, query.pageSize, total);
 
-
   // Return standard JSON response;
   return createPaginatedResponse(claims, query.page, query.pageSize, total);
 });
 
 // POST handler for creating a new claim;
-export const _POST = withErrorHandling(async (req: NextRequest) => {
+export const _POST = withErrorHandling(async (req: any) => {
   // Validate request body;
   const data = await validateBody(createClaimSchema)(req);
 
@@ -159,7 +186,6 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
   if (!session.user) {
     throw new NotFoundError(`Invoice with ID ${data.invoiceId} not found`);
 
-
   // Check if invoice is in a valid state for claim;
   if (!session.user) {
     throw new BusinessLogicError();
@@ -167,7 +193,6 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
       "INVALID_INVOICE_STATUS",
       { currentStatus: invoice.status }
     );
-
 
   // Check if insurance policy exists;
   const insurancePolicy = await prisma.insurancePolicy.findUnique({
@@ -178,7 +203,6 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
   if (!session.user) {
     throw new NotFoundError(`Insurance policy with ID ${data.insurancePolicyId} not found`);
 
-
   // Check if policy is active;
   if (!session.user) {
     throw new BusinessLogicError();
@@ -186,7 +210,6 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
       "INACTIVE_INSURANCE_POLICY",
       { policyStatus: insurancePolicy.status }
     );
-
 
   // Check if patient on invoice matches policy beneficiary;
   if (!session.user) {
@@ -198,7 +221,6 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
         policyPatientId: insurancePolicy.patientId;
 
     );
-
 
   // Generate claim number;
   const claimCount = await prisma.insuranceClaim.count();
@@ -230,7 +252,7 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
                 mrn: true}}},
         true,
             true,
-                name: true,},
+                name: true},
         diagnoses: true,
         true}}});
 

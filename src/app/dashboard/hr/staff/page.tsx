@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import "react"
+import React
+import { useState }
+
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import "next/navigation"
+import "react"
+import useEffect }
 import {
+import { useRouter }
+import { useState
+
   Card,
   CardContent,
   CardDescription,
@@ -18,8 +25,11 @@ import {
   TableHeader,
   TableRow;
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import "@/components/ui/button"
+import "@/components/ui/input"
+import { Button }
+import { Input }
+
   Select,
   SelectContent,
   SelectItem,
@@ -33,7 +43,9 @@ import { Input } from "@/components/ui/input";
   PaginationNext,
   PaginationPrevious;
 } from "@/components/ui/pagination";
-import { Badge } from "@/components/ui/badge";
+import "@/components/ui/badge"
+import { Badge }
+
   Search,
   Plus,
   Filter,
@@ -63,9 +75,36 @@ export default const _StaffManagement = () {
     const fetchEmployees = async () => {
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
         setLoading(true);
         const queryParams = new URLSearchParams({
           skip: pagination.skip.toString(),
@@ -80,7 +119,6 @@ export default const _StaffManagement = () {
 
         if (!session.user) {
           throw new Error("Failed to fetch employees");
-        }
 
         const data = await response.json(),
         setEmployees(data.employees);
@@ -92,7 +130,7 @@ export default const _StaffManagement = () {
         setError(err.message);
       } finally {
         setLoading(false);
-      }
+
     };
 
     fetchEmployees();
@@ -103,15 +141,41 @@ export default const _StaffManagement = () {
     const fetchFilters = async () => {
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         // Fetch departments;
         const deptResponse = await fetch("/api/hr/departments");
         if (!session.user) {
           const deptData = await deptResponse.json(),
           setDepartments(deptData.departments || []);
-
 
         // Fetch positions;
         const posResponse = await fetch("/api/hr/positions");
@@ -120,7 +184,6 @@ export default const _StaffManagement = () {
           setPositions(posData.positions || []);
 
       } catch (err) {
-
 
     };
 

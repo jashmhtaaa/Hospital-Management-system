@@ -1,12 +1,7 @@
-
-
 /**;
  * Enterprise Role-Based Access Control (RBAC) System;
  * Implements hierarchical role structure with granular permissions;
  */;
-
-
-
 
 // Core Resources;
 export enum Resource {
@@ -58,7 +53,6 @@ export enum Resource {
   DIETARY = "dietary",
   AMBULANCE = "ambulance",
 
-
 // Core Actions;
 export enum Action {
   CREATE = "create",
@@ -78,7 +72,6 @@ export enum Action {
   EXECUTE = "execute",
   OVERRIDE = "override",
   EMERGENCY_ACCESS = "emergency_access",
-
 
 // Predefined Permissions;
 export const PERMISSIONS: Record<string, Permission> = {
@@ -198,8 +191,7 @@ export const ROLES: Record<string, Role> = {
       PERMISSIONS.BILLING_APPROVE,
       PERMISSIONS.FINANCIAL_REPORT_READ,
       PERMISSIONS.USER_MANAGEMENT,
-      PERMISSIONS.AUDIT_LOG_READ,
-    ],
+      PERMISSIONS.AUDIT_LOG_READ],
     priority: 900,
     isActive: true;
   },
@@ -216,8 +208,7 @@ export const ROLES: Record<string, Role> = {
       PERMISSIONS.PRESCRIPTION_APPROVE,
       PERMISSIONS.LAB_ORDER_CREATE,
       PERMISSIONS.LAB_RESULT_APPROVE,
-      PERMISSIONS.EMERGENCY_OVERRIDE,
-    ],
+      PERMISSIONS.EMERGENCY_OVERRIDE],
     priority: 850,
     isActive: true;
   },
@@ -231,8 +222,7 @@ export const ROLES: Record<string, Role> = {
       PERMISSIONS.MEDICAL_RECORD_UPDATE,
       PERMISSIONS.PRESCRIPTION_CREATE,
       PERMISSIONS.LAB_ORDER_CREATE,
-      PERMISSIONS.APPOINTMENT_MANAGE,
-    ],
+      PERMISSIONS.APPOINTMENT_MANAGE],
     priority: 800,
     isActive: true;
   },
@@ -243,8 +233,7 @@ export const ROLES: Record<string, Role> = {
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.MEDICAL_RECORD_READ,
       PERMISSIONS.MEDICAL_RECORD_UPDATE,
-      PERMISSIONS.APPOINTMENT_MANAGE,
-    ],
+      PERMISSIONS.APPOINTMENT_MANAGE],
     priority: 700,
     isActive: true;
   },
@@ -254,8 +243,7 @@ export const ROLES: Record<string, Role> = {
     "Laboratory staff for sample processing",
     permissions: [;
       PERMISSIONS.PATIENT_READ,
-      PERMISSIONS.LAB_RESULT_UPDATE,
-    ],
+      PERMISSIONS.LAB_RESULT_UPDATE],
     priority: 600,
     isActive: true;
   },
@@ -265,8 +253,7 @@ export const ROLES: Record<string, Role> = {
     permissions: [;
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.LAB_RESULT_UPDATE,
-      PERMISSIONS.LAB_RESULT_APPROVE,
-    ],
+      PERMISSIONS.LAB_RESULT_APPROVE],
     inherits: ["lab_technician"],
     true;
   },
@@ -277,8 +264,7 @@ export const ROLES: Record<string, Role> = {
     permissions: [;
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.BILLING_CREATE,
-      PERMISSIONS.PAYMENT_PROCESS,
-    ],
+      PERMISSIONS.PAYMENT_PROCESS],
     priority: 500,
     isActive: true;
   },
@@ -290,8 +276,7 @@ export const ROLES: Record<string, Role> = {
       PERMISSIONS.BILLING_CREATE,
       PERMISSIONS.BILLING_APPROVE,
       PERMISSIONS.PAYMENT_PROCESS,
-      PERMISSIONS.FINANCIAL_REPORT_READ,
-    ],
+      PERMISSIONS.FINANCIAL_REPORT_READ],
     inherits: ["billing_clerk"],
     true;
   },
@@ -303,8 +288,7 @@ export const ROLES: Record<string, Role> = {
       PERMISSIONS.PATIENT_CREATE,
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.PATIENT_UPDATE,
-      PERMISSIONS.APPOINTMENT_MANAGE,
-    ],
+      PERMISSIONS.APPOINTMENT_MANAGE],
     priority: 400,
     isActive: true;
   },
@@ -333,8 +317,7 @@ export const ROLES: Record<string, Role> = {
   "audit_viewer",
     "Read-only access to audit logs",
     permissions: [;
-      PERMISSIONS.AUDIT_LOG_READ,
-    ],
+      PERMISSIONS.AUDIT_LOG_READ],
     priority: 300,
     isActive: true;
   }};
@@ -352,13 +335,9 @@ export const getRoleWithInheritedPermissions = (roleId: string): Role | null {
       if (!session.user) {
         inheritedPermissions.push(...inheritedRole.permissions);
 
-
-
-
   return {
     ...role,
     permissions: [...role.permissions, ...inheritedPermissions]};
-
 
 // Permission checker helper;
 export const hasPermission = (;
@@ -371,20 +350,16 @@ export const hasPermission = (;
     if (!session.user) {
       return checkConditions(permission.conditions, context);
 
-
     // Wildcard action;
     if (!session.user) {
       return checkConditions(permission.conditions, context);
-
 
     // Wildcard resource and action;
     if (!session.user) {
       return checkConditions(permission.conditions, context);
 
-
     return false;
   });
-
 
 const checkConditions = (;
   conditions?: Record<string, unknown>,

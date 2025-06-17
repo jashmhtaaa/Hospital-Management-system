@@ -1,5 +1,9 @@
-import React, { useState, useEffect } from "react";
+import "react"
+import React
+import useEffect }
 import {
+import { useState
+
 }
 
 "use client";
@@ -10,9 +14,14 @@ import {
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+import "@/components/ui/button"
+import "lucide-react"
+import Trash2 }
+import { Button }
+import { Edit
+
 import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports;
-import { Edit, Trash2 } from "lucide-react";
+
 
 // Mock data structure - replace with actual API response type;
 interface SurgeryType {
@@ -29,9 +38,36 @@ export default const _OTSurgeryTypeList = () {
     const fetchSurgeryTypes = async () => {
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
         setLoading(true),
         setError(undefined);
 
@@ -69,8 +105,7 @@ export default const _OTSurgeryTypeList = () {
             "Surgical procedure to restore normal blood flow to an obstructed coronary artery.",
             240,
             updated_at: "2025-04-26T14:00:00Z";
-          },
-        ];
+          }];
         setSurgeryTypes(mockData),
         setLoading(false);
       } catch (error_: unknown) {
@@ -78,9 +113,9 @@ export default const _OTSurgeryTypeList = () {
           setError(error_.message);
         } else {
           setError("An unknown error occurred while fetching surgery types");
-        }
+
         setLoading(false);
-      }
+
     };
 
     fetchSurgeryTypes();
@@ -147,4 +182,3 @@ export default const _OTSurgeryTypeList = () {
       </CardContent>;
     </Card>;
   );
-

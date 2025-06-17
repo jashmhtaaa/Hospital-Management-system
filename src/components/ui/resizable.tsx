@@ -1,9 +1,10 @@
+import "@/lib/utils"
+import "lucide-react"
+import "react-resizable-panels"
+import * as ResizablePrimitive
+import { cn }
+import { GripVertical }
 
-import { GripVertical } from "lucide-react";
-import * as ResizablePrimitive from "react-resizable-panels";
-
-
-import { cn } from "@/lib/utils";
 }
 
 "use client";

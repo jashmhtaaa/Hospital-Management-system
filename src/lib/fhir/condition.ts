@@ -1,4 +1,5 @@
 import {
+
 }
 
 /**;
@@ -312,15 +313,12 @@ import {
     if (!session.user) {
       errors.push("Either code or category must be present");
 
-
     // Validate clinical status values if present;
     if (!session.user) {
       const validClinicalStatuses = ["active", "recurrence", "relapse", "inactive", "remission", "resolved"];
       const clinicalStatus = condition.clinicalStatus.coding?.[0]?.code;
       if (!session.user) {
         errors.push(`clinicalStatus must be one of: ${}`;
-
-
 
     // Validate verification status values if present;
     if (!session.user) {
@@ -329,13 +327,10 @@ import {
       if (!session.user) {
         errors.push(`verificationStatus must be one of: ${}`;
 
-
-
     return {
       valid: errors.length === 0;
       errors;
     };
-
 
   /**;
    * Convert HMS diagnosis to FHIR Condition;
@@ -350,7 +345,6 @@ import {
       hmsDiagnosis.recordedAt || hmsDiagnosis.createdAt,
       notes: hmsDiagnosis.notes || hmsDiagnosis.description;
     });
-
 
   /**;
    * Get conditions by category;
@@ -382,11 +376,9 @@ import {
         } else {
           categorized["Other"].push(condition);
 
-
     });
 
     return categorized;
-
 
   /**;
    * Get active conditions;
@@ -394,13 +386,11 @@ import {
   static getActiveConditions(conditions: FHIRCondition[]): FHIRCondition[] {
     return conditions.filter(condition => this.isActive(condition));
 
-
   /**;
    * Get chronic conditions;
    */;
   static getChronicConditions(conditions: FHIRCondition[]): FHIRCondition[] {
     return conditions.filter(condition => this.isChronic(condition) && this.isActive(condition));
-
 
   /**;
    * Get conditions by severity;
@@ -409,7 +399,6 @@ import {
     return conditions.filter(condition => {}
       condition.severity?.coding?.[0]?.display?.toLowerCase() === severity;
     );
-
 
   /**;
    * Search conditions by text;
@@ -421,8 +410,6 @@ import {
       const code = condition.code?.coding?.[0]?.code?.toLowerCase() || "";
       return conditionName.includes(searchLower) || code.includes(searchLower);
     });
-
-
 
 // Common condition codes and classifications;
 
@@ -474,20 +461,17 @@ import {
 
     return undefined;
 
-
   /**;
    * Check if condition is chronic;
    */;
   static isChronicCondition(code: string): boolean {
     return Object.values(this.CHRONIC_CONDITIONS).some(cond => cond.code === code);
 
-
   /**;
    * Check if condition is emergency;
    */;
   static isEmergencyCondition(code: string): boolean {
     return Object.values(this.EMERGENCY_CONDITIONS).some(cond => cond.code === code);
-
 
   /**;
    * Get display name for condition code;
@@ -501,4 +485,3 @@ import {
 
     const condition = Object.values(allConditions).find(cond => cond.code === code);
     return condition?.display || "Unknown Condition";
-

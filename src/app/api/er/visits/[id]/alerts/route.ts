@@ -1,4 +1,8 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "next/server"
+import NextRequest
+import NextResponse }
+import { type
+
 // import { getRequestContext } from "@cloudflare/next-on-pages"; // Cloudflare specific;
 
 // Define interface for alert input data;
@@ -25,14 +29,41 @@ const mockAlerts: Alert[] = [];
 
 // GET /api/er/visits/[id]/alerts - Get alerts for a specific ER visit;
 export const _GET = async();
-  _request: NextRequest, // Prefixed as unused;
+  _request: any, // Prefixed as unused;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // const { env } = getRequestContext(); // Cloudflare specific;
     // const db = env.DB; // Cloudflare specific;
     const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+);
@@ -64,17 +95,42 @@ export const _GET = async();
       },
       { status: 500 }
     );
-  }
-
 
 // POST /api/er/visits/[id]/alerts - Create a new critical alert for an ER visit;
 export const _POST = async();
-  request: NextRequest;
+  request: any;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     // const { env } = getRequestContext(); // Cloudflare specific;
@@ -91,7 +147,6 @@ export const _POST = async();
         { error: "Missing required fields (alert_type, activated_by_id)" },
         { status: 400 }
       );
-
 
     // Placeholder for database insert;
     /*;
@@ -136,9 +191,6 @@ export const _POST = async();
       { status: 500 }
     );
 
-
-
 // Note: Updating alert status (acknowledge/resolve) might be better handled;
 // in a separate route like /api/er/visits/[visitId]/alerts/[alertId] (PUT);
 // or potentially via the main visit update PUT endpoint if simpler.;
-

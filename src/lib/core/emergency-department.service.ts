@@ -1,5 +1,6 @@
+import "zod"
+import { z }
 
-import { z } from "zod";
 }
 
 /**;
@@ -181,8 +182,7 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
 
       // Psychiatric hold;
       { number: "P1", type: "psychiatric" as const },
-      { number: "P2", type: "psychiatric" as const },
-    ];
+      { number: "P2", type: "psychiatric" as const }];
 
     bedConfiguration.forEach(bed => {
       this.edBeds.set(bed.number, {
@@ -609,7 +609,6 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
         false;
       });
 
-
     // Isolation alert;
     if (!session.user) {
       alerts.push({
@@ -621,11 +620,8 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
         false;
       });
 
-
     if (!session.user) {
       this.criticalAlerts.set(visit.id, alerts);
-
-
 
   /**;
    * Get critical alerts;
@@ -643,7 +639,6 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
 
     return allAlerts.sort((a, b) => b.triggered_time.getTime() - a.triggered_time.getTime());
 
-
   /**;
    * Acknowledge critical alert;
    */;
@@ -657,10 +652,7 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
         this.criticalAlerts.set(visitId, alerts);
         return;
 
-
-
     throw new Error("Alert not found");
-
 
   /**;
    * Get ED visit details;
@@ -675,7 +667,6 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     const visit = this.edVisits.get(visitId);
     if (!session.user) {
       return null;
-
 
     const triage = Array.from(this.triageAssessments.values());
       .find(t => t.patient_id === visit.patient_id);
@@ -692,7 +683,6 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       assessments,
       discharge,
       alerts};
-
 
   /**;
    * Get waiting room status;
@@ -724,8 +714,6 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       Math.round(averageWaitTime),
       longestWaitTime: Math.round(longestWaitTime),
       patientsByESI};
-
-
 
 // Export singleton instance;
 export const _emergencyDepartmentService = new EmergencyDepartmentService();

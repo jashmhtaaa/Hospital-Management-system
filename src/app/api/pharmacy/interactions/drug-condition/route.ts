@@ -1,13 +1,22 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../../lib/audit"
+import "../../../../../lib/error-handler"
+import "../../../../../lib/services/patient/patient.service"
+import "../../../../../lib/services/pharmacy/pharmacy.service"
+import "../../../../../lib/validation/pharmacy-validation"
+import "../../../models/domain-models"
+import "../../../services/drug-interaction-service"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { DrugInteractionService }
+import { errorHandler }
+import { getMedicationById }
+import { getPatientConditions }
+import { PharmacyDomain }
+import { type
+import { validateDrugConditionInteractionRequest }
 
-
-import { auditLog } from "../../../../../lib/audit";
-import { errorHandler } from "../../../../../lib/error-handler";
-import { getPatientConditions } from "../../../../../lib/services/patient/patient.service";
-import { getMedicationById } from "../../../../../lib/services/pharmacy/pharmacy.service";
-import { validateDrugConditionInteractionRequest } from "../../../../../lib/validation/pharmacy-validation";
-import type { PharmacyDomain } from "../../../models/domain-models";
-import { DrugInteractionService } from "../../../services/drug-interaction-service";
 }
 
 /**;
@@ -36,12 +45,39 @@ const interactionService = new DrugInteractionService();
  * POST /api/pharmacy/interactions/drug-condition;
  * Check for drug-condition contraindications;
  */;
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
     // Validate request;
     const data = await req.json();
     const validationResult = validateDrugConditionInteractionRequest(data);
@@ -50,13 +86,11 @@ export const POST = async (req: NextRequest) => {
         { error: "Validation failed", details: validationResult.errors },
         { status: 400 }
       );
-    }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -68,7 +102,6 @@ export const POST = async (req: NextRequest) => {
     if (!session.user) {
       const patientConditions = await getPatientConditions(data.patientId);
       conditions = patientConditions.map(c => c.code);
-
 
     // Check for drug-condition contraindications;
     const contraindications = await interactionService.checkDrugConditionContraindications();
@@ -91,8 +124,6 @@ export const POST = async (req: NextRequest) => {
         contraindications.filter(c => c.contraindicationType === "absolute").length,
           contraindications.filter(c => c.contraindicationType === "caution").length;
 
-
     }, { status: 200 });
   } catch (error) {
     return errorHandler(error, "Error checking drug-condition contraindications");
-

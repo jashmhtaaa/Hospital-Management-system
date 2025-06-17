@@ -1,9 +1,17 @@
-import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
-import { PrismaClient } from "@prisma/client";
+import "../biomedical-service"
+import "@/lib/cache"
+import "@jest/globals"
+import "@prisma/client"
+import beforeEach
+import describe
+import expect
+import it
+import jest }
+import { afterEach
+import { BiomedicalService }
+import { cache }
+import { PrismaClient }
 
-
-import { cache } from "@/lib/cache";
-import { BiomedicalService } from "../biomedical-service";
 // Mock PrismaClient;
 jest.mock("@prisma/client", () => {
   const mockPrismaClient = {
@@ -242,8 +250,7 @@ describe("BiomedicalService", () => {
           date: new Date("2023-09-01"),
           "COMPLETED",
           cost: 50;
-        },
-      ];
+        }];
 
       const mockCalibrationRecords = [;
         {
@@ -257,8 +264,7 @@ describe("BiomedicalService", () => {
         {
           date: new Date("2023-08-15"),
           result: "PASS";
-        },
-      ];
+        }];
 
       (prisma.biomedicalEquipment.findUnique as jest.Mock).mockResolvedValue(mockEquipment);
       (prisma.maintenanceRecord.findMany as jest.Mock).mockResolvedValue(mockMaintenanceRecords);
@@ -294,8 +300,7 @@ describe("BiomedicalService", () => {
         {
           date: new Date("2023-09-01"),
           "COMPLETED";
-        },
-      ];
+        }];
 
       (prisma.biomedicalEquipment.findUnique as jest.Mock).mockResolvedValue(mockEquipment);
       (prisma.maintenanceRecord.findMany as jest.Mock).mockResolvedValue(mockMaintenanceRecords);

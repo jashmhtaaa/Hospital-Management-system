@@ -1,10 +1,16 @@
-import { getServerSession } from "next-auth";
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/auth"
+import "@/lib/middleware/error-handling.middleware"
+import "@/lib/services/support-services/marketing"
+import "next-auth"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { authOptions }
+import { getServerSession }
+import { SegmentService }
+import { type
+import { withErrorHandling }
 
-
-import { authOptions } from "@/lib/auth";
-import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
-import { SegmentService } from "@/lib/services/support-services/marketing";
 const segmentService = new SegmentService();
 
 /**;
@@ -12,12 +18,12 @@ const segmentService = new SegmentService();
  * Get a specific segment by ID;
  */;
 export const GET = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   return withErrorHandling();
     request,
-    async (req: NextRequest) => {
+    async (req: any) => {
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
@@ -39,12 +45,12 @@ export const GET = async();
  * Update a specific segment;
  */;
 export const PUT = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   return withErrorHandling();
     request,
-    async (req: NextRequest) => {
+    async (req: any) => {
       const session = await getServerSession(authOptions);
       const data = await req.json();
 

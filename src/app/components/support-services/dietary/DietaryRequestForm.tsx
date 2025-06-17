@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import "react"
+import React
+import { useState }
+
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
+import "@/components/ui/button"
+import "@/components/ui/calendar"
 import {
+import { Button }
+import { Calendar }
+
   Form,
   FormControl,
   FormDescription,
@@ -11,25 +17,45 @@ import {
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import "@hookform/resolvers/zod"
+import "react"
+import "react-hook-form"
+import "zod"
+import * as z
+import useState }
+import { useEffect
+import { useForm }
+import { zodResolver }
+
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { CalendarIcon, Plus, X } from "lucide-react";
-import { useRouter } from "next/navigation";
+import "@/components/ui/badge"
+import "@/components/ui/checkbox"
+import "@/components/ui/input"
+import "@/components/ui/popover"
+import "@/components/ui/textarea"
+import "@/components/ui/use-toast"
+import "@/lib/utils"
+import "date-fns"
+import "lucide-react"
+import "next/navigation"
+import Plus
+import PopoverContent
+import PopoverTrigger }
+import X }
+import { Badge }
+import { CalendarIcon
+import { Checkbox }
+import { cn }
+import { format }
+import { Input }
+import { Popover
+import { Textarea }
+import { useRouter }
+import { useToast }
 
 // Define the form schema with Zod;
 const formSchema = z.object({
@@ -122,6 +148,33 @@ export const _DietaryRequestForm = ({ onSuccess,
     const fetchPatients = async () => {
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -146,9 +199,36 @@ export const _DietaryRequestForm = ({ onSuccess,
     setIsLoading(true);
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const url = isEditing;
         ? `/api/support-services/dietary/$initialData.id`;
         : "/api/support-services/dietary";
@@ -167,7 +247,6 @@ export const _DietaryRequestForm = ({ onSuccess,
 
       if (!session.user) {
         throw new Error("Failed to submit request");
-      }
 
       toast({
         title: isEditing ? "Request Updated" : "Request Created",
@@ -180,7 +259,7 @@ export const _DietaryRequestForm = ({ onSuccess,
       } else {
         router.push("/support-services/dietary");
         router.refresh();
-      }
+
     } catch (error) {
 
       toast({
@@ -189,7 +268,7 @@ export const _DietaryRequestForm = ({ onSuccess,
       });
     } finally {
       setIsLoading(false);
-    }
+
   };
 
   // Handle adding custom preference;

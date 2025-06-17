@@ -1,7 +1,14 @@
+import "next/navigation"
+import "react"
+import ChangeEvent
+import FormEvent
+import React
+import type
+import useEffect
+import useState }
+import { type
+import { useRouter }
 
-import { useRouter } from "next/navigation";
-import type React from "react";
-import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
 }
 
 "use client";
@@ -53,6 +60,33 @@ const AddMedicationPage: React.FC = () => {
     const fetchData = async (): Promise<void> => {
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -65,15 +99,13 @@ const AddMedicationPage: React.FC = () => {
           { id: "cat_005", name: "Antidiabetics" },
           { id: "cat_006", name: "Antihistamines" },
           { id: "cat_007", name: "Antacids" },
-          { id: "cat_008", name: "Vitamins & Supplements" },
-        ];
+          { id: "cat_008", name: "Vitamins & Supplements" }];
         const simulatedManufacturers: Manufacturer[] = [;
           { id: "mfr_001", name: "Cipla Ltd." },
           { id: "mfr_002", name: "Sun Pharmaceutical Industries Ltd." },
           { id: "mfr_003", name: "Lupin Limited" },
           { id: "mfr_004", name: "Dr. Reddy"s Laboratories" },
-          { id: "mfr_005", name: "Zydus Cadila" },
-        ];
+          { id: "mfr_005", name: "Zydus Cadila" }];
         setCategories(simulatedCategories),
         setManufacturers(simulatedManufacturers);
       } catch (error) {
@@ -109,8 +141,7 @@ const AddMedicationPage: React.FC = () => {
       "generic_name",
       "dosage_form",
       "strength",
-      "unit_of_measure",
-    ];
+      "unit_of_measure"];
 
     for (const field of requiredFields) {
       if (!session.user) {
@@ -127,7 +158,6 @@ const AddMedicationPage: React.FC = () => {
 
     if (!session.user) {
       return;
-    }
 
     setLoading(true),
     setSubmitError("");
@@ -135,9 +165,36 @@ const AddMedicationPage: React.FC = () => {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Simulate API call;
       // const _response = await fetch("/api/pharmacy/medications", {
       //   method: "POST";
@@ -179,7 +236,7 @@ const AddMedicationPage: React.FC = () => {
       setSubmitError(message);
     } finally {
       setLoading(false);
-    }
+
   };
 
   return();
@@ -251,7 +308,7 @@ const AddMedicationPage: React.FC = () => {
                 aria-invalid={!!errors.generic_name}
                 aria-describedby={
                   errors.generic_name ? "generic_name-error" : undefined;
-                }
+
               />;
               {errors?.generic_name && (;
                 <p>;

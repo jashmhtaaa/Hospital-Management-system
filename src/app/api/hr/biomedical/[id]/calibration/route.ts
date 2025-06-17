@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/hr/biomedical-service"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { biomedicalService }
+import { type
+import { z }
 
-
-import { biomedicalService } from "@/lib/hr/biomedical-service";
 // Schema for calibration record;
 const calibrationSchema = z.object({
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
@@ -20,10 +24,37 @@ const calibrationSchema = z.object({
 
 // POST handler for recording calibration;
 export const _POST = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -38,7 +69,6 @@ export const _POST = async();
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
       );
-    }
 
     const data = validationResult.data;
 
@@ -61,19 +91,44 @@ export const _POST = async();
       { error: "Failed to record calibration", details: error.message },
       { status: 500 }
     );
-  }
-}
 
 // GET handler for listing calibration records;
 export const _GET = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const calibrationRecords = await biomedicalService.getCalibrationRecords(params.id);
 
     return NextResponse.json(calibrationRecords);
@@ -83,5 +138,3 @@ export const _GET = async();
       { error: "Failed to fetch calibration records", details: error.message },
       { status: 500 }
     );
-
-

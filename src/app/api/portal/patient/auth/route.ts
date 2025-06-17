@@ -1,4 +1,8 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "next/server"
+import NextRequest
+import NextResponse }
+import { type
+
 // src/app/api/portal/patient/auth/route.ts;
 // import { getRequestContext } from "@cloudflare/next-on-pages"; // Import when ready to use D1;
 
@@ -122,8 +126,35 @@ async const registerPatient = (patientData: RegisterData) {
  * POST /api/portal/patient/auth/register;
  * Authenticates or registers a patient and returns patient data.;
  */;
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -159,7 +190,6 @@ export const POST = async (request: NextRequest) => {
           { error: "Invalid email or password" },
           { status: 401 }
         );
-      }
 
       // In a real implementation, you would generate a JWT token here;
       // const token = jwt.sign({ id: patient.id, email: patient.email }, process.env.JWT_SECRET, { expiresIn: "24h" });
@@ -189,7 +219,6 @@ export const POST = async (request: NextRequest) => {
           { error: "Name, email, and password are required" },
           { status: 400 }
         );
-      }
 
       // In a real implementation, you would check if the email is already in use;
       // const { results } = await env.DB.prepare(`SELECT id FROM patients WHERE email = ?`).bind(email).all();
@@ -221,7 +250,7 @@ export const POST = async (request: NextRequest) => {
         },
         { status: 201 }
       );
-    }
+
   } catch (error: unknown) {
     // Add type annotation for error;
 
@@ -231,5 +260,3 @@ export const POST = async (request: NextRequest) => {
       { error: "Authentication failed", details: message },
       { status: 500 }
     );
-  }
-

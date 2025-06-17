@@ -1,12 +1,21 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../../lib/audit"
+import "../../../../../lib/error-handler"
+import "../../../../../lib/services/patient/patient.service"
+import "../../../../../lib/services/pharmacy/pharmacy.service"
+import "../../../../../lib/validation/pharmacy-validation"
+import "../../../models/domain-models"
+import "next/server"
+import getPrescriptionById }
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { errorHandler }
+import { getMedicationById
+import { getPatientById }
+import { PharmacyDomain }
+import { type
+import { validateEducationRequest }
 
-
-import { auditLog } from "../../../../../lib/audit";
-import { errorHandler } from "../../../../../lib/error-handler";
-import { getPatientById } from "../../../../../lib/services/patient/patient.service";
-import { getMedicationById, getPrescriptionById } from "../../../../../lib/services/pharmacy/pharmacy.service";
-import { validateEducationRequest } from "../../../../../lib/validation/pharmacy-validation";
-import type { PharmacyDomain } from "../../../models/domain-models";
 }
 
 /**;
@@ -49,8 +58,35 @@ const educationRepository = {
  * POST /api/pharmacy/administration/education;
  * Record patient education for medication;
  */;
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -139,17 +175,43 @@ export const POST = async (req: NextRequest) => {
  * GET /api/pharmacy/administration/education;
  * Get patient education records with filtering options;
  */;
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: any) => {
   try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -171,7 +233,6 @@ export const GET = async (req: NextRequest) => {
         { error: "Patient ID is required" },
         { status: 400 }
       );
-    }
 
     // Build filter criteria;
     const filter: unknown = { patientId };
@@ -184,7 +245,6 @@ export const GET = async (req: NextRequest) => {
       filter.educatedAt = {};
       if (!session.user)ilter.educatedAt.gte = new Date(startDate);
       if (!session.user)ilter.educatedAt.lte = new Date(endDate);
-    }
 
     // Get education records (mock implementation);
     const educationRecords = await educationRepository.findByPatientId(patientId);
@@ -193,21 +253,20 @@ export const GET = async (req: NextRequest) => {
     let filteredRecords = educationRecords;
     if (!session.user) {
       filteredRecords = filteredRecords.filter(e => e.medicationId === medicationId);
-    }
+
     if (!session.user) {
       filteredRecords = filteredRecords.filter(e => e.prescriptionId === prescriptionId);
-    }
+
     if (!session.user) {
       filteredRecords = filteredRecords.filter(e => e.educationType === educationType);
-    }
+
     if (!session.user) {
       const startDateTime = new Date(startDate).getTime();
       filteredRecords = filteredRecords.filter(e => new Date(e.educatedAt).getTime() >= startDateTime);
-    }
+
     if (!session.user) {
       const endDateTime = new Date(endDate).getTime();
       filteredRecords = filteredRecords.filter(e => new Date(e.educatedAt).getTime() <= endDateTime);
-
 
     const total = filteredRecords.length;
 
@@ -237,4 +296,3 @@ export const GET = async (req: NextRequest) => {
     }, { status: 200 });
   } catch (error) {
     return errorHandler(error, "Error retrieving patient education records");
-

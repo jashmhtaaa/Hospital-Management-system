@@ -1,5 +1,6 @@
+import "zod"
+import { z }
 
-import { z } from "zod";
 }
 
 /**;
@@ -121,8 +122,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
         2,
         reference_ranges: [;
           { gender: "male", range_min: 13.5, range_max: 17.5, unit: "g/dL", normal_text: "Hemoglobin" },
-          { gender: "female", range_min: 12.0, range_max: 15.5, unit: "g/dL", normal_text: "Hemoglobin" },
-        ],
+          { gender: "female", range_min: 12.0, range_max: 15.5, unit: "g/dL", normal_text: "Hemoglobin" }],
         critical_values: { low_critical: 7.0, high_critical: 20.0 },
         cost: 25.00,
         "58410-2",
@@ -136,8 +136,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
         preparation_instructions: "Patient should fast for 8-12 hours",
         [;
           { gender: "both", range_min: 70, range_max: 100, unit: "mg/dL", normal_text: "Glucose" },
-          { gender: "both", range_min: 0.6, range_max: 1.2, unit: "mg/dL", normal_text: "Creatinine" },
-        ],
+          { gender: "both", range_min: 0.6, range_max: 1.2, unit: "mg/dL", normal_text: "Creatinine" }],
         critical_values: { low_critical: 50, high_critical: 400 },
         cost: 35.00,
         "24323-8",
@@ -151,8 +150,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
         preparation_instructions: "Patient must fast for 12 hours",
         [;
           { gender: "both", range_min: 0, range_max: 200, unit: "mg/dL", normal_text: "Total Cholesterol" },
-          { gender: "both", range_min: 40, range_max: 999, unit: "mg/dL", normal_text: "HDL" },
-        ],
+          { gender: "both", range_min: 40, range_max: 999, unit: "mg/dL", normal_text: "HDL" }],
         cost: 45.00,
         "24331-1",
         is_active: true;
@@ -163,13 +161,11 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
         "urine",
         1,
         reference_ranges: [;
-          { gender: "both", normal_text: "Negative for protein, glucose, blood" },
-        ],
+          { gender: "both", normal_text: "Negative for protein, glucose, blood" }],
         cost: 20.00,
         "24357-6",
         is_active: true;
-      },
-    ];
+      }];
 
     defaultTests.forEach(test => {
       const labTest: LabTest = {
@@ -204,8 +200,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
         last_calibration: [0] - 3 * 24 * 60 * 60 * 1000), // 3 days ago;
         next_maintenance: [0] + 27 * 24 * 60 * 60 * 1000), // 27 days from now;
         connection_status: "connected";
-      },
-    ];
+      }];
 
     defaultEquipment.forEach(equipment => {
       this.equipment.set(equipment.id, equipment);
@@ -536,7 +531,6 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
       const toDate = new Date(dateTo);
       filteredOrders = filteredOrders.filter(order => order.created_at <= toDate);
 
-
     const totalOrders = filteredOrders.length;
     const completedOrders = filteredOrders.filter(order => order.status === "completed").length;
     const pendingOrders = filteredOrders.filter(order => order.status === "pending").length;
@@ -575,13 +569,11 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
       criticalResults,
       qcFailures};
 
-
   /**;
    * Get equipment status;
    */;
   async getEquipmentStatus(): Promise<EquipmentInterface[]> {
     return Array.from(this.equipment.values());
-
 
   /**;
    * Update equipment status;
@@ -591,13 +583,10 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
     if (!session.user) {
       throw new Error("Equipment not found");
 
-
     equipment.status = status;
     this.equipment.set(equipmentId, equipment);
 
     return equipment;
-
-
 
 // Export singleton instance;
 export const _laboratoryManagementService = new LaboratoryManagementService();

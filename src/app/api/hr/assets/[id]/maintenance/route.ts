@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/hr/asset-service"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { assetService }
+import { type
+import { z }
 
-
-import { assetService } from "@/lib/hr/asset-service";
 // Schema for maintenance record;
 const maintenanceSchema = z.object({
   maintenanceType: z.enum(["PREVENTIVE", "CORRECTIVE", "CALIBRATION", "INSPECTION"], {
@@ -19,10 +23,37 @@ const maintenanceSchema = z.object({
 
 // POST handler for recording maintenance;
 export const _POST = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -59,19 +90,44 @@ export const _POST = async();
       { error: "Failed to record maintenance", details: error.message },
       { status: 500 }
     );
-  }
-}
 
 // GET handler for listing maintenance records;
 export const _GET = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const asset = await assetService.getAsset(params.id);
 
     if (!session.user) {
@@ -79,7 +135,6 @@ export const _GET = async();
         { error: "Asset not found" },
         { status: 404 }
       );
-    }
 
     return NextResponse.json(asset.maintenanceRecords || []);
   } catch (error) {
@@ -88,5 +143,3 @@ export const _GET = async();
       { error: "Failed to fetch maintenance records", details: error.message },
       { status: 500 }
     );
-
-

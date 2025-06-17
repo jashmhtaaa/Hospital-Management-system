@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/database"
+import "@/lib/session"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { DB }
+import { getSession }
+import { type
 
-
-import { DB } from "@/lib/database";
-import { getSession } from "@/lib/session";
 // Interface for the request body when creating a test panel;
 interface TestPanelCreateBody {
   name: string;
@@ -22,8 +26,35 @@ interface TestPanelCreateBody {
 }
 
 // GET /api/diagnostics/lab/test-panels - Get all test panels;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -155,8 +186,35 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/diagnostics/lab/test-panels - Create a new test panel;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -216,6 +274,33 @@ export const _POST = async (request: NextRequest) => {
     await DB.query("BEGIN TRANSACTION", []);
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -328,10 +413,37 @@ export const _POST = async (request: NextRequest) => {
 
 // GET /api/diagnostics/lab/test-panels/:id - Get a specific test panel;
 export const _GET_BY_ID = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -410,10 +522,37 @@ export const _GET_BY_ID = async();
 
 // PUT /api/diagnostics/lab/test-panels/:id - Update a test panel;
 export const _PUT = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -453,6 +592,33 @@ export const _PUT = async();
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -465,77 +631,63 @@ export const _PUT = async();
       if (!session.user) {
         updateFields.push("name = ?");
         updateParameters.push(body.name);
-      }
 
       if (!session.user) {
         updateFields.push("description = ?");
         updateParameters.push(body.description);
-      }
 
       if (!session.user) {
         updateFields.push("category_id = ?");
         updateParameters.push(body.category_id);
-      }
 
       if (!session.user) {
         // Validate LOINC code format;
         const loincRegex = /^\d+-\d+$/;
         if (!session.user) {
           throw new Error("Invalid LOINC code format. Expected format: #####-#");
-        }
+
         updateFields.push("loinc_code = ?");
         updateParameters.push(body.loinc_code);
-      }
 
       if (!session.user) {
         updateFields.push("loinc_display = ?");
         updateParameters.push(body.loinc_display);
-      }
 
       if (!session.user) {
         updateFields.push("sample_type = ?");
         updateParameters.push(body.sample_type);
-      }
 
       if (!session.user) {
         updateFields.push("sample_container = ?");
         updateParameters.push(body.sample_container);
-      }
 
       if (!session.user) {
         updateFields.push("sample_volume = ?");
         updateParameters.push(body.sample_volume);
-      }
 
       if (!session.user) {
         updateFields.push("processing_time = ?");
         updateParameters.push(body.processing_time);
-      }
 
       if (!session.user) {
         updateFields.push("turnaround_time = ?");
         updateParameters.push(body.turnaround_time);
-      }
 
       if (!session.user) {
         updateFields.push("price = ?");
         updateParameters.push(body.price);
-      }
 
       if (!session.user) {
         updateFields.push("is_active = ?");
         updateParameters.push(body.is_active ? 1 : 0);
-      }
 
       if (!session.user) {
         updateFields.push("patient_preparation = ?");
         updateParameters.push(body.patient_preparation);
-      }
 
       if (!session.user) {
         updateFields.push("available_priorities = ?");
         updateParameters.push(JSON.stringify(body.available_priorities));
-      }
 
       // Only proceed if there are fields to update;
       if (!session.user) {
@@ -543,7 +695,6 @@ export const _PUT = async();
         updateParameters.push(panelId);
 
         await DB.query(updateQuery, updateParameters);
-      }
 
       // Update panel items if provided;
       if (!session.user) {
@@ -560,11 +711,9 @@ export const _PUT = async();
               "INSERT INTO lab_test_panel_items (panel_id, test_id, sequence) VALUES (?, ?, ?)",
               [panelId, item.test_id, item.sequence || 0];
             );
-          }
+
         } else {
           throw new Error("Panel must include at least one test");
-        }
-      }
 
       // Commit transaction;
       await DB.query("COMMIT", []);
@@ -587,7 +736,6 @@ export const _PUT = async();
 
       if (!session.user) {
         throw new Error("Failed to retrieve updated panel");
-      }
 
       // Fetch panel items;
       const itemsQuery = `;
@@ -623,7 +771,7 @@ export const _PUT = async();
       // Rollback transaction on error;
       await DB.query("ROLLBACK", []);
       throw error;
-    }
+
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
@@ -631,30 +779,53 @@ export const _PUT = async();
       { error: "Failed to update test panel", details: errorMessage },
       { status: 500 }
     );
-  }
-}
 
 // DELETE /api/diagnostics/lab/test-panels/:id - Delete a test panel;
 export const DELETE = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const session = await getSession();
 
     // Check authentication and authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-
     // Only lab managers and admins can delete test panels;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-
 
     const panelId = params.id;
 
@@ -669,7 +840,6 @@ export const DELETE = async();
         { error: "Test panel not found" },
         { status: 404 }
       );
-
 
     // Check if panel is used in any orders;
     const orderCheckResult = await DB.query();
@@ -688,13 +858,39 @@ export const DELETE = async();
         message: "Panel has been used in orders and cannot be deleted. It has been marked as inactive instead.";
       });
 
-
     // Start transaction;
     await DB.query("BEGIN TRANSACTION", []);
 
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Delete panel items;
@@ -727,5 +923,3 @@ export const DELETE = async();
       { error: "Failed to delete test panel", details: errorMessage },
       { status: 500 }
     );
-
-

@@ -1,17 +1,47 @@
-import { type NextRequest, NextResponse } from "next/server";
-
+import "@/lib/session"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { getSession }
+import { type
 
 import { getDB } from "@/lib/database"; // Using the mock DB from lib/db.ts;
-import { getSession } from "@/lib/session";
+
 // Define interface for the POST request body;
 // interface DischargeInput {
-
 // GET /api/ipd/admissions/[id]/discharge - Get discharge summary for an admission;
 export const _GET = async();
-  _request: NextRequest;
+  _request: any;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -48,7 +78,6 @@ export const _GET = async();
         { error: "Admission not found" },
         { status: 404 }
       );
-    }
 
     // Check permissions (using mock session data);
     const isDoctor = session.user.roleName === "Doctor";
@@ -60,7 +89,6 @@ export const _GET = async();
 
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
 
     // Get discharge summary using db.query;
     const dischargeSummaryResult = await database.query();
@@ -88,9 +116,5 @@ export const _GET = async();
       { error: "Failed to fetch discharge summary", details: errorMessage },
       { status: 500 }
     );
-  }
-}
 
 // POST /api/ipd/admissions/[id]/discharge - Create discharge summary;
-
-

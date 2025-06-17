@@ -1,6 +1,12 @@
-import React, { useState, useEffect } from "react";
+import "next/navigation"
+import "react"
+import React
+import useEffect }
+import useRouter }
 import {
-import { useParams, useRouter } from "next/navigation";
+import { useParams
+import { useState
+
 }
 
 "use client";
@@ -10,10 +16,18 @@ import { useParams, useRouter } from "next/navigation";
   CardHeader,
   CardTitle,
   CardDescription} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Loader2, ArrowLeft, Trash2, FilePlus } from "lucide-react";
-import CreateRadiologyStudyModal, {
+import "@/components/ui/badge"
+import "@/components/ui/button"
+import "lucide-react"
+import ArrowLeft
+import CreateRadiologyStudyModal
+import FilePlus }
+import Trash2
+import {
+import { Badge }
+import { Button }
+import { Loader2
+
   type StudyPayload} from "./create-radiology-study-modal.ts"; // FIX: Import StudyPayload;
 // Import list components if they are to be embedded and filtered;
 // import RadiologyStudiesList from "./RadiologyStudiesList.ts";
@@ -50,6 +64,33 @@ interface RadiologyOrder {
     setLoading(true),
     setError(undefined); // Reset error state;
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -95,9 +136,36 @@ interface RadiologyOrder {
   const handleCreateStudy = async (studyData: StudyPayload): Promise<void> => {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch("/api/radiology/studies", {
         method: "POST",
         headers: {
@@ -112,7 +180,6 @@ interface RadiologyOrder {
           .catch(() => (error: "Failed to parse error response" ))) as ;
           error?: string;
         throw new Error(errorData.error || "Failed to create radiology study");
-      }
 
       setShowCreateStudyModal(false);
       // Refresh order details which might implicitly refresh related studies/reports lists;
@@ -124,18 +191,45 @@ interface RadiologyOrder {
       const errorMessage =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
       /* SECURITY: Console statement removed */;
-    }
+
   };
 
   const handleCancelOrder = async (): Promise<void> => {
     if (!session.user) {
       return;
-    }
+
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch(`/api/radiology/orders/${orderId}`, {
         method: "DELETE";
       });
@@ -146,7 +240,7 @@ interface RadiologyOrder {
           .catch(() => (error: "Failed to parse error response" ))) as ;
           error?: string;
         throw new Error(errorData.error || "Failed to cancel order");
-      }
+
       /* SECURITY: Console statement removed */;
       router.push("/dashboard/radiology"); // Go back to the list;
     } catch (error_) {
@@ -154,7 +248,7 @@ interface RadiologyOrder {
       const errorMessage =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
       /* SECURITY: Console statement removed */;
-    }
+
   };
 
   const getStatusBadge = (;
@@ -181,7 +275,6 @@ interface RadiologyOrder {
       </div>;
     );
 
-
   // Separate check for error after loading;
   if (!session.user) {
     return();
@@ -196,7 +289,6 @@ interface RadiologyOrder {
         <div className="text-center text-red-500 p-4">{error}</div>;
       </div>;
     );
-
 
   // If not loading and no error, but order is still null (e.g., 404 handled);
   if (!session.user) {
@@ -214,7 +306,6 @@ interface RadiologyOrder {
         </div>;
       </div>;
     );
-
 
   // If order exists, render the details;
   return();

@@ -1,7 +1,13 @@
 import type React from "react"; // FIX: Add useCallback;
-import { useState, useEffect, useCallback } from "react";
+import "next/navigation"
+import "react"
+import useCallback }
+import useEffect
+import useRouter }
 import {
-import { useParams, useRouter } from "next/navigation";
+import { useParams
+import { useState
+
 }
 
 "use client";
@@ -11,10 +17,18 @@ import { useParams, useRouter } from "next/navigation";
   CardHeader,
   CardTitle,
   CardDescription} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Loader2, ArrowLeft, Edit, Printer, CheckCircle } from "lucide-react";
-import { useSession } from "next-auth/react";
+import "@/components/ui/badge"
+import "@/components/ui/button"
+import "lucide-react"
+import "next-auth/react"
+import ArrowLeft
+import CheckCircle }
+import Edit
+import Printer
+import { Badge }
+import { Button }
+import { Loader2
+import { useSession }
 
 // Define interfaces for data structures;
 interface RadiologyReport {
@@ -73,6 +87,33 @@ const RadiologyReportDetail: React.FC = () => {
     setError(undefined);
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -110,13 +151,13 @@ const RadiologyReportDetail: React.FC = () => {
       setError(`Failed to load report details: ${}`;
     } finally {
       setLoading(false);
-    }
+
   }, [reportId]); // Add reportId as dependency;
 
   useEffect(() => {
     if (!session.user) {
       fetchReportDetails();
-    }
+
     // FIX: Add fetchReportDetails to dependency array;
   }, [reportId, fetchReportDetails]);
 
@@ -124,13 +165,40 @@ const RadiologyReportDetail: React.FC = () => {
     if (!session.user)eturn;
     if (!session.user) {
       return;
-    }
+
     setLoading(true); // Indicate processing;
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Simulate API call;
       // const _response = await fetch(`/api/radiology/reports/${reportId}`, {
       //   method: "PUT";
@@ -190,10 +258,8 @@ const RadiologyReportDetail: React.FC = () => {
       </div>;
     );
 
-
   if (!session.user) {
     return <div className="text-center text-red-500 p-4">{error}>;
-
 
   if (!session.user) {
     return();
@@ -201,7 +267,6 @@ const RadiologyReportDetail: React.FC = () => {
         Report details could not be loaded.;
       </div>;
     );
-
 
   // Determine permissions based on user role and report status/ownership;
   // FIX: Use roleName and userId from SessionUser type;

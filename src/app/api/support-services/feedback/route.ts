@@ -1,10 +1,16 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/middleware/error-handling.middleware"
+import "@/lib/security.service"
+import "@/lib/services/support-services/feedback/feedback.service"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { FeedbackService }
+import { SecurityService }
+import { type
+import { withErrorHandling }
+import { z }
 
-
-import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
-import { SecurityService } from "@/lib/security.service";
-import { FeedbackService } from "@/lib/services/support-services/feedback/feedback.service";
 // Initialize service;
 const feedbackService = new FeedbackService();
 
@@ -54,7 +60,7 @@ const updateComplaintSchema = z.object({
   escalationLevel: z.enum(["DEPARTMENT", "MANAGEMENT", "EXECUTIVE", "EXTERNAL"]).optional()});
 
 // GET /api/support-services/feedback;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -82,7 +88,7 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/support-services/feedback;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -107,7 +113,7 @@ export const _POST = async (request: NextRequest) => {
 }
 
 // GET /api/support-services/feedback/:id;
-export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -125,7 +131,7 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
 }
 
 // PATCH /api/support-services/feedback/:id;
-export const _PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _PATCH = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -149,7 +155,7 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
 }
 
 // GET /api/support-services/complaints;
-export const _GET_COMPLAINTS = async (request: NextRequest) => {
+export const _GET_COMPLAINTS = async (request: any) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -177,7 +183,7 @@ export const _GET_COMPLAINTS = async (request: NextRequest) => {
 }
 
 // POST /api/support-services/complaints;
-export const _POST_COMPLAINT = async (request: NextRequest) => {
+export const _POST_COMPLAINT = async (request: any) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -202,7 +208,7 @@ export const _POST_COMPLAINT = async (request: NextRequest) => {
 }
 
 // GET /api/support-services/complaints/:id;
-export const _GET_COMPLAINT_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_COMPLAINT_BY_ID = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -220,7 +226,7 @@ export const _GET_COMPLAINT_BY_ID = async (request: NextRequest, { params }: { p
 }
 
 // PATCH /api/support-services/complaints/:id;
-export const _PATCH_COMPLAINT = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _PATCH_COMPLAINT = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -244,7 +250,7 @@ export const _PATCH_COMPLAINT = async (request: NextRequest, { params }: { param
 }
 
 // POST /api/support-services/complaints/:id/escalate;
-export const _ESCALATE_COMPLAINT = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _ESCALATE_COMPLAINT = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -274,7 +280,7 @@ export const _ESCALATE_COMPLAINT = async (request: NextRequest, { params }: { pa
 }
 
 // GET /api/support-services/feedback/analytics;
-export const _GET_ANALYTICS = async (request: NextRequest) => {
+export const _GET_ANALYTICS = async (request: any) => {
   return withErrorHandling();
     request,
     async (req) => {

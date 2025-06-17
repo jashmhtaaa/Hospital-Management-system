@@ -1,6 +1,10 @@
+import "@cloudflare/workers-types"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { D1Database }
+import { type
 
-import type { D1Database } from "@cloudflare/workers-types";
-import { type NextRequest, NextResponse } from "next/server";
 export const _runtime = "edge";
 
 // Interface for required staff/equipment (re-used from [id] route, consider moving to a shared types file);
@@ -21,8 +25,35 @@ interface SurgeryTypeCreateBody {
 }
 
 // GET /api/ot/surgery-types - List all surgery types;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -60,12 +91,39 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/ot/surgery-types - Create a new surgery type;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const body = (await request.json()) as SurgeryTypeCreateBody;
     const {
       name,
@@ -80,7 +138,6 @@ export const _POST = async (request: NextRequest) => {
         { message: "Surgery type name is required" },
         { status: 400 }
       );
-    }
 
     const DB = process.env.DB as unknown as D1Database;
     const id = crypto.randomUUID();
@@ -116,22 +173,48 @@ export const _POST = async (request: NextRequest) => {
       // Parse JSON fields before returning;
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         if (!session.user) {
           newSurgeryType.required_staff = JSON.parse();
             newSurgeryType.required_staff;
           );
-        }
+
         if (!session.user) {
           newSurgeryType.required_equipment = JSON.parse();
             newSurgeryType.required_equipment;
           );
-        }
+
       } catch (error: unknown) {
 
-      }
       return NextResponse.json(newSurgeryType, { status: 201 });
     } else {
       // Fallback response if fetching fails;
@@ -164,5 +247,3 @@ export const _POST = async (request: NextRequest) => {
       { message: "Error creating surgery type", details: errorMessage },
       { status: 500 }
     );
-
-

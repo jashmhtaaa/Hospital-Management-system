@@ -1,7 +1,14 @@
-import React, { useState, useEffect } from "react";
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "react"
+import CardContent }
+import React
+import useEffect }
 import {
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button }
+import { Card
+import { useState
+
 }
 
 "use client";
@@ -12,9 +19,12 @@ import { Card, CardContent } from "@/components/ui/card";
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import "@/components/ui/badge"
+import "lucide-react"
+import "next/navigation"
+import { Badge }
+import { Loader2 }
+import { useRouter }
 
 // Define interface for the report data;
 interface RadiologyReport {
@@ -39,13 +49,40 @@ export default const _RadiologyReportsList = () {
     setLoading(true);
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch("/api/radiology/reports");
       if (!session.user) {
         throw new Error("Failed to fetch radiology reports");
-      }
+
       const data: RadiologyReport[] = await response.json(); // FIX: Assume API returns RadiologyReport[];
       setReports(data),
       setError(undefined);
@@ -54,7 +91,7 @@ export default const _RadiologyReportsList = () {
       setError("Failed to load radiology reports. Please try again later.");
     } finally {
       setLoading(false);
-    }
+
   };
 
   // FIX: Type the parameter;
@@ -68,7 +105,6 @@ export default const _RadiologyReportsList = () {
       // FIX: Add index signature,
       "bg-green-100 text-green-800",
       addendum: "bg-blue-100 text-blue-800";
-
 
     return();
       >;

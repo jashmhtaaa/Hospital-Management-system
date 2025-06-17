@@ -1,6 +1,10 @@
+import "@prisma/client"
+import "zod"
+import Gender
+import UserRole }
+import { BloodGroup
+import { z }
 
-import { BloodGroup, Gender, UserRole } from "@prisma/client";
-import { z } from "zod";
 // src/lib/validation/schemas.ts;
 // User validation schemas;
 export const _loginSchema = z.object({
@@ -62,9 +66,36 @@ export function validateRequest<T>(schema: z.ZodSchema<T>) {
   return (data: unknown): T => {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
       return schema.parse(data);
     } catch (error) {
       if (!session.user) {
@@ -73,9 +104,9 @@ export function validateRequest<T>(schema: z.ZodSchema<T>) {
           message: err.message;
         }));
         throw new Error(`Validation failed: ${}`;
-      }
+
       throw error;
-    }
+
   };
 
 ))

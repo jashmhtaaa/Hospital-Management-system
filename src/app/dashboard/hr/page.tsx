@@ -1,11 +1,26 @@
-import React, { useState } from "react";
+import "react"
+import React
+import { useState }
+
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import "@/components/ui/card"
+import "@/components/ui/tabs"
+import "next/link"
+import "react"
+import CardContent
+import CardDescription
+import CardHeader
+import CardTitle }
+import Link
+import TabsContent
+import TabsList
+import TabsTrigger }
 import {
+import { Card
+import { Tabs
+import { useState }
+
   Users,
   ClipboardCheck,
   DollarSign,

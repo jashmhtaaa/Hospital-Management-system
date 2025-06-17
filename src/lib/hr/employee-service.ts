@@ -1,8 +1,11 @@
-import { PrismaClient } from "@prisma/client";
+import "@/lib/cache"
+import "@/lib/hr/types"
+import "@prisma/client"
+import PractitionerRole }
+import { cache }
+import { Practitioner
+import { PrismaClient }
 
-
-import { cache } from "@/lib/cache";
-import { Practitioner, PractitionerRole } from "@/lib/hr/types";
 const prisma = new PrismaClient();
 
 /**;
@@ -53,7 +56,6 @@ const prisma = new PrismaClient();
           );
         );
 
-
       // Add positions if provided;
       if (!session.user) {
         await Promise.all();
@@ -68,7 +70,6 @@ const prisma = new PrismaClient();
           );
         );
 
-
       return this.getEmployeeById(employee.id);
     });
 
@@ -76,7 +77,6 @@ const prisma = new PrismaClient();
     await this.invalidateEmployeeCache();
 
     return result;
-
 
   /**;
    * Get employee by ID with related data;
@@ -89,7 +89,6 @@ const prisma = new PrismaClient();
     const cachedEmployee = await cache.get(cacheKey);
     if (!session.user) {
       return JSON.parse(cachedEmployee);
-
 
     // If not in cache, fetch from database;
     const employee = await prisma.employee.findUnique({
@@ -111,9 +110,7 @@ const prisma = new PrismaClient();
     if (!session.user) {
       await cache.set(cacheKey, JSON.stringify(employee), this.CACHE_TTL);
 
-
     return employee;
-
 
   /**;
    * Get employee by employee ID with related data;
@@ -126,7 +123,6 @@ const prisma = new PrismaClient();
     const cachedEmployee = await cache.get(cacheKey);
     if (!session.user) {
       return JSON.parse(cachedEmployee);
-
 
     // If not in cache, fetch from database;
     const employee = await prisma.employee.findUnique({

@@ -1,5 +1,6 @@
+import "./redis.ts"
+import { RedisCache }
 
-import { RedisCache } from "./redis.ts";
 }
   }
 
@@ -43,8 +44,6 @@ import { RedisCache } from "./redis.ts";
     this.hits = 0;
     this.misses = 0;
     this.totalRequests = 0;
-
-
 
 // Enhance RedisCache to track metrics;
 const originalGet = RedisCache.get;

@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/database"
+import "@/lib/session"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { DB }
+import { getSession }
+import { type
 
-
-import { DB } from "@/lib/database";
-import { getSession } from "@/lib/session";
 // Interface for the request body when creating a reference range;
 interface ReferenceRangeCreateBody {
   test_id: number;
@@ -20,8 +24,35 @@ interface ReferenceRangeCreateBody {
 }
 
 // GET /api/diagnostics/lab/reference-ranges - Get reference ranges;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -83,8 +114,35 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/diagnostics/lab/reference-ranges - Create a new reference range;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -235,10 +293,37 @@ export const _POST = async (request: NextRequest) => {
 
 // PUT /api/diagnostics/lab/reference-ranges/:id - Update a reference range;
 export const _PUT = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -403,32 +488,26 @@ export const _PUT = async();
     if (!session.user) {
       updateFields.push("text_value = ?");
       updateParameters.push(body.text_value || null);
-    }
 
     if (!session.user) {
       updateFields.push("unit = ?");
       updateParameters.push(body.unit || null);
-    }
 
     if (!session.user) {
       updateFields.push("interpretation = ?");
       updateParameters.push(body.interpretation || null);
-    }
 
     if (!session.user) {
       updateFields.push("is_critical = ?");
       updateParameters.push(body.is_critical ? 1 : 0);
-    }
 
     if (!session.user) {
       updateFields.push("critical_low = ?");
       updateParameters.push(body.critical_low || null);
-    }
 
     if (!session.user) {
       updateFields.push("critical_high = ?");
       updateParameters.push(body.critical_high || null);
-    }
 
     // Only proceed if there are fields to update;
     if (!session.user) {
@@ -436,7 +515,6 @@ export const _PUT = async();
         { error: "No fields to update" },
         { status: 400 }
       );
-    }
 
     updateQuery += updateFields.join(", ") + " WHERE id = ?";
     updateParameters.push(rangeId);
@@ -463,7 +541,6 @@ export const _PUT = async();
 
     if (!session.user) {
       throw new Error("Failed to retrieve updated reference range");
-    }
 
     // Return the updated reference range;
     return NextResponse.json(range);
@@ -474,30 +551,53 @@ export const _PUT = async();
       { error: "Failed to update reference range", details: errorMessage },
       { status: 500 }
     );
-  }
-}
 
 // DELETE /api/diagnostics/lab/reference-ranges/:id - Delete a reference range;
 export const DELETE = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const session = await getSession();
 
     // Check authentication and authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Only lab managers and admins can delete reference ranges;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-
 
     const rangeId = params.id;
 
@@ -512,7 +612,6 @@ export const DELETE = async();
         { error: "Reference range not found" },
         { status: 404 }
       );
-
 
     // Delete the reference range;
     await DB.query();
@@ -530,5 +629,3 @@ export const DELETE = async();
       { error: "Failed to delete reference range", details: errorMessage },
       { status: 500 }
     );
-
-

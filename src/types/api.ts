@@ -1,4 +1,5 @@
-import type { MedicationAdministrationRecord } from "./pharmacy.ts";
+import "./pharmacy.ts"
+import { MedicationAdministrationRecord }
 
 // src/types/api.ts;
 

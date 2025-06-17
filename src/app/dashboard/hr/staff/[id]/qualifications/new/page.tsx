@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import "react"
+import React
+import { useState }
+
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import "next/navigation"
+import "react"
+import useEffect }
 import {
+import { useRouter }
+import { useState
+
   Card,
   CardContent,
   CardDescription,
@@ -18,16 +25,30 @@ import {
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { format } from "date-fns";
-import { CalendarIcon, Save, ArrowLeft } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { toast } from "@/components/ui/use-toast";
+import "@/components/ui/button"
+import "@/components/ui/calendar"
+import "@/components/ui/input"
+import "@/components/ui/popover"
+import "@/components/ui/use-toast"
+import "@hookform/resolvers/zod"
+import "date-fns"
+import "lucide-react"
+import "react-hook-form"
+import "zod"
+import * as z
+import ArrowLeft }
+import PopoverContent
+import PopoverTrigger }
+import Save
+import { Button }
+import { Calendar }
+import { CalendarIcon
+import { format }
+import { Input }
+import { Popover
+import { toast }
+import { useForm }
+import { zodResolver }
 
 // Form schema for qualification;
 const qualificationSchema = z.object({
@@ -59,21 +80,48 @@ export default const _AddQualification = ({ params }: { id: string }) {
     const fetchEmployee = async () => {
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
         const response = await fetch(`/api/hr/staff/${}`;
         if (!session.user) {
           const data = await response.json(),
           setEmployee(data);
-        }
+
       } catch (err) {
 
         toast({
           title: "Error",
           "destructive";
         });
-      }
+
     };
 
     fetchEmployee();
@@ -83,9 +131,36 @@ export default const _AddQualification = ({ params }: { id: string }) {
   const _onSubmit = async (data) => {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       setLoading(true);
 
       // Format dates for API;
@@ -104,7 +179,6 @@ export default const _AddQualification = ({ params }: { id: string }) {
       if (!session.user) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to add qualification");
-
 
       toast({
         title: "Qualification Added",

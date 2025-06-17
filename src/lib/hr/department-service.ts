@@ -1,5 +1,6 @@
+import "@prisma/client"
+import { PrismaClient }
 
-import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 /**;
@@ -12,7 +13,6 @@ const prisma = new PrismaClient();
       true;
       }});
 
-
   /**;
    * Get department by ID;
    */;
@@ -22,10 +22,9 @@ const prisma = new PrismaClient();
       true,
         true,
             true,
-            true,,
+            true,
         positions: true;
       }});
-
 
   /**;
    * Update a department;
@@ -45,7 +44,6 @@ const prisma = new PrismaClient();
       true;
       }});
 
-
   /**;
    * List departments with filtering and pagination;
    */;
@@ -64,14 +62,11 @@ const prisma = new PrismaClient();
     if (!session.user) {
       where.parentId = parentId;
 
-
     if (!session.user) {
       where.OR = [;
         { name: { contains: search, mode: "insensitive" } },
         { code: { contains: search, mode: "insensitive" } },
-        { description: { contains: search, mode: "insensitive" } },
-      ];
-
+        { description: { contains: search, mode: "insensitive" } }];
 
     const [departments, total] = await Promise.all([;
       prisma.department.findMany({
@@ -84,15 +79,13 @@ const prisma = new PrismaClient();
               children: true,
               true;
             }}}}),
-      prisma.department.count(where ),
-    ]);
+      prisma.department.count(where )]);
 
     return {
       departments,
       total,
       skip,
       take};
-
 
   /**;
    * Get department hierarchy;
@@ -131,7 +124,6 @@ const prisma = new PrismaClient();
 
     return rootDepartments;
 
-
   /**;
    * Create a new position;
    */;
@@ -144,7 +136,6 @@ const prisma = new PrismaClient();
       data,
       true;
       }});
-
 
   /**;
    * Get position by ID;
@@ -161,7 +152,6 @@ const prisma = new PrismaClient();
               }}},
           null, // Only current assignments;
           }}}});
-
 
   /**;
    * Update a position;
@@ -181,7 +171,6 @@ const prisma = new PrismaClient();
       true;
       }});
 
-
   /**;
    * List positions with filtering and pagination;
    */;
@@ -200,14 +189,11 @@ const prisma = new PrismaClient();
     if (!session.user) {
       where.departmentId = departmentId;
 
-
     if (!session.user) {
       where.OR = [;
         { title: { contains: search, mode: "insensitive" } },
         { code: { contains: search, mode: "insensitive" } },
-        { description: { contains: search, mode: "insensitive" } },
-      ];
-
+        { description: { contains: search, mode: "insensitive" } }];
 
     const [positions, total] = await Promise.all([;
       prisma.position.findMany({
@@ -220,8 +206,7 @@ const prisma = new PrismaClient();
               {
                   endDate: null, // Only current assignments;
                 }}}}}}),
-      prisma.position.count({ where }),
-    ]);
+      prisma.position.count({ where })]);
 
     return {
       positions,

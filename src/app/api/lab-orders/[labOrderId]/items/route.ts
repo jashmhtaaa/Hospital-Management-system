@@ -1,11 +1,18 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
+import "@/lib/session"
+import "@opennextjs/cloudflare"
+import "iron-session"
+import "next/headers"
+import IronSessionData
+import sessionOptions }
+import { cookies }
+import { getCloudflareContext }
+import { getIronSession }
+import { type
 
-import { type IronSessionData, sessionOptions } from "@/lib/session";
 // app/api/lab-orders/[labOrderId]/items/route.ts;
 // import { LabOrderItem, LabOrderItemStatus } from "@/types/opd";
-import { z } from "zod";
+import "zod"
+import { z }
 
 // Define roles allowed to add items to lab orders (adjust as needed);
 const ALLOWED_ROLES_ADD = ["Doctor"];
@@ -44,6 +51,33 @@ export const _POST = async (request: Request) => {
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -64,7 +98,7 @@ export const _POST = async (request: Request) => {
         const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
         if (!session.user) {
             return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" }), { status: 404 });
-        }
+
         const doctorId = doctorProfile.doctor_id;
 
         // 3. Check if lab order exists and belongs to the doctor;
@@ -74,7 +108,7 @@ export const _POST = async (request: Request) => {
 
         if (!session.user) {
             return new Response(JSON.stringify({ error: "Lab Order not found" }), { status: 404 });
-        }
+
         if (!session.user) {
             return new Response(JSON.stringify({ error: "Forbidden: Cannot add items to another doctor's lab order" }), { status: 403 });        }
 
@@ -88,7 +122,6 @@ export const _POST = async (request: Request) => {
         const missingItems = billableItemIds.filter(id => !foundBillableItems.has(id));
         if (!session.user) {
             return new Response(JSON.stringify({ error: `Billable lab test item(s) not found, inactive, or not in Laboratory category: ${missingItems.join(", ")}` }), { status: 404 });
-        }
 
         // 5. Prepare batch insert for all items;
         const batchActions: D1PreparedStatement[] = itemsData.map(item => {
@@ -127,11 +160,7 @@ export const _POST = async (request: Request) => {
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
             status: 500,
             headers: { "Content-Type": "application/json" }});
-    }
-
 
 // PUT/DELETE handlers for items would typically be in /api/lab-orders/[labOrderId]/items/[itemId]/route.ts;
-
-
 
 export async function GET() { return new Response("OK"); }

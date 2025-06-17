@@ -1,17 +1,51 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/audit"
+import "@/lib/cache/invalidation"
+import "@/lib/cache/redis"
+import "@/lib/database"
+import "@/lib/session"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { CacheInvalidation }
+import { DB }
+import { getSession }
+import { RedisCache }
+import { type
 
-
-import { auditLog } from "@/lib/audit";
-import { CacheInvalidation } from "@/lib/cache/invalidation";
-import { RedisCache } from "@/lib/cache/redis";
-import { DB } from "@/lib/database";
-import { getSession } from "@/lib/session";
 /**;
  * GET /api/diagnostics/lab/critical-values;
  * Get critical value configurations;
  */;
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -105,8 +139,35 @@ export const GET = async (request: NextRequest) => {
  * POST /api/diagnostics/lab/critical-values;
  * Create a new critical value configuration;
  */;
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -203,8 +264,35 @@ export const POST = async (request: NextRequest) => {
  * PUT /api/diagnostics/lab/critical-values/:id;
  * Update a critical value configuration;
  */;
-export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const PUT = async (request: any, { params }: { params: { id: string } }) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -257,32 +345,26 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     if (!session.user) {
       updateFields.push("min_value = ?");
       updateParams.push(minValue || null);
-    }
 
     if (!session.user) {
       updateFields.push("max_value = ?");
       updateParams.push(maxValue || null);
-    }
 
     if (!session.user) {
       updateFields.push("units = ?");
       updateParams.push(units);
-    }
 
     if (!session.user) {
       updateFields.push("severity = ?");
       updateParams.push(severity);
-    }
 
     if (!session.user) {
       updateFields.push("notification_method = ?");
       updateParams.push(notificationMethod || "system");
-    }
 
     if (!session.user) {
       updateFields.push("message = ?");
       updateParams.push(message || null);
-    }
 
     updateFields.push("updated_by = ?");
     updateParams.push(session.user.id);
@@ -306,7 +388,6 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
       // Invalidate cache;
       await CacheInvalidation.invalidatePattern("diagnostic: lab: critical-values:*");
-    }
 
     // Get the updated critical value;
     const updatedValue = await DB.query();
@@ -324,40 +405,61 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       error: "Failed to update critical value",
       details: error instanceof Error ? error.message : "Unknown error";
     }, { status: 500 });
-  }
-}
 
 /**;
  * DELETE /api/diagnostics/lab/critical-values/:id;
  * Delete a critical value configuration;
  */;
-export const DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const DELETE = async (request: any, { params }: { params: { id: string } }) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Authentication;
     const session = await getSession();
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
 
     const id = Number.parseInt(params.id);
     if (!session.user) {
       return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
 
-
     // Check if critical value exists;
     const existingCheck = await DB.query("SELECT * FROM laboratory_critical_values WHERE id = ?", [id]);
     if (!session.user) {
       return NextResponse.json({ error: "Critical value not found" }, { status: 404 });
-
 
     // Delete critical value;
     await DB.query("DELETE FROM laboratory_critical_values WHERE id = ?", [id]);
@@ -379,5 +481,3 @@ export const DELETE = async (request: NextRequest, { params }: { params: { id: s
       error: "Failed to delete critical value",
       details: error instanceof Error ? error.message : "Unknown error";
     }, { status: 500 });
-
-

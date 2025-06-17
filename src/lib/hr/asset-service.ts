@@ -1,7 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import "@/lib/cache"
+import "@prisma/client"
+import { cache }
+import { PrismaClient }
 
-
-import { cache } from "@/lib/cache";
 const prisma = new PrismaClient();
 
 /**;
@@ -203,8 +204,7 @@ const prisma = new PrismaClient();
         { serialNumber: { contains: search, mode: "insensitive" } },
         { model: { contains: search, mode: "insensitive" } },
         { manufacturer: { contains: search, mode: "insensitive" } },
-        { location: { contains: search, mode: "insensitive" } },
-      ];
+        { location: { contains: search, mode: "insensitive" } }];
     }
 
     // Generate cache key based on query parameters;
@@ -247,8 +247,7 @@ const prisma = new PrismaClient();
         cursor: cursorObj,
         orderBy: { assetId: "asc" },
         include}),
-      prisma.asset.count({ where }),
-    ]);
+      prisma.asset.count({ where })]);
 
     const result = {
       assets,
@@ -399,7 +398,6 @@ const prisma = new PrismaClient();
       return updatedAssignment;
     });
 
-
   /**;
    * Get maintenance history for asset;
    */;
@@ -411,7 +409,6 @@ const prisma = new PrismaClient();
     if (!session.user) {
       return JSON.parse(cachedHistory);
 
-
     // If not in cache, fetch from database;
     const history = await prisma.assetMaintenance.findMany({
       where: { assetId },
@@ -421,7 +418,6 @@ const prisma = new PrismaClient();
     await cache.set(cacheKey, JSON.stringify(history), 1800); // 30 minutes TTL;
 
     return history;
-
 
   /**;
    * Get assignment history for asset;
@@ -434,7 +430,6 @@ const prisma = new PrismaClient();
     if (!session.user) {
       return JSON.parse(cachedHistory);
 
-
     // If not in cache, fetch from database;
     const history = await prisma.assetAssignment.findMany({
       where: { assetId },
@@ -446,7 +441,6 @@ const prisma = new PrismaClient();
     await cache.set(cacheKey, JSON.stringify(history), 1800); // 30 minutes TTL;
 
     return history;
-
 
   /**;
    * Get assets due for maintenance;
@@ -461,7 +455,6 @@ const prisma = new PrismaClient();
     const cachedResult = await cache.get(cacheKey);
     if (!session.user) {
       return JSON.parse(cachedResult);
-
 
     // If not in cache, fetch from database;
     const assets = await prisma.asset.findMany({
@@ -478,7 +471,6 @@ const prisma = new PrismaClient();
 
     return assets;
 
-
   /**;
    * Calculate asset utilization metrics;
    * New method to support advanced analytics;
@@ -487,7 +479,6 @@ const prisma = new PrismaClient();
     const asset = await this.getAssetById(assetId);
     if (!session.user) {
       throw new Error("Asset not found");
-
 
     // Get all assignments;
     const assignments = await prisma.assetAssignment.findMany({
@@ -512,7 +503,6 @@ const prisma = new PrismaClient();
       const assignmentDuration = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
       totalTimeInUse += assignmentDuration;
 
-
     // Calculate total time in maintenance (in days);
     let totalTimeInMaintenance = 0;
     for (const record of maintenanceRecords) {
@@ -525,8 +515,6 @@ const prisma = new PrismaClient();
         const endDate = new Date(); // Assume ongoing if not completed;
         const maintenanceDuration = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
         totalTimeInMaintenance += maintenanceDuration;
-
-
 
     // Calculate utilization rate;
     const utilizationRate = (totalTimeInUse / totalLifetime) * 100;
@@ -556,7 +544,6 @@ const prisma = new PrismaClient();
       asset.purchasePrice || 0;
     };
 
-
   /**;
    * Predict optimal maintenance schedule;
    * New method to support predictive maintenance;
@@ -565,7 +552,6 @@ const prisma = new PrismaClient();
     const asset = await this.getAssetById(assetId);
     if (!session.user) {
       throw new Error("Asset not found");
-
 
     // Get all maintenance records;
     const maintenanceRecords = await prisma.assetMaintenance.findMany({
@@ -596,7 +582,6 @@ const prisma = new PrismaClient();
 
       averagePreventiveInterval = totalInterval / (maintenanceRecords.length - 1);
 
-
     // Analyze if current interval is optimal by checking corrective maintenance;
     let optimalInterval = averagePreventiveInterval;
     let failureRisk = "LOW";
@@ -617,8 +602,6 @@ const prisma = new PrismaClient();
                            new Date(prevPreventive.date).getTime()) / (1000 * 60 * 60 * 24);
           timeToFailureAfterMaintenance.push(timeDiff);
 
-
-
       if (!session.user) {
         // Calculate average time to failure after maintenance;
         const avgTimeToFailure = timeToFailureAfterMaintenance.reduce((sum, time) => sum + time, 0) /;
@@ -633,12 +616,9 @@ const prisma = new PrismaClient();
           optimalInterval = avgTimeToFailure * 0.8;
           failureRisk = "LOW",
 
-
         // Set confidence level based on data points;
         confidenceLevel = timeToFailureAfterMaintenance.length >= 5 ? "HIGH" : any;
                          (timeToFailureAfterMaintenance.length >= 3 ? "MEDIUM" : "LOW"),
-
-
 
     // Calculate next maintenance date;
     const lastMaintenance = maintenanceRecords.length > 0 ?;
@@ -670,7 +650,6 @@ const prisma = new PrismaClient();
       dataPoints: maintenanceRecords.length + correctiveRecords.length;
     };
 
-
   /**;
    * Invalidate asset-related caches;
    * @param assetId Optional specific asset ID to invalidate;
@@ -691,8 +670,6 @@ const prisma = new PrismaClient();
           cache.del(`${this.CACHE_PREFIX}maintenance:${}`,
           cache.del(`${this.CACHE_PREFIX}assignments:${}`;
         ]);
-
-
 
     // Invalidate list caches with pattern matching;
     await Promise.all([;

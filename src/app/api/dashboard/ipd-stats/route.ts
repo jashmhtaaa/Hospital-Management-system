@@ -1,6 +1,8 @@
+import "@/lib/database"
+import "@/lib/session"
+import { getDB }
+import { getSession }
 
-import { getDB } from "@/lib/database";
-import { getSession } from "@/lib/session";
 }
 
 // API route for IPD statistics;
@@ -29,14 +31,40 @@ interface RecentAdmission {
 export const _GET = async (/* _request: unknown */) => { // Removed unused parameter;
   try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
     const session = await getSession();
     // Check authentication;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     const database = await getDB();
 
@@ -84,7 +112,6 @@ export const _GET = async (/* _request: unknown */) => { // Removed unused param
       const occupied = Number.parseInt(String(occupancyRow.occupied ?? 0), 10);
       const total = Number.parseInt(String(occupancyRow.total ?? 0), 10);
       occupancyRate = total > 0 ? Math.round((occupied / total) * 100) : 0;
-    }
 
     // Get recent admissions;
     // FIX: Removed generic type argument from db.query;
@@ -117,9 +144,8 @@ export const _GET = async (/* _request: unknown */) => { // Removed unused param
     let errorMessage = "An unknown error occurred";
     if (!session.user) {
       errorMessage = error.message;
-    }
+
     return NextResponse.json();
       { error: "Failed to fetch IPD statistics", details: errorMessage },
       { status: 500 }
     );
-

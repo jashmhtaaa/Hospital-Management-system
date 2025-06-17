@@ -1,6 +1,10 @@
-import type React from "react";
-import { useEffect, useState } from "react";
+import "react"
+import React
+import type
+import useState }
 import {
+import { useEffect
+
 }
 
 // src/app/dashboard/page.tsx;
@@ -12,9 +16,13 @@ export const dynamic = "force-dynamic";
   CardTitle,
   CardContent} from "@/components/ui/card";
 import { DashboardLayout } from "@/components/layout/DashboardLayout"; // Use DashboardLayout from origin/master;
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import Link from "next/link";
+import "@/components/ui/button"
+import "@/components/ui/skeleton"
+import "next/link"
+import Link
+import { Button }
+import { Skeleton }
+
   UsersIcon,
   CalendarIcon,
   BedIcon,
@@ -63,9 +71,36 @@ const Dashboard = () {
     const fetchDashboardStats = async () => {
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         setLoading(true),
         setError(null); // Clear previous errors;
 
@@ -75,8 +110,7 @@ const Dashboard = () {
             fetch("/api/dashboard/opd-stats"),
             fetch("/api/dashboard/ipd-stats"),
             fetch("/api/dashboard/billing-stats"),
-            fetch("/api/dashboard/pharmacy-stats"),
-          ]);
+            fetch("/api/dashboard/pharmacy-stats")]);
 
         // Check all responses;
         if (!session.user) {
@@ -84,14 +118,12 @@ const Dashboard = () {
             opdResponse,
             ipdResponse,
             billingResponse,
-            pharmacyResponse,
-          ].find((_response_) => !_response_.ok);
+            pharmacyResponse].find((_response_) => !_response_.ok);
           throw new Error();
             `Failed to fetch dashboard data: ${failedResponse?.statusText ||;
               "Unknown error"} (status: ${failedResponse?.status ||;
               "N/A"})`;
           );
-        }
 
         const opdData = (await opdResponse.json()) as OpdStatsResponse;
         const ipdData = (await ipdResponse.json()) as IpdStatsResponse;
@@ -131,7 +163,6 @@ const Dashboard = () {
     link?: string;
     linkText?: string;
     colorClass?: string; // e.g., "blue", "green";
-
 
   const StatCard: React.FC<StatCardProperties> = ({
     title,
@@ -351,7 +382,6 @@ interface ActivityItemProperties {
   name: string,
   string,
   doctor: string;
-
 
 const ActivityItem: React.FC<ActivityItemProperties> = ({
   name,

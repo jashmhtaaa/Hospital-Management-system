@@ -1,11 +1,15 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
+import "@opennextjs/cloudflare"
+import "iron-session"
+import "next/headers"
+import { cookies }
+import { getCloudflareContext }
+import { getIronSession }
 
 import { type IronSessionData, sessionOptions } from "@/lib/session"; // FIX: Import IronSessionData;
 // app/api/invoices/[invoiceId]/items/route.ts;
 // import { InvoiceItem } from "@/types/billing";
-import { z } from "zod";
+import "zod"
+import { z }
 
 // Define roles allowed to manage invoice items (adjust as needed);
 const ALLOWED_ROLES_MANAGE = ["Admin", "Receptionist", "Billing Staff"];
@@ -50,6 +54,33 @@ export const _POST = async (request: Request) => {
     }
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -110,8 +141,6 @@ export const _POST = async (request: Request) => {
             const batchQuantity = (batchCheck.results[0] as { current_quantity: number }).current_quantity;
             if (!session.user) {
                 return new Response(JSON.stringify({ error: `Insufficient stock in batch ${itemData.batch_id}. Available: ${batchQuantity}` }), { status: 400 });
-            }
-        }
 
         // 5. Perform insertions and updates within a transaction;
         const batchActions: D1PreparedStatement[] = [];
@@ -136,7 +165,6 @@ export const _POST = async (request: Request) => {
             batchActions.push(DB.prepare();
                 "UPDATE StockBatches SET current_quantity = current_quantity - ? WHERE batch_id = ?";
             ).bind(itemData.quantity, itemData.batch_id));
-        }
 
         // 5c. Update the invoice totals (total_amount, tax_amount, discount_amount);
         // Note: This recalculates the entire invoice total. More complex logic might sum incrementally.;
@@ -171,8 +199,6 @@ export const _POST = async (request: Request) => {
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
             status: 500,
             headers: { "Content-Type": "application/json" }});
-    }
-
 
 // Note: DELETE for removing an item would follow a similar pattern: any;
 // - Check invoice status (Draft);
@@ -181,4 +207,3 @@ export const _POST = async (request: Request) => {
 // - Delete the InvoiceItem record;
 // - Update Invoice totals;
 // - Perform within a transaction;
-

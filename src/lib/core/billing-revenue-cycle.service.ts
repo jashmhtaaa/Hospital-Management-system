@@ -1,5 +1,6 @@
+import "zod"
+import { z }
 
-import { z } from "zod";
 }
 
 /**;
@@ -196,8 +197,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {
         true,
         [],
         true;
-      },
-    ];
+      }];
 
     services.forEach(serviceData => {
       const service: ServiceCatalogItem = {
@@ -571,8 +571,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {
         payer_name: "Self-Pay",
         cashCollections * 0.1,
         netRevenue * 0.1;
-      },
-    ];
+      }];
 
     // By service analysis;
     const serviceStats = new Map<string, { volume: number, number }>();
@@ -667,13 +666,10 @@ export type Payment = z.infer<typeof PaymentSchema> & {
     if (!session.user) {
       services = services.filter(service => service.is_active);
 
-
     if (!session.user) {
       services = services.filter(service => service.category === category);
 
-
     return services.sort((a, b) => a.service_name.localeCompare(b.service_name));
-
 
   /**;
    * Get claims with filters;
@@ -719,7 +715,6 @@ export type Payment = z.infer<typeof PaymentSchema> & {
 
     return { claims, total, totalPages };
 
-
   /**;
    * Get billing statistics;
    */;
@@ -741,12 +736,10 @@ export type Payment = z.infer<typeof PaymentSchema> & {
       filteredCharges = filteredCharges.filter(charge => new Date(charge.service_date) >= fromDate);
       filteredPayments = filteredPayments.filter(payment => new Date(payment.payment_date) >= fromDate);
 
-
     if (!session.user) {
       const toDate = new Date(dateTo);
       filteredCharges = filteredCharges.filter(charge => new Date(charge.service_date) <= toDate);
       filteredPayments = filteredPayments.filter(payment => new Date(payment.payment_date) <= toDate);
-
 
     const totalCharges = filteredCharges.reduce((sum, charge) => sum + charge.total_charge, 0);
     const totalPayments = filteredPayments.reduce((sum, payment) => sum + payment.payment_amount, 0);
@@ -788,8 +781,6 @@ export type Payment = z.infer<typeof PaymentSchema> & {
       pendingCharges,
       Math.round(averagePaymentTime * 100) / 100;
       top_services};
-
-
 
 // Export singleton instance;
 export const _billingRevenueCycleService = new BillingRevenueCycleService();

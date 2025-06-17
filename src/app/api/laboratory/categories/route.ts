@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
-
+import "@/lib/session"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { getSession }
+import { type
 
 import { getDB } from "@/lib/database"; // Using mock DB;
-import { getSession } from "@/lib/session";
+
 // Define interface for POST request body;
 interface CategoryInput {
   name: string;
@@ -12,6 +16,33 @@ interface CategoryInput {
 // GET /api/laboratory/categories - Get all laboratory test categories;
 export const _GET = async () => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -47,18 +78,44 @@ export const _GET = async () => {
 }
 
 // POST /api/laboratory/categories - Create a new laboratory test category;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const session = await getSession();
 
     // Check authentication and authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Check permissions (using mock session data);
     // Assuming permissions are correctly populated in the mock session;
@@ -69,7 +126,6 @@ export const _POST = async (request: NextRequest) => {
       session.user.roleName === "Lab Manager"; // Adjusted roles/permissions;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
 
     // Parse request body with type assertion;
     const body = (await request.json()) as CategoryInput;
@@ -81,7 +137,6 @@ export const _POST = async (request: NextRequest) => {
         { error: "Missing or empty required field: name" },
         { status: 400 }
       );
-    }
 
     const database = await getDB(); // Fixed: Await the promise returned by getDB();
 
@@ -119,8 +174,5 @@ export const _POST = async (request: NextRequest) => {
       },
       { status: 500 }
     );
-
-
-
 
 export async function GET() { return new Response("OK"); }

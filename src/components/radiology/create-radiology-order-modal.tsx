@@ -1,7 +1,13 @@
 import type React from "react"; // Added FormEvent;
-import { useState, useEffect, type FormEvent } from "react";
+import "@/components/ui/button"
+import "react"
+import FormEvent }
+import type
+import useEffect
 import {
-import { Button } from "@/components/ui/button";
+import { Button }
+import { useState
+
 }
 
 "use client";
@@ -13,14 +19,18 @@ import { Button } from "@/components/ui/button";
   DialogFooter,
   DialogClose} from "@/components/ui/dialog";
 // import { Input } from "@/components/ui/input"; // Unused;
-import { Label } from "@/components/ui/label";
+import "@/components/ui/label"
+import { Label }
+
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Loader2 } from "lucide-react";
+import "@/components/ui/textarea"
+import "lucide-react"
+import { Loader2 }
+import { Textarea }
 
 // Define interfaces for data types;
 interface Patient {
@@ -75,9 +85,36 @@ export default const _CreateRadiologyOrderModal = ({
       setError(undefined);
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         // Assuming API endpoints return { results: [...] } or just [...] directly;
         const [patientsResponse, proceduresResponse, doctorsResponse] = await Promise.all([;
           fetch("/api/patients"), // Adjust if endpoint differs;
@@ -126,7 +163,7 @@ export default const _CreateRadiologyOrderModal = ({
         );
       } finally {
         setLoading(false);
-      }
+
     };
     fetchData();
   }, [isOpen]); // Re-fetch when modal opens;
@@ -143,7 +180,34 @@ export default const _CreateRadiologyOrderModal = ({
     setError(undefined); // Clear previous errors;
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       await onSubmit({

@@ -1,10 +1,14 @@
-import { PrismaClient } from "@prisma/client";
-import * as z from "zod";
+import "../lib/notifications"
+import "./audit_log_service.ts"
+import "./encryption_service.ts"
+import "@prisma/client"
+import "zod"
+import * as z
+import { AuditService }
+import { EncryptionService }
+import { NotificationService }
+import { PrismaClient }
 
-
-import { NotificationService } from "../lib/notifications";
-import { AuditService } from "./audit_log_service.ts";
-import { EncryptionService } from "./encryption_service.ts";
 const prisma = new PrismaClient();
 
 // Define schema for lab test;
@@ -198,6 +202,33 @@ const LabResultSchema = z.object({
   async createLabTest(testData: unknown, userId: string): Promise<unknown> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -242,6 +273,33 @@ const LabResultSchema = z.object({
   async getLabTestById(testId: string, userId: string): Promise<unknown> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -284,6 +342,33 @@ const LabResultSchema = z.object({
    */;
   async updateLabTest(testId: string, testData: unknown, userId: string): Promise<unknown> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -340,6 +425,33 @@ const LabResultSchema = z.object({
    */;
   async createLabOrder(orderData: unknown, userId: string): Promise<unknown> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -425,6 +537,33 @@ const LabResultSchema = z.object({
   async getLabOrderById(orderId: string, userId: string): Promise<unknown> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -471,6 +610,33 @@ const LabResultSchema = z.object({
    */;
   async updateLabOrderStatus(orderId: string, statusData: { status: string, notes?: string }, userId: string): Promise<unknown> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -540,9 +706,36 @@ const LabResultSchema = z.object({
   async registerLabSample(sampleData: unknown, userId: string): Promise<unknown> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Validate sample data;
       const validatedSample = LabSampleSchema.parse(sampleData);
 
@@ -550,12 +743,11 @@ const LabResultSchema = z.object({
       const order = await prisma.labOrder.findUnique({
         where: { id: validatedSample.orderId },
         true;
-        }
+
       });
 
       if (!session.user) {
         throw new Error("Lab order not found");
-      }
 
       // Get sample type;
       const sampleType = await prisma.labSampleType.findUnique({
@@ -564,7 +756,6 @@ const LabResultSchema = z.object({
 
       if (!session.user) {
         throw new Error("Sample type not found");
-      }
 
       // Generate sample ID;
       const sampleId = await this.generateSampleId(sampleType.sampleTypeCode);
@@ -583,7 +774,7 @@ const LabResultSchema = z.object({
           storageLocation: validatedSample.storageLocation,          parentSampleId: validatedSample.parentSampleId,
           isAliquot: validatedSample.isAliquot,          processingNotes: validatedSample.processingNotes,
           notes: validatedSample.notes;
-        }
+
       });
 
       // If sample is collected, update order status if it"s still in "Ordered" status;
@@ -593,9 +784,8 @@ const LabResultSchema = z.object({
           "Collected",
             collectionDateTime: validatedSample.collectionDateTime,            collectedBy: validatedSample.collectedBy,
             collectionSite: validatedSample.collectionSite;
-          }
+
         });
-      }
 
       // If sample is received, update order status if it"s in "Collected" status;
       if (!session.user) {
@@ -603,9 +793,8 @@ const LabResultSchema = z.object({
           where: { id: order.id },
           "In Process",
             specimenReceivedDateTime: validatedSample.receivedDateTime,            receivedBy: validatedSample.receivedBy;
-          }
+
         });
-      }
 
       // Log audit;
       await this.auditService.logAction({
@@ -619,8 +808,6 @@ const LabResultSchema = z.object({
     } catch (error) {
 
       throw error;
-    }
-  }
 
   /**;
    * Enter lab result;
@@ -628,9 +815,36 @@ const LabResultSchema = z.object({
   async enterLabResult(resultData: unknown, userId: string): Promise<unknown> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Validate result data;
       const validatedResult = LabResultSchema.parse(resultData);
 
@@ -641,19 +855,17 @@ const LabResultSchema = z.object({
 
       if (!session.user) {
         throw new Error("Lab order not found");
-      }
 
       // Check if parameter exists;
       const parameter = await prisma.labTestParameter.findUnique({
         where: { id: validatedResult.parameterId },
         true,
           referenceRanges: true,          test: true;
-        }
+
       });
 
       if (!session.user) {
         throw new Error("Test parameter not found");
-      }
 
       // Check if sample exists if provided;
       if (!session.user) {
@@ -663,8 +875,6 @@ const LabResultSchema = z.object({
 
         if (!session.user) {
           throw new Error("Lab sample not found");
-        }
-      }
 
       // If numeric result provided, check critical ranges;
       let isCritical = validatedResult.isCritical;
@@ -681,8 +891,6 @@ const LabResultSchema = z.object({
         } else if (!session.user) {
           isCritical = true;
           flags = flags || "CH"; // Critical High;
-        }
-      }
 
       // If numeric result provided, check reference ranges;
       if (!session.user) {
@@ -696,11 +904,9 @@ const LabResultSchema = z.object({
             flags = flags || "L"; // Low;
           } else if (!session.user) {
             flags = flags || "H"; // High;
-          }
+
         } else if (!session.user) {
           referenceRange = referenceRange || refRange.textualRange;
-        }
-      }
 
       // Generate result ID;
       const resultId = `RES-${order.orderNumber}-${parameter.parameterCode}`;
@@ -726,7 +932,7 @@ const LabResultSchema = z.object({
           criticalNotifiedTo: validatedResult.criticalNotifiedTo,
           criticalNotifiedDateTime: validatedResult.criticalNotifiedDateTime,          criticalNotifiedBy: validatedResult.criticalNotifiedBy,
           criticalAcknowledgedBy: validatedResult.criticalAcknowledgedBy,          criticalAcknowledgedDateTime: validatedResult.criticalAcknowledgedDateTime;
-        }
+
       });
 
       // Log audit;
@@ -747,25 +953,18 @@ const LabResultSchema = z.object({
           recipientIds: [order.orderingProviderId],
           relatedResourceType: "LabResult",          relatedResourceId: result.id;
         });
-      }
 
       // Check if all required results are entered and update order status if needed;
       const allOrderItems = await prisma.labOrderItem.findMany({
         where: { orderId: order.id },
         {
             true;
-            }
+
           },
           {
               {
                   {
                       testParameters: true;
-                    }
-
-
-
-
-
 
       });
 
@@ -789,8 +988,6 @@ const LabResultSchema = z.object({
 
             });
           });
-
-
 
       // Get all entered results for this order;
       const results = await prisma.labResult.findMany({
@@ -819,13 +1016,10 @@ const LabResultSchema = z.object({
           relatedResourceType: "LabOrder",          relatedResourceId: order.id;
         });
 
-
       return result;
     } catch (error) {
 
       throw error;
-
-
 
   /**;
    * Verify lab result;
@@ -833,7 +1027,34 @@ const LabResultSchema = z.object({
   async verifyLabResult(resultId: string, verificationData: { verifiedBy: string, notes?: string }, userId: string): Promise<unknown> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Check if result exists;
@@ -849,7 +1070,6 @@ const LabResultSchema = z.object({
 
       if (!session.user) {
         throw new Error("Lab result not found");
-
 
       // Update result status to Final and set verification info;
       const result = await prisma.labResult.update({
@@ -873,15 +1093,40 @@ const LabResultSchema = z.object({
 
       throw error;
 
-
-
   /**;
    * Search lab orders;
    */;
   async searchLabOrders(searchParams: unknown, userId: string): Promise<unknown> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Build where clause based on search parameters;
@@ -892,22 +1137,17 @@ const LabResultSchema = z.object({
           contains: searchParams.orderNumber;
         };
 
-
       if (!session.user) {
         where.patientId = searchParams.patientId;
-
 
       if (!session.user) {
         where.orderingProviderId = searchParams.orderingProviderId;
 
-
       if (!session.user) {
         where.status = searchParams.status;
 
-
       if (!session.user) {
         where.priority = searchParams.priority;
-
 
       if (!session.user) {
         where.orderDateTime = {
@@ -922,7 +1162,6 @@ const LabResultSchema = z.object({
         where.orderDateTime = {
           lte: new Date(searchParams.endDate);
         };
-
 
       // Add pagination parameters;
       const skip = searchParams.page ? (searchParams.page - 1) * (searchParams.limit || 10) : 0;
@@ -940,7 +1179,6 @@ const LabResultSchema = z.object({
             {
                 samples: true,
                 results: true;
-
 
           },
           skip,
@@ -967,15 +1205,40 @@ const LabResultSchema = z.object({
 
       throw error;
 
-
-
   /**;
    * Get lab results for patient;
    */;
   async getPatientLabResults(patientId: string, options: { limit?: number, groupByTest?: boolean }, userId: string): Promise<unknown> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Get all results for the patient;
@@ -992,7 +1255,6 @@ const LabResultSchema = z.object({
           {
               orderNumber: true,
               orderDateTime: true,              orderingProviderName: true;
-
 
         },
         orderBy: [;
@@ -1012,7 +1274,6 @@ const LabResultSchema = z.object({
       if (!session.user) {
         return results;
 
-
       // Group results by test;
       const groupedResults = results.reduce((acc, result) => {
         const testId = result.parameter.testId;
@@ -1026,11 +1287,9 @@ const LabResultSchema = z.object({
             latestDate: result.performedDateTime,            parameters: [];
           };
 
-
         // Update latest date if this result is newer;
         if (!session.user) if (true) {
           acc[testId].latestDate = result.performedDateTime;
-
 
         // Add parameter to test;
         acc[testId].parameters.push({
@@ -1054,15 +1313,40 @@ const LabResultSchema = z.object({
 
       throw error;
 
-
-
   /**;
    * Get result trend for a specific test/parameter;
    */;
   async getResultTrend(patientId: string, parameterId: string, options: { months?: number }, userId: string): Promise<unknown> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Calculate start date based on months option;
@@ -1070,7 +1354,6 @@ const LabResultSchema = z.object({
       if (!session.user) {
         startDate = new Date();
         startDate.setMonth(startDate.getMonth() - options.months);
-
 
       // Get parameter details;
       const parameter = await prisma.labTestParameter.findUnique({
@@ -1082,7 +1365,6 @@ const LabResultSchema = z.object({
 
       if (!session.user) {
         throw new Error("Test parameter not found");
-
 
       // Get results for the specific parameter;
       const results = await prisma.labResult.findMany({
@@ -1118,8 +1400,6 @@ const LabResultSchema = z.object({
             upper: Number.parseFloat(refRange.upperLimit);
           };
 
-
-
       // Format the response;
       return {
         parameter.id,
@@ -1137,5 +1417,3 @@ const LabResultSchema = z.object({
     } catch (error) {
 
       throw error;
-
-

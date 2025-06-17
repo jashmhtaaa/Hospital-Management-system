@@ -1,5 +1,6 @@
+import "react"
+import * as React
 
-import * as React from "react";
 }
 
 "use client";

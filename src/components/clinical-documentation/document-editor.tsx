@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from "react";
+import "next/navigation"
+import "react"
+import React
+import useEffect }
 import {
-import { useRouter } from "next/navigation";
+import { useRouter }
+import { useState
+
   Card,
   CardContent,
   CardDescription,
@@ -19,15 +24,27 @@ import { useRouter } from "next/navigation";
   SelectItem,
   SelectTrigger,
   SelectValue} from "../ui/select";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
-import { Switch } from "../ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { useToast } from "../../hooks/use-toast";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import "../../hooks/use-toast"
+import "../ui/button"
+import "../ui/input"
+import "../ui/switch"
+import "../ui/tabs"
+import "../ui/textarea"
+import "@hookform/resolvers/zod"
+import "react-hook-form"
+import "zod"
+import * as z
+import TabsContent
+import TabsList
+import TabsTrigger }
+import { Button }
+import { Input }
+import { Switch }
+import { Tabs
+import { Textarea }
+import { useForm }
+import { useToast }
+import { zodResolver }
 
 // Form schema validation;
 const documentFormSchema = z.object({
@@ -94,6 +111,33 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -124,14 +168,40 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch(`/api/clinical-documentation/${}`;
 
       if (!session.user) {
         throw new Error("Failed to fetch document");
-      }
 
       const data = await response.json();
 
@@ -150,7 +220,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
       });
     } finally {
       setLoading(false);
-    }
+
   };
 
   // Effect to fetch templates and document on initial load;
@@ -159,7 +229,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
     if (!session.user) {
       fetchDocument();
-    }
+
   }, [documentId]);
 
   // Handle template selection;
@@ -183,8 +253,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
         }));
 
         form.setValue("sections", formattedSections);
-      }
-    }
+
   };
 
   // Handle form submission;
@@ -193,9 +262,36 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const payload = {
         ...values,
         patientId,
@@ -222,11 +318,9 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
           body: JSON.stringify(payload);
         });
 
-
       if (!session.user) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to save document");
-
 
       const data = await response.json(),
       toast({
@@ -288,8 +382,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     { value: "Operative Report", label: "Operative Report" },
     { value: "Procedure Note", label: "Procedure Note" },
     { value: "History and Physical", label: "History and Physical" },
-    { value: "Care Plan", label: "Care Plan" },
-  ];
+    { value: "Care Plan", label: "Care Plan" }];
 
   // Section type options;
   const sectionTypeOptions = [;
@@ -306,8 +399,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     { value: "Procedures", label: "Procedures" },
     { value: "Vital Signs", label: "Vital Signs" },
     { value: "Diagnosis", label: "Diagnosis" },
-    { value: "Follow Up", label: "Follow Up" },
-  ];
+    { value: "Follow Up", label: "Follow Up" }];
 
   return();
     >;

@@ -1,8 +1,10 @@
-import { PrismaClient } from "@prisma/client";
-import { z } from "zod";
+import "../../services/encryption_service_secure"
+import "@prisma/client"
+import "zod"
+import { getEncryptionService }
+import { PrismaClient }
+import { z }
 
-
-import { getEncryptionService } from "../../services/encryption_service_secure";
 /**;
  * Electronic Health Records (EHR) Service - Persistent Implementation;
  * Complete EHR system with SOAP notes, care plans, clinical pathways, and decision support;
@@ -162,6 +164,33 @@ export type ClinicalGuideline = z.infer>;
   async createClinicalNote(data: ClinicalNote): Promise<ClinicalNote & { id: string }> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -222,6 +251,33 @@ export type ClinicalGuideline = z.infer>;
   async getClinicalNote(id: string): Promise<ClinicalNote | null> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -251,6 +307,33 @@ export type ClinicalGuideline = z.infer>;
 
   async getClinicalNotesByPatient(patientId: string): Promise<ClinicalNote[]> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -283,6 +366,33 @@ export type ClinicalGuideline = z.infer>;
   async createCarePlan(data: CarePlan): Promise<CarePlan & { id: string }> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -294,7 +404,7 @@ export type ClinicalGuideline = z.infer>;
           validated.status,
           validated.period_start,
           validated.created_by;
-        }
+
       });
 
       // Create goals;
@@ -303,9 +413,8 @@ export type ClinicalGuideline = z.infer>;
           carePlan.id,
             goal.target_date,
             goal.priority;
-          }
+
         });
-      }
 
       // Create interventions (activities);
       for (const activity of validated.activities) {
@@ -314,9 +423,8 @@ export type ClinicalGuideline = z.infer>;
             activity.description,
             activity.scheduled_date,
             category: activity.category;
-          }
+
         });
-      }
 
       return {
         ...validated,
@@ -324,20 +432,45 @@ export type ClinicalGuideline = z.infer>;
       };
     } catch (error) {
       throw new Error(`Failed to create care plan: ${}`;
-    }
-  }
 
   async getCarePlan(id: string): Promise<CarePlan | null> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const carePlan = await this.prisma.carePlan.findUnique({
         where: { id },
         true,
           interventions: true;
-        }
+
       });
 
       if (!session.user)eturn null;
@@ -360,18 +493,43 @@ export type ClinicalGuideline = z.infer>;
         snomed_codes: undefined, // Would need to add to schema;
         created_by: carePlan.createdBy,
         carePlan.periodEnd || undefined;
-      }
+
     } catch (error) {
       throw new Error(`Failed to get care plan: ${}`;
-    }
-  }
 
   async getCarePlansByPatient(patientId: string): Promise<CarePlan[]> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const carePlans = await this.prisma.carePlan.findMany({
         where: { patientId },
         true,
@@ -400,16 +558,41 @@ export type ClinicalGuideline = z.infer>;
       }));
     } catch (error) {
       throw new Error(`Failed to get care plans for patient: ${}`;
-    }
-  }
 
   // Problem List Operations;
   async createProblemListItem(data: ProblemListItem): Promise<ProblemListItem & { id: string }> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const validated = ProblemListSchema.parse(data);
       const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields);
 
@@ -430,12 +613,37 @@ export type ClinicalGuideline = z.infer>;
     } catch (error) {
       throw new Error(`Failed to create problem list item: ${}`;
 
-
-
   async getProblemListByPatient(patientId: string): Promise<ProblemListItem[]> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const problems = await this.prisma.problemEntry.findMany({
@@ -457,13 +665,38 @@ export type ClinicalGuideline = z.infer>;
     } catch (error) {
       throw new Error(`Failed to get problem list for patient: ${}`;
 
-
-
   // Clinical Guidelines Operations;
   async createClinicalGuideline(data: ClinicalGuideline): Promise<ClinicalGuideline & { id: string }> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const validated = ClinicalGuidelineSchema.parse(data);
@@ -485,22 +718,46 @@ export type ClinicalGuideline = z.infer>;
     } catch (error) {
       throw new Error(`Failed to create clinical guideline: ${}`;
 
-
-
   async getClinicalGuidelines(filters?: {
     status?: string;
     icd10_codes?: string[];
   }): Promise<ClinicalGuideline[]> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const where: unknown = { ruleType: "guideline" };
 
       if (!session.user) {
         where.status = filters.status;
-
 
       const guidelines = await this.prisma.clinicalDecisionSupport.findMany({
         where,
@@ -523,8 +780,6 @@ export type ClinicalGuideline = z.infer>;
     } catch (error) {
       throw new Error(`Failed to get clinical guidelines: ${}`;
 
-
-
   // Helper methods for deserialization;
   private async deserializeSoapNote(note: unknown): Promise<ClinicalNote> {
     const decrypted = await this.encryptionService.decryptObject(note, this.encryptedFields);
@@ -538,7 +793,6 @@ export type ClinicalGuideline = z.infer>;
       note.status,
       note.updatedAt;
     };
-
 
   private async deserializeProgressNote(note: unknown): Promise<ClinicalNote> {
     const content = JSON.parse(note.content);
@@ -554,7 +808,6 @@ export type ClinicalGuideline = z.infer>;
       updated_at: note.updatedAt;
     };
 
-
   // Search and Query Operations;
   async searchClinicalNotes(query: {
     patientId?: string;
@@ -566,7 +819,34 @@ export type ClinicalGuideline = z.infer>;
   }): Promise<ClinicalNote[]> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const where: unknown = {};
@@ -605,8 +885,6 @@ export type ClinicalGuideline = z.infer>;
     } catch (error) {
       throw new Error(`Failed to search clinical notes: ${}`;
 
-
-
   // Clinical Decision Support;
   async evaluateClinicalDecisionSupport();
     patientId: string,
@@ -619,7 +897,34 @@ export type ClinicalGuideline = z.infer>;
   ): Promise<ClinicalDecisionSupport[]> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const rules = await this.prisma.clinicalDecisionSupport.findMany({
@@ -638,13 +943,11 @@ export type ClinicalGuideline = z.infer>;
             context.icd10_codes!.includes(code);
           );
 
-
         // Check SNOMED codes;
         if (!session.user) {
           triggered = triggered || triggerConditions.snomed_codes.some((code: string) => {}
             context.snomed_codes!.includes(code);
           );
-
 
         // Add more trigger condition logic as needed;
 
@@ -657,19 +960,13 @@ export type ClinicalGuideline = z.infer>;
             rule.updatedAt;
           });
 
-
-
       return triggeredRules;
     } catch (error) {
       throw new Error(`Failed to evaluate clinical decision support: ${}`;
 
-
-
   // Cleanup;
   async disconnect(): Promise<void> {
     await this.prisma.$disconnect();
-
-
 
 // Export singleton instance;
 let ehrServiceInstance: PersistentElectronicHealthRecordsService | null = null;

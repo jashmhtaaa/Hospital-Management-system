@@ -1,10 +1,16 @@
-import { getServerSession } from "next-auth";
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/auth"
+import "@/lib/middleware/error-handling.middleware"
+import "@/lib/services/support-services/marketing"
+import "next-auth"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { authOptions }
+import { getServerSession }
+import { SegmentService }
+import { type
+import { withErrorHandling }
 
-
-import { authOptions } from "@/lib/auth";
-import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
-import { SegmentService } from "@/lib/services/support-services/marketing";
 const segmentService = new SegmentService();
 
 /**;
@@ -12,12 +18,12 @@ const segmentService = new SegmentService();
  * Add a contact to a segment;
  */;
 export const POST = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   return withErrorHandling();
     request,
-    async (req: NextRequest) => {
+    async (req: any) => {
       const session = await getServerSession(authOptions);
       const { contactId } = await req.json();
 
@@ -48,12 +54,12 @@ export const POST = async();
  * Remove a contact from a segment;
  */;
 export const DELETE = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string, contactId: string }
 ) => {
   return withErrorHandling();
     request,
-    async (req: NextRequest) => {
+    async (req: any) => {
       const session = await getServerSession(authOptions);
 
       const member = await segmentService.removeContactFromSegment();

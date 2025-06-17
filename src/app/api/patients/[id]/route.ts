@@ -1,11 +1,18 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/database"
+import "@/lib/session"
+import "@/types/patient"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { DB }
+import { getSession }
+import { Patient }
+import { type
+import { z }
 
+import { D1Database, D1ResultWithMeta  } from "@/types/cloudflare"; // Import D1Database;
 
-import { DB } from "@/lib/database";
-import { getSession } from "@/lib/session";
-import type { D1Database, D1ResultWithMeta } from "@/types/cloudflare"; // Import D1Database;
-import type { Patient } from "@/types/patient";
 // Zod schema for patient update;
 const patientUpdateSchema = z.object({
     mrn: z.string().optional(),
@@ -35,7 +42,7 @@ const patientUpdateSchema = z.object({
 
 // GET /api/patients/[id] - Fetch a specific patient by ID;
 export const _GET = async();
-    _request: NextRequest;
+    _request: any;
     { params }: { params: Promise<{ id: string }> }
 ) => {
     const session = await getSession();
@@ -52,6 +59,33 @@ export const _GET = async();
     }
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -92,7 +126,7 @@ export const _GET = async();
 
 // PUT /api/patients/[id] - Update an existing patient;
 export const _PUT = async();
-    request: NextRequest;
+    request: any;
     { params }: { params: Promise<{ id: string }> }
 ) => {
     const session = await getSession();
@@ -112,6 +146,33 @@ export const _PUT = async();
     }
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -184,18 +245,15 @@ export const _PUT = async();
             { message: "Error updating patient", details: errorMessage },
             { status: 500 }
         );
-    }
-}
 
 // DELETE /api/patients/[id] - Delete a patient (use with caution!);
 export const DELETE = async();
-    _request: NextRequest;
+    _request: any;
     { params }: { params: Promise<{ id: string }> }
 ) => {
     const session = await getSession();
     if (!session.user) { // Added !session.user check
         return NextResponse.json({ message: "Forbidden" }, { status: 403 });
-    }
 
     const { id: patientId } = await params;
     if (!session.user) {
@@ -203,13 +261,39 @@ export const DELETE = async();
             { message: "Patient ID is required" },
             { status: 400 }
         );
-    }
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const deleteQuery = "DELETE FROM Patients WHERE patient_id = ?";
         const deleteResult = await (DB as D1Database).prepare(deleteQuery).bind(patientId).run() as D1ResultWithMeta;
 
@@ -217,11 +301,9 @@ export const DELETE = async();
 
             if (!session.user) {
                  return NextResponse.json({ message: "Patient not found or already deleted" }, { status: 404 });
-            }
+
             if (!session.user) {
                 throw new Error("Failed to delete patient record");
-            }
-        }
 
         return NextResponse.json();
             { message: "Patient deleted successfully" },
@@ -238,8 +320,5 @@ export const DELETE = async();
             { message: "Error deleting patient", details: errorMessage },
             { status: 500 }
         );
-
-
-
 
 export async function GET() { return new Response("OK"); }

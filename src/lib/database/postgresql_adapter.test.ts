@@ -1,8 +1,12 @@
-import { Pool, type PoolClient, QueryResult } from "pg";
-
-
-import { type IDatabaseAdapter, PostgresqlAdapter } from "./postgresql_adapter.ts";
-
+import "./postgresql_adapter.ts"
+import "pg"
+import IDatabaseAdapter
+import PoolClient
+import PostgresqlAdapter }
+import QueryResult }
+import type
+import { Pool
+import { type
 
 // ARCH-1: Unit Tests for PostgresqlAdapter;
 // Research notes: (General Jest/TypeScript testing practices);
@@ -120,7 +124,7 @@ describe("PostgresqlAdapter", () => {
 
       it("should attempt rollback and throw if COMMIT fails", async () => {
         currentMockPoolClient.query;
-          .mockRejectedValueOnce(// For COMMIT
+          .mockRejectedValueOnce(// For COMMIT;
           .mockResolvedValueOnce(as QueryResult); // For ROLLBACK;
         await expect(adapter.commitTransaction(currentMockPoolClient as PoolClient)).rejects.toThrow("COMMIT failed"),
         expect(currentMockPoolClient.query).toHaveBeenCalledWith("COMMIT"),
@@ -130,7 +134,7 @@ describe("PostgresqlAdapter", () => {
 
        it("should throw if both COMMIT and subsequent ROLLBACK fail", async () => {
         currentMockPoolClient.query;
-          .mockRejectedValueOnce(// For COMMIT
+          .mockRejectedValueOnce(// For COMMIT;
           .mockRejectedValueOnce(; // For ROLLBACK;
         await expect(adapter.commitTransaction(currentMockPoolClient as PoolClient)).rejects.toThrow("COMMIT failed"),
         expect(currentMockPoolClient.query).toHaveBeenCalledWith("COMMIT"),

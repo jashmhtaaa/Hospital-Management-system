@@ -1,7 +1,14 @@
-import React, { useState, useEffect } from "react";
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "react"
+import CardContent }
+import React
+import useEffect }
 import {
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button }
+import { Card
+import { useState
+
 }
 
 "use client";
@@ -12,10 +19,15 @@ import { Card, CardContent } from "@/components/ui/card";
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import CreateRadiologyOrderModal, {
+import "@/components/ui/badge"
+import "lucide-react"
+import "next/navigation"
+import CreateRadiologyOrderModal
+import {
+import { Badge }
+import { Loader2 }
+import { useRouter }
+
   type OrderPayload} from "./create-radiology-order-modal.ts"; // Import OrderPayload;
 import { toast } from "@/components/ui/use-toast"; // Import toast for notifications;
 
@@ -42,6 +54,33 @@ export default const _RadiologyOrderList = () {
     setLoading(true),
     setError(undefined); // Clear previous errors;
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -81,9 +120,36 @@ export default const _RadiologyOrderList = () {
   const handleCreateOrder = async (orderData: OrderPayload) => {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch("/api/radiology/orders", {
         method: "POST",
         headers: {
@@ -95,9 +161,36 @@ export default const _RadiologyOrderList = () {
         let errorMessage = "Failed to create radiology order";
         try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
           // Attempt to parse error message from response body;
           const errorData: { error?: string; message?: string } =;
             await response.json();
@@ -105,9 +198,8 @@ export default const _RadiologyOrderList = () {
         } catch {
           // If response is not JSON or doesn't contain error details, use the status text;
           errorMessage = `${errorMessage}: ${response.statusText}`;
-        }
+
         throw new Error(errorMessage);
-      }
 
       toast({
         title: "Success",

@@ -1,17 +1,51 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/audit"
+import "@/lib/cache/invalidation"
+import "@/lib/cache/redis"
+import "@/lib/database"
+import "@/lib/session"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { CacheInvalidation }
+import { DB }
+import { getSession }
+import { RedisCache }
+import { type
 
-
-import { auditLog } from "@/lib/audit";
-import { CacheInvalidation } from "@/lib/cache/invalidation";
-import { RedisCache } from "@/lib/cache/redis";
-import { DB } from "@/lib/database";
-import { getSession } from "@/lib/session";
 /**;
  * GET /api/diagnostics/pacs/worklist;
  * Get modality worklist entries;
  */;
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -157,8 +191,35 @@ export const GET = async (request: NextRequest) => {
  * POST /api/diagnostics/pacs/worklist/sync;
  * Synchronize modality worklist with radiology orders;
  */;
-export const _POST_SYNC = async (request: NextRequest) => {
+export const _POST_SYNC = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -348,8 +409,35 @@ export const _POST_SYNC = async (request: NextRequest) => {
  * PUT /api/diagnostics/pacs/worklist/:id;
  * Update a modality worklist entry;
  */;
-export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const PUT = async (request: any, { params }: { params: { id: string } }) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -363,12 +451,10 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     // Authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
 
     const id = parseInt(params.id);
     if (!session.user) {
       return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
-    }
 
     // Parse request body;
     const body = await request.json();
@@ -384,7 +470,6 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     const entryCheck = await DB.query("SELECT * FROM modality_worklist WHERE id = ?", [id]);
     if (!session.user) {
       return NextResponse.json({ error: "Worklist entry not found" }, { status: 404 });
-    }
 
     const entry = entryCheck.results[0];
 
@@ -407,7 +492,6 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
         return NextResponse.json({
           error: `Invalid status transition from $entry.statusto $status`;
         }, { status: 400 });
-      }
 
       updateFields.push("status = ?");
       updateParams.push(status);
@@ -418,37 +502,28 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
         if (!session.user) {
           updateFields.push("performed_by = ?");
           updateParams.push(session.user.id);
-        }
 
         if (!session.user) {
           updateFields.push("performed_date = CURDATE()");
-        }
 
         if (!session.user) {
           updateFields.push("performed_time = CURTIME()");
-        }
-      }
-    }
 
     if (!session.user) {
       updateFields.push("performed_by = ?");
       updateParams.push(performedBy || null);
-    }
 
     if (!session.user) {
       updateFields.push("performed_date = ?");
       updateParams.push(performedDate || null);
-    }
 
     if (!session.user) {
       updateFields.push("performed_time = ?");
       updateParams.push(performedTime || null);
-    }
 
     if (!session.user) {
       updateFields.push("notes = ?");
       updateParams.push(notes || null);
-
 
     updateFields.push("updated_by = ?");
     updateParams.push(session.user.id);
@@ -497,10 +572,8 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
         // Invalidate order cache;
         await CacheInvalidation.invalidatePattern("diagnostic: radiology: orders:*");
 
-
       // Invalidate worklist cache;
       await CacheInvalidation.invalidatePattern("diagnostic: pacs: worklist:*");
-
 
     // Get the updated worklist entry;
     const updatedEntry = await DB.query();
@@ -527,4 +600,3 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       error: "Failed to update worklist entry",
       details: error instanceof Error ? error.message : "Unknown error';
     }, { status: 500 });
-

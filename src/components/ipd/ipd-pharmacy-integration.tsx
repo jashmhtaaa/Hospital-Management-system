@@ -1,6 +1,11 @@
-import type React from "react";
-import { useCallback, useEffect, useState } from "react";
+import "react"
+import React
+import type
+import useEffect
+import useState }
 import {
+import { useCallback
+
 }
 
 "use client";
@@ -23,11 +28,15 @@ import {
   // SyncOutlined, // Removed unused import;
   // WarningOutlined, // Removed unused import;
 } from "@ant-design/icons";
-import type { AdminRecordsApiResponse, ApiErrorResponse } from "@/types/api"; // Import API response types;
+import { AdminRecordsApiResponse, ApiErrorResponse  } from "@/types/api"; // Import API response types;
 // import { useSession } from "next-auth/react"; // Removed unused import;
-import type { IPDPrescription, IPDPrescriptionItem } from "@/types/ipd";
-import { MedicationAdministrationRecord } from "@/types/pharmacy";
-import dayjs from "dayjs";
+import "@/types/ipd"
+import "@/types/pharmacy"
+import "dayjs"
+import dayjs
+import IPDPrescriptionItem }
+import { IPDPrescription
+import { MedicationAdministrationRecord }
 
 // const { Option } = Select; // Removed unused variable assignment;
 
@@ -122,6 +131,33 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
     _setError(null);
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -130,7 +166,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       );
       if (!session.user) {
         throw new Error("Failed to fetch administration records");
-      }
+
       const data: AdminRecordsApiResponse = await response.json(),
       _setAdministrationRecords(data.records || []);
 
@@ -148,7 +184,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
               status: record.status,
               administrationRecordId: record.id;
             };
-          }
+
           return item;
         });
       );
@@ -159,7 +195,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       message.error(`Error fetching records: ${}`;
     } finally {
       _setLoading(false);
-    }
+
   }, [admissionId]);
 
   useEffect(() => {
@@ -179,12 +215,38 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
     if (!session.user) {
       message.error("Schedule item not found");
       return;
-    }
 
     _setLoading(true);
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const response = await fetch("/api/pharmacy/administration-records", {
@@ -202,7 +264,6 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       if (!session.user) {
         const errorData: ApiErrorResponse = await response.json(),
         throw new Error(errorData.error || "Failed to record administration");
-
 
       message.success(`Medication marked as ${}`,
       fetchAdministrationRecords(); // Refresh records and schedule status;
@@ -311,8 +372,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
           );
 
         return null;
-      }},
-  ];
+      }}];
 
   return();
     >;
@@ -362,8 +422,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
             }}
           >;
             Mark as Administered;
-          </Button>,
-        ]}
+          </Button>]}
       >;
         >;
           <p>;

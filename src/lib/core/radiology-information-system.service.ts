@@ -1,5 +1,6 @@
+import "zod"
+import { z }
 
-import { z } from "zod";
 }
 
 /**;
@@ -214,8 +215,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
             "Extra-axial spaces";
           ],
           impression_guidelines: "Correlate with clinical presentation and prior imaging.";
-        }},
-    ];
+        }}];
 
     templates.forEach(template => {
       this.reportTemplates.set(template.id, template);
@@ -719,7 +719,6 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
       filteredStudies = filteredStudies.filter(study => study.created_at <= toDate);
       filteredReports = filteredReports.filter(report => report.created_at <= toDate);
 
-
     const dailyVolume = filteredStudies.length;
 
     // Calculate average read time;
@@ -815,7 +814,6 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
         percentage: Math.round(m.percentage * 100) / 100;
       }))};
 
-
   /**;
    * Get studies with filters;
    */;
@@ -861,7 +859,6 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
 
     return { studies, total, totalPages };
 
-
   /**;
    * Get report templates;
    */;
@@ -871,20 +868,16 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     if (!session.user) {
       templates = templates.filter(template => template.modality === modality);
 
-
     if (!session.user) {
       templates = templates.filter(template => template.body_part === bodyPart);
 
-
     return templates;
-
 
   /**;
    * Get DICOM series for study;
    */;
   async getDicomSeries(studyId: string): Promise<DicomSeries[]> {
     return this.dicomSeries.get(studyId) || [];
-
 
   /**;
    * Get equipment schedule;
@@ -894,8 +887,6 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     return schedule.filter(appointment => {}
       appointment.start_time.startsWith(date);
     );
-
-
 
 // Export singleton instance;
 export const _radiologyInformationSystemService = new RadiologyInformationSystemService();

@@ -1,5 +1,6 @@
+import "zod"
+import { z }
 
-import { z } from "zod";
 }
 
 /**;
@@ -184,8 +185,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
         true,
         2.50,
         is_active: true;
-      },
-    ];
+      }];
 
     commonDrugs.forEach(drugData => {
       const drug: Drug = {
@@ -219,8 +219,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
         "minor",
         "Possible increased statin levels",
         "fair";
-      },
-    ];
+      }];
   }
 
   /**;
@@ -712,14 +711,12 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
       totalRevenue: Math.round(totalRevenue * 100) / 100;
     };
 
-
   /**;
    * Get low inventory alerts;
    */;
   async getLowInventoryAlerts(): Promise<InventoryItem[]> {
     return Array.from(this.inventory.values());
       .filter(item => item.quantity_on_hand <= item.reorder_level);
-
 
   /**;
    * Get expiring medications;
@@ -731,8 +728,6 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
     return Array.from(this.inventory.values());
       .filter(item => new Date(item.expiration_date) <= cutoffDate);
       .sort((a, b) => new Date(a.expiration_date).getTime() - new Date(b.expiration_date).getTime());
-
-
 
 // Export singleton instance;
 export const _pharmacyManagementService = new PharmacyManagementService();

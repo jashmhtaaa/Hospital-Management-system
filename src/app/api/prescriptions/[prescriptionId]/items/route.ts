@@ -1,11 +1,15 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
+import "@opennextjs/cloudflare"
+import "iron-session"
+import "next/headers"
+import { cookies }
+import { getCloudflareContext }
+import { getIronSession }
 
 import { type IronSessionData, sessionOptions } from "@/lib/session"; // Import IronSessionData;
 // app/api/prescriptions/[prescriptionId]/items/route.ts;
 // import { PrescriptionItem } from "@/types/opd"; // Removed unused import;
-import { z } from "zod";
+import "zod"
+import { z }
 
 // Define roles allowed to add items to prescriptions (adjust as needed);
 const ALLOWED_ROLES_ADD = ["Doctor"];
@@ -47,6 +51,33 @@ export const _POST = async (request: Request) => {
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -81,7 +112,6 @@ export const _POST = async (request: Request) => {
         if (!session.user) {
             // Corrected escaped quote;
             return new Response(JSON.stringify({ error: "Forbidden: Cannot add items to another doctor"s prescription" }), { status: 403 });
-        }
 
         // 4. Validate all inventory items exist and get their names;
         const inventoryItemIds = itemsData.map((item: AddPrescriptionItemType) => item.inventory_item_id);
@@ -95,7 +125,6 @@ export const _POST = async (request: Request) => {
         if (!session.user) {
             // Corrected template literal for error message;
             return new Response(JSON.stringify({ error: `Inventory item(s) not found or inactive: ${missingItems.join(", ")}` }), { status: 404 });
-        }
 
         // 5. Prepare batch insert for all items;
         const batchActions: D1PreparedStatement[] = itemsData.map(item => {
@@ -138,10 +167,7 @@ export const _POST = async (request: Request) => {
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
             status: 500,
             headers: { "Content-Type": "application/json" }});
-    }
-}
 
 // DELETE handler for removing an item from a prescription (if allowed before dispensing);
 // Requires prescriptionItemId in the URL: /api/prescriptions/[prescriptionId]/items/[itemId];
 // export async function DELETE(request: Request): unknown { ...;
-

@@ -1,7 +1,13 @@
-import React, { useState, useEffect } from "react";
+import "@/components/layout/DashboardLayout"
+import "@/components/ui/button"
+import "react"
+import React
+import useEffect }
 import {
-import { Button } from "@/components/ui/button";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { Button }
+import { DashboardLayout }
+import { useState
+
 }
 
 "use client";
@@ -14,11 +20,18 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import { PlusCircle, Search } from "lucide-react";
-import type { Appointment } from "@/types/appointment";
-import { useToast } from "@/hooks/use-toast";
-import Link from "next/link";
+import "@/components/ui/input"
+import "@/hooks/use-toast"
+import "@/types/appointment"
+import "lucide-react"
+import "next/link"
+import Link
+import Search }
+import { Appointment }
+import { Input }
+import { PlusCircle
+import { useToast }
+
 import { format } from "date-fns"; // For date formatting;
 
 export default const _AppointmentsPage = () {
@@ -34,15 +47,42 @@ export default const _AppointmentsPage = () {
       setError(null);
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         // Build query params for filtering;
         const params = new URLSearchParams();
         if (!session.user) {
             params.append("startDate", dateFilter);
             params.append("endDate", dateFilter); // Filter for a single day for now;
-        }
+
         // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
         const response = await fetch(`/api/appointments?${}`;
@@ -163,8 +203,8 @@ export default const _AppointmentsPage = () {
     </DashboardLayout>;
   );
 
-
 // Add Label component import if not globally available;
-import { Label } from "@/components/ui/label";
+import "@/components/ui/label"
+import { Label }
 
 )

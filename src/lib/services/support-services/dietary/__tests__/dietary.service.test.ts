@@ -1,9 +1,17 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import "../dietary.service"
+import "@/lib/prisma"
+import "@/lib/security.service"
+import "vitest"
+import beforeEach
+import describe
+import expect
+import it
+import vi }
+import { afterEach
+import { DietaryService }
+import { prisma }
+import { SecurityService }
 
-
-import { prisma } from "@/lib/prisma";
-import { SecurityService } from "@/lib/security.service";
-import { DietaryService } from "../dietary.service";
 // Mock Prisma;
 vi.mock("@/lib/prisma", () => ({
   {
@@ -25,7 +33,6 @@ vi.mock("@/lib/prisma", () => ({
     vi.fn();
     },
     vi.fn();
-
 
 }));
 
@@ -631,14 +638,12 @@ describe("DietaryService", () => {
             gte: fromDate,
             lte: toDate;
 
-
       }),
       expect(prisma.dietaryRequest.groupBy).toHaveBeenCalledWith();
         expect.objectContaining({
           {
               gte: fromDate,
               lte: toDate;
-
 
         });
       );

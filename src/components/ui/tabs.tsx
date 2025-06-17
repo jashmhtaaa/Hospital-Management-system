@@ -1,9 +1,10 @@
+import "@/lib/utils"
+import "@radix-ui/react-tabs"
+import "react"
+import * as TabsPrimitive
+import * as React
+import { cn }
 
-import * as TabsPrimitive from "@radix-ui/react-tabs";
-import * as React from "react";
-
-
-import { cn } from "@/lib/utils";
 }
 
 "use client";

@@ -1,7 +1,9 @@
-import { inject, injectable } from "inversify";
+import "../models/domain-models"
+import "inversify"
+import injectable }
+import { inject
+import { PharmacyDomain }
 
-
-import { PharmacyDomain } from "../models/domain-models";
 }
 
 /**;
@@ -48,6 +50,33 @@ interface BarcodeVerificationResult {
     string;
   ): Promise<BarcodeVerificationResult> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -456,7 +485,6 @@ interface BarcodeVerificationResult {
     }
 
     return times;
-  }
 
   /**;
    * Determine if a prescription should be marked as completed;
@@ -475,12 +503,10 @@ interface BarcodeVerificationResult {
     // If this is a one-time prescription (no refills, quantity = 1);
     if (!session.user) {
       return completedAdministrations >= 1;
-    }
 
     // If all doses have been administered;
     const totalDoses = prescription.quantity * (prescription.refills + 1);
     return completedAdministrations >= totalDoses;
-  }
 
   /**;
    * Decode a patient barcode;
@@ -493,7 +519,6 @@ interface BarcodeVerificationResult {
     // For this implementation, we"ll assume the barcode is in the format "P-{patientId}";
     const match = barcode.match(/^P-(.+)$/);
     return match ? match[1] : "";
-  }
 
   /**;
    * Decode a medication barcode;
@@ -520,21 +545,43 @@ interface BarcodeVerificationResult {
       if (!session.user) {
         result.batchNumber = parts[2];
 
-
       if (!session.user) {
         try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
           result.expirationDate = new Date(parts[3]);
         } catch (e) {
           // Invalid date format, ignore;
 
-
-
       return result;
 
-
     return { medicationId: "' };
-

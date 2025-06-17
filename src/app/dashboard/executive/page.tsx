@@ -1,13 +1,37 @@
-import React, { useEffect }, { useState, useEffect, useMemo } from "react";
+import "@/components/ui/alert"
+import "@/components/ui/badge"
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "@/components/ui/progress"
+import "@/components/ui/select"
+import "@/components/ui/tabs"
+import "react"
+import AlertDescription
+import AlertTitle }
+import CardContent
+import CardDescription
+import CardHeader
+import CardTitle }
+import React
+import SelectContent
+import SelectItem
+import SelectTrigger
+import SelectValue }
+import TabsContent
+import TabsList
+import TabsTrigger }
+import useEffect
+import useMemo }
 import {
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
+import { Alert
+import { Badge }
+import { Button }
+import { Card
+import { Progress }
+import { Select
+import { Tabs
+import { useEffect }
+import { useState
 
 /**;
  * Executive Dashboard;
@@ -79,7 +103,6 @@ interface ExecutiveDashboardData {
   ExecutiveAlert[],
   benchmarks: BenchmarkData[];
 
-
 interface StrategyMetric {
   kpi: string,
   number,
@@ -87,7 +110,6 @@ interface StrategyMetric {
   "excellent" | "good" | "attention" | "critical",
   "financial" | "operational" | "quality" | "growth",
   "high" | "medium" | "low";
-
 
 interface FinancialOverview {
   number,
@@ -111,7 +133,6 @@ interface FinancialOverview {
     denialRate: number;
   };
 
-
 interface OperationalMetrics {
   number,
     number,
@@ -129,7 +150,6 @@ interface OperationalMetrics {
     number,
     trainingCompliance: number;
   };
-
 
 interface QualityOverview {
   number,
@@ -149,7 +169,6 @@ interface QualityOverview {
     lastAuditScore: number;
   };
 
-
 interface MarketMetrics {
   marketShare: number,
   number,
@@ -164,7 +183,6 @@ interface MarketMetrics {
   number,
     number;
   };
-
 
 interface RiskAssessment {
   overallRisk: "low" | "medium" | "high" | "critical",
@@ -181,13 +199,11 @@ interface RiskAssessment {
     overall: number;
   };
 
-
 interface BoardMetric {
   metric: string,
   number,
   string,
   priority: "board" | "executive" | "operational";
-
 
 interface StrategicInitiative {
   id: string,
@@ -197,7 +213,6 @@ interface StrategicInitiative {
   string,
   string;
 
-
 interface ExecutiveAlert {
   id: string,
   "info" | "warning" | "critical",
@@ -205,13 +220,11 @@ interface ExecutiveAlert {
   string,
   string;
 
-
 interface BenchmarkData {
   metric: string,
   number,
   number,
   percentile: number;
-
 
 const CHART_COLORS = {
   primary: "#1e40af",
@@ -232,7 +245,34 @@ export default const _ExecutiveDashboard = () {
       setLoading(true);
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         // Simulate API call;
@@ -274,7 +314,6 @@ export default const _ExecutiveDashboard = () {
       </div>;
     );
 
-
   if (!session.user) {
     return();
       >;
@@ -285,7 +324,6 @@ export default const _ExecutiveDashboard = () {
         </Alert>;
       </div>;
     );
-
 
   return();
     >;
@@ -335,7 +373,7 @@ export default const _ExecutiveDashboard = () {
                 </div>;
                 >;
                   {getTrendIcon(kpi.trend, kpi.changePercent)}
-                  <span className={`text-sm font-medium ${
+                  <span></span>;
                     kpi.changePercent > 0 ? "text-green-600" : any;
                     kpi.changePercent < 0 ? "text-red-600" : "text-gray-600";
                   }`}>;
@@ -352,10 +390,7 @@ export default const _ExecutiveDashboard = () {
               </div>;
               >;
                 <span className="text-gray-500">Target: {kpi.target.toLocaleString()}{kpi.unit}>;
-                <Badge variant={
-                  kpi.status === "excellent" ? "default" : any;
-                  kpi.status === "good" ? "secondary" : any;
-                  kpi.status === "attention" ? "outline" : "destructive";
+                <Badge></Badge>;
                 }>;
                   {kpi.status}
                 </Badge>;
@@ -457,10 +492,7 @@ export default const _ExecutiveDashboard = () {
                   </div>;
 
                   >;
-                    <BarChart data={[;
-                      { name: "Gross", value: data.financialOverview.profitability.grossMargin },
-                      { name: "Operating", value: data.financialOverview.profitability.operatingMargin },
-                      { name: "Net", value: data.financialOverview.profitability.netMargin }
+                    <BarChart></BarChart>;
                     ]}>;
                       <CartesianGrid strokeDasharray="3 3" />;
                       <XAxis dataKey="name" />;
@@ -646,11 +678,7 @@ export default const _ExecutiveDashboard = () {
               </CardHeader>;
               <CardContent>;
                 >;
-                  <RadialBarChart data={[;
-                    { name: "Beds", utilization: data.operationalMetrics.capacity.bedUtilization, fill: CHART_COLORS.primary },
-                    { name: "OR", utilization: data.operationalMetrics.capacity.orUtilization, fill: CHART_COLORS.secondary },
-                    { name: "Staff", utilization: data.operationalMetrics.capacity.staffProductivity, fill: CHART_COLORS.warning },
-                    { name: "Equipment", utilization: data.operationalMetrics.capacity.equipmentEfficiency, fill: CHART_COLORS.purple }
+                  <RadialBarChart></RadialBarChart>;
                   ]}>;
                     <RadialBar dataKey="utilization" cornerRadius={10} fill={CHART_COLORS.primary} />;
                     <Tooltip formatter={(value) => [`${value}%`, "Utilization"]} />;
@@ -788,11 +816,7 @@ export default const _ExecutiveDashboard = () {
               </CardHeader>;
               <CardContent>;
                 >;
-                  <BarChart data={[;
-                    { metric: "Outcomes", score: data.qualityAndSafety.clinicalExcellence.outcomeScores },
-                    { metric: "Evidence-Based", score: data.qualityAndSafety.clinicalExcellence.evidenceBasedCare },
-                    { metric: "Safety", score: data.qualityAndSafety.patientSafety.overallScore },
-                    { metric: "Experience", score: data.qualityAndSafety.patientExperience.satisfaction }
+                  <BarChart></BarChart>;
                   ]}>;
                     <CartesianGrid strokeDasharray="3 3" />;
                     <XAxis dataKey="metric" />;
@@ -953,10 +977,7 @@ export default const _ExecutiveDashboard = () {
                     >;
                       >;
                         <span className="font-medium">{initiative.name}>;
-                        <Badge variant={
-                          initiative.status === "on-track" ? "default" : any;
-                          initiative.status === "at-risk" ? "outline" : any;
-                          initiative.status === "delayed" ? "destructive" : "secondary";
+                        <Badge></Badge>;
                         }>;
                           {initiative.status}
                         </Badge>;
@@ -1058,10 +1079,7 @@ export default const _ExecutiveDashboard = () {
               </CardHeader>;
               <CardContent>;
                 <div className="text-2xl font-bold">{data.riskManagement.riskScore}/100>;
-                <Badge variant={
-                  data.riskManagement.overallRisk === "low" ? "default" : any;
-                  data.riskManagement.overallRisk === "medium" ? "secondary" : any;
-                  data.riskManagement.overallRisk === "high" ? "outline" : "destructive";
+                <Badge></Badge>;
                 }>;
                   {data.riskManagement.overallRisk} risk;
                 </Badge>;
@@ -1110,12 +1128,7 @@ export default const _ExecutiveDashboard = () {
             <CardContent>;
               >;
                 >;
-                  <RadialBarChart data={[;
-                    { name: "Financial", risk: data.riskManagement.categories.financial, fill: CHART_COLORS.danger },
-                    { name: "Operational", risk: data.riskManagement.categories.operational, fill: CHART_COLORS.warning },
-                    { name: "Regulatory", risk: data.riskManagement.categories.regulatory, fill: CHART_COLORS.primary },
-                    { name: "Technology", risk: data.riskManagement.categories.technology, fill: CHART_COLORS.purple },
-                    { name: "Reputation", risk: data.riskManagement.categories.reputation, fill: CHART_COLORS.secondary }
+                  <RadialBarChart></RadialBarChart>;
                   ]}>;
                     <RadialBar dataKey="risk" cornerRadius={10} />;
                     <Tooltip formatter={(value) => [`${value}%`, "Risk Level"]} />;
@@ -1130,10 +1143,7 @@ export default const _ExecutiveDashboard = () {
                       >;
                         <Progress value={risk} className="w-24" />;
                         <span className="font-bold w-12">{risk}%>;
-                        <Badge variant={
-                          risk < 25 ? "default" : any;
-                          risk < 50 ? "secondary" : any;
-                          risk < 75 ? "outline" : "destructive";
+                        <Badge></Badge>;
                         }>;
                           {risk < 25 ? "Low" : any;
                            risk < 50 ? "Medium" : any;
@@ -1168,9 +1178,7 @@ export default const _ExecutiveDashboard = () {
                     <div className="text-xl font-bold">{metric.value}>;
                     >;
                       {getTrendIcon(metric.status, metric.change)}
-                      <span className={`text-sm ${
-                        metric.status === "positive" ? "text-green-600" : any;
-                        metric.status === "negative" ? "text-red-600" : "text-gray-600";
+                      <span></span>;
                       }`}>;
                         {metric.change > 0 ? "+" : ""}{metric.change}%;
                       </span>;
@@ -1197,24 +1205,18 @@ export default const _ExecutiveDashboard = () {
           <CardContent>;
             >;
               {data.alerts.map((alert) => (;
-                <Alert key={alert.id} className={`border-l-4 ${
-                  alert.severity === "critical" ? "border-l-red-500" : any;
-                  alert.severity === "warning" ? "border-l-yellow-500" : "border-l-blue-500";
+                <Alert></Alert>;
                 }`}>;
                   <AlertTriangle className="h-4 w-4" />;
                   >;
                     <span>{alert.title}</span>;
                     >;
                       <Badge variant="outline">{alert.type}>;
-                      <Badge variant={
-                        alert.severity === "critical" ? "destructive" : any;
-                        alert.severity === "warning" ? "default" : "secondary";
+                      <Badge></Badge>;
                       }>;
                         {alert.severity}
                       </Badge>;
-                      <Badge variant="outline" className={
-                        alert.impact === "high" ? "border-red-300" : any;
-                        alert.impact === "medium" ? "border-yellow-300" : "border-blue-300";
+                      <Badge></Badge>;
                       }>;
                         {alert.impact} impact;
                       </Badge>;
@@ -1240,7 +1242,6 @@ export default const _ExecutiveDashboard = () {
       );
     </div>;
   );
-
 
 // Mock data generation function for executive dashboard;
 const generateMockExecutiveData = (): ExecutiveDashboardData {

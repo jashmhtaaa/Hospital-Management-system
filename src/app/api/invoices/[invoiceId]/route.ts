@@ -1,10 +1,22 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
-import { z } from "zod";
+import "@/types/billing"
+import "@opennextjs/cloudflare"
+import "iron-session"
+import "next/headers"
+import "zod"
+import Invoice
+import InvoiceItem
+import InvoiceStatus
+import ItemType
+import Payment }
+import type
+import { cookies }
+import { getCloudflareContext }
+import { getIronSession }
+import { type
+import { z }
 
 import { type IronSessionData, sessionOptions } from "@/lib/session"; // FIX: Import IronSessionData;
-import { type Invoice, InvoiceItem, InvoiceStatus, type ItemType, Payment } from "@/types/billing";
+
 // app/api/invoices/[invoiceId]/route.ts;
 // Removed unused D1Result import;
 
@@ -70,6 +82,33 @@ export const _GET = async (request: Request) => {
     }
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -182,9 +221,36 @@ export const _PUT = async (request: Request) => {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const body = await request.json();
         const validation = UpdateInvoiceSchema.safeParse(body);
 
@@ -192,7 +258,6 @@ export const _PUT = async (request: Request) => {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" }});
-        }
 
         const updateData = validation.data;
 
@@ -201,7 +266,6 @@ export const _PUT = async (request: Request) => {
              return new Response(JSON.stringify({ message: "No update data provided" }), {
                 status: 200, // Or 304 Not Modified;
                 headers: { "Content-Type": "application/json" }});
-        }
 
         const context = await getCloudflareContext<CloudflareEnv>();
         const { env } = context;
@@ -215,7 +279,6 @@ export const _PUT = async (request: Request) => {
             return new Response(JSON.stringify({ error: "Invoice not found" }), {
                 status: 404,
                 headers: { "Content-Type": "application/json" }});
-        }
 
         // Optional: Add logic to prevent certain status transitions (e.g., cannot change from Paid);
         // if (!session.user) { ... }
@@ -228,7 +291,7 @@ export const _PUT = async (request: Request) => {
             if (!session.user) { // Allow null values to be set
                 query += `, ${key} = ?`;
                 queryParams.push(value);
-            }
+
         });
 
         query += " WHERE invoice_id = ?";
@@ -242,7 +305,6 @@ export const _PUT = async (request: Request) => {
         if (!session.user) {
 
             throw new Error("Failed to update invoice");
-        }
 
         // 5. Return success response;
         return new Response(JSON.stringify({ message: "Invoice updated successfully" }), {
@@ -255,8 +317,6 @@ export const _PUT = async (request: Request) => {
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
             status: 500,
             headers: { "Content-Type": "application/json" }});
-
-
 
 // DELETE handler - Typically invoices are cancelled (status update) rather than deleted;
 // Implement if hard deletion is truly required, but use with caution.;

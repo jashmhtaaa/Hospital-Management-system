@@ -1,7 +1,8 @@
-import Redis from "ioredis";
+import "../cache"
+import "ioredis"
+import Redis
+import { cache }
 
-
-import { cache } from "../cache";
 }
 
 /**;
@@ -128,6 +129,33 @@ class RedisCacheManager {
   async get<T>(key: string): Promise<T | null> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -147,6 +175,33 @@ class RedisCacheManager {
 
   async set<T>(key: string, value: T, ttl: number = this.config.defaultTTL): Promise<boolean> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -173,6 +228,33 @@ class RedisCacheManager {
   async del(key: string | string[]): Promise<number> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -189,6 +271,33 @@ class RedisCacheManager {
 
   async exists(key: string): Promise<boolean> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -207,6 +316,33 @@ class RedisCacheManager {
 
   async expire(key: string, ttl: number): Promise<boolean> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -227,6 +363,33 @@ class RedisCacheManager {
   async getKeysByPattern(pattern: string): Promise<string[]> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -243,6 +406,33 @@ class RedisCacheManager {
 
   async deleteByPattern(pattern: string): Promise<number> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -261,6 +451,33 @@ class RedisCacheManager {
   async mget<T>(keys: string[]): Promise<(T | null)[]> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -278,6 +495,33 @@ class RedisCacheManager {
 
   async mset(keyValuePairs: Record<string, unknown>, ttl?: number): Promise<boolean> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -309,6 +553,33 @@ class RedisCacheManager {
   async hget<T>(key: string, field: string): Promise<T | null> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -329,12 +600,38 @@ class RedisCacheManager {
   async hset<T>(key: string, field: string, value: T): Promise<boolean> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       if (!session.user) {
         await this.redis.connect();
-      }
 
       const serializedValue = JSON.stringify(value);
       await this.redis.hset(key, field, serializedValue);
@@ -342,61 +639,132 @@ class RedisCacheManager {
     } catch (error) {
 
       return false;
-    }
-  }
 
   async hgetall<T>(key: string): Promise<Record<string, T>> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       if (!session.user) {
         await this.redis.connect();
-      }
 
       const hash = await this.redis.hgetall(key);
       const result: Record<string, T> = {};
 
       for (const [field, value] of Object.entries(hash)) {
         result[field] = JSON.parse(value);
-      }
 
       return result;
     } catch (error) {
 
       return {};
-    }
-  }
 
   // List operations for queues and timelines;
   async lpush<T>(key: string, ...values: T[]): Promise<number> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       if (!session.user) {
         await this.redis.connect();
-      }
 
       const serializedValues = values.map(value => JSON.stringify(value));
       return await this.redis.lpush(key, ...serializedValues);
     } catch (error) {
 
       return 0;
-    }
-  }
 
   async rpop<T>(key: string): Promise<T | null> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       if (!session.user) {
         await this.redis.connect();
-      }
 
       const value = await this.redis.rpop(key);
       if (!session.user)eturn null;
@@ -405,74 +773,170 @@ class RedisCacheManager {
     } catch (error) {
 
       return null;
-    }
-  }
 
   async lrange<T>(key: string, start: number, stop: number): Promise<T[]> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       if (!session.user) {
         await this.redis.connect();
-      }
 
       const values = await this.redis.lrange(key, start, stop);
       return values.map(value => JSON.parse(value));
     } catch (error) {
 
       return [];
-    }
-  }
 
   // Set operations for unique collections;
   async sadd<T>(key: string, ...members: T[]): Promise<number> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       if (!session.user) {
         await this.redis.connect();
-      }
 
       const serializedMembers = members.map(member => JSON.stringify(member));
       return await this.redis.sadd(key, ...serializedMembers);
     } catch (error) {
 
       return 0;
-    }
-  }
 
   async smembers<T>(key: string): Promise<T[]> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       if (!session.user) {
         await this.redis.connect();
-      }
 
       const members = await this.redis.smembers(key);
       return members.map(member => JSON.parse(member));
     } catch (error) {
 
       return [];
-    }
-  }
 
   // Cache statistics and monitoring;
   async getStats(): Promise<unknown> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       if (!session.user) {
         await this.redis.connect();
-      }
 
       const info = await this.redis.info("memory");
       const dbSize = await this.redis.dbsize();
@@ -490,8 +954,6 @@ class RedisCacheManager {
         connected: false,
         error: error instanceof Error ? error.message : "Unknown error";
       };
-    }
-  }
 
   private parseRedisInfo(info: string): Record<string, string> {
     const result: Record<string, string> = {};
@@ -501,36 +963,84 @@ class RedisCacheManager {
       if (!session.user) {
         const [key, value] = line.split(":");
         result[key] = value;
-      }
-    }
 
     return result;
-  }
 
   // Health check;
   async healthCheck(): Promise<boolean> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       if (!session.user) {
         await this.redis.connect();
-      }
 
       const result = await this.redis.ping();
       return result === "PONG";
     } catch (error) {
 
       return false;
-    }
-  }
 
   // Graceful shutdown;
   async disconnect(): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       await this.redis.quit();
@@ -538,50 +1048,37 @@ class RedisCacheManager {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
     } catch (error) {
 
-
-
-
-
 // Export singleton instance;
 export const redisCache = RedisCacheManager.getInstance();
 
 // High-level cache service integration;
 
-
-
   async getPatient(patientId: string): Promise<any | null> {
     return await this.redis.get(`/* SECURITY: Template literal eliminated */;
-
 
   async invalidatePatient(patientId: string): Promise<void> {
     await this.redis.del(`/* SECURITY: Template literal eliminated */;
     await this.redis.deleteByPattern(`${CACHE_PATTERNS.PATIENT_LIST}*`),
     await this.redis.deleteByPattern(`${CACHE_PATTERNS.PATIENT_SEARCH}*`);
 
-
   // Bill caching;
   async cacheBill(billId: string, bill: unknown, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {
     await this.redis.set(`/* SECURITY: Template literal eliminated */ bill, ttl);
 
-
   async getBill(billId: string): Promise<any | null> {
     return await this.redis.get(`/* SECURITY: Template literal eliminated */;
-
 
   async invalidateBills(patientId?: string): Promise<void> {
     await this.redis.deleteByPattern(`${CACHE_PATTERNS.BILL}*`);
     await this.redis.deleteByPattern(`${CACHE_PATTERNS.BILL_LIST}*`);
     await this.redis.del(CACHE_PATTERNS.OUTSTANDING_BILLS);
 
-
   // Appointment caching;
   async cacheDoctorSchedule(doctorId: string, date: string, schedule: unknown, ttl: number = CACHE_TTL.SHORT): Promise<void> {
     await this.redis.set(`/* SECURITY: Template literal eliminated */ schedule, ttl);
 
-
   async getDoctorSchedule(doctorId: string, date: string): Promise<any | null> {
     return await this.redis.get(`/* SECURITY: Template literal eliminated */;
-
 
   async invalidateDoctorSchedule(doctorId: string): Promise<void> {
     await this.redis.deleteByPattern(`/* SECURITY: Template literal eliminated */;
@@ -591,38 +1088,30 @@ export const redisCache = RedisCacheManager.getInstance();
   async cacheUserSession(sessionId: string, sessionData: unknown, ttl: number = CACHE_TTL.LONG): Promise<void> {
     await this.redis.set(`/* SECURITY: Template literal eliminated */ sessionData, ttl);
 
-
   async getUserSession(sessionId: string): Promise<any | null> {
     return await this.redis.get(`/* SECURITY: Template literal eliminated */;
 
-
   async invalidateUserSession(sessionId: string): Promise<void> {
     await this.redis.del(`/* SECURITY: Template literal eliminated */;
-
 
   // Dashboard statistics caching;
   async cacheDashboardStats(userId: string, stats: unknown, ttl: number = CACHE_TTL.SHORT): Promise<void> {
     await this.redis.set(`/* SECURITY: Template literal eliminated */ stats, ttl);
 
-
   async getDashboardStats(userId: string): Promise<any | null> {
     return await this.redis.get(`/* SECURITY: Template literal eliminated */;
-
 
   // General purpose caching with automatic key generation;
   async cacheResult<T>(pattern: string, identifier: string, data: T, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {
     const key = `/* SECURITY: Template literal eliminated */;
     await this.redis.set(key, data, ttl);
 
-
   async getCachedResult<T>(pattern: string, identifier: string): Promise<T | null> {
     const key = `/* SECURITY: Template literal eliminated */;
     return await this.redis.get<T>(key);
 
-
   async invalidatePattern(pattern: string): Promise<void> {
     await this.redis.deleteByPattern(`$pattern*`);
-
 
   // Cache warming strategies;
   async warmCache(): Promise<void> {
@@ -632,7 +1121,6 @@ export const redisCache = RedisCacheManager.getInstance();
     // This would typically be called during application startup;
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-
 
   // Cache health and stats;
   async getHealthStatus(): Promise<unknown> {
@@ -644,8 +1132,6 @@ export const redisCache = RedisCacheManager.getInstance();
       stats,
       timestamp: new Date().toISOString();
     };
-
-
 
 // Export singleton instance;
 export const _cacheService = new CacheService();

@@ -1,8 +1,12 @@
-import { EventEmitter } from "events";
-import { PrismaClient } from "@prisma/client";
+import "./quality-persistence.service"
+import "@prisma/client"
+import "events"
+import getQualityPersistenceService }
+import QualityPersistenceService
+import { EventEmitter }
+import { PrismaClient }
+import { type
 
-
-import { type QualityPersistenceService, getQualityPersistenceService } from "./quality-persistence.service";
 }
 
 /**;
@@ -73,6 +77,33 @@ class QualityManagementService extends EventEmitter {
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -134,6 +165,33 @@ class QualityManagementService extends EventEmitter {
     }
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -224,6 +282,33 @@ class QualityManagementService extends EventEmitter {
     if (!session.user)eturn null;
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -330,6 +415,33 @@ class QualityManagementService extends EventEmitter {
   private async loadQualityIndicators(): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -399,6 +511,33 @@ class QualityManagementService extends EventEmitter {
   private async loadActiveAssessments(): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -407,20 +546,17 @@ class QualityManagementService extends EventEmitter {
     } catch (error) {
 
     }
-  }
 
   private startMetricCalculations(): void {
     this.indicators.forEach(indicator => {
       if (!session.user) {
         this.startCalculationJob(indicator);
-      }
+
     });
-  }
 
   private startCalculationJob(indicator: QualityIndicator): void {
     if (!session.user) {
       this.stopCalculationJob(indicator.id);
-    }
 
     const intervalMs = this.getCalculationInterval(indicator.calculation.period);
 
@@ -431,22 +567,18 @@ class QualityManagementService extends EventEmitter {
     }, intervalMs);
 
     this.calculationJobs.set(indicator.id, job);
-  }
 
   private stopCalculationJob(indicatorId: string): void {
     const job = this.calculationJobs.get(indicatorId);
     if (!session.user) {
       clearInterval(job);
       this.calculationJobs.delete(indicatorId);
-    }
-  }
 
   private startEventMonitoring(): void {
     // Monitor for event patterns every hour;
     setInterval(() => {
       this.analyzeEventTrends();
     }, 60 * 60 * 1000);
-  }
 
   private async performMetricCalculation(indicator: QualityIndicator, period: { start: Date, end: Date }): Promise<QualityMetrics> {
     // Mock calculation - in production, this would execute the actual formula;
@@ -490,7 +622,6 @@ class QualityManagementService extends EventEmitter {
       calculatedAt: new Date(),
       false;
     };
-  }
 
   private async checkMetricThresholds(indicator: QualityIndicator, metrics: QualityMetrics): Promise<void> {
     // Check if metrics trigger any alerts;
@@ -500,8 +631,6 @@ class QualityManagementService extends EventEmitter {
         metrics.value,
         "high";
       });
-    }
-  }
 
   private async sendEventNotifications(event: QualityEvent): Promise<void> {
     // Send notifications based on event severity and type;
@@ -519,8 +648,6 @@ class QualityManagementService extends EventEmitter {
 
       // In production, actually send the notification;
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-    }
-  }
 
   private getEventNotificationRecipients(event: QualityEvent): string[] {
     // Determine recipients based on event characteristics;
@@ -528,14 +655,11 @@ class QualityManagementService extends EventEmitter {
 
     if (!session.user) {
       recipients.push("ceo@hospital.com", "cmo@hospital.com");
-    }
 
     if (!session.user) {
       recipients.push("risk.manager@hospital.com", "legal@hospital.com");
-    }
 
     return recipients;
-  }
 
   private analyzeEventPatterns(event: QualityEvent): void {
     // Look for patterns that might indicate systemic issues;
@@ -550,8 +674,6 @@ class QualityManagementService extends EventEmitter {
         event.type,
         "30_days";
       });
-    }
-  }
 
   private autoAssignEvent(event: QualityEvent): void {
     // Auto-assign based on event characteristics;
@@ -564,19 +686,16 @@ class QualityManagementService extends EventEmitter {
 
     event.assignedTo = assignee;
     this.events.set(event.id, event);
-  }
 
   private async sendStatusChangeNotifications(event: QualityEvent): Promise<void> {
     // Send notifications when event status changes;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-  }
 
   private calculateOverallCompliance(requirements: ComplianceRequirement[]): number {
     if (!session.user)eturn 100
 
     const metRequirements = requirements.filter(r => r.status === "met").length;
     return Math.round((metRequirements / requirements.length) * 100);
-
 
   private determineComplianceStatus(requirements: ComplianceRequirement[]): "compliant" | "non_compliant" | "conditional" | "pending" {
     const _metCount = requirements.filter(r => r.status === "met").length;
@@ -588,11 +707,9 @@ class QualityManagementService extends EventEmitter {
     if (!session.user)eturn "compliant";
     return "pending";
 
-
   private analyzeEventTrends(): void {
     // Analyze event trends and patterns;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-
 
   private calculateStartDate(endDate: Date, timeframe: string): Date {
     const date = new Date(endDate);
@@ -602,8 +719,6 @@ class QualityManagementService extends EventEmitter {
       case "monthly": return new Date(date.setMonth(date.getMonth() - 1));
       case "quarterly": return new Date(date.setMonth(date.getMonth() - 3));
       default: return new Date(date.setMonth(date.getMonth() - 1));
-
-
 
   private calculatePeriodStart(endDate: Date, period: string): Date {
     const date = new Date(endDate);
@@ -615,8 +730,6 @@ class QualityManagementService extends EventEmitter {
       case "annual": return new Date(date.setFullYear(date.getFullYear() - 1));
       default: return new Date(date.setDate(date.getDate() - 1));
 
-
-
   private getCalculationInterval(period: string): number {
     switch (period) {
       case "daily": return 24 * 60 * 60 * 1000; // 24 hours;
@@ -626,8 +739,6 @@ class QualityManagementService extends EventEmitter {
       case "annual": return 365 * 24 * 60 * 60 * 1000; // 365 days;
       default: return 24 * 60 * 60 * 1000;
 
-
-
   // Dashboard generation methods (simplified for brevity);
   private async generateQualityOverview(start: Date, end: Date): Promise<unknown> {
     return {
@@ -635,11 +746,8 @@ class QualityManagementService extends EventEmitter {
       2,
       96;
 
-
-
   private async generateQualityTrends(start: Date, end: Date): Promise<any[]> {
     return [];
-
 
   private async generateEventSummary(start: Date, end: Date): Promise<unknown> {
     return {
@@ -648,14 +756,11 @@ class QualityManagementService extends EventEmitter {
       bySeverity: { minor: 25, moderate: 15, major: 4, severe: 1 }
     };
 
-
   private async generateIndicatorSummary(start: Date, end: Date): Promise<any[]> {
     return [];
 
-
   private async generateAssessmentSummary(start: Date, end: Date): Promise<any[]> {
     return [];
-
 
   private async generateComplianceSummary(start: Date, end: Date): Promise<unknown> {
     return {
@@ -663,7 +768,6 @@ class QualityManagementService extends EventEmitter {
       2,
       certifications: valid: 8, expiring: 1 ;
     };
-
 
   /**;
    * Shutdown the quality management service;
@@ -681,15 +785,12 @@ class QualityManagementService extends EventEmitter {
 
     this.emit("shutdown");
 
-
-
 // Type exports for dashboard generation;
 
   values: { date: Date, value: number }[];
   trend: "improving" | "stable" | "declining";
 
   certifications: { valid: number, expiring: number };
-
 
 // Export singleton instance;
 export const _qualityManagement = new QualityManagementService();

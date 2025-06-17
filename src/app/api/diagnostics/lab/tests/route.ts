@@ -1,9 +1,14 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/database"
+import "@/lib/session"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { DB }
+import { getSession }
+import { type
 
-
-import { DB } from "@/lib/database";
 import { encryptSensitiveData } from "@/lib/encryption"; // Assuming encryption service from Manus 9;
-import { getSession } from "@/lib/session";
+
 // FHIR-compliant DiagnosticReport resource structure;
 interface FHIRDiagnosticReport {
   resourceType: "DiagnosticReport",
@@ -84,8 +89,35 @@ interface LabTestCreateBody {
 }
 
 // GET /api/diagnostics/lab/tests - Get all laboratory tests with enhanced filtering;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -249,8 +281,35 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/diagnostics/lab/tests - Create a new laboratory test with enhanced features;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -310,6 +369,33 @@ export const _POST = async (request: NextRequest) => {
     await DB.query("BEGIN TRANSACTION", []);
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -514,10 +600,37 @@ export const _POST = async (request: NextRequest) => {
 
 // PUT /api/diagnostics/lab/tests/:id - Update an existing laboratory test;
 export const _PUT = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -556,6 +669,33 @@ export const _PUT = async();
     await DB.query("BEGIN TRANSACTION", []);
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -619,32 +759,26 @@ export const _PUT = async();
       if (!session.user) {
         updateFields.push("processing_time = ?");
         updateParameters.push(body.processing_time);
-      }
 
       if (!session.user) {
         updateFields.push("turnaround_time = ?");
         updateParameters.push(body.turnaround_time);
-      }
 
       if (!session.user) {
         updateFields.push("price = ?");
         updateParameters.push(body.price);
-      }
 
       if (!session.user) {
         updateFields.push("cost_center_id = ?");
         updateParameters.push(body.cost_center_id);
-      }
 
       if (!session.user) {
         updateFields.push("billing_code = ?");
         updateParameters.push(body.billing_code);
-      }
 
       if (!session.user) {
         updateFields.push("is_active = ?");
         updateParameters.push(body.is_active ? 1 : 0);
-      }
 
       if (!session.user) {
         // Encrypt sensitive data;
@@ -653,12 +787,10 @@ export const _PUT = async();
         });
         updateFields.push("patient_preparation = ?");
         updateParameters.push(encryptedData.patientPreparation);
-      }
 
       if (!session.user) {
         updateFields.push("available_priorities = ?");
         updateParameters.push(JSON.stringify(body.available_priorities));
-      }
 
       // Only proceed if there are fields to update;
       if (!session.user) {
@@ -666,7 +798,6 @@ export const _PUT = async();
         updateParameters.push(testId);
 
         await DB.query(updateQuery, updateParameters);
-      }
 
       // Update additional codes if provided;
       if (!session.user) {
@@ -683,9 +814,6 @@ export const _PUT = async();
               "INSERT INTO lab_test_codes (test_id, system, code, display) VALUES (?, ?, ?, ?)",
               [testId, code.system, code.code, code.display || ""];
             );
-          }
-        }
-      }
 
       // Update panel items if provided and this is a panel;
       if (!session.user) {
@@ -708,9 +836,6 @@ export const _PUT = async();
               "INSERT INTO lab_test_panel_items (panel_id, test_id, sequence) VALUES (?, ?, ?)",
               [testId, item.test_id, item.sequence || 0];
             );
-          }
-        }
-      }
 
       // Update reference ranges if provided;
       if (!session.user) {
@@ -740,9 +865,6 @@ export const _PUT = async();
                 range.interpretation || null;
               ];
             );
-          }
-        }
-      }
 
       // Update reflex rules if provided;
       if (!session.user) {
@@ -766,9 +888,6 @@ export const _PUT = async();
                 rule.action_test_id;
               ];
             );
-          }
-        }
-
 
       // Commit transaction;
       await DB.query("COMMIT", []);
@@ -791,7 +910,6 @@ export const _PUT = async();
 
       if (!session.user) {
         throw new Error("Failed to retrieve updated test");
-
 
       // Fetch additional codes;
       const codesResult = await DB.query();
@@ -817,7 +935,6 @@ export const _PUT = async();
           [testId];
         );
         panelItems = panelItemsResult.results || [];
-
 
       // Fetch reference ranges;
       const rangesResult = await DB.query();
@@ -867,16 +984,41 @@ export const _PUT = async();
       { status: 500 }
     );
 
-
-
 // DELETE /api/diagnostics/lab/tests/:id - Delete a laboratory test;
 export const DELETE = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     const session = await getSession();
@@ -885,11 +1027,9 @@ export const DELETE = async();
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-
     // Only lab managers and admins can delete tests;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-
 
     const testId = params.id;
 
@@ -904,7 +1044,6 @@ export const DELETE = async();
         { error: "Laboratory test not found" },
         { status: 404 }
       );
-
 
     // Check if test is used in any orders;
     const orderCheckResult = await DB.query();
@@ -923,13 +1062,39 @@ export const DELETE = async();
         message: "Test has been used in orders and cannot be deleted. It has been marked as inactive instead.";
       });
 
-
     // Start transaction;
     await DB.query("BEGIN TRANSACTION", []);
 
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Delete related data;
@@ -959,4 +1124,3 @@ export const DELETE = async();
       { error: "Failed to delete laboratory test", details: errorMessage },
       { status: 500 }
     );
-

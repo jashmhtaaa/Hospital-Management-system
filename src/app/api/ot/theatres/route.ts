@@ -1,6 +1,10 @@
+import "@cloudflare/workers-types"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { D1Database }
+import { type
 
-import type { D1Database } from "@cloudflare/workers-types";
-import { type NextRequest, NextResponse } from "next/server";
 export const _runtime = "edge";
 
 // Interface for the POST request body;
@@ -12,8 +16,35 @@ interface TheatreCreateBody {
 }
 
 // GET /api/ot/theatres - List all operation theatres;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -47,16 +78,41 @@ export const _GET = async (request: NextRequest) => {
       { message: "Error fetching operation theatres", details: errorMessage },
       { status: 500 }
     );
-  }
-}
 
 // POST /api/ot/theatres - Create a new operation theatre;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const body = (await request.json()) as TheatreCreateBody;
     const { name, location, specialty, equipment } = body;
 
@@ -65,7 +121,6 @@ export const _POST = async (request: NextRequest) => {
         { message: "Theatre name is required" },
         { status: 400 }
       );
-    }
 
     const DB = process.env.DB as unknown as D1Database;
     const id = crypto.randomUUID(); // Generate UUID;
@@ -121,5 +176,3 @@ export const _POST = async (request: NextRequest) => {
       { message: "Error creating operation theatre", details: errorMessage },
       { status: 500 }
     );
-
-

@@ -1,9 +1,13 @@
-import type { D1Database, D1Result } from "@cloudflare/workers-types"; // Import D1Result;
-import { type NextRequest, NextResponse } from "next/server";
+import { D1Database, D1Result  } from "@cloudflare/workers-types"; // Import D1Result;
+import "@/lib/auth"
+import "@/lib/session"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { checkUserRole }
+import { getSession }
+import { type
 
-
-import { checkUserRole } from "@/lib/auth";
-import { getSession } from "@/lib/session";
 // Define interface for PUT request body;
 interface OrderUpdateInput {
   status?: string;
@@ -11,7 +15,7 @@ interface OrderUpdateInput {
   clinical_indication?: string;
   procedure_type_id?: string;
 export const _GET = async();
-  request: NextRequest;
+  request: any;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   const session = await getSession();
@@ -23,6 +27,33 @@ export const _GET = async();
   const DB = process.env.DB as unknown as D1Database;
 
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -50,7 +81,7 @@ export const _GET = async();
     );
   }
 export const _PUT = async();
-  request: NextRequest;params : params: Promise<{ id: string }> ;
+  request: any;params : params: Promise<{ id: string }> ;
 ) {
   const session = await getSession();
   // Allow Admin, Receptionist, Technician to update status/details;
@@ -62,6 +93,33 @@ export const _PUT = async();
   const DB = process.env.DB as unknown as D1Database;
 
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -112,13 +170,12 @@ export const _PUT = async();
           { error: "Radiology order not found" },
           { status: 404 }
         );
-      }
+
       // If it exists but no changes were made (e.g., same data sent), return success;
       return NextResponse.json({
         id: orderId,
         status: "Radiology order update processed (no changes detected)";
       });
-    }
 
     return NextResponse.json({
       id: orderId,
@@ -132,9 +189,9 @@ export const _PUT = async();
       { error: "Failed to update radiology order", details: errorMessage },
       { status: 500 }
     );
-  }
+
 export const _DELETE = async();
-  request: NextRequest;params : params: Promise<{ id: string }> ;
+  request: any;params : params: Promise<{ id: string }> ;
 ) {
   const session = await getSession();
   // Typically only Admins or perhaps Receptionists should cancel orders;
@@ -148,9 +205,36 @@ export const _DELETE = async();
 
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Instead of deleting, consider marking as \"cancelled\";
     const updatedAt = new Date().toISOString();
     const info: D1Result = await DB.prepare();
@@ -174,7 +258,7 @@ export const _DELETE = async();
           { error: "Radiology order not found" },
           { status: 404 }
         );
-      }
+
       // Check if existingOrder has status property before accessing it;
       // FIX: Removed unnecessary escapes around \"object\" and \"status\";
       if (!session.user)eturn NextResponse.json({
@@ -185,7 +269,6 @@ export const _DELETE = async();
         { error: "Failed to cancel radiology order (unknown reason)" },
         { status: 500 }
       );
-    }
 
     return NextResponse.json({
       id: orderId,
@@ -199,8 +282,3 @@ export const _DELETE = async();
       { error: "Failed to cancel radiology order", details: errorMessage },
       { status: 500 }
     );
-  }
-
-}
-
-

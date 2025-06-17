@@ -22,9 +22,36 @@ export const DB = (): DBConnection => {
     query: async (sql: string, params: unknown[] = []) => {
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         // In a real implementation, this would execute the query against a database;
         // For testing purposes, we"re returning a mock result;
         // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
@@ -63,7 +90,34 @@ export const executeTransaction = async();
 
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     // Start transaction;
@@ -73,7 +127,6 @@ export const executeTransaction = async();
     for (const query of queries) {
       const result = await db.query(query.sql, query.params);
       results.push(result);
-
 
     // Commit transaction;
     await db.query("COMMIT");

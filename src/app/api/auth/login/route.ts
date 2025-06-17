@@ -1,12 +1,20 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
-import { z } from "zod";
+import "@/lib/authUtils"
+import "@/lib/session"
+import "@/types/user"
+import "@opennextjs/cloudflare"
+import "iron-session"
+import "next/headers"
+import "zod"
+import IronSessionData
+import sessionOptions }
+import { comparePassword }
+import { cookies }
+import { getCloudflareContext }
+import { getIronSession }
+import { type
+import { User }
+import { z }
 
-
-import { comparePassword } from "@/lib/authUtils";
-import { type IronSessionData, sessionOptions } from "@/lib/session";
-import type { User } from "@/types/user";
 // app/api/auth/login/route.ts;
 // Input validation schema;
 const LoginSchema = z.object({
@@ -14,6 +22,33 @@ const LoginSchema = z.object({
   password: z.string().min(1, "Password is required")});
 export const _POST = async (request: Request) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -25,7 +60,6 @@ export const _POST = async (request: Request) => {
       return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
         status: 400,
         headers: { "Content-Type": "application/json" }});
-    }
 
     const { identifier, password } = validation.data;
 
@@ -34,7 +68,6 @@ export const _POST = async (request: Request) => {
 
     if (!session.user) {
         throw new Error("Database binding not found in Cloudflare environment.");
-    }
 
     // 1. Find user by username or email;
     // Assuming permissions are not directly stored/queried here yet.;
@@ -56,7 +89,6 @@ export const _POST = async (request: Request) => {
       return new Response(JSON.stringify({ error: "Invalid credentials or user inactive" }), {
         status: 401, // Unauthorized;
         headers: { "Content-Type": "application/json" }});
-    }
 
     // 2. Compare password;
     const isPasswordValid = await comparePassword(password, userResult.password_hash);
@@ -65,7 +97,6 @@ export const _POST = async (request: Request) => {
       return new Response(JSON.stringify({ error: "Invalid credentials" }), {
         status: 401, // Unauthorized;
         headers: { "Content-Type": "application/json" }});
-    }
 
     // 3. Create session;
     const cookieStore = await cookies();
@@ -95,4 +126,3 @@ export const _POST = async (request: Request) => {
     return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
       status: 500,
       headers: { "Content-Type": "application/json" }});
-

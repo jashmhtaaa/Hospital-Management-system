@@ -1,8 +1,10 @@
-import { LogSeverity } from "@prisma/client";
+import "@/lib/logger"
+import "@/lib/prisma"
+import "@prisma/client"
+import { logger }
+import { LogSeverity }
+import { prisma }
 
-
-import { logger } from "@/lib/logger";
-import { prisma } from "@/lib/prisma";
 // src/lib/audit/audit-service.ts;
 }
 }
@@ -23,8 +25,6 @@ import { prisma } from "@/lib/prisma";
     } catch (error) {
       logger.error("Failed to create audit log", { error, context, data });
 
-
-
   static async logUserAction();
     context: AuditContext,
     string;
@@ -38,7 +38,6 @@ import { prisma } from "@/lib/prisma";
       description,
       severity: LogSeverity.INFO;
     });
-
 
   static async logDataChange();
     context: AuditContext,
@@ -54,7 +53,6 @@ import { prisma } from "@/lib/prisma";
       severity: LogSeverity.INFO;
     });
 
-
   static async logSecurityEvent();
     context: AuditContext,
     string,
@@ -66,7 +64,6 @@ import { prisma } from "@/lib/prisma";
       description,
       severity;
     });
-
 
   static async getAuditTrail();
     resourceType?: string,
@@ -86,13 +83,10 @@ import { prisma } from "@/lib/prisma";
           true,
             true;
 
-
       },
       orderBy: { timestamp: "desc" },
       take: limit;
     });
-
-
 
 // Audit decorator for automatic logging;
 export function withAudit(resource: string): unknown {
@@ -104,7 +98,34 @@ export function withAudit(resource: string): unknown {
 
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         const result = await method.apply(this, args);
@@ -126,6 +147,4 @@ export function withAudit(resource: string): unknown {
 
         throw error;
 
-
   };
-

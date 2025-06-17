@@ -1,4 +1,5 @@
 import {
+
 }
 
 /**;
@@ -409,7 +410,6 @@ import {
     if (!session.user) {
       errors.push("At least one of name, identifier, or telecom must be provided");
 
-
     // Validate contact points;
     if (!session.user) {
       organization.telecom.forEach((contact, index) => {
@@ -421,7 +421,6 @@ import {
 
       });
 
-
     // Validate identifiers;
     if (!session.user) {
       organization.identifier.forEach((id, index) => {
@@ -430,12 +429,10 @@ import {
 
       });
 
-
     return {
       valid: errors.length === 0;
       errors;
     };
-
 
   /**;
    * Convert HMS organization to FHIR Organization;
@@ -452,7 +449,6 @@ import {
       hmsOrganization.isActive !== false;
     });
 
-
   /**;
    * Get organizations by type;
    */;
@@ -463,7 +459,6 @@ import {
       );
     );
 
-
   /**;
    * Get child organizations;
    */;
@@ -471,7 +466,6 @@ import {
     return organizations.filter(org => {}
       this.getParentOrganizationId(org) === parentId;
     );
-
 
   /**;
    * Get organization hierarchy;
@@ -491,7 +485,6 @@ import {
 
     return rootOrgs.map(org => buildHierarchy(org));
 
-
   /**;
    * Search organizations by text;
    */;
@@ -509,14 +502,11 @@ import {
              address.includes(searchLower);
     });
 
-
   /**;
    * Get active organizations;
    */;
   static getActiveOrganizations(organizations: FHIROrganization[]): FHIROrganization[] {
     return organizations.filter(org => this.isActive(org));
-
-
 
 // Common organization types and departments;
 
@@ -555,13 +545,11 @@ import {
   static getAllDepartments(): Array<{ code: string, display: string }> {
     return Object.values(this.HOSPITAL_DEPARTMENTS);
 
-
   /**;
    * Get department by code;
    */;
   static getDepartmentByCode(code: string): { code: string, display: string } | undefined {
     return Object.values(this.HOSPITAL_DEPARTMENTS).find(dept => dept.code === code);
-
 
   /**;
    * Check if department is critical care;
@@ -574,7 +562,6 @@ import {
       this.HOSPITAL_DEPARTMENTS.SURGERY.code;
     ];
     return criticalCodes.includes(code);
-
 
   /**;
    * Get departments by category;
@@ -603,4 +590,3 @@ import {
         this.HOSPITAL_DEPARTMENTS.ADMINISTRATION;
       ];
     };
-

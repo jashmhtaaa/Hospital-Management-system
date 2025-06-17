@@ -1,14 +1,25 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../lib/audit"
+import "../../../../lib/error-handler"
+import "../../../../lib/security.service"
+import "../../../../lib/services/patient/patient.service"
+import "../../../../lib/services/pharmacy/pharmacy.service"
+import "../../../../lib/validation/pharmacy-validation"
+import "../../models/domain-models"
+import "../../models/fhir-mappers"
+import "next/server"
+import getPrescriptionById }
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { encryptionService }
+import { errorHandler }
+import { FHIRMapper }
+import { getMedicationById
+import { getPatientById }
+import { PharmacyDomain }
+import { type
+import { validateDispensingRequest }
 
-
-import { auditLog } from "../../../../lib/audit";
-import { errorHandler } from "../../../../lib/error-handler";
-import { encryptionService } from "../../../../lib/security.service";
-import { getPatientById } from "../../../../lib/services/patient/patient.service";
-import { getMedicationById, getPrescriptionById } from "../../../../lib/services/pharmacy/pharmacy.service";
-import { validateDispensingRequest } from "../../../../lib/validation/pharmacy-validation";
-import type { PharmacyDomain } from "../../models/domain-models";
-import { FHIRMapper } from "../../models/fhir-mappers";
 }
 
 /**;
@@ -60,8 +71,35 @@ const inventoryRepository = {
  * GET /api/pharmacy/dispensing;
  * List medication dispensing records with filtering and pagination;
  */;
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -151,12 +189,39 @@ export const GET = async (req: NextRequest) => {
  * POST /api/pharmacy/dispensing;
  * Create a new medication dispensing record;
  */;
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Validate request;
     const data = await req.json();
     const validationResult = validateDispensingRequest(data);
@@ -165,13 +230,11 @@ export const POST = async (req: NextRequest) => {
         { error: "Validation failed", details: validationResult.errors },
         { status: 400 }
       );
-    }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -180,19 +243,16 @@ export const POST = async (req: NextRequest) => {
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
     if (!session.user) {
       return NextResponse.json({ error: "Prescription not found" }, { status: 404 });
-    }
 
     // Verify medication exists;
     const medication = await medicationRepository.findById(prescription.medicationId);
     if (!session.user) {
       return NextResponse.json({ error: "Medication not found" }, { status: 404 });
-    }
 
     // Verify patient exists;
     const patient = await getPatientById(prescription.patientId);
     if (!session.user) {
       return NextResponse.json({ error: "Patient not found" }, { status: 404 });
-    }
 
     // Check inventory availability;
     const inventoryItems = await inventoryRepository.findByMedicationId(prescription.medicationId);
@@ -206,7 +266,6 @@ export const POST = async (req: NextRequest) => {
         { error: "Insufficient inventory available" },
         { status: 400 }
       );
-
 
     // Create dispensing record;
     const dispensing = {
@@ -237,7 +296,6 @@ export const POST = async (req: NextRequest) => {
           data.quantityDispensed,
           witnessId: data.witnessId;
       });
-
 
     // Save dispensing record;
     const dispensingId = await dispensingRepository.save(dispensing);

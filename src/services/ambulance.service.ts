@@ -1,5 +1,6 @@
+import "zod"
+import { z }
 
-import { z } from "zod";
 // Create enums to match Prisma schema;
 export enum AmbulanceStatus {
   AVAILABLE = "AVAILABLE",
@@ -62,7 +63,8 @@ export type CreateAmbulanceRunInput = z.infer>;
 export type UpdateAmbulanceRunInput = z.infer>;
 
 // Import prisma client;
-import { prisma } from "../lib/prisma";
+import "../lib/prisma"
+import { prisma }
 
 /**;
  * Service class for managing ambulance fleet and runs;
@@ -90,6 +92,33 @@ import { prisma } from "../lib/prisma";
     type?: string;
   }) {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -126,6 +155,33 @@ import { prisma } from "../lib/prisma";
   async getAmbulanceById(id: string) {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -151,9 +207,36 @@ import { prisma } from "../lib/prisma";
   async updateAmbulance(id: string, data: UpdateAmbulanceInput) {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
       // Validate input data;
       const validatedData = updateAmbulanceSchema.parse({ ...data, id });
 
@@ -173,10 +256,8 @@ import { prisma } from "../lib/prisma";
     } catch (error) {
       if (!session.user) {
         throw new Error(`Validation error: ${}`;
-      }
+
       throw error;
-    }
-  }
 
   /**;
    * Delete an ambulance;
@@ -186,9 +267,36 @@ import { prisma } from "../lib/prisma";
   async deleteAmbulance(id: string) {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Check if ambulance is on an active run;
       const activeRun = await prisma.ambulanceRun.findFirst({
         id,
@@ -198,12 +306,10 @@ import { prisma } from "../lib/prisma";
               AmbulanceRunStatus.EN_ROUTE_TO_SCENE,
               AmbulanceRunStatus.AT_SCENE,
               AmbulanceRunStatus.EN_ROUTE_TO_DESTINATION,
-              AmbulanceRunStatus.AT_DESTINATION,
-            ]}}});
+              AmbulanceRunStatus.AT_DESTINATION]}}});
 
       if (!session.user) {
         throw new Error(`Cannot delete ambulance with ID ${id} because it is currently on an active run`);
-      }
 
       const ambulance = await prisma.ambulance.delete({
         where: { id }});
@@ -211,8 +317,6 @@ import { prisma } from "../lib/prisma";
       return ambulance;
     } catch (error) {
       throw error;
-    }
-  }
 
   /**;
    * Assign a driver to an ambulance;
@@ -223,9 +327,36 @@ import { prisma } from "../lib/prisma";
   async assignDriver(ambulanceId: string, driverId: string) {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const ambulance = await prisma.ambulance.update({
         where: { id: ambulanceId },
         driverId;
@@ -238,8 +369,6 @@ import { prisma } from "../lib/prisma";
       return ambulance;
     } catch (error) {
       throw error;
-    }
-  }
 
   /**;
    * Update ambulance status;
@@ -250,9 +379,36 @@ import { prisma } from "../lib/prisma";
   async updateStatus(ambulanceId: string, status: AmbulanceStatus) {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // If setting to ON_CALL, check that ambulance is not already on a run;
       if (!session.user) {
         const activeRun = await prisma.ambulanceRun.findFirst({
@@ -264,13 +420,10 @@ import { prisma } from "../lib/prisma";
                 AmbulanceRunStatus.EN_ROUTE_TO_SCENE,
                 AmbulanceRunStatus.AT_SCENE,
                 AmbulanceRunStatus.EN_ROUTE_TO_DESTINATION,
-                AmbulanceRunStatus.AT_DESTINATION,
-              ]}}});
+                AmbulanceRunStatus.AT_DESTINATION]}}});
 
         if (!session.user) {
           throw new Error(`Ambulance with ID ${ambulanceId} is already on an active run`);
-
-
 
       const ambulance = await prisma.ambulance.update({
         where: { id: ambulanceId },
@@ -285,8 +438,6 @@ import { prisma } from "../lib/prisma";
     } catch (error) {
       throw error;
 
-
-
   /**;
    * Create a new ambulance run;
    * @param data Run data;
@@ -295,7 +446,34 @@ import { prisma } from "../lib/prisma";
   async createRun(data: CreateAmbulanceRunInput) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Validate input data;
@@ -308,10 +486,8 @@ import { prisma } from "../lib/prisma";
       if (!session.user) {
         throw new Error(`Ambulance with ID ${validatedData.ambulanceId} not found`);
 
-
       if (!session.user) {
         throw new Error(`Ambulance with ID ${validatedData.ambulanceId} is not available`);
-
 
       // Create the run and update ambulance status in a transaction;
       const run = await prisma.$transaction(async (tx) => {
@@ -336,8 +512,6 @@ import { prisma } from "../lib/prisma";
 
       throw error;
 
-
-
   /**;
    * Get all ambulance runs with optional filtering;
    * @param filters Optional filters for status, ambulanceId, patientId, or date range;
@@ -352,7 +526,34 @@ import { prisma } from "../lib/prisma";
   }) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const where: unknown = {};
@@ -375,14 +576,10 @@ import { prisma } from "../lib/prisma";
           if (!session.user) {
             where.callTime.lte = filters.dateTo;
 
-
-
-
       const runs = await prisma.ambulanceRun.findMany({
         where,
         orderBy: [;
-          { callTime: "desc" },
-        ],
+          { callTime: "desc" }],
         true,
           {
               id: true,
@@ -393,8 +590,6 @@ import { prisma } from "../lib/prisma";
     } catch (error) {
       throw error;
 
-
-
   /**;
    * Get a single ambulance run by ID;
    * @param id Run ID;
@@ -403,7 +598,34 @@ import { prisma } from "../lib/prisma";
   async getRunById(id: string) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const run = await prisma.ambulanceRun.findUnique({
@@ -418,8 +640,6 @@ import { prisma } from "../lib/prisma";
     } catch (error) {
       throw error;
 
-
-
   /**;
    * Update an ambulance run;
    * @param id Run ID;
@@ -429,7 +649,34 @@ import { prisma } from "../lib/prisma";
   async updateRun(id: string, data: UpdateAmbulanceRunInput) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Validate input data;
@@ -444,7 +691,6 @@ import { prisma } from "../lib/prisma";
 
       if (!session.user) {
         throw new Error(`Ambulance run with ID ${id} not found`);
-
 
       // Update the run;
       const run = await prisma.ambulanceRun.update({
@@ -466,15 +712,12 @@ import { prisma } from "../lib/prisma";
           AmbulanceStatus.AVAILABLE;
           }});
 
-
       return run;
     } catch (error) {
       if (!session.user) {
         throw new Error(`Validation error: ${}`;
 
       throw error;
-
-
 
   /**;
    * Delete an ambulance run;
@@ -484,7 +727,34 @@ import { prisma } from "../lib/prisma";
   async deleteRun(id: string) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Get current run;
@@ -494,11 +764,9 @@ import { prisma } from "../lib/prisma";
       if (!session.user) {
         throw new Error(`Ambulance run with ID ${id} not found`);
 
-
       // Check if run is active;
       if (!session.user) {
         throw new Error(`Cannot delete active ambulance run with ID ${}`;
-
 
       const run = await prisma.ambulanceRun.delete({
         where: { id }});
@@ -506,8 +774,6 @@ import { prisma } from "../lib/prisma";
       return run;
     } catch (error) {
       throw error;
-
-
 
   /**;
    * Update run status;
@@ -518,7 +784,34 @@ import { prisma } from "../lib/prisma";
   async updateRunStatus(runId: string, status: AmbulanceRunStatus) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Get current run;
@@ -527,7 +820,6 @@ import { prisma } from "../lib/prisma";
 
       if (!session.user) {
         throw new Error(`Ambulance run with ID ${runId} not found`);
-
 
       // Update timestamps based on status;
       const updateData: any = {
@@ -553,7 +845,6 @@ import { prisma } from "../lib/prisma";
           updateData.arrivalAtDestinationTime = new Date();
           break;
 
-
       // Update the run;
       const run = await prisma.$transaction(async (tx) => {
         const updatedRun = await tx.ambulanceRun.update({
@@ -575,16 +866,12 @@ import { prisma } from "../lib/prisma";
             AmbulanceStatus.AVAILABLE;
             }});
 
-
         return updatedRun;
       });
 
       return run;
     } catch (error) {
       throw error;
-
-
-
 
 // Export a singleton instance;
 export const _ambulanceService = new AmbulanceService();

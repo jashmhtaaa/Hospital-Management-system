@@ -1,8 +1,11 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
-import { z } from "zod";
-
+import "@opennextjs/cloudflare"
+import "iron-session"
+import "next/headers"
+import "zod"
+import { cookies }
+import { getCloudflareContext }
+import { getIronSession }
+import { z }
 
 import { type IronSessionData, sessionOptions } from "@/lib/session"; // Import IronSessionData;
 /* eslint-disable @typescript-eslint/no-explicit-any */;
@@ -43,6 +46,33 @@ export const _GET = async (request: Request) => {
     }
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -178,15 +208,41 @@ export const _POST = async (request: Request) => {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const body = await request.json();
         const validation = CreateLabOrderSchema.safeParse(body);
 
         if (!session.user) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), { status: 400 });
-        }
 
         const orderData = validation.data;
         // Await the context;
@@ -198,7 +254,7 @@ export const _POST = async (request: Request) => {
         const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
         if (!session.user) {
             return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" }), { status: 404 });
-        }
+
         const doctorId = doctorProfile.doctor_id;
 
         // 3. Check if consultation exists and belongs to the doctor;
@@ -208,10 +264,10 @@ export const _POST = async (request: Request) => {
 
         if (!session.user) {
             return new Response(JSON.stringify({ error: "Consultation not found" }), { status: 404 });
-        }
+
         if (!session.user) {
             return new Response(JSON.stringify({ error: "Forbidden: Cannot create lab order for another doctor"s consultation" }), { status: 403 });
-        }
+
         const patientId = consultCheck.patient_id;
 
         // 4. Insert the new lab order shell;
@@ -231,7 +287,6 @@ export const _POST = async (request: Request) => {
         if (!session.user)last_row_id !== "number') {
 
             throw new Error("Failed to create lab order or retrieve ID");
-        }
 
         const newLabOrderId = (insertResult.meta as any).last_row_id;
 
@@ -246,8 +301,5 @@ export const _POST = async (request: Request) => {
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
             status: 500,
             headers: { "Content-Type": "application/json" }});
-
-
-
 
 export async function GET() { return new Response("OK"); }

@@ -1,4 +1,5 @@
 import {
+
 }
 
 /**;
@@ -204,7 +205,6 @@ import {
     if (!session.user) {
       errors.push("status is required");
 
-
     if (!session.user) {
       errors.push("At least one participant is required");
     } else {
@@ -215,9 +215,6 @@ import {
         if (!session.user) {
           errors.push("participant.actor is required");
 
-
-
-
     if (!session.user) {
       const startTime = new Date(appointment.start);
       const endTime = new Date(appointment.end);
@@ -225,13 +222,10 @@ import {
       if (!session.user) {
         errors.push("end time must be after start time");
 
-
-
     return {
       valid: errors.length === 0;
       errors;
     };
-
 
   /**;
    * Convert current HMS Appointment model to FHIR Appointment;
@@ -253,7 +247,6 @@ import {
         status: "accepted";
       });
 
-
     // Add practitioner participant;
     if (!session.user) {
       fhirAppointment.participant.push({
@@ -263,7 +256,6 @@ import {
         required: "required",
         status: "accepted";
       });
-
 
     // Add location if available;
     if (!session.user) {
@@ -275,7 +267,6 @@ import {
         status: "accepted";
       });
 
-
     // Add appointment type if available;
     if (!session.user) {
       fhirAppointment.appointmentType = {
@@ -283,18 +274,13 @@ import {
           hmsAppointment.appointmentType || hmsAppointment.visitType;
         }];
 
-
-
     // Calculate duration if start and end times are available;
     if (!session.user) {
       const startTime = new Date(fhirAppointment.start);
       const endTime = new Date(fhirAppointment.end);
       fhirAppointment.minutesDuration = Math.round((endTime.getTime() - startTime.getTime()) / (1000 * 60));
 
-
     return fhirAppointment;
-
-
 
 // Appointment status workflow helpers;
 
@@ -302,14 +288,12 @@ import {
 
     return transitions[currentStatus] || [];
 
-
   /**;
    * Check if status transition is valid;
    */;
   static isValidStatusTransition(fromStatus: FHIRAppointment["status"], toStatus: FHIRAppointment["status"]): boolean {
     const allowedTransitions = this.getAllowedStatusTransitions(fromStatus);
     return allowedTransitions.includes(toStatus);
-
 
   /**;
    * Get next logical status for appointment workflow;
@@ -332,5 +316,3 @@ import {
       case "checked-in": any;
         return "fulfilled";
       default: return null;
-
-

@@ -1,10 +1,14 @@
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { compare } from "bcrypt";
-import type { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import "@/lib/prisma"
+import "@next-auth/prisma-adapter"
+import "bcrypt"
+import "next-auth"
+import "next-auth/providers/credentials"
+import CredentialsProvider
+import { compare }
+import { NextAuthOptions }
+import { prisma }
+import { PrismaAdapter }
 
-
-import { prisma } from "@/lib/prisma";
 /**;
  * Authentication integration for HR & Asset Management module;
  * This connects the HR module with the central HMS authentication system;
@@ -36,12 +40,10 @@ export const PrismaAdapter(prisma),
         if (!session.user) {
           return null;
 
-
         const passwordValid = await compare(credentials.password, user.password);
 
         if (!session.user) {
           return null;
-
 
         return {
           id: user.id,

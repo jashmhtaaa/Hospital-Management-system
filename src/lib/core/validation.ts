@@ -1,5 +1,6 @@
+import "zod"
+import { z }
 
-import { z } from "zod";
 }
 
 /**;
@@ -54,8 +55,7 @@ export const _invoiceStatusSchema = z.enum([;
   "paid",
   "overdue",
   "cancelled",
-  "refunded",
-]);
+  "refunded"]);
 
 export const _paymentMethodSchema = z.enum([;
   "cash",
@@ -65,8 +65,7 @@ export const _paymentMethodSchema = z.enum([;
   "bank_transfer",
   "online_payment",
   "insurance",
-  "mobile_payment",
-]);
+  "mobile_payment"]);
 
 export const _paymentStatusSchema = z.enum([;
   "pending",
@@ -75,8 +74,7 @@ export const _paymentStatusSchema = z.enum([;
   "failed",
   "refunded",
   "partially_refunded",
-  "cancelled",
-]);
+  "cancelled"]);
 
 // Insurance validation schemas;
 export const _insuranceVerificationStatusSchema = z.enum([;
@@ -85,8 +83,7 @@ export const _insuranceVerificationStatusSchema = z.enum([;
   "inactive",
   "expired",
   "not_found",
-  "error",
-]);
+  "error"]);
 
 export const _claimStatusSchema = z.enum([;
   "draft",
@@ -98,8 +95,7 @@ export const _claimStatusSchema = z.enum([;
   "partially_approved",
   "denied",
   "appealed",
-  "closed",
-]);
+  "closed"]);
 
 // Validation utility functions;
 export const _validateId = (id: string): string {

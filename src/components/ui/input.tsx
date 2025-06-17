@@ -1,9 +1,12 @@
-import React, { type InputHTMLAttributes, forwardRef } from "react";
+import "@/lib/utils"
+import "react"
+import forwardRef }
+import InputHTMLAttributes
+import React
+import { cn }
+import { type
 
-
-import { cn } from "@/lib/utils";
 }
-
 
 /**;
  * Input component for form fields;

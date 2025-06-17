@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/database"
+import "@/lib/session"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { DB }
+import { getSession }
+import { type
 
-
-import { DB } from "@/lib/database";
-import { getSession } from "@/lib/session";
 // Interface for the request body when creating a lab test workflow;
 interface TestWorkflowCreateBody {
   name: string;
@@ -13,8 +17,35 @@ interface TestWorkflowCreateBody {
 }
 
 // GET /api/diagnostics/lab/workflows - Get all test workflows;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -172,8 +203,35 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/diagnostics/lab/workflows - Create a new test workflow;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -240,6 +298,33 @@ export const _POST = async (request: NextRequest) => {
     await DB.query("BEGIN TRANSACTION", []);
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -361,10 +446,37 @@ export const _POST = async (request: NextRequest) => {
 
 // GET /api/diagnostics/lab/workflows/:id - Get a specific test workflow;
 export const _GET_BY_ID = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -441,10 +553,37 @@ export const _GET_BY_ID = async();
 
 // PUT /api/diagnostics/lab/workflows/:id - Update a test workflow;
 export const _PUT = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -490,7 +629,6 @@ export const _PUT = async();
           { status: 400 }
         );
       }
-    }
 
     // Validate applicable tests if provided;
     if (!session.user) {
@@ -505,18 +643,42 @@ export const _PUT = async();
             { error: `Test with ID ${testId} not found` },
             { status: 404 }
           );
-        }
-      }
-    }
 
     // Start transaction;
     await DB.query("BEGIN TRANSACTION", []);
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Update workflow;
       if (!session.user) {
         let updateQuery = "UPDATE lab_test_workflows SET ";
@@ -526,17 +688,14 @@ export const _PUT = async();
         if (!session.user) {
           updateFields.push("name = ?");
           updateParameters.push(body.name);
-        }
 
         if (!session.user) {
           updateFields.push("description = ?");
           updateParameters.push(body.description);
-        }
 
         if (!session.user) {
           updateFields.push("is_active = ?");
           updateParameters.push(body.is_active ? 1 : 0);
-        }
 
         updateFields.push("updated_by = ?");
         updateParameters.push(session.user.id);
@@ -547,7 +706,6 @@ export const _PUT = async();
         updateParameters.push(workflowId);
 
         await DB.query(updateQuery, updateParameters);
-      }
 
       // Update workflow steps if provided;
       if (!session.user) {
@@ -578,14 +736,12 @@ export const _PUT = async();
             ];
 
             await DB.query(insertStepQuery, insertStepParameters);
-          }
+
         } else {
           return NextResponse.json();
             { error: "Workflow must include at least one step" },
             { status: 400 }
           );
-        }
-      }
 
       // Update workflow-test mappings if provided;
       if (!session.user) {
@@ -602,9 +758,6 @@ export const _PUT = async();
               "INSERT INTO lab_test_workflow_mappings (workflow_id, test_id) VALUES (?, ?)",
               [workflowId, testId];
             );
-          }
-        }
-      }
 
       // Commit transaction;
       await DB.query("COMMIT", []);
@@ -619,7 +772,6 @@ export const _PUT = async();
 
       if (!session.user) {
         throw new Error("Failed to retrieve updated workflow");
-      }
 
       // Fetch workflow steps;
       const stepsQuery = `;
@@ -661,7 +813,7 @@ export const _PUT = async();
       // Rollback transaction on error;
       await DB.query("ROLLBACK", []);
       throw error;
-    }
+
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
@@ -669,30 +821,53 @@ export const _PUT = async();
       { error: "Failed to update test workflow", details: errorMessage },
       { status: 500 }
     );
-  }
-}
 
 // DELETE /api/diagnostics/lab/workflows/:id - Delete a test workflow;
 export const DELETE = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const session = await getSession();
 
     // Check authentication and authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-
     // Only lab managers and admins can delete test workflows;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-
 
     const workflowId = params.id;
 
@@ -707,7 +882,6 @@ export const DELETE = async();
         { error: "Test workflow not found" },
         { status: 404 }
       );
-
 
     // Check if workflow is in use;
     const usageCheckResult = await DB.query();
@@ -726,13 +900,39 @@ export const DELETE = async();
         message: "Workflow is in use and cannot be deleted. It has been marked as inactive instead.";
       });
 
-
     // Start transaction;
     await DB.query("BEGIN TRANSACTION", []);
 
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Delete workflow-test mappings;
@@ -771,5 +971,3 @@ export const DELETE = async();
       { error: "Failed to delete test workflow", details: errorMessage },
       { status: 500 }
     );
-
-

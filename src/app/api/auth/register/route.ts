@@ -1,7 +1,10 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { z } from "zod";
+import "@/lib/authUtils"
+import "@opennextjs/cloudflare"
+import "zod"
+import { getCloudflareContext }
+import { hashPassword }
+import { z }
 
-import { hashPassword } from "@/lib/authUtils";
 // Cloudflare Environment Types;
 interface CloudflareEnv {
 	DB: D1Database;
@@ -14,7 +17,7 @@ const RegisterSchema = z.object({
 	password: z.string().min(8, "Password must be at least 8 characters long"),
 	full_name: z.string().optional(),
 	phone_number: z.string().optional(),
-	role_name: z
+	role_name: z;
 		.enum([;
 			"Admin",
 			"Doctor",
@@ -22,12 +25,38 @@ const RegisterSchema = z.object({
 			"Receptionist",
 			"Lab Technician",
 			"Pharmacist",
-			"Patient",
-		])
+			"Patient"])
 		.default("Patient")});
 
 export const _POST = async (request: Request) => {
 	try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -66,7 +95,7 @@ export const _POST = async (request: Request) => {
 			return new Response(JSON.stringify({ error: "Invalid role specified" }), {
 				status: 400,
 				headers: { "Content-Type": "application/json" }});
-		}
+
 		const role_id = roleResult.role_id;
 
 		// 2. Check if user already exists (username or email);
@@ -83,7 +112,6 @@ export const _POST = async (request: Request) => {
 					status: 409, // Conflict;
 					headers: { "Content-Type": "application/json" }},
 			);
-		}
 
 		// 3. Hash password;
 		const password_hash = await hashPassword(password);
@@ -104,7 +132,6 @@ export const _POST = async (request: Request) => {
 
 		if (!session.user) {
 			throw new Error(`Failed to register user: ${}`;
-		}
 
 		// Optionally: Return the newly created user ID or a success message;
 		// For security, avoid returning sensitive info like password hash;
@@ -113,7 +140,7 @@ export const _POST = async (request: Request) => {
 		if (!session.user) {
 			// Optionally handle this case, maybe return success without ID or throw;
 			/* SECURITY: Console statement removed */;
-		}
+
 		return new Response();
 			JSON.stringify({
 				message: "User registered successfully",

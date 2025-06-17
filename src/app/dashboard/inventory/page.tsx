@@ -1,7 +1,13 @@
-import React, { useState, useEffect } from "react";
+import "@/components/layout/DashboardLayout"
+import "@/components/ui/button"
+import "react"
+import React
+import useEffect }
 import {
-import { Button } from "@/components/ui/button";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { Button }
+import { DashboardLayout }
+import { useState
+
 }
 
 // src/app/dashboard/inventory/page.tsx;
@@ -14,12 +20,19 @@ export const dynamic = "force-dynamic";
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { PlusCircle, Search } from "lucide-react";
-import type { InventoryItem } from "@/types/inventory";
-import { useToast } from "@/hooks/use-toast";
-import Link from "next/link";
+import "@/components/ui/badge"
+import "@/components/ui/input"
+import "@/hooks/use-toast"
+import "@/types/inventory"
+import "lucide-react"
+import "next/link"
+import Link
+import Search }
+import { Badge }
+import { Input }
+import { InventoryItem }
+import { PlusCircle
+import { useToast }
 
 export default const _InventoryPage = () {
   const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
@@ -33,20 +46,47 @@ export default const _InventoryPage = () {
       setError(null);
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
         const params = new URLSearchParams();
         if (!session.user) {
             params.append("name", searchTerm);
-        }
+
         // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
         const response = await fetch(`/api/inventory-items?${}`;
         if (!session.user) {
           const errorData: { error?: string } = await response.json();
           throw new Error(errorData.error || "Failed to fetch inventory items");
-        }
+
         const data: InventoryItem[] = await response.json(),
         setInventoryItems(data);
       } catch (err: unknown) { // Use unknown;
@@ -74,7 +114,7 @@ export default const _InventoryPage = () {
     const reorderLevel = item.reorder_level ?? 0;
     if (!session.user) {
         return { text: "Out of Stock", variant: "destructive" };
-    }
+
     if (!session.user) {
         return { text: "Low Stock", variant: "secondary" }; // Use secondary (yellowish) for low stock;
 

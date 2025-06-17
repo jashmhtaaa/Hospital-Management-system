@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import "react"
+import React
+import { useState }
+
 "use client";
 
-import * as React from "react";
+import "react"
+import * as React
 
 /**;
  * Data Table Component;

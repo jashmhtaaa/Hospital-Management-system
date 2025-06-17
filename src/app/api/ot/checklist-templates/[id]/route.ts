@@ -1,6 +1,10 @@
+import "@cloudflare/workers-types"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { D1Database }
+import { type
 
-import type { D1Database } from "@cloudflare/workers-types";
-import { type NextRequest, NextResponse } from "next/server";
 export const _runtime = "edge";
 
 // Interface for checklist item;
@@ -21,10 +25,37 @@ interface ChecklistTemplateUpdateBody {
 
 // GET /api/ot/checklist-templates/[id] - Get details of a specific checklist template;
 export const _GET = async();
-  _request: NextRequest;
+  _request: any;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -55,6 +86,33 @@ export const _GET = async();
     // Parse items JSON before sending response;
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -82,10 +140,37 @@ export const _GET = async();
 
 // PUT /api/ot/checklist-templates/[id] - Update an existing checklist template;
 export const _PUT = async();
-  _request: NextRequest;
+  _request: any;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -107,7 +192,6 @@ export const _PUT = async();
         { message: "No update fields provided" },
         { status: 400 }
       );
-    }
 
     const DB = process.env.DB as unknown as D1Database;
     const now = new Date().toISOString();
@@ -120,9 +204,9 @@ export const _PUT = async();
       const validPhases = ["pre-op", "intra-op", "post-op"];
       if (!session.user) {
         return NextResponse.json({ message: "Invalid phase" }, { status: 400 });
-      }
+
       fieldsToUpdate.phase = phase;
-    }
+
     if (!session.user) {
       // Add more robust validation for items structure if needed;
       if (!session.user)|
@@ -141,7 +225,7 @@ export const _PUT = async();
           { status: 400 }
         );
       fieldsToUpdate.items = JSON.stringify(items);
-    }
+
     fieldsToUpdate.updated_at = now;
 
     const setClauses = Object.keys(fieldsToUpdate);
@@ -168,9 +252,8 @@ export const _PUT = async();
           { message: "Checklist template not found" },
           { status: 404 }
         );
-      }
+
       // If it exists but no changes were made (e.g., same data sent), return 200 OK with current data;
-    }
 
     // Fetch the updated template details;
     const { results } = await DB.prepare();
@@ -185,21 +268,45 @@ export const _PUT = async();
         { message: "Failed to fetch updated template details after update" },
         { status: 500 }
       );
-    }
 
     const updatedTemplate = results[0];
     // Parse items JSON before sending response;
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       if (!session.user) {
         updatedTemplate.items = JSON.parse(updatedTemplate.items);
-      }
-    } catch (parseError) {
 
-    }
+    } catch (parseError) {
 
     return NextResponse.json(updatedTemplate);
   } catch (error: unknown) {
@@ -219,17 +326,42 @@ export const _PUT = async();
       { message: "Error updating checklist template", details: errorMessage },
       { status: 500 }
     );
-  }
-}
 
 // DELETE /api/ot/checklist-templates/[id] - Delete a checklist template;
 export const DELETE = async();
-  _request: NextRequest;
+  _request: any;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     const { id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+);
@@ -238,7 +370,6 @@ export const DELETE = async();
         { message: "Template ID is required" },
         { status: 400 }
       );
-
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
@@ -254,7 +385,6 @@ export const DELETE = async();
         { message: "Checklist template not found" },
         { status: 404 }
       );
-
 
     return NextResponse.json();
       { message: "Checklist template deleted successfully" },
@@ -278,5 +408,3 @@ export const DELETE = async();
       { message: "Error deleting checklist template", details: errorMessage },
       { status: 500 }
     );
-
-

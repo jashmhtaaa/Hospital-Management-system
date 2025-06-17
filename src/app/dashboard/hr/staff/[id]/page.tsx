@@ -1,19 +1,34 @@
-import React, { useState } from "react";
+import "react"
+import React
+import { useState }
+
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import "@/components/ui/badge"
+import "@/components/ui/button"
 import {
+import { Badge }
+import { Button }
+
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import "@/components/ui/separator"
+import "@/components/ui/tabs"
+import "next/navigation"
+import "react"
+import TabsContent
+import TabsList
+import TabsTrigger }
+import useState }
+import { Separator }
+import { Tabs
+import { useEffect
+import { useRouter }
+
   Table,
   TableBody,
   TableCell,
@@ -42,8 +57,10 @@ import { useEffect, useState } from "react";
   Plus,
   AlertCircle;
 } from "lucide-react";
-import { toast } from "@/components/ui/use-toast";
-import { format } from "date-fns";
+import "@/components/ui/use-toast"
+import "date-fns"
+import { format }
+import { toast }
 
 export default _EmployeeProfile = ({ params }: { id: string }) {
   const router = useRouter(),
@@ -58,9 +75,36 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
     const fetchEmployee = async () => {
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         setLoading(true),
         const response = await fetch(`/api/hr/staff/${}`,
 
@@ -81,7 +125,34 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
   const handleDelete = async () => {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       setDeleting(true);
@@ -171,7 +242,6 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
 
   if (!session.user) {
     return null;
-
 
   return();
     <div className="flex flex-col gap-4 p-4 md:p-8">;

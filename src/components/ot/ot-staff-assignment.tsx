@@ -1,9 +1,21 @@
-import React, { useState, useEffect, useCallback } from "react";
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "@/components/ui/input"
+import "@/components/ui/label"
+import "react"
+import CardContent
+import CardHeader
+import CardTitle }
+import React
+import useCallback }
+import useEffect
 import {
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button }
+import { Card
+import { Input }
+import { Label }
+import { useState
+
 }
 
 "use client";
@@ -19,8 +31,12 @@ import { Label } from "@/components/ui/label";
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { useToast } from "@/components/ui/use-toast";
-import { PlusCircle, Trash2, Users } from "lucide-react";
+import "@/components/ui/use-toast"
+import "lucide-react"
+import Trash2
+import Users }
+import { PlusCircle
+import { useToast }
 
 // Props for the component;
 interface OTStaffAssignmentProperties {
@@ -47,8 +63,7 @@ const mockUsers: User[] = [;
   { id: "user-4", name: "Dr. Diana Black", role: "Anesthesiologist" },
   { id: "user-5", name: "Nurse Eve Adams", role: "Scrub Nurse" },
   { id: "user-6", name: "Nurse Frank Davis", role: "Circulating Nurse" },
-  { id: "user-7", name: "Tech Grace Hall", role: "Technician" },
-];
+  { id: "user-7", name: "Tech Grace Hall", role: "Technician" }];
 
 export default const _OTStaffAssignment = ({
   bookingId}: OTStaffAssignmentProperties) {
@@ -63,6 +78,33 @@ export default const _OTStaffAssignment = ({
 
   const fetchAssignedStaff = useCallback(async () => {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -94,8 +136,7 @@ export default const _OTStaffAssignment = ({
           assignment_id: "assign-3",
           "Nurse Eve Adams",
           role: "Scrub Nurse";
-        },
-      ];
+        }];
       setAssignedStaff(mockAssigned),
       setLoading(false);
     } catch (error_: unknown) {
@@ -105,14 +146,14 @@ export default const _OTStaffAssignment = ({
         setError("An unknown error occurred while fetching staff");
       }
       setLoading(false);
-    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps;
   }, [bookingId]);
 
   useEffect(() => {
     if (!session.user) {
       fetchAssignedStaff();
-    }
+
   }, [bookingId, fetchAssignedStaff]);
 
   const handleAddStaff = async () => {
@@ -122,14 +163,40 @@ export default const _OTStaffAssignment = ({
         "destructive";
       });
       return;
-    }
 
     setIsAdding(true);
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const userData = availableUsers.find((u) => u.id === selectedUser);
       if (!session.user)hrow new Error("Selected user not found");
 
@@ -179,7 +246,34 @@ export default const _OTStaffAssignment = ({
   const handleRemoveStaff = async (assignmentId: string) => {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Replace with actual API call;

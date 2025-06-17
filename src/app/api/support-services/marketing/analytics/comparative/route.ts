@@ -1,20 +1,26 @@
-import { getServerSession } from "next-auth";
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/auth"
+import "@/lib/middleware/error-handling.middleware"
+import "@/lib/services/support-services/marketing"
+import "next-auth"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { AnalyticsService }
+import { authOptions }
+import { getServerSession }
+import { type
+import { withErrorHandling }
 
-
-import { authOptions } from "@/lib/auth";
-import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
-import { AnalyticsService } from "@/lib/services/support-services/marketing";
 const analyticsService = new AnalyticsService();
 
 /**;
  * GET /api/support-services/marketing/analytics/comparative;
  * Get comparative analytics for multiple campaigns;
  */;
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: any) => {
   return withErrorHandling();
     request,
-    async (req: NextRequest) => {
+    async (req: any) => {
       const _session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 

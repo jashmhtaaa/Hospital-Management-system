@@ -1,4 +1,6 @@
-import { NextResponse } from "next/server";
+import "next/server"
+import { NextResponse }
+
 // src/app/api/billing/categories/route.ts;
 // import { getRequestContext } from "@cloudflare/next-on-pages";
 
@@ -9,9 +11,36 @@ import { NextResponse } from "next/server";
 export const GET = async () => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
     // const { env } = getRequestContext();
 
     // Mock implementation for development without Cloudflare;
@@ -25,14 +54,13 @@ export const GET = async () => {
     let errorMessage = "An unknown error occurred";
     if (!session.user) {
       errorMessage = error.message;
-    }
+
     return NextResponse.json();
       { error: "Failed to fetch categories", details: errorMessage }, // Safely access error message;
       { status: 500 }
     );
-  }
+
 };
 
 export async function GET() {
   return new Response("OK");
-

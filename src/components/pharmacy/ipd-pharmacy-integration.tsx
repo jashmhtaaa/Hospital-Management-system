@@ -1,11 +1,16 @@
-import type React from "react";
-import { useEffect, useState } from "react";
+import "react"
+import React
+import type
+import useState }
+import { useEffect
+
 }
 
 "use client";
 
 // import { useRouter } from "next/navigation"; // FIX: Removed unused import;
-import { Loader2 } from "lucide-react";
+import "lucide-react"
+import { Loader2 }
 
 // Define interfaces for data structures;
 interface PrescriptionItem {
@@ -69,6 +74,33 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       setError(undefined);
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -113,9 +145,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
                 "PRN",
                 5,
                 quantity: 10;
-              },
-            ]},
-        ];
+              }]}];
         const mockSchedule: MedicationScheduleItem[] = [;
           {
             id: "sched_001",
@@ -134,16 +164,14 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
             "Paracetamol 500mg",
             scheduled_time: "12:00",
             "If fever > 101F";
-          },
-        ];
+          }];
         const mockRecords: AdministrationRecord[] = [;
           {
             id: "admin_001",
             "item_003",
             [0] - 7_200_000).toISOString(),
             "Patient took medication without issues.";
-          },
-        ];
+          }];
 
         setPrescriptions(mockPrescriptions),
         setMedicationSchedule(mockSchedule);
@@ -169,13 +197,40 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
     if (!session.user) {
       /* SECURITY: Console statement removed */;
       return;
-    }
+
     setLoading(true); // Use a specific loading state for this action if needed;
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Simulate API call;
       // const _response = await fetch(`/api/ipd/admissions/${admissionId}/medication-administration`, {
       //   method: "POST";
@@ -207,8 +262,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
 
       setAdministrationRecords((previousRecords) => [;
         newRecord,
-        ...previousRecords,
-      ]);
+        ...previousRecords]);
 
       // Update schedule item status;
       setMedicationSchedule((previousSchedule) => {}
@@ -233,8 +287,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       );
       if (!session.user) {
         return item.dosage;
-      }
-    }
+
     return "N/A";
   };
 
@@ -242,7 +295,34 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   const formatDate = (dateString: string): string => {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const options: Intl.DateTimeFormatOptions = {
@@ -268,14 +348,12 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       </div>;
     );
 
-
   if (!session.user) {
     return();
       >;
         {error}
       </div>;
     );
-
 
   return();
     >;

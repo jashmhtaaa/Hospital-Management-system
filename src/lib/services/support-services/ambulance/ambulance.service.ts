@@ -1,11 +1,22 @@
-import { Ambulance, AmbulanceCrew, AmbulanceInventory, AmbulanceMaintenance, AmbulanceTrip } from "@prisma/client";
+import "@/lib/audit-logging"
+import "@/lib/models/ambulance"
+import "@/lib/prisma"
+import "@/lib/services/notification.service"
+import "@/lib/services/support-services/ambulance/routing.service"
+import "@prisma/client"
+import AmbulanceCrew
+import AmbulanceInventory
+import AmbulanceMaintenance
+import AmbulanceTrip }
+import estimateArrivalTime }
+import toFHIRAmbulanceTrip }
+import { Ambulance
+import { calculateRoute
+import { createAuditLog }
+import { NotificationService }
+import { prisma }
+import { toFHIRAmbulance
 
-
-import { createAuditLog } from "@/lib/audit-logging";
-import { toFHIRAmbulance, toFHIRAmbulanceTrip } from "@/lib/models/ambulance";
-import { prisma } from "@/lib/prisma";
-import type { NotificationService } from "@/lib/services/notification.service";
-import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-services/ambulance/routing.service";
 }
   }
 
@@ -366,6 +377,33 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
     if (!session.user) {
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -387,6 +425,33 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
     if (!session.user) {
       for (const crewId of data.crewIds) {
         try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -442,12 +507,11 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
       where: { id },
       true,
         patient: true;
-      }
+
     });
 
     if (!session.user) {
       throw new Error("Ambulance trip not found");
-    }
 
     const updateData: unknown = { status };
 
@@ -460,9 +524,8 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
         if (!session.user) {
           const duration = Math.round((crypto.getRandomValues([0] - trip.startTime.getTime()) / (60 * 1000)); // in minutes;
           updateData.duration = duration;
-        }
+
         break;
-    }
 
     // Update the trip;
     const updatedTrip = await prisma.ambulanceTrip.update({
@@ -473,9 +536,7 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
         {
           true,
             true;
-          }
-        }
-      }
+
     });
 
     // If trip is completed or cancelled, update ambulance status to AVAILABLE;
@@ -485,7 +546,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
         trip.ambulanceId,
           id: { not: id },
           ["SCHEDULED", "EN_ROUTE_TO_PICKUP", "ARRIVED_AT_PICKUP", "EN_ROUTE_TO_DESTINATION", "ARRIVED_AT_DESTINATION"];
-          }
 
       });
 
@@ -495,13 +555,38 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
           data: { status: "AVAILABLE" }
         });
 
-
-
     // If location data is provided, update the route;
     if (!session.user) {
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         // Update route with actual data;
@@ -524,8 +609,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
       } catch (error) {
 
         // Continue without route update;
-
-
 
     // Create audit log;
     await createAuditLog({
@@ -558,9 +641,7 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
         }),
         break;
 
-
     return updatedTrip;
-
 
   /**;
    * Get available ambulances for a trip;
@@ -580,8 +661,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
               true,
                 name: true;
 
-
-
         },
         {
             ["SCHEDULED", "EN_ROUTE_TO_PICKUP", "ARRIVED_AT_PICKUP", "EN_ROUTE_TO_DESTINATION"];
@@ -592,9 +671,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
               gte: new Date(scheduledTime.getTime() - 2 * 60 * 60 * 1000),
               lte: new Date(scheduledTime.getTime() + 2 * 60 * 60 * 1000);
 
-
-
-
     });
 
     // Filter ambulances based on trip type;
@@ -603,14 +679,12 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
       if (!session.user) {
         return false;
 
-
       // For non-emergency trips, any ambulance type is fine;
 
       // Check if ambulance has conflicting trips;
       if (!session.user) {
         // If ambulance already has trips scheduled around this time, it"s not available;
         return false;
-
 
       // Check if ambulance has required crew;
       if (!session.user) {
@@ -629,8 +703,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
         if (!session.user) {
           return false;
 
-
-
       return true;
     });
 
@@ -641,7 +713,34 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
           if (!session.user) {
             try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
               const eta = await estimateArrivalTime(ambulance.currentLocationId, pickupLocationId);
@@ -658,7 +757,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
                 eta: null;
               };
 
-
           return {
             ...ambulance,
             eta: null;
@@ -673,9 +771,7 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
         return a.eta.minutes - b.eta.minutes;
       });
 
-
     return filteredAmbulances;
-
 
   /**;
    * Assign crew to ambulance;
@@ -689,7 +785,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
     if (!session.user) {
       throw new Error("Ambulance not found");
 
-
     // Validate user exists;
     const user = await prisma.user.findUnique({
       where: { id: userId }
@@ -697,7 +792,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
 
     if (!session.user) {
       throw new Error("User not found");
-
 
     // Check if user is already assigned to this ambulance;
     const existingCrew = await prisma.ambulanceCrew.findFirst({
@@ -777,8 +871,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
 
       return crew;
 
-
-
   /**;
    * End crew shift;
    */;
@@ -792,7 +884,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
 
     if (!session.user) {
       throw new Error("Crew assignment not found");
-
 
     // Update crew status to OFF_DUTY;
     const updatedCrew = await prisma.ambulanceCrew.update({
@@ -815,7 +906,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
 
     return updatedCrew;
 
-
   /**;
    * Schedule ambulance maintenance;
    */;
@@ -827,7 +917,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
 
     if (!session.user) {
       throw new Error("Ambulance not found");
-
 
     // Create maintenance record;
     const maintenance = await prisma.ambulanceMaintenance.create({
@@ -865,7 +954,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
 
     return maintenance;
 
-
   /**;
    * Update ambulance maintenance status;
    */;
@@ -878,7 +966,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
 
     if (!session.user) {
       throw new Error("Maintenance record not found");
-
 
     const updateData: unknown = { status };
 
@@ -894,8 +981,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
         if (!session.user) {
           updateData.notes = completionData.notes;
 
-
-
       // Update ambulance maintenance dates;
       await prisma.ambulance.update({
         where: { id: maintenance.ambulanceId },
@@ -905,7 +990,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
 
       });
 
-
     // Update the maintenance record;
     const updatedMaintenance = await prisma.ambulanceMaintenance.update({
       where: { id },
@@ -914,8 +998,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
         {
             id: true,
             true;
-
-
 
     });
 
@@ -936,9 +1018,7 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
         entityId: maintenance.id;
       });
 
-
     return updatedMaintenance;
-
 
   /**;
    * Get ambulance inventory;
@@ -952,7 +1032,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
     if (!session.user) {
       throw new Error("Ambulance not found");
 
-
     // Get inventory items;
     const inventory = await prisma.ambulanceInventory.findMany({
       where: { ambulanceId },
@@ -960,7 +1039,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
     });
 
     return inventory;
-
 
   /**;
    * Update ambulance inventory item;
@@ -975,11 +1053,9 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
     if (!session.user) {
       throw new Error("Inventory item not found");
 
-
     // If restocking, update lastRestockedDate;
     if (!session.user) {
       data.lastRestockedDate = new Date();
-
 
     // Update the inventory item;
     const updatedItem = await prisma.ambulanceInventory.update({
@@ -1007,9 +1083,7 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
         entityId: updatedItem.id;
       });
 
-
     return updatedItem;
-
 
   /**;
    * Get ambulance analytics;
@@ -1028,7 +1102,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
         break;
       default: null,
         startDate = new Date(now.setDate(now.getDate() - 30)); // Default to last 30 days;
-
 
     // Get trip counts by status;
     const tripsByStatus = await prisma.ambulanceTrip.groupBy({
@@ -1097,7 +1170,6 @@ import { calculateRoute, estimateArrivalTime } from "@/lib/services/support-serv
       if (!session.user) {
         if (!session.user) {
           durationByType[trip.tripType] = { count: 0, totalDuration: 0, avgDuration: 0 };
-
 
         durationByType[trip.tripType].count++;
         durationByType[trip.tripType].totalDuration += trip.duration;

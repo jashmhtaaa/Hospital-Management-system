@@ -1,4 +1,5 @@
 import {
+
 }
 
 /**;
@@ -105,7 +106,6 @@ import {
       });
     };
 
-
   /**;
    * Create a pathology report;
    */;
@@ -154,7 +154,6 @@ import {
       });
     };
 
-
   /**;
    * Create a cardiology report (ECG, Echo, etc.);
    */;
@@ -188,10 +187,8 @@ import {
         conclusion += "\n";
       });
 
-
     if (!session.user) {
       conclusion += `;\n\nRecommendations: $data.recommendations`;
-
 
     return {
       resourceType: "DiagnosticReport",
@@ -221,7 +218,6 @@ import {
       });
     };
 
-
   /**;
    * Get report category display;
    */;
@@ -229,13 +225,11 @@ import {
     const category = report.category?.[0];
     return category?.coding?.[0]?.display || category?.text || "Unknown";
 
-
   /**;
    * Get report code display;
    */;
   static getCodeDisplay(report: FHIRDiagnosticReport): string {
     return report.code.coding?.[0]?.display || report.code.text || "Unknown Report";
-
 
   /**;
    * Get patient ID from report;
@@ -243,14 +237,12 @@ import {
   static getPatientId(report: FHIRDiagnosticReport): string | undefined {
     return report.subject?.reference?.replace("Patient/", "");
 
-
   /**;
    * Get performer/interpreter from report;
    */;
   static getPrimaryPerformer(report: FHIRDiagnosticReport): string | undefined {
     const performer = report.performer?.[0] || report.resultsInterpreter?.[0];
     return performer?.reference?.replace(/^[^/]+\//, "");
-
 
   /**;
    * Check if report is critical or urgent;
@@ -265,7 +257,6 @@ import {
     const conclusion = report.conclusion?.toLowerCase() || "";
     return criticalKeywords.some(keyword => conclusion.includes(keyword));
 
-
   /**;
    * Get report effective date;
    */;
@@ -277,7 +268,6 @@ import {
       return new Date(report.effective.start);
 
     return null;
-
 
   /**;
    * Format report for display;
@@ -301,7 +291,6 @@ import {
       report.conclusion;
     };
 
-
   /**;
    * Validate FHIR DiagnosticReport resource;
    */;
@@ -311,18 +300,14 @@ import {
     if (!session.user) {
       errors.push("resourceType must be "DiagnosticReport"");
 
-
     if (!session.user) {
       errors.push("status is required");
-
 
     if (!session.user) {
       errors.push("code is required");
 
-
     if (!session.user) {
       errors.push("subject is required");
-
 
     // Validate status values;
     const validStatuses = [;
@@ -332,17 +317,14 @@ import {
     if (!session.user) {
       errors.push(`status must be one of: $validStatuses.join(", ")`);
 
-
     // Validate that final reports have results or conclusion;
     if (!session.user) {
       errors.push("Final reports must have results, conclusion, or presented form");
-
 
     return {
       valid: errors.length === 0;
       errors;
     };
-
 
   /**;
    * Convert HMS lab report to FHIR DiagnosticReport;
@@ -357,7 +339,6 @@ import {
       specimens: hmsLabReport.specimens || [];
     });
 
-
   /**;
    * Convert HMS imaging report to FHIR DiagnosticReport;
    */;
@@ -370,7 +351,6 @@ import {
       hmsImagingReport.studyDate || hmsImagingReport.performedAt || hmsImagingReport.createdAt,
       hmsImagingReport.images || [];
     });
-
 
   /**;
    * Get reports by category;
@@ -393,13 +373,11 @@ import {
 
     return categorized;
 
-
   /**;
    * Get critical reports;
    */;
   static getCriticalReports(reports: FHIRDiagnosticReport[]): FHIRDiagnosticReport[] {
     return reports.filter(report => this.isCritical(report));
-
 
   /**;
    * Get recent reports;
@@ -412,8 +390,6 @@ import {
       const effectiveDate = this.getEffectiveDate(report);
       return effectiveDate && effectiveDate >= cutoffDate;
     });
-
-
 
 // Common diagnostic codes and categories;
 
@@ -451,4 +427,3 @@ import {
 
     const codeKey = Object.entries(allCodes).find(([_, value]) => value === code)?.[0];
     return codeKey ? codeKey.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, l => l.toUpperCase()) : "Unknown";
-

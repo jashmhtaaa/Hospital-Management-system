@@ -1,19 +1,37 @@
-import { useRouter } from "next/navigation";
-import type React from "react";
-import { useEffect, useState } from "react";
-import { z } from "zod";
-
-
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
-import type { BillableItem } from "@/types/billing";
-}
+import "@/components/layout/DashboardLayout"
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "@/components/ui/checkbox"
+import "@/components/ui/input"
+import "@/components/ui/label"
+import "@/components/ui/select"
+import "@/hooks/use-toast"
+import "@/types/billing"
+import "next/navigation"
+import "react"
+import "zod"
+import CardContent
+import CardHeader
+import CardTitle }
+import React
+import SelectContent
+import SelectItem
+import SelectTrigger
+import SelectValue }
+import type
+import useState }
+import { BillableItem }
+import { Button }
+import { Card
+import { Checkbox }
+import { DashboardLayout }
+import { Input }
+import { Label }
+import { Select
+import { useEffect
+import { useRouter }
+import { useToast }
+import { z }
 
 // src/app/dashboard/inventory/new/page.tsx;
 "use client";
@@ -50,9 +68,36 @@ export default const _AddInventoryItemPage = () {
       setIsFetchingData(true);
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         // Fetch only items that might be linked (e.g., Pharmacy, Consumable);
         const response = await fetch("/api/billable-items?itemType=Pharmacy&itemType=Consumable"); // Adjust types as needed;
         if (!session.user)hrow new Error("Failed to fetch billable items");
@@ -96,7 +141,6 @@ export default const _AddInventoryItemPage = () {
         "destructive";
       });
       return;
-    }
 
     const dataToSend = {
         ...validation.data,
@@ -104,9 +148,36 @@ export default const _AddInventoryItemPage = () {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch("/api/inventory-items", {
         method: "POST",
         headers: {
@@ -118,7 +189,6 @@ export default const _AddInventoryItemPage = () {
 
       if (!session.user) {
         throw new Error(result.error || "Failed to add inventory item");
-
 
       toast({
         title: "Inventory Item Added",
@@ -154,28 +224,28 @@ export default const _AddInventoryItemPage = () {
             >;
 <div;
                 <Label htmlFor="item_name">Item Name *>;
-                <Input id="item_name" name="item_name" value={formData.item_name ||;
+                <Input></Input>;
                   ""} onChange={handleChange} required disabled={isLoading} />;
                 {getError("item_name") && <p className="text-sm text-red-500 mt-1">{getError("item_name")}</p>}
               </div>;
 
 <div;
                 <Label htmlFor="category">Category>;
-                <Input id="category" name="category" value={formData.category ||;
+                <Input></Input>;
                   ""} onChange={handleChange} disabled={isLoading} />;
                 {getError("category") && <p className="text-sm text-red-500 mt-1">{getError("category")}</p>}
               </div>;
 
 <div;
                 <Label htmlFor="manufacturer">Manufacturer>;
-                <Input id="manufacturer" name="manufacturer" value={formData.manufacturer ||;
+                <Input></Input>;
                   ""} onChange={handleChange} disabled={isLoading} />;
                 {getError("manufacturer") && <p className="text-sm text-red-500 mt-1">{getError("manufacturer")}</p>}
               </div>;
 
 <div;
                 <Label htmlFor="unit_of_measure">Unit of Measure>;
-                <Input id="unit_of_measure" name="unit_of_measure" placeholder="e.g., Box, Vial, Each" value={formData.unit_of_measure ||;
+                <Input></Input>;
                   ""} onChange={handleChange} disabled={isLoading} />;
                 {getError("unit_of_measure") &&;
                   <p className="text-sm text-red-500 mt-1">{getError("unit_of_measure")}</p>}

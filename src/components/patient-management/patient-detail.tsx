@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from "react";
+import "next/navigation"
+import "react"
+import React
+import useEffect }
 import {
-import { useRouter } from "next/navigation";
+import { useRouter }
+import { useState
+
   Tabs,
   TabsContent,
   TabsList,
@@ -13,8 +18,11 @@ import { useRouter } from "next/navigation";
   CardHeader,
   CardTitle;
 } from "../ui/card";
-import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
+import "../ui/badge"
+import "../ui/button"
+import { Badge }
+import { Button }
+
   AlertCircle,
   Calendar,
   ChevronLeft,
@@ -34,16 +42,27 @@ import { Badge } from "../ui/badge";
   UserCheck,
   Users;
 } from "lucide-react";
-import { format, formatDistance } from "date-fns";
-import { useToast } from "../../hooks/use-toast";
-import PatientDemographics from "./patient-demographics.ts";
-import PatientContacts from "./patient-contacts.ts";
-import PatientInsurance from "./patient-insurance.ts";
-import PatientAllergies from "./patient-allergies.ts";
-import PatientConditions from "./patient-conditions.ts";
-import PatientAppointments from "./patient-appointments.ts";
-import PatientVisits from "./patient-visits.ts";
-import PatientDocuments from "./patient-documents.ts";
+import "../../hooks/use-toast"
+import "./patient-allergies.ts"
+import "./patient-appointments.ts"
+import "./patient-conditions.ts"
+import "./patient-contacts.ts"
+import "./patient-demographics.ts"
+import "./patient-documents.ts"
+import "./patient-insurance.ts"
+import "./patient-visits.ts"
+import "date-fns"
+import formatDistance }
+import PatientAllergies
+import PatientAppointments
+import PatientConditions
+import PatientContacts
+import PatientDemographics
+import PatientDocuments
+import PatientInsurance
+import PatientVisits
+import { format
+import { useToast }
 
 // Define patient status colors;
 const statusColors: Record<string, string> = {
@@ -156,6 +175,33 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -201,22 +247,76 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
   const formatDate = (date: string) => {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       return format(new Date(date), "MMM d, yyyy");
     } catch (error) {
       return "Invalid date";
-    }
+
   };
 
   // Calculate age from date of birth;
   const calculateAge = (dateOfBirth: string) => {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const birthDate = new Date(dateOfBirth);
       const today = new Date();
       let age = today.getFullYear() - birthDate.getFullYear();
@@ -224,12 +324,11 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
 
       if (!session.user) birthDate.getDate())) {
         age--;
-      }
 
       return age;
     } catch (error) {
       return "Unknown";
-    }
+
   };
 
   // If loading;
@@ -248,7 +347,6 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
         </CardContent>;
       </Card>;
     );
-  }
 
   // If patient not found;
   if (!session.user) {
@@ -270,7 +368,6 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
         </CardContent>;
       </Card>;
     );
-
 
   return();
     >;
@@ -496,5 +593,3 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
       </div>;
     </div>;
   );
-
-

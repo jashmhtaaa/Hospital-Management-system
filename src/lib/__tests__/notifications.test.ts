@@ -1,5 +1,9 @@
-import { notifyUsers, markNotificationRead, getUserNotifications } from "../notifications";
-import { DB } from "../database";
+import "../database"
+import "../notifications"
+import getUserNotifications }
+import markNotificationRead
+import { DB }
+import { notifyUsers
 
 // Mock the database module;
 jest.mock("../database", () => ({
@@ -56,8 +60,7 @@ describe("Notifications Module", () => {
 					"LabResult",
 					123,
 					"medium",
-					null,
-				]);
+					null]);
 			);
 		});
 
@@ -102,8 +105,7 @@ describe("Notifications Module", () => {
 			expect(result).toBe(true);
 			expect(mockQuery).toHaveBeenCalledWith(expect.stringContaining("UPDATE notifications"), [;
 				notificationId,
-				userId,
-			]);
+				userId]);
 		});
 
 		it("should return false if notification not found", async () => {
@@ -169,8 +171,7 @@ describe("Notifications Module", () => {
 					priority: "low",
 					metadata: null,
 					created_at: "2023-01-02T12:00:00Z",
-					read: true},
-			];
+					read: true}];
 
 			// Mock DB response;
 			mockQuery.mockReturnValue({

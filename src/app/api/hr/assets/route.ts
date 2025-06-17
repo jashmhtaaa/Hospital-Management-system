@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/hr/asset-service"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { assetService }
+import { type
+import { z }
 
-
-import { assetService } from "@/lib/hr/asset-service";
 // Schema for asset creation;
 const assetSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -28,8 +32,35 @@ const assetSchema = z.object({
 });
 
 // POST handler for creating asset;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -44,7 +75,6 @@ export const _POST = async (request: NextRequest) => {
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
       );
-    }
 
     const data = validationResult.data;
 
@@ -65,16 +95,41 @@ export const _POST = async (request: NextRequest) => {
       { error: "Failed to create asset", details: error.message },
       { status: 500 }
     );
-  }
-}
 
 // GET handler for listing assets;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const searchParams = request.nextUrl.searchParams;
 
     // Parse pagination parameters;
@@ -115,5 +170,3 @@ export const _GET = async (request: NextRequest) => {
       { error: "Failed to fetch assets", details: error.message },
       { status: 500 }
     );
-
-

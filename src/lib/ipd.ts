@@ -1,5 +1,6 @@
+import "@/lib/database"
+import { getDB }
 
-import { getDB } from "@/lib/database";
 }
 
 // Placeholder for IPD related database functions;
@@ -23,7 +24,6 @@ interface Admission {
 interface QueryResult<T> {
   rows?: T[];
   // Add other potential properties like rowCount, etc., based on your DB library;
-
 
 // Define a type for filters for better type safety;
 export type AdmissionFilters = {
@@ -115,8 +115,7 @@ export const _updateAdmissionInDB = async();
   // FIX: Build actual UPDATE statement with parameters from updateData;
   // FIX: Ensure parameter type matches DB expectation (e.g., string if ID is string);
   await database.query("UPDATE admissions SET ... WHERE id = ?", [;
-    id.toString(),
-  ]); // Mock query, assuming ID is string in DB;
+    id.toString()]); // Mock query, assuming ID is string in DB;
 
   // Return mock updated data;
   const existing = await getAdmissionByIdFromDB(id); // Fetch mock existing data;

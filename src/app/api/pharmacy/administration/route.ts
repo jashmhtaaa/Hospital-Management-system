@@ -1,13 +1,24 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../lib/audit"
+import "../../../../lib/error-handler"
+import "../../../../lib/services/pharmacy/pharmacy.service"
+import "../../../../lib/validation/pharmacy-validation"
+import "../../models/domain-models"
+import "../../models/fhir-mappers"
+import "../../services/barcode-administration-service"
+import "next/server"
+import getPrescriptionById }
+import NextRequest
+import NextResponse }
+import validateBarcodeVerificationRequest }
+import { auditLog }
+import { BarcodeAdministrationService }
+import { errorHandler }
+import { FHIRMapper }
+import { getMedicationById
+import { PharmacyDomain }
+import { type
+import { validateAdministrationRequest
 
-
-import { auditLog } from "../../../../lib/audit";
-import { errorHandler } from "../../../../lib/error-handler";
-import { getMedicationById, getPrescriptionById } from "../../../../lib/services/pharmacy/pharmacy.service";
-import { validateAdministrationRequest, validateBarcodeVerificationRequest } from "../../../../lib/validation/pharmacy-validation";
-import { PharmacyDomain } from "../../models/domain-models";
-import { FHIRMapper } from "../../models/fhir-mappers";
-import { BarcodeAdministrationService } from "../../services/barcode-administration-service";
 /**;
  * Medication Administration API Routes;
  *;
@@ -55,8 +66,35 @@ const barcodeService = new BarcodeAdministrationService();
  * POST /api/pharmacy/administration;
  * Record a medication administration;
  */;
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -125,8 +163,35 @@ export const POST = async (req: NextRequest) => {
  * GET /api/pharmacy/administration/patient/[patientId];
  * Get medication administration history for a patient;
  */;
-export const GET = async (req: NextRequest, { params }: { params: { patientId: string } }) => {
+export const GET = async (req: any, { params }: { params: { patientId: string } }) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -168,8 +233,35 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
  * POST /api/pharmacy/administration/verify;
  * Verify medication administration with barcode;
  */;
-export const verifyAdministration = async (req: NextRequest) => {
+export const verifyAdministration = async (req: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -219,8 +311,35 @@ export const verifyAdministration = async (req: NextRequest) => {
  * POST /api/pharmacy/administration/missed;
  * Record a missed medication dose;
  */;
-export const recordMissedDose = async (req: NextRequest) => {
+export const recordMissedDose = async (req: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -288,8 +407,35 @@ export const recordMissedDose = async (req: NextRequest) => {
  * GET /api/pharmacy/administration/schedule/[patientId];
  * Get medication administration schedule for a patient;
  */;
-export const getAdministrationSchedule = async (req: NextRequest, { params }: { params: { patientId: string } }) => {
+export const getAdministrationSchedule = async (req: any, { params }: { params: { patientId: string } }) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -458,12 +604,39 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
  * POST /api/pharmacy/administration/prn;
  * Record a PRN (as needed) medication administration;
  */;
-export const recordPRNAdministration = async (req: NextRequest) => {
+export const recordPRNAdministration = async (req: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
     // Validate request;
     const data = await req.json();
     if (!session.user) {
@@ -471,13 +644,11 @@ export const recordPRNAdministration = async (req: NextRequest) => {
         { error: "Missing required fields" },
         { status: 400 }
       );
-    }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -486,14 +657,12 @@ export const recordPRNAdministration = async (req: NextRequest) => {
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
     if (!session.user) {
       return NextResponse.json({ error: "Prescription not found" }, { status: 404 });
-    }
 
     if (!session.user)& !prescription.dosage.frequency.includes("as needed")) {
       return NextResponse.json();
         { error: "Prescription is not PRN (as needed)" },
         { status: 400 }
       );
-    }
 
     // Create PRN administration record;
     const administration = new PharmacyDomain.MedicationAdministration();
@@ -533,19 +702,44 @@ export const recordPRNAdministration = async (req: NextRequest) => {
     );
   } catch (error) {
     return errorHandler(error, "Error recording PRN medication administration");
-  }
-}
 
 /**;
  * POST /api/pharmacy/administration/education;
  * Record patient education for medication;
  */;
-export const recordPatientEducation = async (req: NextRequest) => {
+export const recordPatientEducation = async (req: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Validate request;
     const data = await req.json();
     if (!session.user) {
@@ -553,13 +747,11 @@ export const recordPatientEducation = async (req: NextRequest) => {
         { error: "Missing required fields" },
         { status: 400 }
       );
-    }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -596,19 +788,44 @@ export const recordPatientEducation = async (req: NextRequest) => {
     );
   } catch (error) {
     return errorHandler(error, "Error recording patient education");
-  }
-}
 
 /**;
  * POST /api/pharmacy/administration/reaction;
  * Record adverse reaction to medication;
  */;
-export const recordAdverseReaction = async (req: NextRequest) => {
+export const recordAdverseReaction = async (req: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Validate request;
     const data = await req.json();
     if (!session.user) {
@@ -616,13 +833,11 @@ export const recordAdverseReaction = async (req: NextRequest) => {
         { error: "Missing required fields" },
         { status: 400 }
       );
-    }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -647,7 +862,6 @@ export const recordAdverseReaction = async (req: NextRequest) => {
     if (!session.user) {
       // In a real implementation, send alert to appropriate staff;
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-    }
 
     // Audit logging;
     await auditLog("MEDICATION_REACTION", {
@@ -668,24 +882,48 @@ export const recordAdverseReaction = async (req: NextRequest) => {
     );
   } catch (error) {
     return errorHandler(error, "Error recording adverse reaction");
-  }
-}
 
 /**;
  * GET /api/pharmacy/administration/due;
  * List medications due for administration;
  */;
-export const getDueMedications = async (req: NextRequest) => {
+export const getDueMedications = async (req: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Get query parameters;
     const url = new URL(req.url);
@@ -694,7 +932,6 @@ export const getDueMedications = async (req: NextRequest) => {
 
     if (!session.user) {
       return NextResponse.json({ error: "Ward ID is required" }, { status: 400 });
-    }
 
     // In a real implementation, get patients in ward and their schedules;
     // For now, return mock data;
@@ -717,7 +954,7 @@ export const getDueMedications = async (req: NextRequest) => {
         25,
         "oral",
         "due";
-      }
+
     ];
 
     // Audit logging;
@@ -726,7 +963,7 @@ export const getDueMedications = async (req: NextRequest) => {
       userId: "current-user-id", // In production, extract from token;
       wardId,
         dueMedications.length;
-      }
+
     });
 
     // Return response;
@@ -734,23 +971,47 @@ export const getDueMedications = async (req: NextRequest) => {
   } catch (error) {
     return errorHandler(error, "Error retrieving due medications");
 
-
-
 /**;
  * GET /api/pharmacy/administration/overdue;
  * List overdue medications;
  */;
-export const getOverdueMedications = async (req: NextRequest) => {
+export const getOverdueMedications = async (req: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
 
     // Get query parameters;
     const url = new URL(req.url);
@@ -759,7 +1020,6 @@ export const getOverdueMedications = async (req: NextRequest) => {
 
     if (!session.user) {
       return NextResponse.json({ error: "Ward ID is required" }, { status: 400 });
-
 
     // In a real implementation, get patients in ward and their schedules;
     // For now, return mock data;
@@ -801,23 +1061,47 @@ export const getOverdueMedications = async (req: NextRequest) => {
   } catch (error) {
     return errorHandler(error, "Error retrieving overdue medications");
 
-
-
 /**;
  * GET /api/pharmacy/administration/reports;
  * Generate administration reports;
  */;
-export const generateAdministrationReports = async (req: NextRequest) => {
+export const generateAdministrationReports = async (req: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
 
     // Get query parameters;
     const url = new URL(req.url);
@@ -829,7 +1113,6 @@ export const generateAdministrationReports = async (req: NextRequest) => {
 
     if (!session.user) {
       return NextResponse.json({ error: "Start date and end date are required" }, { status: 400 });
-
 
     // In a real implementation, generate report based on parameters;
     // For now, return mock data;
@@ -887,7 +1170,6 @@ export const generateAdministrationReports = async (req: NextRequest) => {
     } else {
       return NextResponse.json({ error: "Invalid report type" }, { status: 400 });
 
-
     // Audit logging;
     await auditLog("MEDICATION_ADMINISTRATION", {
       action: "REPORT_GENERATION",
@@ -905,8 +1187,6 @@ export const generateAdministrationReports = async (req: NextRequest) => {
     return NextResponse.json({ report }, { status: 200 });
   } catch (error) {
     return errorHandler(error, "Error generating administration report");
-
-
 
 // Export route handlers;
 export { verifyAdministration as POST } from "./verify/route.ts";

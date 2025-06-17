@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/hr/attendance-service"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { attendanceService }
+import { type
+import { z }
 
-
-import { attendanceService } from "@/lib/hr/attendance-service";
 // Schema for check-in request;
 const checkInSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
@@ -17,8 +21,35 @@ const checkInSchema = z.object({
 });
 
 // POST handler for check-in;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -47,7 +78,6 @@ export const _POST = async (request: NextRequest) => {
           { status: 401 }
         );
       }
-    }
 
     // Record check-in;
     const attendance = await attendanceService.recordCheckIn({
@@ -64,16 +94,41 @@ export const _POST = async (request: NextRequest) => {
       { error: "Failed to record check-in", details: error.message },
       { status: 500 }
     );
-  }
-}
 
 // GET handler for attendance records;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const searchParams = request.nextUrl.searchParams;
 
     // Parse pagination parameters;
@@ -108,5 +163,3 @@ export const _GET = async (request: NextRequest) => {
       { error: "Failed to fetch attendance records", details: error.message },
       { status: 500 }
     );
-
-

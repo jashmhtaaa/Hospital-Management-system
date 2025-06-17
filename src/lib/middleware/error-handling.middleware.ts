@@ -1,5 +1,8 @@
+import "next/server"
+import NextResponse }
 import {
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest
+
 }
 
 /**;
@@ -18,14 +21,43 @@ import { NextRequest, NextResponse } from "next/server";
   RateLimitError,
   ConflictError;
 } from "@/lib/errors";
-import { AuditLogger } from "@/lib/audit";
-import { SecurityService } from "@/lib/security.service";
+import "@/lib/audit"
+import "@/lib/security.service"
+import { AuditLogger }
+import { SecurityService }
 
 export const _errorHandlingMiddleware = async();
-  request: NextRequest,
-  handler: (request: NextRequest) => Promise>;
+  request: any,
+  handler: (request: any) => Promise>;
 ): Promise<NextResponse> {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -45,18 +77,42 @@ export const _errorHandlingMiddleware = async();
     if (!session.user) {
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const token = authHeader.replace("Bearer ", "");
         const decodedToken = await SecurityService.verifyToken(token);
         userId = decodedToken.userId;
         userRoles = decodedToken.roles || [];
       } catch (error) {
         // Token verification failed, continue as anonymous;
-
-      }
-    }
 
     // Create audit context;
     const auditLogger = new AuditLogger({
@@ -98,7 +154,7 @@ export const _errorHandlingMiddleware = async();
       userId,
       response.status,
         timestamp: new Date().toISOString();
-      }
+
     });
 
     return response;
@@ -139,12 +195,38 @@ export const _errorHandlingMiddleware = async();
       message = "Database operation failed";
       code = "DATABASE_ERROR";
       // Don"t expose database details in response;
-    }
 
     // Log error with appropriate sanitization for HIPAA compliance;
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const auditLogger = new AuditLogger({
@@ -166,8 +248,6 @@ export const _errorHandlingMiddleware = async();
       });
     } catch (loggingError) {
 
-
-
     // Return standardized error response;
     return NextResponse.json();
       {
@@ -180,4 +260,3 @@ export const _errorHandlingMiddleware = async();
       },
       { status }
     );
-

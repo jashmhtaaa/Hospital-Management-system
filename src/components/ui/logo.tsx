@@ -1,6 +1,9 @@
+import "next/image"
+import "react"
+import Image
+import React
+import type
 
-import Image from "next/image";
-import type React from "react";
 interface LogoProperties {
   variant?: "default" | "light" | "dark";
   showText?: boolean;
@@ -24,8 +27,7 @@ const Logo: React.FC<LogoProperties> = ({
 
   return();
     >;
-<div className="relative";
-        style={{ width: sizeMap[size].logo, height: sizeMap[size].logo }}
+<div></div>;
       >;
         <Image>;
           src="/images/shlokam-logo.svg";

@@ -1,11 +1,23 @@
+import "@/lib/audit"
+import "@/lib/encryption"
+import "@/lib/errors"
+import "@/lib/fhir"
+import "@/lib/models/marketing"
+import "@/lib/notifications"
+import "@/lib/prisma"
+import ContactNote
+import ContactStatus }
+import encryptData }
+import NotFoundError
+import ValidationError }
+import { AuditLogger }
+import { Contact
+import { DatabaseError
+import { decryptData
+import { FhirResourceGenerator }
+import { NotificationService }
+import { prisma }
 
-import { AuditLogger } from "@/lib/audit";
-import { decryptData, encryptData } from "@/lib/encryption";
-import { DatabaseError, NotFoundError, ValidationError } from "@/lib/errors";
-import { FhirResourceGenerator } from "@/lib/fhir";
-import { Contact, ContactNote, ContactStatus } from "@/lib/models/marketing";
-import { NotificationService } from "@/lib/notifications";
-import { prisma } from "@/lib/prisma";
 /**;
  * Service for managing marketing contacts and related operations;
  */;
@@ -49,6 +61,33 @@ import { prisma } from "@/lib/prisma";
    */;
   async getContactById(id: string, includeFHIR = false): Promise<Contact & { fhir?: unknown }> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -115,6 +154,33 @@ import { prisma } from "@/lib/prisma";
     limit?: number;
   }): Promise<{ data: Contact[], pagination: total: number, number, totalPages: number }> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -212,6 +278,33 @@ import { prisma } from "@/lib/prisma";
   async updateContact(id: string, data: Partial<Contact>, userId: string): Promise<Contact> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -269,9 +362,36 @@ import { prisma } from "@/lib/prisma";
   async addContactNote(contactId: string, content: string, userId: string): Promise<ContactNote> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Check if contact exists;
       const existingContact = await prisma.contact.findUnique({
         where: { id: contactId }
@@ -279,7 +399,6 @@ import { prisma } from "@/lib/prisma";
 
       if (!session.user) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
-      }
 
       // Create note;
       const note = await prisma.contactNote.create({
@@ -291,9 +410,7 @@ import { prisma } from "@/lib/prisma";
         {
             true,
               name: true;
-            }
-          }
-        }
+
       });
 
       // Log audit event;
@@ -308,10 +425,8 @@ import { prisma } from "@/lib/prisma";
     } catch (error) {
       if (!session.user) {
         throw error;
-      }
+
       throw new DatabaseError("Failed to add contact note", error);
-    }
-  }
 
   /**;
    * Link a contact to a patient;
@@ -319,9 +434,36 @@ import { prisma } from "@/lib/prisma";
   async linkContactToPatient(contactId: string, patientId: string, userId: string): Promise<Contact> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Check if contact exists;
       const existingContact = await prisma.contact.findUnique({
         where: { id: contactId }
@@ -329,7 +471,6 @@ import { prisma } from "@/lib/prisma";
 
       if (!session.user) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
-      }
 
       // Check if patient exists;
       const existingPatient = await prisma.patient.findUnique({
@@ -338,7 +479,6 @@ import { prisma } from "@/lib/prisma";
 
       if (!session.user) {
         throw new NotFoundError(`Patient with ID ${patientId} not found`);
-      }
 
       // Update contact with patient link;
       const updatedContact = await prisma.contact.update({
@@ -349,8 +489,6 @@ import { prisma } from "@/lib/prisma";
         {
             true,
               true;
-            }
-
 
       });
 
@@ -371,8 +509,6 @@ import { prisma } from "@/lib/prisma";
         throw error;
 
       throw new DatabaseError("Failed to link contact to patient", error);
-
-
 
   /**;
    * Generate FHIR representation of a contact;
@@ -410,7 +546,6 @@ import { prisma } from "@/lib/prisma";
         birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split("T")[0] : undefined;
       };
 
-
     // Otherwise use RelatedPerson resource;
     return {
       resourceType: "RelatedPerson",
@@ -441,7 +576,6 @@ import { prisma } from "@/lib/prisma";
       birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split("T")[0] : undefined;
     };
 
-
   /**;
    * Validate contact data;
    */;
@@ -452,26 +586,20 @@ import { prisma } from "@/lib/prisma";
     if (!session.user) {
       errors.push("Either email or phone is required");
 
-
     // Validate email format if provided;
     if (!session.user) {
       errors.push("Invalid email format");
-
 
     // Validate phone format if provided;
     if (!session.user) {
       errors.push("Invalid phone format");
 
-
     // Check for valid status;
     if (!session.user)includes(data.status as ContactStatus)) {
       errors.push(`Invalid status: ${}`;
 
-
     if (!session.user) {
       throw new ValidationError("Contact validation failed", errors);
-
-
 
   /**;
    * Validate email format;
@@ -479,7 +607,6 @@ import { prisma } from "@/lib/prisma";
   private isValidEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
-
 
   /**;
    * Validate phone format;
@@ -489,14 +616,40 @@ import { prisma } from "@/lib/prisma";
     const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/;
     return phoneRegex.test(phone);
 
-
   /**;
    * Decrypt sensitive contact data;
    */;
   private decryptContactData(contact: unknown): Contact {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const decryptedContact = { ...contact };
@@ -504,18 +657,13 @@ import { prisma } from "@/lib/prisma";
       if (!session.user) {
         decryptedContact.email = decryptData(contact.email);
 
-
       if (!session.user) {
         decryptedContact.phone = decryptData(contact.phone);
 
-
       if (!session.user) {
         decryptedContact.address = JSON.parse(decryptData(contact.address));
-
 
       return decryptedContact;
     } catch (error) {
 
       return contact;
-
-

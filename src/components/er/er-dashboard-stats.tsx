@@ -1,5 +1,10 @@
+import "@/components/ui/card"
+import CardContent
+import CardHeader
+import CardTitle }
 import {
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card
+
 }
 
 // src/components/er/ERDashboardStats.tsx;

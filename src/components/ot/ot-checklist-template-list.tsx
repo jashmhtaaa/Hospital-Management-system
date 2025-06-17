@@ -1,5 +1,9 @@
-import React, { useState, useEffect } from "react";
+import "react"
+import React
+import useEffect }
 import {
+import { useState
+
 }
 
 "use client";
@@ -10,10 +14,16 @@ import {
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import "@/components/ui/badge"
+import "@/components/ui/button"
+import "lucide-react"
+import Trash2 }
+import { Badge }
+import { Button }
+import { Edit
+
 import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports;
-import { Edit, Trash2 } from "lucide-react";
+
 
 // Mock data structure - replace with actual API response type;
 interface ChecklistItem {
@@ -33,6 +43,33 @@ export default const _OTChecklistTemplateList = () {
   useEffect(() => {
     const fetchTemplates = async () => {
       try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -64,8 +101,7 @@ export default const _OTChecklistTemplateList = () {
                 id: "item-4",
                 text: "Pulse oximeter on patient and functioning?";
               },
-              { id: "item-5", text: "Does patient have known allergies?" },
-            ],
+              { id: "item-5", text: "Does patient have known allergies?" }],
             updated_at: "2025-04-25T10:00:00Z";
           },
           {
@@ -83,8 +119,7 @@ export default const _OTChecklistTemplateList = () {
                 id: "item-3",
                 text: "Antibiotic prophylaxis given within last 60 minutes?";
               },
-              { id: "item-4", text: "Anticipated critical events reviewed?" },
-            ],
+              { id: "item-4", text: "Anticipated critical events reviewed?" }],
             updated_at: "2025-04-25T11:00:00Z";
           },
           {
@@ -103,11 +138,9 @@ export default const _OTChecklistTemplateList = () {
               {
                 id: "item-5",
                 text: "Key concerns for recovery and management reviewed?";
-              },
-            ],
+              }],
             updated_at: "2025-04-26T09:00:00Z";
-          },
-        ];
+          }];
         setTemplates(mockData),
         setLoading(false);
       } catch (error_: unknown) {
@@ -132,14 +165,13 @@ export default const _OTChecklistTemplateList = () {
         return();
           <Badge className="bg-yellow-100 text-yellow-800">Intra-Op>;
         );
-      }
+
       case "post-op": {
         return <Badge className="bg-green-100 text-green-800">Post-Op>;
-      }
+
       default: {
         return <Badge>{phase}>;
-      }
-    }
+
   };
 
   return();
@@ -197,4 +229,3 @@ export default const _OTChecklistTemplateList = () {
       </CardContent>;
     </Card>;
   );
-

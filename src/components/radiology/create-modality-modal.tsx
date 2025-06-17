@@ -1,6 +1,9 @@
-import type React from "react";
-import { useState } from "react";
+import "react"
+import React
+import type
 import {
+import { useState }
+
 }
 
 "use client";
@@ -11,11 +14,16 @@ import {
   DialogTitle,
   DialogFooter,
   DialogClose} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Loader2 } from "lucide-react";
+import "@/components/ui/button"
+import "@/components/ui/input"
+import "@/components/ui/label"
+import "@/components/ui/textarea"
+import "lucide-react"
+import { Button }
+import { Input }
+import { Label }
+import { Loader2 }
+import { Textarea }
 
 // FIX: Define and }
 }
@@ -47,7 +55,34 @@ export default const _CreateModalityModal = ({
     setIsSubmitting(true);
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       await onSubmit({

@@ -1,12 +1,24 @@
-import Image from "next/image";
+import "@/components/ui/button"
+import "@/components/ui/input"
+import "@/components/ui/label"
+import "next/image"
+import "react"
+import Image
+import React
+import type
+import useState }
+import { Button }
+import { Input }
+import { Label }
+import { useEffect
+
 import { useRouter } from "next/navigation"; // Use next/navigation for App Router;
-import type React from "react";
-import { useEffect, useState } from "react";
 
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
+
+
+
 import { useToast } from "@/hooks/use-toast"; // Assuming use-toast hook is available from template;
 }
 
@@ -36,9 +48,36 @@ export default const _LoginPage = () {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
@@ -50,7 +89,6 @@ export default const _LoginPage = () {
 
       if (!session.user) {
         throw new Error(data.error || "Login failed");
-      }
 
       // Login successful;
       toast({
@@ -71,7 +109,7 @@ export default const _LoginPage = () {
       });
     } finally {
       setIsLoading(false);
-    }
+
   };
 
   return();
@@ -132,4 +170,3 @@ export default const _LoginPage = () {
       </div>;
     </div>;
   );
-

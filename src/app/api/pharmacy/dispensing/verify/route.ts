@@ -1,11 +1,19 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../../lib/audit"
+import "../../../../../lib/error-handler"
+import "../../../../../lib/services/pharmacy/pharmacy.service"
+import "../../../../../lib/validation/pharmacy-validation"
+import "../../../models/domain-models"
+import "next/server"
+import getPrescriptionById }
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { errorHandler }
+import { getMedicationById
+import { PharmacyDomain }
+import { type
+import { validateDispensingVerificationRequest }
 
-
-import { auditLog } from "../../../../../lib/audit";
-import { errorHandler } from "../../../../../lib/error-handler";
-import { getMedicationById, getPrescriptionById } from "../../../../../lib/services/pharmacy/pharmacy.service";
-import { validateDispensingVerificationRequest } from "../../../../../lib/validation/pharmacy-validation";
-import type { PharmacyDomain } from "../../../models/domain-models";
 }
 
 /**;
@@ -49,8 +57,35 @@ const dispensingRepository = {
  * POST /api/pharmacy/dispensing/verify;
  * Verify medication dispensing with barcode scanning;
  */;
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -104,7 +139,6 @@ export const POST = async (req: NextRequest) => {
           data.patientBarcode;
         },status: 400 ;
       );
-    }
 
     // Create verification record;
     const verification = {
@@ -127,8 +161,6 @@ export const POST = async (req: NextRequest) => {
         dispensing.verifiedBy = userId;
         dispensing.verifiedAt = new Date();
         await dispensingRepository.update(dispensing);
-      }
-    }
 
     // Audit logging;
     await auditLog("DISPENSING", {
@@ -138,7 +170,7 @@ export const POST = async (req: NextRequest) => {
       {
         medicationId: prescription.medicationId,
         data.dispensingId;
-      }
+
     });
 
     // Return response;
@@ -155,4 +187,3 @@ export const POST = async (req: NextRequest) => {
     );
   } catch (error) {
     return errorHandler(error, "Error verifying medication dispensing");
-

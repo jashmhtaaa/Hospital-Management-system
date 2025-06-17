@@ -1,10 +1,16 @@
-import { getServerSession } from "next-auth";
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/auth"
+import "@/lib/middleware/error-handling.middleware"
+import "@/lib/services/support-services/marketing"
+import "next-auth"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { authOptions }
+import { ContactService }
+import { getServerSession }
+import { type
+import { withErrorHandling }
 
-
-import { authOptions } from "@/lib/auth";
-import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
-import { ContactService } from "@/lib/services/support-services/marketing";
 const contactService = new ContactService();
 
 /**;
@@ -12,12 +18,12 @@ const contactService = new ContactService();
  * Link a contact to a patient;
  */;
 export const POST = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   return withErrorHandling();
     request,
-    async (req: NextRequest) => {
+    async (req: any) => {
       const session = await getServerSession(authOptions);
       const { patientId } = await req.json();
 

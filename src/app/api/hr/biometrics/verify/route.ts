@@ -1,7 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/hr/biometric-service"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { biometricService }
+import { type
+import { z }
 
-import { biometricService } from "@/lib/hr/biometric-service";
 // Schema for biometric verification;
 const biometricVerificationSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
@@ -10,12 +15,39 @@ const biometricVerificationSchema = z.object({
   sampleData: z.string().min(1, "Sample data is required")});
 
 // POST handler for verifying biometric data;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Parse request body;
     const body = await request.json();
 
@@ -26,7 +58,6 @@ export const _POST = async (request: NextRequest) => {
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
       );
-    }
 
     // Verify biometric data;
     const result = await biometricService.verifyBiometric(validationResult.data);

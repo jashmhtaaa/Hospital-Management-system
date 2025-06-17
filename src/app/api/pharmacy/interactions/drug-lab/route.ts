@@ -1,13 +1,22 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../../lib/audit"
+import "../../../../../lib/error-handler"
+import "../../../../../lib/services/laboratory/laboratory.service"
+import "../../../../../lib/services/pharmacy/pharmacy.service"
+import "../../../../../lib/validation/pharmacy-validation"
+import "../../../models/domain-models"
+import "../../../services/drug-interaction-service"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { DrugInteractionService }
+import { errorHandler }
+import { getMedicationById }
+import { getPatientLabResults }
+import { PharmacyDomain }
+import { type
+import { validateDrugLabInteractionRequest }
 
-
-import { auditLog } from "../../../../../lib/audit";
-import { errorHandler } from "../../../../../lib/error-handler";
-import { getPatientLabResults } from "../../../../../lib/services/laboratory/laboratory.service";
-import { getMedicationById } from "../../../../../lib/services/pharmacy/pharmacy.service";
-import { validateDrugLabInteractionRequest } from "../../../../../lib/validation/pharmacy-validation";
-import type { PharmacyDomain } from "../../../models/domain-models";
-import { DrugInteractionService } from "../../../services/drug-interaction-service";
 }
 
 /**;
@@ -36,12 +45,39 @@ const interactionService = new DrugInteractionService();
  * POST /api/pharmacy/interactions/drug-lab;
  * Check for drug-lab result interactions;
  */;
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
     // Validate request;
     const data = await req.json();
     const validationResult = validateDrugLabInteractionRequest(data);
@@ -50,13 +86,11 @@ export const POST = async (req: NextRequest) => {
         { error: "Validation failed", details: validationResult.errors },
         { status: 400 }
       );
-    }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -72,7 +106,6 @@ export const POST = async (req: NextRequest) => {
         lr.unit,
         lr.abnormalFlag;
       }));
-
 
     // Check for drug-lab interactions;
     const interactions = await interactionService.checkDrugLabInteractions();
@@ -96,8 +129,6 @@ export const POST = async (req: NextRequest) => {
           interactions.filter(i => i.severity === "moderate").length,
           minor: interactions.filter(i => i.severity === "minor").length;
 
-
     }, { status: 200 });
   } catch (error) {
     return errorHandler(error, "Error checking drug-lab interactions");
-

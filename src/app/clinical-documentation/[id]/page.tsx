@@ -1,10 +1,14 @@
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-import { Suspense } from "react";
+import "../../../components/clinical-documentation/document-viewer"
+import "../../../lib/auth"
+import "next-auth"
+import "next/navigation"
+import "react"
+import { authOptions }
+import { DocumentViewer }
+import { getServerSession }
+import { redirect }
+import { Suspense }
 
-
-import { DocumentViewer } from "../../../components/clinical-documentation/document-viewer";
-import { authOptions } from "../../../lib/auth";
 export default async const _DocumentViewPage = ({
   params;
 }: {id: string ;

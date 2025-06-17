@@ -1,6 +1,10 @@
+import "@cloudflare/workers-types"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { D1Database }
+import { type
 
-import type { D1Database } from "@cloudflare/workers-types";
-import { type NextRequest, NextResponse } from "next/server";
 export const _runtime = "edge";
 
 // Interface for checklist item (re-used from [id] route, consider moving to a shared types file);
@@ -19,8 +23,35 @@ interface ChecklistTemplateCreateBody {
 }
 
 // GET /api/ot/checklist-templates - List all checklist templates;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -55,12 +86,39 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/ot/checklist-templates - Create a new checklist template;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const body = (await request.json()) as ChecklistTemplateCreateBody;
     const { name, phase, items } = body;
 
@@ -79,7 +137,6 @@ export const _POST = async (request: NextRequest) => {
         { message: "Invalid phase. Must be one of: " + validPhases.join(", ") },
         { status: 400 }
       );
-    }
 
     // Validate items structure (basic check);
     if (!session.user)>
@@ -118,16 +175,43 @@ export const _POST = async (request: NextRequest) => {
       // Parse items JSON before sending response;
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         if (!session.user) {
           newTemplate.items = JSON.parse(newTemplate.items);
-        }
+
       } catch (parseError) {
 
         // Return raw string if parsing fails;
-      }
+
       return NextResponse.json(newTemplate, { status: 201 });
     } else {
       // Fallback response if fetching fails;
@@ -135,7 +219,7 @@ export const _POST = async (request: NextRequest) => {
         { id, name, phase, items, created_at: now, updated_at: now },
         { status: 201 }
       );
-    }
+
   } catch (error: unknown) {
     // FIX: Remove explicit any;
 
@@ -153,5 +237,3 @@ export const _POST = async (request: NextRequest) => {
       { message: "Error creating checklist template", details: errorMessage },
       { status: 500 }
     );
-
-

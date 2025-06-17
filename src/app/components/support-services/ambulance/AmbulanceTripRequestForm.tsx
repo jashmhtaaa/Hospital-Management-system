@@ -1,19 +1,45 @@
-import React, { useState } from "react";
+import "react"
+import React
+import { useState }
+
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/use-toast";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import "@/components/ui/button"
+import "@/components/ui/calendar"
+import "@/components/ui/card"
+import "@/components/ui/input"
+import "@/components/ui/label"
+import "@/components/ui/popover"
+import "@/components/ui/select"
+import "@/components/ui/textarea"
+import "@/components/ui/use-toast"
+import "date-fns"
+import "lucide-react"
+import "next/navigation"
+import "react"
+import CardContent
+import CardHeader
+import CardTitle }
+import PopoverContent
+import PopoverTrigger }
+import SelectContent
+import SelectItem
+import SelectTrigger
+import SelectValue }
+import useState }
+import { Button }
+import { Calendar }
+import { CalendarIcon }
+import { Card
+import { format }
+import { Input }
+import { Label }
+import { Popover
+import { Select
+import { Textarea }
+import { toast }
+import { useEffect
+import { useRouter }
 
 export default const _AmbulanceTripRequestForm = () {
   const router = useRouter();
@@ -50,6 +76,33 @@ export default const _AmbulanceTripRequestForm = () {
     setLoading(true);
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -78,6 +131,33 @@ export default const _AmbulanceTripRequestForm = () {
   const fetchLocations = async () => {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -104,9 +184,36 @@ export default const _AmbulanceTripRequestForm = () {
   const fetchPatients = async () => {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
       const response = await fetch("/api/patients?page=1&limit=100");
       const data = await response.json();
 
@@ -117,14 +224,14 @@ export default const _AmbulanceTripRequestForm = () {
           title: "Error",
           "destructive";
         });
-      }
+
     } catch (error) {
 
       toast({
         title: "Error",
         "destructive";
       });
-    }
+
   };
 
   const handleInputChange = (e: unknown) => {
@@ -145,14 +252,14 @@ export default const _AmbulanceTripRequestForm = () {
         [parent]: {
           ...medicalDetails[parent],
           [child]: value;
-        }
+
       });
     } else {
       setMedicalDetails({
         ...medicalDetails,
         [name]: type === "checkbox" ? checked : value;
       });
-    }
+
   };
 
   const handleSubmit = async (e) => {
@@ -164,7 +271,6 @@ export default const _AmbulanceTripRequestForm = () {
         "destructive";
       });
       return;
-    }
 
     if (!session.user) {
       toast({
@@ -172,7 +278,6 @@ export default const _AmbulanceTripRequestForm = () {
         "destructive";
       });
       return;
-    }
 
     if (!session.user) {
       toast({
@@ -180,7 +285,6 @@ export default const _AmbulanceTripRequestForm = () {
         "destructive";
       });
       return;
-    }
 
     if (!session.user) {
       toast({
@@ -188,15 +292,41 @@ export default const _AmbulanceTripRequestForm = () {
         "destructive";
       });
       return;
-    }
 
     setSubmitting(true);
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Combine date and time;
       const [hours, minutes] = selectedTime.split(":");
       const scheduledTime = new Date(selectedDate);
@@ -228,7 +358,7 @@ export default const _AmbulanceTripRequestForm = () {
           title: "Error",
           "destructive";
         });
-      }
+
     } catch (error) {
 
       toast({
@@ -237,7 +367,7 @@ export default const _AmbulanceTripRequestForm = () {
       });
     } finally {
       setSubmitting(false);
-    }
+
   };
 
   const handleFindAvailableAmbulances = async () => {
@@ -249,12 +379,38 @@ export default const _AmbulanceTripRequestForm = () {
       });
       return;
 
-
     setLoading(true);
 
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Combine date and time;

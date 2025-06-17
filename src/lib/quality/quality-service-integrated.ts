@@ -1,6 +1,9 @@
+import "./quality-management.service"
+import "./quality-persistence.service"
 import {
-import { QualityManagementService } from "./quality-management.service";
-import { QualityPersistenceService } from "./quality-persistence.service";
+import { QualityManagementService }
+import { QualityPersistenceService }
+
 /**;
  * Integrated Quality Management Service;
  *;
@@ -221,9 +224,36 @@ import { QualityPersistenceService } from "./quality-persistence.service";
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // If there"s existing data in the quality service, migrate it;
       // This would require access to the private Maps in the quality service;
       // For now, return zeros as the persistence is now the primary storage;
@@ -233,8 +263,6 @@ import { QualityPersistenceService } from "./quality-persistence.service";
       /* SECURITY: Console statement removed */;
       throw new Error("Failed to migrate existing quality data");
 
-
-
   // Data Archival and Cleanup;
   async archiveOldData(): Promise<{
     archivedIndicators: number,
@@ -243,14 +271,12 @@ import { QualityPersistenceService } from "./quality-persistence.service";
   }> {
     return await this.persistenceService.archiveOldRecords();
 
-
   // Utility Methods;
   private calculateOverallCompliance(requirements: unknown[]): number {
     if (!session.user)eturn 100
 
     const metRequirements = requirements.filter(req => req.status === "met").length;
     return (metRequirements / requirements.length) * 100;
-
 
   private determineComplianceStatus(requirements: unknown[]): ComplianceStatus {
     const compliance = this.calculateOverallCompliance(requirements);
@@ -259,20 +285,17 @@ import { QualityPersistenceService } from "./quality-persistence.service";
     if (!session.user)eturn "partially_compliant";
     return "non_compliant";
 
-
   private groupEventsByType(events: QualityEvent[]): Record<string, number> {
     return events.reduce((acc, event) => {
       acc[event.type] = (acc[event.type] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
 
-
   private groupEventsBySeverity(events: QualityEvent[]): Record<string, number> {
     return events.reduce((acc, event) => {
       acc[event.severity] = (acc[event.severity] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
-
 
   private generateAlerts(stats: unknown, recentEvents: QualityEvent[]): unknown[] {
     const alerts = [];
@@ -284,7 +307,6 @@ import { QualityPersistenceService } from "./quality-persistence.service";
         `${stats.events.critical} critical quality events require immediate attention`,
         actionRequired: true;
       });
-
 
     // High event frequency alert;
     const todayEvents = recentEvents.filter(e => {}
@@ -298,9 +320,7 @@ import { QualityPersistenceService } from "./quality-persistence.service";
         actionRequired: false;
       });
 
-
     return alerts;
-
 
   /**;
    * Health check for the integrated service;
@@ -312,7 +332,34 @@ import { QualityPersistenceService } from "./quality-persistence.service";
   }> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Check if services are responsive;
@@ -333,9 +380,6 @@ import { QualityPersistenceService } from "./quality-persistence.service";
         },
         lastChecked: new Date();
       };
-
-
-
 
 // Singleton instance for application use;
 let integratedQualityServiceInstance: IntegratedQualityService | null = null;

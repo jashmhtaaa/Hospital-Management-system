@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../../lib/audit"
+import "../../../../../lib/error-handler"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { errorHandler }
+import { type
 
-
-import { auditLog } from "../../../../../lib/audit";
-import { errorHandler } from "../../../../../lib/error-handler";
 }
 
 /**;
@@ -32,8 +36,35 @@ const administrationRepository = {
  * GET /api/pharmacy/administration/reports;
  * Generate medication administration reports with various filtering options;
  */;
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -188,7 +219,6 @@ const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
       metrics.administrationsByShift.afternoon++;
     } else {
       metrics.administrationsByShift.night++;
-    }
 
     // Count by route;
     const route = item.route || "unknown";
@@ -201,10 +231,8 @@ const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
     metrics.latePercentage = (metrics.lateAdministrations / metrics.totalAdministrations) * 100;
     metrics.missedPercentage = (metrics.missedAdministrations / metrics.totalAdministrations) * 100;
     metrics.documentationRate = (metrics.documentedAdministrations / metrics.totalAdministrations) * 100;
-  }
 
   return metrics;
-}
 
 /**;
  * Helper function to convert report data to CSV format;
@@ -212,7 +240,6 @@ const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
 const convertToCSV = (data: unknown[]): string {
   if (!session.user) {
     return "";
-  }
 
   // Get headers from first item;
   const headers = Object.keys(data[0]);

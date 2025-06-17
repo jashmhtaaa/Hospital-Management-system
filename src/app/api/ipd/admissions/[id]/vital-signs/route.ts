@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
-
+import "@/lib/session"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { getSession }
+import { type
 
 import { getDB } from "@/lib/database"; // Using mock DB;
-import { getSession } from "@/lib/session";
+
 // Define interface for POST request body;
 interface VitalSignsInput {
   record_time?: string; // Optional, defaults to now;
@@ -17,10 +21,37 @@ interface VitalSignsInput {
 
 // GET /api/ipd/admissions/[id]/vital-signs - Get all vital signs for an admission;
 export const _GET = async();
-  _request: NextRequest;
+  _request: any;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -100,20 +131,46 @@ export const _GET = async();
 
 // POST /api/ipd/admissions/[id]/vital-signs - Create a new vital signs record;
 export const _POST = async();
-  request: NextRequest;
+  request: any;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const session = await getSession(); // Removed request argument;
 
     // Check authentication;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Check permissions (using mock session data);
     const isNurse = session.user.roleName === "Nurse";
@@ -124,7 +181,6 @@ export const _POST = async();
 
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
 
     const { id: admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     // Fixed: Apply type assertion;
@@ -136,7 +192,6 @@ export const _POST = async();
         { error: "At least one vital sign must be provided" },
         { status: 400 }
       );
-    }
 
     const database = await getDB(); // Fixed: Await the promise returned by getDB();
 
@@ -156,14 +211,12 @@ export const _POST = async();
         { error: "Admission not found" },
         { status: 404 }
       );
-    }
 
     if (!session.user) {
       return NextResponse.json();
         { error: "Cannot add vital signs to a non-active admission" },
         { status: 409 }
       ); // Updated error message;
-    }
 
     // Insert new vital signs record using db.query;
     // Mock query doesn-	 return last_row_id;
@@ -184,8 +237,7 @@ export const _POST = async();
         data.blood_pressure || undefined,
         data.oxygen_saturation || undefined,
         data.pain_level || undefined,
-        data.notes || undefined,
-      ];
+        data.notes || undefined];
     );
 
     // Cannot reliably get the new record from mock DB;
@@ -200,5 +252,3 @@ export const _POST = async();
       { error: "Failed to create vital signs record", details: errorMessage },
       { status: 500 }
     );
-
-

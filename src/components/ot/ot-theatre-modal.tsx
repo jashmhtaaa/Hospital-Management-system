@@ -1,6 +1,10 @@
-import type React from "react";
-import { useEffect, useState } from "react";
+import "react"
+import React
+import type
+import useState }
 import {
+import { useEffect
+
 }
 
 "use client";
@@ -12,16 +16,22 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import "@/components/ui/button"
+import "@/components/ui/input"
+import "@/components/ui/label"
+import { Button }
+import { Input }
+import { Label }
+
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
+import "@/components/ui/textarea"
+import "@/components/ui/use-toast"
+import { Textarea }
+import { useToast }
 
 // Define Theatre interface;
 interface Theatre {
@@ -88,9 +98,36 @@ export default const _OTTheatreModal = ({
     setIsSaving(true);
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const formData.name,
         formData.specialty || null,
         formData.equipment || null

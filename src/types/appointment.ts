@@ -1,6 +1,8 @@
+import "./doctor.ts"
+import "./patient.ts"
+import { Doctor }
+import { Patient }
 
-import type { Doctor } from "./doctor.ts";
-import type { Patient } from "./patient.ts";
 }
 
 // types/appointment.ts;

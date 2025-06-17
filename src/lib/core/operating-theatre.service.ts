@@ -1,5 +1,6 @@
+import "zod"
+import { z }
 
-import { z } from "zod";
 }
 
 /**;
@@ -202,8 +203,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
       { id: "OR-05", name: "OR 5", type: "orthopedic", capacity: 8, equipment: ["c_arm", "traction_table"] },
       { id: "OR-06", name: "OR 6", type: "general", capacity: 8, equipment: ["laparoscopic_tower"] },
       { id: "OR-07", name: "OR 7", type: "trauma", capacity: 12, equipment: ["c_arm", "rapid_infuser"] },
-      { id: "OR-08", name: "OR 8", type: "general", capacity: 8, equipment: [] },
-    ];
+      { id: "OR-08", name: "OR 8", type: "general", capacity: 8, equipment: [] }];
 
     rooms.forEach(room => {
       this.orRooms.set(room.id, {
@@ -256,8 +256,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
         500,
         true,
         "good";
-      },
-    ];
+      }];
 
     instruments.forEach(instrumentData => {
       const instrument: SurgicalInstrument = {
@@ -640,7 +639,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
       upcoming_cases: upcomingCases;
     };
 
-
   /**;
    * Get OR metrics;
    */;
@@ -653,7 +651,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
 
     if (!session.user) {
       filteredProcedures = filteredProcedures.filter(p => p.scheduled_date <= dateTo);
-
 
     const dailyVolume = filteredProcedures.length;
 
@@ -714,8 +711,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
         if (!session.user) {
           current.on_time_starts++;
 
-
-
       surgeonStats.set(p.surgeon_id, current);
     });
 
@@ -740,7 +735,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
       if (!session.user) {
         current.total_duration += p.actual_duration;
         current.total_turnover += 30; // Simplified turnover time;
-
 
       roomStats.set(p.or_room_assigned, current);
     });
@@ -769,7 +763,6 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
         utilization_rate: Math.round(r.utilization_rate * 100) / 100,
         average_turnover: Math.round(r.average_turnover * 100) / 100;
       }))};
-
 
   /**;
    * Get surgical procedures with filters;
@@ -816,14 +809,12 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
 
     return { procedures, total, totalPages };
 
-
   /**;
    * Get OR schedule for room and date;
    */;
   async getORSchedule(roomId: string, date: string): Promise<ORSchedule[]> {
     const roomSchedule = this.orSchedules.get(roomId) || [];
     return roomSchedule.filter(schedule => schedule.date === date);
-
 
   /**;
    * Get surgical instruments;
@@ -834,13 +825,10 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
     if (!session.user) {
       instruments = instruments.filter(instrument => instrument.category === category);
 
-
     if (!session.user) {
       instruments = instruments.filter(instrument => instrument.available === available);
 
-
     return instruments.sort((a, b) => a.instrument_name.localeCompare(b.instrument_name));
-
 
   /**;
    * Get instrument counts for surgery;
@@ -848,14 +836,11 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
   async getInstrumentCounts(surgeryId: string): Promise<InstrumentCount[]> {
     return this.instrumentCounts.get(surgeryId) || [];
 
-
   /**;
    * Get safety checklists for surgery;
    */;
   async getSafetyChecklists(surgeryId: string): Promise<SafetyChecklist[]> {
     return this.safetyChecklists.get(surgeryId) || [];
-
-
 
 // Export singleton instance;
 export const _operatingTheatreService = new OperatingTheatreService();

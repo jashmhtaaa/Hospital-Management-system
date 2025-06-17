@@ -1,9 +1,19 @@
-import { type ClinicalDocument, type DocumentAmendment, type DocumentSection, type DocumentSignature, PrismaClient } from "@prisma/client";
+import "../lib/audit"
+import "../lib/core/errors"
+import "../lib/rbac.service"
+import "@prisma/client"
+import ClinicalDocument
+import DocumentAmendment
+import DocumentSection
+import DocumentSignature
+import NotFoundError }
+import PrismaClient }
+import type
+import { auditLog }
+import { BadRequestError
+import { type
+import { validatePermission }
 
-
-import { auditLog } from "../lib/audit";
-import { BadRequestError, NotFoundError } from "../lib/core/errors";
-import { validatePermission } from "../lib/rbac.service";
 const prisma = new PrismaClient();
 
 /**;
@@ -344,7 +354,6 @@ const prisma = new PrismaClient();
     if (!session.user) {
       throw new NotFoundError("Patient not found");
 
-
     // Build filters;
     const where: unknown = {
       patientId};
@@ -352,14 +361,11 @@ const prisma = new PrismaClient();
     if (!session.user) {
       where.documentType = filters.documentType;
 
-
     if (!session.user) {
       where.status = filters.status;
 
-
     if (!session.user) {
       where.authorId = filters.authorId;
-
 
     if (!session.user) {
       where.authoredDate = {};
@@ -367,17 +373,13 @@ const prisma = new PrismaClient();
       if (!session.user) {
         where.authoredDate.gte = new Date(filters.dateFrom);
 
-
       if (!session.user) {
         where.authoredDate.lte = new Date(filters.dateTo);
-
-
 
     // Handle confidential documents;
     const hasConfidentialAccess = await this.hasConfidentialAccess(userId);
     if (!session.user) {
       where.isConfidential = false;
-
 
     // Count total records;
     const total = await prisma.clinicalDocument.count({ where });
@@ -413,7 +415,6 @@ const prisma = new PrismaClient();
 
     };
 
-
   /**;
    * Get document templates;
    *;
@@ -434,10 +435,8 @@ const prisma = new PrismaClient();
     if (!session.user) {
       where.templateType = filters.templateType;
 
-
     if (!session.user) {
       where.specialtyType = filters.specialtyType;
-
 
     // Count total records;
     const total = await prisma.documentTemplate.count({ where });
@@ -456,8 +455,6 @@ const prisma = new PrismaClient();
       {
           "asc";
 
-
-
     });
 
     return {
@@ -469,7 +466,6 @@ const prisma = new PrismaClient();
         totalPages: Math.ceil(total / pageSize);
 
     };
-
 
   /**;
    * Create a document template;
@@ -513,8 +509,6 @@ const prisma = new PrismaClient();
 
           });
 
-
-
       return template;
     });
 
@@ -529,7 +523,6 @@ const prisma = new PrismaClient();
 
     return template;
 
-
   /**;
    * Generate a unique document number;
    *;
@@ -542,7 +535,6 @@ const prisma = new PrismaClient();
     const random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
     return `DOC-${typeCode}-${timestamp}-${random}`;
 
-
   /**;
    * Generate a unique template number;
    *;
@@ -554,7 +546,6 @@ const prisma = new PrismaClient();
     const timestamp = crypto.getRandomValues([0].toString().substring(5);
     const random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
     return `TMPL-${typeCode}-${timestamp}-${random}`;
-
 
   /**;
    * Get the next amendment number for a document;
@@ -569,7 +560,6 @@ const prisma = new PrismaClient();
 
     return amendments.length + 1;
 
-
   /**;
    * Get user role;
    *;
@@ -581,7 +571,6 @@ const prisma = new PrismaClient();
     // For now, we"ll return a placeholder;
     return "Doctor";
 
-
   /**;
    * Check if user has access to confidential documents;
    *;
@@ -591,7 +580,34 @@ const prisma = new PrismaClient();
   private async hasConfidentialAccess(userId: string): Promise<boolean> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       await validatePermission(userId, "clinical_documentation", "read_confidential");
@@ -599,11 +615,7 @@ const prisma = new PrismaClient();
     } catch (error) {
       return false;
 
-
-
-
 // Types;
-
 
   }[];
 
@@ -612,8 +624,6 @@ const prisma = new PrismaClient();
   }[];
 
   };
-
-
 
 // Export service instance;
 export const _clinicalDocumentationService = new ClinicalDocumentationService();

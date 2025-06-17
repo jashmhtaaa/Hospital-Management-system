@@ -1,9 +1,17 @@
-import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
-import { PrismaClient } from "@prisma/client";
+import "../asset-service"
+import "@/lib/cache"
+import "@jest/globals"
+import "@prisma/client"
+import beforeEach
+import describe
+import expect
+import it
+import jest }
+import { afterEach
+import { AssetService }
+import { cache }
+import { PrismaClient }
 
-
-import { cache } from "@/lib/cache";
-import { AssetService } from "../asset-service";
 // Mock PrismaClient;
 jest.mock("@prisma/client", () => {
   const mockPrismaClient = {
@@ -230,8 +238,7 @@ describe("AssetService", () => {
         {
           startDate: new Date("2023-07-01"),
           endDate: null, // Current assignment;
-        },
-      ];
+        }];
 
       const mockMaintenanceRecords = [;
         {
@@ -241,8 +248,7 @@ describe("AssetService", () => {
         {
           date: new Date("2023-06-15"),
           150;
-        },
-      ];
+        }];
 
       (prisma.asset.findUnique as jest.Mock).mockResolvedValue(mockAsset);
       (prisma.assetAssignment.findMany as jest.Mock).mockResolvedValue(mockAssignments);
@@ -277,8 +283,7 @@ describe("AssetService", () => {
         {
           date: new Date("2023-09-01"),
           "COMPLETED";
-        },
-      ];
+        }];
 
       const mockCorrectiveRecords = [;
         {
@@ -290,8 +295,7 @@ describe("AssetService", () => {
           date: new Date("2023-08-15"),
           "COMPLETED",
           cost: 300;
-        },
-      ];
+        }];
 
       (prisma.asset.findUnique as jest.Mock).mockResolvedValue(mockAsset);
       (prisma.assetMaintenance.findMany as jest.Mock);

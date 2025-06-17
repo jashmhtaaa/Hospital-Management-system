@@ -1,9 +1,12 @@
-import type { PrismaClient } from "@prisma/client";
-import { z } from "zod";
+import "@/lib/fhir/fhir-integration"
+import "@/lib/fhir/patient"
+import "@prisma/client"
+import "zod"
+import { FHIRPatient }
+import { FHIRPatientIntegration }
+import { PrismaClient }
+import { z }
 
-
-import { FHIRPatientIntegration } from "@/lib/fhir/fhir-integration";
-import { FHIRPatient } from "@/lib/fhir/patient";
 }
 
 /**;
@@ -89,6 +92,33 @@ export type PatientUpdate = z.infer>;
   async createPatient(patientData: PatientCreate): Promise<Patient> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -160,6 +190,33 @@ export type PatientUpdate = z.infer>;
    */;
   async updatePatient(patientId: string, updateData: PatientUpdate): Promise<Patient> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -238,6 +295,33 @@ export type PatientUpdate = z.infer>;
   async searchPatients(criteria: PatientSearchCriteria): Promise<PatientSearchResult> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -305,12 +389,10 @@ export type PatientUpdate = z.infer>;
           total,
           page,
           totalPages};
-      }
+
     } catch (error) {
 
       throw error;
-    }
-  }
 
   /**;
    * Get patient by ID with FHIR compliance;
@@ -318,9 +400,36 @@ export type PatientUpdate = z.infer>;
   async getPatientById(patientId: string): Promise<Patient | null> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       if (!session.user) {
         const result = await FHIRPatientIntegration.getPatient(patientId);
         return result?.hmsPatient || null;
@@ -329,12 +438,10 @@ export type PatientUpdate = z.infer>;
           where: { id: patientId }
         });
         return patient ? this.convertPrismaPatientToHMS(patient) : null;
-      }
+
     } catch (error) {
 
       return null;
-    }
-  }
 
   /**;
    * Get patient by MRN with FHIR compliance;
@@ -342,9 +449,36 @@ export type PatientUpdate = z.infer>;
   async findPatientByMRN(mrn: string): Promise<Patient | null> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       if (!session.user) {
         const result = await FHIRPatientIntegration.searchPatients({ identifier: mrn });
         return result.hmsPatients.length > 0 ? result.hmsPatients[0] : null;
@@ -353,12 +487,10 @@ export type PatientUpdate = z.infer>;
           where: { mrn }
         });
         return patient ? this.convertPrismaPatientToHMS(patient) : null;
-      }
+
     } catch (error) {
 
       return null;
-    }
-  }
 
   /**;
    * Convert Prisma patient to HMS format;
@@ -386,7 +518,7 @@ export type PatientUpdate = z.infer>;
           planName: "",
           "",
           "self" as const;
-        }
+
       },
       allergies: additionalData?.allergies || [],
       additionalData?.preferredLanguage || "en",
@@ -396,7 +528,6 @@ export type PatientUpdate = z.infer>;
 
     };
 
-
   /**;
    * Get FHIR representation of patient;
    */;
@@ -404,10 +535,36 @@ export type PatientUpdate = z.infer>;
     if (!session.user) {
       throw new Error("FHIR integration is disabled");
 
-
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const result = await FHIRPatientIntegration.getPatient(patientId);
@@ -415,8 +572,6 @@ export type PatientUpdate = z.infer>;
     } catch (error) {
 
       return null;
-
-
 
   /**;
    * Initialize FHIR integration;
@@ -426,14 +581,11 @@ export type PatientUpdate = z.infer>;
       const { FHIRIntegrationUtils } = await import("@/lib/fhir/fhir-integration");
       await FHIRIntegrationUtils.initializeFHIRIntegration();
 
-
-
   /**;
    * Cleanup database connections;
    */;
   async cleanup(): Promise<void> {
     await this.prisma.$disconnect();
-
 
   /**;
    * Add medical record to patient;
@@ -442,7 +594,6 @@ export type PatientUpdate = z.infer>;
     const patient = this.patients.get(patientId);
     if (!session.user) {
       throw new Error("Patient not found");
-
 
     const medicalRecord: MedicalRecord = {
       ...record,
@@ -462,18 +613,15 @@ export type PatientUpdate = z.infer>;
       };
       this.patients.set(patientId, updatedPatient);
 
-
     await this.logAuditEvent("medical_record_added", patientId, { recordType: record.type, recordId: medicalRecord.id });
 
     return medicalRecord;
-
 
   /**;
    * Get patient"s medical records;
    */;
   async getPatientMedicalRecords(patientId: string): Promise<MedicalRecord[]> {
     return this.medicalRecords.get(patientId) || [];
-
 
   /**;
    * Verify insurance eligibility;
@@ -484,7 +632,6 @@ export type PatientUpdate = z.infer>;
     const patient = this.patients.get(patientId);
     if (!session.user) {
       throw new Error("Patient not found");
-
 
     // Simulate insurance verification;
     const primaryStatus = crypto.getRandomValues([0] / (0xFFFFFFFF + 1) > 0.1 ? "active" : "inactive";
@@ -502,7 +649,6 @@ export type PatientUpdate = z.infer>;
 
     return result;
 
-
   /**;
    * Check patient eligibility for services;
    */;
@@ -514,7 +660,6 @@ export type PatientUpdate = z.infer>;
     const patient = this.patients.get(patientId);
     if (!session.user) {
       throw new Error("Patient not found");
-
 
     const insurance = await this.verifyInsurance(patientId);
 
@@ -530,7 +675,6 @@ export type PatientUpdate = z.infer>;
       copay,
       deductible,
       reasons: eligible ? undefined : ["Insurance not active", "Service not covered"]};
-
 
   /**;
    * Get patient statistics;
@@ -554,7 +698,6 @@ export type PatientUpdate = z.infer>;
 
     return stats;
 
-
   /**;
    * Log audit events for HIPAA compliance;
    */;
@@ -571,7 +714,6 @@ export type PatientUpdate = z.infer>;
     // In real implementation, store in audit log database;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
-
   /**;
    * Export patient data (for patient portal or data requests);
    */;
@@ -581,7 +723,6 @@ export type PatientUpdate = z.infer>;
     const patient = this.patients.get(patientId);
     if (!session.user) {
       throw new Error("Patient not found");
-
 
     const medicalRecords = await this.getPatientMedicalRecords(patientId);
 
@@ -593,7 +734,6 @@ export type PatientUpdate = z.infer>;
       exportDate: new Date();
     };
 
-
   /**;
    * Merge duplicate patient records;
    */;
@@ -603,7 +743,6 @@ export type PatientUpdate = z.infer>;
 
     if (!session.user) {
       throw new Error("One or both patients not found");
-
 
     // Merge medical records;
     const primaryRecords = this.medicalRecords.get(primaryPatientId) || [];
@@ -643,8 +782,6 @@ export type PatientUpdate = z.infer>;
     });
 
     return mergedPatient;
-
-
 
 // Export singleton instance with FHIR enabled by default;
 export const _patientManagementService = new PatientManagementService(true);

@@ -1,11 +1,18 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/database"
+import "@/lib/session"
+import "@/types/opd"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { Consultation }
+import { DB }
+import { getSession }
+import { type
+import { z }
 
+import { D1Database, D1ResultWithMeta  } from "@/types/cloudflare"; // Import D1Database;
 
-import { DB } from "@/lib/database";
-import { getSession } from "@/lib/session";
-import type { D1Database, D1ResultWithMeta } from "@/types/cloudflare"; // Import D1Database;
-import { Consultation } from "@/types/opd";
 // Zod schema for creating an OPD visit;
 const opdVisitCreateSchema = z.object({
     patient_id: z.number(),
@@ -23,13 +30,40 @@ const opdVisitCreateSchema = z.object({
 });
 
 // GET /api/opd-visits - Fetch list of OPD visits (with filtering/pagination);
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
     const session = await getSession();
     if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -131,7 +165,7 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/opd-visits - Create a new OPD visit (Consultation record);
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
     const session = await getSession();
     if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -142,9 +176,36 @@ export const _POST = async (request: NextRequest) => {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const body = await request.json();
         const validationResult = opdVisitCreateSchema.safeParse(body);
 
@@ -153,7 +214,6 @@ export const _POST = async (request: NextRequest) => {
                 { message: "Invalid input", errors: validationResult.error.errors },
                 { status: 400 }
             );
-        }
 
         const visitData = validationResult.data;
         const now = new Date().toISOString();
@@ -186,7 +246,6 @@ export const _POST = async (request: NextRequest) => {
         if (!session.user) {
 
             throw new Error("Failed to create OPD visit record");
-        }
 
         const newVisitId = insertResult.meta.last_row_id;
 
@@ -200,13 +259,10 @@ export const _POST = async (request: NextRequest) => {
         let errorMessage = "An unknown error occurred";
         if (!session.user) {
             errorMessage = error.message;
-        }
+
         return NextResponse.json();
             { message: "Error creating OPD visit", details: errorMessage },
             { status: 500 }
         );
-
-
-
 
 export async function GET() { return new Response("OK"); }

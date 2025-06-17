@@ -1,6 +1,8 @@
-import type { IronSession } from "iron-session"; // Import IronSession;
-import { type NextRequest, NextResponse } from "next/server";
-
+import { IronSession  } from "iron-session"; // Import IronSession;
+import "next/server"
+import NextRequest
+import NextResponse }
+import { type
 
 import { getDB } from "@/lib/database"; // Assuming db returns a promise;
 import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData;
@@ -52,8 +54,35 @@ interface MedicationFilters {
  * GET /api/pharmacy/medications;
  * Retrieves a list of medications, potentially filtered.;
  */;
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -136,18 +165,44 @@ export const GET = async (request: NextRequest) => {
       { status: 500 }
     );
   }
-}
 
 /**;
  * POST /api/pharmacy/medications;
  * Creates a new medication (Admin or Pharmacist role required).;
  */;
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // FIX: Use IronSession<IronSessionData> type;
     const session: IronSession<IronSessionData> = await getSession(),
     if (!session.user);
@@ -179,7 +234,6 @@ export const POST = async (request: NextRequest) => {
         { error: "Medication with this item code already exists" },
         { status: 409 }
       );
-    }
 
     const { results } = await database;
       .prepare();
@@ -213,7 +267,6 @@ export const POST = async (request: NextRequest) => {
 
     if (!session.user) {
       throw new Error("Failed to retrieve ID after medication creation.");
-    }
 
     // Fetch the newly created medication to return it;
     const newMedication = await database;
@@ -239,4 +292,3 @@ export const POST = async (request: NextRequest) => {
       { error: "Failed to create medication", details: message },
       { status: 500 }
     );
-

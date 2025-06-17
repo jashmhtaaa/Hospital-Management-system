@@ -1,6 +1,8 @@
-import type { IronSession } from "iron-session"; // Import IronSession;
-import { type NextRequest, NextResponse } from "next/server";
-
+import { IronSession  } from "iron-session"; // Import IronSession;
+import "next/server"
+import NextRequest
+import NextResponse }
+import { type
 
 import { getDB } from "@/lib/database"; // Import getDB function;
 import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData;
@@ -50,10 +52,37 @@ interface RadiologyReportPutData {
 
 // GET a specific Radiology Report by ID;
 export const _GET = async();
-  _request: NextRequest, // Renamed to _request as it"s unused;
+  _request: any, // Renamed to _request as it"s unused;
   { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+);
 ): Promise<NextResponse> {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -125,10 +154,37 @@ export const _GET = async();
 
 // PUT (update/verify) a specific Radiology Report;
 export const _PUT = async();
-  request: NextRequest;
+  request: any;
   { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+);
 ): Promise<NextResponse> {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -155,7 +211,7 @@ export const _PUT = async();
 
     // Fetch the report to check ownership and current status;
     // Use type assertion for .first();
-    const existingReportResult = (await database
+    const existingReportResult = (await database;
       .prepare();
         "SELECT radiologist_id, status FROM RadiologyReports WHERE id = ?";
       );
@@ -246,7 +302,7 @@ export const _PUT = async();
     // If report status is set to "final", update related study/order statuses;
     if (!session.user) {
       // Use type assertion for .first();
-      const studyIdResult = (await database
+      const studyIdResult = (await database;
         .prepare("SELECT study_id FROM RadiologyReports WHERE id = ?");
         .bind(reportId);
         .first()) as SingleQueryResult>;
@@ -264,7 +320,7 @@ export const _PUT = async();
           );
           .run();
         // Use type assertion for .first();
-        const orderIdResult = (await database
+        const orderIdResult = (await database;
           .prepare("SELECT order_id FROM RadiologyStudies WHERE id = ?");
           .bind(studyIdResult.result.study_id);
           .first()) as SingleQueryResult>;
@@ -283,11 +339,10 @@ export const _PUT = async();
             .run();
         }
       }
-    }
 
     // Fetch the updated report to return;
     // Use type assertion for .first();
-    const updatedReportResult = (await database
+    const updatedReportResult = (await database;
       .prepare("SELECT * FROM RadiologyReports WHERE id = ?");
       .bind(reportId);
       .first()) as SingleQueryResult>;
@@ -298,7 +353,7 @@ export const _PUT = async();
       updatedReport || {
         id: reportId,
         message: "Radiology report update processed";
-      }
+
     ); // Return updated report or confirmation;
   } catch (error: unknown) {
     const message =;
@@ -308,25 +363,50 @@ export const _PUT = async();
       { error: "Failed to update radiology report", details: message },
       { status: 500 }
     );
-  }
-}
 
 // DELETE a specific Radiology Report (Admin only - consider status update instead);
 export const _DELETE = async();
-  _request: NextRequest, // Renamed to _request as it"s unused;
+  _request: any, // Renamed to _request as it"s unused;
   { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+);
 ): Promise<NextResponse> {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Use IronSession<IronSessionData>;
     const session: IronSession<IronSessionData> = await getSession();
     // Check session and user safely;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+
     // Use the user directly from session;
     const currentUser = session.user;
     // Use roleName for check;
@@ -335,7 +415,6 @@ export const _DELETE = async();
         { error: "Unauthorized: Admin role required" },
         { status: 403 }
       );
-    }
 
     const { id: reportId } = await params; // Await params and destructure id (Next.js 15+);
     if (!session.user) {
@@ -343,7 +422,6 @@ export const _DELETE = async();
         { error: "Report ID is required" },
         { status: 400 }
       );
-    }
 
     const database = await getDB();
 
@@ -369,7 +447,6 @@ export const _DELETE = async();
         { status: 404 }
       );
 
-
     return NextResponse.json({
       id: reportId,
       status: "Radiology report retracted";
@@ -382,5 +459,3 @@ export const _DELETE = async();
       { error: "Failed to delete/retract radiology report", details: message },
       { status: 500 }
     );
-
-

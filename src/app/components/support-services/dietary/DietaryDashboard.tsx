@@ -1,18 +1,47 @@
-import React, { useState } from "react";
+import "react"
+import React
+import { useState }
+
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Calendar } from "@/components/ui/calendar";
-import { Separator } from "@/components/ui/separator";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useToast } from "@/components/ui/use-toast";
-import { format } from "date-fns";
+import "@/components/ui/badge"
+import "@/components/ui/button"
+import "@/components/ui/calendar"
+import "@/components/ui/card"
+import "@/components/ui/separator"
+import "@/components/ui/table"
+import "@/components/ui/tabs"
+import "@/components/ui/use-toast"
+import "date-fns"
+import "next/navigation"
+import "react"
+import CardContent
+import CardDescription
+import CardHeader
+import CardTitle }
+import TableBody
+import TableCell
+import TableHead
+import TableHeader
+import TableRow }
+import TabsContent
+import TabsList
+import TabsTrigger }
+import useEffect }
+import useSearchParams }
 import {
+import { Badge }
+import { Button }
+import { Calendar }
+import { Card
+import { format }
+import { Separator }
+import { Table
+import { Tabs
+import { useRouter
+import { useState
+import { useToast }
+
   CalendarIcon,
   ChevronLeft,
   ChevronRight,
@@ -31,16 +60,24 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import "@/components/ui/input"
+import "@/components/ui/popover"
+import "@/lib/utils"
+import PopoverContent
+import PopoverTrigger }
+import { cn }
+import { Input }
+import { Popover
+
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
-import { Skeleton } from "@/components/ui/skeleton";
+import "@/components/ui/skeleton"
+import { Skeleton }
+
   Dialog,
   DialogContent,
   DialogDescription,
@@ -105,6 +142,33 @@ export const _DietaryDashboard = () => {
     setIsLoading(true);
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -133,16 +197,43 @@ export const _DietaryDashboard = () => {
       });
     } finally {
       setIsLoading(false);
-    }
+
   };
 
   // Fetch analytics data;
   const fetchAnalytics = async () => {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch("/api/support-services/dietary/analytics?period=MONTHLY");
       if (!session.user)hrow new Error("Failed to fetch analytics");
 
@@ -154,7 +245,7 @@ export const _DietaryDashboard = () => {
         title: "Error",
         "destructive";
       });
-    }
+
   };
 
   // Handle filter changes;
@@ -186,9 +277,36 @@ export const _DietaryDashboard = () => {
   const viewRequestDetails = async (requestId: string) => {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch(`/api/support-services/dietary/${}`;
       if (!session.user)hrow new Error("Failed to fetch request details");
 
@@ -201,16 +319,43 @@ export const _DietaryDashboard = () => {
         title: "Error",
         "destructive";
       });
-    }
+
   };
 
   // View meal plan details;
   const viewMealPlanDetails = async (mealPlanId: string) => {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch(`/api/support-services/dietary/meal-plans/${}`;
       if (!session.user)hrow new Error("Failed to fetch meal plan details");
 
@@ -230,7 +375,34 @@ export const _DietaryDashboard = () => {
   const updateRequestStatus = async (requestId: string, status: string) => {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const response = await fetch(`/api/support-services/dietary/${requestId}`, {
@@ -291,7 +463,6 @@ export const _DietaryDashboard = () => {
         </div>;
       );
 
-
     if (!session.user) {
       return();
         >;
@@ -305,7 +476,6 @@ export const _DietaryDashboard = () => {
           </Button>;
         </div>;
       );
-
 
     return();
       <Table>;
@@ -439,7 +609,6 @@ export const _DietaryDashboard = () => {
         </div>;
       );
 
-
     return();
       >;
         >;
@@ -498,7 +667,7 @@ export const _DietaryDashboard = () => {
                 {analytics.requestsByType.map((item: unknown) => (;
                   >;
                     >;
-                      <div className={`w-3 h-3 rounded-full mr-2 ${requestTypeColors[item.requestType] ||;
+                      <div></div>;
                         "bg-gray-200"}`}></div>;
                       <span>{item.requestType.replace(/_/g, " ")}</span>;
                     </div>;

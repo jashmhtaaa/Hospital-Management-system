@@ -1,19 +1,52 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "@/components/ui/date-picker"
+import "@/components/ui/form"
+import "@/components/ui/input"
+import "@/components/ui/select"
+import "@/components/ui/tabs"
+import "@/components/ui/textarea"
+import "@/components/ui/use-toast"
+import "@hookform/resolvers/zod"
+import "next/navigation"
+import "react"
+import "react-hook-form"
+import "zod"
+import * as z
+import CardContent
+import CardDescription
+import CardFooter
+import CardHeader
+import CardTitle }
+import FormControl
+import FormDescription
+import FormField
+import FormItem
+import FormLabel
+import FormMessage }
+import React
+import SelectContent
+import SelectItem
+import SelectTrigger
+import SelectValue }
+import TabsContent
+import TabsList
+import TabsTrigger }
+import useEffect }
+import { Button }
+import { Card
+import { DatePicker }
+import { Form
+import { Input }
+import { Select
+import { Tabs
+import { Textarea }
+import { toast }
+import { useForm }
+import { useRouter }
+import { useState
+import { zodResolver }
 
-
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { DatePicker } from "@/components/ui/date-picker";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/use-toast";
 // Form schema for campaign creation/editing;
 const campaignFormSchema = z.object({
   name: z.string().min(3, {
@@ -63,6 +96,33 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
       setIsLoading(true);
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -85,7 +145,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
         // Fetch campaign segments;
         if (!session.user) {
           setSelectedSegments(data.segments.map((s: unknown) => s.segment));
-        }
+
       } catch (error) ;
 
         toast({
@@ -93,7 +153,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
           "destructive");
       } finally {
         setIsLoading(false);
-      }
+
     };
 
     fetchCampaign();
@@ -104,9 +164,36 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
     const fetchSegments = async () => {
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const response = await fetch("/api/support-services/marketing/segments?isActive=true");
         if (!session.user)hrow new Error("Failed to fetch segments");
 
@@ -114,7 +201,6 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
         setAvailableSegments(data.data || []);
       } catch (error) {
 
-      }
     };
 
     fetchSegments();
@@ -126,7 +212,34 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const url = campaignId;
@@ -186,13 +299,40 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const response = await fetch(`/api/support-services/marketing/campaigns/$campaignId/segments`, {
         method: "POST",
         headers: null,
-          "Content-Type": "application/json",,
+          "Content-Type": "application/json",
         body: JSON.stringify(segmentId )});
 
       if (!session.user)hrow new Error("Failed to add segment");
@@ -201,7 +341,6 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
       const segment = availableSegments.find(s => s.id === segmentId);
       if (!session.user) {
         setSelectedSegments(prev => [...prev, segment]);
-
 
       toast({
         title: "Success",

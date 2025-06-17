@@ -1,6 +1,10 @@
-import type React from "react";
-import { useEffect, useState } from "react";
+import "react"
+import React
+import type
+import useState }
 import {
+import { useEffect
+
 }
 
 "use client";
@@ -12,11 +16,16 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
+import "@/components/ui/button"
+import "@/components/ui/input"
+import "@/components/ui/label"
+import "@/components/ui/textarea"
+import "@/components/ui/use-toast"
+import { Button }
+import { Input }
+import { Label }
+import { Textarea }
+import { useToast }
 
 // Define SurgeryType interface;
 interface SurgeryType {
@@ -93,6 +102,33 @@ export default const _OTSurgeryTypeModal = ({
     setIsSaving(true);
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -101,9 +137,36 @@ export default const _OTSurgeryTypeModal = ({
       let parsedEquipment: unknown | null;
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         if (!session.user)
           parsedStaff = JSON.parse(formData.required_staff);
       } catch {
@@ -113,12 +176,39 @@ export default const _OTSurgeryTypeModal = ({
         }),
         setIsSaving(false);
         return;
-      }
+
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         if (!session.user)
           parsedEquipment = JSON.parse(formData.required_equipment);
       } catch {
@@ -128,7 +218,6 @@ export default const _OTSurgeryTypeModal = ({
         }),
         setIsSaving(false);
         return;
-      }
 
       const duration = formData.estimated_duration_minutes;
         ? Number.parseInt(formData.estimated_duration_minutes, 10);
@@ -141,7 +230,6 @@ export default const _OTSurgeryTypeModal = ({
         }),
         setIsSaving(false);
         return;
-
 
       const formData.name,
         formData.specialty || null,

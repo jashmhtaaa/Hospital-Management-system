@@ -1,10 +1,17 @@
-import * as z from "zod";
-import React, { useState, useEffect } from "react";
+import "@/components/ui/button"
+import "@hookform/resolvers/zod"
+import "react"
+import "react-hook-form"
+import "zod"
+import * as z
+import React
+import useEffect }
 import {
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Button }
+import { useForm }
+import { useState
+import { zodResolver }
 
-import { Button } from "@/components/ui/button";
 }
 
 // src/components/er/ERRegistrationModal.tsx;
@@ -22,13 +29,16 @@ import { Button } from "@/components/ui/button";
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import "@/components/ui/input"
+import { Input }
+
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { useToast } from "@/components/ui/use-toast";
+import "@/components/ui/use-toast"
+import { useToast }
 
 // Define Zod schema for form validation;
 const registrationSchema = z;
@@ -132,6 +142,33 @@ export default const _ERRegistrationModal = ({
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -160,7 +197,7 @@ export default const _ERRegistrationModal = ({
           description: `No patient found with MRN ${mrn}.`,
           variant: "default";
         });
-      }
+
     } catch (error) {
 
       toast({
@@ -169,7 +206,7 @@ export default const _ERRegistrationModal = ({
       });
     } finally {
       setIsSearching(false);
-    }
+
   };
 
   async const onSubmit = (data: RegistrationFormValues) {
@@ -180,9 +217,36 @@ export default const _ERRegistrationModal = ({
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Step 1: Create/Verify Patient;
       if (!session.user) {
         // Create new patient if details are provided;
@@ -201,8 +265,6 @@ export default const _ERRegistrationModal = ({
         } else {
           // This case should ideally be prevented by the form validation (refine);
           throw new Error("Patient details incomplete for new registration.");
-        }
-
 
       // Step 2: Create ER Visit;
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
@@ -220,7 +282,34 @@ export default const _ERRegistrationModal = ({
         let errorMessage = "Failed to create ER visit";
         try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
           // FIX: Use defined type for errorData;
@@ -230,7 +319,6 @@ export default const _ERRegistrationModal = ({
           // Ignore if response is not JSON;
 
         throw new Error(errorMessage);
-
 
       // FIX: Use defined type for newVisit;
       const newVisit: ERVisitResponse = await visitResponse.json(),
@@ -257,8 +345,6 @@ export default const _ERRegistrationModal = ({
       });
     } finally {
       setIsLoading(false);
-
-
 
   return();
     >;

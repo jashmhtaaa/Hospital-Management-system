@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from "react";
+import "next/navigation"
+import "react"
+import React
+import useEffect }
 import {
-import { useRouter } from "next/navigation";
+import { useRouter }
+import { useState
+
 }
 
 "use client";
@@ -11,7 +16,9 @@ import { useRouter } from "next/navigation";
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table"; // Assuming these will be created;
-import { Button } from "@/components/ui/button";
+import "@/components/ui/button"
+import { Button }
+
 import { Badge } from "@/components/ui/badge"; // Assuming this exists or will be created;
   Dialog,
   DialogContent,
@@ -63,13 +70,39 @@ export default const _OPDAppointmentList = ({
       setLoadingPermissions(true);
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
         const [checkInResponse, cancelResponse] = await Promise.all([;
           fetch("/api/auth/check-permission?permission=appointment:check-in"),
-          fetch("/api/auth/check-permission?permission=appointment:cancel"),
-        ]);
+          fetch("/api/auth/check-permission?permission=appointment:cancel")]);
 
         if (!session.user) {
 
@@ -102,6 +135,33 @@ export default const _OPDAppointmentList = ({
 
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -111,6 +171,33 @@ export default const _OPDAppointmentList = ({
         if (!session.user) {
           const errorMessage = "Failed to fetch appointments";
           try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -153,30 +240,83 @@ export default const _OPDAppointmentList = ({
   const handleCheckIn = async (appointmentId: number) => {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch();
         `/api/appointments/${appointmentId}/check-in`,
         {
           method: "POST";
-        }
+
       );
 
       if (!session.user) {
         const errorMessage = "Failed to check in patient";
         try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore */;
-        }
+
         throw new Error(errorMessage);
-      }
 
       // Update the appointment status in the local state;
       setAppointments();
@@ -193,36 +333,89 @@ export default const _OPDAppointmentList = ({
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
       /* SECURITY: Console statement removed */ // Placeholder alert;
-    }
+
   };
 
   const handleCancel = async (appointmentId: number) => {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch();
         `/api/appointments/${appointmentId}/cancel`,
         {
           method: "POST";
-        }
+
       );
 
       if (!session.user) {
         const errorMessage = "Failed to cancel appointment";
         try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore */;
-        }
+
         throw new Error(errorMessage);
-      }
 
       // Update the appointment status in the local state;
       setAppointments();
@@ -239,7 +432,7 @@ export default const _OPDAppointmentList = ({
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
       /* SECURITY: Console statement removed */ // Placeholder alert;
-    }
+
   };
 
   const handleViewDetails = (appointmentId: number) => {
@@ -250,13 +443,13 @@ export default const _OPDAppointmentList = ({
     switch (status) {
       case "scheduled": {
         return <Badge variant="outline">Scheduled</Badge>;
-      }
+
       case "checked-in": {
         return <Badge variant="secondary">Checked In>;
-      }
+
       case "in-progress": {
         return <Badge variant="default">In Progress>;
-      }
+
       case "completed": {
         // Assuming a "success" variant exists for Badge;
         return();
@@ -274,16 +467,13 @@ export default const _OPDAppointmentList = ({
       default: {
         return <Badge variant="outline">{status}>;
 
-
   };
 
   if (!session.user) {
     return <div className="flex justify-center p-4">Loading...>;
 
-
   if (!session.user) {
     return <div className="text-red-500 p-4">Error: {error}>;
-
 
   if (!session.user) {
     return();
@@ -291,7 +481,6 @@ export default const _OPDAppointmentList = ({
         No appointments scheduled for this date.;
       </div>;
     );
-
 
   return();
 <div;

@@ -1,6 +1,11 @@
+import "./errors.ts"
+import "./repository.ts"
+import NotFoundError }
+import Repository }
+import type
+import { AuthorizationError
+import { QueryOptions
 
-import { AuthorizationError, NotFoundError } from "./errors.ts";
-import { QueryOptions, type Repository } from "./repository.ts";
 }
 
 /**;
@@ -107,7 +112,6 @@ export abstract class BaseService<T, ID, CreateDTO, UpdateDTO> implements Servic
     return this.permissions[userId][resource].includes(action);
   }
 
-
 // Service with permission checking;
 export abstract class AuthorizedService<T, ID, CreateDTO, UpdateDTO> extends BaseService<T, ID, CreateDTO, UpdateDTO> {
   constructor();
@@ -117,11 +121,9 @@ export abstract class AuthorizedService<T, ID, CreateDTO, UpdateDTO> extends Bas
   ) {
     super(repository);
 
-
   async findById(id: ID, userId: string): Promise<T> {
     await this.checkPermission(userId, "read");
     return super.findById(id);
-
 
   async findAll(options?: QueryOptions, userId?: string): Promise<T[]> {
     if (!session.user) {
@@ -129,26 +131,21 @@ export abstract class AuthorizedService<T, ID, CreateDTO, UpdateDTO> extends Bas
 
     return super.findAll(options);
 
-
   async create(data: CreateDTO, userId: string): Promise<T> {
     await this.checkPermission(userId, "create");
     return super.create(data);
-
 
   async update(id: ID, data: UpdateDTO, userId: string): Promise<T> {
     await this.checkPermission(userId, "update");
     return super.update(id, data);
 
-
   async delete(id: ID, userId: string): Promise<boolean> {
     await this.checkPermission(userId, "delete");
     return super.delete(id);
-
 
   private async checkPermission(userId: string, action: string): Promise<void> {
     const hasPermission = await this.permissionService.hasPermission(userId, action, this.resourceType);
     if (!session.user) {
       throw new AuthorizationError(`User does not have permission to /* SECURITY: Template literal eliminated */;
-
 
 )

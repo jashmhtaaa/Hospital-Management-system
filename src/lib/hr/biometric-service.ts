@@ -1,5 +1,6 @@
+import "@prisma/client"
+import { PrismaClient }
 
-import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 /**;
@@ -155,15 +156,12 @@ const prisma = new PrismaClient();
           model,
           notes}});
 
-
-
   /**;
    * Get all biometric devices;
    */;
   async getBiometricDevices() {
     return prisma.biometricDevice.findMany({
       orderBy: { location: "asc" }});
-
 
   /**;
    * Get biometric verification logs;
@@ -187,7 +185,6 @@ const prisma = new PrismaClient();
         equals: employeeId;
       };
 
-
     if (!session.user) {
       where.createdAt = {};
       if (!session.user) {
@@ -196,8 +193,6 @@ const prisma = new PrismaClient();
       if (!session.user) {
         where.createdAt.lte = endDate;
 
-
-
     // Get logs;
     const [logs, total] = await Promise.all([;
       prisma.auditLog.findMany({
@@ -205,8 +200,7 @@ const prisma = new PrismaClient();
         orderBy: { createdAt: "desc' },
         skip,
         take}),
-      prisma.auditLog.count({ where }),
-    ]);
+      prisma.auditLog.count({ where })]);
 
     return {
       logs,

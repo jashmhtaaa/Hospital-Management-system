@@ -1,5 +1,6 @@
+import "@radix-ui/react-aspect-ratio"
+import * as AspectRatioPrimitive
 
-import * as AspectRatioPrimitive from "@radix-ui/react-aspect-ratio";
 }
 
 "use client";

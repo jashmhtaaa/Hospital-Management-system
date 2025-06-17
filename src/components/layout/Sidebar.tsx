@@ -1,9 +1,13 @@
-import Link from "next/link";
+import "@/components/ui/button"
+import "@/lib/utils"
+import "next/link"
+import "next/navigation"
+import Link
 import {
-import { usePathname } from "next/navigation";
+import { Button }
+import { cn }
+import { usePathname }
 
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 }
 
 // src/components/layout/Sidebar.tsx;
@@ -16,7 +20,8 @@ import { cn } from "@/lib/utils";
   Boxes,
   Settings,
   LogOut} from "lucide-react";
-import Image from "next/image";
+import "next/image"
+import Image
 
 // Define navigation items;
 const navItems = [;
@@ -25,8 +30,7 @@ const navItems = [;
   { href: "/dashboard/appointments", label: "Appointments", icon: CalendarDays },
   { href: "/dashboard/billing", label: "Billing", icon: ReceiptText },
   { href: "/dashboard/inventory", label: "Inventory", icon: Boxes },
-  { href: "/dashboard/settings", label: "Settings", icon: Settings },
-];
+  { href: "/dashboard/settings", label: "Settings", icon: Settings }];
 
 export const _Sidebar = () => {
   const pathname = usePathname();

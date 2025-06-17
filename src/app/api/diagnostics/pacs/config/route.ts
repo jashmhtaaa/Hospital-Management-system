@@ -1,18 +1,54 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/audit"
+import "@/lib/cache/invalidation"
+import "@/lib/cache/redis"
+import "@/lib/database"
+import "@/lib/encryption"
+import "@/lib/session"
+import "next/server"
+import encryptSensitiveData }
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { CacheInvalidation }
+import { DB }
+import { decryptSensitiveData
+import { getSession }
+import { RedisCache }
+import { type
 
-
-import { auditLog } from "@/lib/audit";
-import { CacheInvalidation } from "@/lib/cache/invalidation";
-import { RedisCache } from "@/lib/cache/redis";
-import { DB } from "@/lib/database";
-import { decryptSensitiveData, encryptSensitiveData } from "@/lib/encryption";
-import { getSession } from "@/lib/session";
 /**;
  * GET /api/diagnostics/pacs/config;
  * Get PACS configuration settings;
  */;
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -91,8 +127,35 @@ export const GET = async (request: NextRequest) => {
  * POST /api/diagnostics/pacs/config;
  * Create or update PACS configuration;
  */;
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -231,22 +294,47 @@ export const POST = async (request: NextRequest) => {
  * POST /api/diagnostics/pacs/config/test;
  * Test PACS connection;
  */;
-export const _POST_TEST = async (request: NextRequest) => {
+export const _POST_TEST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Authentication;
     const session = await getSession();
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
 
     // Parse request body;
     const body = await request.json();
@@ -276,7 +364,6 @@ export const _POST_TEST = async (request: NextRequest) => {
         return NextResponse.json({
           error: "No active PACS configuration found";
         }, { status: 404 });
-      }
 
       const config = configResult.results[0];
 
@@ -292,7 +379,6 @@ export const _POST_TEST = async (request: NextRequest) => {
         return NextResponse.json({
           error: "AE Title, hostname, and port are required";
         }, { status: 400 });
-      }
 
       connectionParams = {
         aetitle,
@@ -301,7 +387,6 @@ export const _POST_TEST = async (request: NextRequest) => {
         username,
         password;
       };
-    }
 
     // Test connection;
     const connectionTest = await testPacsConnection(connectionParams);
@@ -313,7 +398,7 @@ export const _POST_TEST = async (request: NextRequest) => {
       details: {
         useExisting,
         success: connectionTest.success;
-      }
+
     });
 
     return NextResponse.json(connectionTest);
@@ -323,8 +408,6 @@ export const _POST_TEST = async (request: NextRequest) => {
       error: "Failed to test PACS connection",
       details: error instanceof Error ? error.message : "Unknown error";
     }, { status: 500 });
-  }
-}
 
 /**;
  * Helper function to test PACS connection;
@@ -336,7 +419,34 @@ async const testPacsConnection = (string,
 }) {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     // In a real implementation, this would use a DICOM library to test the connection;
@@ -363,7 +473,6 @@ async const testPacsConnection = (string,
         params.port,
         new Date().toISOString();
 
-
     */;
   } catch (error) {
     return {
@@ -372,4 +481,3 @@ async const testPacsConnection = (string,
         params.port,
         new Date().toISOString();
     };
-

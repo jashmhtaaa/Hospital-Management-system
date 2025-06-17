@@ -1,7 +1,10 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/monitoring/metrics-collector"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { metricsCollector }
+import { type
 
-
-import { metricsCollector } from "@/lib/monitoring/metrics-collector";
 }
 
 /**;
@@ -9,8 +12,35 @@ import { metricsCollector } from "@/lib/monitoring/metrics-collector";
  * Manages alert rules and notifications;
  */;
 
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -47,8 +77,7 @@ export const _GET = async (request: NextRequest) => {
           0.85,
           "medium",
           ["email"];
-        },
-      ],
+        }],
       recentAlerts: [;
         // This would come from a persistent alert log;
         {
@@ -58,8 +87,7 @@ export const _GET = async (request: NextRequest) => {
           "medium",
           timestamp: "2024-01-01T00:00:00.000Z",
           status: "resolved";
-        },
-      ]};
+        }]};
 
     return NextResponse.json({
       timestamp: new Date().toISOString(),
@@ -76,12 +104,39 @@ export const _GET = async (request: NextRequest) => {
       { status: 500 }
     );
   }
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
     const body = await request.json();
     const { action } = body;
 
@@ -93,7 +148,6 @@ export const _POST = async (request: NextRequest) => {
             { error: "Invalid rule data" },
             { status: 400 }
           );
-        }
 
         metricsCollector.addAlertRule(rule);
         return NextResponse.json({
@@ -108,7 +162,6 @@ export const _POST = async (request: NextRequest) => {
             { error: "Invalid rule data" },
             { status: 400 }
           );
-        }
 
         metricsCollector.addAlertRule(updatedRule); // This will overwrite existing;
         return NextResponse.json({
@@ -123,7 +176,6 @@ export const _POST = async (request: NextRequest) => {
             { error: "Rule ID is required" },
             { status: 400 }
           );
-        }
 
         metricsCollector.removeAlertRule(ruleId);
         return NextResponse.json({
@@ -137,7 +189,6 @@ export const _POST = async (request: NextRequest) => {
             { error: "Rule data is required for testing" },
             { status: 400 }
           );
-        }
 
         // Simulate an alert trigger for testing;
         // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
@@ -163,13 +214,40 @@ export const _POST = async (request: NextRequest) => {
       },
       { status: 500 }
     );
-  }
-export const _PUT = async (request: NextRequest) => {
+
+export const _PUT = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const body = await request.json();
     const { ruleId, enabled } = body;
 
@@ -178,7 +256,6 @@ export const _PUT = async (request: NextRequest) => {
         { error: "Rule ID and enabled status are required" },
         { status: 400 }
       );
-
 
     // This would require updating the metricsCollector to support enabling/disabling rules;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
@@ -197,5 +274,3 @@ export const _PUT = async (request: NextRequest) => {
       },
       { status: 500 }
     );
-
-

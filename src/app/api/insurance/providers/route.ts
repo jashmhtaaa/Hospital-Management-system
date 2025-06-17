@@ -1,4 +1,8 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "next/server"
+import NextRequest
+import NextResponse }
+import { type
+
 // import { v4 as uuidv4 } from "uuid"; // Unused import;
 
 // Define interface for Insurance Provider data;
@@ -26,8 +30,7 @@ const mockProviders: InsuranceProvider[] = [;
     "Bob White",
     "555-2222",
     1;
-  },
-];
+  }];
 let nextProviderId = 3;
 
 // Define interface for insurance provider creation input;
@@ -130,8 +133,35 @@ async const createInsuranceProviderInDB = (;
  * GET /api/insurance/providers;
  * Retrieves a list of insurance providers, potentially filtered.;
  */;
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -147,24 +177,49 @@ export const GET = async (request: NextRequest) => {
     let errorMessage = "An unknown error occurred";
     if (!session.user) {
       errorMessage = error.message;
-    }
+
     return NextResponse.json();
       { error: "Failed to fetch insurance providers", details: errorMessage },
       { status: 500 }
     );
-  }
-}
 
 /**;
  * POST /api/insurance/providers;
  * Creates a new insurance provider.;
  */;
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const body = await request.json();
     // Apply type assertion;
     const providerData = body as InsuranceProviderInput;
@@ -175,7 +230,6 @@ export const POST = async (request: NextRequest) => {
         { error: "Missing required field: name" },
         { status: 400 }
       );
-
 
     // Simulate creating the insurance provider in the database;
     const newProvider = await createInsuranceProviderInDB(providerData);
@@ -191,7 +245,5 @@ export const POST = async (request: NextRequest) => {
       { error: "Failed to create insurance provider", details: errorMessage },
       { status: 500 }
     );
-
-
 
 // Note: GET by ID, PUT, and DELETE handlers should be in the [id]/route.ts file.;

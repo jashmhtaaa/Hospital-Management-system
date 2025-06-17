@@ -1,10 +1,17 @@
-import * as z from "zod";
-import React, { useState, useEffect } from "react";
+import "@/components/ui/button"
+import "@hookform/resolvers/zod"
+import "react"
+import "react-hook-form"
+import "zod"
+import * as z
+import React
+import useEffect }
 import {
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Button }
+import { useForm }
+import { useState
+import { zodResolver }
 
-import { Button } from "@/components/ui/button";
 }
 
 // src/components/er/ERPatientAdmitModal.tsx;
@@ -22,8 +29,11 @@ import { Button } from "@/components/ui/button";
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import "@/components/ui/input"
+import "@/components/ui/textarea"
+import { Input }
+import { Textarea }
+
   Select,
   SelectContent,
   SelectItem,
@@ -106,6 +116,33 @@ export default const _ERPatientAdmitModal = ({
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -124,18 +161,44 @@ export default const _ERPatientAdmitModal = ({
       let admissionResponseData: unknown;
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         admissionResponseData = await admissionResponse.json();
       } catch {
         if (!session.user) {
           throw new Error();
             `HTTP error ${admissionResponse.status}: Failed to create admission. Invalid response from server.`;
           );
-        }
+
         admissionResponseData = {}; // OK but no JSON body;
-      }
 
       if (!session.user) {
         // FIX: Cast errorData and access error message safely;
@@ -144,7 +207,6 @@ export default const _ERPatientAdmitModal = ({
           errorData?.error ||;
             `HTTP error ${admissionResponse.status}: Failed to create admission`;
         );
-      }
 
       // FIX: Cast newAdmission to the success response type;
       const newAdmission = admissionResponseData as AdmissionSuccessResponse;
@@ -164,7 +226,34 @@ export default const _ERPatientAdmitModal = ({
       let visitResponseData: unknown;
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         visitResponseData = await visitResponse.json();
@@ -176,7 +265,6 @@ export default const _ERPatientAdmitModal = ({
 
         visitResponseData = {}; // OK but no JSON body;
 
-
       if (!session.user) {
         // FIX: Cast errorData and access error message safely;
         const errorData = visitResponseData as ApiErrorResponse;
@@ -184,7 +272,6 @@ export default const _ERPatientAdmitModal = ({
           errorData?.error ||;
             `HTTP error ${visitResponse.status}: Failed to update ER visit status`;
         );
-
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
@@ -210,14 +297,11 @@ export default const _ERPatientAdmitModal = ({
       })} finally {
       setIsLoading(false);
 
-
-
   // Mock data for doctors and ward types - Replace with API fetches;
   const doctors = [;
     { id: "doctor_1", name: "Dr. Smith" },
     { id: "doctor_2", name: "Dr. Jones" },
-    { id: "doctor_3", name: "Dr. Williams" },
-  ];
+    { id: "doctor_3", name: "Dr. Williams" }];
 
   const wardTypes = [;
     { id: "general", name: "General Ward" },
@@ -225,8 +309,7 @@ export default const _ERPatientAdmitModal = ({
     { id: "private", name: "Private Room" },
     { id: "icu", name: "Intensive Care Unit" },
     { id: "hdu", name: "High Dependency Unit" },
-    { id: "isolation", name: "Isolation Room" },
-  ];
+    { id: "isolation", name: "Isolation Room" }];
 
   return();
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>;

@@ -1,6 +1,14 @@
-import React, { useState, useEffect } from "react";
+import "@/components/ui/tabs"
+import "react"
+import React
+import TabsContent
+import TabsList
+import TabsTrigger }
+import useEffect }
 import {
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs
+import { useState
+
 }
 
 // src/app/dashboard/er/page.tsx;
@@ -12,12 +20,18 @@ export const dynamic = "force-dynamic";
   CardDescription,
   CardHeader,
   CardTitle} from "@/components/ui/card";
-import ERDashboardStats from "@/components/er/er-dashboard-stats";
-import ERPatientTrackingBoard from "@/components/er/er-patient-tracking-board";
-import ERTriageForm from "@/components/er/er-triage-form";
-import ERCriticalAlerts from "@/components/er/er-critical-alerts";
-import ERRegistrationModal from "@/components/er/er-registration-modal";
-import { Button } from "@/components/ui/button";
+import "@/components/er/er-critical-alerts"
+import "@/components/er/er-dashboard-stats"
+import "@/components/er/er-patient-tracking-board"
+import "@/components/er/er-registration-modal"
+import "@/components/er/er-triage-form"
+import "@/components/ui/button"
+import ERCriticalAlerts
+import ERDashboardStats
+import ERPatientTrackingBoard
+import ERRegistrationModal
+import ERTriageForm
+import { Button }
 
 export default const _ERDashboardPage = () {
   const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);

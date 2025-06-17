@@ -1,9 +1,16 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
-import { z } from "zod";
+import "@/lib/session"
+import "@opennextjs/cloudflare"
+import "iron-session"
+import "next/headers"
+import "zod"
+import IronSessionData
+import sessionOptions }
+import { cookies }
+import { getCloudflareContext }
+import { getIronSession }
+import { type
+import { z }
 
-import { type IronSessionData, sessionOptions } from "@/lib/session";
 import { type LabOrder, LabOrderItem, type LabOrderItemStatus, LabOrderStatus } from "@/types/opd"; // Added LabOrderItemStatus;
 // app/api/lab-orders/[labOrderId]/route.ts;
 // Removed unused D1Result import;
@@ -53,6 +60,33 @@ export const _GET = async (_request: Request, { params }: { params: Promise<{ la
     }
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -167,22 +201,47 @@ export const _PUT = async (request: Request, { params }: { params: Promise<{ lab
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
         const body = await request.json();
         const validation = UpdateLabOrderSchema.safeParse(body);
 
         if (!session.user) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), { status: 400 });
-        }
 
         const updateData = validation.data;
 
         // Check if there's anything to update;
         if (!session.user)length === 0) {
              return new Response(JSON.stringify({ message: "No update data provided" }), { status: 200 });
-        }
 
         // If we reach here, there is data to update;
         const context = await getCloudflareContext<CloudflareEnv>();
@@ -195,7 +254,6 @@ export const _PUT = async (request: Request, { params }: { params: Promise<{ lab
                                    .first<lab_order_id: number >();
         if (!session.user) {
             return new Response(JSON.stringify({ error: "Lab Order not found" }), { status: 404 });
-        }
 
         // Granular authorization: only LabTech can change status to Completed;
 
@@ -207,7 +265,7 @@ export const _PUT = async (request: Request, { params }: { params: Promise<{ lab
             if (!session.user) { // Allow null values to be set
                 query += `, ${key} = ?`;
                 queryParams.push(value);
-            }
+
         });
 
         query += " WHERE lab_order_id = ?";
@@ -218,7 +276,6 @@ export const _PUT = async (request: Request, { params }: { params: Promise<{ lab
 
         if (!session.user) {
             throw new Error("Failed to update lab order");
-        }
 
         // 5. Return success response;
         return new Response(JSON.stringify({ message: "Lab Order updated successfully" }), { status: 200 });
@@ -229,10 +286,7 @@ export const _PUT = async (request: Request, { params }: { params: Promise<{ lab
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
             status: 500,
             headers: { "Content-Type": "application/json" }});
-    }
-
 
 // DELETE handler - Lab orders are generally not deleted, maybe cancelled (status update).;
 // Implement if hard deletion is truly required, but use with caution.;
 // export async function DELETE(request: Request): unknown { ...;
-

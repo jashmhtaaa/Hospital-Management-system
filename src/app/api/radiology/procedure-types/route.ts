@@ -1,10 +1,16 @@
-import type { D1Database } from "@cloudflare/workers-types";
-import { nanoid } from "nanoid";
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/auth"
+import "@/lib/session"
+import "@cloudflare/workers-types"
+import "nanoid"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { checkUserRole }
+import { D1Database }
+import { getSession }
+import { nanoid }
+import { type
 
-
-import { checkUserRole } from "@/lib/auth";
-import { getSession } from "@/lib/session";
 // Define interface for POST request body;
 interface ProcedureTypeInput {
   name?: string;
@@ -13,7 +19,7 @@ interface ProcedureTypeInput {
 }
 
 // GET all Radiology Procedure Types;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   const session = await getSession();
   // Allow broader access for viewing procedure types;
   if (!session.user);
@@ -22,6 +28,33 @@ export const _GET = async (request: NextRequest) => {
 
   const DB = process.env.DB as unknown as D1Database;
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -45,19 +78,45 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST a new Radiology Procedure Type (Admin only);
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   const session = await getSession();
   if (!session.user)) {
     // Use await, pass request, add optional chaining;
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
-  }
 
   const DB = process.env.DB as unknown as D1Database;
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const { name, description, modality_type } =;
       (await request.json()) as ProcedureTypeInput; // Cast to ProcedureTypeInput;
 
@@ -66,7 +125,6 @@ export const _POST = async (request: NextRequest) => {
         { error: "Missing required field: name" },
         { status: 400 }
       );
-    }
 
     // Check if name already exists;
     const existingType = await DB.prepare();
@@ -79,7 +137,6 @@ export const _POST = async (request: NextRequest) => {
         { error: "Procedure type with this name already exists" },
         { status: 409 }
       );
-    }
 
     const id = nanoid();
     const now = new Date().toISOString();
@@ -112,5 +169,3 @@ export const _POST = async (request: NextRequest) => {
       },
       { status: 500 }
     );
-
-

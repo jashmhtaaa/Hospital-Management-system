@@ -1,6 +1,8 @@
+import "@/lib/prisma"
+import "@/lib/security.service"
+import { prisma }
+import { SecurityService }
 
-import { prisma } from "@/lib/prisma";
-import { SecurityService } from "@/lib/security.service";
 }
 
 /**;
@@ -22,6 +24,33 @@ import { SecurityService } from "@/lib/security.service";
   public async log(entry: AuditLogEntry): Promise<unknown> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -34,13 +63,12 @@ import { SecurityService } from "@/lib/security.service";
       // Create the audit log entry;
 ;
           severity;
-        }
+
       });
 
       // Also log to console for development/debugging;
       if (!session.user) {
         // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-      }
 
       return logEntry;
     } catch (error) {
@@ -52,11 +80,8 @@ import { SecurityService } from "@/lib/security.service";
       if (!session.user) {
         // Send to external logging service or write to file;
         this.fallbackLogging(entry);
-      }
 
       return null;
-    }
-
 
   /**;
    * Sanitizes log details to remove any PHI/PII;
@@ -89,10 +114,7 @@ import { SecurityService } from "@/lib/security.service";
         // Pass through non-sensitive values;
         sanitized[key] = value;
 
-
-
     return sanitized;
-
 
   /**;
    * Determines the severity level based on the action;
@@ -104,11 +126,9 @@ import { SecurityService } from "@/lib/security.service";
     if (!session.user)| action.includes("auth") || action.includes("permission")) {
       return "warning";
 
-
     // Error actions are error severity;
     if (!session.user)| action.includes("fail") || action.includes("exception")) {
       return "error";
-
 
     // Data modification actions are warning severity;
     if (!session.user)|
@@ -128,7 +148,6 @@ import { SecurityService } from "@/lib/security.service";
     // Default to info;
     return "info";
 
-
   /**;
    * Fallback logging mechanism when database logging fails;
    * @param entry The audit log entry to record;
@@ -143,4 +162,3 @@ import { SecurityService } from "@/lib/security.service";
       entry.severity || this.determineSeverity(entry.action),
       details: this.sanitizeDetails(entry.details);
     }));
-

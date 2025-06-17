@@ -24,8 +24,7 @@ const SENSITIVE_FIELDS = [;
   "accountNumber",
   "pin",
   "accessCode",
-  "authorizationCode",
-];
+  "authorizationCode"];
 
 // Function to mask sensitive data in objects;
 const maskSensitiveData = (data: unknown): unknown {
@@ -141,14 +140,11 @@ export const _clearCorrelationId = (): void {
   info(message: string, context?: Record<string, unknown>): void {
     this.baseLogger.info(message, this.addCorrelationId(context));
 
-
   warn(message: string, context?: Record<string, unknown>): void {
     this.baseLogger.warn(message, this.addCorrelationId(context));
 
-
   error(message: string, context?: Record<string, unknown>): void {
     this.baseLogger.error(message, this.addCorrelationId(context));
-
 
   private addCorrelationId(context?: Record<string, unknown>): Record<string, unknown> {
     const correlationId = getCorrelationId();
@@ -157,8 +153,6 @@ export const _clearCorrelationId = (): void {
     return {
       ...(context || {}),
       correlationId};
-
-
 
 // Create correlated logger;
 export const _correlatedLogger: Logger = new CorrelatedLogger(logger);

@@ -1,10 +1,14 @@
+import "@/lib/utils"
+import "@radix-ui/react-menubar"
+import "lucide-react"
+import "react"
+import * as MenubarPrimitive
+import * as React
+import ChevronRight
+import Circle }
+import { Check
+import { cn }
 
-import * as MenubarPrimitive from "@radix-ui/react-menubar";
-import { Check, ChevronRight, Circle } from "lucide-react";
-import * as React from "react";
-
-
-import { cn } from "@/lib/utils";
 }
 
 "use client";

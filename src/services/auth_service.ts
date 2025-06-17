@@ -29,6 +29,33 @@ interface IAuditLogService {
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -49,7 +76,6 @@ interface IAuditLogService {
         // Log audit event for failed login (invalid password);
         await this.auditLogService.logEvent(userIdForAudit, "LOGIN_ATTEMPT", "Auth", user.id, "FAILURE", { reason: "Invalid password" });
         return null; // Or throw specific error;
-      }
 
       const token = await this.authUtils.generateToken(user.id, user.username);
       _loginStatus = "SUCCESS";
@@ -68,11 +94,9 @@ interface IAuditLogService {
       } else {
         await this.auditLogService.logEvent(userIdForAudit, "LOGIN_ATTEMPT", "Auth", null, "FAILURE", { reason: error.message ||;
           "Unknown error" });
-      }
+
       // Depending on requirements, might re-throw or return null/specific error structure;
       return null;
-    }
-  }
 
   async logout(userId: string): Promise<void> {
     // Business logic for logout (e.g., invalidating a token if using a denylist);
@@ -80,7 +104,34 @@ interface IAuditLogService {
     // Server-side logout might involve logging the event.;
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
@@ -92,5 +143,3 @@ interface IAuditLogService {
       await this.auditLogService.logEvent(userId, "LOGOUT_ATTEMPT", "Auth", userId, "FAILURE", { reason: error.message ||;
         "Unknown error during logout" });
       throw error; // Or handle more gracefully;
-
-

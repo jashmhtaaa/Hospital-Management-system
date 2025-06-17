@@ -1,5 +1,6 @@
+import "zod"
+import { z }
 
-import { z } from "zod";
 // Create enums to match Prisma schema;
 export enum HousekeepingTaskStatus {
   PENDING = "PENDING",
@@ -32,7 +33,8 @@ export type CreateHousekeepingTaskInput = z.infer>;
 export type UpdateHousekeepingTaskInput = z.infer>;
 
 // Import prisma client;
-import { prisma } from "../lib/prisma";
+import "../lib/prisma"
+import { prisma }
 
 /**;
  * Service class for managing housekeeping tasks;
@@ -62,15 +64,42 @@ import { prisma } from "../lib/prisma";
   }) {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const where: unknown = {};
 
       if (!session.user) {
         if (!session.user) {
           where.status = filters.status;
-        }
+
         if (!session.user) {
           where.priority = filters.priority;
 
@@ -80,14 +109,11 @@ import { prisma } from "../lib/prisma";
         if (!session.user) {
           where.assignedToId = filters.assignedToId;
 
-
-
       const tasks = await prisma.housekeepingTask.findMany({
         where,
         orderBy: [;
           { priority: "desc" },
-          { requestedAt: "asc" },
-        ],
+          { requestedAt: "asc" }],
         {
             true,
               name: true;
@@ -97,8 +123,6 @@ import { prisma } from "../lib/prisma";
     } catch (error) {
       throw error;
 
-
-
   /**;
    * Get a single housekeeping task by ID;
    * @param id Task ID;
@@ -107,7 +131,34 @@ import { prisma } from "../lib/prisma";
   async getTaskById(id: string) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const task = await prisma.housekeepingTask.findUnique({
@@ -121,8 +172,6 @@ import { prisma } from "../lib/prisma";
     } catch (error) {
       throw error;
 
-
-
   /**;
    * Update a housekeeping task;
    * @param id Task ID;
@@ -132,7 +181,34 @@ import { prisma } from "../lib/prisma";
   async updateTask(id: string, data: UpdateHousekeepingTaskInput) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Validate input data;
@@ -157,8 +233,6 @@ import { prisma } from "../lib/prisma";
 
       throw error;
 
-
-
   /**;
    * Delete a housekeeping task;
    * @param id Task ID;
@@ -167,7 +241,34 @@ import { prisma } from "../lib/prisma";
   async deleteTask(id: string) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const task = await prisma.housekeepingTask.delete({
@@ -176,8 +277,6 @@ import { prisma } from "../lib/prisma";
       return task;
     } catch (error) {
       throw error;
-
-
 
   /**;
    * Assign a task to a user;
@@ -188,7 +287,34 @@ import { prisma } from "../lib/prisma";
   async assignTask(taskId: string, userId: string) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const task = await prisma.housekeepingTask.update({
@@ -205,8 +331,6 @@ import { prisma } from "../lib/prisma";
     } catch (error) {
       throw error;
 
-
-
   /**;
    * Mark a task as completed;
    * @param taskId Task ID;
@@ -215,7 +339,34 @@ import { prisma } from "../lib/prisma";
   async completeTask(taskId: string) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const task = await prisma.housekeepingTask.update({
@@ -232,8 +383,6 @@ import { prisma } from "../lib/prisma";
     } catch (error) {
       throw error;
 
-
-
   /**;
    * Cancel a task;
    * @param taskId Task ID;
@@ -242,7 +391,34 @@ import { prisma } from "../lib/prisma";
   async cancelTask(taskId: string) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const task = await prisma.housekeepingTask.update({
@@ -257,9 +433,6 @@ import { prisma } from "../lib/prisma";
       return task;
     } catch (error) {
       throw error;
-
-
-
 
 // Export a singleton instance;
 export const _housekeepingService = new HousekeepingService();

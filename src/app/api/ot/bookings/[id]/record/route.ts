@@ -1,6 +1,10 @@
+import "@cloudflare/workers-types"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { D1Database }
+import { type
 
-import type { D1Database } from "@cloudflare/workers-types";
-import { type NextRequest, NextResponse } from "next/server";
 export const _runtime = "edge";
 
 // Interface for the POST request body;
@@ -24,10 +28,37 @@ interface OTRecordBody {
 
 // GET /api/ot/bookings/[id]/record - Get operation record for a booking;
 export const _GET = async();
-  _request: NextRequest;
+  _request: any;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -65,6 +96,33 @@ export const _GET = async();
     const record = results[0];
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -91,21 +149,47 @@ export const _GET = async();
 
 // POST /api/ot/bookings/[id]/record - Create/Update operation record for a booking;
 export const _POST = async();
-  request: NextRequest;
+  request: any;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
         { message: "Booking ID is required" },
         { status: 400 }
       );
-    }
 
     const body = (await request.json()) as OTRecordBody;
     const {
@@ -137,7 +221,6 @@ export const _POST = async();
         { message: "OT Booking not found" },
         { status: 404 }
       );
-    }
 
     const now = new Date().toISOString();
 
@@ -155,7 +238,6 @@ export const _POST = async();
       );
         .bind(now, bookingId);
         .run();
-    }
 
     // Check if record already exists;
     const { results: existingRecord } = await DB.prepare();
@@ -206,7 +288,7 @@ export const _POST = async();
         await DB.prepare(updateQuery);
           .bind(...values);
           .run();
-      }
+
     } else {
       // Create new record;
       isNewRecord = true;
@@ -246,7 +328,6 @@ export const _POST = async();
           now;
         );
         .run();
-    }
 
     // Fetch the created/updated record;
     const { results: finalRecordResult } = await DB.prepare();
@@ -259,19 +340,45 @@ export const _POST = async();
       const finalRecord = finalRecordResult[0];
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         if (!session.user) {
           finalRecord.implants_used = JSON.parse(finalRecord.implants_used);
-        }
+
         if (!session.user) {
           finalRecord.specimens_collected = JSON.parse();
             finalRecord.specimens_collected;
           );
-        }
-      } catch (error: unknown) {
 
+      } catch (error: unknown) {
 
       return NextResponse.json(finalRecord, {
         status: isNewRecord ? 201 : 200;
@@ -290,5 +397,3 @@ export const _POST = async();
       { message: "Error saving operation record", details: errorMessage },
       { status: 500 }
     );
-
-

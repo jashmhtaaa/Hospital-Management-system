@@ -1,8 +1,9 @@
+import "@/components/ui/toast"
+import "react"
+import * as React
+import ToastProps }
+import { ToastActionElement
 
-import * as React from "react";
-
-
-import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
 }
 
 // Inspired by react-hot-toast library;
@@ -99,7 +100,7 @@ export const _reducer = (state: State, action: Action): State => {
         ...state,
         toasts: state.toasts.map((t) => {}
           t.id === toastId || toastId === undefined;
-            ? 
+            ? ;
                 ...t,
                 open: false;
             : t;

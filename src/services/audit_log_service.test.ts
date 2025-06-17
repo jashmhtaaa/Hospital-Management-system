@@ -1,5 +1,8 @@
+import "./audit_log_service.ts"
+import IAuditLogService }
+import type
+import { AuditLogService
 
-import { AuditLogService, type IAuditLogService } from "./audit_log_service.ts";
 }
 
 // SEC-3: Unit Tests for AuditLogService (Placeholder);
@@ -91,7 +94,6 @@ describe("AuditLogService (Placeholder)", () => {
     expect(loggedEntry.timestamp).toBeDefined();
   });
 });
-
 
 }
 }

@@ -1,11 +1,18 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/database"
+import "@/lib/session"
+import "@/types/opd"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { DB }
+import { getSession }
+import { Prescription }
+import { type
+import { z }
 
+import { D1ResultWithMeta  } from "@/types/cloudflare"; // Import the specific type;
 
-import { DB } from "@/lib/database";
-import { getSession } from "@/lib/session";
-import type { D1ResultWithMeta } from "@/types/cloudflare"; // Import the specific type;
-import { Prescription } from "@/types/opd";
 // Zod schema for creating a prescription;
 const prescriptionItemSchema = z.object({
     inventory_item_id: z.number(),
@@ -31,13 +38,40 @@ const prescriptionCreateSchema = z.object({
 // type PrescriptionCreateBody = z.infer<typeof prescriptionCreateSchema>;
 
 // GET /api/prescriptions - Fetch list of prescriptions (with filtering/pagination);
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
     const session = await getSession();
     if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -144,7 +178,7 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/prescriptions - Create a new prescription;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
     const session = await getSession();
     if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -156,9 +190,36 @@ export const _POST = async (request: NextRequest) => {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const body = await request.json();
         const validationResult = prescriptionCreateSchema.safeParse(body);
 
@@ -167,7 +228,6 @@ export const _POST = async (request: NextRequest) => {
                 { message: "Invalid input", errors: validationResult.error.errors },
                 { status: 400 }
             );
-        }
 
         const prescriptionData = validationResult.data;
         const now = new Date().toISOString();
@@ -195,7 +255,6 @@ export const _POST = async (request: NextRequest) => {
         if (!session.user) {
 
             throw new Error("Failed to create prescription record");
-        }
 
         const newPrescriptionId = insertResult.meta.last_row_id;
 
@@ -230,7 +289,6 @@ export const _POST = async (request: NextRequest) => {
             // Attempt to rollback/delete the main prescription record;
             await DB.prepare("DELETE FROM Prescriptions WHERE prescription_id = ?").bind(newPrescriptionId).run();
             throw new Error("Failed to create prescription items");
-        }
 
         // Return success response;
         return NextResponse.json();
@@ -243,13 +301,10 @@ export const _POST = async (request: NextRequest) => {
         let errorMessage = "An unknown error occurred";
         if (!session.user) {
             errorMessage = error.message;
-        }
+
         return NextResponse.json();
             { message: "Error creating prescription", details: errorMessage },
             { status: 500 }
         );
-
-
-
 
 export async function GET() { return new Response("OK"); }

@@ -1,4 +1,5 @@
 import {
+
   Button,
   Table,
   TableBody,
@@ -8,8 +9,11 @@ import {
   TableRow,
   // Badge, // FIX: Removed unused import;
 } from "@/components/ui";
-import type React from "react";
-import { useEffect, useState } from "react";
+import "react"
+import React
+import type
+import useState }
+import { useEffect
 
 // FIX: Define an interface for the patient data structure;
 interface Inpatient {
@@ -47,16 +51,42 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
     const fetchPatients = async () => {
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
         setLoading(true),
         setError(undefined); // Reset error on new fetch;
         const response = await fetch("/api/ipd/admissions?status=active");
 
         if (!session.user) {
           throw new Error("Failed to fetch inpatient list");
-        }
 
         // FIX: Add type assertion for the API response data;
         const data: InpatientsApiResponse = await response.json();
@@ -80,7 +110,7 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
         setPatients([]); // Clear patients on error;
       } finally {
         setLoading(false);
-      }
+
     };
 
     fetchPatients();
@@ -99,7 +129,7 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
     } else {
 
       setError("Could not view patient details due to invalid data.");
-    }
+
   };
 
   return();

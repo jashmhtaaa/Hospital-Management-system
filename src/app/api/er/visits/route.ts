@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from "next/server"; // Import uuid;
 // Define interface for ER Visit data;
 interface ERVisit {
@@ -49,8 +48,7 @@ const mockVisits: ERVisit[] = [;
     disposition: undefined,
     [0] - 1 * 60 * 60 * 1000).toISOString(),
     updated_at: [0] - 30 * 60 * 1000).toISOString(), // Updated 30 mins ago;
-  },
-];
+  }];
 let nextVisitId = 3;
 
 // Define interface for ER Visit creation input;
@@ -131,8 +129,35 @@ async const createERVisitInDB = (data: ERVisitInput): Promise<ERVisit> {
  * GET /api/er/visits;
  * Retrieves a list of ER visits, potentially filtered.;
  */;
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -154,19 +179,44 @@ export const GET = async (request: NextRequest) => {
       { error: "Failed to fetch ER visits", details: errorMessage },
       { status: 500 }
     );
-  }
-}
 
 /**;
  * POST /api/er/visits;
  * Creates a new ER visit record (patient arrival).;
  */;
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const body = await request.json();
     // Apply type assertion;
     const visitData = body as ERVisitInput;
@@ -177,7 +227,6 @@ export const POST = async (request: NextRequest) => {
         { error: "Missing required fields (patient_id, chief_complaint)" },
         { status: 400 }
       );
-    }
 
     // Simulate creating the ER visit in the database;
     const newVisit = await createERVisitInDB(visitData);
@@ -193,7 +242,5 @@ export const POST = async (request: NextRequest) => {
       { error: "Failed to create ER visit", details: errorMessage },
       { status: 500 }
     );
-
-
 
 // Note: GET by ID, PUT, and DELETE handlers should be in the [id]/route.ts file.;

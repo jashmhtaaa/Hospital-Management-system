@@ -1,10 +1,17 @@
-import * as z from "zod";
-import React, { useState, useEffect } from "react";
+import "@/components/ui/button"
+import "@hookform/resolvers/zod"
+import "react"
+import "react-hook-form"
+import "zod"
+import * as z
+import React
+import useEffect }
 import {
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Button }
+import { useForm }
+import { useState
+import { zodResolver }
 
-import { Button } from "@/components/ui/button";
 }
 
 // src/components/er/ERLabOrderModal.tsx;
@@ -24,8 +31,11 @@ import { Button } from "@/components/ui/button";
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+import "@/components/ui/checkbox"
+import "@/components/ui/input"
+import { Checkbox }
+import { Input }
+
 // FIX: Remove direct import of toast, use useToast hook instead;
 // import { toast } from "@/components/ui/use-toast";
 import { useToast } from "@/components/ui/use-toast"; // Keep this;
@@ -80,8 +90,7 @@ const availableTests = [;
   { id: "blood_gas", name: "Blood Gas (ABG/VBG)" },
   { id: "coag", name: "Coagulation Panel (PT/INR, PTT)" },
   { id: "ua", name: "Urinalysis (UA)" },
-  { id: "blood_culture", name: "Blood Culture" },
-];
+  { id: "blood_culture", name: "Blood Culture" }];
 
 export default const _ERLabOrderModal = ({
   isOpen,
@@ -118,9 +127,36 @@ export default const _ERLabOrderModal = ({
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
       const response = await fetch("/api/lab/orders", {
         method: "POST",
@@ -138,9 +174,36 @@ export default const _ERLabOrderModal = ({
       let responseData: unknown;
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         responseData = await response.json();
       } catch {
         // Handle non-JSON responses or empty responses;
@@ -148,10 +211,9 @@ export default const _ERLabOrderModal = ({
           throw new Error();
             `HTTP error ${response.status}: Failed to create lab order. Invalid response from server.`;
           );
-        }
+
         // If response is OK but not JSON (e.g., 204 No Content), treat as success;
         responseData = {};
-      }
 
       if (!session.user) {
         // FIX: Cast errorData and access error message safely;
@@ -160,7 +222,6 @@ export default const _ERLabOrderModal = ({
           errorData?.error ||;
             `HTTP error ${response.status}: Failed to create lab order`;
         );
-
 
       // FIX: Cast newOrder to the success response type;
       const newOrder = responseData as LabOrderSuccessResponse;
@@ -194,8 +255,6 @@ export default const _ERLabOrderModal = ({
       });
     } finally {
       setIsLoading(false);
-
-
 
   return();
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>;
@@ -275,8 +334,7 @@ export default const _ERLabOrderModal = ({
                                     return checked;
                                       ? field.onChange([
                                           ...currentValue,
-                                          item.id,
-                                        ]);
+                                          item.id]);
                                       : field.onChange();
                                           currentValue.filter();
                                             (value) => value !== item.id;

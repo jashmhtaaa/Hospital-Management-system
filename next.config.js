@@ -8,16 +8,12 @@ const nextConfig = {
   },
   images: {
     domains: ['localhost'],
+    unoptimized: true,
   },
   experimental: {
     serverComponentsExternalPackages: ['prisma'],
   },
-  compiler: {
-    removeConsole: false,
-  },
-  poweredByHeader: false,
-  compress: true,
-  swcMinify: true,
+  swcMinify: false,
   reactStrictMode: false
 }
 

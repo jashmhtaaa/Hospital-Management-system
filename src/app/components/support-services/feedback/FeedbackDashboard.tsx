@@ -1,19 +1,61 @@
-import React, { useState } from "react";
+import "react"
+import React
+import { useState }
+
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { DataTable } from "@/components/ui/data-table";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toast } from "@/components/ui/use-toast";
-import type { ColumnDef } from "@tanstack/react-table";
-import { format } from "date-fns";
-import { Download, Filter, Loader2, RefreshCw, Search } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import "@/components/ui/badge"
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "@/components/ui/data-table"
+import "@/components/ui/label"
+import "@/components/ui/select"
+import "@/components/ui/tabs"
+import "@/components/ui/use-toast"
+import "@tanstack/react-table"
+import "date-fns"
+import "lucide-react"
+import "react"
+import "recharts"
+import BarChart
+import CardContent
+import CardDescription
+import CardHeader
+import CardTitle }
+import CartesianGrid
+import Cell
+import Filter
+import Legend
+import Loader2
+import Pie
+import PieChart
+import RefreshCw
+import ResponsiveContainer
+import Search }
+import SelectContent
+import SelectItem
+import SelectTrigger
+import SelectValue }
+import TabsContent
+import TabsList
+import TabsTrigger }
+import Tooltip
+import useState }
+import XAxis
+import YAxis }
+import { Badge }
+import { Bar
+import { Button }
+import { Card
+import { ColumnDef }
+import { DataTable }
+import { Download
+import { format }
+import { Label }
+import { Select
+import { Tabs
+import { toast }
+import { useEffect
 
 // Define types for feedback and complaint data;
 interface Feedback {
@@ -61,7 +103,6 @@ interface AnalyticsData {
   complaintsBySeverity: { severity: string, _count: number }[];
   complaintsByStatus: { status: string, _count: number }[];
   string;
-
 
 // Define columns for feedback table;
 const feedbackColumns: ColumnDef<Feedback>[] = [;
@@ -116,7 +157,6 @@ const feedbackColumns: ColumnDef<Feedback>[] = [;
           variant = "outline";
           break;
 
-
       return();
         >;
           {status.toLowerCase()}
@@ -132,8 +172,7 @@ const feedbackColumns: ColumnDef<Feedback>[] = [;
       <Button variant="ghost" size="sm" onClick={() => window.location.href = `/feedback/${row.original.id}`}>;
         View;
       </Button>;
-    )},
-];
+    )}];
 
 // Define columns for complaint table;
 const complaintColumns: ColumnDef<Complaint>[] = [;
@@ -164,7 +203,6 @@ const complaintColumns: ColumnDef<Complaint>[] = [;
           variant = "destructive";
           break;
 
-
       return();
         >;
           {severity.toLowerCase()}
@@ -185,7 +223,6 @@ const complaintColumns: ColumnDef<Complaint>[] = [;
           variant = "outline";\n    }\n    case "ESCALATED": any;
           variant = "destructive";
           break;
-
 
       return();
         >;
@@ -214,8 +251,7 @@ const complaintColumns: ColumnDef<Complaint>[] = [;
       <Button variant="ghost" size="sm" onClick={() => window.location.href = `/complaints/${row.original.id}`}>;
         View;
       </Button>;
-    )},
-];
+    )}];
 
 // Define color palette for charts;
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8", "#82CA9D", "#FF6B6B", "#6C757D"];
@@ -272,7 +308,34 @@ export default const _FeedbackDashboard = () {
     setIsLoading(true);
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const queryParams = new URLSearchParams();
@@ -283,7 +346,6 @@ export default const _FeedbackDashboard = () {
       const response = await fetch(`/api/support-services/feedback?${}`;
       if (!session.user) {
         throw new Error("Failed to load feedback data");
-
 
       const data = await response.json(),
       setFeedbackData(data.data);
@@ -307,7 +369,34 @@ export default const _FeedbackDashboard = () {
     setIsLoading(true);
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const queryParams = new URLSearchParams();
@@ -318,7 +407,6 @@ export default const _FeedbackDashboard = () {
       const response = await fetch(`/api/support-services/feedback/complaint?${}`;
       if (!session.user) {
         throw new Error("Failed to load complaint data");
-
 
       const data = await response.json(),
       setComplaintData(data.data);
@@ -341,13 +429,39 @@ export default const _FeedbackDashboard = () {
   const loadAnalyticsData = async () => {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const response = await fetch(`/api/support-services/feedback/analytics?period=${}`;
       if (!session.user) {
         throw new Error("Failed to load analytics data");
-
 
       const data = await response.json(),
       setAnalyticsData(data);
@@ -721,8 +835,7 @@ export default const _FeedbackDashboard = () {
                                   ...Object.entries(analyticsData.ratingsByServiceType).map(([type, data]) => ({
                                     name: type.replace(/_/g, " "),
                                     rating: data.avg;
-                                  })),
-                                ]}
+                                  }))]}
                                 margin={{ top: 20, right: 30, left: 20, bottom: 40 }}
                               >;
                                 <CartesianGrid strokeDasharray="3 3" />;
@@ -824,8 +937,7 @@ export default const _FeedbackDashboard = () {
                               { name: "Low", days: analyticsData.resolutionTimes.LOW.avgDays },
                               { name: "Medium", days: analyticsData.resolutionTimes.MEDIUM.avgDays },
                               { name: "High", days: analyticsData.resolutionTimes.HIGH.avgDays },
-                              { name: "Critical", days: analyticsData.resolutionTimes.CRITICAL.avgDays },
-                            ]}
+                              { name: "Critical", days: analyticsData.resolutionTimes.CRITICAL.avgDays }]}
                             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                           >;
                             <CartesianGrid strokeDasharray="3 3" />;

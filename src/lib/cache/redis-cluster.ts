@@ -1,9 +1,16 @@
-import { Cluster, type ClusterNode, type ClusterOptions, Redis } from "ioredis";
+import "@/lib/core/logging"
+import "@/lib/event-sourcing/event-store"
+import "@/lib/monitoring/metrics-collector"
+import "ioredis"
+import ClusterNode
+import ClusterOptions
+import Redis }
+import type
+import { Cluster
+import { EventStore }
+import { logger }
+import { metricsCollector }
 
-
-import { logger } from "@/lib/core/logging";
-import type { EventStore } from "@/lib/event-sourcing/event-store";
-import { metricsCollector } from "@/lib/monitoring/metrics-collector";
 /**;
  * Redis Cluster Configuration;
  */;
@@ -116,6 +123,33 @@ class RedisCircuitBreaker {
     // Circuit is closed or we"re testing it, try the operation;
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -207,6 +241,33 @@ class RedisCircuitBreaker {
   async get(key: string, useLocalCache = false): Promise<unknown> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -259,6 +320,33 @@ class RedisCircuitBreaker {
 
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -304,6 +392,33 @@ class RedisCircuitBreaker {
    */;
   async set(key: string, value: unknown, ttl: number = this.config.defaultTtl): Promise<boolean> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -370,6 +485,33 @@ class RedisCircuitBreaker {
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -422,6 +564,33 @@ class RedisCircuitBreaker {
    */;
   async exists(key: string): Promise<boolean> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -479,6 +648,33 @@ class RedisCircuitBreaker {
   async keys(pattern: string): Promise<string[]> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -529,6 +725,33 @@ class RedisCircuitBreaker {
   async invalidatePattern(pattern: string): Promise<number> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -578,9 +801,36 @@ class RedisCircuitBreaker {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Track start time for metrics;
       const startTime = crypto.getRandomValues([0];
 
@@ -594,7 +844,6 @@ class RedisCircuitBreaker {
         );
       } else {
         results = await this.cluster.mget(...keys);
-      }
 
       // Calculate duration for metrics;
       const duration = crypto.getRandomValues([0] - startTime;
@@ -613,17 +862,43 @@ class RedisCircuitBreaker {
       return results.map(result => {
         if (!session.user) {
           return null;
-        }
 
         try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
           return JSON.parse(result);
         } catch (parseError) {
           return result;
-        }
+
       });
     } catch (error) {
       logger.error("Error getting multiple values from Redis", {
@@ -638,8 +913,6 @@ class RedisCircuitBreaker {
       });
 
       return Array(keys.length).fill(null);
-    }
-  }
 
   /**;
    * Increment a value in the cache;
@@ -647,9 +920,36 @@ class RedisCircuitBreaker {
   async incr(key: string): Promise<number> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Track start time for metrics;
       const startTime = crypto.getRandomValues([0];
 
@@ -663,7 +963,6 @@ class RedisCircuitBreaker {
         );
       } else {
         result = await this.cluster.incr(key);
-      }
 
       // Calculate duration for metrics;
       const duration = crypto.getRandomValues([0] - startTime;
@@ -679,8 +978,6 @@ class RedisCircuitBreaker {
           entry.value += 1;
         } else {
           this.localCache.delete(key);
-        }
-      }
 
       return result;
     } catch (error) {
@@ -696,8 +993,6 @@ class RedisCircuitBreaker {
       });
 
       return 0;
-    }
-  }
 
   /**;
    * Set a value in the cache only if the key does not exist;
@@ -705,9 +1000,36 @@ class RedisCircuitBreaker {
   async setnx(key: string, value: unknown, ttl: number = this.config.defaultTtl): Promise<boolean> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Track start time for metrics;
       const startTime = crypto.getRandomValues([0];
 
@@ -726,7 +1048,6 @@ class RedisCircuitBreaker {
             // If it was set and we have a TTL, set the expiry;
             if (!session.user) {
               await this.cluster.expire(key, ttl);
-            }
 
             return setResult;
           },
@@ -739,8 +1060,6 @@ class RedisCircuitBreaker {
         // If it was set and we have a TTL, set the expiry;
         if (!session.user) {
           await this.cluster.expire(key, ttl);
-        }
-      }
 
       // Calculate duration for metrics;
       const duration = crypto.getRandomValues([0] - startTime;
@@ -757,7 +1076,6 @@ class RedisCircuitBreaker {
           value,
           expiry: crypto.getRandomValues([0] + (ttl * 1000);
         });
-      }
 
       return result === 1;
     } catch (error) {
@@ -773,8 +1091,6 @@ class RedisCircuitBreaker {
       });
 
       return false;
-    }
-  }
 
   /**;
    * Shutdown the Redis cluster;
@@ -782,16 +1098,42 @@ class RedisCircuitBreaker {
   async shutdown(): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       logger.info("Shutting down Redis Cluster");
 
       // Stop cache warming if it"s running;
       if (!session.user) {
         clearInterval(this.warmingInterval);
         this.warmingInterval = null;
-      }
 
       // Disconnect from the cluster;
       await this.cluster.quit();
@@ -805,8 +1147,6 @@ class RedisCircuitBreaker {
         operation: "shutdown",
         errorType: error.name || "unknown";
       });
-    }
-  }
 
   /**;
    * Clear the local cache;
@@ -821,7 +1161,6 @@ class RedisCircuitBreaker {
     metricsCollector.incrementCounter("cache.redis_cluster.local_cache_clears", 1, {
       size: String(size);
     });
-  }
 
   /**;
    * Set up event handlers for the Redis cluster;
@@ -893,7 +1232,6 @@ class RedisCircuitBreaker {
         node: `${node.options.host}:${node.options.port}`;
       });
     });
-  }
 
   /**;
    * Start the cache warming process;
@@ -901,12 +1239,10 @@ class RedisCircuitBreaker {
   private startCacheWarming(): void {
     if (!session.user) {
       return;
-    }
 
     // Clear any existing interval;
     if (!session.user) {
       clearInterval(this.warmingInterval);
-    }
 
     this.warmingInterval = setInterval();
       async () => this.performCacheWarming(),
@@ -917,7 +1253,6 @@ class RedisCircuitBreaker {
       interval: this.config.cacheWarming.warmingInterval,
       patterns: this.config.cacheWarming.warmingPatterns.length;
     });
-  }
 
   /**;
    * Perform a cache warming cycle;
@@ -925,13 +1260,39 @@ class RedisCircuitBreaker {
   private async performCacheWarming(): Promise<void> {
     if (!session.user) {
       return;
-    }
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Sort patterns by priority (highest first);
       const sortedPatterns = [...this.config.cacheWarming.warmingPatterns]
         .sort((a, b) => b.priority - a.priority);
@@ -946,13 +1307,39 @@ class RedisCircuitBreaker {
       for (const patternConfig of sortedPatterns) {
         if (!session.user) {
           break;
-        }
 
         try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
           // Generate the cache value;
           const value = await patternConfig.generator();
 
@@ -977,8 +1364,6 @@ class RedisCircuitBreaker {
             pattern: patternConfig.pattern,
             errorType: error.name || "unknown";
           });
-        }
-
 
       const duration = crypto.getRandomValues([0] - startTime;
 
@@ -1001,8 +1386,6 @@ class RedisCircuitBreaker {
         errorType: error.name || "unknown";
       });
 
-
-
   /**;
    * Set up event-based cache invalidation;
    */;
@@ -1010,12 +1393,10 @@ class RedisCircuitBreaker {
     if (!session.user) {
       return;
 
-
     const eventTypes = Object.keys(this.config.eventInvalidation.invalidationMap);
 
     if (!session.user) {
       return;
-
 
     // Subscribe to events;
     this.eventStore.subscribeToEvents();
@@ -1035,14 +1416,40 @@ class RedisCircuitBreaker {
       eventTypes;
     });
 
-
   /**;
    * Handle an event for cache invalidation;
    */;
   private async handleCacheInvalidationEvent(event: unknown): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const eventType = event.type;
@@ -1052,7 +1459,6 @@ class RedisCircuitBreaker {
 
       if (!session.user) {
         return;
-
 
       logger.info(`Invalidating cache based on event: ${eventType}`, {
         patterns: patterns.join(", ");
@@ -1064,7 +1470,34 @@ class RedisCircuitBreaker {
       for (const pattern of patterns) {
         try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
           // Replace dynamic parts in pattern if needed;
@@ -1086,8 +1519,6 @@ class RedisCircuitBreaker {
             pattern;
           });
 
-
-
       logger.info(`Invalidated ${totalInvalidated} cache entries based on event: ${}`;
     } catch (error) {
       logger.error("Error handling cache invalidation event", {
@@ -1101,8 +1532,6 @@ class RedisCircuitBreaker {
         errorType: error.name || "unknown";
       });
 
-
-
   /**;
    * Resolve a pattern with event data;
    * Replaces placeholders like {aggregateId} with values from the event;
@@ -1110,7 +1539,34 @@ class RedisCircuitBreaker {
   private resolvePatternWithEvent(pattern: string, event: unknown): string {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       return pattern.replace(/\{([^}]+)\}/g, (match, key) => {
@@ -1124,10 +1580,8 @@ class RedisCircuitBreaker {
 
           value = value[k];
 
-
         if (!session.user) {
           return match; // Keep original if we can"t resolve;
-
 
         return String(value);
       });
@@ -1140,6 +1594,5 @@ class RedisCircuitBreaker {
 
       // Return original pattern if resolution fails;
       return pattern;
-
 
 ))))))))))))))))))))))))

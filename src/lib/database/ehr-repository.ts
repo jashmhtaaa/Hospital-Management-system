@@ -1,7 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import "../../services/encryption_service_secure"
+import "@prisma/client"
+import { getEncryptionService }
+import { PrismaClient }
 
-
-import { getEncryptionService } from "../../services/encryption_service_secure";
 /**;
  * Electronic Health Records Repository;
  * Provides persistent storage for EHR data with encryption support;
@@ -71,6 +72,33 @@ import { getEncryptionService } from "../../services/encryption_service_secure";
   async createClinicalNote(note: ClinicalNote): Promise<ClinicalNote> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -100,6 +128,33 @@ import { getEncryptionService } from "../../services/encryption_service_secure";
   async getClinicalNote(id: string): Promise<ClinicalNote | null> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -116,6 +171,33 @@ import { getEncryptionService } from "../../services/encryption_service_secure";
 
   async getClinicalNotesByPatient(patientId: string): Promise<ClinicalNote[]> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -134,9 +216,36 @@ import { getEncryptionService } from "../../services/encryption_service_secure";
   async updateClinicalNote(id: string, updates: Partial<ClinicalNote>): Promise<ClinicalNote> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
       // Encrypt sensitive fields in updates;
       const encryptedUpdates = await this.encryptionService.encryptObject();
         updates,
@@ -151,36 +260,86 @@ import { getEncryptionService } from "../../services/encryption_service_secure";
           updates.snomed_codes ? JSON.stringify(updates.snomed_codes) : undefined,
           new Date(),
           version: increment: 1 ;
-        }
+
       });
 
       return this.decryptClinicalNote(updated);
     } catch (error) {
       throw new Error(`Failed to update clinical note: ${}`;
-    }
-  }
 
   async deleteClinicalNote(id: string): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       await this.prisma.clinicalNote.delete({
         where: { id }
       });
     } catch (error) {
       throw new Error(`Failed to delete clinical note: ${}`;
-    }
-  }
 
   // Care Plans Operations;
   async createCarePlan(carePlan: CarePlan): Promise<CarePlan> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const created = await this.prisma.carePlan.create({
         data: {
           ...carePlan,
@@ -190,21 +349,46 @@ import { getEncryptionService } from "../../services/encryption_service_secure";
           carePlan.snomed_codes ? JSON.stringify(carePlan.snomed_codes) : null,
           created_at: new Date(),
           updated_at: new Date();
-        }
+
       });
 
       return this.deserializeCarePlan(created);
     } catch (error) {
       throw new Error(`Failed to create care plan: ${}`;
-    }
-  }
 
   async getCarePlan(id: string): Promise<CarePlan | null> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const carePlan = await this.prisma.carePlan.findUnique({
         where: { id }
       });
@@ -213,15 +397,40 @@ import { getEncryptionService } from "../../services/encryption_service_secure";
       return this.deserializeCarePlan(carePlan);
     } catch (error) {
       throw new Error(`Failed to get care plan: ${}`;
-    }
-  }
 
   async getCarePlansByPatient(patientId: string): Promise<CarePlan[]> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const carePlans = await this.prisma.carePlan.findMany({
         where: { patient_id: patientId },
         orderBy: { created_at: "desc" }
@@ -231,13 +440,38 @@ import { getEncryptionService } from "../../services/encryption_service_secure";
     } catch (error) {
       throw new Error(`Failed to get care plans for patient: ${}`;
 
-
-
   // Problem List Operations;
   async createProblemListItem(item: ProblemListItem): Promise<ProblemListItem> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Encrypt sensitive fields;
@@ -258,12 +492,37 @@ import { getEncryptionService } from "../../services/encryption_service_secure";
     } catch (error) {
       throw new Error(`Failed to create problem list item: ${}`;
 
-
-
   async getProblemListByPatient(patientId: string): Promise<ProblemListItem[]> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const items = await this.prisma.problemListItem.findMany({
@@ -275,13 +534,38 @@ import { getEncryptionService } from "../../services/encryption_service_secure";
     } catch (error) {
       throw new Error(`Failed to get problem list for patient: ${}`;
 
-
-
   // Clinical Guidelines Operations;
   async createClinicalGuideline(guideline: ClinicalGuideline): Promise<ClinicalGuideline> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const created = await this.prisma.clinicalGuideline.create({
@@ -298,22 +582,46 @@ import { getEncryptionService } from "../../services/encryption_service_secure";
     } catch (error) {
       throw new Error(`Failed to create clinical guideline: ${}`;
 
-
-
   async getClinicalGuidelines(filters?: {
     status?: string;
     icd10_codes?: string[];
   }): Promise<ClinicalGuideline[]> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const where: unknown = {};
 
       if (!session.user) {
         where.status = filters.status;
-
 
       const guidelines = await this.prisma.clinicalGuideline.findMany({
         where,
@@ -323,8 +631,6 @@ import { getEncryptionService } from "../../services/encryption_service_secure";
       return guidelines.map(g => this.deserializeClinicalGuideline(g));
     } catch (error) {
       throw new Error(`Failed to get clinical guidelines: ${}`;
-
-
 
   // Helper methods for decryption and deserialization;
   private async decryptClinicalNote(note: unknown): Promise<ClinicalNote> {
@@ -337,10 +643,8 @@ import { getEncryptionService } from "../../services/encryption_service_secure";
       cpt_codes: note.cpt_codes ? JSON.parse(note.cpt_codes) : undefined;
     };
 
-
   private async decryptProblemListItem(item: unknown): Promise<ProblemListItem> {
     return this.encryptionService.decryptObject(item, this.encryptedFields);
-
 
   private deserializeCarePlan(carePlan: unknown): CarePlan {
     return {
@@ -351,14 +655,12 @@ import { getEncryptionService } from "../../services/encryption_service_secure";
       carePlan.snomed_codes ? JSON.parse(carePlan.snomed_codes) : undefined;
     };
 
-
   private deserializeClinicalGuideline(guideline: unknown): ClinicalGuideline {
     return {
       ...guideline,
       icd10_codes: guideline.icd10_codes ? JSON.parse(guideline.icd10_codes) : undefined,
       JSON.parse(guideline.decision_support_rules);
     };
-
 
   // Cleanup;
   async disconnect(): Promise<void> {

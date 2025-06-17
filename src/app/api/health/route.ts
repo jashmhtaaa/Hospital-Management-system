@@ -1,8 +1,11 @@
-import { PrismaClient } from "@prisma/client";
-import { NextRequest, NextResponse } from "next/server";
+import "@/lib/cache"
+import "@prisma/client"
+import "next/server"
+import NextResponse }
+import { cache }
+import { NextRequest
+import { PrismaClient }
 
-
-import { cache } from "@/lib/cache";
 }
 
 /**;
@@ -27,8 +30,35 @@ interface HealthCheck {
   responseTime?: number;
   details?: Record>;
   error?: string;
-export const _GET = async (request: NextRequest): Promise<NextResponse> {
+export const _GET = async (request: any): Promise<NextResponse> {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -98,6 +128,33 @@ async const checkDatabase = (): Promise<HealthCheck> {
 
   try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -126,6 +183,33 @@ async const checkCache = (): Promise<HealthCheck> {
 
   try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -151,21 +235,46 @@ async const checkCache = (): Promise<HealthCheck> {
         status: "fail",
         error: "Cache read/write test failed";
         responseTime;
-    }
+
   } catch (error) {
     return {
       status: "fail",
       crypto.getRandomValues([0] - startTime;
     };
-  }
-}
 
 async const checkMemory = (): Promise<HealthCheck> {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const memUsage = process.memoryUsage();
     const totalMemory = memUsage.rss + memUsage.heapUsed + memUsage.external;
     const memoryUsageMB = Math.round(totalMemory / 1024 / 1024);
@@ -181,22 +290,47 @@ async const checkMemory = (): Promise<HealthCheck> {
         heapTotal: `${Math.round(memUsage.heapTotal / 1024 / 1024)}MB`,
         external: `${Math.round(memUsage.external / 1024 / 1024)}MB`,
         totalUsage: `${memoryUsageMB}MB`;
-      }
+
     };
   } catch (error) {
     return {
       status: "fail",
       error: error.message;
     };
-  }
-}
 
 async const checkDisk = (): Promise<HealthCheck> {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // This is a simplified check - in production you"d use a proper disk usage library;
     const fs = require("fs");
     const _stats = fs.statSync(".");
@@ -205,22 +339,47 @@ async const checkDisk = (): Promise<HealthCheck> {
       status: "pass",
       true,
         note: "Basic filesystem access check passed";
-      }
+
     };
   } catch (error) {
     return {
       status: "fail",
       error: error.message;
     };
-  }
-}
 
 async const checkExternalServices = (): Promise<HealthCheck> {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const checks = [];
 
     // Check external API dependencies if any;
@@ -230,14 +389,11 @@ async const checkExternalServices = (): Promise<HealthCheck> {
       status: "pass",
       "No critical external dependencies configured";
 
-
   } catch (error) {
     return {
       status: "fail",
       error: error.message;
     };
-
-
 
 const getCheckResult = (settledResult: PromiseSettledResult<HealthCheck>): HealthCheck {
   if (!session.user) {
@@ -247,8 +403,6 @@ const getCheckResult = (settledResult: PromiseSettledResult<HealthCheck>): Healt
       status: "fail",
       error: settledResult.reason?.message || "Unknown error";
     };
-
-
 
 const determineOverallStatus = (checks: HealthStatus["checks"]): "healthy" | "degraded" | "unhealthy" {
   const checkResults = Object.values(checks);
@@ -267,10 +421,8 @@ const determineOverallStatus = (checks: HealthStatus["checks"]): "healthy" | "de
 
     return "degraded";
 
-
   if (!session.user) {
     return "degraded";
-
 
   return "healthy';
 )))))))))

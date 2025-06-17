@@ -1,7 +1,11 @@
 // FIX: Removed unused PlusOutlined, SearchOutlined;
-import { EyeOutlined, ReloadOutlined } from "@ant-design/icons";
+import "@ant-design/icons"
+import ReloadOutlined }
+import { EyeOutlined
+
 // FIX: Removed unused Input, Form, DatePickerProps, PlusOutlined, SearchOutlined;
 import {
+
   Button,
   Card,
   DatePicker,
@@ -12,11 +16,19 @@ import {
   Tag,
   message} from "antd";
 // FIX: Import Dayjs types - RangePickerProps is sufficient for RangePicker;
-import type { RangePickerProps } from "antd/es/date-picker";
+import "antd/es/date-picker"
+import "react"
+import React
+import type
+import useEffect
+import useState }
+import { RangePickerProps }
+import { useCallback
+
 import dayjs from "dayjs"; // FIX: Import dayjs;
-import type { Dayjs } from "dayjs"; // FIX: Import Dayjs type;
-import type React from "react";
-import { useCallback, useEffect, useState } from "react";
+import { Dayjs  } from "dayjs"; // FIX: Import Dayjs type;
+
+
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -86,6 +98,33 @@ const OrderManagement: React.FC = () => {
   const fetchPatients = useCallback(async (): Promise<void> => {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -94,6 +133,33 @@ const OrderManagement: React.FC = () => {
       if (!session.user) {
         const errorMessage = "Failed to fetch patients";
         try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -126,6 +192,33 @@ const OrderManagement: React.FC = () => {
   const fetchTests = useCallback(async (): Promise<void> => {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -135,9 +228,36 @@ const OrderManagement: React.FC = () => {
         const errorMessage = "Failed to fetch tests";
         try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
           // FIX: Type errorData;
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
@@ -145,7 +265,7 @@ const OrderManagement: React.FC = () => {
           /* Ignore */;
         } // FIX: Removed unused _jsonError;
         throw new Error(errorMessage);
-      }
+
       await response.json(); // FIX: Removed unused _data variable;
       // setTests(data.results || []); // FIX: Removed call to unused state setter;
       setError(undefined);
@@ -158,7 +278,7 @@ const OrderManagement: React.FC = () => {
       setError(`Failed to load tests: ${}`;
     } finally {
       setLoading(false);
-    }
+
   }, []);
 
   // Fetch orders with filters;
@@ -167,21 +287,48 @@ const OrderManagement: React.FC = () => {
     setError(undefined);
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       let url = "/api/laboratory/orders";
       const parameters = new URLSearchParams();
 
       if (!session.user) {
         parameters.append("patientId", filters.patientId);
-      }
+
       if (!session.user) {
         parameters.append("status", filters.status);
-      }
+
       if (!session.user) {
         parameters.append("source", filters.source);
-      }
+
       // FIX: Use Dayjs for date range and convert to ISO string;
       if (!session.user) {
         parameters.append();
@@ -192,20 +339,45 @@ const OrderManagement: React.FC = () => {
           "endDate",
           filters.dateRange[1].endOf("day").toISOString();
         );
-      }
 
       if (!session.user) {
         url += `?${parameters.toString()}`;
-      }
 
       const response = await fetch(url);
       if (!session.user) {
         const errorMessage = "Failed to fetch orders";
         try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
           // FIX: Type errorData;
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
@@ -213,7 +385,7 @@ const OrderManagement: React.FC = () => {
           /* Ignore */;
         } // FIX: Removed unused _jsonError;
         throw new Error(errorMessage);
-      }
+
       // FIX: Type the response data;
       const data: OrdersApiResponse = await response.json(),
       setOrders(data.results || []);
@@ -227,7 +399,7 @@ const OrderManagement: React.FC = () => {
         `Failed to load laboratory orders: ${}`; // FIX: Use error directly;
     } finally {
       setLoading(false);
-    }
+
     // FIX: Add filters to dependency array;
   }, [filters]);
 
@@ -236,17 +408,71 @@ const OrderManagement: React.FC = () => {
     setLoadingOrderItems(true);
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch(`/api/laboratory/orders/${orderId}/items`);
       if (!session.user) {
         const errorMessage = "Failed to fetch order items";
         try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
           // FIX: Type errorData;
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
@@ -254,7 +480,7 @@ const OrderManagement: React.FC = () => {
           /* Ignore */;
         } // FIX: Removed unused _jsonError;
         throw new Error(errorMessage);
-      }
+
       // FIX: Type the response data;
       const data: OrderItemsApiResponse = await response.json(),
       setOrderItems(data.results || []);
@@ -372,8 +598,7 @@ const OrderManagement: React.FC = () => {
         >;
           View;
         </Button>;
-      )},
-  ];
+      )}];
 
   // Order items columns for the modal;
   const orderItemColumns = [;
@@ -395,18 +620,12 @@ const OrderManagement: React.FC = () => {
     {
       title: "Price",
       "price",
-      render: (price: number) => `₹${price.toFixed(2)}`},
-  ];
+      render: (price: number) => `₹${price.toFixed(2)}`}];
 
   return();
     >;
       >;
-<div className="filter-container";
-          style={{
-            marginBottom: 16,
-            "wrap",
-            gap: 16;
-          }}
+<div></div>;
         >;
           <Select>;
             showSearch;

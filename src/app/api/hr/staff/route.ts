@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/hr/employee-service"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { employeeService }
+import { type
+import { z }
 
-
-import { employeeService } from "@/lib/hr/employee-service";
 // Schema for employee creation;
 const createEmployeeSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
@@ -56,12 +60,39 @@ const _updateEmployeeSchema = z.object({
 });
 
 // GET /api/hr/staff;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
     const { searchParams } = new URL(request.url);
 
     const skip = Number.parseInt(searchParams.get("skip") || "0");
@@ -86,16 +117,41 @@ export const _GET = async (request: NextRequest) => {
       { error: "Failed to list employees", details: error.message },
       { status: 500 }
     );
-  }
-}
 
 // POST /api/hr/staff;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const body = await request.json();
 
     // Validate request body;
@@ -114,11 +170,9 @@ export const _POST = async (request: NextRequest) => {
         { status: 400 }
       );
 
-
     return NextResponse.json();
       { error: "Failed to create employee", details: error.message },
       { status: 500 }
     );
-
 
 })))

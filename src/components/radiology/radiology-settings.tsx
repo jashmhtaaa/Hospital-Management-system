@@ -1,8 +1,19 @@
-import React, { useState, useEffect } from "react";
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "@/components/ui/tabs"
+import "react"
+import CardContent }
+import React
+import TabsContent
+import TabsList
+import TabsTrigger }
+import useEffect }
 import {
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button }
+import { Card
+import { Tabs
+import { useState
+
 }
 
 "use client";
@@ -13,8 +24,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { Loader2, Plus } from "lucide-react";
-import CreateProcedureTypeModal, {
+import "lucide-react"
+import CreateProcedureTypeModal
+import Plus }
+import {
+import { Loader2
+
   type ProcedureTypeFormData} from "./create-procedure-type-modal.ts"; // Assuming modal exports form data type;
 import CreateModalityModal, { type ModalityFormData } from "./create-modality-modal.ts"; // Assuming modal exports form data type;
 
@@ -55,6 +70,33 @@ export default const _RadiologySettings = () {
     setErrorProcedures(undefined);
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -62,6 +104,33 @@ export default const _RadiologySettings = () {
       if (!session.user) {
         let errorMessage = `Failed to fetch procedure types (status: ${response.status})`;
         try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -82,7 +151,7 @@ export default const _RadiologySettings = () {
       setProcedureTypes([]); // Clear on error;
     } finally {
       setLoadingProcedures(false);
-    }
+
   };
 
   const fetchModalities = async (): Promise<void> => {
@@ -90,24 +159,78 @@ export default const _RadiologySettings = () {
     setErrorModalities(undefined);
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch("/api/radiology/modalities");
       if (!session.user) {
         let errorMessage = `Failed to fetch modalities (status: ${response.status})`;
         try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
           const errorData: { error?: string } = await response.json();
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore if response is not JSON */;
-        }
+
         throw new Error(errorMessage);
-      }
+
       const data: Modality[] = await response.json(),
       setModalities(data || []); // Ensure it"s always an array;
     } catch (err) { // Changed error to err;
@@ -117,7 +240,7 @@ export default const _RadiologySettings = () {
       setModalities([]); // Clear on error;
     } finally {
       setLoadingModalities(false);
-    }
+
   };
 
   const handleCreateProcedureType = async();
@@ -125,9 +248,36 @@ export default const _RadiologySettings = () {
   ): Promise<void> => {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch("/api/radiology/procedure-types", {
         method: "POST",
         headers: {
@@ -139,16 +289,42 @@ export default const _RadiologySettings = () {
         let errorMessage = `Failed to create procedure type (status: ${response.status})`;
         try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
           const errorData: { error?: string } = await response.json();
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore if response is not JSON */;
 
         throw new Error(errorMessage);
-
 
       setShowCreateProcedureModal(false),
       fetchProcedureTypes(); // Refresh the list;
@@ -165,7 +341,34 @@ export default const _RadiologySettings = () {
   ): Promise<void> => {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const response = await fetch("/api/radiology/modalities", {
@@ -179,7 +382,34 @@ export default const _RadiologySettings = () {
         let errorMessage = `Failed to create modality (status: ${response.status})`;
         try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
           const errorData: { error?: string } = await response.json();
@@ -188,7 +418,6 @@ export default const _RadiologySettings = () {
           /* Ignore if response is not JSON */;
 
         throw new Error(errorMessage);
-
 
       setShowCreateModalityModal(false),
       fetchModalities(); // Refresh the list;

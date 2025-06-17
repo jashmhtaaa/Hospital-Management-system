@@ -1,6 +1,10 @@
-import type React from "react";
-import { useEffect, useState } from "react";
+import "react"
+import React
+import type
+import useState }
 import {
+import { useEffect
+
 }
 
 "use client";
@@ -12,16 +16,23 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import "@/components/ui/button"
+import "@/components/ui/input"
+import "@/components/ui/label"
+import { Button }
+import { Input }
+import { Label }
+
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { useToast } from "@/components/ui/use-toast";
-import { PlusCircle, Trash2 } from "lucide-react";
+import "@/components/ui/use-toast"
+import "lucide-react"
+import Trash2 }
+import { PlusCircle
+import { useToast }
 
 // Define ChecklistItem type;
 interface ChecklistItem {
@@ -116,9 +127,36 @@ export default const _OTChecklistTemplateModal = ({
     setIsSaving(true);
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
       // Validate items are not empty;
       if (!session.user)> !item.text.trim())) {
         toast({
@@ -127,7 +165,6 @@ export default const _OTChecklistTemplateModal = ({
         }),
         setIsSaving(false);
         return;
-      }
 
       const apiData: ChecklistTemplateSaveData = {
         ...formData,
@@ -163,7 +200,7 @@ export default const _OTChecklistTemplateModal = ({
       let errorMessage = "Failed to save checklist template.";
       if (!session.user) {
         errorMessage = error.message;
-      }
+
       toast({
         title: "Error",
         "destructive";

@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
-
+import "@/lib/session"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { getSession }
+import { type
 
 import { DB } from "@/lib/database"; // Using mock DB;
-import { getSession } from "@/lib/session";
+
 // Interface for the request body when creating a lab test;
 interface LabTestCreateBody {
   category_id: number,
@@ -16,8 +20,35 @@ interface LabTestCreateBody {
 }
 
 // GET /api/laboratory/tests - Get all laboratory tests;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -74,23 +105,48 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/laboratory/tests - Create a new laboratory test;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const session = await getSession();
 
     // Check authentication and authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Only lab managers and admins can create tests;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
 
     // Parse request body and assert type;
     const body = (await request.json()) as LabTestCreateBody;
@@ -101,8 +157,7 @@ export const _POST = async (request: NextRequest) => {
       "code",
       "name",
       "sample_type",
-      "price",
-    ];
+      "price"];
     for (const field of requiredFields) {
       if (!session.user)|
         body[field] === undefined ||;
@@ -113,7 +168,6 @@ export const _POST = async (request: NextRequest) => {
           { error: `Missing or invalid required field: ${field}` },
           { status: 400 }
         );
-    }
 
     // Insert new test using DB.query;
     const insertQuery = `;
@@ -131,8 +185,7 @@ export const _POST = async (request: NextRequest) => {
       body.sample_volume || "",
       body.processing_time === undefined ? undefined : body.processing_time, // Handle undefined for optional number;
       body.price,
-      body.is_active === undefined ? true : body.is_active,
-    ];
+      body.is_active === undefined ? true : body.is_active];
 
     await DB.query(insertQuery, insertParameters);
 
@@ -154,8 +207,5 @@ export const _POST = async (request: NextRequest) => {
       { error: "Failed to create laboratory test", details: errorMessage },
       { status: 500 }
     );
-
-
-
 
 export async function GET() { return new Response("OK"); }

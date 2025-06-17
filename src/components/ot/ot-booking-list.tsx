@@ -1,5 +1,9 @@
-import React, { useState, useEffect } from "react";
+import "react"
+import React
+import useEffect }
 import {
+import { useState
+
 }
 
 "use client";
@@ -10,17 +14,26 @@ import {
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import "@/components/ui/badge"
+import "@/components/ui/button"
+import "@/components/ui/input"
+import { Badge }
+import { Button }
+import { Input }
+
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports;
-import { format } from "date-fns";
-import { Edit, Eye, Filter, Trash2 } from "lucide-react";
+import "date-fns"
+import "lucide-react"
+import Eye
+import Filter
+import Trash2 }
+import { Edit
+import { format }
 
 // Mock data structure - replace with actual API response type;
 interface Booking {
@@ -43,6 +56,33 @@ export default const _OTBookingList = () {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -97,8 +137,7 @@ export default const _OTBookingList = () {
             "MRN004",
             "OT-1",
             surgeon_name: "Dr. Alice Brown";
-          },
-        ];
+          }];
         setBookings();
           mockData.filter();
             (b) => {}
@@ -143,18 +182,17 @@ export default const _OTBookingList = () {
       }
       case "completed": {
         return <Badge className="bg-green-100 text-green-800">Completed>;
-      }
+
       case "cancelled": {
         return <Badge variant="destructive">Cancelled>;
-      }
+
       case "postponed": {
         return();
           <Badge className="bg-purple-100 text-purple-800">Postponed>;
         );
-      }
+
       default: {
         return <Badge>{status}>;
-      }
 
   };
 

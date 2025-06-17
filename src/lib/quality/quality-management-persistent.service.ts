@@ -1,8 +1,10 @@
-import { PrismaClient } from "@prisma/client";
-import { z } from "zod";
+import "../../services/encryption_service_secure"
+import "@prisma/client"
+import "zod"
+import { getEncryptionService }
+import { PrismaClient }
+import { z }
 
-
-import { getEncryptionService } from "../../services/encryption_service_secure";
 /**;
  * Quality Management Service - Persistent Implementation;
  * Comprehensive quality management system for NABH/JCI compliance;
@@ -149,6 +151,33 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
   async createQualityIndicator(data: QualityIndicator): Promise<QualityIndicator & { id: string }> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -174,6 +203,33 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
   async getQualityIndicator(id: string): Promise<QualityIndicator | null> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -194,6 +250,33 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
     status?: string;
   }): Promise<QualityIndicator[]> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -216,6 +299,33 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 
   async updateQualityIndicator(id: string, updates: Partial<QualityIndicator>): Promise<QualityIndicator> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -241,6 +351,33 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
   // Quality Events Operations;
   async createQualityEvent(data: QualityEvent): Promise<QualityEvent & { id: string }> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -271,6 +408,33 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
   async getQualityEvent(id: string): Promise<QualityEvent | null> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -295,9 +459,36 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
   }): Promise<QualityEvent[]> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
       const where: unknown = {};
       if (!session.user)here.eventType = filters.eventType;
       if (!session.user)here.severity = filters.severity;
@@ -307,7 +498,6 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         where.eventDateTime = {};
         if (!session.user)here.eventDateTime.gte = filters.dateFrom;
         if (!session.user)here.eventDateTime.lte = filters.dateTo;
-      }
 
       const events = await this.prisma.qualityEvent.findMany({
         where,
@@ -317,16 +507,41 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       return Promise.all(events.map(event => this.deserializeQualityEvent(event)));
     } catch (error) {
       throw new Error(`Failed to get quality events: ${}`;
-    }
-  }
 
   // Quality Assessment Operations;
   async createQualityAssessment(data: QualityAssessment): Promise<QualityAssessment & { id: string }> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const validated = QualityAssessmentSchema.parse(data);
       const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields);
 
@@ -336,7 +551,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
           assessors: JSON.stringify(validated.assessors),
           validated.recommendations ? JSON.stringify(validated.recommendations) : null,
           status: "planned";
-        }
+
       });
 
       return {
@@ -345,28 +560,51 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       };
     } catch (error) {
       throw new Error(`Failed to create quality assessment: ${}`;
-    }
-  }
 
   async getQualityAssessment(id: string): Promise<QualityAssessment | null> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const assessment = await this.prisma.qualityAssessment.findUnique({
         where: { id },
         true,
           true;
-        }
+
       });
 
       if (!session.user)eturn null;
       return this.deserializeQualityAssessment(assessment);
     } catch (error) {
       throw new Error(`Failed to get quality assessment: ${}`;
-    }
-  }
 
   async getQualityAssessments(filters?: {
     type?: string;
@@ -375,9 +613,36 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
   }): Promise<QualityAssessment[]> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const where: unknown = {};
       if (!session.user)here.type = filters.type;
       if (!session.user)here.status = filters.status;
@@ -394,16 +659,41 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       return Promise.all(assessments.map(assessment => this.deserializeQualityAssessment(assessment)));
     } catch (error) {
       throw new Error(`Failed to get quality assessments: ${}`;
-    }
-  }
 
   // Quality Metrics Operations;
   async recordQualityMetrics(data: QualityMetrics): Promise<QualityMetrics & { id: string }> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Calculate rate if not provided;
       const rate = data.rate || (data.denominatorValue > 0 ?;
         (data.numeratorValue / data.denominatorValue) * 100 : 0);
@@ -412,7 +702,6 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       let varianceFromTarget: number | undefined;
       if (!session.user) {
         varianceFromTarget = rate - data.targetValue;
-      }
 
       const metrics = await this.prisma.qualityMetrics.create({
         data.indicatorId,
@@ -427,7 +716,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
           data.dataSource,
           data.enteredBy,
           verifiedBy: data.verifiedBy;
-        }
+
       });
 
       return {
@@ -437,8 +726,6 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         varianceFromTarget};
     } catch (error) {
       throw new Error(`Failed to record quality metrics: ${}`;
-    }
-  }
 
   async getQualityMetrics(indicatorId: string, filters?: {
     periodType?: string;
@@ -447,16 +734,42 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
   }): Promise<QualityMetrics[]> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const where: unknown = { indicatorId };
       if (!session.user)here.periodType = filters.periodType;
       if (!session.user) {
         where.measurementPeriod = {};
         if (!session.user)here.measurementPeriod.gte = filters.dateFrom;
         if (!session.user)here.measurementPeriod.lte = filters.dateTo;
-      }
 
       const metrics = await this.prisma.qualityMetrics.findMany({
         where,
@@ -478,16 +791,41 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       }));
     } catch (error) {
       throw new Error(`Failed to get quality metrics: ${}`;
-    }
-  }
 
   // Compliance Report Operations;
   async createComplianceReport(data: ComplianceReport): Promise<ComplianceReport & { id: string }> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const validated = ComplianceReportSchema.parse(data);
       const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields);
 
@@ -496,7 +834,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
           ...encryptedData,
           requirements: JSON.stringify(validated.requirements),
           validated.gaps ? JSON.stringify(validated.gaps) : null;
-        }
+
       });
 
       return {
@@ -505,13 +843,38 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       };
     } catch (error) {
       throw new Error(`Failed to create compliance report: ${}`;
-    }
-  }
 
   async getComplianceReport(id: string): Promise<ComplianceReport | null> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const report = await this.prisma.complianceReport.findUnique({
@@ -523,13 +886,38 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
     } catch (error) {
       throw new Error(`Failed to get compliance report: ${}`;
 
-
-
   // Action Plan Operations;
   async createActionPlan(data: ActionPlan): Promise<ActionPlan & { id: string }> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const validated = ActionPlanSchema.parse(data);
@@ -551,12 +939,37 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
     } catch (error) {
       throw new Error(`Failed to create action plan: ${}`;
 
-
-
   async getActionPlan(id: string): Promise<ActionPlan | null> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const actionPlan = await this.prisma.actionPlan.findUnique({
@@ -570,13 +983,38 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
     } catch (error) {
       throw new Error(`Failed to get action plan: ${}`;
 
-
-
   // Action Item Operations;
   async createActionItem(data: ActionItem): Promise<ActionItem & { id: string }> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const validated = ActionItemSchema.parse(data);
@@ -598,12 +1036,37 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
     } catch (error) {
       throw new Error(`Failed to create action item: ${}`;
 
-
-
   async updateActionItem(id: string, updates: Partial<ActionItem>): Promise<ActionItem> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const encryptedUpdates = await this.encryptionService.encryptObject(updates, this.encryptedFields);
@@ -624,13 +1087,38 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
     } catch (error) {
       throw new Error(`Failed to update action item: ${}`;
 
-
-
   // Analytics and Reporting;
   async getQualityDashboardData(indicatorIds: string[], dateRange: { from: Date, to: Date }) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const metrics = await this.prisma.qualityMetrics.findMany({
@@ -656,8 +1144,6 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
     } catch (error) {
       throw new Error(`Failed to get dashboard data: ${}`;
 
-
-
   // Helper methods for deserialization;
   private async deserializeQualityIndicator(indicator: unknown): Promise<QualityIndicator> {
     const decrypted = await this.encryptionService.decryptObject(indicator, this.encryptedFields);
@@ -666,7 +1152,6 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       ...decrypted,
       stratificationCriteria: indicator.stratificationCriteria ?;
         JSON.parse(indicator.stratificationCriteria) : undefined};
-
 
   private async deserializeQualityEvent(event: unknown): Promise<QualityEvent> {
     const decrypted = await this.encryptionService.decryptObject(event, this.encryptedFields);
@@ -680,7 +1165,6 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       preventiveActions: event.preventiveActions ?;
         JSON.parse(event.preventiveActions) : undefined};
 
-
   private async deserializeQualityAssessment(assessment: unknown): Promise<QualityAssessment> {
     const decrypted = await this.encryptionService.decryptObject(assessment, this.encryptedFields);
 
@@ -690,7 +1174,6 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       assessment.recommendations ? JSON.parse(assessment.recommendations) : undefined;
     };
 
-
   private async deserializeComplianceReport(report: unknown): Promise<ComplianceReport> {
     const decrypted = await this.encryptionService.decryptObject(report, this.encryptedFields);
 
@@ -699,7 +1182,6 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       requirements: JSON.parse(report.requirements),
       report.gaps ? JSON.parse(report.gaps) : undefined;
     };
-
 
   private async deserializeActionPlan(actionPlan: unknown): Promise<ActionPlan> {
     const decrypted = await this.encryptionService.decryptObject(actionPlan, this.encryptedFields);
@@ -711,7 +1193,6 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       teamMembers: actionPlan.teamMembers ?;
         JSON.parse(actionPlan.teamMembers) : undefined};
 
-
   private async deserializeActionItem(actionItem: unknown): Promise<ActionItem> {
     const decrypted = await this.encryptionService.decryptObject(actionItem, this.encryptedFields);
 
@@ -722,12 +1203,9 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       blockers: actionItem.blockers ?;
         JSON.parse(actionItem.blockers) : undefined};
 
-
   // Cleanup;
   async disconnect(): Promise<void> {
     await this.prisma.$disconnect();
-
-
 
 // Export singleton instance;
 let qualityServiceInstance: PersistentQualityManagementService | null = null;

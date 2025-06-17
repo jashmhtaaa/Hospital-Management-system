@@ -1,9 +1,14 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../../lib/audit"
+import "../../../../../lib/error-handler"
+import "../../../../../lib/validation/pharmacy-validation"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { errorHandler }
+import { type
+import { validateInventoryAdjustmentRequest }
 
-
-import { auditLog } from "../../../../../lib/audit";
-import { errorHandler } from "../../../../../lib/error-handler";
-import { validateInventoryAdjustmentRequest } from "../../../../../lib/validation/pharmacy-validation";
 }
 
 /**;
@@ -38,8 +43,35 @@ const adjustmentRepository = {
  * POST /api/pharmacy/inventory/adjustment;
  * Adjust inventory quantity with reason documentation;
  */;
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -130,23 +162,48 @@ export const POST = async (req: NextRequest) => {
   } catch (error) {
     return errorHandler(error, "Error adjusting inventory");
   }
-}
 
 /**;
  * GET /api/pharmacy/inventory/adjustments;
  * List inventory adjustments with filtering options;
  */;
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -174,7 +231,6 @@ export const GET = async (req: NextRequest) => {
       filter.adjustedAt = {};
       if (!session.user)ilter.adjustedAt.gte = new Date(startDate);
       if (!session.user)ilter.adjustedAt.lte = new Date(endDate);
-    }
 
     // Get adjustments (mock implementation);
     const adjustments = []; // In production, query database with filter, pagination;
@@ -203,4 +259,3 @@ export const GET = async (req: NextRequest) => {
     }, { status: 200 });
   } catch (error) {
     return errorHandler(error, "Error retrieving inventory adjustments");
-

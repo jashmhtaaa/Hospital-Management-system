@@ -1,9 +1,14 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../../lib/audit"
+import "../../../../../lib/error-handler"
+import "../../../models/fhir-mappers"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { errorHandler }
+import { FHIRMapper }
+import { type
 
-
-import { auditLog } from "../../../../../lib/audit";
-import { errorHandler } from "../../../../../lib/error-handler";
-import { FHIRMapper } from "../../../models/fhir-mappers";
 }
 
 /**;
@@ -29,17 +34,43 @@ const inventoryRepository = {
  * GET /api/pharmacy/inventory/expiring;
  * List medications approaching expiry date;
  */;
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: any) => {
   try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -64,10 +95,9 @@ export const GET = async (req: NextRequest) => {
     let filteredItems = expiringItems;
     if (!session.user) {
       filteredItems = filteredItems.filter(item => item.locationId === locationId);
-    }
+
     if (!session.user) {
       filteredItems = filteredItems.filter(item => item.medicationId === medicationId);
-    }
 
     const total = filteredItems.length;
 

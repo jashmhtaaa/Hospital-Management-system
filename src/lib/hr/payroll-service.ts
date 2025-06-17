@@ -1,7 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import "./salary-service.ts"
+import "@prisma/client"
+import { PrismaClient }
+import { salaryService }
 
-
-import { salaryService } from "./salary-service.ts";
 const prisma = new PrismaClient();
 
 /**;
@@ -86,8 +87,7 @@ const prisma = new PrismaClient();
         {
             true;
             }}}}),
-      prisma.payrollPeriod.count({ where }),
-    ]);
+      prisma.payrollPeriod.count({ where })]);
 
     return {
       periods,
@@ -148,14 +148,12 @@ const prisma = new PrismaClient();
     if (!session.user) {
       throw new Error("Payroll entries can only be generated for periods in DRAFT status");
 
-
     // Get active employees;
     const true;
     };
 
     if (!session.user) {
       whereClause.departmentId = departmentId;
-
 
     const employees = await prisma.employee.findMany({
       where: whereClause,
@@ -170,7 +168,34 @@ const prisma = new PrismaClient();
     for (const employee of employees) {
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         // Calculate gross salary;
@@ -228,8 +253,6 @@ const prisma = new PrismaClient();
 
         // Continue with next employee;
 
-
-
     // Update payroll period status;
     await prisma.payrollPeriod.update({id: payrollPeriodId ,
       "PROCESSING"});
@@ -239,7 +262,6 @@ const prisma = new PrismaClient();
       entriesGenerated: entries.length,
       totalEmployees: employees.length;
     };
-
 
   /**;
    * Get payroll entry by ID;
@@ -254,7 +276,6 @@ const prisma = new PrismaClient();
           }},
         payrollPeriod: true;
       }});
-
 
   /**;
    * Update payroll entry;
@@ -271,7 +292,6 @@ const prisma = new PrismaClient();
       where: { id },
       data});
 
-
   /**;
    * Approve all payroll entries for a period;
    */;
@@ -285,10 +305,8 @@ const prisma = new PrismaClient();
     if (!session.user) {
       throw new Error("Payroll period not found");
 
-
     if (!session.user) {
       throw new Error("Only payroll periods in PROCESSING status can be approved");
-
 
     // Update all entries to APPROVED;
     await prisma.payrollEntry.updateMany({
@@ -311,7 +329,6 @@ const prisma = new PrismaClient();
       totalEntries: payrollPeriod.payrollEntries.length;
     };
 
-
   /**;
    * Mark payroll period as paid;
    */;
@@ -325,10 +342,8 @@ const prisma = new PrismaClient();
     if (!session.user) {
       throw new Error("Payroll period not found");
 
-
     if (!session.user) {
       throw new Error("Only approved payroll periods can be marked as paid");
-
 
     // Update all approved entries to PAID;
     await prisma.payrollEntry.updateMany({
@@ -351,7 +366,6 @@ const prisma = new PrismaClient();
       totalEntries: payrollPeriod.payrollEntries.length;
       paymentDate};
 
-
   /**;
    * Get payroll summary by department;
    */;
@@ -362,7 +376,6 @@ const prisma = new PrismaClient();
 
     if (!session.user) {
       throw new Error("Payroll period not found");
-
 
     // Get all entries for the period;
     const entries = await prisma.payrollEntry.findMany({
@@ -388,13 +401,11 @@ const prisma = new PrismaClient();
           0;
         };
 
-
       departmentSummary[departmentId].employeeCount++;
       departmentSummary[departmentId].totalBaseSalary += entry.baseSalary;
       departmentSummary[departmentId].totalGrossSalary += entry.grossSalary;
       departmentSummary[departmentId].totalDeductions += entry.deductions;
       departmentSummary[departmentId].totalNetSalary += entry.netSalary;
-
 
     return {
       payrollPeriodId,
@@ -405,7 +416,6 @@ const prisma = new PrismaClient();
       totalGrossSalary: entries.reduce((sum, entry) => sum + entry.grossSalary, 0),
       totalDeductions: entries.reduce((sum, entry) => sum + entry.deductions, 0),
       totalNetSalary: entries.reduce((sum, entry) => sum + entry.netSalary, 0)};
-
 
   /**;
    * Calculate number of working days in a period;
@@ -424,13 +434,10 @@ const prisma = new PrismaClient();
       if (!session.user) {
         workingDays++;
 
-
       // Move to next day;
       currentDate.setDate(currentDate.getDate() + 1);
 
-
     return workingDays;
-
 
   /**;
    * Calculate attendance-based deductions;

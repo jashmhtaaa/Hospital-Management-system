@@ -1,11 +1,18 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/fhir/appointment"
+import "@/lib/fhir/encounter"
+import "@/lib/fhir/fhir.service"
+import "@/lib/fhir/medication"
+import "@/lib/fhir/patient"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { FHIRAppointment }
+import { FHIREncounter }
+import { FHIRMedicationRequest }
+import { FHIRPatient }
+import { fhirService }
+import { type
 
-
-import { FHIRAppointment } from "@/lib/fhir/appointment";
-import { FHIREncounter } from "@/lib/fhir/encounter";
-import { fhirService } from "@/lib/fhir/fhir.service";
-import { FHIRMedicationRequest } from "@/lib/fhir/medication";
-import { FHIRPatient } from "@/lib/fhir/patient";
 }
 
 /**;
@@ -23,8 +30,35 @@ interface RouteParams {
  * GET /fhir/r4/{resourceType} - Search resources;
  * GET /fhir/r4/{resourceType}/{id} - Read resource by ID;
  */;
-export const GET = async (request: NextRequest, { params }: RouteParams) => {
+export const GET = async (request: any, { params }: RouteParams) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -99,8 +133,35 @@ export const GET = async (request: NextRequest, { params }: RouteParams) => {
 /**;
  * POST /fhir/r4/{resourceType} - Create resource;
  */;
-export const POST = async (request: NextRequest, { params }: RouteParams) => {
+export const POST = async (request: any, { params }: RouteParams) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -146,7 +207,6 @@ export const POST = async (request: NextRequest, { params }: RouteParams) => {
           headers: { "Content-Type": "application/fhir+json" }
         }
       );
-    }
 
     // Return 201 Created with Location header;
     const headers = {
@@ -172,20 +232,45 @@ export const POST = async (request: NextRequest, { params }: RouteParams) => {
       {
         status: 500,
         headers: { "Content-Type": "application/fhir+json" }
-      }
+
     );
-  }
-}
 
 /**;
  * PUT /fhir/r4/{resourceType}/{id} - Update resource;
  */;
-export const PUT = async (request: NextRequest, { params }: RouteParams) => {
+export const PUT = async (request: any, { params }: RouteParams) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const { resource } = params;
     const resourceType = resource[0];
     const resourceId = resource[1];
@@ -201,9 +286,8 @@ export const PUT = async (request: NextRequest, { params }: RouteParams) => {
         {
           status: 400,
           headers: { "Content-Type": "application/fhir+json" }
-        }
+
       );
-    }
 
     const body = await request.json();
 
@@ -219,9 +303,8 @@ export const PUT = async (request: NextRequest, { params }: RouteParams) => {
         {
           status: 400,
           headers: { "Content-Type": "application/fhir+json" }
-        }
-      );
 
+      );
 
     let result;
 
@@ -234,7 +317,6 @@ export const PUT = async (request: NextRequest, { params }: RouteParams) => {
       default: any;
         result = await fhirService.updateResource(resourceType, resourceId, body);
 
-
     if (!session.user) {
       const status = result.error === "Resource not found" ? 404 : 400;
       return NextResponse.json();
@@ -244,7 +326,6 @@ export const PUT = async (request: NextRequest, { params }: RouteParams) => {
           headers: { "Content-Type": "application/fhir+json" }
 
       );
-
 
     const headers = {
       "Content-Type": "application/fhir+json",
@@ -268,15 +349,40 @@ export const PUT = async (request: NextRequest, { params }: RouteParams) => {
 
     );
 
-
-
 /**;
  * DELETE /fhir/r4/{resourceType}/{id} - Delete resource;
  */;
-export const DELETE = async (request: NextRequest, { params }: RouteParams) => {
+export const DELETE = async (request: any, { params }: RouteParams) => {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     const { resource } = params;
@@ -297,7 +403,6 @@ export const DELETE = async (request: NextRequest, { params }: RouteParams) => {
 
       );
 
-
     const result = await fhirService.deleteResource(resourceType, resourceId);
 
     if (!session.user) {
@@ -309,7 +414,6 @@ export const DELETE = async (request: NextRequest, { params }: RouteParams) => {
           headers: { "Content-Type": "application/fhir+json" }
 
       );
-
 
     // Return 204 No Content for successful deletion;
     return new NextResponse(null, { status: 204 });
@@ -329,15 +433,40 @@ export const DELETE = async (request: NextRequest, { params }: RouteParams) => {
 
     );
 
-
-
 /**;
  * PATCH /fhir/r4/{resourceType}/{id} - Partial update (JSON Patch);
  */;
-export const PATCH = async (request: NextRequest, { params }: RouteParams) => {
+export const PATCH = async (request: any, { params }: RouteParams) => {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     const { resource } = params;
@@ -358,7 +487,6 @@ export const PATCH = async (request: NextRequest, { params }: RouteParams) => {
 
       );
 
-
     // Get current resource;
     const currentResult = await fhirService.readResource(resourceType, resourceId);
 
@@ -370,7 +498,6 @@ export const PATCH = async (request: NextRequest, { params }: RouteParams) => {
           headers: { "Content-Type": "application/fhir+json" }
 
       );
-
 
     const contentType = request.headers.get("content-type");
 
@@ -407,7 +534,6 @@ export const PATCH = async (request: NextRequest, { params }: RouteParams) => {
 
       );
 
-
   } catch (error) {
 
     return NextResponse.json();
@@ -422,4 +548,3 @@ export const PATCH = async (request: NextRequest, { params }: RouteParams) => {
         headers: { "Content-Type": "application/fhir+json" }
 
     );
-

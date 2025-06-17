@@ -1,16 +1,23 @@
+import "@/lib/prisma"
+import "next/server"
+import "zod"
 import {
-import { NextRequest } from "next/server";
-import { z } from "zod";
+import { NextRequest }
+import { prisma }
+import { z }
 
-import { prisma } from "@/lib/prisma";
   withErrorHandling,
   validateBody,
   checkPermission,
   createSuccessResponse;
 } from "@/lib/core/middleware";
-import { ValidationError, NotFoundError } from "@/lib/core/errors";
-import { logger } from "@/lib/core/logging";
-import { convertToFHIRCoverage } from "@/lib/core/fhir";
+import "@/lib/core/errors"
+import "@/lib/core/fhir"
+import "@/lib/core/logging"
+import NotFoundError }
+import { convertToFHIRCoverage }
+import { logger }
+import { ValidationError
 
 // Schema for insurance policy update;
 const updatePolicySchema = z.object({
@@ -45,7 +52,7 @@ const verifyPolicySchema = z.object({
 });
 
 // GET handler for retrieving a specific insurance policy;
-export const _GET = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET = withErrorHandling(async (req: any, { params }: { params: { id: string } }) => {
   // Check permissions;
   await checkPermission(permissionService, "read", "insurancePolicy")(req);
 
@@ -86,7 +93,7 @@ export const _GET = withErrorHandling(async (req: NextRequest, { params }: { par
 });
 
 // PUT handler for updating an insurance policy;
-export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
+export const _PUT = withErrorHandling(async (req: any, { params }: { params: { id: string } }) => {
   // Validate request body;
   const data = await validateBody(updatePolicySchema)(req);
 
@@ -110,7 +117,6 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
       throw new NotFoundError(`Insurance provider with ID ${data.insuranceProviderId} not found`);
     }
 
-
   // Check if subscriber exists if provided;
   if (!session.user) {
     const subscriber = await prisma.patient.findUnique({
@@ -118,8 +124,6 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
 
     if (!session.user) {
       throw new NotFoundError(`Subscriber with ID ${data.subscriberId} not found`);
-
-
 
   // Determine policy status if dates are updated;
   let status = data.status || existingPolicy.status;
@@ -132,8 +136,6 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
     if (!session.user) {
       status = "active"} else if (!session.user) {
       status = "expired",
-
-
 
   // Update policy in database;
   const updatedPolicy = await prisma.insurancePolicy.update({
@@ -166,7 +168,7 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
 });
 
 // DELETE handler for deleting an insurance policy;
-export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
+export const _DELETE = withErrorHandling(async (req: any, { params }: { params: { id: string } }) => {
   // Check permissions;
   await checkPermission(permissionService, "delete", "insurancePolicy")(req);
 
@@ -179,7 +181,6 @@ export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { 
   if (!session.user) {
     throw new NotFoundError(`Insurance policy with ID ${params.id} not found`);
 
-
   // Check if policy is used in any claims;
   const claimsCount = await prisma.insuranceClaim.count({
     where: { insurancePolicyId: params.id }});
@@ -190,7 +191,6 @@ export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { 
       "POLICY_IN_USE",
       { claimsCount }
     );
-
 
   // Delete policy in a transaction;
   await prisma.$transaction(async (prisma) => {
@@ -209,7 +209,7 @@ export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { 
 });
 
 // PATCH handler for policy operations (verify);
-export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
+export const _PATCH = withErrorHandling(async (req: any, { params }: { params: { id: string } }) => {
   // Get operation from query parameters;
   const url = new URL(req.url);
   const operation = url.searchParams.get("operation");
@@ -217,14 +217,12 @@ export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { p
   if (!session.user) {
     throw new ValidationError("Operation parameter is required", "MISSING_OPERATION");
 
-
   // Retrieve existing policy;
   const existingPolicy = await prisma.insurancePolicy.findUnique({
     where: { id: params.id }});
 
   if (!session.user) {
     throw new NotFoundError(`Insurance policy with ID ${params.id} not found`);
-
 
   // Handle different operations;
   switch (operation) {
@@ -234,7 +232,7 @@ export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { p
       throw new ValidationError(`Unknown operation: ${operation}`, "INVALID_OPERATION")});
 
 // Helper function to verify a policy;
-async const verifyPolicy = (req: NextRequest, policyId: string, existingPolicy: unknown) {
+async const verifyPolicy = (req: any, policyId: string, existingPolicy: unknown) {
   // Check permissions;
   await checkPermission(permissionService, "verify", "insurancePolicy")(req);
 
@@ -260,9 +258,9 @@ async const verifyPolicy = (req: NextRequest, policyId: string, existingPolicy: 
     },
     true,
           true,
-          mrn: true,,
+          mrn: true,
       true,
-          true,,
+          true,
       insuranceProvider: true,
       "desc",
         take: 5}});

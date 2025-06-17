@@ -1,8 +1,13 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/core/patient-management.service"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import patientManagementService }
+import { PatientCreateSchema
+import { type
+import { z }
 
-
-import { PatientCreateSchema, patientManagementService } from "@/lib/core/patient-management.service";
 }
 
 /**;
@@ -26,8 +31,35 @@ const SearchQuerySchema = z.object({
 /**;
  * GET /api/v2/patients - Search and list patients with enhanced features;
  */;
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -65,18 +97,43 @@ export const GET = async (request: NextRequest) => {
       },
       { status: 500 }
     );
-  }
-}
 
 /**;
  * POST /api/v2/patients - Create new patient with enhanced validation;
  */;
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const body = await request.json();
 
     // Validate patient data using enhanced schema;
@@ -102,7 +159,6 @@ export const POST = async (request: NextRequest) => {
           message: "Please check the provided patient information";
         },status: 400 ;
       );
-    }
 
     if (!session.user) {
       return NextResponse.json();
@@ -113,7 +169,6 @@ export const POST = async (request: NextRequest) => {
         { status: 409 }
       );
 
-
     return NextResponse.json();
       {
         success: false,
@@ -121,4 +176,3 @@ export const POST = async (request: NextRequest) => {
       },
       { status: 500 }
     );
-

@@ -1,5 +1,10 @@
+import "@prisma/client"
+import AmbulanceCrew
+import AmbulanceMaintenance
+import AmbulanceTrip }
+import type
+import { Ambulance
 
-import { Ambulance, AmbulanceCrew, AmbulanceMaintenance, type AmbulanceTrip } from "@prisma/client";
 // FHIR-compliant interfaces for Ambulance Management;
 
 /**;
@@ -46,7 +51,6 @@ import { Ambulance, AmbulanceCrew, AmbulanceMaintenance, type AmbulanceTrip } fr
     };
   }[];
 
-
 /**;
  * FHIR-compliant Ambulance Trip;
  * Maps to FHIR ServiceRequest resource;
@@ -87,7 +91,6 @@ import { Ambulance, AmbulanceCrew, AmbulanceMaintenance, type AmbulanceTrip } fr
     text: string;
   }[];
 
-
 /**;
  * FHIR-compliant Ambulance Crew;
  * Maps to FHIR Practitioner resource;
@@ -120,7 +123,6 @@ import { Ambulance, AmbulanceCrew, AmbulanceMaintenance, type AmbulanceTrip } fr
       end?: string;
     };
   }[];
-
 
 /**;
  * FHIR-compliant Ambulance Maintenance;
@@ -160,7 +162,6 @@ import { Ambulance, AmbulanceCrew, AmbulanceMaintenance, type AmbulanceTrip } fr
   note?: {
     text: string;
   }[];
-
 
 /**;
  * Convert database Ambulance to FHIR Device;
@@ -240,7 +241,6 @@ export const _toFHIRAmbulance = (ambulance: Ambulance & {
     ];
   };
 
-
 /**;
  * Convert database AmbulanceTrip to FHIR ServiceRequest;
  */;
@@ -291,7 +291,6 @@ export const _toFHIRAmbulanceTrip = (trip: AmbulanceTrip & {
       display: `Ambulance ${trip.ambulance.registrationNumber}`;
     });
 
-
   // Create location references;
   const locationReferences = [];
   if (!session.user) {
@@ -305,7 +304,6 @@ export const _toFHIRAmbulanceTrip = (trip: AmbulanceTrip & {
       reference: `Location/${trip.dropLocationId}`,
       display: trip.dropLocation?.name || "Destination Location";
     });
-
 
   return {
     resourceType: "ServiceRequest",
@@ -340,7 +338,6 @@ export const _toFHIRAmbulanceTrip = (trip: AmbulanceTrip & {
     authoredOn: trip.createdAt.toISOString(),
     note: trip.notes ? [{ text: trip.notes }] : undefined;
   };
-
 
 /**;
  * Convert database AmbulanceCrew to FHIR Practitioner;
@@ -390,8 +387,6 @@ export const _toFHIRAmbulanceCrew = (unknown;
 
     ] : undefined,
     qualification: [qualification];
-
-
 
 /**;
  * Convert database AmbulanceMaintenance to FHIR Task;

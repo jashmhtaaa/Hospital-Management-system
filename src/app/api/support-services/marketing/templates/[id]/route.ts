@@ -1,10 +1,16 @@
-import { getServerSession } from "next-auth";
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/auth"
+import "@/lib/middleware/error-handling.middleware"
+import "@/lib/services/support-services/marketing"
+import "next-auth"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { authOptions }
+import { getServerSession }
+import { TemplateService }
+import { type
+import { withErrorHandling }
 
-
-import { authOptions } from "@/lib/auth";
-import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
-import { TemplateService } from "@/lib/services/support-services/marketing";
 const templateService = new TemplateService();
 
 /**;
@@ -12,12 +18,12 @@ const templateService = new TemplateService();
  * Get a specific template by ID;
  */;
 export const GET = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   return withErrorHandling();
     request,
-    async (req: NextRequest) => {
+    async (req: any) => {
       const session = await getServerSession(authOptions);
 
       const template = await templateService.getTemplateById(params.id);
@@ -36,12 +42,12 @@ export const GET = async();
  * Update a specific template;
  */;
 export const PUT = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   return withErrorHandling();
     request,
-    async (req: NextRequest) => {
+    async (req: any) => {
       const session = await getServerSession(authOptions);
       const data = await req.json();
 
@@ -65,12 +71,12 @@ export const PUT = async();
  * Delete a specific template;
  */;
 export const DELETE = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   return withErrorHandling();
     request,
-    async (req: NextRequest) => {
+    async (req: any) => {
       const session = await getServerSession(authOptions);
 
       await templateService.deleteTemplate();

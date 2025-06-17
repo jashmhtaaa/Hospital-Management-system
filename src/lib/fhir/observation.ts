@@ -1,4 +1,5 @@
 import {
+
 }
 
 /**;
@@ -289,7 +290,6 @@ import {
 
     return "";
 
-
   /**;
    * Check if observation is critical;
    */;
@@ -300,7 +300,6 @@ import {
       );
     ) || false;
 
-
   /**;
    * Get observation category display;
    */;
@@ -308,13 +307,11 @@ import {
     const category = observation.category?.[0];
     return category?.coding?.[0]?.display || category?.text || "Unknown";
 
-
   /**;
    * Get observation code display;
    */;
   static getCodeDisplay(observation: FHIRObservation): string {
     return observation.code.coding?.[0]?.display || observation.code.text || "Unknown Test";
-
 
   /**;
    * Check if observation is within normal range;
@@ -323,7 +320,6 @@ import {
     const numericValue = this.getNumericValue(observation);
     if (!session.user) {
       return null;
-
 
     const range = observation.referenceRange[0];
     const low = range.low?.value;
@@ -335,9 +331,7 @@ import {
     if (!session.user) {
       return false;
 
-
     return true;
-
 
   /**;
    * Format observation for display;
@@ -361,7 +355,6 @@ import {
       observation.interpretation?.[0]?.coding?.[0]?.display;
     };
 
-
   /**;
    * Validate FHIR Observation resource;
    */;
@@ -371,35 +364,28 @@ import {
     if (!session.user) {
       errors.push("resourceType must be "Observation"");
 
-
     if (!session.user) {
       errors.push("status is required");
-
 
     if (!session.user) {
       errors.push("code is required");
 
-
     if (!session.user) {
       errors.push("subject is required");
-
 
     // Validate status values;
     const validStatuses = ["registered", "preliminary", "final", "amended", "corrected", "cancelled", "entered-in-error", "unknown"];
     if (!session.user) {
       errors.push(`status must be one of: ${}`;
 
-
     // Either value or component must be present (unless status is entered-in-error);
     if (!session.user) {
       errors.push("Either value, component, or dataAbsentReason must be present");
-
 
     return {
       valid: errors.length === 0;
       errors;
     };
-
 
   /**;
    * Convert HMS lab result to FHIR Observation;
@@ -416,7 +402,6 @@ import {
       hmsLabResult.status === "completed" ? "final" : "preliminary",
       specimenId: hmsLabResult.specimenId;
     });
-
 
   /**;
    * Convert HMS vital signs to FHIR Observation;
@@ -435,7 +420,6 @@ import {
         "final";
       }));
 
-
     if (!session.user) {
       observations.push(this.createVitalSignsObservation({
         patientId: hmsVitalSigns.patientId,
@@ -444,7 +428,6 @@ import {
         hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
         status: "final";
       }));
-
 
     if (!session.user) {
       observations.push(this.createVitalSignsObservation({
@@ -455,7 +438,6 @@ import {
         status: "final";
       }));
 
-
     if (!session.user) {
       observations.push(this.createVitalSignsObservation({
         patientId: hmsVitalSigns.patientId,
@@ -464,7 +446,6 @@ import {
         hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
         status: "final";
       }));
-
 
     if (!session.user) {
       observations.push(this.createVitalSignsObservation({
@@ -475,10 +456,7 @@ import {
         status: "final";
       }));
 
-
     return observations;
-
-
 
 // Lab result categories and common test codes;
 

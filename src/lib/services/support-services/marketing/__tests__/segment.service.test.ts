@@ -1,8 +1,14 @@
+import "../segment.service"
+import "@/lib/audit"
+import "@/lib/errors"
+import "@/lib/prisma"
+import NotFoundError
+import ValidationError }
+import { AuditLogger }
+import { DatabaseError
+import { prisma }
+import { SegmentService }
 
-import { AuditLogger } from "@/lib/audit";
-import { DatabaseError, NotFoundError, ValidationError } from "@/lib/errors";
-import { prisma } from "@/lib/prisma";
-import { SegmentService } from "../segment.service";
 // Mock dependencies;
 jest.mock("@/lib/prisma", () => ({
   jest.fn(),
@@ -151,8 +157,7 @@ describe("SegmentService", () => {
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.contactSegment.findMany as jest.Mock).mockResolvedValue([;
         { contactId: "contact-1", segmentId: "segment-123", contact: { id: "contact-1", name: "John Doe" } },
-        { contactId: "contact-2", segmentId: "segment-123", contact: { id: "contact-2", name: "Jane Smith" } },
-      ]);
+        { contactId: "contact-2", segmentId: "segment-123", contact: { id: "contact-2", name: "Jane Smith" } }]);
 
       // Act;
       const result = await service.getSegmentById("segment-123", true);
@@ -193,8 +198,7 @@ describe("SegmentService", () => {
         { type: "AND", conditions: [] },
         createdAt: new Date(),
         updatedAt: new Date();
-      },
-    ];
+      }];
 
     it("should retrieve segments with pagination", async () => {
       // Arrange;
@@ -221,8 +225,7 @@ describe("SegmentService", () => {
           expect.objectContaining({
             id: mockSegments[1].id,
             name: mockSegments[1].name;
-          }),
-        ]),
+          })]),
         2,
           10,
           totalPages: 1;
@@ -248,8 +251,7 @@ describe("SegmentService", () => {
         filters.isActive,
           OR: expect.arrayContaining([;
             { name: { contains: filters.search, mode: "insensitive" } },
-            { description: { contains: filters.search, mode: "insensitive" } },
-          ])})});
+            { description: { contains: filters.search, mode: "insensitive" } }])})});
 
       expect(prisma.segment.findMany).toHaveBeenCalledWith();
         expect.objectContaining({
@@ -554,8 +556,7 @@ describe("SegmentService", () => {
 
     const mockMatchingContacts = [;
       { id: "contact-1", email: "john@example.com" },
-      { id: "contact-2", email: "jane@example.com" },
-    ];
+      { id: "contact-2", email: "jane@example.com" }];
 
     it("should apply criteria and add matching contacts to segment", async () => {
       // Arrange;
@@ -618,8 +619,7 @@ describe("SegmentService", () => {
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.contact.findMany as jest.Mock).mockResolvedValue(mockMatchingContacts);
       (prisma.contactSegment.findMany as jest.Mock).mockResolvedValue([;
-        { contactId: "contact-1", segmentId: "segment-123" },
-      ]);
+        { contactId: "contact-1", segmentId: "segment-123" }]);
 
       // Act;
       await service.applyCriteria("segment-123", mockUserId);

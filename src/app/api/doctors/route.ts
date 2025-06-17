@@ -1,11 +1,16 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
+import "@opennextjs/cloudflare"
+import "iron-session"
+import "next/headers"
+import { cookies }
+import { getCloudflareContext }
+import { getIronSession }
 
 import { type IronSessionData, sessionOptions } from "@/lib/session"; // FIX: Added IronSessionData import;
 // import { User } from "@/types/user";
-import type { Doctor } from "@/types/doctor";
-import { z } from "zod";
+import "@/types/doctor"
+import "zod"
+import { Doctor }
+import { z }
 
 // Define roles allowed to view doctor lists (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Nurse", "Doctor", "Patient"];
@@ -27,6 +32,33 @@ export const _GET = async (request: Request) => {
   }
 
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -99,9 +131,36 @@ export const _POST = async (request: Request) => {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const body = await request.json();
         const validation = AddDoctorSchema.safeParse(body);
 
@@ -109,7 +168,6 @@ export const _POST = async (request: Request) => {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" }});
-        }
 
         const doctorData = validation.data;
 
@@ -126,7 +184,6 @@ export const _POST = async (request: Request) => {
              return new Response(JSON.stringify({ error: "User not found, inactive, or does not have the "Doctor" role" }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" }});
-        }
 
         // 3. Check if doctor record already exists for this user_id;
         const existingDoctor = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(doctorData.user_id).first();
@@ -134,7 +191,6 @@ export const _POST = async (request: Request) => {
              return new Response(JSON.stringify({ error: "Doctor profile already exists for this user" }), {
                 status: 409, // Conflict;
                 headers: { "Content-Type": "application/json" }});
-        }
 
         // 4. Insert new doctor record;
         const insertResult = await DB.prepare();
@@ -150,14 +206,12 @@ export const _POST = async (request: Request) => {
 
         if (!session.user) {
             throw new Error("Failed to add doctor profile");
-        }
 
         const meta = insertResult.meta as { last_row_id?: number | string };
         const newDoctorId = meta.last_row_id;
         if (!session.user) {
 
             throw new Error("Failed to retrieve doctor ID after creation.");
-        }
 
         // 5. Return success response;
         return new Response(JSON.stringify({ message: "Doctor profile added successfully", doctorId: newDoctorId }), {
@@ -172,5 +226,3 @@ export const _POST = async (request: Request) => {
         return new Response(JSON.stringify({ error: statusCode === 409 ? "Unique constraint violation (e.g., license number)" : "Internal Server Error", details: errorMessage }), {
             status: statusCode,
             headers: { "Content-Type": "application/json" }});
-
-

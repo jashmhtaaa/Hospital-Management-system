@@ -1,4 +1,8 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "next/server"
+import NextRequest
+import NextResponse }
+import { type
+
 // src/app/api/opd/appointments/route.ts;
 // import { getRequestContext } from "@cloudflare/next-on-pages"; // Import when ready to use D1;
 
@@ -97,8 +101,7 @@ async const getAppointmentsFromDB = (filters: AppointmentFilters) {
       "completed",
       "BP well controlled with current medication",
       created_at: "2025-04-24T11:20:00Z";
-    },
-  ];
+    }];
 
   return mockAppointments.filter((appointment) => {
     // Apply date range filter;
@@ -217,8 +220,7 @@ async const getAppointmentByIdFromDB = (id: number) {
       42,
         "+91-9876543211",
         medical_record_number: "MRN00102";
-      }},
-  ];
+      }}];
 
   return mockAppointments.find((appointment) => appointment.id === id) || undefined;
 }
@@ -252,8 +254,35 @@ async const updateAppointmentInDB = (;
  * GET /api/opd/appointments;
  * Retrieves a list of appointments, potentially filtered.;
  */;
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -306,18 +335,44 @@ export const GET = async (request: NextRequest) => {
       { status: 500 }
     );
   }
-}
 
 /**;
  * POST /api/opd/appointments;
  * Creates a new appointment.;
  */;
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const appointmentData = (await request.json()) as AppointmentCreateBody;
 
     // Basic validation (add more comprehensive validation);
@@ -327,7 +382,6 @@ export const POST = async (request: NextRequest) => {
           error: "Missing required fields (patient_id, doctor_id, appointment_date, appointment_type)"},
         { status: 400 }
       );
-    }
 
     // Simulate creating the appointment in the database;
     const newAppointment = await createAppointmentInDB(appointmentData);
@@ -343,17 +397,42 @@ export const POST = async (request: NextRequest) => {
       },
       { status: 500 }
     );
-  }
-
 
 /**;
  * PUT /api/opd/appointments/[id];
  * Updates an existing appointment.;
  */;
-export const PUT = async (request: NextRequest) => {
+export const PUT = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     const path = request.nextUrl.pathname;
@@ -364,7 +443,6 @@ export const PUT = async (request: NextRequest) => {
         { error: "Invalid appointment ID" },
         { status: 400 }
       );
-
 
     const updateData = (await request.json()) as AppointmentUpdateBody;
 
@@ -382,4 +460,3 @@ export const PUT = async (request: NextRequest) => {
       },
       { status: 500 }
     );
-

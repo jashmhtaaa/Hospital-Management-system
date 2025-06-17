@@ -1,10 +1,16 @@
-import { getServerSession } from "next-auth";
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/auth"
+import "@/lib/middleware/error-handling.middleware"
+import "@/lib/services/support-services/marketing"
+import "next-auth"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { authOptions }
+import { getServerSession }
+import { TemplateService }
+import { type
+import { withErrorHandling }
 
-
-import { authOptions } from "@/lib/auth";
-import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
-import { TemplateService } from "@/lib/services/support-services/marketing";
 const templateService = new TemplateService();
 
 /**;
@@ -12,12 +18,12 @@ const templateService = new TemplateService();
  * Render a template with variables;
  */;
 export const POST = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   return withErrorHandling();
     request,
-    async (req: NextRequest) => {
+    async (req: any) => {
       const _session = await getServerSession(authOptions);
       const { variables } = await req.json();
 

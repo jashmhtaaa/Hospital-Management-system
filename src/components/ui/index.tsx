@@ -1,6 +1,8 @@
-
 import { ChevronLeft, ChevronRight } from "lucide-react"; // Added import for icons;
-import React, { useEffect } from "react";
+import "react"
+import React
+import { useEffect }
+
 // UI components barrel file;
 // This file exports all UI components to make imports cleaner;
 
@@ -571,7 +573,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentPrope
           setOpen?.(false);
         }}
       >;
-<div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative";
+<div></div>;
           onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside content;
         >;
           {children}

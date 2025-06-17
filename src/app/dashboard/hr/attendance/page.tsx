@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import "react"
+import React
+import { useState }
+
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import "next/navigation"
+import "react"
+import useEffect }
 import {
+import { useRouter }
+import { useState
+
   Card,
   CardContent,
   CardDescription,
@@ -11,7 +18,12 @@ import {
   CardHeader,
   CardTitle;
 } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import "@/components/ui/tabs"
+import TabsContent
+import TabsList
+import TabsTrigger }
+import { Tabs
+
   Table,
   TableBody,
   TableCell,
@@ -19,8 +31,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
   TableHeader,
   TableRow;
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import "@/components/ui/button"
+import "@/components/ui/input"
+import { Button }
+import { Input }
+
   Select,
   SelectContent,
   SelectItem,
@@ -34,9 +49,15 @@ import { Input } from "@/components/ui/input";
   PaginationNext,
   PaginationPrevious;
 } from "@/components/ui/pagination";
-import { Badge } from "@/components/ui/badge";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import "@/components/ui/badge"
+import "@/components/ui/calendar"
+import "@/components/ui/popover"
+import PopoverContent
+import PopoverTrigger }
+import { Badge }
+import { Calendar }
+import { Popover
+
   Search,
   Calendar as CalendarIcon,
   Filter,
@@ -47,8 +68,14 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
   AlertCircle,
   FileText;
 } from "lucide-react";
-import { format, startOfMonth, endOfMonth, startOfDay, endOfDay } from "date-fns";
-import { toast } from "@/components/ui/use-toast";
+import "@/components/ui/use-toast"
+import "date-fns"
+import endOfDay }
+import endOfMonth
+import startOfDay
+import startOfMonth
+import { format
+import { toast }
 
 export default const _AttendanceManagement = () {
   const router = useRouter();
@@ -73,6 +100,33 @@ export default const _AttendanceManagement = () {
   useEffect(() => {
     const fetchAttendance = async () => {
       try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -106,7 +160,6 @@ export default const _AttendanceManagement = () {
 
         if (!session.user) {
           throw new Error("Failed to fetch attendance records");
-        }
 
         const data = await response.json(),
         setAttendanceRecords(data.records || []);
@@ -132,17 +185,43 @@ export default const _AttendanceManagement = () {
     const fetchDepartments = async () => {
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const response = await fetch("/api/hr/departments");
         if (!session.user) {
           const data = await response.json(),
           setDepartments(data.departments || []);
-        }
+
       } catch (err) {
 
-      }
     };
 
     fetchDepartments();
@@ -191,7 +270,34 @@ export default const _AttendanceManagement = () {
   const handleExport = async () => {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;

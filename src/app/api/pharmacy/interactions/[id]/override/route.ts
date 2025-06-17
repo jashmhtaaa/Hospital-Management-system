@@ -1,9 +1,14 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../../lib/audit"
+import "../../../../../lib/error-handler"
+import "../../../../../lib/validation/pharmacy-validation"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { errorHandler }
+import { type
+import { validateInteractionOverrideRequest }
 
-
-import { auditLog } from "../../../../../lib/audit";
-import { errorHandler } from "../../../../../lib/error-handler";
-import { validateInteractionOverrideRequest } from "../../../../../lib/validation/pharmacy-validation";
 }
 
 /**;
@@ -27,10 +32,37 @@ const interactionOverrideRepository = {
  * Override an interaction alert with documented reason;
  */;
 export const POST = async();
-  req: NextRequest;
+  req: any;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -95,23 +127,48 @@ export const POST = async();
   } catch (error) {
     return errorHandler(error, "Error recording interaction override");
   }
-}
 
 /**;
  * GET /api/pharmacy/interactions/overrides;
  * List interaction overrides with filtering options;
  */;
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -137,7 +194,6 @@ export const GET = async (req: NextRequest) => {
       filter.overriddenAt = {};
       if (!session.user)ilter.overriddenAt.gte = new Date(startDate);
       if (!session.user)ilter.overriddenAt.lte = new Date(endDate);
-    }
 
     // Get overrides (mock implementation);
     const overrides = []; // In production, query database with filter, pagination;
@@ -166,4 +222,3 @@ export const GET = async (req: NextRequest) => {
     }, { status: 200 });
   } catch (error) {
     return errorHandler(error, "Error retrieving interaction overrides");
-

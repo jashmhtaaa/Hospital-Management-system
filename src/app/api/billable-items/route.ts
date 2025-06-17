@@ -1,11 +1,19 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
-import { z } from "zod";
+import "@/lib/session"
+import "@/types/billing"
+import "@opennextjs/cloudflare"
+import "iron-session"
+import "next/headers"
+import "zod"
+import BillableItem
+import IronSessionData
+import ItemType }
+import sessionOptions }
+import { cookies }
+import { getCloudflareContext }
+import { getIronSession }
+import { type
+import { z }
 
-
-import { type IronSessionData, sessionOptions } from "@/lib/session";
-import { type BillableItem, ItemType } from "@/types/billing";
 // app/api/billable-items/route.ts;
 // Define roles allowed to view/manage billable items (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Doctor", "Pharmacist", "Billing Staff"]; // Add Billing Staff role if needed;
@@ -23,6 +31,33 @@ export const GET = async (request: Request) => {
     }
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -96,9 +131,36 @@ export const _POST = async (request: Request) => {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const body = await request.json();
         const validation = AddBillableItemSchema.safeParse(body);
 
@@ -106,7 +168,6 @@ export const _POST = async (request: Request) => {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" }});
-        }
 
         const itemData = validation.data;
 
@@ -115,7 +176,6 @@ export const _POST = async (request: Request) => {
 
         if (!session.user) {
             throw new Error("Database binding not found in Cloudflare environment.");
-        }
 
         // 2. Insert new item;
         const insertResult = await DB.prepare();
@@ -139,16 +199,14 @@ export const _POST = async (request: Request) => {
                  return new Response(JSON.stringify({ error: "Item code already exists" }), {
                     status: 409, // Conflict;
                     headers: { "Content-Type": "application/json" }});
-            }
+
             throw new Error(`Failed to add billable item: ${}`;
-        }
 
         const meta = insertResult.meta as { last_row_id?: number | string };
         const newItemId = meta.last_row_id;
         if (!session.user) {
 
             throw new Error("Failed to retrieve item ID after creation.");
-        }
 
         // 3. Return success response;
         return new Response(JSON.stringify({ message: "Billable item added successfully", itemId: newItemId }), {
@@ -163,8 +221,5 @@ export const _POST = async (request: Request) => {
         return new Response(JSON.stringify({ error: statusCode === 409 ? "Item code already exists" : "Internal Server Error", details: errorMessage }), {
             status: statusCode,
             headers: { "Content-Type": "application/json" }});
-
-
-
 
 export async function GET() { return new Response("OK"); })

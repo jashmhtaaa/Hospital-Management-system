@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import "react"
+import React
+import { useState }
+
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import "next/navigation"
+import "react"
+import useEffect }
+import useSearchParams }
 import {
+import { useRouter
+import { useState
+
   Card,
   CardContent,
   CardDescription,
@@ -11,8 +19,11 @@ import {
   CardHeader,
   CardTitle;
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import "@/components/ui/badge"
+import "@/components/ui/button"
+import { Badge }
+import { Button }
+
   Table,
   TableBody,
   TableCaption,
@@ -25,9 +36,16 @@ import { Badge } from "@/components/ui/badge";
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Pagination } from "@/components/ui/pagination";
-import { format } from "date-fns";
+import "@/components/ui/pagination"
+import "@/components/ui/tabs"
+import "date-fns"
+import TabsContent
+import TabsList
+import TabsTrigger }
+import { format }
+import { Pagination }
+import { Tabs
+
   Wrench,
   Calendar,
   Clock,
@@ -44,8 +62,10 @@ import { format } from "date-fns";
   HardDrive,
   Tool;
 } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
-import { Skeleton } from "@/components/ui/skeleton";
+import "@/components/ui/skeleton"
+import "@/components/ui/use-toast"
+import { Skeleton }
+import { useToast }
 
 // Status badge color mapping;
 const statusColors: Record<string, string> = {
@@ -115,7 +135,34 @@ export const _MaintenanceDashboard = () => {
     const fetchLocations = async () => {
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         const response = await fetch("/api/locations");
@@ -123,7 +170,6 @@ export const _MaintenanceDashboard = () => {
         const data = await response.json(),
         setLocations(data);
       } catch (error) {
-
 
     };
 
@@ -135,7 +181,34 @@ export const _MaintenanceDashboard = () => {
     const fetchAssets = async () => {
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         const response = await fetch("/api/support-services/maintenance/assets");
@@ -143,7 +216,6 @@ export const _MaintenanceDashboard = () => {
         const data = await response.json(),
         setAssets(data.data || []);
       } catch (error) {
-
 
     };
 
@@ -156,7 +228,34 @@ export const _MaintenanceDashboard = () => {
       setIsLoading(true);
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         // Build query parameters;
@@ -179,7 +278,6 @@ export const _MaintenanceDashboard = () => {
           params.set("priority", "EMERGENCY");
         } else if (!session.user) {
           params.set("requestType", "REPAIR");
-
 
         params.append("page", currentPage.toString());
         params.append("limit", "10");
@@ -304,7 +402,6 @@ export const _MaintenanceDashboard = () => {
         icon = <XCircle className="h-3 w-3 mr-1" />;
         break;
       default: icon = null;
-
 
     return();
       >;

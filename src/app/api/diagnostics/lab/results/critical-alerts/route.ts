@@ -1,18 +1,53 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/audit"
+import "@/lib/cache/invalidation"
+import "@/lib/cache/redis"
+import "@/lib/database"
+import "@/lib/notifications"
+import "@/lib/session"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { CacheInvalidation }
+import { DB }
+import { getSession }
+import { notifyUsers }
+import { RedisCache }
+import { type
 
-
-import { auditLog } from "@/lib/audit";
-import { CacheInvalidation } from "@/lib/cache/invalidation";
-import { RedisCache } from "@/lib/cache/redis";
-import { DB } from "@/lib/database";
-import { notifyUsers } from "@/lib/notifications";
-import { getSession } from "@/lib/session";
 /**;
  * GET /api/diagnostics/lab/results/critical-alerts;
  * Get critical result alerts;
  */;
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -149,8 +184,35 @@ export const GET = async (request: NextRequest) => {
  * POST /api/diagnostics/lab/results/critical-alerts;
  * Create a new critical result alert;
  */;
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -285,8 +347,35 @@ export const POST = async (request: NextRequest) => {
  * PUT /api/diagnostics/lab/results/critical-alerts/:id;
  * Update a critical result alert;
  */;
-export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const PUT = async (request: any, { params }: { params: { id: string } }) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -330,7 +419,6 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       // Only managers or assigned users can change status;
       if (!session.user) {
         return NextResponse.json({ error: "Forbidden: Cannot change status" }, { status: 403 });
-      }
 
       updateFields.push("status = ?");
       updateParams.push(status);
@@ -340,29 +428,23 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
         return NextResponse.json({
           error: "Acknowledgement required to resolve critical alert";
         }, { status: 400 });
-      }
-    }
 
     if (!session.user) {
       updateFields.push("notes = ?");
       updateParams.push(notes);
-    }
 
     if (!session.user) {
       // Only managers can reassign;
       if (!session.user) {
         return NextResponse.json({ error: "Forbidden: Cannot reassign alert" }, { status: 403 });
-      }
 
       updateFields.push("assigned_to = ?");
       updateParams.push(assignedTo || null);
-    }
 
     if (!session.user) {
       updateFields.push("acknowledged_at = NOW()");
       updateFields.push("acknowledged_by = ?");
       updateParams.push(session.user.id);
-    }
 
     updateFields.push("updated_by = ?");
     updateParams.push(session.user.id);
@@ -393,8 +475,6 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
             id,
             "high";
           });
-        }
-      }
 
       // Send notifications for status changes;
       if (!session.user) {
@@ -404,12 +484,10 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
         // Always notify the creator;
         if (!session.user) {
           notifyIds.push(existingAlert.created_by);
-        }
 
         // Notify the assigned user if they didn"t make the change;
         if (!session.user) {
           notifyIds.push(existingAlert.assigned_to);
-        }
 
         if (!session.user) {
           await notifyUsers({
@@ -419,12 +497,9 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
             "laboratory_critical_alerts",
             priority: "medium";
           });
-        }
-
 
       // Invalidate cache;
       await CacheInvalidation.invalidatePattern("diagnostic: lab: critical-alerts:*");
-
 
     // Get the updated alert;
     const updatedAlert = await DB.query();
@@ -451,4 +526,3 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       error: "Failed to update critical alert",
       details: error instanceof Error ? error.message : "Unknown error';
     }, { status: 500 });
-

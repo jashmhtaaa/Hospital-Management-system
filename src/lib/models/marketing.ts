@@ -24,54 +24,29 @@
 // Contact Model (for marketing purposes);
 }
 
-
 // Contact Note Model;
-
-
 
 // Marketing Activity Model;
 
-
-
 // Contact Segment Model;
-
-
 
 // Segment Member Model;
 
-
-
 // Campaign Segment Model (Many-to-Many);
-
-
 
 // Lead Model;
 
-
-
 // Lead Activity Model;
-
-
 
 // Campaign Analytics Model;
 
-
-
 // Marketing Template Model;
-
-
 
 // Marketing Event Model;
 
-
-
 // Event Registration Model;
 
-
-
 // User interface (partial, only for marketing relations);
-
-
 
 // Campaign Status enum;
 export enum CampaignStatus {
@@ -81,7 +56,6 @@ export enum CampaignStatus {
   PAUSED = "PAUSED",
   COMPLETED = "COMPLETED",
   CANCELLED = "CANCELLED",
-
 
 // Campaign Type enum;
 export enum CampaignType {
@@ -93,7 +67,6 @@ export enum CampaignType {
   DIGITAL_AD = "DIGITAL_AD",
   OTHER = "OTHER",
 
-
 // Channel Type enum;
 export enum ChannelType {
   EMAIL = "EMAIL",
@@ -104,14 +77,12 @@ export enum ChannelType {
   DIGITAL_AD = "DIGITAL_AD",
   OTHER = "OTHER",
 
-
 // Message Status enum;
 export enum MessageStatus {
   DRAFT = "DRAFT",
   SCHEDULED = "SCHEDULED",
   SENT = "SENT",
   FAILED = "FAILED",
-
 
 // Interaction Type enum;
 export enum InteractionType {
@@ -121,14 +92,12 @@ export enum InteractionType {
   UNSUBSCRIBE = "UNSUBSCRIBE",
   BOUNCE = "BOUNCE",
 
-
 // Contact Status enum;
 export enum ContactStatus {
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
   UNSUBSCRIBED = "UNSUBSCRIBED",
   BOUNCED = "BOUNCED",
-
 
 // Lead Status enum;
 export enum LeadStatus {
@@ -137,7 +106,6 @@ export enum LeadStatus {
   QUALIFIED = "QUALIFIED",
   CONVERTED = "CONVERTED",
   LOST = "LOST",
-
 
 // Lead Source enum;
 export enum LeadSource {
@@ -148,7 +116,6 @@ export enum LeadSource {
   SOCIAL_MEDIA = "SOCIAL_MEDIA",
   OTHER = "OTHER",
 
-
 // Event Status enum;
 export enum EventStatus {
   PLANNED = "PLANNED",
@@ -157,7 +124,6 @@ export enum EventStatus {
   ONGOING = "ONGOING",
   COMPLETED = "COMPLETED",
   CANCELLED = "CANCELLED",
-
 
 // Registration Status enum;
 export enum RegistrationStatus {

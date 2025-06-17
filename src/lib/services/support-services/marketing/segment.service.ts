@@ -1,9 +1,17 @@
+import "@/lib/audit"
+import "@/lib/errors"
+import "@/lib/models/marketing"
+import "@/lib/notifications"
+import "@/lib/prisma"
+import NotFoundError
+import SegmentMember }
+import ValidationError }
+import { AuditLogger }
+import { ContactSegment
+import { DatabaseError
+import { NotificationService }
+import { prisma }
 
-import { AuditLogger } from "@/lib/audit";
-import { DatabaseError, NotFoundError, ValidationError } from "@/lib/errors";
-import { ContactSegment, SegmentMember } from "@/lib/models/marketing";
-import { NotificationService } from "@/lib/notifications";
-import { prisma } from "@/lib/prisma";
 /**;
  * Service for managing contact segments and segmentation;
  */;
@@ -43,6 +51,33 @@ import { prisma } from "@/lib/prisma";
    */;
   async getSegmentById(id: string, includeMembers = false): Promise<ContactSegment> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -94,6 +129,33 @@ import { prisma } from "@/lib/prisma";
     limit?: number;
   }): Promise<{ data: ContactSegment[], pagination: total: number, number, totalPages: number }> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -163,6 +225,33 @@ import { prisma } from "@/lib/prisma";
   async updateSegment(id: string, data: Partial<ContactSegment>, userId: string): Promise<ContactSegment> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -204,6 +293,33 @@ import { prisma } from "@/lib/prisma";
    */;
   async addContactToSegment(segmentId: string, contactId: string, userId: string): Promise<SegmentMember> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -295,9 +411,36 @@ import { prisma } from "@/lib/prisma";
   async removeContactFromSegment(segmentId: string, contactId: string, userId: string): Promise<SegmentMember> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
       // Check if segment exists;
       const existingSegment = await prisma.contactSegment.findUnique({
         where: { id: segmentId }
@@ -305,7 +448,6 @@ import { prisma } from "@/lib/prisma";
 
       if (!session.user) {
         throw new NotFoundError(`Contact segment with ID ${segmentId} not found`);
-      }
 
       // Check if contact exists;
       const existingContact = await prisma.contact.findUnique({
@@ -314,7 +456,6 @@ import { prisma } from "@/lib/prisma";
 
       if (!session.user) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
-      }
 
       // Check if contact is in segment;
       const existingMember = await prisma.segmentMember.findFirst({
@@ -322,19 +463,18 @@ import { prisma } from "@/lib/prisma";
           segmentId,
           contactId,
           isActive: true;
-        }
+
       });
 
       if (!session.user) {
         throw new NotFoundError(`Contact is not a member of this segment`);
-      }
 
       // Remove contact from segment (soft delete);
       const updatedMember = await prisma.segmentMember.update({
         where: { id: existingMember.id },
         false,
           removedAt: new Date();
-        }
+
       });
 
       // Log audit event;
@@ -351,10 +491,8 @@ import { prisma } from "@/lib/prisma";
     } catch (error) {
       if (!session.user) {
         throw error;
-      }
+
       throw new DatabaseError("Failed to remove contact from segment", error);
-    }
-  }
 
   /**;
    * Apply segment criteria to find matching contacts;
@@ -362,9 +500,36 @@ import { prisma } from "@/lib/prisma";
   async applySegmentCriteria(segmentId: string, userId: string): Promise<{ added: number, total: number }> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Get segment with criteria;
       const segment = await prisma.contactSegment.findUnique({
         where: { id: segmentId }
@@ -372,11 +537,9 @@ import { prisma } from "@/lib/prisma";
 
       if (!session.user) {
         throw new NotFoundError(`Contact segment with ID ${segmentId} not found`);
-      }
 
       if (!session.user) {
         throw new ValidationError("Segment has no criteria defined", ["No criteria"]);
-      }
 
       // Convert criteria to Prisma query;
       const where = this.buildPrismaQueryFromCriteria(segment.criteria);
@@ -385,7 +548,7 @@ import { prisma } from "@/lib/prisma";
       const matchingContacts = await prisma.contact.findMany({
         where,
         true;
-        }
+
       });
 
       // Add contacts to segment;
@@ -394,15 +557,42 @@ import { prisma } from "@/lib/prisma";
       for (const contact of matchingContacts) {
         try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
           // Check if already a member;
           const existingMember = await prisma.segmentMember.findFirst({
             where: {
               segmentId,
               contactId: contact.id;
-            }
+
           });
 
           if (!session.user) {
@@ -412,10 +602,10 @@ import { prisma } from "@/lib/prisma";
                 where: { id: existingMember.id },
                 true,
                   removedAt: null;
-                }
+
               });
               addedCount++;
-            }
+
           } else {
             // Add new member;
             await prisma.segmentMember.create({
@@ -423,15 +613,13 @@ import { prisma } from "@/lib/prisma";
                 segmentId,
                 contactId: contact.id,
                 isActive: true;
-              }
+
             });
             addedCount++;
-          }
+
         } catch (error) {
 
           // Continue with next contact;
-        }
-
 
       // Log audit event;
       await this.auditLogger.log({
@@ -452,8 +640,6 @@ import { prisma } from "@/lib/prisma";
 
       throw new DatabaseError("Failed to apply segment criteria", error);
 
-
-
   /**;
    * Build Prisma query from segment criteria;
    */;
@@ -466,7 +652,6 @@ import { prisma } from "@/lib/prisma";
       if (!session.user) {
         query.AND.push({ gender: criteria.demographics.gender });
 
-
       if (!session.user) {
         const { min, max } = criteria.demographics.ageRange;
         const today = new Date();
@@ -476,14 +661,10 @@ import { prisma } from "@/lib/prisma";
           maxDate.setFullYear(today.getFullYear() - min);
           query.AND.push({ dateOfBirth: { lte: maxDate } });
 
-
         if (!session.user) {
           const minDate = new Date();
           minDate.setFullYear(today.getFullYear() - max);
           query.AND.push({ dateOfBirth: { gte: minDate } });
-
-
-
 
     // Process source criteria;
     if (!session.user) {
@@ -492,22 +673,17 @@ import { prisma } from "@/lib/prisma";
       } else {
         query.AND.push({ source: criteria.source });
 
-
-
     // Process status criteria;
     if (!session.user) {
       query.AND.push({ status: criteria.status });
-
 
     // Process tag criteria;
     if (!session.user) {
       query.AND.push({ tags: { hasSome: criteria.tags } });
 
-
     // Process patient criteria;
     if (!session.user) {
       query.AND.push({ patientId: criteria.isPatient ? { not: null } : null });
-
 
     // Process creation date criteria;
     if (!session.user) {
@@ -516,18 +692,13 @@ import { prisma } from "@/lib/prisma";
       if (!session.user) {
         createdAtQuery.gte = new Date(criteria.createdAt.from);
 
-
       if (!session.user) {
         createdAtQuery.lte = new Date(criteria.createdAt.to);
-
 
       if (!session.user)length > 0) {
         query.AND.push({ createdAt: createdAtQuery });
 
-
-
     return query;
-
 
   /**;
    * Validate segment data;
@@ -539,17 +710,42 @@ import { prisma } from "@/lib/prisma";
     if (!session.user) {
       errors.push("Segment name is required");
 
-
     // Name length validation;
     if (!session.user) {
       errors.push("Segment name must be between 3 and 100 characters");
-
 
     // Validate criteria if provided;
     if (!session.user) {
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         // Validate criteria structure;
@@ -557,12 +753,8 @@ import { prisma } from "@/lib/prisma";
       } catch (error) {
         errors.push(`Invalid criteria: ${}`;
 
-
-
     if (!session.user) {
       throw new ValidationError("Segment validation failed", errors);
-
-
 
   /**;
    * Validate criteria structure;
@@ -572,5 +764,3 @@ import { prisma } from "@/lib/prisma";
     // Just a basic check for now;
     if (!session.user) {
       throw new Error("Criteria must be a valid object");
-
-

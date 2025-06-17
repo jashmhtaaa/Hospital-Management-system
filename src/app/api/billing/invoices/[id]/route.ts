@@ -1,17 +1,26 @@
+import "@/lib/prisma"
+import "next/server"
+import "zod"
 import {
-import { NextRequest } from "next/server";
-import { z } from "zod";
+import { NextRequest }
+import { prisma }
+import { z }
 
-import { prisma } from "@/lib/prisma";
   withErrorHandling,
   validateBody,
   checkPermission,
   createSuccessResponse;
 } from "@/lib/core/middleware";
-import { ValidationError, NotFoundError } from "@/lib/core/errors";
-import { invoiceStatusSchema, moneySchema } from "@/lib/core/validation";
-import { convertToFHIRInvoice } from "@/lib/core/fhir";
-import { logger } from "@/lib/core/logging";
+import "@/lib/core/errors"
+import "@/lib/core/fhir"
+import "@/lib/core/logging"
+import "@/lib/core/validation"
+import moneySchema }
+import NotFoundError }
+import { convertToFHIRInvoice }
+import { invoiceStatusSchema
+import { logger }
+import { ValidationError
 
 // Schema for invoice update;
 const updateInvoiceSchema = z.object({
@@ -47,7 +56,7 @@ const cancelInvoiceSchema = z.object({
 });
 
 // GET handler for retrieving a specific invoice;
-export const _GET = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET = withErrorHandling(async (req: any, { params }: { params: { id: string } }) => {
   // Check permissions;
   await checkPermission(permissionService, "read", "invoice")(req);
 
@@ -82,7 +91,7 @@ export const _GET = withErrorHandling(async (req: NextRequest, { params }: { par
 });
 
 // PUT handler for updating an invoice;
-export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
+export const _PUT = withErrorHandling(async (req: any, { params }: { params: { id: string } }) => {
   // Validate request body;
   const data = await validateBody(updateInvoiceSchema)(req);
 
@@ -97,7 +106,6 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
   if (!session.user) {
     throw new NotFoundError(`Invoice with ID ${params.id} not found`);
 
-
   // Check if invoice can be updated (only draft invoices can be updated);
   if (!session.user) {
     throw new ValidationError();
@@ -105,7 +113,6 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
       "INVOICE_UPDATE_FORBIDDEN",
       { currentStatus: existingInvoice.status }
     );
-
 
   // Prepare update data;
   const updateData: unknown = {};
@@ -160,7 +167,6 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
     updateData.netAmount = totalAmount;
     updateData.outstandingAmount = totalAmount - (existingInvoice.paidAmount || 0);
 
-
   // Update invoice;
   const updatedInvoice = await prisma.bill.update({
     where: { id: params.id },
@@ -178,7 +184,7 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
 });
 
 // DELETE handler for deleting an invoice;
-export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
+export const _DELETE = withErrorHandling(async (req: any, { params }: { params: { id: string } }) => {
   // Check permissions;
   await checkPermission(permissionService, "delete", "invoice")(req);
 
@@ -189,7 +195,6 @@ export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { 
   if (!session.user) {
     throw new NotFoundError(`Invoice with ID ${params.id} not found`);
 
-
   // Check if invoice can be deleted (only draft invoices can be deleted);
   if (!session.user) {
     throw new ValidationError();
@@ -197,7 +202,6 @@ export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { 
       "INVOICE_DELETE_FORBIDDEN",
       { currentStatus: existingInvoice.status }
     );
-
 
   // Delete invoice items first;
   await prisma.billItem.deleteMany({
@@ -213,7 +217,7 @@ export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { 
 });
 
 // PATCH handler for invoice operations (verify, approve, cancel);
-export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
+export const _PATCH = withErrorHandling(async (req: any, { params }: { params: { id: string } }) => {
   // Get operation from query parameters;
   const url = new URL(req.url);
   const operation = url.searchParams.get("operation");
@@ -221,14 +225,12 @@ export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { p
   if (!session.user) {
     throw new ValidationError("Operation parameter is required", "MISSING_OPERATION");
 
-
   // Retrieve existing invoice;
   const existingInvoice = await prisma.bill.findUnique({
     where: { id: params.id }});
 
   if (!session.user) {
     throw new NotFoundError(`Invoice with ID ${params.id} not found`);
-
 
   // Handle different operations;
   switch (operation) {
@@ -242,7 +244,7 @@ export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { p
       throw new ValidationError(`Unknown operation: ${operation}`, "INVALID_OPERATION")});
 
 // Helper function to verify an invoice;
-async const verifyInvoice = (req: NextRequest, invoiceId: string, existingInvoice: unknown) {
+async const verifyInvoice = (req: any, invoiceId: string, existingInvoice: unknown) {
   // Check permissions;
   await checkPermission(permissionService, "verify", "invoice")(req);
 
@@ -256,7 +258,6 @@ async const verifyInvoice = (req: NextRequest, invoiceId: string, existingInvoic
       "INVOICE_VERIFY_FORBIDDEN",
       { currentStatus: existingInvoice.status }
     );
-
 
   // Update invoice;
   const updatedInvoice = await prisma.bill.update({
@@ -276,9 +277,8 @@ async const verifyInvoice = (req: NextRequest, invoiceId: string, existingInvoic
 
   return createSuccessResponse(updatedInvoice);
 
-
 // Helper function to approve an invoice;
-async const approveInvoice = (req: NextRequest, invoiceId: string, existingInvoice: unknown) {
+async const approveInvoice = (req: any, invoiceId: string, existingInvoice: unknown) {
   // Check permissions;
   await checkPermission(permissionService, "approve", "invoice")(req);
 
@@ -292,7 +292,6 @@ async const approveInvoice = (req: NextRequest, invoiceId: string, existingInvoi
       "INVOICE_APPROVE_FORBIDDEN",
       { currentStatus: existingInvoice.status }
     );
-
 
   // Update invoice;
   const updatedInvoice = await prisma.bill.update({
@@ -312,9 +311,8 @@ async const approveInvoice = (req: NextRequest, invoiceId: string, existingInvoi
 
   return createSuccessResponse(updatedInvoice);
 
-
 // Helper function to cancel an invoice;
-async const cancelInvoice = (req: NextRequest, invoiceId: string, existingInvoice: unknown) {
+async const cancelInvoice = (req: any, invoiceId: string, existingInvoice: unknown) {
   // Check permissions;
   await checkPermission(permissionService, "cancel", "invoice")(req);
 
@@ -328,7 +326,6 @@ async const cancelInvoice = (req: NextRequest, invoiceId: string, existingInvoic
       "INVOICE_CANCEL_FORBIDDEN",
       { currentStatus: existingInvoice.status }
     );
-
 
   // Update invoice;
   const updatedInvoice = await prisma.bill.update({

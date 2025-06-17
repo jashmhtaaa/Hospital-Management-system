@@ -1,6 +1,10 @@
+import "next/image"
+import "react"
+import Image
+import React
+import useEffect }
+import { useState
 
-import Image from "next/image";
-import React, { useState, useEffect } from "react";
 }
 
 "use client";
@@ -36,6 +40,33 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
 
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -48,16 +79,42 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
           const errorMessage = "Failed to fetch statistics";
           try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
             const errorData: ApiErrorResponse = await response.json(),
             errorMessage = errorData.error || errorMessage;
           } catch {
             /* Ignore */;
-          }
+
           throw new Error(errorMessage);
-        }
 
         // FIX: Type the response data;
         const data: StatisticsApiResponse = await response.json();
@@ -67,7 +124,7 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
         } else {
 
           setStatistics(undefined); // Set to null or handle appropriately;
-        }
+
       } catch (error_: unknown) {
         // FIX: Use unknown;
         const messageText =;
@@ -78,7 +135,7 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
 
       } finally {
         setLoading(false);
-      }
+
     };
 
     fetchStatistics();
@@ -86,11 +143,9 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
 
   if (!session.user) {
     return <div className="text-center p-4">Loading statistics...>;
-  }
 
   if (!session.user) {
     return <div className="text-red-500 p-4">Error: {error}>;
-
 
   if (!session.user) {
     return();
@@ -98,7 +153,6 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
         No statistics available for this date.;
       </div>;
     );
-
 
   return();
 >;
@@ -179,9 +233,7 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
               <span>{doctor.patientsServed} patients</span>;
             </div>;
             >;
-<div className="h-1.5 bg-blue-500 rounded-full";
-                // FIX: Ensure divisor is not zero if doctorPerformance can be empty;
-                style={{
+<div></div>;
                   width: `${Math.min(100, (doctor.patientsServed / Math.max(...statistics.doctorPerformance.map((d) => d.patientsServed), 1)) * 100)}%`}}
               ></div>;
             </div>;

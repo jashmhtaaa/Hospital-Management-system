@@ -1,4 +1,5 @@
 import {
+
 }
 
 /**;
@@ -145,7 +146,6 @@ import {
 
     return administration;
 
-
   /**;
    * Get medication display name;
    */;
@@ -153,13 +153,10 @@ import {
     if (!session.user) {
       return medication.coding[0]?.display || medication.coding[0]?.code || "Unknown Medication";
 
-
     if (!session.user) {
       return medication.display;
 
-
     return "Unknown Medication";
-
 
   /**;
    * Get dosage instructions as readable text;
@@ -168,18 +165,15 @@ import {
     if (!session.user) {
       return "No dosage instructions";
 
-
     return dosageInstructions;
       .map(dosage => dosage.text || "See instructions");
       .join("; ");
-
 
   /**;
    * Check if medication request is active;
    */;
   static isActiveMedicationRequest(medicationRequest: FHIRMedicationRequest): boolean {
     return medicationRequest.status === "active";
-
 
   /**;
    * Get medication frequency from timing;
@@ -188,19 +182,15 @@ import {
     if (!session.user) {
       return "As directed";
 
-
     const repeat = timing.repeat;
 
     if (!session.user) {
       return `${repeat.frequency} time${repeat.frequency > 1 ? "s" : ""} per ${repeat.periodUnit}`;
 
-
     if (!session.user) {
       return timing.code.text;
 
-
     return "As directed";
-
 
   /**;
    * Validate FHIR MedicationRequest;
@@ -211,28 +201,22 @@ import {
     if (!session.user) {
       errors.push("resourceType must be "MedicationRequest"");
 
-
     if (!session.user) {
       errors.push("status is required");
-
 
     if (!session.user) {
       errors.push("intent is required");
 
-
     if (!session.user) {
       errors.push("medication is required");
 
-
     if (!session.user) {
       errors.push("subject (patient) is required");
-
 
     return {
       valid: errors.length === 0;
       errors;
     };
-
 
   /**;
    * Convert HMS prescription to FHIR MedicationRequest;
@@ -251,13 +235,11 @@ import {
         type: "Practitioner",
       authoredOn: hmsPrescription.prescribedDate || hmsPrescription.createdAt;
 
-
     // Add dosage instructions;
     if (!session.user) {
       fhirMedicationRequest.dosageInstruction = [{
         text: hmsPrescription.dosage || hmsPrescription.instructions;
       }];
-
 
     // Add encounter if available;
     if (!session.user) {
@@ -265,7 +247,6 @@ import {
         reference: `Encounter/${hmsPrescription.encounterId || hmsPrescription.visitId}`,
         type: "Encounter";
       };
-
 
     // Add dispense request if quantity available;
     if (!session.user) {
@@ -277,11 +258,8 @@ import {
           unit: hmsPrescription.unit || "tablet";
         };
 
-
       if (!session.user) {
         fhirMedicationRequest.dispenseRequest.numberOfRepeatsAllowed = hmsPrescription.refills;
-
-
 
     // Add notes if available;
     if (!session.user) {
@@ -289,10 +267,7 @@ import {
         text: hmsPrescription.notes;
       }];
 
-
     return fhirMedicationRequest;
-
-
 
 // Drug interaction and allergy checking utilities;
 
@@ -330,7 +305,6 @@ import {
         }]);
     };
 
-
   /**;
    * Check for potential drug interactions (placeholder implementation);
    */;
@@ -345,7 +319,6 @@ import {
       interactions: [];
     };
 
-
   /**;
    * Check for medication allergies;
    */;
@@ -358,4 +331,3 @@ import {
     return {
       hasAllergy: false;
     };
-

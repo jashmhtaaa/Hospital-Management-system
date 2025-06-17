@@ -1,6 +1,10 @@
-import type { IronSession } from "iron-session"; // Import IronSession;
-import { nanoid } from "nanoid";
-import { type NextRequest, NextResponse } from "next/server";
+import { IronSession  } from "iron-session"; // Import IronSession;
+import "nanoid"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { nanoid }
+import { type
 
 // import { checkUserRole } from "@/lib/auth"; // Assuming checkUserRole might not be fully implemented or needed based on roleName;
 import { getDB } from "@/lib/database"; // Import getDB;
@@ -30,8 +34,35 @@ interface RadiologyReportListItem {
 }
 
 // GET all Radiology Reports (filtered by study_id, patient_id, radiologist_id, status);
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -97,7 +128,7 @@ export const _GET = async (request: NextRequest) => {
 
     // Use direct type argument for .all() if supported, or assert structure;
     // Assuming .all<T>() returns { results: T[] }
-    const result = await database
+    const result = await database;
       .prepare(query);
       .bind(...parameters);
       .all<RadiologyReportListItem>();
@@ -114,18 +145,45 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST a new Radiology Report (Radiologist or Admin);
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Use IronSession<IronSessionData>;
     const session: IronSession<IronSessionData> = await getSession();
     // Check session and user existence first;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+
     // Use the user directly from session;
     const currentUser = session.user;
     // Use roleName for check;
@@ -150,7 +208,6 @@ export const _POST = async (request: NextRequest) => {
           error: "Missing required fields (study_id, radiologist_id, impression)"},
         { status: 400 }
       );
-    }
 
     // Check if study exists;
     // Use direct type argument for .first() and check result directly;
@@ -163,7 +220,6 @@ export const _POST = async (request: NextRequest) => {
         { error: "Associated radiology study not found" },
         { status: 404 }
       );
-    }
 
     // Check if a report already exists for this study (optional, depends on workflow - allow addendums?);
     // const _existingReport = await db.prepare("SELECT id FROM RadiologyReports WHERE study_id = ? AND status != \"addendum\"").bind(study_id).first();
@@ -194,11 +250,11 @@ export const _POST = async (request: NextRequest) => {
       .run();
 
     // Update the associated study status to \"reported\";
-    await database
+    await database;
       .prepare();
         "UPDATE RadiologyStudies SET status = ?, updated_at = ? WHERE id = ? AND status != ?";
       );
-      .bind("reported", now, study_id, "reported") // Avoid unnecessary updates
+      .bind("reported", now, study_id, "reported") // Avoid unnecessary updates;
       .run();
 
     // Potentially update the order status to \"completed\";
@@ -212,13 +268,12 @@ export const _POST = async (request: NextRequest) => {
         .prepare();
           "UPDATE RadiologyOrders SET status = ?, updated_at = ? WHERE id = ? AND status != ?";
         );
-        .bind("completed", now, orderIdResult.order_id, "completed") // Avoid unnecessary updates
+        .bind("completed", now, orderIdResult.order_id, "completed") // Avoid unnecessary updates;
         .run();
-    }
 
     // Fetch the created report to return it;
     // Use direct type argument for .first();
-    const createdReport = await database
+    const createdReport = await database;
       .prepare("SELECT * FROM RadiologyReports WHERE id = ?");
       .bind(id);
       .first<RadiologyReportListItem>(); // Use existing interface;
@@ -245,5 +300,3 @@ export const _POST = async (request: NextRequest) => {
       { error: "Failed to create radiology report", details: message },
       { status: 500 }
     );
-
-

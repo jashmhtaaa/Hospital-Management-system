@@ -3,8 +3,12 @@ import { getDB } from "@/lib/database"; // Import getDB;
 import { getSession } from "@/lib/session"; // Import Session type;
 // Remove D1Database import if using getDB;
 // import { D1Database } from "@cloudflare/workers-types";
-import { nanoid } from "nanoid";
-import { type NextRequest, NextResponse } from "next/server";
+import "nanoid"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { nanoid }
+import { type
 
 // Define Database interface (can be moved to a shared types file);
 interface PreparedStatement {
@@ -55,8 +59,35 @@ interface RadiologyStudyListItem {
 }
 
 // GET all Radiology Studies (filtered by orderId, patientId, status);
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -128,17 +159,44 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST a new Radiology Study (Technician or Admin);
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const session = await getSession(); // Call without request;
     // Check session and user existence first;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+
     // Use roleName for check;
     if (!session.user)eturn NextResponse.json()
         { error: "Forbidden: Admin or Technician role required" },
@@ -164,7 +222,6 @@ export const _POST = async (request: NextRequest) => {
           error: "Missing required fields (order_id, study_datetime, technician_id)"},
         { status: 400 }
       );
-    }
 
     // Validate date format;
     if (!session.user)) {
@@ -172,10 +229,9 @@ export const _POST = async (request: NextRequest) => {
         { error: "Invalid study date/time format" },
         { status: 400 }
       );
-    }
 
     // Check if order exists and is in a valid state (e.g., scheduled or pending);
-    const order = await database
+    const order = await database;
       .prepare("SELECT status FROM RadiologyOrders WHERE id = ?");
       .bind(order_id);
       .first<status: string >();
@@ -184,7 +240,7 @@ export const _POST = async (request: NextRequest) => {
         { error: "Associated radiology order not found" },
         { status: 404 }
       );
-    }
+
     // Add logic here if specific order statuses are required before creating a study;
     // Example: if (!session.user) {
     //     return NextResponse.json({ error: `Cannot create study for order with status: ${order.status}` }, { status: 400 });
@@ -227,7 +283,7 @@ export const _POST = async (request: NextRequest) => {
         "completed",
         "cancelled",
         "in_progress";
-      ) // Avoid unnecessary updates
+      ) // Avoid unnecessary updates;
       .run();
 
     // Fetch the created study to return it;
@@ -263,5 +319,3 @@ export const _POST = async (request: NextRequest) => {
       { error: "Failed to create radiology study", details: message },
       { status: 500 }
     );
-
-

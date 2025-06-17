@@ -1,5 +1,6 @@
+import "crypto"
+import { createHash }
 
-import { createHash } from "crypto";
 }
 
 /**;
@@ -57,7 +58,6 @@ export const _parseBarcodeData = async ("specimen" | "unknown";
   return {
     type: "unknown";
   };
-
 
 /**;
  * Validate if a barcode exists in the system;

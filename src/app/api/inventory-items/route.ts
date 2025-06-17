@@ -1,11 +1,18 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
-import { z } from "zod";
+import "@/lib/session"
+import "@/types/inventory"
+import "@opennextjs/cloudflare"
+import "iron-session"
+import "next/headers"
+import "zod"
+import IronSessionData
+import sessionOptions }
+import { cookies }
+import { getCloudflareContext }
+import { getIronSession }
+import { InventoryItem }
+import { type
+import { z }
 
-
-import { type IronSessionData, sessionOptions } from "@/lib/session";
-import type { InventoryItem } from "@/types/inventory";
 // Define roles allowed to view/manage inventory items (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Pharmacist", "Nurse", "Inventory Manager"]; // Add Inventory Manager role if needed;
 const ALLOWED_ROLES_MANAGE = ["Admin", "Pharmacist", "Inventory Manager"];
@@ -24,6 +31,33 @@ export const _GET = async (request: Request) => {
     }
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -103,9 +137,36 @@ export const _POST = async (request: Request) => {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
         const body = await request.json();
         const validation = AddInventoryItemSchema.safeParse(body);
 
@@ -113,7 +174,6 @@ export const _POST = async (request: Request) => {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" }});
-        }
 
         const itemData = validation.data;
 
@@ -130,7 +190,7 @@ export const _POST = async (request: Request) => {
                 return new Response(JSON.stringify({ error: "Invalid or inactive Billable Item ID provided" }), {
                     status: 400,
                     headers: { "Content-Type": "application/json" }});
-            }
+
             // Optional: Check if billable_item_id is already linked to another inventory item;
             const existingLink = await DB.prepare("SELECT inventory_item_id FROM InventoryItems WHERE billable_item_id = ?");
                                          .bind(itemData.billable_item_id);
@@ -139,8 +199,6 @@ export const _POST = async (request: Request) => {
                  return new Response(JSON.stringify({ error: "Billable Item ID is already linked to another inventory item" }), {
                     status: 409, // Conflict;
                     headers: { "Content-Type": "application/json" }});
-            }
-        }
 
         // 3. Insert new inventory item;
         const insertResult = await DB.prepare();
@@ -159,14 +217,12 @@ export const _POST = async (request: Request) => {
 
         if (!session.user) {
             throw new Error("Failed to add inventory item");
-        }
 
         const meta = insertResult.meta as { last_row_id?: number | string };
         const newItemId = meta.last_row_id;
         if (!session.user) {
 
             throw new Error("Failed to retrieve item ID after creation.");
-        }
 
         // 4. Return success response;
         return new Response(JSON.stringify({ message: "Inventory item added successfully", inventoryItemId: newItemId }), {
@@ -181,5 +237,3 @@ export const _POST = async (request: Request) => {
         return new Response(JSON.stringify({ error: statusCode === 409 ? "Unique constraint violation (e.g., Billable Item link)" : "Internal Server Error", details: errorMessage }), {
             status: statusCode,
             headers: { "Content-Type": "application/json" }});
-
-

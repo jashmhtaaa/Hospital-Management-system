@@ -1,3 +1,4 @@
-import type { BillableItem } from "./billing.ts";
+import "./billing.ts"
+import { BillableItem }
 
 // types/inventory.ts;

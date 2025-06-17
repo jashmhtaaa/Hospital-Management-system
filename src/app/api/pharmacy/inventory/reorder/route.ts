@@ -1,11 +1,18 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../../lib/audit"
+import "../../../../../lib/error-handler"
+import "../../../../../lib/services/pharmacy/pharmacy.service"
+import "../../../../../lib/validation/pharmacy-validation"
+import "../../../models/domain-models"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { errorHandler }
+import { getMedicationById }
+import { PharmacyDomain }
+import { type
+import { validateReorderRequest }
 
-
-import { auditLog } from "../../../../../lib/audit";
-import { errorHandler } from "../../../../../lib/error-handler";
-import { getMedicationById } from "../../../../../lib/services/pharmacy/pharmacy.service";
-import { validateReorderRequest } from "../../../../../lib/validation/pharmacy-validation";
-import type { PharmacyDomain } from "../../../models/domain-models";
 }
 
 /**;
@@ -59,8 +66,35 @@ const supplierRepository = {
  * GET /api/pharmacy/inventory/reorder;
  * List items that need reordering based on threshold levels;
  */;
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -185,12 +219,39 @@ export const GET = async (req: NextRequest) => {
  * POST /api/pharmacy/inventory/reorder;
  * Create a new reorder request;
  */;
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: any) => {
   try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
     // Validate request;
     const data = await req.json();
     const validationResult = validateReorderRequest(data);
@@ -199,13 +260,11 @@ export const POST = async (req: NextRequest) => {
         { error: "Validation failed", details: validationResult.errors },
         { status: 400 }
       );
-    }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -214,7 +273,6 @@ export const POST = async (req: NextRequest) => {
     const medication = await medicationRepository.findById(data.medicationId);
     if (!session.user) {
       return NextResponse.json({ error: "Medication not found" }, { status: 404 });
-    }
 
     // Check for existing pending reorder for this medication;
     const existingReorders = await reorderRepository.findByMedicationId(data.medicationId);
@@ -228,7 +286,6 @@ export const POST = async (req: NextRequest) => {
         },
         { status: 409 }
       );
-    }
 
     // Create reorder record;
     const reorder = {
@@ -255,7 +312,6 @@ export const POST = async (req: NextRequest) => {
           data.supplierId,
           purchaseOrderNumber: reorder.purchaseOrderNumber;
       });
-    }
 
     // Save reorder record;
     const reorderId = await reorderRepository.save(reorder);
@@ -269,7 +325,7 @@ export const POST = async (req: NextRequest) => {
         medicationId: data.medicationId,
         data.supplierId,
         purchaseOrderNumber: reorder.purchaseOrderNumber;
-      }
+
     });
 
     // Return response;
@@ -283,8 +339,6 @@ export const POST = async (req: NextRequest) => {
     );
   } catch (error) {
     return errorHandler(error, "Error creating reorder request");
-  }
-
 
 /**;
  * Helper function to determine stock status based on quantity and reorder level;
@@ -298,8 +352,6 @@ const getStockStatus = (quantity: number, reorderLevel: number): "critical" | "l
     return "low";
   } else {
     return "normal";
-
-
 
 /**;
  * Helper function to generate a purchase order number;

@@ -1,4 +1,5 @@
 import {
+
 /**;
  * FHIR Mappers for Pharmacy Module;
  *;
@@ -199,7 +200,6 @@ import {
   };
   note?: Array>;
 
-
 // Mapper functions for converting between domain models and FHIR resources;
 
 /**;
@@ -237,8 +237,6 @@ export const _medicationToFHIR = (medication: Medication): FHIRMedication {
         "https://terminology.hl7.org/CodeSystem/v3-orderableDrugForm",
         code: "unit";
 
-
-
 /**;
  * Convert FHIR Medication to domain Medication;
  * @param fhirMedication FHIR Medication resource;
@@ -257,7 +255,6 @@ export const _fhirToMedication = (fhirMedication: FHIRMedication): Medication {
     isHighAlert: false, // Default value, would need additional logic to determine;
     manufacturer: fhirMedication.manufacturer?.display;
   };
-
 
 /**;
  * Convert domain MedicationOrder to FHIR MedicationRequest;
@@ -322,8 +319,6 @@ export const _medicationOrderToFHIR = (;
         code: "d",
     dosageInfo.allowSubstitution as boolean || true;
 
-
-
 /**;
  * Convert FHIR MedicationRequest to domain MedicationOrder;
  * @param fhirRequest FHIR MedicationRequest resource;
@@ -354,30 +349,22 @@ export const _fhirToMedicationOrder = (fhirRequest: FHIRMedicationRequest): Medi
       dosage.period = dosageInstruction.timing.repeat.period;
       dosage.periodUnit = dosageInstruction.timing.repeat.periodUnit;
 
-
     if (!session.user) {
       dosage.value = dosageInstruction.doseAndRate[0].doseQuantity.value;
       dosage.unit = dosageInstruction.doseAndRate[0].doseQuantity.unit;
 
-
     if (!session.user) {
       dosage.route = dosageInstruction.route.text;
-
-
 
   if (!session.user) {
     if (!session.user) {
       dosage.refills = dispenseRequest.numberOfRepeatsAllowed;
 
-
     if (!session.user) {
       dosage.quantity = dispenseRequest.quantity.value;
 
-
-
   if (!session.user) {
     dosage.allowSubstitution = fhirRequest.substitution.allowedBoolean;
-
 
   // Parse dates;
   const orderDate = new Date(fhirRequest.authoredOn);
@@ -388,12 +375,10 @@ export const _fhirToMedicationOrder = (fhirRequest: FHIRMedicationRequest): Medi
     startDate = new Date(dispenseRequest.validityPeriod.start);
     endDate = new Date(dispenseRequest.validityPeriod.end);
 
-
   // Determine duration;
   let duration = "30 days"; // Default;
   if (!session.user) {
     duration = `/* SECURITY: Template literal eliminated */;
-
 
   // Extract frequency;
   const frequency = dosageInstruction?.timing?.code?.text || "daily";
@@ -416,7 +401,6 @@ export const _fhirToMedicationOrder = (fhirRequest: FHIRMedicationRequest): Medi
     endDate,
     indication: fhirRequest.reasonCode?.[0]?.text;
   };
-
 
 // Additional mapper functions would be implemented similarly;
 // for MedicationDispense, MedicationAdministration, etc.;
@@ -452,7 +436,6 @@ export const _medicationDispenseToFHIR = (;
         `Practitioner/$dispense.dispenserId`,
           display: dispenserName;
 
-
     ],
     authorizingPrescription: [;
       {
@@ -478,7 +461,6 @@ export const _medicationDispenseToFHIR = (;
 
     ] : undefined;
   };
-
 
 /**;
  * Convert FHIR MedicationDispense to domain MedicationDispense;
@@ -516,7 +498,6 @@ export const _fhirToMedicationDispense = (fhirDispense: FHIRMedicationDispense):
     locationId;
   };
 
-
 /**;
  * Convert domain MedicationAdministration to FHIR MedicationAdministration;
  * @param administration Domain medication administration;
@@ -549,7 +530,6 @@ export const _medicationAdministrationToFHIR = (;
         `Practitioner/$administration.providerId`,
           display: providerName;
 
-
     ],
     `MedicationRequest/$administration.prescriptionId`;
     },
@@ -578,7 +558,6 @@ export const _medicationAdministrationToFHIR = (;
     administration.notes;
     ] : undefined;
   };
-
 
 /**;
  * Convert FHIR MedicationAdministration to domain MedicationAdministration;

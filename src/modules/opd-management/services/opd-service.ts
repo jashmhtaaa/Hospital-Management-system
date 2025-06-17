@@ -1,6 +1,8 @@
+import "@/lib/audit/audit-service"
+import "@/lib/prisma"
+import { AuditService }
+import { prisma }
 
-import { AuditService } from "@/lib/audit/audit-service";
-import { prisma } from "@/lib/prisma";
 // src/modules/opd-management/services/opd-service.ts;
 }
 }
@@ -54,11 +56,9 @@ import { prisma } from "@/lib/prisma";
           true,
             true;
 
-
       },
       orderBy: { appointmentTime: "asc" }
     });
-
 
   static async updateAppointmentStatus();
     appointmentId: string,
@@ -71,7 +71,6 @@ import { prisma } from "@/lib/prisma";
 
     if (!session.user) {
       throw new Error("Appointment not found");
-
 
     const appointment = await prisma.appointment.update({
       where: { id: appointmentId },
@@ -90,9 +89,7 @@ import { prisma } from "@/lib/prisma";
         appointment;
       );
 
-
     return appointment;
-
 
   static async getOPDStats(date?: Date) {
     const targetDate = date || new Date();
@@ -123,5 +120,3 @@ import { prisma } from "@/lib/prisma";
     ]);
 
     return { scheduled, completed, cancelled, inProgress };
-
-

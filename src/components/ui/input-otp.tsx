@@ -1,10 +1,13 @@
+import "@/lib/utils"
+import "input-otp"
+import "lucide-react"
+import "react"
+import * as React
+import OTPInputContext }
+import { cn }
+import { Minus }
+import { OTPInput
 
-import { OTPInput, OTPInputContext } from "input-otp";
-import { Minus } from "lucide-react";
-import * as React from "react";
-
-
-import { cn } from "@/lib/utils";
 }
 
 "use client";

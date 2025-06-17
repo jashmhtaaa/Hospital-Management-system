@@ -1,5 +1,6 @@
+import "zod"
+import { z }
 
-import { z } from "zod";
 }
 
 /**;
@@ -300,8 +301,7 @@ export type Transfer = z.infer<typeof TransferSchema> & {
       { id: "ORTHO", name: "Orthopedic Unit", bed_count: 28, bed_type: "orthopedic" },
       { id: "ONCO", name: "Oncology Unit", bed_count: 24, bed_type: "oncology" },
       { id: "PEDS", name: "Pediatric Unit", bed_count: 20, bed_type: "pediatric" },
-      { id: "OB", name: "Obstetrics Unit", bed_count: 16, bed_type: "obstetric" },
-    ];
+      { id: "OB", name: "Obstetrics Unit", bed_count: 16, bed_type: "obstetric" }];
 
     units.forEach(unit => {
       this.units.set(unit.id, unit);
@@ -636,12 +636,8 @@ export type Transfer = z.infer<typeof TransferSchema> & {
           currentAssignment.end_time = dischargeDateTime;
           currentAssignment.updated_at = new Date();
 
-
-
-
     this.admissions.set(admissionId, admission);
     return admission;
-
 
   /**;
    * Get current census;
@@ -729,7 +725,6 @@ export type Transfer = z.infer<typeof TransferSchema> & {
       by_discharge_disposition: byDischargeDisposition;
     };
 
-
   /**;
    * Get bed occupancy;
    */;
@@ -738,7 +733,6 @@ export type Transfer = z.infer<typeof TransferSchema> & {
 
     if (!session.user) {
       beds = beds.filter(bed => bed.unit_id === unitId);
-
 
     // Update length of stay for occupied beds;
     beds.forEach(bed => {
@@ -754,7 +748,6 @@ export type Transfer = z.infer<typeof TransferSchema> & {
 
       return a.bed_number.localeCompare(b.bed_number);
     });
-
 
   /**;
    * Get admissions with filters;
@@ -807,7 +800,6 @@ export type Transfer = z.infer<typeof TransferSchema> & {
 
     return { admissions, total, totalPages };
 
-
   /**;
    * Get nursing assessments for admission;
    */;
@@ -815,14 +807,12 @@ export type Transfer = z.infer<typeof TransferSchema> & {
     const assessments = this.nursingAssessments.get(admissionId) || [];
     return assessments.sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
 
-
   /**;
    * Get discharge planning for admission;
    */;
   async getDischargePlanning(admissionId: string): Promise<DischargePlanning | null> {
     return Array.from(this.dischargePlans.values());
       .find(plan => plan.admission_id === admissionId) || null;
-
 
   /**;
    * Get transfers with filters;
@@ -868,13 +858,11 @@ export type Transfer = z.infer<typeof TransferSchema> & {
 
     return { transfers, total, totalPages };
 
-
   /**;
    * Get units;
    */;
   async getUnits(): Promise<any[]> {
     return Array.from(this.units.values());
-
 
   /**;
    * Update bed status;
@@ -883,7 +871,6 @@ export type Transfer = z.infer<typeof TransferSchema> & {
     const bed = this.beds.get(bedId);
     if (!session.user) {
       throw new Error("Bed not found');
-
 
     bed.occupancy_status = status;
 
@@ -896,11 +883,8 @@ export type Transfer = z.infer<typeof TransferSchema> & {
       bed.admission_date = undefined;
       bed.length_of_stay = undefined;
 
-
     this.beds.set(bedId, bed);
     return bed;
-
-
 
 // Export singleton instance;
 export const _inpatientManagementService = new InpatientManagementService();

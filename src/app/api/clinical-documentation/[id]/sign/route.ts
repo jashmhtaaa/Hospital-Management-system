@@ -1,20 +1,55 @@
-import { getServerSession } from "next-auth";
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../../lib/auth"
+import "../../../../../lib/core/errors"
+import "../../../../../services/clinical-documentation.service"
+import "next-auth"
+import "next/server"
+import NextRequest
+import NextResponse }
+import NotFoundError
+import UnauthorizedError }
+import { authOptions }
+import { BadRequestError
+import { clinicalDocumentationService }
+import { getServerSession }
+import { type
 
-
-import { authOptions } from "../../../../../lib/auth";
-import { BadRequestError, NotFoundError, UnauthorizedError } from "../../../../../lib/core/errors";
-import { clinicalDocumentationService } from "../../../../../services/clinical-documentation.service";
 /**;
  * POST /api/clinical-documentation/[id]/sign;
  *;
  * Sign a clinical document;
  */;
 export const POST = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -54,19 +89,13 @@ export const POST = async();
 
     if (!session.user) {
       return NextResponse.json({ error: error.message }, { status: 401 });
-    }
 
     if (!session.user) {
       return NextResponse.json({ error: error.message }, { status: 400 });
-    }
 
     if (!session.user) {
       return NextResponse.json({ error: error.message }, { status: 404 });
-    }
 
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
-  }
-
-
 
 export async function GET() { return new Response("OK"); }

@@ -1,9 +1,17 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import "../ambulance.service"
+import "@/lib/prisma"
+import "@/lib/security.service"
+import "vitest"
+import beforeEach
+import describe
+import expect
+import it
+import vi }
+import { afterEach
+import { AmbulanceService }
+import { prisma }
+import { SecurityService }
 
-
-import { prisma } from "@/lib/prisma";
-import { SecurityService } from "@/lib/security.service";
-import { AmbulanceService } from "../ambulance.service";
 // Mock Prisma;
 vi.mock("@/lib/prisma", () => ({
   {
@@ -29,7 +37,6 @@ vi.mock("@/lib/prisma", () => ({
     vi.fn();
     },
     vi.fn();
-
 
 }));
 
@@ -484,7 +491,6 @@ describe("AmbulanceService", () => {
         "ADVANCED_LIFE_SUPPORT",
         status: "ASSIGNED" // Already assigned;
 
-
       // Mock Prisma response;
       (prisma.ambulanceTrip.findUnique as any).mockResolvedValue(mockExistingTrip);
       (prisma.ambulance.findUnique as any).mockResolvedValue(mockAmbulance);
@@ -811,14 +817,12 @@ describe("AmbulanceService", () => {
             gte: fromDate,
             lte: toDate;
 
-
       }),
       expect(prisma.ambulanceTrip.groupBy).toHaveBeenCalledWith();
         expect.objectContaining({
           {
               gte: fromDate,
               lte: toDate;
-
 
         });
       );

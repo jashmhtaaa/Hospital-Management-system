@@ -1,10 +1,24 @@
-import React, { useState, type ChangeEvent, type FormEvent } from "react";
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "@/components/ui/input"
+import "@/components/ui/label"
+import "@/components/ui/textarea"
+import "react"
+import CardContent }
+import CardHeader
+import CardTitle
+import ChangeEvent
+import FormEvent }
+import React
+import type
 import {
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Button }
+import { Card
+import { Input }
+import { Label }
+import { Textarea }
+import { useState
+
 }
 
 "use client";
@@ -15,7 +29,8 @@ import { Textarea } from "@/components/ui/textarea";
   SelectContent,
   SelectItem} from "@/components/ui/select";
 import { toast } from "sonner"; // Changed from useToast to sonner;
-import { Loader2 } from "lucide-react";
+import "lucide-react"
+import { Loader2 }
 
 interface AdmissionFormData {
   patient_id: string,
@@ -60,20 +75,17 @@ const AdmissionForm = () => {
   const patients: MockPatient[] = [;
     { id: "pat1", name: "Rahul Sharma" },
     { id: "pat2", name: "Priya Patel" },
-    { id: "pat3", name: "Amit Singh" },
-  ];
+    { id: "pat3", name: "Amit Singh" }];
 
   const doctors: MockDoctor[] = [;
     { id: "doc1", name: "Dr. Evelyn Reed" },
-    { id: "doc2", name: "Dr. Kenji Tanaka" },
-  ];
+    { id: "doc2", name: "Dr. Kenji Tanaka" }];
 
   const beds: MockBed[] = [;
     { id: "bed1", number: "101-A", room: "101", ward: "General Ward" },
     { id: "bed2", number: "101-B", room: "101", ward: "General Ward" },
     { id: "bed3", number: "201-A", room: "201", ward: "Semi-Private" },
-    { id: "bed4", number: "301", room: "301", ward: "Private" },
-  ];
+    { id: "bed4", number: "301", room: "301", ward: "Private" }];
 
   const handleChange = (;
     event: ChangeEvent>;
@@ -103,6 +115,33 @@ const AdmissionForm = () => {
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -117,16 +156,42 @@ const AdmissionForm = () => {
         let errorMessage = "Failed to create admission";
         try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorData.message || errorMessage;
         } catch {
           errorMessage = `${errorMessage}: ${response.statusText}`;
-        }
+
         throw new Error(errorMessage);
-      }
 
       const newAdmission: AdmissionResponse = await response.json(),
 
@@ -148,7 +213,7 @@ const AdmissionForm = () => {
       });
     } finally {
       setLoading(false);
-    }
+
   };
 
   return();
@@ -319,4 +384,3 @@ const AdmissionForm = () => {
 };
 
 export default AdmissionForm;
-

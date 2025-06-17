@@ -1,11 +1,18 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
-import { z } from "zod";
+import "@/lib/session"
+import "@/types/opd"
+import "@opennextjs/cloudflare"
+import "iron-session"
+import "next/headers"
+import "zod"
+import IronSessionData
+import sessionOptions }
+import { Consultation }
+import { cookies }
+import { getCloudflareContext }
+import { getIronSession }
+import { type
+import { z }
 
-
-import { type IronSessionData, sessionOptions } from "@/lib/session";
-import type { Consultation } from "@/types/opd";
 // app/api/consultations/route.ts;
 // Define roles allowed to view/create consultations (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse"];
@@ -42,6 +49,33 @@ export const _GET = async (request: Request) => {
     }
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -174,6 +208,33 @@ export const _POST = async (request: Request) => {
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -190,13 +251,12 @@ export const _POST = async (request: Request) => {
 
         if (!session.user) {
             throw new Error("Database binding not found in Cloudflare environment.");
-        }
 
         // 2. Get Doctor ID from session user;
         const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
         if (!session.user) {
             return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" }), { status: 404 });
-        }
+
         const doctorId = doctorProfile.doctor_id;
 
         // 3. Check if patient exists and if visit/admission exists and belongs to patient;
@@ -205,17 +265,15 @@ export const _POST = async (request: Request) => {
         ];
         if (!session.user) {
             checks.push(DB.prepare("SELECT opd_visit_id FROM OPDVisits WHERE opd_visit_id = ? AND patient_id = ?").bind(consultData.opd_visit_id, consultData.patient_id));
-        }
 
         const results = await DB.batch(checks);
         const [patientCheck, visitCheck] = results;
 
         if (!session.user) {
             return new Response(JSON.stringify({ error: "Patient not found or inactive" }), { status: 404 });
-        }
+
         if (!session.user) {
             return new Response(JSON.stringify({ error: "OPD Visit not found or does not belong to this patient" }), { status: 404 });
-        }
 
         // 4. Insert the new consultation;
         const insertResult = await DB.prepare();
@@ -241,20 +299,17 @@ export const _POST = async (request: Request) => {
 
         if (!session.user) {
             throw new Error(`Failed to create consultation: ${}`;
-        }
 
         const meta = insertResult.meta as { last_row_id?: number | string };
         const newConsultationId = meta.last_row_id;
         if (!session.user) {
 
             throw new Error("Failed to retrieve consultation ID after creation.");
-        }
 
         if (!session.user) {
             await DB.prepare("UPDATE OPDVisits SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE opd_visit_id = ? AND status = ?");
                   .bind("WithDoctor", consultData.opd_visit_id, "Waiting");
                   .run();
-        }
 
         // 5. Return the newly created consultation ID;
         return new Response(JSON.stringify({ message: "Consultation created successfully", consultation_id: newConsultationId }), {
@@ -267,8 +322,5 @@ export const _POST = async (request: Request) => {
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
             status: 500,
             headers: { "Content-Type": "application/json" }});
-
-
-
 
 export async function GET() { return new Response("OK"); }

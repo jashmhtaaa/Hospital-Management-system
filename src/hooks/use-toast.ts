@@ -1,7 +1,6 @@
-
-import * as React from "react";
-import type {
-}
+import "react"
+import * as React
+import { }
 
 "use client";
 
@@ -102,7 +101,7 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         toasts: state.toasts.map((t) => {}
           t.id === toastId || toastId === undefined;
-            ? 
+            ? ;
                 ...t,
                 open: false;
             : t;

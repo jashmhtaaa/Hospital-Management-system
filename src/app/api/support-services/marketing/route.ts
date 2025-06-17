@@ -1,10 +1,16 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/middleware/error-handling.middleware"
+import "@/lib/security.service"
+import "@/lib/services/support-services/marketing/marketing.service"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { MarketingCampaignService }
+import { SecurityService }
+import { type
+import { withErrorHandling }
+import { z }
 
-
-import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
-import { SecurityService } from "@/lib/security.service";
-import { MarketingCampaignService } from "@/lib/services/support-services/marketing/marketing.service";
 // Initialize service;
 const marketingService = new MarketingCampaignService();
 
@@ -46,7 +52,7 @@ const updateCampaignSchema = z.object({
 });
 
 // GET /api/support-services/marketing/campaigns;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -70,7 +76,7 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/support-services/marketing/campaigns;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -103,7 +109,7 @@ export const _POST = async (request: NextRequest) => {
 }
 
 // GET /api/support-services/marketing/campaigns/:id;
-export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -121,7 +127,7 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
 }
 
 // PATCH /api/support-services/marketing/campaigns/:id;
-export const _PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _PATCH = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -155,7 +161,7 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
 }
 
 // DELETE /api/support-services/marketing/campaigns/:id;
-export const _DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _DELETE = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -176,7 +182,7 @@ export const _DELETE = async (request: NextRequest, { params }: { params: { id: 
 }
 
 // GET /api/support-services/marketing/campaigns/:id/analytics;
-export const _GET_ANALYTICS = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_ANALYTICS = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -193,7 +199,7 @@ export const _GET_ANALYTICS = async (request: NextRequest, { params }: { params:
 }
 
 // POST /api/support-services/marketing/campaigns/:id/channels;
-export const _POST_CHANNEL = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _POST_CHANNEL = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -224,7 +230,7 @@ export const _POST_CHANNEL = async (request: NextRequest, { params }: { params: 
 }
 
 // POST /api/support-services/marketing/campaigns/:id/segments/:segmentId;
-export const _POST_SEGMENT = async (request: NextRequest, { params }: { params: { id: string, segmentId: string } }) => {
+export const _POST_SEGMENT = async (request: any, { params }: { params: { id: string, segmentId: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -249,7 +255,7 @@ export const _POST_SEGMENT = async (request: NextRequest, { params }: { params: 
 }
 
 // GET /api/support-services/marketing/contacts;
-export const _GET_CONTACTS = async (request: NextRequest) => {
+export const _GET_CONTACTS = async (request: any) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -275,7 +281,7 @@ export const _GET_CONTACTS = async (request: NextRequest) => {
 }
 
 // GET /api/support-services/marketing/analytics/overview;
-export const _GET_OVERVIEW_ANALYTICS = async (request: NextRequest) => {
+export const _GET_OVERVIEW_ANALYTICS = async (request: any) => {
   return withErrorHandling();
     request,
     async (req) => {

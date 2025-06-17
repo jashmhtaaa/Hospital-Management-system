@@ -1,10 +1,17 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../../lib/audit"
+import "../../../../../lib/error-handler"
+import "../../../../../lib/services/pharmacy/pharmacy.service"
+import "../../../models/domain-models"
+import "next/server"
+import getPrescriptionById }
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { errorHandler }
+import { getMedicationById
+import { PharmacyDomain }
+import { type
 
-
-import { auditLog } from "../../../../../lib/audit";
-import { errorHandler } from "../../../../../lib/error-handler";
-import { getMedicationById, getPrescriptionById } from "../../../../../lib/services/pharmacy/pharmacy.service";
-import { PharmacyDomain } from "../../../models/domain-models";
 }
 
 /**;
@@ -47,12 +54,39 @@ const () => Promise.resolve(null),
  * POST /api/pharmacy/administration/missed;
  * Record a missed medication dose with reason and documentation;
  */;
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Validate request;
     const data = await req.json();
     if (!session.user) {
@@ -60,13 +94,11 @@ export const POST = async (req: NextRequest) => {
         { error: "Missing required fields" },
         { status: 400 }
       );
-    }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -75,7 +107,6 @@ export const POST = async (req: NextRequest) => {
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
     if (!session.user) {
       return NextResponse.json({ error: "Prescription not found" }, { status: 404 });
-
 
     // Create missed dose record;
     const administration = new PharmacyDomain.MedicationAdministration();
@@ -104,7 +135,6 @@ export const POST = async (req: NextRequest) => {
       // In a real implementation, create alert for clinical staff;
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
-
     // Audit logging;
     await auditLog("MEDICATION_ADMINISTRATION", {
       action: "MISSED_DOSE",
@@ -125,4 +155,3 @@ export const POST = async (req: NextRequest) => {
     );
   } catch (error) {
     return errorHandler(error, "Error recording missed dose");
-

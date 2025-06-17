@@ -1,4 +1,8 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "next/server"
+import NextRequest
+import NextResponse }
+import { type
+
 // src/app/api/radiology/orders/route.ts;
 // import { getRequestContext } from "@cloudflare/next-on-pages"; // Import when ready to use D1;
 
@@ -93,8 +97,7 @@ async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {
       "Lower back pain radiating to left leg",
       "2025-04-27T14:00:00Z",
       updated_at: "2025-04-28T09:15:00Z";
-    },
-  ];
+    }];
 
   return mockRadiologyOrders.filter((order) => {
     // Apply status filter;
@@ -246,8 +249,35 @@ async const updateRadiologyOrderInDB = (;
  * GET /api/radiology/orders;
  * Retrieves a list of radiology orders, potentially filtered.;
  */;
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -304,19 +334,44 @@ export const GET = async (request: NextRequest) => {
       { error: "Failed to fetch radiology orders", details: message },
       { status: 500 }
     );
-  }
-}
 
 /**;
  * POST /api/radiology/orders;
  * Creates a new radiology order.;
  */;
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const orderData = (await request.json()) as RadiologyOrderInput; // Cast to interface;
 
     // Basic validation (add more comprehensive validation);
@@ -326,7 +381,6 @@ export const POST = async (request: NextRequest) => {
           error: "Missing required fields (patient_id, ordering_doctor_id, modality, body_part)"},
         { status: 400 }
       );
-    }
 
     // Simulate creating the radiology order in the database;
     const newOrder = await createRadiologyOrderInDB(orderData);
@@ -342,8 +396,6 @@ export const POST = async (request: NextRequest) => {
       { status: 500 }
     );
 
-
-
 /**;
  * PUT /api/radiology/orders/[id];
  * Updates an existing radiology order.;
@@ -351,10 +403,37 @@ export const POST = async (request: NextRequest) => {
  * It should likely be in /orders/[id]/route.ts.;
  * Keeping it here for now to fix TS errors, but should be refactored.;
  */;
-export const PUT = async (request: NextRequest) => {
+export const PUT = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     const path = request.nextUrl.pathname;
@@ -369,7 +448,6 @@ export const PUT = async (request: NextRequest) => {
         { error: "Invalid or missing radiology order ID in URL path" },
         { status: 400 }
       );
-
 
     const updateData = (await request.json()) as RadiologyOrderUpdateInput; // Cast to interface;
 
@@ -386,4 +464,3 @@ export const PUT = async (request: NextRequest) => {
       { error: "Failed to update radiology order", details: message },
       { status: 500 }
     );
-

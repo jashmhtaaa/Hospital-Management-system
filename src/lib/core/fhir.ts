@@ -1,5 +1,3 @@
-
-
 /**;
  * Core FHIR utilities for the Financial Management system;
  * Provides standardized FHIR resource handling and validation;
@@ -15,7 +13,6 @@ export enum FHIRResourceType {
   PAYMENT_RECONCILIATION = "PaymentReconciliation",
   INVOICE = "Invoice",
   CHARGE_ITEM = "ChargeItem",
-
 
 // FHIR Account resource interface (simplified);
 
@@ -38,7 +35,6 @@ export enum FHIRResourceType {
   };
   description?: string;
   balance?: Array>;
-
 
 // FHIR Claim resource interface (simplified);
 
@@ -95,7 +91,6 @@ export enum FHIRResourceType {
     currency: string;
   };
 
-
 // FHIR Coverage resource interface (simplified);
 
   }>;
@@ -133,7 +128,6 @@ export enum FHIRResourceType {
     name?: string;
   }>;
 
-
 // FHIR Invoice resource interface (simplified);
 
   }>;
@@ -168,7 +162,6 @@ export enum FHIRResourceType {
     value: number,
     currency: string;
   };
-
 
 // FHIR PaymentReconciliation resource interface (simplified);
 
@@ -225,7 +218,6 @@ export enum FHIRResourceType {
     };
   }>;
 
-
 // Utility function to convert internal invoice to FHIR Invoice;
 export const _convertToFHIRInvoice = (invoice: unknown): FHIRInvoice {
   // Map internal invoice status to FHIR Invoice status;
@@ -244,8 +236,7 @@ export const _convertToFHIRInvoice = (invoice: unknown): FHIRInvoice {
       {
         system: "https://hospital.example.org/identifiers/invoice",
         value: invoice.invoiceNumber;
-      },
-    ],
+      }],
     status: statusMap[invoice.status] || "draft",
     `Patient/${invoice.patientId}`},
     date: invoice.invoiceDate,
@@ -253,27 +244,24 @@ export const _convertToFHIRInvoice = (invoice: unknown): FHIRInvoice {
     },
     `Account/${invoice.accountId}`} : undefined,
     lineItem: invoice.items.map((item: unknown, index + 1,
-      `ChargeItem/${item.id}`,,
+      `ChargeItem/${item.id}`,
       "base",
           item.unitPrice,
-            currency: "USD",,
+            currency: "USD",
         ...(item.discount > 0 ? [;
           type: "discount",
           -item.discount,
-            currency: "USD",] : []),
+            currency: "USD"] : []),
         ...(item.tax > 0 ? [;
           type: "tax",
           item.tax,
-            currency: "USD",] : []),
-      ]})),
+            currency: "USD"] : [])]})),
     invoice.totalAmount - invoice.taxAmount,
       currency: "USD";
     },
     invoice.totalAmount,
       currency: "USD";
     },
-
-
 
 // Utility function to convert internal claim to FHIR Claim;
 export const _convertToFHIRClaim = (claim: unknown): FHIRClaim {
@@ -293,16 +281,14 @@ export const _convertToFHIRClaim = (claim: unknown): FHIRClaim {
       {
         system: "https://hospital.example.org/identifiers/claim",
         value: claim.claimNumber;
-      },
-    ],
+      }],
     status: statusMap[claim.status] || "draft",
     {
       coding: [;
         {
           system: "https://terminology.hl7.org/CodeSystem/claim-type",
           "Institutional";
-        },
-      ]},
+        }]},
     use: "claim",
     `Patient/${claim.patientId}`},
     created: claim.createdAt,
@@ -312,27 +298,23 @@ export const _convertToFHIRClaim = (claim: unknown): FHIRClaim {
         {
           system: "https://terminology.hl7.org/CodeSystem/processpriority",
           "Normal";
-        },
-      ]},
+        }]},
     insurance: [;
       {
         sequence: 1,
-        `Coverage/${claim.insurancePolicyId}`},
-    ],
+        `Coverage/${claim.insurancePolicyId}`}],
     diagnosis: claim.diagnoses.map((diagnosis: unknown, index + 1,
       [;
           {
             system: "https://hl7.org/fhir/sid/icd-10",
             diagnosis.description;
-          },
-        ]})),
+          }]})),
     item: claim.items.map((item: unknown, index + 1,
       [;
           {
             system: "https://www.ama-assn.org/go/cpt",
             item.serviceItem.name;
-          },
-        ],,
+          }],
       servicedDate: item.serviceDate,
       item.unitPrice,
         currency: "USD",
@@ -342,8 +324,6 @@ export const _convertToFHIRClaim = (claim: unknown): FHIRClaim {
       currency: "USD";
     },
 
-
-
 // Utility function to convert internal coverage to FHIR Coverage;
 export const _convertToFHIRCoverage = (coverage: unknown): FHIRCoverage {
   return {
@@ -352,41 +332,33 @@ export const _convertToFHIRCoverage = (coverage: unknown): FHIRCoverage {
       {
         system: "https://hospital.example.org/identifiers/coverage",
         value: coverage.policyNumber;
-      },
-    ],
+      }],
     status: coverage.status === "active" ? "active" : "cancelled",
       coding: [;
         {
           system: "https://terminology.hl7.org/CodeSystem/v3-ActCode",
           coverage.typeName;
-        },
-      ],,
-    `Patient/${coverage.subscriberId}`,,
-    `Patient/${coverage.patientId}`,,
+        }],
+    `Patient/${coverage.subscriberId}`,
+    `Patient/${coverage.patientId}`,
     [;
         {
           system: "https://terminology.hl7.org/CodeSystem/subscriber-relationship",
           coverage.relationshipName;
-        },
-      ],,
+        }],
     coverage.startDate,
       end: coverage.endDate,
-    `Organization/${coverage.insuranceProviderId}`,,
-    ],
+    `Organization/${coverage.insuranceProviderId}`],
     class: [;
       {
         [;
             {
               system: "https://terminology.hl7.org/CodeSystem/coverage-class",
               "Group";
-            },
-          ]},
+            }]},
         value: coverage.groupNumber,
         name: coverage.groupName;
-      },
-    ],
-
-
+      }],
 
 // Utility function to validate FHIR resources;
 export const _validateFHIRResource = (resource: unknown): boolean {
@@ -395,7 +367,6 @@ export const _validateFHIRResource = (resource: unknown): boolean {
 
   if (!session.user) {
     return false;
-
 
   switch (resource.resourceType) {
     case FHIRResourceType.ACCOUNT: null,
@@ -409,12 +380,9 @@ export const _validateFHIRResource = (resource: unknown): boolean {
     case FHIRResourceType.PAYMENT_RECONCILIATION: return validateFHIRPaymentReconciliation(resource),
     default: return false;
 
-
-
 // Helper validation functions;
 const validateFHIRAccount = (account: unknown): boolean {
   return !!account.status;
-
 
 const validateFHIRClaim = (claim: unknown): boolean {
   return !!claim?.status &&;
@@ -427,18 +395,15 @@ const validateFHIRClaim = (claim: unknown): boolean {
          Array.isArray(claim.insurance) &&;
          claim.insurance.length > 0;
 
-
 const validateFHIRCoverage = (coverage: unknown): boolean {
   return !!coverage?.status &&;
          !!coverage?.beneficiary &&;
          Array.isArray(coverage.payor) &&;
          coverage.payor.length > 0;
 
-
 const validateFHIRInvoice = (invoice: unknown): boolean {
   return !!invoice?.status &&;
          !!invoice.date;
-
 
 const validateFHIRPaymentReconciliation = (paymentReconciliation: unknown): boolean {
   return !!paymentReconciliation?.status &&;

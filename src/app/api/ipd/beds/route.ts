@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
-
+import "@/lib/session"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { getSession }
+import { type
 
 import { getDB } from "@/lib/database"; // Using mock DB;
-import { getSession } from "@/lib/session";
+
 // Define interface for POST request body;
 interface BedInput {
   bed_number: string,
@@ -13,8 +17,35 @@ interface BedInput {
 }
 
 // GET /api/ipd/beds - Get all beds with optional filtering;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -69,18 +100,44 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/ipd/beds - Create a new bed;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
     const session = await getSession(); // Removed request argument;
 
     // Check authentication and permissions;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Check permissions (using mock session data);
     // Assuming permissions are correctly populated in the mock session;
@@ -88,7 +145,6 @@ export const _POST = async (request: NextRequest) => {
       session.user.permissions?.includes("bed:create") ?? false;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
 
     // Fixed: Apply type assertion;
     const data = (await request.json()) as BedInput;
@@ -99,8 +155,7 @@ export const _POST = async (request: NextRequest) => {
       "room_number",
       "ward",
       "category",
-      "price_per_day",
-    ];
+      "price_per_day"];
     for (const field of requiredFields) {
       // Check if the field exists and is not empty (for strings);
       if (!session.user)trim())
@@ -109,15 +164,13 @@ export const _POST = async (request: NextRequest) => {
           { error: `Missing or empty required field: ${field}` },
           { status: 400 }
         );
-      }
-    }
+
     // Validate price is a positive number;
     if (!session.user) {
       return NextResponse.json();
         { error: "Invalid price_per_day: must be a positive number" },
         { status: 400 }
       );
-    }
 
     const database = await getDB(); // Fixed: Await the promise returned by getDB();
 
@@ -137,7 +190,6 @@ export const _POST = async (request: NextRequest) => {
         { error: "Bed number already exists in this room and ward" },
         { status: 409 }
       );
-    }
 
     // Insert new bed using db.query;
     // Mock query doesn-	 return last_row_id;
@@ -153,8 +205,7 @@ export const _POST = async (request: NextRequest) => {
         data.category,
         data.status || "available",
         data.price_per_day,
-        data.features || undefined,
-      ];
+        data.features || undefined];
     );
 
     // Cannot reliably get the new record from mock DB;
@@ -170,5 +221,3 @@ export const _POST = async (request: NextRequest) => {
       { error: "Failed to create bed", details: errorMessage },
       { status: 500 }
     );
-
-

@@ -1,5 +1,7 @@
-import { type NextRequest, NextResponse } from "next/server";
-
+import "next/server"
+import NextRequest
+import NextResponse }
+import { type
 
 import { getDB } from "@/lib/database"; // Using mock DB;
 import { getSession } from "@/lib/session"; // Using mock session;
@@ -132,8 +134,7 @@ async const getLabOrderByIdFromDB = (id: number): Promise<LabOrder | null> {
 
   const database = await getDB();
   const result = await database.query("SELECT * FROM lab_orders WHERE id = ?", [;
-    id,
-  ]);
+    id]);
   const order = result?.results &&;
     result.results.length > 0 ? result.results[0] : undefined; // Changed .rows to .results;
 
@@ -182,8 +183,35 @@ async const updateLabOrderInDB = (;
 
 // --- API Route Handlers ---;
 
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -242,16 +270,42 @@ export const _GET = async (request: NextRequest) => {
       { status: 500 }
     );
   }
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const session = await getSession();
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     const orderData = (await request.json()) as LabOrderInput;
 
@@ -272,19 +326,45 @@ export const _POST = async (request: NextRequest) => {
       { error: "Failed to create lab order", details: errorMessage },
       { status: 500 }
     );
-  }
+
 export const _PUT = async();
-  request: NextRequest;params : params: Promise<{ id: string }> ;
+  request: any;params : params: Promise<{ id: string }> ;
 ) ;
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const session = await getSession();
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     const { id } = await params; // FIX: Await params and destructure id (Next.js 15+);
     const numericId = Number.parseInt(id),
@@ -293,7 +373,6 @@ export const _PUT = async();
         { error: "Invalid lab order ID" },
         { status: 400 }
       );
-    }
 
     const updateData = (await request.json()) as LabOrderUpdateInput;
 
@@ -305,7 +384,6 @@ export const _PUT = async();
         { status: 404 }
       );
 
-
     return NextResponse.json({ order: updatedOrder });
   } catch (error: unknown) {
 
@@ -315,5 +393,3 @@ export const _PUT = async();
       { error: "Failed to update lab order", details: errorMessage },
       { status: 500 }
     );
-
-

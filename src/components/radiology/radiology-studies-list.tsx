@@ -1,8 +1,15 @@
-import type React from "react";
-import { useState, useEffect } from "react";
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "react"
+import CardContent }
+import React
+import type
+import useEffect }
 import {
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button }
+import { Card
+import { useState
+
 }
 
 "use client";
@@ -13,9 +20,12 @@ import { Card, CardContent } from "@/components/ui/card";
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import "@/components/ui/badge"
+import "lucide-react"
+import "next/navigation"
+import { Badge }
+import { Loader2 }
+import { useRouter }
 
 // Define interface for Radiology Study data;
 interface RadiologyStudy {
@@ -37,13 +47,40 @@ export default const _RadiologyStudiesList = () {
     setError(undefined); // Reset error state before fetching;
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch("/api/radiology/studies");
       if (!session.user) {
         throw new Error("Failed to fetch radiology studies");
-      }
+
       const data = await response.json();
       // Assuming the API returns an array of studies;
       setStudies(Array.isArray(data) ? data : []);

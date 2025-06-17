@@ -1,4 +1,5 @@
 import {
+
 }
 
 /**;
@@ -340,7 +341,6 @@ import {
       comp.coding?.[0]?.display || comp.text || "Unknown complication";
     ) || [];
 
-
   /**;
    * Format procedure for display;
    */;
@@ -367,7 +367,6 @@ import {
       outcome: procedure.outcome?.coding?.[0]?.display;
     };
 
-
   /**;
    * Validate FHIR Procedure resource;
    */;
@@ -377,14 +376,11 @@ import {
     if (!session.user) {
       errors.push("resourceType must be "Procedure"");
 
-
     if (!session.user) {
       errors.push("status is required");
 
-
     if (!session.user) {
       errors.push("subject is required");
-
 
     // Validate status values;
     const validStatuses = [;
@@ -394,17 +390,14 @@ import {
     if (!session.user) {
       errors.push(`status must be one of: ${}`;
 
-
     // If status is not-done, statusReason should be provided;
     if (!session.user) {
       errors.push("statusReason should be provided when status is not-done");
-
 
     return {
       valid: errors.length === 0;
       errors;
     };
-
 
   /**;
    * Convert HMS procedure to FHIR Procedure;
@@ -419,7 +412,6 @@ import {
       hmsProcedure.indication || hmsProcedure.reason,
       hmsProcedure.notes || hmsProcedure.description;
     });
-
 
   /**;
    * Get procedures by category;
@@ -445,7 +437,6 @@ import {
 
     return categorized;
 
-
   /**;
    * Get recent procedures;
    */;
@@ -458,13 +449,11 @@ import {
       return performedDate && performedDate >= cutoffDate;
     });
 
-
   /**;
    * Get procedures with complications;
    */;
   static getProceduresWithComplications(procedures: FHIRProcedure[]): FHIRProcedure[] {
     return procedures.filter(procedure => this.hasComplications(procedure));
-
 
   /**;
    * Search procedures by text;
@@ -479,8 +468,6 @@ import {
              code.includes(searchLower) ||;
              category.includes(searchLower);
     });
-
-
 
 // Common procedure codes and classifications;
 
@@ -547,20 +534,17 @@ import {
 
     return undefined;
 
-
   /**;
    * Check if procedure is surgical;
    */;
   static isSurgicalProcedure(code: string): boolean {
     return Object.values(this.SURGICAL_PROCEDURES).some(proc => proc.code === code);
 
-
   /**;
    * Check if procedure is emergency;
    */;
   static isEmergencyProcedure(code: string): boolean {
     return Object.values(this.EMERGENCY_PROCEDURES).some(proc => proc.code === code);
-
 
   /**;
    * Get display name for procedure code;
@@ -575,7 +559,6 @@ import {
 
     const procedure = Object.values(allProcedures).find(proc => proc.code === code);
     return procedure?.display || "Unknown Procedure";
-
 
   /**;
    * Get estimated duration for common procedures (in minutes);
@@ -592,4 +575,3 @@ import {
     };
 
     return durations[code];
-

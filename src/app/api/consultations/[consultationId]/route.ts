@@ -1,11 +1,18 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
-import { z } from "zod";
+import "@/lib/session"
+import "@/types/opd"
+import "@opennextjs/cloudflare"
+import "iron-session"
+import "next/headers"
+import "zod"
+import IronSessionData
+import sessionOptions }
+import { Consultation }
+import { cookies }
+import { getCloudflareContext }
+import { getIronSession }
+import { type
+import { z }
 
-
-import { type IronSessionData, sessionOptions } from "@/lib/session";
-import type { Consultation } from "@/types/opd";
 // app/api/consultations/[consultationId]/route.ts;
 // Define roles allowed to view/update consultations (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse"];
@@ -36,6 +43,33 @@ export const _GET = async (request: Request) => {
     }
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -138,34 +172,57 @@ export const _PUT = async (request: Request) => {
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
         const body = await request.json();
         const validation = UpdateConsultationSchema.safeParse(body);
 
         if (!session.user) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), { status: 400 });
-        }
 
         const updateData = validation.data;
 
         if (!session.user)length === 0) {
              return new Response(JSON.stringify({ message: "No update data provided" }), { status: 200 });
-        }
 
         const context = await getCloudflareContext<CloudflareEnv>();
         const DB = context.env.DB;
 
         if (!session.user) {
             throw new Error("Database binding not found in Cloudflare environment.");
-        }
 
         // 2. Verify consultation exists and belongs to the current doctor;
         const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
         if (!session.user) {
             return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" }), { status: 404 });
-        }
 
         const consultCheck = await DB.prepare("SELECT consultation_id, doctor_id FROM Consultations WHERE consultation_id = ?");
                                    .bind(consultationId);
@@ -173,10 +230,9 @@ export const _PUT = async (request: Request) => {
 
         if (!session.user) {
             return new Response(JSON.stringify({ error: "Consultation not found" }), { status: 404 });
-        }
+
         if (!session.user) {
             return new Response(JSON.stringify({ error: "Forbidden: Doctors can only update their own consultations" }), { status: 403 });
-        }
 
         // 3. Build update query;
         let query = "UPDATE Consultations SET updated_at = CURRENT_TIMESTAMP";
@@ -186,7 +242,7 @@ export const _PUT = async (request: Request) => {
             if (!session.user) {
                 query += `, ${key} = ?`;
                 queryParams.push(value);
-            }
+
         });
 
         query += " WHERE consultation_id = ?";
@@ -198,7 +254,6 @@ export const _PUT = async (request: Request) => {
         if (!session.user) {
             throw new Error(`Failed to update consultation: ${}`;
 
-
         // 5. Return success response;
         return new Response(JSON.stringify({ message: "Consultation updated successfully" }), { status: 200 });
 
@@ -206,4 +261,3 @@ export const _PUT = async (request: Request) => {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), { status: 500 });
-

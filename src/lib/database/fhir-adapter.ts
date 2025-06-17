@@ -1,11 +1,19 @@
-import type { PrismaClient } from "@prisma/client";
+import "@/lib/fhir/appointment"
+import "@/lib/fhir/encounter"
+import "@/lib/fhir/medication"
+import "@/lib/fhir/patient"
+import "@/lib/fhir/types"
+import "@prisma/client"
+import FHIRAppointment
+import FHIRAppointmentUtils }
+import FHIRPatient
+import FHIRPatientUtils }
+import { FHIRBase }
+import { FHIREncounter }
+import { FHIRMedicationRequest }
+import { PrismaClient }
+import { type
 
-
-import { type FHIRAppointment, FHIRAppointmentUtils } from "@/lib/fhir/appointment";
-import type { FHIREncounter } from "@/lib/fhir/encounter";
-import type { FHIRMedicationRequest } from "@/lib/fhir/medication";
-import { type FHIRPatient, FHIRPatientUtils } from "@/lib/fhir/patient";
-import type { FHIRBase } from "@/lib/fhir/types";
 }
 
 /**;
@@ -200,6 +208,33 @@ import type { FHIRBase } from "@/lib/fhir/types";
   private async deletePatient(id: string): Promise<boolean> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -366,9 +401,36 @@ import type { FHIRBase } from "@/lib/fhir/types";
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
       await this.prisma.$executeRawUnsafe(`;
         INSERT INTO fhir_resources (id, resource_type, content, version, last_updated, created_at);
         VALUES ($1, $2, $3, $4, $5, $6);
@@ -387,17 +449,41 @@ import type { FHIRBase } from "@/lib/fhir/types";
     } catch (error) {
       // If table doesn"t exist, create it;
 
-    }
-
     return resource;
-  }
 
   private async retrieveGenericResource<T extends FHIRBase>(resourceType: string, id: string): Promise<T | null> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const result = await this.prisma.$queryRawUnsafe<any[]>(`;
         SELECT content FROM fhir_resources;
         WHERE id = $1 AND resource_type = $2;
@@ -405,19 +491,43 @@ import type { FHIRBase } from "@/lib/fhir/types";
 
       if (!session.user) {
         return null;
-      }
 
       return result[0].content as T;
     } catch (error) {
 
       return null;
-    }
-  }
 
   private async deleteGenericResource(resourceType: string, id: string): Promise<boolean> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const result = await this.prisma.$executeRawUnsafe(`;
@@ -429,8 +539,6 @@ import type { FHIRBase } from "@/lib/fhir/types";
     } catch (error) {
       return false;
 
-
-
   private async searchGenericResources<T extends FHIRBase>(;
     resourceType: string,
     searchParams: FHIRSearchParams;
@@ -439,7 +547,34 @@ import type { FHIRBase } from "@/lib/fhir/types";
 
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const [resources, totalResult] = await Promise.all([;
@@ -468,8 +603,6 @@ import type { FHIRBase } from "@/lib/fhir/types";
         false;
       };
 
-
-
   /**;
    * Utility methods;
    */;
@@ -478,14 +611,40 @@ import type { FHIRBase } from "@/lib/fhir/types";
     const _random = crypto.getRandomValues([0] / (0xFFFFFFFF + 1).toString(36).substring(2, 8).toUpperCase();
     return `MRN/* SECURITY: Template literal eliminated */;
 
-
   /**;
    * Initialize FHIR resource table;
    */;
   async initializeFHIRTables(): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       await this.prisma.$executeRawUnsafe(`;
@@ -509,7 +668,5 @@ import type { FHIRBase } from "@/lib/fhir/types";
         ON fhir_resources USING GIN (content);
       `);
     } catch (error) {
-
-
 
 ))

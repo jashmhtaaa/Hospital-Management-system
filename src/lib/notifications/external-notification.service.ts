@@ -1,6 +1,8 @@
+import "@prisma/client"
+import "zod"
+import { PrismaClient }
+import { z }
 
-import { PrismaClient } from "@prisma/client";
-import { z } from "zod";
 /**;
  * External Notification Service;
  * Comprehensive notification system with SMS, Email, and WhatsApp support;
@@ -107,6 +109,33 @@ class TwilioSMSProvider implements ISMSProvider {
   async sendSMS(to: string, message: string, metadata?: Record<string, unknown>) {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -158,6 +187,33 @@ class SendGridEmailProvider implements IEmailProvider {
 
   async sendEmail(to: string, subject: string, body: string, isHtml = true, metadata?: Record<string, unknown>) {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -212,6 +268,33 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
 
   async sendWhatsApp(to: string, message: string, metadata?: Record<string, unknown>) {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -301,9 +384,36 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
   async createTemplate(template: NotificationTemplate): Promise<NotificationTemplate & { id: string }> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const validated = NotificationTemplateSchema.parse(template);
 
       // Store template in database (assuming a NotificationTemplate model exists);
@@ -317,8 +427,6 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
         id};
     } catch (error) {
       throw new Error(`Failed to create notification template: $error instanceof Error ? error.message : "Unknown error"`);
-    }
-  }
 
   async getTemplate(id: string): Promise<NotificationTemplate | null> {
     // In production, fetch from database;
@@ -331,16 +439,41 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
       variables: ["patientName", "appointmentDate", "appointmentTime"],
       priority: "medium",
       "system";
-    }
-  }
 
   // Core Notification Methods;
   async sendNotification(request: NotificationRequest): Promise<NotificationResult> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const validated = NotificationRequestSchema.parse(request);
 
       let finalMessage = validated.message;
@@ -353,21 +486,15 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
           finalMessage = this.processTemplate(template.body, validated.variables || {});
           if (!session.user) {
             subject = this.processTemplate(template.subject, validated.variables || {});
-          }
-        }
-      }
 
       // If scheduled, store for later processing;
       if (!session.user) {
         return this.scheduleNotification(validated, finalMessage, subject);
-      }
 
       // Send immediately;
       return this.sendImmediateNotification(validated, finalMessage, subject);
     } catch (error) {
       throw new Error(`Failed to send notification: $error instanceof Error ? error.message : "Unknown error"`);
-    }
-  }
 
   private async sendImmediateNotification();
     request: NotificationRequest,
@@ -378,9 +505,36 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       let result: { id: string, status: "sent" | "failed"; errorMessage?: string; cost?: number };
 
       switch (request.type) {
@@ -425,7 +579,6 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
         default: null,
           throw new Error(`Unsupported notification type: $request.type`),
 
-
       // Log notification in database (implement actual storage);
       await this.logNotification(notificationId, request, result);
 
@@ -451,8 +604,6 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
         sentAt: new Date();
       };
 
-
-
   private async scheduleNotification();
     request: NotificationRequest,
     message: string;
@@ -464,7 +615,6 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
     /* notificationId,
       undefined;
     };
-
 
   // Bulk Notifications;
   async sendBulkNotifications(requests: NotificationRequest[]): Promise<NotificationResult[]> {
@@ -493,9 +643,7 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
       if (!session.user) {
         await }
 
-
     return results;
-
 
   // Common notification scenarios;
   async sendAppointmentReminder();
@@ -518,7 +666,6 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
         sender: "appointment_system";
       });
       results.push(smsResult);
-
 
     // Email Reminder;
     if (!session.user) {
@@ -544,9 +691,7 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
       });
       results.push(emailResult);
 
-
     return results;
-
 
   async sendCriticalLab/* SECURITY: Alert removed */: Promise<NotificationResult[]> {
     const results: NotificationResult[] = [];
@@ -561,7 +706,6 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
         sender: "lab_system";
       });
       results.push(smsResult);
-
 
     // Email Alert;
     if (!session.user) {
@@ -582,9 +726,7 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
       });
       results.push(emailResult);
 
-
     return results;
-
 
   // Analytics and Reporting;
   async getNotificationStats(filters?: {
@@ -601,8 +743,6 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
       95.0,
       totalCost: 45.50;
 
-
-
   // Utility Methods;
   private processTemplate(template: string, variables: Record<string, string>): string {
     let processed = template;
@@ -611,7 +751,6 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
       processed = processed.replace(regex, value);
     });
     return processed;
-
 
   private async logNotification();
     id: string,
@@ -624,8 +763,6 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
   // Cleanup;
   async disconnect(): Promise<void> {
     await this.prisma.$disconnect();
-
-
 
 // Factory function for creating service with configuration;
 export const createNotificationService = (config?: Partial<NotificationConfig>): ExternalNotificationService => {
@@ -646,7 +783,6 @@ export const createNotificationService = (config?: Partial<NotificationConfig>):
         process.env.TWILIO_WHATSAPP_NUMBER || "',
       enabled: true;
     },
-
 
   const mergedConfig = { ...defaultConfig, ...config };
   return new ExternalNotificationService(mergedConfig);

@@ -1,16 +1,48 @@
-import { UserRole } from "@prisma/client";
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/auth/auth-service"
+import "@/lib/logger"
+import "@prisma/client"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { AuthService }
+import { logger }
+import { type
+import { UserRole }
 
-
-import { AuthService } from "@/lib/auth/auth-service";
-import { logger } from "@/lib/logger";
 // src/middleware/rbac.ts;
 }
 }
 
 export function createRBACMiddleware(routePermission: RoutePermission): unknown {
-  return async (request: NextRequest) => {
+  return async (request: any) => {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -22,7 +54,6 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
           { error: "Unauthorized - No token provided" },
           { status: 401 }
         );
-      }
 
       const token = authHeader.substring(7);
       const user = await AuthService.verifyToken(token);
@@ -32,7 +63,6 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
           { error: "Unauthorized - Invalid token" },
           { status: 401 }
         );
-      }
 
       // Check role-based access;
       if (!session.user) {
@@ -45,7 +75,6 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
           { error: "Forbidden - Insufficient role" },
           { status: 403 }
         );
-      }
 
       // Check permission-based access;
       if (!session.user) {
@@ -63,8 +92,6 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
             { error: "Forbidden - Insufficient permissions" },
             { status: 403 }
           );
-        }
-
 
       // Add user context to request headers for downstream handlers;
       const requestHeaders = new Headers(request.headers);
@@ -85,7 +112,6 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
       );
 
   };
-
 
 // Predefined permission checkers;
 export const _requireAdmin = createRBACMiddleware({

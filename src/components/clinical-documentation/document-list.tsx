@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from "react";
+import "next/navigation"
+import "react"
+import React
+import useEffect }
 import {
-import { useRouter } from "next/navigation";
+import { useRouter }
+import { useState
+
   Table,
   TableHeader,
   TableBody,
@@ -19,12 +24,18 @@ import { useRouter } from "next/navigation";
   CardFooter,
   CardHeader,
   CardTitle} from "../ui/card";
-import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
-import { Pagination } from "../ui/pagination";
-import { DatePicker } from "../ui/date-picker";
-import { format } from "date-fns";
-import { useToast } from "../../hooks/use-toast";
+import "../../hooks/use-toast"
+import "../ui/badge"
+import "../ui/button"
+import "../ui/date-picker"
+import "../ui/pagination"
+import "date-fns"
+import { Badge }
+import { Button }
+import { DatePicker }
+import { format }
+import { Pagination }
+import { useToast }
 
 interface Document {
   id: string,
@@ -68,6 +79,33 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -87,18 +125,15 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
 
       if (!session.user) {
         params.append("dateFrom", filters.dateFrom.toISOString());
-      }
 
       if (!session.user) {
         params.append("dateTo", filters.dateTo.toISOString());
-      }
 
       // Fetch documents;
       const response = await fetch(`/api/clinical-documentation?${}`;
 
       if (!session.user) {
         throw new Error("Failed to fetch documents");
-      }
 
       const data = await response.json(),
       setDocuments(data.data);
@@ -111,7 +146,7 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
       });
     } finally {
       setLoading(false);
-    }
+
   };
 
   // Effect to fetch documents on initial load and when filters or pagination change;

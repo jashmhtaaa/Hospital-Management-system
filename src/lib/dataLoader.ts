@@ -1,8 +1,10 @@
-import DataLoader from "dataloader";
+import "@/lib/logger"
+import "@/lib/prisma"
+import "dataloader"
+import DataLoader
+import { logger }
+import { prisma }
 
-
-import { logger } from "@/lib/logger";
-import { prisma } from "@/lib/prisma";
 /**;
  * DataLoader implementation for efficient batch loading of database records;
  * Prevents N+1 query problems by batching database requests;

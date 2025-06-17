@@ -104,6 +104,33 @@ export default const _CreateInvoicePage = () {
     setError(undefined); // Clear previous errors;
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -123,7 +150,7 @@ export default const _CreateInvoicePage = () {
       setPatients([]); // Clear patients on error;
     } finally {
       setLoadingPatients(false);
-    }
+
   }, []);
 
   // Fetch Service Items;
@@ -132,9 +159,36 @@ export default const _CreateInvoicePage = () {
     setError(undefined); // Clear previous errors;
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch();
         `/api/billing/service-items?search=/* SECURITY: Safe parameter encoding */`;
       );
@@ -155,7 +209,7 @@ export default const _CreateInvoicePage = () {
       setServiceItems([]); // Clear service items on error;
     } finally {
       setLoadingServices(false);
-    }
+
   }, []);
 
   // Debounce search for patients;
@@ -166,7 +220,7 @@ export default const _CreateInvoicePage = () {
         fetchPatients(patientSearchTerm);
       } else {
         setPatients([]); // Clear if search is empty or just whitespace;
-      }
+
     }, 300); // Debounce time;
     return () => clearTimeout(handler);
   }, [patientSearchTerm, fetchPatients]);
@@ -196,8 +250,7 @@ export default const _CreateInvoicePage = () {
       // Add new item;
       setInvoiceItems([
         ...invoiceItems,
-        { ...item, quantity: 1, subtotal: item.unit_price },
-      ]);
+        { ...item, quantity: 1, subtotal: item.unit_price }]);
     } else {
       // Increment quantity if item already exists;
       const updatedItems = [...invoiceItems];
@@ -245,13 +298,39 @@ export default const _CreateInvoicePage = () {
       setError("Please select a patient and add at least one item.");
       return;
 
-
     setIsSubmitting(true),
     setError(undefined);
 
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const invoiceData = {
@@ -276,7 +355,34 @@ export default const _CreateInvoicePage = () {
         let errorMessage = "Failed to create invoice";
         try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
           // FIX: Cast error response JSON to defined type;
@@ -290,7 +396,6 @@ export default const _CreateInvoicePage = () {
           errorMessage = `HTTP error! status: ${response.status}`;
 
         throw new Error(errorMessage);
-
 
       const _result = await response.json(); // Assuming success response has data, define interface if needed;
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;

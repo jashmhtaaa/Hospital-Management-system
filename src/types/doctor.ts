@@ -1,3 +1,4 @@
-import type { User } from "./user.ts";
+import "./user.ts"
+import { User }
 
 // types/doctor.ts;

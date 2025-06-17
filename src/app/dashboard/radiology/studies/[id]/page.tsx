@@ -1,7 +1,8 @@
-import React from "react";
+import "@/components/radiology/radiology-study-detail"
+import "react"
+import RadiologyStudyDetail
+import React
 
-
-import RadiologyStudyDetail from "@/components/radiology/radiology-study-detail";
 }
 
 "use client";

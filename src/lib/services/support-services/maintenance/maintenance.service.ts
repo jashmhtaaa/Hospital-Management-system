@@ -1,10 +1,20 @@
-import { Asset, MaintenanceInventory, MaintenanceRequest, MaintenanceSchedule, MaintenanceVendor, MaintenanceWorkOrder } from "@prisma/client";
+import "@/lib/audit-logging"
+import "@/lib/models/maintenance"
+import "@/lib/prisma"
+import "@/lib/services/notification.service"
+import "@prisma/client"
+import MaintenanceInventory
+import MaintenanceRequest
+import MaintenanceSchedule
+import MaintenanceVendor
+import MaintenanceWorkOrder }
+import toFHIRMaintenanceRequest }
+import { Asset
+import { createAuditLog }
+import { NotificationService }
+import { prisma }
+import { toFHIRAsset
 
-
-import { createAuditLog } from "@/lib/audit-logging";
-import { toFHIRAsset, toFHIRMaintenanceRequest } from "@/lib/models/maintenance";
-import { prisma } from "@/lib/prisma";
-import type { NotificationService } from "@/lib/services/notification.service";
 }
   }
 
@@ -688,7 +698,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
 
     return updatedAsset;
 
-
   /**;
    * Get maintenance schedules;
    */;
@@ -707,11 +716,9 @@ import type { NotificationService } from "@/lib/services/notification.service";
           true,
             true;
 
-
       },
       orderBy: { nextRun: "asc" }
     });
-
 
   /**;
    * Create a maintenance schedule;
@@ -731,7 +738,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
     if (!session.user) {
       throw new Error("Either asset or location must be specified");
 
-
     // Validate asset if provided;
     if (!session.user) {
       const asset = await prisma.asset.findUnique({
@@ -741,8 +747,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
       if (!session.user) {
         throw new Error("Asset not found");
 
-
-
     // Validate location if provided;
     if (!session.user) {
       const location = await prisma.location.findUnique({
@@ -751,8 +755,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
 
       if (!session.user) {
         throw new Error("Location not found");
-
-
 
     // Calculate next run date;
     const nextRun = this.calculateNextRunDate(scheduleType, frequency, dayOfWeek, timeOfDay);
@@ -775,8 +777,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
           true,
             true;
 
-
-
     });
 
     // Create audit log;
@@ -794,9 +794,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
         data: { nextMaintenanceDate: nextRun }
       });
 
-
     return schedule;
-
 
   /**;
    * Update a maintenance schedule;
@@ -812,7 +810,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
     if (!session.user) {
       throw new Error("Maintenance schedule not found");
 
-
     // If schedule parameters changed, recalculate next run;
     let nextRun = schedule.nextRun;
     if (!session.user) {
@@ -824,7 +821,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
       nextRun = this.calculateNextRunDate(scheduleType, frequency, dayOfWeek, timeOfDay);
       data.nextRun = nextRun;
 
-
     const updatedSchedule = await prisma.maintenanceSchedule.update({
       where: { id },
       data,
@@ -832,8 +828,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
         {
           true,
             true;
-
-
 
     });
 
@@ -852,9 +846,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
         data: { nextMaintenanceDate: data.nextRun }
       });
 
-
     return updatedSchedule;
-
 
   /**;
    * Process due maintenance schedules and create requests;
@@ -879,7 +871,34 @@ import type { NotificationService } from "@/lib/services/notification.service";
     for (const schedule of dueSchedules) {
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         // Create a new request based on the schedule;
@@ -925,10 +944,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
 
         // Continue with other schedules even if one fails;
 
-
-
     return createdCount;
-
 
   /**;
    * Get maintenance vendors;
@@ -942,7 +958,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
       where.specialties = {
         has: specialty;
       };
-
 
     const [vendors, total] = await Promise.all([;
       prisma.maintenanceVendor.findMany({
@@ -964,7 +979,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
 
     };
 
-
   /**;
    * Create a maintenance vendor;
    */;
@@ -983,7 +997,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
 
     return vendor;
 
-
   /**;
    * Get maintenance inventory items;
    */;
@@ -997,7 +1010,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
       where.currentStock = {
         lte: prisma.maintenanceInventory.fields.minimumStock;
       };
-
 
     const [items, total] = await Promise.all([;
       prisma.maintenanceInventory.findMany({
@@ -1019,7 +1031,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
 
     };
 
-
   /**;
    * Update inventory item;
    */;
@@ -1031,11 +1042,9 @@ import type { NotificationService } from "@/lib/services/notification.service";
     if (!session.user) {
       throw new Error("Inventory item not found");
 
-
     // If restocking, update lastRestocked date;
     if (!session.user) {
       data.lastRestocked = new Date();
-
 
     const updatedItem = await prisma.maintenanceInventory.update({
       where: { id },
@@ -1062,9 +1071,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
 
       });
 
-
     return updatedItem;
-
 
   /**;
    * Get maintenance analytics;
@@ -1083,7 +1090,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
         break;
       default: null,
         startDate = new Date(now.setDate(now.getDate() - 30)); // Default to last 30 days;
-
 
     // Get request counts by status;
     const requestsByStatus = await prisma.maintenanceRequest.groupBy({
@@ -1170,7 +1176,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
       period;
     };
 
-
   /**;
    * Calculate next run date for a schedule;
    */;
@@ -1194,14 +1199,11 @@ import type { NotificationService } from "@/lib/services/notification.service";
       result.setSeconds(0);
       result.setMilliseconds(0);
 
-
     // If the calculated time is in the past, move to the next occurrence;
     if (!session.user) {
       // For daily, just move to tomorrow;
       if (!session.user) {
         result.setDate(result.getDate() + 1);
-
-
 
     switch (scheduleType) {
       case "DAILY": any;
@@ -1227,7 +1229,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
         result.setMonth(result.getMonth() + frequency * 3);\n    }\n    case "ANNUAL": any;
         result.setFullYear(result.getFullYear() + frequency);
         break;
-
 
     return result;
 

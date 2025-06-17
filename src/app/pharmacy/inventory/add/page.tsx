@@ -1,7 +1,14 @@
+import "next/navigation"
+import "react"
+import ChangeEvent
+import FormEvent
+import React
+import type
+import useEffect
+import useState }
+import { type
+import { useRouter }
 
-import { useRouter } from "next/navigation";
-import type React from "react";
-import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
 }
 
 "use client";
@@ -60,6 +67,33 @@ const AddInventoryPage: React.FC = () => {
     const fetchMedications = async (): Promise<void> => {
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -116,8 +150,7 @@ const AddInventoryPage: React.FC = () => {
       "purchase_date",
       "purchase_price",
       "selling_price",
-      "initial_quantity",
-    ];
+      "initial_quantity"];
 
     for (const field of requiredFields) {
       if (!session.user) {
@@ -167,9 +200,36 @@ const AddInventoryPage: React.FC = () => {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const _submitData: InventorySubmitData = {
         ...formData,
         purchase_price: Number.parseFloat(formData.purchase_price),
@@ -217,7 +277,7 @@ const AddInventoryPage: React.FC = () => {
       setSubmitError(message);
     } finally {
       setLoading(false);
-    }
+
   };
 
   return();
@@ -268,7 +328,7 @@ const AddInventoryPage: React.FC = () => {
                 aria-invalid={!!errors.medication_id}
                 aria-describedby={
                   errors.medication_id ? "medication_id-error" : undefined;
-                }
+
               >;
                 <option value="">Select a medication>;
                 {medications.map((med) => (;
@@ -309,7 +369,7 @@ const AddInventoryPage: React.FC = () => {
                 aria-invalid={!!errors.batch_number}
                 aria-describedby={
                   errors.batch_number ? "batch_number-error" : undefined;
-                }
+
               />;
               {errors?.batch_number && (;
                 <p>;
@@ -341,7 +401,7 @@ const AddInventoryPage: React.FC = () => {
                 aria-invalid={!!errors.expiry_date}
                 aria-describedby={
                   errors.expiry_date ? "expiry_date-error" : undefined;
-                }
+
               />;
               {errors?.expiry_date && (;
                 >;
@@ -389,7 +449,7 @@ const AddInventoryPage: React.FC = () => {
                 aria-invalid={!!errors.purchase_date}
                 aria-describedby={
                   errors.purchase_date ? "purchase_date-error" : undefined;
-                }
+
               />;
               {errors?.purchase_date && (;
                 <p>;

@@ -1,4 +1,8 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "next/server"
+import NextRequest
+import NextResponse }
+import { type
+
 // import { getRequestContext } from "@cloudflare/next-on-pages"; // Cloudflare specific;
 
 // Define interface for ER Visit data;
@@ -39,10 +43,37 @@ interface ERVisitUpdateInput {
 
 // GET /api/er/visits/[id] - Get details of a specific ER visit;
 export const _GET = async();
-  _request: NextRequest, // FIX: Prefixed as unused, changed Request to NextRequest;
+  _request: any, // FIX: Prefixed as unused, changed Request to NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -89,9 +120,36 @@ export const _GET = async();
 
 // PUT /api/er/visits/[id] - Update a specific ER visit;
 export const _PUT = async();
-  request: NextRequest, // Use NextRequest for json() => { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
+  request: any, // Use NextRequest for json() => { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -110,8 +168,7 @@ export const _PUT = async();
       "current_location",
       "current_status",
       "disposition",
-      "discharge_timestamp",
-    ]);
+      "discharge_timestamp"]);
 
     // FIX: Use keyof ERVisitUpdateInput for better type safety;
     const updateFields = (;
@@ -145,7 +202,6 @@ export const _PUT = async();
         { error: "ER visit not found" },
         { status: 404 }
       );
-    }
 
     // FIX: Update mock data with better type safety;
     const updatedVisit: ERVisit = { ...mockVisits[visitIndex] };
@@ -154,8 +210,7 @@ export const _PUT = async();
       if (!session.user) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any;
         (updatedVisit as any)[field] = updateData[field]; // Use "as any" to bypass strict index check after "in" guard;
-      }
-    }
+
     updatedVisit.updated_at = new Date().toISOString();
     mockVisits[visitIndex] = updatedVisit;
 
@@ -164,21 +219,47 @@ export const _PUT = async();
       // FIX: Define type for log entry;
       interface StatusLogEntry {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         id: string,
         string | null | undefined,
         string | number | undefined,
         timestamp: string;
-      }
+
       const uuidv4(),
         updateData.current_status,
         updateData.updated_by_id, // Assuming updated_by_id is passed;
         timestamp: new Date().toISOString();
       };
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-    }
 
     // Return the updated visit;
     return NextResponse.json(updatedVisit);
@@ -189,17 +270,42 @@ export const _PUT = async();
       { error: "Failed to update ER visit", details: errorMessage },
       { status: 500 }
     );
-  }
-}
 
 // DELETE /api/er/visits/[id] - Delete a specific ER visit (rarely used in production);
 export const DELETE = async();
-  _request: NextRequest, // FIX: Prefixed as unused, changed Request to NextRequest;
+  _request: any, // FIX: Prefixed as unused, changed Request to NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     // const { env } = getRequestContext(); // Cloudflare specific;
@@ -219,9 +325,8 @@ export const DELETE = async();
         { status: 404 }
       );
 
-
     // Delete related records first (foreign key constraints);
-    await db
+    await db;
       .prepare("DELETE FROM er_critical_alerts WHERE visit_id = ?");
       .bind(visitId);
       .run();
@@ -252,7 +357,6 @@ export const DELETE = async();
         { status: 404 }
       );
 
-
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
     return NextResponse.json();
@@ -266,4 +370,3 @@ export const DELETE = async();
       { error: "Failed to delete ER visit", details: errorMessage },
       { status: 500 }
     );
-

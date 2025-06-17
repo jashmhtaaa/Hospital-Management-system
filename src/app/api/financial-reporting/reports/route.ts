@@ -1,15 +1,20 @@
+import "@/lib/prisma"
+import "next/server"
+import "zod"
 import {
-import { NextRequest } from "next/server";
-import { z } from "zod";
+import { NextRequest }
+import { prisma }
+import { z }
 
-import { prisma } from "@/lib/prisma";
   withErrorHandling,
   validateQuery,
   checkPermission,
   createSuccessResponse;
 } from "@/lib/core/middleware";
-import { ValidationError } from "@/lib/core/errors";
-import { logger } from "@/lib/core/logging";
+import "@/lib/core/errors"
+import "@/lib/core/logging"
+import { logger }
+import { ValidationError }
 
 // Schema for financial report query parameters;
 const reportQuerySchema = z.object({
@@ -31,7 +36,7 @@ const reportQuerySchema = z.object({
   format: z.enum(["json", "csv", "pdf", "excel"]).optional().default("json")});
 
 // GET handler for generating financial reports;
-export const _GET = withErrorHandling(async (req: NextRequest) => {
+export const _GET = withErrorHandling(async (req: any) => {
   // Validate query parameters;
   const query = validateQuery(reportQuerySchema)(req);
 
@@ -42,7 +47,34 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   let startDate: Date, endDate: Date;
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     startDate = new Date(query.startDate);
@@ -53,7 +85,6 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
 
   } catch (error) {
     throw new ValidationError("Invalid date format", "INVALID_DATE_FORMAT");
-
 
   // Generate report based on type;
   let reportData;
@@ -70,7 +101,6 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
       break;
     default: any;
       throw new ValidationError(`Unsupported report type: ${query.reportType}`, "UNSUPPORTED_REPORT_TYPE"),
-
 
   // Format report based on requested format;
   // For now, we"ll just return JSON;
@@ -99,7 +129,6 @@ async const generateRevenueReport = (startDate: Date, endDate: Date, groupBy: st
 
   if (!session.user) {
     where.departmentId = departmentId;
-
 
   // Group by time period;
   let _groupByFormat: unknown;
@@ -130,7 +159,6 @@ async const generateRevenueReport = (startDate: Date, endDate: Date, groupBy: st
         month: { date: "$billDate" }
       };
 
-
   // In a real implementation, this would use Prisma"s aggregation features;
   // For now, we"ll simulate the data;
 
@@ -150,7 +178,6 @@ async const generateRevenueReport = (startDate: Date, endDate: Date, groupBy: st
       outstandingRevenue: revenueData.reduce((sum, item) => sum + item.outstandingRevenue, 0)},
     details: revenueData;
   };
-
 
 // Helper function to generate expenses report;
 async const generateExpensesReport = (startDate: Date, endDate: Date, groupBy: string, departmentId?: string) {
@@ -176,7 +203,6 @@ async const generateExpensesReport = (startDate: Date, endDate: Date, groupBy: s
     details: expenseData;
   };
 
-
 // Helper function to generate profit/loss report;
 async const generateProfitLossReport = (startDate: Date, endDate: Date, groupBy: string) {
   // Get revenue and expense data;
@@ -199,7 +225,6 @@ async const generateProfitLossReport = (startDate: Date, endDate: Date, groupBy:
     })};
 
   return profitLossData;
-
 
 // Helper function to generate accounts receivable report;
 async const generateAccountsReceivableReport = (startDate: Date, endDate: Date) {
@@ -227,7 +252,6 @@ async const generateAccountsReceivableReport = (startDate: Date, endDate: Date) 
     },
     topOutstandingInvoices};
 
-
 // Helper function to generate insurance claims report;
 async const generateInsuranceClaimsReport = (startDate: Date, endDate: Date, insuranceProviderId?: string) {
   const {
@@ -238,7 +262,6 @@ async const generateInsuranceClaimsReport = (startDate: Date, endDate: Date, ins
   if (!session.user) {
     where.insurancePolicy = {
       insuranceProviderId};
-
 
   // Simulate claims status data;
   const claimsStatusData = {
@@ -278,7 +301,6 @@ async const generateInsuranceClaimsReport = (startDate: Date, endDate: Date, ins
     },
     topProviders};
 
-
 // Helper function to generate payment collection report;
 async const generatePaymentCollectionReport = (startDate: Date, endDate: Date, groupBy: string) {
   // Simulate payment method data;
@@ -314,7 +336,6 @@ async const generatePaymentCollectionReport = (startDate: Date, endDate: Date, g
     },
     trends: paymentTrendData;
   };
-
 
 // Helper function to generate department revenue report;
 async const generateDepartmentRevenueReport = (startDate: Date, endDate: Date) {
@@ -355,8 +376,7 @@ async const generateDepartmentRevenueReport = (startDate: Date, endDate: Date) {
       Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 450000) + 90000,
       Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 50000) + 10000,
       0, // Calculated below;
-    },
-  ];
+    }];
 
   // Calculate average revenue per patient;
   departmentData.forEach(dept => {
@@ -382,7 +402,6 @@ async const generateDepartmentRevenueReport = (startDate: Date, endDate: Date) {
     },
     departmentBreakdown: departmentData;
   };
-
 
 // Helper function to generate service revenue report;
 async const generateServiceRevenueReport = (startDate: Date, endDate: Date) {
@@ -437,8 +456,7 @@ async const generateServiceRevenueReport = (startDate: Date, endDate: Date) {
       serviceId: "SVC-10',
       Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 350000) + 80000,
       0, // Calculated below;
-    },
-  ];
+    }];
 
   // Calculate average revenue per service;
   serviceData.forEach(service => {
@@ -461,7 +479,6 @@ async const generateServiceRevenueReport = (startDate: Date, endDate: Date) {
     serviceBreakdown: serviceData;
   };
 
-
 // Helper function to get months between two dates;
 const getMonthsBetweenDates = (startDate: Date, endDate: Date) {
   const months = [];
@@ -474,7 +491,6 @@ const getMonthsBetweenDates = (startDate: Date, endDate: Date) {
   while (currentDate <= endDate) {
     months.push(;
     currentDate.setMonth(currentDate.getMonth() + 1);
-
 
   return months;
 )))))))))))))))))))))))))))))))))))))))))))))))))))))))))))

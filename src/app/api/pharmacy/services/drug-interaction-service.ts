@@ -1,8 +1,10 @@
-import type { PrismaClient } from "@prisma/client";
+import "../../../../implementation/models/domain-models"
+import "../../../../implementation/utils/audit-logger"
+import "@prisma/client"
+import { AuditLogger }
+import { PharmacyDomain }
+import { PrismaClient }
 
-
-import { PharmacyDomain } from "../../../../implementation/models/domain-models";
-import type { AuditLogger } from "../../../../implementation/utils/audit-logger";
 }
 
 /**;
@@ -112,6 +114,33 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
     patientId?: string;
   ): Promise<PharmacyDomain.DrugInteractionResult> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -249,6 +278,33 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
   ): Promise<PharmacyDomain.DrugAllergyInteractionResult> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -358,6 +414,33 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
   ): Promise<PharmacyDomain.DrugConditionInteractionResult> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -383,7 +466,7 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
         where: {
           patientId,
           status: "active";
-        }
+
       });
 
       // Check for condition interactions;
@@ -410,8 +493,6 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
             interaction.description,
             reference: interaction.reference;
           };
-        }
-      }
 
       // No interaction found;
       return {
@@ -429,8 +510,6 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
       });
 
       throw error;
-    }
-  }
 
   /**;
    * Check for drug-lab interactions for a medication and patient;
@@ -445,9 +524,36 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
   ): Promise<PharmacyDomain.DrugLabInteractionResult> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Log the interaction check;
       this.auditLogger.logEvent({
         eventType: "LAB_INTERACTION_CHECK",
@@ -463,7 +569,6 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
 
       if (!session.user) {
         throw new Error("Medication not found");
-      }
 
       // Get patient lab results (recent abnormal results);
       const labResults = await this.prisma.labResult.findMany({
@@ -472,10 +577,10 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
           ["H", "L", "HH", "LL", "A"] // Abnormal flags;
           },
           [0] - 30 * 24 * 60 * 60 * 1000) // Last 30 days;
-          }
+
         },
         "desc";
-        }
+
       });
 
       // Check for lab interactions;
@@ -503,8 +608,6 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
             interaction.description,
             reference: interaction.reference;
           };
-        }
-      }
 
       // No interaction found;
       return {
@@ -522,8 +625,6 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
       });
 
       throw error;
-    }
-
 
   /**;
    * Create an override for a specific interaction;
@@ -542,7 +643,34 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
   ): Promise<PharmacyDomain.InteractionOverride> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Log the override creation;
@@ -581,8 +709,6 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
 
       throw error;
 
-
-
   /**;
    * Perform a comprehensive batch interaction check for multiple medications;
    *;
@@ -596,7 +722,34 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
   ): Promise<PharmacyDomain.BatchInteractionResult> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Log the batch check;
@@ -624,17 +777,12 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
           if (!session.user) {
             drugDrugInteractions.push(interaction);
 
-
-
-
       // Check drug-allergy interactions;
       for (const medicationId of medicationIds) {
         const interaction = await this.checkDrugAllergyInteraction(medicationId, patientId);
 
         if (!session.user) {
           drugAllergyInteractions.push(interaction);
-
-
 
       // Check drug-condition interactions;
       for (const medicationId of medicationIds) {
@@ -643,16 +791,12 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
         if (!session.user) {
           drugConditionInteractions.push(interaction);
 
-
-
       // Check drug-lab interactions;
       for (const medicationId of medicationIds) {
         const interaction = await this.checkDrugLabInteraction(medicationId, patientId);
 
         if (!session.user) {
           drugLabInteractions.push(interaction);
-
-
 
       // Determine if there are any severe interactions;
       const hasSevereInteractions = [
@@ -685,5 +829,3 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
       });
 
       throw error;
-
-

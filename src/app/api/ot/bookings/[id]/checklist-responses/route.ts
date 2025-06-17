@@ -1,6 +1,10 @@
+import "@cloudflare/workers-types"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { D1Database }
+import { type
 
-import type { D1Database } from "@cloudflare/workers-types";
-import { type NextRequest, NextResponse } from "next/server";
 export const _runtime = "edge";
 
 // Interface for the POST request body;
@@ -13,10 +17,37 @@ interface ChecklistResponseBody {
 
 // GET /api/ot/bookings/[id]/checklist-responses - Get checklist responses for a booking;
 export const _GET = async();
-  request: NextRequest;
+  request: any;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -61,6 +92,33 @@ export const _GET = async();
       results?.map((result) => {
         try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -88,21 +146,47 @@ export const _GET = async();
 
 // POST /api/ot/bookings/[id]/checklist-responses - Add/Update checklist responses for a booking;
 export const _POST = async();
-  request: NextRequest;
+  request: any;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
         { message: "Booking ID is required" },
         { status: 400 }
       );
-    }
 
     const body = (await request.json()) as ChecklistResponseBody;
     const {
@@ -117,7 +201,6 @@ export const _POST = async();
         { message: "Template ID, phase, and responses are required" },
         { status: 400 }
       );
-    }
 
     const DB = process.env.DB as unknown as D1Database;
 
@@ -132,7 +215,6 @@ export const _POST = async();
         { message: "OT Booking not found" },
         { status: 404 }
       );
-    }
 
     // Check if template exists;
     const { results: templateResults } = await DB.prepare();
@@ -145,7 +227,6 @@ export const _POST = async();
         { message: "Checklist template not found for the specified phase" },
         { status: 404 }
       );
-    }
 
     const now = new Date().toISOString();
     const completedAt = completed_by_id ? now : undefined; // Set completion time if user is provided;
@@ -196,7 +277,6 @@ export const _POST = async();
           now;
         );
         .run();
-    }
 
     // Fetch the created/updated response;
     const { results: finalResult } = await DB.prepare();
@@ -208,13 +288,40 @@ export const _POST = async();
     if (!session.user) {
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         // Ensure finalResult[0].responses is treated as string before parsing;
         if (!session.user) {
           finalResult[0].responses = JSON.parse(finalResult[0].responses);
-        }
+
       } catch (error: unknown) {
 
         // Keep responses as original string if parsing fails;
@@ -235,5 +342,3 @@ export const _POST = async();
       { message: "Error saving checklist response", details: errorMessage },
       { status: 500 }
     );
-
-

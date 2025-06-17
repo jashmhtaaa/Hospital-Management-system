@@ -1,9 +1,10 @@
+import "@/lib/utils"
+import "react"
+import "recharts"
+import * as React
+import * as RechartsPrimitive
+import { cn }
 
-import * as React from "react";
-import * as RechartsPrimitive from "recharts";
-
-
-import { cn } from "@/lib/utils";
 }
 
 "use client";
@@ -72,7 +73,7 @@ ChartContainer.displayName = "Chart";
 
 const ChartStyle = ({ id, config }: { id: string, config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter();
-    ([, config]) => config.theme || config.color;
+    ([ config]) => config.theme || config.color;
   );
 
   if (!session.user) {
@@ -167,8 +168,7 @@ const ChartTooltipContent = React.forwardRef<;
       hideLabel,
       labelClassName,
       config,
-      labelKey,
-    ]);
+      labelKey]);
 
     if (!session.user) {
       return null;
@@ -298,10 +298,7 @@ const ChartLegendContent = React.forwardRef<;
               {itemConfig?.icon && !hideIcon ? (;
                 <itemConfig.icon />;
               ) : (;
-<div className="h-2 w-2 shrink-0 rounded-[2px]";
-                  style={{
-                    backgroundColor: item.color;
-                  }}
+<div></div>;
                 />;
               )}
               {itemConfig?.label}
@@ -338,7 +335,6 @@ const getPayloadConfigFromPayload = (;
     configLabelKey = payloadPayload[;
       key as keyof typeof payloadPayload;
     ] as string;
-
 
   return configLabelKey in config;
     ? config[configLabelKey];

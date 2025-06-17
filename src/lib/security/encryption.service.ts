@@ -1,7 +1,8 @@
-import crypto from "crypto";
+import "@/lib/audit"
+import "crypto"
+import crypto
+import { logAuditEvent }
 
-
-import { logAuditEvent } from "@/lib/audit";
 }
 
 /**;
@@ -32,6 +33,33 @@ import { logAuditEvent } from "@/lib/audit";
     context?: EncryptionContext;
   ): string {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -83,6 +111,33 @@ import { logAuditEvent } from "@/lib/audit";
     context?: EncryptionContext;
   ): string {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -136,6 +191,33 @@ import { logAuditEvent } from "@/lib/audit";
   hash(data: string, salt?: string): string {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -164,12 +246,38 @@ import { logAuditEvent } from "@/lib/audit";
   verifyHash(data: string, hashedData: string): boolean {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       if (!session.user) {
         return false;
-      }
 
       const [salt, hash] = hashedData.split(":");
       const verifyHash = crypto.pbkdf2Sync();
@@ -187,15 +295,12 @@ import { logAuditEvent } from "@/lib/audit";
     } catch (error) {
 
       return false;
-    }
-  }
 
   /**;
    * Generate secure random token;
    */;
   generateToken(length: number = 32): string {
     return crypto.randomBytes(length).toString("hex");
-  }
 
   /**;
    * Generate cryptographically secure random string;
@@ -207,10 +312,8 @@ import { logAuditEvent } from "@/lib/audit";
     for (let i = 0; i < length; i++) {
       const randomIndex = crypto.randomInt(0, charset.length);
       result += charset[randomIndex];
-    }
 
     return result;
-  }
 
   /**;
    * Encrypt multiple fields at once;
@@ -229,11 +332,8 @@ import { logAuditEvent } from "@/lib/audit";
           ...context,
           resource: `${context?.resource || "object"}.${String(field)}`;
         }) as T[keyof T];
-      }
-    }
 
     return encrypted;
-  }
 
   /**;
    * Decrypt multiple fields at once;
@@ -250,9 +350,36 @@ import { logAuditEvent } from "@/lib/audit";
       if (!session.user) {
         try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
           decrypted[field] = this.decrypt(value, {
             ...context,
             resource: `${context?.resource || "object"}.${String(field)}`;
@@ -260,12 +387,8 @@ import { logAuditEvent } from "@/lib/audit";
         } catch (error) {
           // Debug logging removed}:`, error);
           // Keep encrypted value if decryption fails;
-        }
-      }
-
 
     return decrypted;
-
 
   /**;
    * Key rotation - re-encrypt data with new key;
@@ -276,7 +399,34 @@ import { logAuditEvent } from "@/lib/audit";
   ): Promise<string> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Decrypt with old key;
@@ -299,8 +449,6 @@ import { logAuditEvent } from "@/lib/audit";
 
       throw new Error("Key rotation failed");
 
-
-
   /**;
    * Data masking for display purposes;
    */;
@@ -308,12 +456,10 @@ import { logAuditEvent } from "@/lib/audit";
     if (!session.user) {
       return maskChar.repeat(data?.length || 8);
 
-
     const visible = data.substring(0, visibleChars);
     const masked = maskChar.repeat(data.length - visibleChars);
 
     return visible + masked;
-
 
   /**;
    * Validate encryption integrity;
@@ -321,7 +467,34 @@ import { logAuditEvent } from "@/lib/audit";
   validateIntegrity(encryptedData: string): boolean {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const parsed: EncryptedData = JSON.parse();
@@ -340,8 +513,6 @@ import { logAuditEvent } from "@/lib/audit";
     } catch (error) {
       return false;
 
-
-
   /**;
    * Private methods;
    */;
@@ -356,7 +527,6 @@ import { logAuditEvent } from "@/lib/audit";
       this.config.keyLength,
       "sha512";
     );
-
 
   private async logEncryptionEvent();
     operation: string,
@@ -378,9 +548,6 @@ import { logAuditEvent } from "@/lib/audit";
         ipAddress: context?.ipAddress,
         severity: success ? "LOW" : "HIGH";
       });
-
-
-
 
 // Export singleton instance and utilities;
 export const encrypt = (data: string, context?: EncryptionContext): string => {

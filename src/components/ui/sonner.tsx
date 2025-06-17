@@ -1,5 +1,6 @@
+import "next-themes"
+import { useTheme }
 
-import { useTheme } from "next-themes";
 }
 
 "use client";

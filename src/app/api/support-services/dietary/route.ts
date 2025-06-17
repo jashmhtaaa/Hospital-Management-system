@@ -1,10 +1,16 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/middleware/error-handling.middleware"
+import "@/lib/security.service"
+import "@/lib/services/support-services/dietary/dietary.service"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { DietaryService }
+import { SecurityService }
+import { type
+import { withErrorHandling }
+import { z }
 
-
-import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
-import { SecurityService } from "@/lib/security.service";
-import { DietaryService } from "@/lib/services/support-services/dietary/dietary.service";
 // Initialize service;
 const dietaryService = new DietaryService();
 
@@ -34,7 +40,7 @@ const updateDietaryRequestSchema = z.object({
 });
 
 // GET /api/support-services/dietary/requests;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -61,7 +67,7 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/support-services/dietary/requests;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -85,7 +91,7 @@ export const _POST = async (request: NextRequest) => {
 }
 
 // GET /api/support-services/dietary/requests/:id;
-export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -103,7 +109,7 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
 }
 
 // PATCH /api/support-services/dietary/requests/:id;
-export const _PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _PATCH = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -127,7 +133,7 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
 }
 
 // DELETE /api/support-services/dietary/requests/:id;
-export const _DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _DELETE = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -144,7 +150,7 @@ export const _DELETE = async (request: NextRequest, { params }: { params: { id: 
 }
 
 // POST /api/support-services/dietary/requests/:id/prepare;
-export const _PREPARE = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _PREPARE = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -173,7 +179,7 @@ export const _PREPARE = async (request: NextRequest, { params }: { params: { id:
 }
 
 // POST /api/support-services/dietary/requests/:id/deliver;
-export const _DELIVER = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _DELIVER = async (request: any, { params }: { params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -202,7 +208,7 @@ export const _DELIVER = async (request: NextRequest, { params }: { params: { id:
 }
 
 // GET /api/support-services/dietary/menus;
-export const _GET_MENUS = async (request: NextRequest) => {
+export const _GET_MENUS = async (request: any) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -227,7 +233,7 @@ export const _GET_MENUS = async (request: NextRequest) => {
 }
 
 // GET /api/support-services/dietary/analytics;
-export const _GET_ANALYTICS = async (request: NextRequest) => {
+export const _GET_ANALYTICS = async (request: any) => {
   return withErrorHandling();
     request,
     async (req) => {

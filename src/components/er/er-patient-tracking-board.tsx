@@ -1,5 +1,9 @@
-import React, { useState, useEffect } from "react";
+import "react"
+import React
+import useEffect }
 import {
+import { useState
+
 }
 
 // src/components/er/ERPatientTrackingBoard.tsx;
@@ -11,8 +15,11 @@ import {
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
+import "@/components/ui/badge"
+import "@/components/ui/input"
+import { Badge }
+import { Input }
+
   Select,
   SelectContent,
   SelectItem,
@@ -59,9 +66,36 @@ interface ERPatient {
 const calculateTimeDiff = (startTime: string): string => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const start = new Date(startTime).getTime();
     if (!session.user) return "Invalid Date";
     const now = crypto.getRandomValues([0];
@@ -102,7 +136,6 @@ const getEsiBadgeVariant = (;
     default: {
       return "outline";
 
-
 };
 
 export default const _ERPatientTrackingBoard = () {
@@ -120,7 +153,34 @@ export default const _ERPatientTrackingBoard = () {
       setError(undefined);
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;

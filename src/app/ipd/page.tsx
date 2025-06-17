@@ -1,6 +1,9 @@
-import type React from "react";
-import { useState } from "react";
+import "react"
+import React
+import type
 import {
+import { useState }
+
 }
 
 "use client";
@@ -14,14 +17,23 @@ export const dynamic = "force-dynamic";
   TabsList,
   TabsTrigger,
   TabsContent} from "@/components/ui"; // Assuming all these are from @/components/ui;
-import AdmissionForm from "@/components/ipd/admission-form";
-import BedManagementDashboard from "@/components/ipd/bed-management-dashboard";
-import DischargeSummary from "@/components/ipd/discharge-summary";
-import IPDPatientList from "@/components/ipd/ipd-patient-list";
-import MedicationAdministration from "@/components/ipd/medication-administration";
-import NursingNotes from "@/components/ipd/nursing-notes";
-import PatientProgressNotes from "@/components/ipd/patient-progress-notes";
-import VitalSigns from "@/components/ipd/vital-signs";
+import "@/components/ipd/admission-form"
+import "@/components/ipd/bed-management-dashboard"
+import "@/components/ipd/discharge-summary"
+import "@/components/ipd/ipd-patient-list"
+import "@/components/ipd/medication-administration"
+import "@/components/ipd/nursing-notes"
+import "@/components/ipd/patient-progress-notes"
+import "@/components/ipd/vital-signs"
+import AdmissionForm
+import BedManagementDashboard
+import DischargeSummary
+import IPDPatientList
+import MedicationAdministration
+import NursingNotes
+import PatientProgressNotes
+import VitalSigns
+
 import { Button } from "@/components/ui/button"; // FIX: Add missing Button import;
 
 // --- INTERFACES ---;
@@ -36,7 +48,6 @@ interface IPDPatientDetailsProperties {
 interface SelectedAdmission {
   admissionId: number,
   patientId: number;
-
 
 // --- COMPONENTS ---;
 

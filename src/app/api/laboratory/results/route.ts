@@ -1,5 +1,7 @@
-import { type NextRequest, NextResponse } from "next/server";
-
+import "next/server"
+import NextRequest
+import NextResponse }
+import { type
 
 import { getDB } from "@/lib/database"; // Using mock DB;
 import { getSession } from "@/lib/session"; // Using mock session;
@@ -45,8 +47,35 @@ interface OrderItem {
 // Removed unused interfaces: TestParameter, LabTest;
 
 // GET /api/laboratory/results - Get laboratory results;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -131,8 +160,35 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/laboratory/results - Create or update laboratory results;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -147,8 +203,7 @@ export const _POST = async (request: NextRequest) => {
       "Lab Technician",
       "Lab Manager",
       "Pathologist",
-      "Admin",
-    ]; // Adjust role names as needed;
+      "Admin"]; // Adjust role names as needed;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -233,8 +288,7 @@ export const _POST = async (request: NextRequest) => {
       // --- Create new result ---;
       const requiredFields: (keyof LabResultInput)[] = [;
         "order_item_id",
-        "result_value",
-      ];
+        "result_value"];
       for (const field of requiredFields) {
         if (!session.user) {
           return NextResponse.json();
@@ -247,9 +301,36 @@ export const _POST = async (request: NextRequest) => {
       // Mock transaction - replace with real transaction logic if using a capable DB driver;
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
         const orderItemResult = await database.query();
           "SELECT * FROM lab_order_items WHERE id = ?",
           [body.order_item_id];
@@ -265,7 +346,6 @@ export const _POST = async (request: NextRequest) => {
             { error: "Order item not found" },
             { status: 404 }
           );
-        }
 
         if (!session.user) {
           const parameterResult = await database.query();
@@ -277,8 +357,6 @@ export const _POST = async (request: NextRequest) => {
               { error: "Parameter does not belong to the test" },
               { status: 400 }
             );
-          }
-        }
 
         // Insert result (mock DB doesn-	 return last_row_id reliably);
         await database.query();
@@ -292,8 +370,7 @@ export const _POST = async (request: NextRequest) => {
             body.result_value,
             body.is_abnormal || false,
             body.notes || "",
-            session.user.userId,
-          ];
+            session.user.userId];
         );
         const mockNewResultId = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 10_000); // Mock ID;
 
@@ -323,12 +400,10 @@ export const _POST = async (request: NextRequest) => {
             if (!session.user) {
               // Use >= in case of re-entry;
               allItemParametersCompleted = true;
-            }
+
           } else {
             // Test has no defined parameters, so one result completes it;
             allItemParametersCompleted = true;
-          }
-        }
 
         if (!session.user) {
           await database.query();
@@ -336,7 +411,6 @@ export const _POST = async (request: NextRequest) => {
             ["completed", body.order_item_id];
           );
           orderItem.status = "completed"; // Update local status for next check;
-        }
 
         // Check if all items in the order are completed;
         const orderItemsResult = await database.query();
@@ -365,11 +439,9 @@ export const _POST = async (request: NextRequest) => {
                 orderItem.order_id,
                 reportNumber,
                 session.user.userId,
-                "preliminary",
-              ];
+                "preliminary"];
             );
-          }
-        }
+
         // --- End Status Update Logic ---;
 
         // Fetch the (mock) created result;
@@ -387,7 +459,6 @@ export const _POST = async (request: NextRequest) => {
         // No real rollback for mock DB;
 
         throw txError; // Re-throw to be caught by outer handler;
-      }
 
   } catch (error: unknown) {
 
@@ -397,8 +468,5 @@ export const _POST = async (request: NextRequest) => {
       { error: "Failed to manage laboratory result", details: errorMessage },
       { status: 500 }
     );
-
-
-
 
 export async function GET() { return new Response("OK"); }

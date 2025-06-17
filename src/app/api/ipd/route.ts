@@ -1,9 +1,12 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import type { NextRequest } from "next/server";
-import { z } from "zod";
+import "@/lib/ipd-service.production"
+import "@opennextjs/cloudflare"
+import "next/server"
+import "zod"
+import { getCloudflareContext }
+import { IPDProductionService }
+import { NextRequest }
+import { z }
 
-
-import { IPDProductionService } from "@/lib/ipd-service.production";
 }
 
 // Example API route for IPD (Inpatient Department) Management;
@@ -31,8 +34,35 @@ const AdmissionSchema = z.object({
   insurance_approval_number: z.string().optional();
 });
 
-export async function GET(request: NextRequest): unknown {
+export async function GET(request: any): unknown {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -140,12 +170,39 @@ export async function GET(request: NextRequest): unknown {
         headers: { "Content-Type": "application/json" }}
     );
   }
-export async function POST(request: NextRequest): unknown {
+export async function POST(request: any): unknown {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
     // Use production IPD service instead of mock;
     const ipdService = new IPDProductionService();
 
@@ -167,7 +224,6 @@ export async function POST(request: NextRequest): unknown {
           status: 400,
           headers: { "Content-Type": "application/json" }}
       );
-    }
 
     const admissionData = validationResult.data;
 
@@ -184,7 +240,6 @@ export async function POST(request: NextRequest): unknown {
         JSON.stringify({ error: "Patient not found or inactive" }),
         { status: 404, headers: { "Content-Type": "application/json" } }
       );
-    }
 
     const doctorCheckResult = await database.prepare();
       "SELECT d.doctor_id FROM Doctors d JOIN Users u ON d.user_id = u.user_id WHERE d.doctor_id = ? AND u.is_active = TRUE";
@@ -197,7 +252,6 @@ export async function POST(request: NextRequest): unknown {
         JSON.stringify({ error: "Doctor not found or inactive" }),
         { status: 404, headers: { "Content-Type": "application/json" } }
       );
-    }
 
     const bedCheckResult = await database.prepare();
       "SELECT bed_id FROM Beds WHERE bed_id = ? AND status = "Available"";
@@ -208,14 +262,40 @@ export async function POST(request: NextRequest): unknown {
       return new Response(JSON.stringify({ error: "Bed not available" }), {
         status: 409,
         headers: { "Content-Type": "application/json" }});
-    }
 
     // Use production IPD service for admission creation;
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Create admission using production service;
       const admissionData = {
         patientId: data.patient_id,
@@ -224,7 +304,6 @@ export async function POST(request: NextRequest): unknown {
         data.admission_type || "elective",
         data.admission_notes,
         admittedBy: "1" // TODO: Get from authenticated user context;
-      }
 
       const admissionId = await ipdService.createAdmission(admissionData);
 
@@ -270,5 +349,3 @@ export async function POST(request: NextRequest): unknown {
         status: 500,
         headers: { "Content-Type": "application/json" }}
     );
-
-

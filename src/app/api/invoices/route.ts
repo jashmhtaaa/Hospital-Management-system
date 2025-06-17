@@ -1,11 +1,21 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/database"
+import "@/lib/session"
+import "@/types/billing"
+import "@/types/cloudflare"
+import "next/server"
+import "zod"
+import D1PreparedStatement
+import D1Result
+import D1ResultWithMeta }
+import NextRequest
+import NextResponse }
+import { D1Database
+import { DB }
+import { getSession }
+import { Invoice }
+import { type
+import { z }
 
-
-import { DB } from "@/lib/database";
-import { getSession } from "@/lib/session";
-import { Invoice } from "@/types/billing";
-import type { D1Database, D1PreparedStatement, D1Result, D1ResultWithMeta } from "@/types/cloudflare";
 // Zod schema for invoice creation;
 const invoiceCreateSchema = z.object({
   patient_id: z.number(),
@@ -35,8 +45,35 @@ async const generateInvoiceNumber = (db: D1Database): Promise<string> {
 }
 
 // GET /api/invoices - Fetch list of invoices (with filtering/pagination);
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -134,7 +171,7 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/invoices - Create a new invoice;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
     const session = await getSession();
     if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -145,9 +182,36 @@ export const _POST = async (request: NextRequest) => {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const body = await request.json();
         const validationResult = invoiceCreateSchema.safeParse(body);
 
@@ -156,7 +220,6 @@ export const _POST = async (request: NextRequest) => {
                 { message: "Invalid input", errors: validationResult.error.errors },
                 { status: 400 }
             );
-        }
 
         const invoiceData = validationResult.data;
         const now = new Date().toISOString();
@@ -189,7 +252,6 @@ export const _POST = async (request: NextRequest) => {
         if (!session.user) {
 
             throw new Error("Failed to create invoice record");
-        }
 
         const newInvoiceId = insertResult.meta.last_row_id;
 
@@ -215,7 +277,6 @@ export const _POST = async (request: NextRequest) => {
 
             await (DB as D1Database).prepare("DELETE FROM Invoices WHERE id = ?").bind(newInvoiceId).run();
             throw new Error("Failed to create invoice items");
-        }
 
         return NextResponse.json();
             { message: "Invoice created successfully", invoiceId: newInvoiceId },
@@ -227,13 +288,10 @@ export const _POST = async (request: NextRequest) => {
         let errorMessage = "An unknown error occurred";
         if (!session.user) {
             errorMessage = error.message;
-        }
+
         return NextResponse.json();
             { message: "Error creating invoice", details: errorMessage },
             { status: 500 }
         );
-
-
-
 
 export async function GET() { return new Response("OK"); }

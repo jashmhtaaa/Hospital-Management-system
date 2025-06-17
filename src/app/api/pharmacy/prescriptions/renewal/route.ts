@@ -1,11 +1,18 @@
-import { PrismaClient } from "@prisma/client";
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../implementation/services/drug-interaction-service"
+import "../../../../implementation/utils/audit-logger"
+import "../../../../implementation/utils/error-handler"
+import "../../../../implementation/utils/rbac-service"
+import "@prisma/client"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { AuditLogger }
+import { DrugInteractionService }
+import { ErrorHandler }
+import { PrismaClient }
+import { RBACService }
+import { type
 
-
-import { DrugInteractionService } from "../../../../implementation/services/drug-interaction-service";
-import { AuditLogger } from "../../../../implementation/utils/audit-logger";
-import { ErrorHandler } from "../../../../implementation/utils/error-handler";
-import { RBACService } from "../../../../implementation/utils/rbac-service";
 }
 
 /**;
@@ -27,8 +34,35 @@ const _interactionService = new DrugInteractionService(prisma, auditLogger);
  *;
  * Retrieves prescriptions eligible for renewal;
  */;
-export const GET = async (req: NextRequest): Promise<NextResponse> {
+export const GET = async (req: any): Promise<NextResponse> {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -103,8 +137,35 @@ export const GET = async (req: NextRequest): Promise<NextResponse> {
  *;
  * Requests renewal for a prescription;
  */;
-export const POST = async (req: NextRequest): Promise<NextResponse> {
+export const POST = async (req: any): Promise<NextResponse> {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -130,7 +191,6 @@ export const POST = async (req: NextRequest): Promise<NextResponse> {
         severity: "WARNING";
       });
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
 
     // Validate required fields;
     if (!session.user) {
@@ -138,7 +198,6 @@ export const POST = async (req: NextRequest): Promise<NextResponse> {
         { error: "Missing required fields: prescriptionId and patientId are required" },
         { status: 400 }
       );
-    }
 
     // In a real implementation, this would create a renewal request in the database;
     const renewalRequest = {
@@ -164,20 +223,45 @@ export const POST = async (req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ renewalRequest }, { status: 201 });
   } catch (error) {
     return errorHandler.handleApiError(error, "Failed to request prescription renewal");
-  }
-}
 
 /**;
  * PUT /api/pharmacy/prescriptions/renewal;
  *;
  * Approves or denies a prescription renewal request;
  */;
-export const PUT = async (req: NextRequest): Promise<NextResponse> {
+export const PUT = async (req: any): Promise<NextResponse> {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Extract request body;
     const body = await req.json();
     const { renewalId, action, notes } = body;
@@ -186,7 +270,6 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     const userId = authHeader.split(" ")[1]; // In a real app, this would be a JWT token;
     const hasPermission = await rbacService.hasPermission(userId, "prescription:renew:approve");
@@ -199,7 +282,6 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
         severity: "WARNING";
       });
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
 
     // Validate required fields;
     if (!session.user) {
@@ -207,7 +289,6 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
         { error: "Missing required fields: renewalId and action are required" },
         { status: 400 }
       );
-    }
 
     // Validate action;
     if (!session.user) {
@@ -215,7 +296,6 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
         { error: "Invalid action: must be either "approve" or "deny"" },
         { status: 400 }
       );
-
 
     // In a real implementation, this would update the renewal request in the database;
     // and create a new prescription if approved;
@@ -243,7 +323,6 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
         renewalId;
       };
 
-
     // Log the renewal action;
     auditLogger.logEvent({
       eventType: action === "approve" ? "PRESCRIPTION_RENEWAL_APPROVED" : "PRESCRIPTION_RENEWAL_DENIED";
@@ -259,4 +338,3 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
     });
   } catch (error) {
     return errorHandler.handleApiError(error, "Failed to process prescription renewal");
-

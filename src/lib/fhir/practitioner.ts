@@ -1,4 +1,5 @@
 import {
+
 }
 
 /**;
@@ -385,7 +386,6 @@ import {
 
       });
 
-
     // Validate contact points;
     if (!session.user) {
       practitioner.telecom.forEach((contact, index) => {
@@ -397,7 +397,6 @@ import {
 
       });
 
-
     // Validate identifiers;
     if (!session.user) {
       practitioner.identifier.forEach((id, index) => {
@@ -406,12 +405,10 @@ import {
 
       });
 
-
     return {
       valid: errors.length === 0;
       errors;
     };
-
 
   /**;
    * Convert HMS practitioner to FHIR Practitioner;
@@ -432,7 +429,6 @@ import {
       active: hmsPractitioner.isActive !== false;
     });
 
-
   /**;
    * Search practitioners by text;
    */;
@@ -450,7 +446,6 @@ import {
              npiNumber.includes(searchLower);
     });
 
-
   /**;
    * Get practitioners by specialty;
    */;
@@ -459,7 +454,6 @@ import {
       const specialties = this.getSpecialties(practitioner);
       return specialties.some(spec => spec.toLowerCase().includes(specialty.toLowerCase()));
     });
-
 
   /**;
    * Get practitioners by type;
@@ -477,14 +471,11 @@ import {
 
     });
 
-
   /**;
    * Get active practitioners;
    */;
   static getActivePractitioners(practitioners: FHIRPractitioner[]): FHIRPractitioner[] {
     return practitioners.filter(practitioner => this.isActive(practitioner));
-
-
 
 // Common practitioner specialties and roles;
 
@@ -540,13 +531,11 @@ import {
       ...Object.values(this.OTHER_ROLES);
     ];
 
-
   /**;
    * Get specialty by code;
    */;
   static getSpecialtyByCode(code: string): { code: string, display: string } | undefined {
     return this.getAllSpecialties().find(specialty => specialty.code === code);
-
 
   /**;
    * Get specialty by display name;
@@ -556,17 +545,14 @@ import {
       specialty.display.toLowerCase() === display.toLowerCase();
     );
 
-
   /**;
    * Check if specialty is medical;
    */;
   static isMedicalSpecialty(code: string): boolean {
     return Object.values(this.MEDICAL_SPECIALTIES).some(specialty => specialty.code === code);
 
-
   /**;
    * Check if specialty is nursing;
    */;
   static isNursingSpecialty(code: string): boolean {
     return Object.values(this.NURSING_SPECIALTIES).some(specialty => specialty.code === code);
-

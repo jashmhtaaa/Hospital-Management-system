@@ -1,5 +1,8 @@
+import "@prisma/client"
+import HousekeepingRequest
+import HousekeepingTask }
+import { HousekeepingInspection
 
-import type { HousekeepingInspection, HousekeepingRequest, HousekeepingTask } from "@prisma/client";
 // FHIR-compliant interfaces for Housekeeping Management;
 
 /**;
@@ -34,7 +37,6 @@ import type { HousekeepingInspection, HousekeepingRequest, HousekeepingTask } fr
     text: string;
   }[];
 
-
 /**;
  * FHIR-compliant Housekeeping Task;
  * Maps to FHIR Task resource;
@@ -65,7 +67,6 @@ import type { HousekeepingInspection, HousekeepingRequest, HousekeepingTask } fr
     end?: string;
   };
 
-
 /**;
  * FHIR-compliant Housekeeping Location;
  * Maps to FHIR Location resource;
@@ -84,7 +85,6 @@ import type { HousekeepingInspection, HousekeepingRequest, HousekeepingTask } fr
   partOf?: {
     reference: string;
   };
-
 
 /**;
  * FHIR-compliant Housekeeping Inspection;
@@ -125,7 +125,6 @@ import type { HousekeepingInspection, HousekeepingRequest, HousekeepingTask } fr
       code: string;
     };
   }[];
-
 
 /**;
  * Convert database HousekeepingRequest to FHIR ServiceRequest;
@@ -184,8 +183,6 @@ export const _toFHIRHousekeepingRequest = (unknown,
     authoredOn: request.createdAt.toISOString(),
     note: request.notes ? [text: request.notes ] : [];
 
-
-
 /**;
  * Convert database HousekeepingTask to FHIR Task;
  */;
@@ -220,7 +217,6 @@ export const _toFHIRHousekeepingTask = (HousekeepingRequest;
     task.startTime?.toISOString(),
       end: task.endTime?.toISOString();
   };
-
 
 /**;
  * Convert database HousekeepingInspection to FHIR Observation;
@@ -279,7 +275,6 @@ export const _toFHIRHousekeepingInspection = (unknown,
       }] : []);
     ];
   };
-
 
 // Helper function to map priority;
 const priorityMap = (priority: string): "routine" | "urgent" | "asap" | "stat" {

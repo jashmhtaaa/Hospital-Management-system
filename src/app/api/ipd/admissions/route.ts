@@ -1,5 +1,8 @@
+import "next/server"
+import NextResponse }
 import {
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest
+
   getAdmissionsFromDB,
   getAdmissionByIdFromDB,
   createAdmissionInDB,
@@ -18,8 +21,35 @@ import { NextRequest, NextResponse } from "next/server";
  * Retrieves a list of admissions, optionally filtered by query parameters.;
  * Can also retrieve a single admission by ID if provided as a query parameter.;
  */;
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -83,12 +113,39 @@ export const GET = async (request: NextRequest) => {
  * POST /api/ipd/admissions;
  * Creates a new admission.;
  */;
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // FIX: Use imported CreateAdmissionData type;
     const admissionData = (await request.json()) as CreateAdmissionData;
 
@@ -99,7 +156,6 @@ export const POST = async (request: NextRequest) => {
         { error: "Missing required fields (e.g., patient_id)" }, // Adjust error message based on actual required fields;
         { status: 400 }
       );
-    }
 
     // Simulate creating the admission in the database;
     const newAdmission = await createAdmissionInDB(admissionData);
@@ -114,8 +170,6 @@ export const POST = async (request: NextRequest) => {
       { error: "Failed to create admission", details: errorMessage },
       { status: 500 }
     );
-  }
-}
 
 /**;
  * PUT /api/ipd/admissions/[id];
@@ -124,12 +178,39 @@ export const POST = async (request: NextRequest) => {
  * but the current implementation reads it from the path manually.;
  * A better approach is to use dynamic route segments like /api/ipd/admissions/[id]/route.ts;
  */;
-export const PUT = async (request: NextRequest) => {
+export const PUT = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // This manual path parsing is fragile. Consider using dynamic routes.;
     const path = request.nextUrl.pathname;
     const idString = path.split("/").pop();
@@ -140,7 +221,6 @@ export const PUT = async (request: NextRequest) => {
         { error: "Invalid or missing admission ID in URL path" },
         { status: 400 }
       );
-    }
 
     // FIX: Use imported UpdateAdmissionData type;
     const updateData = (await request.json()) as UpdateAdmissionData;
@@ -154,7 +234,6 @@ export const PUT = async (request: NextRequest) => {
         { status: 404 }
       );
 
-
     return NextResponse.json({ admission: updatedAdmission });
   } catch (error: unknown) {
 
@@ -165,5 +244,3 @@ export const PUT = async (request: NextRequest) => {
       { error: "Failed to update admission", details: errorMessage },
       { status: 500 }
     );
-
-

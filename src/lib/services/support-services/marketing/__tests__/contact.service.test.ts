@@ -1,9 +1,16 @@
+import "../contact.service"
+import "@/lib/audit"
+import "@/lib/encryption"
+import "@/lib/errors"
+import "@/lib/prisma"
+import NotFoundError
+import ValidationError }
+import { AuditLogger }
+import { ContactService }
+import { DatabaseError
+import { EncryptionService }
+import { prisma }
 
-import { AuditLogger } from "@/lib/audit";
-import { EncryptionService } from "@/lib/encryption";
-import { DatabaseError, NotFoundError, ValidationError } from "@/lib/errors";
-import { prisma } from "@/lib/prisma";
-import { ContactService } from "../contact.service";
 // Mock dependencies;
 jest.mock("@/lib/prisma", () => ({
   jest.fn(),
@@ -180,8 +187,7 @@ describe("ContactService", () => {
         "REFERRAL",
         new Date(),
         updatedAt: new Date();
-      },
-    ];
+      }];
 
     it("should retrieve contacts with pagination", async () => {
       // Arrange;
@@ -208,8 +214,7 @@ describe("ContactService", () => {
           expect.objectContaining({
             id: mockContacts[1].id,
             expect.not.stringContaining("encrypted_");
-          }),
-        ]),
+          })]),
         2,
           10,
           totalPages: 1;
@@ -238,8 +243,7 @@ describe("ContactService", () => {
         filters.status,
           expect.arrayContaining([;
             { name: { contains: filters.search, mode: "insensitive" } },
-            { email: { contains: filters.search, mode: "insensitive" } },
-          ])})});
+            { email: { contains: filters.search, mode: "insensitive" } }])})});
 
       expect(prisma.contact.findMany).toHaveBeenCalledWith();
         expect.objectContaining({

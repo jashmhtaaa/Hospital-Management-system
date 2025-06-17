@@ -1,9 +1,10 @@
+import "@/lib/utils"
+import "@radix-ui/react-scroll-area"
+import "react"
+import * as ScrollAreaPrimitive
+import * as React
+import { cn }
 
-import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
-import * as React from "react";
-
-
-import { cn } from "@/lib/utils";
 }
 
 "use client";

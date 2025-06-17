@@ -1,11 +1,19 @@
-import React from "react";
+import "@/components/radiology/radiology-order-list"
+import "@/components/radiology/radiology-reports-list"
+import "@/components/radiology/radiology-settings"
+import "@/components/radiology/radiology-studies-list"
+import "@/components/ui/tabs"
+import "react"
+import RadiologyOrderList
+import RadiologyReportsList
+import RadiologySettings
+import RadiologyStudiesList
+import React
+import TabsContent
+import TabsList
+import TabsTrigger }
+import { Tabs
 
-
-import RadiologyOrderList from "@/components/radiology/radiology-order-list";
-import RadiologyReportsList from "@/components/radiology/radiology-reports-list";
-import RadiologySettings from "@/components/radiology/radiology-settings";
-import RadiologyStudiesList from "@/components/radiology/radiology-studies-list";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 }
 
 "use client";

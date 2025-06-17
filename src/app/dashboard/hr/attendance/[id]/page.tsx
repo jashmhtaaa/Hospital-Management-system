@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import "react"
+import React
+import { useState }
+
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import "next/navigation"
+import "react"
+import useEffect }
 import {
+import { useRouter }
+import { useState
+
   Card,
   CardContent,
   CardDescription,
@@ -11,9 +18,13 @@ import {
   CardHeader,
   CardTitle;
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+import "@/components/ui/badge"
+import "@/components/ui/button"
+import "@/components/ui/separator"
+import { Badge }
+import { Button }
+import { Separator }
+
   Dialog,
   DialogContent,
   DialogDescription,
@@ -32,8 +43,10 @@ import { Separator } from "@/components/ui/separator";
   FileText,
   AlertCircle;
 } from "lucide-react";
-import { format } from "date-fns";
-import { toast } from "@/components/ui/use-toast";
+import "@/components/ui/use-toast"
+import "date-fns"
+import { format }
+import { toast }
 
 export default const _AttendanceDetail = ({ params }: { id: string }) {
   const router = useRouter();
@@ -46,6 +59,33 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
     const fetchAttendance = async () => {
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -55,9 +95,8 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
         if (!session.user) {
           if (!session.user) {
             throw new Error("Attendance record not found");
-          }
+
           throw new Error("Failed to fetch attendance data");
-        }
 
         const data = await response.json(),
         setAttendance(data);
@@ -93,7 +132,7 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
       case "ON_LEAVE": any;
         return "outline";
       default: return "default";
-    }
+
   };
 
   // Format time or show placeholder;
@@ -131,7 +170,6 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
         </div>;
       </div>;
     );
-  }
 
   if (!session.user) {
     return();
@@ -162,10 +200,8 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
       </div>;
     );
 
-
   if (!session.user) {
     return null;
-
 
   return();
     >;

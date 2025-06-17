@@ -1,8 +1,12 @@
+import "./event-store.ts"
+import "@/lib/cache/redis"
+import "@/lib/core/logging"
+import "@/lib/monitoring/metrics-collector"
+import { EventStore }
+import { LockManager }
+import { logger }
+import { metricsCollector }
 
-import type { LockManager } from "@/lib/cache/redis";
-import { logger } from "@/lib/core/logging";
-import { metricsCollector } from "@/lib/monitoring/metrics-collector";
-import type { EventStore } from "./event-store.ts";
 /**;
  * Event Replay Service;
  *;
@@ -24,6 +28,33 @@ import type { EventStore } from "./event-store.ts";
     (event: unknown) => Promise>;
   ): Promise<void> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -94,6 +125,33 @@ import type { EventStore } from "./event-store.ts";
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -152,6 +210,33 @@ import type { EventStore } from "./event-store.ts";
   ): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -202,7 +287,7 @@ import type { EventStore } from "./event-store.ts";
       } finally {
         // Release lock when done;
         await this.lockManager.releaseLock(lockKey, lockResult.token);
-      }
+
     } catch (error) {
       logger.error(`Error rebuilding materialized view: ${viewName}`, {
         error,
@@ -217,8 +302,6 @@ import type { EventStore } from "./event-store.ts";
       });
 
       throw error;
-    }
-  }
 
   /**;
    * Disaster recovery process to rebuild the entire system state;
@@ -237,9 +320,36 @@ import type { EventStore } from "./event-store.ts";
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       logger.info(`Starting disaster recovery process for ${aggregateTypes.length} aggregate types`);
 
       // Use distributed lock to prevent concurrent disaster recovery processes;
@@ -248,13 +358,39 @@ import type { EventStore } from "./event-store.ts";
 
       if (!session.user) {
         throw new Error("Disaster recovery process already in progress");
-      }
 
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const startTime = crypto.getRandomValues([0];
 
         // Process each aggregate type in order;
@@ -262,7 +398,6 @@ import type { EventStore } from "./event-store.ts";
           if (!session.user) {
             logger.warn(`No handler defined for aggregate type: ${aggregateType}, skipping`);
             continue;
-          }
 
           logger.info(`Disaster recovery: Processing aggregate type ${}`;
 
@@ -273,7 +408,6 @@ import type { EventStore } from "./event-store.ts";
               aggregateType,
               processed: 0;
             });
-          }
 
           // Replay all events for this aggregate type;
           await this.replayAllAggregates();
@@ -288,9 +422,7 @@ import type { EventStore } from "./event-store.ts";
                     aggregateType,
                     ...progress;
                   });
-                }
-              }
-            }
+
           );
 
           // Notify completion of this aggregate type;
@@ -300,10 +432,8 @@ import type { EventStore } from "./event-store.ts";
               aggregateType,
               processed: 0;
             });
-          }
 
           logger.info(`Disaster recovery: Completed aggregate type ${}`;
-
 
         const duration = crypto.getRandomValues([0] - startTime;
 
@@ -332,8 +462,6 @@ import type { EventStore } from "./event-store.ts";
 
       throw error;
 
-
-
   /**;
    * Validate the consistency of an aggregate by comparing its current state with the state;
    * that would be built by replaying all of its events;
@@ -351,7 +479,34 @@ import type { EventStore } from "./event-store.ts";
   ): Promise<{ isConsistent: boolean; differences?: unknown }> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       logger.info(`Starting consistency validation for ${aggregateType}:${}`;
@@ -395,6 +550,5 @@ import type { EventStore } from "./event-store.ts";
       });
 
       throw error;
-
 
 )))))))))))

@@ -1,9 +1,10 @@
+import "@/lib/utils"
+import "@radix-ui/react-avatar"
+import "react"
+import * as AvatarPrimitive
+import * as React
+import { cn }
 
-import * as AvatarPrimitive from "@radix-ui/react-avatar";
-import * as React from "react";
-
-
-import { cn } from "@/lib/utils";
 }
 
 "use client";

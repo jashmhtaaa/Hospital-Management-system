@@ -1,15 +1,34 @@
-import { useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import "@/components/opd/opd-appointment-list"
+import "@/components/opd/opd-consultation-form"
+import "@/components/opd/opd-patient-queue"
+import "@/components/opd/opd-statistics"
+import "@/components/ui/button"
+import "@/components/ui/calendar"
+import "@/components/ui/card"
+import "@/components/ui/tabs"
+import "next/navigation"
+import "react"
+import CardContent
+import CardHeader
+import CardTitle }
+import OPDAppointmentList
+import OPDConsultationForm
+import OPDPatientQueue
+import OPDStatistics
+import React
+import TabsContent
+import TabsList
+import TabsTrigger }
+import useEffect }
+import { Button }
+import { Calendar }
+import { Card
+import { Tabs
+import { useRouter }
+import { useState
 
-import OPDAppointmentList from "@/components/opd/opd-appointment-list";
-import OPDConsultationForm from "@/components/opd/opd-consultation-form";
-import OPDPatientQueue from "@/components/opd/opd-patient-queue";
-import OPDStatistics from "@/components/opd/opd-statistics";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton for loading states;
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 }
 
 // OPD Dashboard Page;
@@ -43,13 +62,39 @@ export default const _OPDDashboard = () {
       setPermissionError(undefined);
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
         const [createResponse, statsResponse] = await Promise.all([;
           fetch("/api/session/check-permission?permission=appointment:create"),
-          fetch("/api/session/check-permission?permission=statistics:view"),
-        ]);
+          fetch("/api/session/check-permission?permission=statistics:view")]);
 
         // Check responses before parsing JSON;
         if (!session.user) {
@@ -57,7 +102,6 @@ export default const _OPDDashboard = () {
           throw new Error();
             `Failed to fetch permissions: ${failedResponse.statusText} (${failedResponse.status})`;
           );
-        }
 
         // FIX: Cast JSON responses to the defined type;
         const createData = (await createResponse.json()) as PermissionCheckResponse;
@@ -79,7 +123,7 @@ export default const _OPDDashboard = () {
         });
       } finally {
         setLoadingPermissions(false);
-      }
+
     };
 
     checkPermissions();
@@ -235,4 +279,3 @@ export default const _OPDDashboard = () {
       </div>;
     </div>;
   );
-

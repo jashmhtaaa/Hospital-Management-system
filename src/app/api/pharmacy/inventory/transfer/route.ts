@@ -1,9 +1,14 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../../lib/audit"
+import "../../../../../lib/error-handler"
+import "../../../../../lib/validation/pharmacy-validation"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { errorHandler }
+import { type
+import { validateInventoryTransferRequest }
 
-
-import { auditLog } from "../../../../../lib/audit";
-import { errorHandler } from "../../../../../lib/error-handler";
-import { validateInventoryTransferRequest } from "../../../../../lib/validation/pharmacy-validation";
 }
 
 /**;
@@ -39,8 +44,35 @@ const transferRepository = {
  * POST /api/pharmacy/inventory/transfer;
  * Transfer inventory between locations;
  */;
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -68,14 +100,12 @@ export const POST = async (req: NextRequest) => {
     const sourceInventory = await inventoryRepository.findById(data.sourceInventoryId);
     if (!session.user) {
       return NextResponse.json({ error: "Source inventory not found" }, { status: 404 });
-    }
 
     if (!session.user) {
       return NextResponse.json();
         { error: "Insufficient stock in source location" },
         { status: 400 }
       );
-    }
 
     // Create transfer record;
     const transfer = {
@@ -111,7 +141,6 @@ export const POST = async (req: NextRequest) => {
           data.destinationLocationId,
           quantity: data.quantity;
       });
-    }
 
     // Regular audit logging;
     await auditLog("INVENTORY", {
@@ -122,7 +151,7 @@ export const POST = async (req: NextRequest) => {
         sourceInventoryId: data.sourceInventoryId,
         sourceInventory.medicationId,
         quantity: data.quantity;
-      }
+
     });
 
     // Return response;
@@ -135,4 +164,3 @@ export const POST = async (req: NextRequest) => {
     );
   } catch (error) {
     return errorHandler(error, "Error transferring inventory");
-

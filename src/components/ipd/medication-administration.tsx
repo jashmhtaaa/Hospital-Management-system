@@ -1,6 +1,13 @@
-import type React from "react";
-import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
+import "react"
+import ChangeEvent
+import FormEvent
+import React
+import type
+import useEffect
+import useState }
 import {
+import { type
+
 }
 
 "use client";
@@ -20,7 +27,8 @@ import {
   Label,
   // Textarea, // FIX: Removed unused import;
 } from "@/components/ui"; // Assuming Select components are also here or adjust import;
-import { Loader2 } from "lucide-react";
+import "lucide-react"
+import { Loader2 }
 
 // Define interfaces for data structures;
 interface MedicationRecord {
@@ -87,9 +95,36 @@ const MedicationAdministration: React.FC<;
 
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         setLoading(true),
         setError(undefined);
         // Simulate API call;
@@ -119,8 +154,7 @@ const MedicationAdministration: React.FC<;
             medication_name: "Amoxicillin 250mg Capsule",
             "oral",
             "Smith";
-          },
-        ];
+          }];
         const "ADM123456",
           admission_date: [0] - 86_400_000).toISOString(), // Yesterday;
           patient_first_name: "Jane",
@@ -147,9 +181,36 @@ const MedicationAdministration: React.FC<;
     const fetchMedications = async (): Promise<void> => {
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         setLoadingMedications(true);
         // Simulate API call;
         // const _response = await fetch("/api/pharmacy/inventory?in_stock=true");
@@ -176,8 +237,7 @@ const MedicationAdministration: React.FC<;
             id: "med_003",
             "Tablet",
             strength: "200mg";
-          },
-        ];
+          }];
         setMedications(mockMeds);
       } catch (error_) {
 
@@ -212,19 +272,44 @@ const MedicationAdministration: React.FC<;
 
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Validate required fields;
       if (!session.user) {
         throw new Error("Please fill in Medication, Dosage, and Route");
 
-
       const submissionData = {
         ...formData,
         administered_time: new Date().toISOString();
         // administered_by_id: session?.user?.id // Get from session in real app;
-
 
       // Simulate API call;
       // const _response = await fetch(`/api/ipd/admissions/${admissionId}/medication-administration`, {
@@ -283,7 +368,34 @@ const MedicationAdministration: React.FC<;
   const formatDate = (dateString: string): string => {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const "numeric",
@@ -310,8 +422,7 @@ const MedicationAdministration: React.FC<;
     { value: "inhaled", label: "Inhaled" },
     { value: "sublingual", label: "Sublingual" },
     { value: "ng", label: "Nasogastric (NG)" },
-    { value: "other", label: "Other" },
-  ];
+    { value: "other", label: "Other" }];
 
   return();
     >;
@@ -413,14 +524,7 @@ const MedicationAdministration: React.FC<;
 
               >;
                 <Label htmlFor="notes">Notes>;
-                <Input // Changed to Input, use Textarea if multi-line is needed;
-                  id="notes";
-                  name="notes";
-                  type="text";
-                  placeholder="Any additional information (optional)";
-                  value={formData.notes}
-                  onChange={handleChange}
-                  disabled={submitting}
+                <Input></Input>;
                 />;
                 {/* <Textarea>;
                   id="notes";

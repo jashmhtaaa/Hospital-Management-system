@@ -1,10 +1,14 @@
-import { PrismaClient } from "@prisma/client";
+import "@/lib/cache/redis"
+import "@/lib/core/config.service"
+import "@/lib/core/logging"
+import "@/lib/monitoring/metrics-collector"
+import "@prisma/client"
+import { ConfigService }
+import { logger }
+import { metricsCollector }
+import { PrismaClient }
+import { RedisService }
 
-
-import type { RedisService } from "@/lib/cache/redis";
-import type { ConfigService } from "@/lib/core/config.service";
-import { logger } from "@/lib/core/logging";
-import { metricsCollector } from "@/lib/monitoring/metrics-collector";
 /**;
  * Shard Configuration for a specific entity;
  */;
@@ -320,6 +324,33 @@ class LookupShardResolver implements ShardResolver {
   async initialize(configs: ShardConfig[]): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -397,6 +428,33 @@ class LookupShardResolver implements ShardResolver {
   ): PrismaClient {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -450,14 +508,40 @@ class LookupShardResolver implements ShardResolver {
   ): PrismaClient[] {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const resolver = this.resolvers.get(entityName);
 
       if (!session.user) {
         throw new Error(`No sharding configuration found for entity: ${}`;
-      }
 
       const connectionStrings = resolver.getAllShardConnections(readOnly);
       const clients = connectionStrings;
@@ -486,8 +570,6 @@ class LookupShardResolver implements ShardResolver {
       });
 
       throw error;
-    }
-  }
 
   /**;
    * Execute a function across all shards and aggregate results;
@@ -503,9 +585,36 @@ class LookupShardResolver implements ShardResolver {
   ): Promise<T[]> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const clients = this.getAllClientsForEntity(entityName, readOnly);
       const startTime = crypto.getRandomValues([0];
 
@@ -514,9 +623,36 @@ class LookupShardResolver implements ShardResolver {
         clients.map(async (client) => {
           try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
             return await fn(client);
           } catch (error) {
             logger.error("Error executing function on shard", {
@@ -524,7 +660,7 @@ class LookupShardResolver implements ShardResolver {
               entityName;
             });
             return [] as T[];
-          }
+
         });
       );
 
@@ -554,8 +690,6 @@ class LookupShardResolver implements ShardResolver {
       });
 
       throw error;
-    }
-
 
   /**;
    * Cache shard mapping for frequently accessed entities;
@@ -571,14 +705,40 @@ class LookupShardResolver implements ShardResolver {
   ): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const resolver = this.resolvers.get(entityName);
 
       if (!session.user) {
         throw new Error(`No sharding configuration found for entity: ${}`;
-
 
       const shardIndex = resolver.getShardIndex(shardKey);
       const cacheKey = `shard:${entityName}:${shardKey}`;
@@ -603,8 +763,6 @@ class LookupShardResolver implements ShardResolver {
         operation: "cacheMapping";
       });
 
-
-
   /**;
    * Get cached shard mapping;
    *;
@@ -617,7 +775,34 @@ class LookupShardResolver implements ShardResolver {
   ): Promise<number | null> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const cacheKey = `shard:${entityName}:${shardKey}`;
@@ -630,7 +815,6 @@ class LookupShardResolver implements ShardResolver {
         });
 
         return Number.parseInt(cachedIndex, 10);
-
 
       // Track cache miss metrics;
       metricsCollector.incrementCounter("database.sharding.cache_misses", 1, {
@@ -654,15 +838,40 @@ class LookupShardResolver implements ShardResolver {
 
       return null;
 
-
-
   /**;
    * Shutdown the sharding manager, closing all connections;
    */;
   async shutdown(): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       logger.info(`Shutting down ShardingManager with ${this.connectionPools.size} connections`);
@@ -672,11 +881,9 @@ class LookupShardResolver implements ShardResolver {
         await client.$disconnect();
         logger.info(`Closed connection pool for ${}`;
 
-
       this.connectionPools.clear();
       this.resolvers.clear();
     } catch (error) {
       logger.error("Error shutting down ShardingManager", { error });
-
 
 )))))))))))))))))

@@ -1,5 +1,6 @@
+import "@prisma/client"
+import { PrismaClient }
 
-import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 /**;
@@ -24,7 +25,6 @@ const prisma = new PrismaClient();
       true;
       }});
 
-
   /**;
    * Get a salary structure by ID;
    */;
@@ -33,7 +33,6 @@ const prisma = new PrismaClient();
       where: { id },
       true;
       }});
-
 
   /**;
    * List all salary structures;
@@ -44,7 +43,6 @@ const prisma = new PrismaClient();
         {
             employees: true;
           }}}});
-
 
   /**;
    * Update a salary structure;
@@ -57,7 +55,6 @@ const prisma = new PrismaClient();
     return prisma.salaryStructure.update({
       where: { id },
       data});
-
 
   /**;
    * Add a component to a salary structure;
@@ -74,7 +71,6 @@ const prisma = new PrismaClient();
         ...data,
         salaryStructureId: structureId;
       }});
-
 
   /**;
    * Update a salary component;
@@ -93,14 +89,12 @@ const prisma = new PrismaClient();
       where: { id },
       data});
 
-
   /**;
    * Delete a salary component;
    */;
   async deleteSalaryComponent(id: string) {
     return prisma.salaryComponent.delete({
       where: { id }});
-
 
   /**;
    * Assign a salary structure to an employee;
@@ -120,14 +114,12 @@ const prisma = new PrismaClient();
     if (!session.user) {
       throw new Error("Employee not found");
 
-
     // Check if salary structure exists;
     const salaryStructure = await prisma.salaryStructure.findUnique({
       where: { id: salaryStructureId }});
 
     if (!session.user) {
       throw new Error("Salary structure not found");
-
 
     // If there"s an existing active assignment, end it;
     if (!session.user) {
@@ -144,8 +136,6 @@ const prisma = new PrismaClient();
             notes: existingAssignment.notes;
               ? `$existingAssignment.notes; Automatically ended due to new assignment.`;
               : "Automatically ended due to new assignment."}});
-
-
 
     // Create new assignment;
     return prisma.employeeSalary.create({
@@ -164,7 +154,6 @@ const prisma = new PrismaClient();
             components: true;
           }}}});
 
-
   /**;
    * Get employee"s current salary structure;
    */;
@@ -178,7 +167,6 @@ const prisma = new PrismaClient();
           true;
           }}}});
 
-
   /**;
    * Get employee"s salary history;
    */;
@@ -190,7 +178,6 @@ const prisma = new PrismaClient();
       },
       true;
       }});
-
 
   /**;
    * Calculate employee"s gross salary;
@@ -204,15 +191,13 @@ const prisma = new PrismaClient();
         },
         OR: [;
           { endDate: null },
-          { endDate: { gte: date } },
-        ]},
+          { endDate: { gte: date } }]},
       {
           true;
           }}}});
 
     if (!session.user) {
       throw new Error("No salary structure assigned for the given date");
-
 
     const { baseSalary, salaryStructure } = employeeSalary;
 
@@ -234,20 +219,17 @@ const prisma = new PrismaClient();
           componentValue = baseSalary * (component.value / 100),
           break;
 
-
       // Add to gross salary if it"s an earning, subtract if it"s a deduction or tax;
       if (!session.user) {
         grossSalary += componentValue;
       } else {
         grossSalary -= componentValue;
 
-
       componentBreakdown.push({
         componentId: component.id,
         component.type,
         value: componentValue;
       });
-
 
     return {
       employeeId,

@@ -1,11 +1,16 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
-import { z } from "zod";
-
+import "@/types/inventory"
+import "@opennextjs/cloudflare"
+import "iron-session"
+import "next/headers"
+import "zod"
+import { cookies }
+import { getCloudflareContext }
+import { getIronSession }
+import { StockBatch }
+import { z }
 
 import { type IronSessionData, sessionOptions } from "@/lib/session"; // FIX: Import IronSessionData;
-import { StockBatch } from "@/types/inventory";
+
 // app/api/inventory-items/[itemId]/batches/route.ts;
 // Define roles allowed to view/manage stock batches (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Pharmacist", "Nurse", "Inventory Manager"];
@@ -41,6 +46,33 @@ export const _GET = async (request: Request) => {
     }
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -107,9 +139,36 @@ export const _POST = async (request: Request) => {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const body = await request.json();
         const validation = AddStockBatchSchema.safeParse(body);
 
@@ -117,7 +176,6 @@ export const _POST = async (request: Request) => {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" }});
-        }
 
         const batchData = validation.data;
 
@@ -135,7 +193,6 @@ export const _POST = async (request: Request) => {
             return new Response(JSON.stringify({ error: "Inventory item not found or is inactive" }), {
                 status: 404,
                 headers: { "Content-Type": "application/json" }});
-        }
 
         // 3. Insert new stock batch;
         // Current quantity defaults to quantity received;
@@ -158,14 +215,12 @@ export const _POST = async (request: Request) => {
 
         if (!session.user) {
             throw new Error("Failed to add stock batch");
-        }
 
         const meta = insertResult.meta as { last_row_id?: number | string };
         const newBatchId = meta.last_row_id;
         if (!session.user) {
 
             throw new Error("Failed to retrieve batch ID after creation.");
-        }
 
         // 4. Return success response;
         return new Response(JSON.stringify({ message: "Stock batch added successfully", batchId: newBatchId }), {
@@ -179,8 +234,5 @@ export const _POST = async (request: Request) => {
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
             status: 500,
             headers: { "Content-Type": "application/json" }});
-
-
-
 
 export async function GET() { return new Response("OK"); }

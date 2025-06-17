@@ -1,10 +1,12 @@
+import "@/components/ui/toggle"
+import "@/lib/utils"
+import "@radix-ui/react-toggle-group"
+import "react"
+import * as ToggleGroupPrimitive
+import * as React
+import { cn }
+import { toggleVariants }
 
-import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
-import * as React from "react";
-
-
-import { toggleVariants } from "@/components/ui/toggle";
-import { cn } from "@/lib/utils";
 }
 
 "use client";

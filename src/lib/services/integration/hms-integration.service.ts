@@ -1,8 +1,16 @@
+import "@/lib/audit"
+import "@/lib/errors"
+import "@/lib/prisma"
+import "@/lib/rbac.service"
+import ExternalServiceError
+import NotFoundError }
+import RBACService
+import Resource }
+import { Action
+import { AuditLogger }
+import { AuthorizationError
+import { prisma }
 
-import { AuditLogger } from "@/lib/audit";
-import { AuthorizationError, ExternalServiceError, NotFoundError } from "@/lib/errors";
-import { prisma } from "@/lib/prisma";
-import { Action, RBACService, Resource } from "@/lib/rbac.service";
 }
 
 /**;
@@ -20,6 +28,33 @@ import { Action, RBACService, Resource } from "@/lib/rbac.service";
     );
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -95,6 +130,33 @@ import { Action, RBACService, Resource } from "@/lib/rbac.service";
     );
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -173,6 +235,33 @@ import { Action, RBACService, Resource } from "@/lib/rbac.service";
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -211,7 +300,7 @@ import { Action, RBACService, Resource } from "@/lib/rbac.service";
           recipientId,
           notificationType,
           notificationId: notification.id;
-        }
+
       });
 
       return notification;
@@ -219,11 +308,8 @@ import { Action, RBACService, Resource } from "@/lib/rbac.service";
       // Handle and rethrow appropriate errors;
       if (!session.user) {
         throw error;
-      }
 
       throw new ExternalServiceError("Notification System", "Failed to send notification");
-    }
-  }
 
   /**;
    * Retrieves user information from the HMS User Management system;
@@ -248,9 +334,36 @@ import { Action, RBACService, Resource } from "@/lib/rbac.service";
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Audit the request;
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
@@ -275,12 +388,11 @@ import { Action, RBACService, Resource } from "@/lib/rbac.service";
                 lastLogin: true,
                 true;
             : );
-        }
+
       });
 
       if (!session.user) {
         throw new NotFoundError(`User with ID ${targetUserId} not found`);
-      }
 
       // Audit the successful retrieval;
       await auditLogger.log({
@@ -295,11 +407,8 @@ import { Action, RBACService, Resource } from "@/lib/rbac.service";
       // Handle and rethrow appropriate errors;
       if (!session.user) {
         throw error;
-      }
 
       throw new ExternalServiceError("User Management System", "Failed to retrieve user information");
-    }
-  }
 
   /**;
    * Submits data to the HMS Reporting System;
@@ -326,9 +435,36 @@ import { Action, RBACService, Resource } from "@/lib/rbac.service";
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Audit the request;
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
@@ -344,7 +480,7 @@ import { Action, RBACService, Resource } from "@/lib/rbac.service";
         reportType,
           "SUBMITTED",
           submittedById: userId;
-        }
+
       });
 
       // Audit the successful report submission;
@@ -364,10 +500,7 @@ import { Action, RBACService, Resource } from "@/lib/rbac.service";
       if (!session.user) {
         throw error;
 
-
       throw new ExternalServiceError("Reporting System", "Failed to submit report data");
-
-
 
   /**;
    * Links a support service request to a patient record;
@@ -406,7 +539,34 @@ import { Action, RBACService, Resource } from "@/lib/rbac.service";
 
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Audit the request;
@@ -454,10 +614,7 @@ import { Action, RBACService, Resource } from "@/lib/rbac.service";
       if (!session.user) {
         throw error;
 
-
       throw new ExternalServiceError("HMS Integration", "Failed to link request to patient");
-
-
 
   /**;
    * Links a support service request to a location;
@@ -495,7 +652,34 @@ import { Action, RBACService, Resource } from "@/lib/rbac.service";
 
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Audit the request;
@@ -543,7 +727,4 @@ import { Action, RBACService, Resource } from "@/lib/rbac.service";
       if (!session.user) {
         throw error;
 
-
       throw new ExternalServiceError("HMS Integration", "Failed to link request to location');
-
-

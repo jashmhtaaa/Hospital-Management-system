@@ -1,7 +1,8 @@
-import { createClient } from "redis";
+import "@/config"
+import "redis"
+import { config }
+import { createClient }
 
-
-import { config } from "@/config";
 // Create Redis client;
 const redisClient = createClient({
   url: config.redis.url,
@@ -32,6 +33,33 @@ redisClient.on("error", (err) => {
   static async set<T>(key: string, data: T, ttlSeconds = 3600): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -47,14 +75,38 @@ redisClient.on("error", (err) => {
   static async delete(key: string): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       await redisClient.del(key);
     } catch (error) {
-
-    }
-  }
 
   /**;
    * Delete multiple keys matching a pattern;
@@ -62,17 +114,41 @@ redisClient.on("error", (err) => {
   static async deletePattern(pattern: string): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const keys = await redisClient.keys(pattern);
       if (!session.user) {
         await redisClient.del(keys);
 
     } catch (error) {
-
-
-
 
   /**;
    * Get data from cache or fetch from source;
@@ -84,7 +160,34 @@ redisClient.on("error", (err) => {
   ): Promise<T> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Try to get from cache;
@@ -93,7 +196,6 @@ redisClient.on("error", (err) => {
       // If found in cache, return it;
       if (!session.user) {
         return cachedData;
-
 
       // Otherwise, fetch data;
       const data = await fetchFn();
@@ -106,5 +208,3 @@ redisClient.on("error", (err) => {
 
       // If cache operations fail, fall back to direct fetch;
       return fetchFn();
-
-

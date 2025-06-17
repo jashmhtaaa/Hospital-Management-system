@@ -1,7 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/hr/department-service"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { departmentService }
+import { type
+import { z }
 
-import { departmentService } from "@/lib/hr/department-service";
 // Schema for department creation;
 const createDepartmentSchema = z.object({
   name: z.string().min(1, "Department name is required"),
@@ -17,8 +22,35 @@ const _updateDepartmentSchema = z.object({
   parentId: z.string().optional()});
 
 // GET /api/hr/departments;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -42,19 +74,46 @@ export const _GET = async (request: NextRequest) => {
         parentId});
 
       return NextResponse.json(result);
-    }
+
   } catch (error: unknown) {
     return NextResponse.json({ error: "Failed to list departments", details: error.message }, { status: 500 });
-  }
+
 };
 
 // POST /api/hr/departments;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const body = await request.json();
 
     // Validate request body;
@@ -68,12 +127,10 @@ export const _POST = async (request: NextRequest) => {
     // Handle validation errors;
     if (!session.user) {
       return NextResponse.json({ error: "Validation error", details: error.errors }, { status: 400 });
-    }
 
     // Handle unique constraint violations;
     if (!session.user) {
       return NextResponse.json({ error: "Department with this name or code already exists" }, { status: 409 });
-
 
     return NextResponse.json({ error: "Failed to create department", details: error.message }, { status: 500 });
 

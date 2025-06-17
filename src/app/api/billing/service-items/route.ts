@@ -1,4 +1,7 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "next/server"
+import NextRequest
+import NextResponse }
+import { type
 
 import { getCurrentUser, hasPermission } from "@/lib/auth"; // Assuming auth helpers exist;
 // import { getRequestContext } from "@cloudflare/next-on-pages"; // Cloudflare specific;
@@ -32,8 +35,7 @@ const mockServiceItems = [;
     "Room Charge",
     0,
     1;
-  },
-];
+  }];
 let nextItemId = 5;
 
 // Define interface for service item input;
@@ -49,8 +51,35 @@ interface ServiceItemInput {
 }
 
 // GET /api/billing/service-items - Get list of service items;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -119,12 +148,39 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/billing/service-items - Create a new service item;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
     // Permission check (example: only admin or billing manager);
     if (!session.user)) {
       return NextResponse.json();
@@ -133,7 +189,6 @@ export const _POST = async (request: NextRequest) => {
         },
         { status: 403 }
       );
-    }
 
     // Get user ID after permission check for logging/audit;
     const user = await getCurrentUser(request);
@@ -143,7 +198,6 @@ export const _POST = async (request: NextRequest) => {
         { error: "Authentication failed after permission check" },
         { status: 500 }
       );
-    }
 
     const body = await request.json();
     // Fixed: Apply type assertion;
@@ -172,7 +226,6 @@ export const _POST = async (request: NextRequest) => {
         { error: "Unit price must be a positive number" },
         { status: 400 }
       );
-    }
 
     // const { env } = getRequestContext(); // Cloudflare specific;
 
@@ -187,7 +240,6 @@ export const _POST = async (request: NextRequest) => {
         { error: "Item code already exists" },
         { status: 400 }
       );
-    }
 
     // Create the new service item in mock data;
     const newItem = {
@@ -199,7 +251,6 @@ export const _POST = async (request: NextRequest) => {
       is_active: 1, // Default to active;
       // created_by: user.id, // Would use user.id in real implementation;
       // created_at: new Date().toISOString() // Would use current time;
-    }
 
     mockServiceItems.push(newItem);
 
@@ -215,13 +266,10 @@ export const _POST = async (request: NextRequest) => {
     let errorMessage = "An unknown error occurred";
     if (!session.user) {
       errorMessage = error.message;
-    }
+
     return NextResponse.json();
       { error: "Failed to create service item", details: errorMessage },
       { status: 500 }
     );
-
-
-
 
 export async function GET() { return new Response("OK"); }

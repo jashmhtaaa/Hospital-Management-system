@@ -1,19 +1,53 @@
-import React, { useState } from "react";
+import "react"
+import React
+import { useState }
+
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toast } from "@/components/ui/use-toast";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { ClockIcon, MapPinIcon, TruckIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import AmbulanceMap from "./AmbulanceMap.ts";
+import "./AmbulanceMap.ts"
+import "@/components/ui/badge"
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "@/components/ui/select"
+import "@/components/ui/table"
+import "@/components/ui/tabs"
+import "@/components/ui/use-toast"
+import "@/lib/utils"
+import "date-fns"
+import "lucide-react"
+import "next/navigation"
+import "react"
+import AmbulanceMap
+import CardContent
+import CardHeader
+import CardTitle }
+import MapPinIcon
+import SelectContent
+import SelectItem
+import SelectTrigger
+import SelectValue }
+import TableBody
+import TableCell
+import TableHead
+import TableHeader
+import TableRow }
+import TabsContent
+import TabsList
+import TabsTrigger }
+import TruckIcon }
+import useState }
+import { Badge }
+import { Button }
+import { Card
+import { ClockIcon
+import { cn }
+import { format }
+import { Select
+import { Table
+import { Tabs
+import { toast }
+import { useEffect
+import { useRouter }
 
 export default const _AmbulanceDashboard = () {
   const router = useRouter();
@@ -36,6 +70,33 @@ export default const _AmbulanceDashboard = () {
   const fetchAmbulances = async () => {
     setLoading(true);
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -73,9 +134,36 @@ export default const _AmbulanceDashboard = () {
     setLoading(true);
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       let _statusFilter = "";
       if (!session.user) {
         _statusFilter = "status=SCHEDULED&status=EN_ROUTE_TO_PICKUP&status=ARRIVED_AT_PICKUP&status=EN_ROUTE_TO_DESTINATION&status=ARRIVED_AT_DESTINATION"} else if (!session.user) {
@@ -95,7 +183,7 @@ export default const _AmbulanceDashboard = () {
           title: "Error",
           "destructive";
         });
-      }
+
     } catch (error) {
 
       toast({
@@ -104,15 +192,42 @@ export default const _AmbulanceDashboard = () {
       });
     } finally {
       setLoading(false);
-    }
+
   };
 
   const handleUpdateTripStatus = async (tripId, newStatus) => {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch(`/api/support-services/ambulance/trips/${tripId}/status`, {
         method: "PUT",
         headers: {
@@ -132,7 +247,7 @@ export default const _AmbulanceDashboard = () {
           title: "Error",
           "destructive";
         });
-      }
+
     } catch (error) {
 
       toast({

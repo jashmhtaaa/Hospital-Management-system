@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/hr/payroll-service"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { payrollService }
+import { type
+import { z }
 
-
-import { payrollService } from "@/lib/hr/payroll-service";
 // Schema for payroll period creation;
 const payrollPeriodSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -19,8 +23,35 @@ const payrollPeriodSchema = z.object({
 });
 
 // POST handler for creating payroll period;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -35,7 +66,6 @@ export const _POST = async (request: NextRequest) => {
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
       );
-    }
 
     const { name, startDate, endDate, paymentDate, notes } = validationResult.data;
 
@@ -55,16 +85,41 @@ export const _POST = async (request: NextRequest) => {
       { error: "Failed to create payroll period", details: error.message },
       { status: 500 }
     );
-  }
-}
 
 // GET handler for listing payroll periods;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const searchParams = request.nextUrl.searchParams;
 
     // Parse pagination parameters;
@@ -91,5 +146,3 @@ export const _GET = async (request: NextRequest) => {
       { error: "Failed to fetch payroll periods", details: error.message },
       { status: 500 }
     );
-
-

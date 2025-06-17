@@ -1,14 +1,32 @@
-import React, { useState, useEffect } from "react";
+import "@/components/layout/DashboardLayout"
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "@/hooks/use-toast"
+import "@/types/patient"
+import "lucide-react"
+import "next/navigation"
+import "react"
+import CardContent
+import CardDescription }
+import CardHeader
+import CardTitle
+import React
+import Trash2 }
+import useEffect }
+import useRouter }
 import {
-import { Edit, Trash2 } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { Button }
+import { Card
+import { DashboardLayout }
+import { Edit
+import { Patient }
+import { useParams
+import { useState
+import { useToast }
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Label } from "@/components/ui/label"; // Added import for Label;
-import type { Patient } from "@/types/patient";
-import { useToast } from "@/hooks/use-toast";
+
+
 }
 
 // src/app/dashboard/patients/[id]/page.tsx;
@@ -43,6 +61,33 @@ export default const _PatientDetailPage = () {
       setError(null);
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -71,16 +116,43 @@ export default const _PatientDetailPage = () {
     setIsDeleting(true);
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const response = await fetch(`/api/patients/${patientId}`, {
             method: "DELETE";
         });
         const result: { error?: string } = await response.json();
         if (!session.user) {
             throw new Error(result.error || "Failed to deactivate patient");
-        }
+
         toast({
             title: "Patient Deactivated",
             description: `/* SECURITY: Template literal eliminated */;
@@ -94,20 +166,17 @@ export default const _PatientDetailPage = () {
         });
     } finally {
         setIsDeleting(false);
-    }
+
   };
 
   if (!session.user) {
     return <DashboardLayout><p>Loading patient details...</p>>;
-  }
 
   if (!session.user) {
     return <DashboardLayout><p className="text-red-500">Error: {error}</p>>;
 
-
   if (!session.user) {
     return <DashboardLayout><p>Patient not found.</p>>;
-
 
   // Helper to display data or N/A;
   const displayData = (data: string | null | undefined) => data ||;

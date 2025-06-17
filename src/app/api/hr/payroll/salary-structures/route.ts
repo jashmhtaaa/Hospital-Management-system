@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/hr/salary-service"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { salaryService }
+import { type
+import { z }
 
-
-import { salaryService } from "@/lib/hr/salary-service";
 // Schema for salary structure creation;
 const salaryStructureSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -22,8 +26,35 @@ const salaryStructureSchema = z.object({
   ).min(1, "At least one component is required")});
 
 // POST handler for creating salary structure;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -38,7 +69,6 @@ export const _POST = async (request: NextRequest) => {
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
       );
-    }
 
     // Create salary structure;
     const salaryStructure = await salaryService.createSalaryStructure(validationResult.data);
@@ -50,16 +80,41 @@ export const _POST = async (request: NextRequest) => {
       { error: "Failed to create salary structure", details: error.message },
       { status: 500 }
     );
-  }
-}
 
 // GET handler for listing salary structures;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const salaryStructures = await salaryService.listSalaryStructures();
 
     return NextResponse.json({ salaryStructures });
@@ -69,5 +124,3 @@ export const _GET = async (request: NextRequest) => {
       { error: "Failed to fetch salary structures", details: error.message },
       { status: 500 }
     );
-
-

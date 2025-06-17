@@ -1,6 +1,10 @@
-import type React from "react";
-import { useState, useEffect } from "react";
+import "react"
+import React
+import type
+import useEffect }
 import {
+import { useState
+
 import { Card, CardContent } from "@/components/ui/card"; // Assuming Card and CardContent are correctly imported;
 }
 
@@ -57,8 +61,7 @@ const BedManagementDashboard: React.FC = () => {
     "General Ward",
     "Semi-Private",
     "Private",
-    "Intensive Care",
-  ];
+    "Intensive Care"];
 
   // Define category options;
   const categoryOptions: Array<BedCategory | "All"> = [;
@@ -66,8 +69,7 @@ const BedManagementDashboard: React.FC = () => {
     "general",
     "semi-private",
     "private",
-    "icu",
-  ];
+    "icu"];
 
   // Define status options;
   const statusOptions: Array<BedStatus | "All"> = [;
@@ -75,12 +77,38 @@ const BedManagementDashboard: React.FC = () => {
     "available",
     "occupied",
     "reserved",
-    "maintenance",
-  ];
+    "maintenance"];
 
   useEffect(() => {
     const fetchBeds = async () => {
       try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -100,6 +128,33 @@ const BedManagementDashboard: React.FC = () => {
           const errorMessage = `Failed to fetch beds (status: ${response.status})`;
           try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -108,9 +163,8 @@ const BedManagementDashboard: React.FC = () => {
             errorMessage = errorData.error || errorMessage;
           } catch {
             // Ignore if response is not JSON;
-          }
+
           throw new Error(errorMessage);
-        }
 
         // FIX: Use defined type for success response;
         const data: BedsApiResponse = await response.json(),
@@ -126,7 +180,7 @@ const BedManagementDashboard: React.FC = () => {
         setBeds([]); // Clear beds on error;
       } finally {
         setLoading(false);
-      }
+
     };
 
     fetchBeds();
@@ -142,17 +196,16 @@ const BedManagementDashboard: React.FC = () => {
       } // FIX: Map to an existing variant, maybe style differently via className;
       case "occupied": {
         return "destructive";
-      }
+
       case "reserved": {
         return "secondary";
-      }
+
       case "maintenance": {
         return "outline";
-      }
+
       default: {
         return "default";
-      }
-    }
+
   };
 
   const handleFilterChange = (;

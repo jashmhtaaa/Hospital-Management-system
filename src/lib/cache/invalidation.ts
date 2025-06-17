@@ -1,6 +1,8 @@
+import "./redis.ts"
+import "@/config"
+import { config }
+import { RedisCache }
 
-import { config } from "@/config";
-import { RedisCache } from "./redis.ts";
 }
     await RedisCache.deletePattern(`${config.cache.prefix.test}list:*`);
 
@@ -113,11 +115,9 @@ async const getRelatedTestPanelIds = (testId: number): Promise<number[]> {
   // Example implementation;
   return []; // Placeholder;
 
-
 async const getRelatedResultIds = (specimenId: number): Promise<number[]> {
   // Example implementation;
   return []; // Placeholder;
-
 
 async const getRelatedReportIds = (entityId: number): Promise<number[]> {
   // Example implementation;

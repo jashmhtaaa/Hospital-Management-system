@@ -1,11 +1,16 @@
-import type { Patient } from "./patient.ts";
+import "./patient.ts"
+import { Patient }
+
 }
 
 // types/opd.ts;
 // import { Doctor } from "./doctor.ts"; // FIX: Removed unused import;
-import type { Appointment } from "./appointment.ts";
-import type { BillableItem } from "./billing.ts";
-import type { InventoryItem } from "./inventory.ts";
+import "./appointment.ts"
+import "./billing.ts"
+import "./inventory.ts"
+import { Appointment }
+import { BillableItem }
+import { InventoryItem }
 
 export enum OPDVisitStatus {
     Waiting = "Waiting",

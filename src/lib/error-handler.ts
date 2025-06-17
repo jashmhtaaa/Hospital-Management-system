@@ -126,13 +126,11 @@
       message = this.sanitizeErrorMessage(error.message) || "An error occurred";
       errorCode = error.code || this.ERROR_CODES.INTERNAL_SERVER_ERROR;
 
-
     return {
       status,
       message,
       errorCode,
       shouldLog};
-
 
   /**;
    * Create a domain-specific error with appropriate type and code;
@@ -150,7 +148,6 @@
     error.status = this.ERROR_TYPES[type];
     error.code = this.ERROR_CODES[code];
     return error;
-
 
   /**;
    * Sanitize error messages to ensure HIPAA compliance;
@@ -176,7 +173,7 @@
       // Remove any potential phone numbers
       .replace(/\b(?:\+\d1,2\s?)?\(?\d3\)?[\s.-]?\d3[\s.-]?\d4\b/g, "[REDACTED]");
       // Remove any potential addresses
-      .replace(/\b\d+\s+[A-Za-z\s,]+(?:street|st|avenue|ave|road|rd|boulevard|blvd|drive|dr|lane|ln|court|ct|plaza|plz|square|sq|parkway|pkwy)\b/gi, "[REDACTED]");
+      .replace(/\b\d+\s+[A-Za-z\s]+(?:street|st|avenue|ave|road|rd|boulevard|blvd|drive|dr|lane|ln|court|ct|plaza|plz|square|sq|parkway|pkwy)\b/gi, "[REDACTED]");
 
     // Ensure the message doesn"t contain any stack traces or sensitive paths;
     sanitized = sanitized;

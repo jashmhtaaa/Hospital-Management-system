@@ -1,14 +1,45 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/hr/asset-service"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { assetService }
+import { type
+import { z }
 
-
-import { assetService } from "@/lib/hr/asset-service";
 // GET handler for retrieving a specific asset;
 export const _GET = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -58,14 +89,41 @@ const assetUpdateSchema = z.object({
 
 // PUT handler for updating an asset;
 export const _PUT = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Parse request body;
     const body = await request.json();
 
@@ -76,7 +134,6 @@ export const _PUT = async();
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
       );
-    }
 
     const data = validationResult.data;
 
@@ -97,17 +154,42 @@ export const _PUT = async();
       { error: "Failed to update asset", details: error.message },
       { status: 500 }
     );
-  }
-}
 
 // DELETE handler for deleting an asset;
 export const _DELETE = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     await assetService.deleteAsset(params.id);
@@ -119,5 +201,3 @@ export const _DELETE = async();
       { error: "Failed to delete asset", details: error.message },
       { status: 500 }
     );
-
-

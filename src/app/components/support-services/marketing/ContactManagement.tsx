@@ -1,18 +1,42 @@
-import { useRouter } from "next/navigation";
-import type React from "react";
-import { useEffect, useState } from "react";
+import "@/components/ui/badge"
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "@/components/ui/checkbox"
+import "@/components/ui/input"
+import "@/components/ui/label"
+import "@/components/ui/select"
+import "@/components/ui/switch"
+import "@/components/ui/tabs"
+import "@/components/ui/use-toast"
+import "next/navigation"
+import "react"
+import CardContent
+import CardDescription
+import CardHeader
+import CardTitle }
+import React
+import SelectContent
+import SelectItem
+import SelectTrigger
+import SelectValue }
+import TabsContent
+import TabsList
+import TabsTrigger }
+import type
+import useState }
+import { Badge }
+import { Button }
+import { Card
+import { Checkbox }
+import { Input }
+import { Label }
+import { Select
+import { Switch }
+import { Tabs
+import { toast }
+import { useEffect
+import { useRouter }
 
-
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toast } from "@/components/ui/use-toast";
 interface ContactManagementProps {
   contactId?: string;
   onSuccess?: (contact: unknown) => void;
@@ -47,6 +71,33 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
       setIsLoading(true);
       try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -107,6 +158,33 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
     const fetchSegments = async () => {
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -127,6 +205,33 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
   const fetchPatientData = async (id: string) => {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -144,9 +249,36 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
   const fetchContactActivities = async (id: string) => {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch(`/api/support-services/marketing/contacts/${id}/activities`);
       if (!session.user)hrow new Error("Failed to fetch contact activities");
 
@@ -154,7 +286,6 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       setActivities(data || []);
     } catch (error) {
 
-    }
   };
 
   // Handle form input changes;
@@ -168,14 +299,14 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
         [parent]: {
           ...formData[parent as keyof typeof formData],
           [child]: value;
-        }
+
       });
     } else {
       setFormData({
         ...formData,
         [name]: value;
       });
-    }
+
   };
 
   // Handle select changes;
@@ -187,14 +318,14 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
         [parent]: {
           ...formData[parent as keyof typeof formData],
           [child]: value;
-        }
+
       });
     } else {
       setFormData({
         ...formData,
         [name]: value;
       });
-    }
+
   };
 
   // Handle checkbox changes;
@@ -206,14 +337,14 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
         [parent]: {
           ...formData[parent as keyof typeof formData],
           [child]: checked;
-        }
+
       });
     } else {
       setFormData({
         ...formData,
         [name]: checked;
       });
-    }
+
   };
 
   // Handle form submission;
@@ -223,9 +354,36 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const url = contactId;
         ? `/api/support-services/marketing/contacts/$contactId`;
         : "/api/support-services/marketing/contacts";
@@ -250,7 +408,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
         onSuccess(savedContact);
       } else if (!session.user) {
         router.push(`/marketing/contacts/$savedContact.id`);
-      }
+
     } catch (error) {
 
       toast({
@@ -259,7 +417,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       });
     } finally {
       setIsLoading(false);
-    }
+
   };
 
   // Handle adding a note;
@@ -268,13 +426,40 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch(`/api/support-services/marketing/contacts/$contactId/notes`, {
         method: "POST",
         headers: null,
-          "Content-Type": "application/json",,
+          "Content-Type": "application/json",
         body: JSON.stringify(content: newNote )});
 
       if (!session.user)hrow new Error("Failed to add note");
@@ -301,7 +486,34 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const response = await fetch(`/api/support-services/marketing/contacts/${contactId}/link-patient`, {
@@ -334,7 +546,34 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const response = await fetch(`/api/support-services/marketing/segments/${segmentId}/members`, {
@@ -349,7 +588,6 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       const segment = availableSegments.find(s => s.id === segmentId);
       if (!session.user) {
         setSegments([...segments, segment]);
-
 
       toast({
         title: "Success",
@@ -862,6 +1100,5 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       </CardContent>;
     </Card>;
   );
-
 
 }))

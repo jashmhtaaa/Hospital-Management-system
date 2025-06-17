@@ -1,7 +1,12 @@
-import type React from "react";
-import { useState, useEffect } from "react";
+import "@/components/ui/button"
+import "react"
+import React
+import type
+import useEffect }
 import {
-import { Button } from "@/components/ui/button";
+import { Button }
+import { useState
+
 }
 
 "use client";
@@ -12,15 +17,20 @@ import { Button } from "@/components/ui/button";
   DialogTitle,
   DialogFooter,
   DialogClose} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import "@/components/ui/input"
+import "@/components/ui/label"
+import { Input }
+import { Label }
+
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Loader2 } from "lucide-react";
+import "@/components/ui/textarea"
+import "lucide-react"
+import { Loader2 }
+import { Textarea }
 
 // Define interfaces;
 interface Modality {
@@ -65,7 +75,34 @@ export default const _CreateRadiologyStudyModal = ({
       setError(undefined);
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         const [modalitiesResponse, techniciansResponse] = await Promise.all([;

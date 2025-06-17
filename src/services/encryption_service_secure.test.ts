@@ -1,7 +1,9 @@
-import * as crypto from "crypto";
+import "./encryption_service_secure"
+import "crypto"
+import * as crypto
+import getEncryptionService }
+import { SecureEncryptionService
 
-
-import { SecureEncryptionService, getEncryptionService } from "./encryption_service_secure";
 describe("SecureEncryptionService", () => {
   let encryptionService: SecureEncryptionService;
   const testMasterKey = crypto.randomBytes(32).toString("base64"),

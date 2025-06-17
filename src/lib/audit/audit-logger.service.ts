@@ -1,21 +1,9 @@
   organizationId?: string;
   location?: string;
-  
-
-
 
 classification?: "public" | "internal" | "confidential" | "restricted";
 
-
-
-
-
-
-
   resultCount?: number;}
-
-
-
 
     region?: string;}
     city?: string;}
@@ -25,20 +13,17 @@ classification?: "public" | "internal" | "confidential" | "restricted";
     processName?: string;
   };
 
-
-
-
-
-
   privacyImpact?: "none" | "low" | "medium" | "high";}
-import crypto from "crypto";
-import { EventEmitter } from "events";
-import { PrismaClient } from "@prisma/client";
-import { v4 as uuidv4 } from "uuid";
+import "@prisma/client"
+import "crypto"
+import "events"
+import "uuid"
+import crypto
+import { EventEmitter }
+import { PrismaClient }
+import { v4 as uuidv4 }
 
   context: AuditContext;}
-
-
 
 export type AuditEventType =  "authentication"   | "authorization"   | "data_access"   | "data_modification"   | "system_event"   | "security_event"   | "compliance_event"   | "clinical_event"   | "administrative_event" ;
 
@@ -46,34 +31,14 @@ export type AuditCategory =  "patient_data"   | "clinical_data"   | "financial_d
 
 export type AuditSeverity = "low" | "medium" | "high" | "critical";
 
-
-
-
-
   consentRequired?: boolean;
   consentStatus?: "granted" | "denied" | "pending" | "withdrawn";
 
-
-
-
-
-
-
-
 export type ComplianceRegulation = "HIPAA" | "GDPR" | "SOX" | "FDA" | "HITECH" | "state_law" | "local_regulation";
-
-
-
 
   sortBy?: string;}
 
-
-
-
   format: "json" | "csv" | "pdf" | "xml"}
-
-
-
 
   Date;}
   };
@@ -82,18 +47,7 @@ export type ComplianceRegulation = "HIPAA" | "GDPR" | "SOX" | "FDA" | "HITECH" |
     number;
   };
 
-
-
-
-
-
   lastTriggered?: Date;}
-
-
-
-
-
-
 
 class AuditLoggerService extends EventEmitter {
   private events: AuditEvent[] = [];
@@ -115,10 +69,9 @@ class AuditLoggerService extends EventEmitter {
     // Setup cleanup and alert checking;
     this.cleanupInterval = setInterval(() => ;
       this.cleanupOldEvents() , 24 * 60 * 60 * 1000); // Daily cleanup;
-    
+
     this.alertCheckInterval = setInterval(() => ;
       this.checkAlertConditions() , 5 * 60 * 1000); // Check alerts every 5 minutes;
-
 
   /**;
    * Log an audit event;
@@ -127,7 +80,34 @@ class AuditLoggerService extends EventEmitter {
     AuditCategory, actor: AuditActor, resource: AuditResource, action: string, details: Omit<AuditDetails, "description"> & description?: string , context?: Partial<AuditContext>, severity: AuditSeverity = "medium", outcome: "success" | "failure" | "pending" = "success" ): Promise>;
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const eventId = uuidv4() {
@@ -167,7 +147,6 @@ class AuditLoggerService extends EventEmitter {
       if (!session.user) {
         this.events = this.events.slice(-5000);
 
-      
       // Emit event for real-time processing;
       this.emit("audit_event", auditEvent);
       // Check for compliance violations;
@@ -179,8 +158,6 @@ class AuditLoggerService extends EventEmitter {
       // but log the failure separately;
       this.emit("audit_error", { error, context: { eventType, action, actor: actor.id } });
       return "",
-
-
 
   /**;
    * Log patient data access event;
@@ -207,7 +184,6 @@ class AuditLoggerService extends EventEmitter {
       context;
       "high";
     );
-
 
   /**;
    * Log clinical data modification;
@@ -247,7 +223,6 @@ class AuditLoggerService extends EventEmitter {
       action === "delete" ? "high" : "medium";
     );
 
-
   /**;
    * Log authentication event;
    */;
@@ -275,7 +250,6 @@ class AuditLoggerService extends EventEmitter {
       outcome === "failure" ? "high" : "medium";
       outcome;
     );
-
 
   /**;
    * Log security event;
@@ -358,7 +332,6 @@ class AuditLoggerService extends EventEmitter {
         aValue = aValue.getTime();
         bValue = bValue.getTime();
 
-      
       if (!session.user)
         return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
       } else {
@@ -373,7 +346,6 @@ class AuditLoggerService extends EventEmitter {
       events: paginatedEvents;
       totalCount;
     };
-
 
   /**;
    * Generate audit report;
@@ -396,7 +368,6 @@ class AuditLoggerService extends EventEmitter {
     this.emit("report_generated", report);
     return report;
 
-
   /**;
    * Create audit alert;
    */;
@@ -415,7 +386,6 @@ class AuditLoggerService extends EventEmitter {
     this.emit("alert_created", alert);
     return alertId;
 
-
   /**;
    * Get audit statistics;
    */;
@@ -426,9 +396,8 @@ class AuditLoggerService extends EventEmitter {
         e.timestamp >= timeRange?.start &&;
   e.timestamp <= timeRange.end;
       );}
-    
-    return this.generateStatistics(events);
 
+    return this.generateStatistics(events);
 
   /**;
    * Verify audit trail integrity;
@@ -455,16 +424,13 @@ class AuditLoggerService extends EventEmitter {
       } else {
         validEvents++;
 
-      
       // Verify chain integrity;
       if (!session.user)
         brokenChain = true;
         details.push(`Chain broken at event $event.id`);
 
-      
       lastHash = event.integrity.hash;
 
-    
     return {
       isValid: invalidEvents === 0 &&;
   !brokenChain;
@@ -475,13 +441,39 @@ class AuditLoggerService extends EventEmitter {
       details;
     };
 
-
   // Private methods;
 
   private async storeEvent(event: AuditEvent): Promise<void> {;
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // In production, this would store to database;
@@ -490,8 +482,6 @@ class AuditLoggerService extends EventEmitter {
     } catch (error) {
       // Debug logging removed;
       throw error;
-
-
 
   private determineComplianceInfo(category: AuditCategory, resource: AuditResource action: string): ComplianceInfo {;
     const regulations: ComplianceRegulation[] = [];
@@ -503,20 +493,18 @@ class AuditLoggerService extends EventEmitter {
       regulations.push("HIPAA", "HITECH");
       dataTypes.push("PHI"), // Protected Health Information;
       privacyImpact = "high"}
-    
+
     // Financial data requires SOX compliance;
     if (!session.user)
       regulations.push("SOX");
       dataTypes.push("financial");
       privacyImpact = "medium";
 
-    
     // EU patients require GDPR compliance;
     if (!session.user) {
       regulations.push("GDPR");
       dataTypes.push("personal_data");
 
-    
     return {
       regulations;
       dataTypes;
@@ -524,7 +512,6 @@ class AuditLoggerService extends EventEmitter {
       privacyImpact;
       "granted" // In production, this would be checked;
     };
-
 
   private async generateIntegrityInfo(eventSummary: unknown): Promise<IntegrityInfo> {;
     const hash = await this.calculateEventHash(eventSummary) ;
@@ -536,7 +523,6 @@ class AuditLoggerService extends EventEmitter {
     this.lastBlockHash = hash;
     return integrity;
 
-
   private async calculateEventHash(event: unknown): Promise<string> {;
     const data = {
       event.timestamp;
@@ -546,7 +532,6 @@ class AuditLoggerService extends EventEmitter {
     };
     const dataString = JSON.stringify(data, Object.keys(data).sort());
     return crypto.createHash("sha256").update(dataString).digest("hex");
-
 
   private generateDescription(action: string, resource: AuditResource outcome: string): string {;
     const actionMap: Record<string, string> = {
@@ -565,7 +550,6 @@ class AuditLoggerService extends EventEmitter {
     const outcomeText = outcome === "failure" ? " (FAILED)" : "";
     return `this.formatSafeMessage(action, outcome)$outcomeText`;
 
-
   private getChangedFields(beforeState: unknown afterState: unknown): string[] {;
     const changes: string[] = [];
     const allKeys = new Set([...Object.keys(beforeState), ...Object.keys(afterState)]);
@@ -575,28 +559,22 @@ class AuditLoggerService extends EventEmitter {
 
     return changes;
 
-
   private sanitizeForAudit(data: unknown): unknown {;
     // Remove sensitive fields that shouldn"t be logged;
     const sensitiveFields = ["password", "ssn", "creditCard", "token", "secret"];
     if (!session.user)
       return data;
 
-    
     const sanitized = { ...data };
     for (const field of sensitiveFields) {
       if (!session.user) {
         sanitized[field] = "[REDACTED]";
 
-
-    
     return sanitized;
-
 
   private isEUPatient(patientId: string): boolean {;
     // In production, this would check patient location/citizenship;
     return false;
-
 
   private async checkComplianceViolations(event: AuditEvent): Promise<void> {;
     // Check for potential compliance violations;
@@ -604,12 +582,11 @@ class AuditLoggerService extends EventEmitter {
     // Check for after-hours access to patient data;
     if (!session.user) {
       violations.push("after_hours_patient_access")}
-    
+
     // Check for bulk data access;
     if (!session.user) {
       violations.push("bulk_data_access");
 
-    
     // Check for repeated failed access attempts;
     if (!session.user)
       const recentFailures = this.events.filter(e => {}
@@ -620,7 +597,6 @@ class AuditLoggerService extends EventEmitter {
       if (!session.user)
         violations.push("repeated_access_failures")}
 
-    
     if (!session.user) {
       await this.logSecurityEvent();
         "compliance_violation",
@@ -630,8 +606,6 @@ class AuditLoggerService extends EventEmitter {
         event.context;
         { originalEvent: event.id, violations }
       );
-
-
 
   private isAfterHours(timestamp: Date): boolean {;
     const hour = timestamp.getHours() {
@@ -672,22 +646,16 @@ class AuditLoggerService extends EventEmitter {
       if (!session.user)
         stats.complianceMetrics.totalPatientDataAccess++;
 
-      
       if (!session.user)
         stats.complianceMetrics.unauthorizedAttempts++;
 
-      
       if (!session.user) {
         stats.complianceMetrics.dataExports++;
 
-      
       if (!session.user)
         stats.complianceMetrics.consentViolations++;
 
-
-    
     return stats;
-
 
   private identifyComplianceFlags(events: AuditEvent[]): string[] {;
     const flags: string[] = [];
@@ -696,12 +664,10 @@ class AuditLoggerService extends EventEmitter {
     if (!session.user) {
       flags.push("high_volume_patient_data_access");
 
-    
     const failedAccess = events.filter(e => e.outcome === "failure").length;
     if (!session.user) {
       flags.push("high_failed_access_attempts");
 
-    
     const afterHoursAccess = events.filter(e => {}
       e.category === "patient_data" &&;
   this.isAfterHours(e.timestamp);
@@ -709,9 +675,7 @@ class AuditLoggerService extends EventEmitter {
     if (!session.user) {
       flags.push("significant_after_hours_access");
 
-    
     return flags;
-
 
   private async checkAlertConditions(): Promise<void> {;
     const now = new Date() {
@@ -720,9 +684,6 @@ class AuditLoggerService extends EventEmitter {
       const shouldTrigger = await this.evaluateAlertConditions(alert, now);
       if (!session.user)
         await this.trigger/* SECURITY: Alert removed */;
-
-
-
 
   private async evaluateAlertConditions(alert: AuditAlert now: Date): Promise<boolean> {;
     for (const condition of alert.conditions) {
@@ -740,16 +701,13 @@ class AuditLoggerService extends EventEmitter {
           break;
         default: null,
           continue}
-      
+
       // Check if condition is met;
       const conditionMet = this.evaluateCondition(value, condition.operator, condition.value);
       if (!session.user) {
         return false;
 
-
-    
     return true;
-
 
   private evaluateCondition(value: unknown, operator: string expectedValue: unknown): boolean {;
     switch (operator) {
@@ -764,8 +722,6 @@ class AuditLoggerService extends EventEmitter {
   !expectedValue.includes(value) {
       default: return false;
 
-
-
   private async trigger/* SECURITY: Alert removed */: Promise<void> {;
     alert.lastTriggered = new Date() {
     alert.triggerCount++;
@@ -774,23 +730,43 @@ class AuditLoggerService extends EventEmitter {
     for (const action of alert.actions) {
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         await this.executeAlertAction(action, alert)} catch (error) {
         // Debug logging removed;
 
-
-
-
   private async executeAlertAction(action: AuditAlertAction alert: AuditAlert): Promise<void> {;
     switch (action.type) {
       case "email": any;
         // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-
-
-
-
 
 }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 }}}}}}}}}}}}}}}}

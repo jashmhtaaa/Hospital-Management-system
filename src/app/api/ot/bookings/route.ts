@@ -1,6 +1,10 @@
+import "@cloudflare/workers-types"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { D1Database }
+import { type
 
-import type { D1Database } from "@cloudflare/workers-types";
-import { type NextRequest, NextResponse } from "next/server";
 export const _runtime = "edge";
 
 // Interface for the POST request body;
@@ -19,8 +23,35 @@ interface OTBookingBody {
 }
 
 // GET /api/ot/bookings - List OT bookings;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -78,7 +109,6 @@ export const _GET = async (request: NextRequest) => {
 
     if (!session.user) {
       query += " WHERE " + conditions.join(" AND ");
-    }
 
     query += " ORDER BY b.scheduled_start_time ASC";
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
@@ -95,16 +125,41 @@ export const _GET = async (request: NextRequest) => {
       { message: "Error fetching OT bookings", details: errorMessage },
       { status: 500 }
     );
-  }
-}
 
 // POST /api/ot/bookings - Create a new OT booking;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const body = (await request.json()) as OTBookingBody;
     const {
       patient_id,
@@ -193,5 +248,3 @@ export const _POST = async (request: NextRequest) => {
       { message: "Error creating OT booking", details: errorMessage },
       { status: 500 }
     );
-
-

@@ -1,8 +1,11 @@
+import "@/lib/prisma"
+import "next/server"
+import "zod"
 import {
-import { NextRequest } from "next/server";
-import { z } from "zod";
+import { NextRequest }
+import { prisma }
+import { z }
 
-import { prisma } from "@/lib/prisma";
   withErrorHandling,
   validateBody,
   validateQuery,
@@ -10,14 +13,18 @@ import { prisma } from "@/lib/prisma";
   createSuccessResponse,
   createPaginatedResponse;
 } from "@/lib/core/middleware";
-import { ValidationError } from "@/lib/core/errors";
+import "@/lib/core/errors"
+import { ValidationError }
+
   idSchema,
   invoiceStatusSchema,
   moneySchema,
   dateRangeSchema;
 } from "@/lib/core/validation";
-import { convertToFHIRInvoice } from "@/lib/core/fhir";
-import { logger } from "@/lib/core/logging";
+import "@/lib/core/fhir"
+import "@/lib/core/logging"
+import { convertToFHIRInvoice }
+import { logger }
 
 // Schema for invoice creation;
 const createInvoiceSchema = z.object({
@@ -54,7 +61,7 @@ const invoiceQuerySchema = z.object({
   format: z.enum(["json", "fhir"]).optional().default("json")});
 
 // GET handler for retrieving all invoices with filtering and pagination;
-export const _GET = withErrorHandling(async (req: NextRequest) => {
+export const _GET = withErrorHandling(async (req: any) => {
   // Validate query parameters;
   const query = validateQuery(invoiceQuerySchema)(req);
 
@@ -71,11 +78,37 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   if (!session.user) {
     where.status = query.status;
 
-
   if (!session.user) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const { startDate, endDate } = dateRangeSchema.parse({
@@ -90,21 +123,17 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
     } catch (error) {
       throw new ValidationError("Invalid date range", "INVALID_DATE_RANGE");
 
-
-
   if (!session.user) {
     where.totalAmount = {
       ...(where.totalAmount || {}),
       gte: query.minAmount;
     };
 
-
   if (!session.user) {
     where.totalAmount = {
       ...(where.totalAmount || {}),
       lte: query.maxAmount;
     };
-
 
   // Execute query with pagination;
   const [invoices, total] = await Promise.all([;
@@ -121,21 +150,19 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
           }},
         billItems: true;
       }}),
-    prisma.bill.count(where ),
-  ]);
+    prisma.bill.count(where )]);
 
   // Convert to FHIR format if requested;
   if (!session.user) {
     const fhirInvoices = invoices.map(invoice => convertToFHIRInvoice(invoice));
     return createPaginatedResponse(fhirInvoices, query.page, query.pageSize, total);
 
-
   // Return standard JSON response;
   return createPaginatedResponse(invoices, query.page, query.pageSize, total);
 });
 
 // POST handler for creating a new invoice;
-export const _POST = withErrorHandling(async (req: NextRequest) => {
+export const _POST = withErrorHandling(async (req: any) => {
   // Validate request body;
   const data = await validateBody(createInvoiceSchema)(req);
 

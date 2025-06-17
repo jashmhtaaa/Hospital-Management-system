@@ -1,11 +1,19 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../../lib/audit"
+import "../../../../../lib/error-handler"
+import "../../../../../lib/services/pharmacy/pharmacy.service"
+import "../../../../../lib/validation/pharmacy-validation"
+import "../../../models/domain-models"
+import "next/server"
+import getPrescriptionById }
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { errorHandler }
+import { getMedicationById
+import { PharmacyDomain }
+import { type
+import { validatePartialDispensingRequest }
 
-
-import { auditLog } from "../../../../../lib/audit";
-import { errorHandler } from "../../../../../lib/error-handler";
-import { getMedicationById, getPrescriptionById } from "../../../../../lib/services/pharmacy/pharmacy.service";
-import { validatePartialDispensingRequest } from "../../../../../lib/validation/pharmacy-validation";
-import type { PharmacyDomain } from "../../../models/domain-models";
 }
 
 /**;
@@ -56,8 +64,35 @@ const inventoryRepository = {
  * POST /api/pharmacy/dispensing/partial;
  * Record a partial medication dispensing;
  */;
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -76,7 +111,6 @@ export const POST = async (req: NextRequest) => {
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -85,13 +119,11 @@ export const POST = async (req: NextRequest) => {
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
     if (!session.user) {
       return NextResponse.json({ error: "Prescription not found" }, { status: 404 });
-    }
 
     // Verify medication exists;
     const medication = await medicationRepository.findById(prescription.medicationId);
     if (!session.user) {
       return NextResponse.json({ error: "Medication not found" }, { status: 404 });
-    }
 
     // Check inventory availability;
     const inventoryItems = await inventoryRepository.findByMedicationId(prescription.medicationId);
@@ -105,7 +137,6 @@ export const POST = async (req: NextRequest) => {
         { error: "Insufficient inventory available" },
         { status: 400 }
       );
-    }
 
     // Get previous dispensing records for this prescription;
     const previousDispensings = await dispensingRepository.findByPrescriptionId(data.prescriptionId);
@@ -130,7 +161,6 @@ export const POST = async (req: NextRequest) => {
           totalPrescribed - totalDispensed;
         },status: 400 ;
       );
-
 
     // Create partial dispensing record;
     const dispensing = {

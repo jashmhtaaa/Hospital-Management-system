@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/middleware/error-handling.middleware"
+import "@/lib/services/integration/hms-integration.service"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { errorHandlingMiddleware }
+import { HMSIntegrationService }
+import { type
 
-
-import { errorHandlingMiddleware } from "@/lib/middleware/error-handling.middleware";
-import { HMSIntegrationService } from "@/lib/services/integration/hms-integration.service";
 /**;
  * Integration API for Support Services;
  *;
@@ -14,7 +18,7 @@ import { HMSIntegrationService } from "@/lib/services/integration/hms-integratio
  * Retrieves patient information for support services;
  */;
 export const GET = async();
-  request: NextRequest;
+  request: any;
   { params }: { patientId: string }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
@@ -41,7 +45,7 @@ export const GET = async();
  * Retrieves location information for support services;
  */;
 export const GET = async();
-  request: NextRequest;
+  request: any;
   { params }: { locationId: string }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
@@ -67,7 +71,7 @@ export const GET = async();
  * POST /api/integration/support-services/notification;
  * Sends a notification through the HMS Notification System;
  */;
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context;
     const userId = req.userId || "anonymous";
@@ -112,7 +116,7 @@ export const POST = async (request: NextRequest) => {
  * POST /api/integration/support-services/report;
  * Submits data to the HMS Reporting System;
  */;
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context;
     const userId = req.userId || "anonymous";
@@ -155,7 +159,7 @@ export const POST = async (request: NextRequest) => {
  * Links a support service request to a patient record;
  */;
 export const POST = async();
-  request: NextRequest;
+  request: any;
   { params }: { serviceType: string, requestId: string }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
@@ -212,13 +216,12 @@ export const POST = async();
     });
   });
 
-
 /**;
  * POST /api/integration/support-services/:serviceType/:requestId/link-location;
  * Links a support service request to a location;
  */;
 export const POST = async();
-  request: NextRequest;
+  request: any;
   { params }: { serviceType: string, requestId: string }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
@@ -242,7 +245,6 @@ export const POST = async();
         { status: 400 }
       );
 
-
     // Validate service type;
     const validServiceTypes = ["HOUSEKEEPING", "MAINTENANCE", "DIETARY", "AMBULANCE"];
     const serviceType = params.serviceType.toUpperCase();
@@ -258,7 +260,6 @@ export const POST = async();
         },
         { status: 400 }
       );
-
 
     // Link request to location;
     const request = await HMSIntegrationService.linkRequestToLocation();

@@ -1,13 +1,23 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../lib/audit"
+import "../../../../lib/error-handler"
+import "../../../../lib/services/patient/patient.service"
+import "../../../../lib/services/pharmacy/pharmacy.service"
+import "../../../../lib/validation/pharmacy-validation"
+import "../../models/domain-models"
+import "../../services/drug-interaction-service"
+import "next/server"
+import getPrescriptionById }
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { DrugInteractionService }
+import { errorHandler }
+import { getMedicationById
+import { getPatientById }
+import { PharmacyDomain }
+import { type
+import { validateInteractionCheckRequest }
 
-
-import { auditLog } from "../../../../lib/audit";
-import { errorHandler } from "../../../../lib/error-handler";
-import { getPatientById } from "../../../../lib/services/patient/patient.service";
-import { getMedicationById, getPrescriptionById } from "../../../../lib/services/pharmacy/pharmacy.service";
-import { validateInteractionCheckRequest } from "../../../../lib/validation/pharmacy-validation";
-import type { PharmacyDomain } from "../../models/domain-models";
-import { DrugInteractionService } from "../../services/drug-interaction-service";
 }
 
 /**;
@@ -46,8 +56,35 @@ const interactionService = new DrugInteractionService();
  * POST /api/pharmacy/interactions/check;
  * Check for drug interactions between medications;
  */;
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -66,7 +103,6 @@ export const POST = async (req: NextRequest) => {
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -86,24 +122,48 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json({ interactions }, { status: 200 });
   } catch (error) {
     return errorHandler(error, "Error checking drug interactions");
-  }
-}
 
 /**;
  * GET /api/pharmacy/interactions/patient/[patientId];
  * Check for drug interactions among a patient"s active medications;
  */;
-export const GET = async (req: NextRequest, { params }: { params: { patientId: string } }) => {
+export const GET = async (req: any, { params }: { params: { patientId: string } }) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -113,12 +173,10 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
     if (!session.user) {
       return NextResponse.json({ error: "Patient ID is required" }, { status: 400 });
 
-
     // Verify patient exists;
     const patient = await getPatientById(patientId);
     if (!session.user) {
       return NextResponse.json({ error: "Patient not found" }, { status: 404 });
-
 
     // Get active prescriptions for patient;
     const prescriptions = await prescriptionRepository.findByPatientId(patientId);
@@ -146,4 +204,3 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
     }, { status: 200 });
   } catch (error) {
     return errorHandler(error, "Error checking patient drug interactions');
-

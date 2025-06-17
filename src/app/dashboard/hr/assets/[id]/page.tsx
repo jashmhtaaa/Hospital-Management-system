@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import "react"
+import React
+import { useState }
+
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import "next/navigation"
+import "react"
+import useEffect }
 import {
+import { useRouter }
+import { useState
+
   Card,
   CardContent,
   CardDescription,
@@ -11,10 +18,18 @@ import {
   CardHeader,
   CardTitle;
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import "@/components/ui/badge"
+import "@/components/ui/button"
+import "@/components/ui/separator"
+import "@/components/ui/tabs"
+import TabsContent
+import TabsList
+import TabsTrigger }
+import { Badge }
+import { Button }
+import { Separator }
+import { Tabs
+
   Table,
   TableBody,
   TableCell,
@@ -44,8 +59,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
   DollarSign,
   FileText;
 } from "lucide-react";
-import { format } from "date-fns";
-import { toast } from "@/components/ui/use-toast";
+import "@/components/ui/use-toast"
+import "date-fns"
+import { format }
+import { toast }
 
 export default const _AssetDetail = ({ params }: { id: string }) {
   const router = useRouter();
@@ -60,6 +77,33 @@ export default const _AssetDetail = ({ params }: { id: string }) {
     const fetchAsset = async () => {
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -71,7 +115,6 @@ export default const _AssetDetail = ({ params }: { id: string }) {
             throw new Error("Asset not found");
           }
           throw new Error("Failed to fetch asset data");
-        }
 
         const data = await response.json(),
         setAsset(data);
@@ -97,16 +140,42 @@ export default const _AssetDetail = ({ params }: { id: string }) {
   const handleDelete = async () => {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch(`/api/hr/assets/${params.id}`, {
         method: "DELETE";
       });
 
       if (!session.user) {
         throw new Error("Failed to delete asset");
-      }
 
       toast({
         title: "Success",
@@ -119,7 +188,7 @@ export default const _AssetDetail = ({ params }: { id: string }) {
         title: "Error",
         "destructive";
       });
-    }
+
   };
 
   // Handle maintenance record;
@@ -187,7 +256,6 @@ export default const _AssetDetail = ({ params }: { id: string }) {
       </div>;
     );
 
-
   if (!session.user) {
     return();
       >;
@@ -217,10 +285,8 @@ export default const _AssetDetail = ({ params }: { id: string }) {
       </div>;
     );
 
-
   if (!session.user) {
     return null;
-
 
   return();
     >;

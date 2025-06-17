@@ -1,10 +1,17 @@
-import * as z from "zod";
-import React, { useState, useEffect } from "react";
+import "@/components/ui/button"
+import "@hookform/resolvers/zod"
+import "react"
+import "react-hook-form"
+import "zod"
+import * as z
+import React
+import useEffect }
 import {
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Button }
+import { useForm }
+import { useState
+import { zodResolver }
 
-import { Button } from "@/components/ui/button";
 }
 
 // src/components/er/ERTriageForm.tsx;
@@ -17,14 +24,18 @@ import { Button } from "@/components/ui/button";
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import "@/components/ui/input"
+import "@/components/ui/textarea"
+import { Input }
+import { Textarea }
+
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { useToast } from "@/components/ui/use-toast";
+import "@/components/ui/use-toast"
+import { useToast }
 
 // Define the schema for the triage form using Zod;
 const triageFormSchema = z.object({
@@ -92,16 +103,43 @@ export default const _ERTriageForm = () {
     const filteredVitalSigns = Object.fromEntries();
       Object.entries(vitalSigns);
         .filter();
-          ([, value]) => value !== undefined && value !== undefined && value !== "";
+          ([ value]) => value !== undefined && value !== undefined && value !== "";
         );
         .map(([key, value]) => [key, value]);
     );
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Replace with actual API call: POST /api/er/visits/[id]/triage;
       const response = await fetch(`/api/er/visits/${data.visitId}/triage`, {
         method: "POST",
@@ -115,7 +153,34 @@ export default const _ERTriageForm = () {
         const errorMessage = "Failed to submit triage assessment";
         try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
           // FIX: Use defined type for errorData;
@@ -125,7 +190,6 @@ export default const _ERTriageForm = () {
           // Ignore if response is not JSON;
 
         throw new Error(errorMessage);
-
 
       // FIX: Use defined type for result;
       const result: TriageResponse = await response.json(),
@@ -147,8 +211,6 @@ export default const _ERTriageForm = () {
       });
     } finally {
       setIsLoading(false);
-
-
 
   return();
     <Form {...form}>;

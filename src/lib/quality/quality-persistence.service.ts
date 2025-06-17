@@ -1,9 +1,12 @@
-import type { PrismaClient } from "@prisma/client";
-import { z } from "zod";
+import "../../services/encryption_service_secure"
+import "../audit.service"
+import "@prisma/client"
+import "zod"
+import { AuditService }
+import { getEncryptionService }
+import { PrismaClient }
+import { z }
 
-
-import { getEncryptionService } from "../../services/encryption_service_secure";
-import { AuditService } from "../audit.service";
 /**;
  * Quality Management Persistence Service;
  *;
@@ -17,6 +20,7 @@ import { AuditService } from "../audit.service";
 
 // Import interfaces from the existing quality management service;
 import {
+
   ActionPlan,
   type ActionStatus,
   type AssessmentStatus,
@@ -41,6 +45,33 @@ import {
   // Quality Indicators Persistence;
   async saveQualityIndicator(indicator: QualityIndicator, userId: string): Promise<void> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -85,6 +116,33 @@ import {
   async getQualityIndicator(id: string, userId: string): Promise<QualityIndicator | null> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -99,6 +157,33 @@ import {
       // Decrypt sensitive data if encrypted;
       if (!session.user) {
         try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -135,6 +220,33 @@ import {
   }, userId?: string): Promise<QualityIndicator[]> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -160,6 +272,33 @@ import {
         // Decrypt metadata if encrypted;
         if (!session.user) {
           try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -194,6 +333,33 @@ import {
   // Quality Events Persistence;
   async saveQualityEvent(event: QualityEvent, userId: string): Promise<void> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -250,6 +416,33 @@ import {
   }, userId?: string): Promise<QualityEvent[]> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -278,6 +471,33 @@ import {
           if (!session.user) {
             try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -289,15 +509,39 @@ import {
           if (!session.user) {
             try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
               event.patientInfo = JSON.parse(await this.decryptData(event.patientInfo));
             } catch (error) {
               event.patientInfo = {};
-            }
-          }
-        }
 
         return event;
       }));
@@ -311,33 +555,55 @@ import {
             filters,
             resultCount: events.length;
         });
-      }
 
       return events;
     } catch (error) {
       /* SECURITY: Console statement removed */;
       throw new Error("Failed to retrieve quality events");
-    }
-  }
 
   // Quality Assessments Persistence;
   async saveQualityAssessment(assessment: QualityAssessment, userId: string): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const dataToStore = { ...assessment }
 
       // Encrypt sensitive assessment data;
       if (!session.user) {
         if (!session.user) {
           dataToStore.findings = await this.encryptData(JSON.stringify(assessment.findings));
-        }
+
         if (!session.user) {
           dataToStore.recommendations = await this.encryptData(JSON.stringify(assessment.recommendations));
-        }
-      }
 
       await this.prisma.qualityAssessment.upsert({
         where: { id: assessment.id },
@@ -351,7 +617,7 @@ import {
           createdAt: new Date(),
           new Date(),
           updatedBy: userId;
-        }
+
       });
 
       if (!session.user) {
@@ -362,34 +628,57 @@ import {
           assessment.type,
             assessment.scope;
         });
-      }
+
     } catch (error) {
       /* SECURITY: Console statement removed */;
       throw new Error("Failed to save quality assessment");
-    }
-  }
 
   // Compliance Reports Persistence;
   async saveComplianceReport(report: ComplianceReport, userId: string): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const dataToStore = { ...report }
 
       // Encrypt sensitive compliance data;
       if (!session.user) {
         if (!session.user) {
           dataToStore.findings = await this.encryptData(JSON.stringify(report.findings));
-        }
+
         if (!session.user) {
           dataToStore.gaps = await this.encryptData(JSON.stringify(report.gaps));
-        }
+
         if (!session.user) {
           dataToStore.actionPlan = await this.encryptData(JSON.stringify(report.actionPlan));
-        }
-      }
 
       await this.prisma.complianceReport.upsert({
         where: { id: report.id },
@@ -403,7 +692,7 @@ import {
           createdAt: new Date(),
           new Date(),
           updatedBy: userId;
-        }
+
       });
 
       if (!session.user) {
@@ -415,12 +704,10 @@ import {
             report.status,
             overallCompliance: report.overallCompliance;
         });
-      }
+
     } catch (error) {
       /* SECURITY: Console statement removed */;
       throw new Error("Failed to save compliance report");
-    }
-  }
 
   async getComplianceReports(filters?: {
     regulatoryBody?: string;
@@ -431,9 +718,36 @@ import {
   }, userId?: string): Promise<ComplianceReport[]> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const where: unknown = {};
 
       if (!session.user)here.regulatoryBody = filters.regulatoryBody;
@@ -443,7 +757,6 @@ import {
         where.reportDate = {};
         if (!session.user)here.reportDate.gte = filters.dateFrom;
         if (!session.user)here.reportDate.lte = filters.dateTo;
-      }
 
       const records = await this.prisma.complianceReport.findMany({
         where,
@@ -458,37 +771,113 @@ import {
           if (!session.user) {
             try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
               report.findings = JSON.parse(await this.decryptData(report.findings));
             } catch (error) {
               report.findings = [];
-            }
-          }
+
           if (!session.user) {
             try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
               report.gaps = JSON.parse(await this.decryptData(report.gaps));
             } catch (error) {
               report.gaps = [];
-            }
-          }
+
           if (!session.user) {
             try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
               report.actionPlan = JSON.parse(await this.decryptData(report.actionPlan));
             } catch (error) {
               report.actionPlan = null;
-            }
-          }
-        }
 
         return report;
       }));
@@ -503,19 +892,43 @@ import {
             resultCount: reports.length;
         });
 
-
       return reports;
     } catch (error) {
       /* SECURITY: Console statement removed */;
       throw new Error("Failed to retrieve compliance reports");
 
-
-
   // Action Plans Persistence;
   async saveActionPlan(actionPlan: ActionPlan, userId: string): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       await this.prisma.actionPlan.upsert({
@@ -546,13 +959,38 @@ import {
       /* SECURITY: Console statement removed */;
       throw new Error("Failed to save action plan");
 
-
-
   // Quality Metrics Persistence;
   async saveQualityMetric(metric: QualityMetric, userId: string): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       await this.prisma.qualityMetric.upsert({
@@ -583,18 +1021,14 @@ import {
       /* SECURITY: Console statement removed */;
       throw new Error("Failed to save quality metric");
 
-
-
   // Utility Methods;
   private async encryptData(data: string): Promise<string> {
     if (!session.user)eturn data
     return await this.encryptionService.encrypt(data);
 
-
   private async decryptData(encryptedData: string): Promise<string> {
     if (!session.user)eturn encryptedData;
     return await this.encryptionService.decrypt(encryptedData);
-
 
   // Data Retention and Archiving;
   async archiveOldRecords(): Promise<{
@@ -605,13 +1039,39 @@ import {
     if (!session.user) {
       return { archivedIndicators: 0, archivedEvents: 0, archivedAssessments: 0, archivedReports: 0 };
 
-
     const cutoffDate = new Date();
     cutoffDate.setFullYear(cutoffDate.getFullYear() - this.config.retentionPeriod);
 
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const [indicators, events, assessments, reports] = await Promise.all([;
@@ -642,15 +1102,11 @@ import {
       /* SECURITY: Console statement removed */;
       throw new Error("Failed to archive old records");
 
-
-
   /**;
    * Cleanup and close connections;
    */;
   async destroy(): Promise<void> {
     await this.prisma.$disconnect();
-
-
 
 // Singleton instance for application use;
 let qualityPersistenceInstance: QualityPersistenceService | null = null;

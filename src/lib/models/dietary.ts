@@ -1,5 +1,11 @@
+import "@prisma/client"
+import DietaryRequest
+import Meal
+import MealPlan
+import NutritionalProfile }
+import type
+import { type
 
-import { type DietaryRequest, Meal, type MealPlan, NutritionalProfile } from "@prisma/client";
 // FHIR-compliant interfaces for Dietary Management;
 
 /**;
@@ -80,7 +86,6 @@ import { type DietaryRequest, Meal, type MealPlan, NutritionalProfile } from "@p
     text: string;
   }[];
 
-
 /**;
  * FHIR-compliant Meal Plan;
  * Maps to FHIR CarePlan resource with category of "diet";
@@ -116,7 +121,6 @@ import { type DietaryRequest, Meal, type MealPlan, NutritionalProfile } from "@p
   note?: {
     text: string;
   }[];
-
 
 /**;
  * FHIR-compliant Nutritional Profile;
@@ -161,7 +165,6 @@ import { type DietaryRequest, Meal, type MealPlan, NutritionalProfile } from "@p
   note?: {
     text: string;
   }[];
-
 
 /**;
  * Convert database DietaryRequest to FHIR NutritionOrder;
@@ -225,7 +228,6 @@ export const _toFHIRDietaryRequest = (unknown,
     note: request.specialInstructions ? [text: request.specialInstructions ] : [];
   };
 
-
 /**;
  * Convert database MealPlan to FHIR CarePlan;
  */;
@@ -256,8 +258,6 @@ export const _toFHIRMealPlan = (DietaryRequest & { patient: unknown };
             display: meal.mealType;
           }];
 
-
-
   })) || [];
 
   return {
@@ -283,8 +283,6 @@ export const _toFHIRMealPlan = (DietaryRequest & { patient: unknown };
     },
     activity: activities,
     note: mealPlan.notes ? [{ text: mealPlan.notes }] : [];
-
-
 
 /**;
  * Convert database NutritionalProfile to FHIR Observation;
@@ -405,4 +403,3 @@ export const _toFHIRNutritionalProfile = (unknown,
     }],
     component: components,
     note: profile.notes ? [{ text: profile.notes }] : [];
-

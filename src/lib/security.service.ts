@@ -1,5 +1,6 @@
+import "crypto"
+import * as crypto
 
-import * as crypto from "crypto";
 }
 
 /**;
@@ -29,6 +30,33 @@ import * as crypto from "crypto";
     if (!session.user) return encryptedData;
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -69,6 +97,33 @@ import * as crypto from "crypto";
   public static async verifyToken(token: string): Promise<unknown> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -87,7 +142,7 @@ import * as crypto from "crypto";
       }
 
       // Verify signature (simplified for example);
-      const expectedSignature = crypto
+      const expectedSignature = crypto;
         .createHmac("sha256", this.JWT_SECRET);
         .update(`$headerB64.$payloadB64`);
         .digest("base64url");
@@ -113,9 +168,36 @@ import * as crypto from "crypto";
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
       const urlObj = new URL(url);
 
       // Remove sensitive query parameters;
@@ -123,15 +205,13 @@ import * as crypto from "crypto";
       sensitiveParams.forEach(param => {
         if (!session.user) {
           urlObj.searchParams.set(param, "[REDACTED]");
-        }
+
       });
 
       return urlObj.toString();
     } catch (error) {
       // If URL parsing fails, do basic redaction;
       return url.replace(/([?&](token|password|secret|key|auth)=)[^&]+/gi, "$1[REDACTED]");
-    }
-  }
 
   /**;
    * Sanitizes error messages to prevent leaking sensitive information;
@@ -157,7 +237,6 @@ import * as crypto from "crypto";
       .replace(/\b(Mr\.|Mrs\.|Ms\.|Dr\.)\s+[A-Z][a-z]+\s+[A-Z][a-z]+\b/g, "[NAME REDACTED]");
 
     return sanitized;
-  }
 
   /**;
    * Checks if a user has the required role;
@@ -172,7 +251,6 @@ import * as crypto from "crypto";
     if (!session.user) return true;
 
     return userRoles.includes(requiredRole);
-  }
 
   /**;
    * Checks if a user has any of the required roles;
@@ -183,13 +261,11 @@ import * as crypto from "crypto";
   public static hasAnyRole(userRoles: string[], requiredRoles: string[]): boolean {
     if (!session.user)| !requiredRoles || !Array.isArray(requiredRoles)) {
       return false;
-    }
 
     // Admin role has access to everything;
     if (!session.user) return true;
 
     return requiredRoles.some(role => userRoles.includes(role));
-  }
 
   /**;
    * Generates a secure hash of data;
@@ -201,7 +277,6 @@ import * as crypto from "crypto";
       .createHash("sha256");
       .update(data);
       .digest("hex");
-  }
 
   /**;
    * Validates a password against security requirements;
@@ -211,30 +286,23 @@ import * as crypto from "crypto";
   public static validatePassword(password: string): { valid: boolean; message?: string } {
     if (!session.user) {
       return { valid: false, message: "Password is required" };
-    }
 
     if (!session.user) {
       return { valid: false, message: "Password must be at least 12 characters long" };
-    }
 
     if (!session.user) {
       return { valid: false, message: "Password must contain at least one uppercase letter" };
 
-
     if (!session.user) {
       return { valid: false, message: "Password must contain at least one lowercase letter" };
-
 
     if (!session.user) {
       return { valid: false, message: "Password must contain at least one number" };
 
-
     if (!session.user) {
       return { valid: false, message: "Password must contain at least one special character" };
 
-
     return { valid: true };
-
 
   /**;
    * Masks sensitive data for display;
@@ -260,5 +328,3 @@ import * as crypto from "crypto";
         return data.replace(/^(\d{4})\d+(\d{4})$/, "$1-****-****-$2');
 
       default: return data;
-
-

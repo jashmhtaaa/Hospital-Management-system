@@ -1,15 +1,46 @@
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
+import "@/lib/session"
+import "iron-session"
+import "next/headers"
+import IronSessionData
+import sessionOptions }
+import { cookies }
+import { getIronSession }
+import { type
 
-
-import { type IronSessionData, sessionOptions } from "@/lib/session";
 // app/api/auth/logout/route.ts;
 export const _POST = async () => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const cookieStore = await cookies(); // REVERT FIX: Add await back based on TS error;
     const session = await getIronSession<IronSessionData>(;
       cookieStore, // FIX: Pass the store;
@@ -27,5 +58,3 @@ export const _POST = async () => {
     return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
       status: 500,
       headers: { "Content-Type": "application/json" }});
-  }
-

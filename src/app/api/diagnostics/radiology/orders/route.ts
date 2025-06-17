@@ -1,19 +1,56 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "@/lib/audit"
+import "@/lib/cache/invalidation"
+import "@/lib/cache/redis"
+import "@/lib/database"
+import "@/lib/encryption"
+import "@/lib/notifications"
+import "@/lib/session"
+import "next/server"
+import encryptSensitiveData }
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { CacheInvalidation }
+import { DB }
+import { decryptSensitiveData
+import { getSession }
+import { notifyUsers }
+import { RedisCache }
+import { type
 
-
-import { auditLog } from "@/lib/audit";
-import { CacheInvalidation } from "@/lib/cache/invalidation";
-import { RedisCache } from "@/lib/cache/redis";
-import { DB } from "@/lib/database";
-import { decryptSensitiveData, encryptSensitiveData } from "@/lib/encryption";
-import { notifyUsers } from "@/lib/notifications";
-import { getSession } from "@/lib/session";
 /**;
  * GET /api/diagnostics/radiology/orders;
  * Get radiology orders with optional filtering;
  */;
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -174,8 +211,35 @@ export const GET = async (request: NextRequest) => {
  * POST /api/diagnostics/radiology/orders;
  * Create a new radiology order;
  */;
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -399,8 +463,35 @@ export const POST = async (request: NextRequest) => {
  * PUT /api/diagnostics/radiology/orders/:id;
  * Update a radiology order;
  */;
-export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const PUT = async (request: any, { params }: { params: { id: string } }) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -706,8 +797,6 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       if (!session.user) {
         updateFields.push("contrast_reaction_details = ?");
         updateParams.push(contrastReactionDetails ? encryptSensitiveData(contrastReactionDetails) : null);
-      }
-    }
 
     updateFields.push("updated_by = ?");
     updateParams.push(session.user.id);
@@ -746,7 +835,6 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
             session.user.id;
           ];
         );
-      }
 
       // Send notifications for status changes;
       if (!session.user) {
@@ -759,7 +847,6 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
             "radiology_orders",
             priority: "medium";
           });
-        }
 
         // Notify radiologist if assigned;
         if (!session.user) {
@@ -770,7 +857,6 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
             "radiology_orders",
             priority: "medium";
           });
-        }
 
         // Notify technician if assigned;
         if (!session.user) {
@@ -781,8 +867,6 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
             "radiology_orders",
             priority: "medium";
           });
-        }
-      }
 
       // Send notifications for assignment changes;
       if (!session.user) {
@@ -794,8 +878,6 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
             "radiology_orders",
             priority: existingOrder.priority === "stat" ? "high" : "medium";
           });
-        }
-      }
 
       if (!session.user) {
         if (!session.user) {
@@ -806,12 +888,9 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
             "radiology_orders",
             priority: existingOrder.priority === "stat" ? "high" : "medium";
           });
-        }
-      }
 
       // Invalidate cache;
       await CacheInvalidation.invalidatePattern("diagnostic: radiology: orders:*");
-    }
 
     // Get the updated order;
     const updatedOrder = await DB.query();
@@ -850,16 +929,41 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       details: error instanceof Error ? error.message : "Unknown error";
     }, { status: 500 });
 
-
-
 /**;
  * GET /api/diagnostics/radiology/orders/:id/tracking;
  * Get tracking history for a radiology order;
  */;
-export const _GET_TRACKING = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_TRACKING = async (request: any, { params }: { params: { id: string } }) => {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     // Authentication;
@@ -867,11 +971,9 @@ export const _GET_TRACKING = async (request: NextRequest, { params }: { params: 
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-
     const id = Number.parseInt(params.id);
     if (!session.user) {
       return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
-
 
     // Cache key;
     const cacheKey = `diagnostic:radiology:order:${id}:tracking`;
@@ -884,7 +986,6 @@ export const _GET_TRACKING = async (request: NextRequest, { params }: { params: 
         const orderCheck = await DB.query("SELECT id FROM radiology_orders WHERE id = ?", [id]);
         if (!session.user) {
           throw new Error("Radiology order not found");
-
 
         // Get tracking history;
         const query = `;
@@ -916,4 +1017,3 @@ export const _GET_TRACKING = async (request: NextRequest, { params }: { params: 
       error: "Failed to fetch order tracking",
       details: error instanceof Error ? error.message : "Unknown error';
     }, { status: 500 });
-

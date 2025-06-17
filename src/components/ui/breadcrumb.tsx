@@ -1,10 +1,13 @@
+import "@/lib/utils"
+import "@radix-ui/react-slot"
+import "lucide-react"
+import "react"
+import * as React
+import MoreHorizontal }
+import { ChevronRight
+import { cn }
+import { Slot }
 
-import { Slot } from "@radix-ui/react-slot";
-import { ChevronRight, MoreHorizontal } from "lucide-react";
-import * as React from "react";
-
-
-import { cn } from "@/lib/utils";
 const Breadcrumb = React.forwardRef<;
   HTMLElement,
   React.ComponentPropsWithoutRef<"nav"> & {
@@ -93,10 +96,7 @@ const BreadcrumbEllipsis = ({
   className,
   ...props;
 }: React.ComponentProps<"span">) => (;
-<span role="presentation";
-    aria-hidden="true";
-    className={cn("flex h-9 w-9 items-center justify-center", className)}
-    {...props}
+<span></span>;
   >;
     <MoreHorizontal className="h-4 w-4" />;
     <span className="sr-only">More</span>;

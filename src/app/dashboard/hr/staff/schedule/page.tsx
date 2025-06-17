@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import "react"
+import React
+import { useState }
+
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import "next/navigation"
+import "react"
+import useEffect }
 import {
+import { useRouter }
+import { useState
+
   Card,
   CardContent,
   CardDescription,
@@ -18,8 +25,11 @@ import {
   TableHeader,
   TableRow;
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import "@/components/ui/button"
+import "@/components/ui/input"
+import { Button }
+import { Input }
+
   Select,
   SelectContent,
   SelectItem,
@@ -33,7 +43,9 @@ import { Input } from "@/components/ui/input";
   PaginationNext,
   PaginationPrevious;
 } from "@/components/ui/pagination";
-import { Badge } from "@/components/ui/badge";
+import "@/components/ui/badge"
+import { Badge }
+
   Search,
   Plus,
   Building2,
@@ -41,7 +53,8 @@ import { Badge } from "@/components/ui/badge";
   CalendarRange,
   Users;
 } from "lucide-react";
-import { format } from "date-fns";
+import "date-fns"
+import { format }
 
 export default const _StaffScheduling = () {
   const router = useRouter();
@@ -64,9 +77,36 @@ export default const _StaffScheduling = () {
     const fetchEmployees = async () => {
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
         setLoading(true);
         const queryParams = new URLSearchParams({
           skip: pagination.skip.toString(),
@@ -80,7 +120,6 @@ export default const _StaffScheduling = () {
 
         if (!session.user) {
           throw new Error("Failed to fetch employees");
-        }
 
         const data = await response.json(),
         setEmployees(data.employees);
@@ -92,7 +131,7 @@ export default const _StaffScheduling = () {
         setError(err.message);
       } finally {
         setLoading(false);
-      }
+
     };
 
     fetchEmployees();
@@ -103,17 +142,43 @@ export default const _StaffScheduling = () {
     const fetchDepartments = async () => {
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         // Fetch departments;
         const deptResponse = await fetch("/api/hr/departments");
         if (!session.user) {
           const deptData = await deptResponse.json(),
           setDepartments(deptData.departments || []);
-        }
-      } catch (err) {
 
+      } catch (err) {
 
     };
 
@@ -195,7 +260,6 @@ export default const _StaffScheduling = () {
         name: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][i],
         date: date;
       });
-
 
     return days;
   };
@@ -359,11 +423,7 @@ export default const _StaffScheduling = () {
                       </TableCell>;
                       {getDaysOfWeek().map((day) => (;
                         >;
-                          <Badge variant={
-                            schedule.schedule[day.name] === "Off" ? "outline" : any;
-                            schedule.schedule[day.name]?.includes("Morning") ? "default" : any;
-                            schedule.schedule[day.name]?.includes("Evening") ? "secondary" : any;
-                            "destructive";
+                          <Badge></Badge>;
                           }>;
                             {schedule.schedule[day.name]}
                           </Badge>;

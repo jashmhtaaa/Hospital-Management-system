@@ -1,10 +1,15 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/database"
+import "@/lib/session"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { DB }
+import { getSession }
+import { type
+import { z }
 
-
-import { DB } from "@/lib/database";
-import { getSession } from "@/lib/session";
-import type { D1Database, D1ResultWithMeta } from "@/types/cloudflare"; // Import D1Database;
+import { D1Database, D1ResultWithMeta  } from "@/types/cloudflare"; // Import D1Database;
 // Zod schema for creating a progress note;
 const progressNoteCreateSchema = z.object({
     note_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {
@@ -16,7 +21,7 @@ const progressNoteCreateSchema = z.object({
 
 // GET /api/ipd/[admissionId]/progress-notes - Fetch progress notes for an admission;
 export const _GET = async();
-    request: NextRequest;
+    request: any;
     { params }: { params: Promise<{ admissionId: string }> }
 ) => {
     const session = await getSession();
@@ -33,6 +38,33 @@ export const _GET = async();
     }
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -103,7 +135,7 @@ export const _GET = async();
 
 // POST /api/ipd/[admissionId]/progress-notes - Create a new progress note;
 export const _POST = async();
-    request: NextRequest;
+    request: any;
     { params }: { params: Promise<{ admissionId: string }> }
 ) => {
     const session = await getSession();
@@ -124,9 +156,36 @@ export const _POST = async();
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const admissionCheck = await (DB as D1Database).prepare();
             "SELECT id FROM IPDAdmissions WHERE id = ?";
         ).bind(admissionId).first<id: number >();
@@ -136,7 +195,6 @@ export const _POST = async();
                 { message: "Admission not found" },
                 { status: 404 }
             );
-        }
 
         const body = await request.json();
         const validationResult = progressNoteCreateSchema.safeParse(body);
@@ -146,7 +204,6 @@ export const _POST = async();
                 { message: "Invalid input", errors: validationResult.error.errors },
                 { status: 400 }
             );
-        }
 
         const noteData = validationResult.data;
         const now = new Date().toISOString();
@@ -169,7 +226,6 @@ export const _POST = async();
         if (!session.user) {
 
             throw new Error("Failed to create progress note record");
-        }
 
         const progressNoteId = result.meta.last_row_id;
 
@@ -183,10 +239,8 @@ export const _POST = async();
         let errorMessage = "An unknown error occurred";
         if (!session.user) {
             errorMessage = error.message;
-        }
+
         return NextResponse.json();
             { message: "Error creating progress note", details: errorMessage },
             { status: 500 }
         );
-
-

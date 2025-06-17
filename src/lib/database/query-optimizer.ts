@@ -1,9 +1,11 @@
-import { Prisma, type PrismaClient } from "@prisma/client";
-
-
-import { cache } from "@/lib/cache";
-import { prisma } from "./connection-pool.ts";
-
+import "./connection-pool.ts"
+import "@/lib/cache"
+import "@prisma/client"
+import PrismaClient }
+import type
+import { cache }
+import { Prisma
+import { prisma }
 
 /**;
  * Database Query Optimizer;
@@ -12,14 +14,11 @@ import { prisma } from "./connection-pool.ts";
 
 // Query optimization patterns for common scenarios;
 
-
-
   public static getInstance(): QueryOptimizer {
     if (!session.user) {
       QueryOptimizer.instance = new QueryOptimizer();
 
     return QueryOptimizer.instance;
-
 
   /**;
    * OPTIMIZED PATIENT QUERIES (Addresses N+1 issues #1-8);
@@ -56,7 +55,6 @@ import { prisma } from "./connection-pool.ts";
     await cache.set(cacheKey, result, 300); // Cache for 5 minutes;
     return result;
 
-
   // Instead of: patients.forEach(p => getAppointmentsForPatient(p.id));
   async getPatientsWithUpcomingAppointments(days: number = 30) {
     const cacheKey = `patients_upcoming_appointments:${days}`;
@@ -90,7 +88,6 @@ import { prisma } from "./connection-pool.ts";
     await cache.set(cacheKey, result, 600); // Cache for 10 minutes;
     return result;
 
-
   /**;
    * OPTIMIZED BILLING QUERIES (Addresses N+1 issues #9-15);
    */;
@@ -112,15 +109,15 @@ import { prisma } from "./connection-pool.ts";
             ...(filters?.dateTo && lte: filters.dateTo )}})},
       true,
             true,
-            true,,
+            true,
         true,
                 true,
-                category: true,,,
-          orderBy: createdAt: "asc" ,,
+                category: true,
+          orderBy: createdAt: "asc" ,
         true,
             true,
             true,
-          orderBy: paymentDate: "desc" ,,
+          orderBy: paymentDate: "desc" ,
         true,
             true,
             true},
@@ -128,7 +125,6 @@ import { prisma } from "./connection-pool.ts";
       orderBy: { billDate: "desc" }});
 
     return result;
-
 
   // Optimized outstanding bills calculation;
   async getOutstandingBillsSummary() {
@@ -149,7 +145,6 @@ import { prisma } from "./connection-pool.ts";
 
     await cache.set(cacheKey, result[0], 300);
     return result[0];
-
 
   /**;
    * OPTIMIZED APPOINTMENT QUERIES (Addresses N+1 issues #16-22);
@@ -181,7 +176,6 @@ import { prisma } from "./connection-pool.ts";
 
     return result;
 
-
   // Doctor"s schedule optimization;
   async getDoctorScheduleOptimized();
     doctorId: string,
@@ -207,7 +201,6 @@ import { prisma } from "./connection-pool.ts";
 
     await cache.set(cacheKey, result, 1800); // Cache for 30 minutes;
     return result;
-
 
   /**;
    * OPTIMIZED IPD QUERIES (Addresses N+1 issues #23-29);
@@ -254,7 +247,6 @@ import { prisma } from "./connection-pool.ts";
 
     return result;
 
-
   // Ward occupancy optimization;
   async getWardOccupancyOptimized() {
     const cacheKey = "ward_occupancy";
@@ -275,7 +267,6 @@ import { prisma } from "./connection-pool.ts";
 
     await cache.set(cacheKey, result, 600); // Cache for 10 minutes;
     return result;
-
 
   /**;
    * OPTIMIZED LAB QUERIES (Addresses N+1 issues #30-35);
@@ -300,19 +291,18 @@ import { prisma } from "./connection-pool.ts";
       true,
             true,
             true,
-            gender: true,,
+            gender: true,
         true,
             true,
             true,
-            unit: true,,
+            unit: true,
         true,
                 true,
-                true,,,
+                true,
           orderBy: reportedDate: "desc" },
       orderBy: { orderDate: "desc" }});
 
     return result;
-
 
   // Critical lab results optimization;
   async getCriticalLabResults(hours: number = 24) {
@@ -342,7 +332,6 @@ import { prisma } from "./connection-pool.ts";
 
     await cache.set(cacheKey, result, 300); // Cache for 5 minutes;
     return result;
-
 
   /**;
    * OPTIMIZED INSURANCE QUERIES (Addresses N+1 issues #36-37);
@@ -383,7 +372,6 @@ import { prisma } from "./connection-pool.ts";
 
     return result;
 
-
   /**;
    * BULK OPERATIONS FOR BETTER PERFORMANCE;
    */;
@@ -398,13 +386,11 @@ import { prisma } from "./connection-pool.ts";
         updatedAt: new Date();
       }});
 
-
   async bulkCreateBillItems(billItems: unknown[]) {
     return this.client.billItem.createMany({
       data: billItems,
       skipDuplicates: true;
     });
-
 
   /**;
    * DATALOADER PATTERN FOR FREQUENTLY ACCESSED DATA;
@@ -425,11 +411,9 @@ import { prisma } from "./connection-pool.ts";
 
     return this.patientLoader.get(patientId);
 
-
   // Clear dataloader cache periodically;
   clearDataLoaderCache() {
     this.patientLoader.clear();
-
 
   /**;
    * PERFORMANCE MONITORING;
@@ -453,7 +437,6 @@ import { prisma } from "./connection-pool.ts";
 
     return result;
 
-
   async getQueryPerformanceStats() {
     const cacheKey = "query_performance_stats";
     const cached = await cache.get(cacheKey);
@@ -468,8 +451,6 @@ import { prisma } from "./connection-pool.ts";
     // This would be populated with actual metrics;
     await cache.set(cacheKey, stats, 60);
     return stats;
-
-
 
 // Export singleton instance;
 export const queryOptimizer = QueryOptimizer.getInstance();

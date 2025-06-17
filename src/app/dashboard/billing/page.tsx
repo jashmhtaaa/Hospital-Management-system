@@ -1,5 +1,9 @@
-import React, { useState, useEffect } from "react";
+import "react"
+import React
+import useEffect }
 import {
+import { useState
+
 }
 
 "use client";
@@ -15,7 +19,9 @@ import {
   TabsList,
   TabsTrigger;
 } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
+import "@/components/ui/button"
+import { Button }
+
   Dialog,
   DialogContent,
   DialogDescription,
@@ -23,20 +29,31 @@ import { Button } from "@/components/ui/button";
   DialogHeader,
   DialogTitle,
   DialogTrigger} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import "@/components/ui/input"
+import "@/components/ui/label"
+import { Input }
+import { Label }
+
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue;
 } from "@/components/ui/select";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { DataTable } from "@/components/ui/data-table";
-import { DatePicker } from "@/components/ui/date-picker";
-import { Spinner } from "@/components/ui/spinner";
-import { formatCurrency, formatDate } from "@/lib/formatters";
+import "@/components/ui/alert"
+import "@/components/ui/badge"
+import "@/components/ui/data-table"
+import "@/components/ui/date-picker"
+import "@/components/ui/spinner"
+import "@/lib/formatters"
+import AlertDescription }
+import formatDate }
+import { Alert
+import { Badge }
+import { DataTable }
+import { DatePicker }
+import { formatCurrency
+import { Spinner }
 
 export default const _BillingDashboard = () {
   const [activeTab, setActiveTab] = useState("invoices");
@@ -54,6 +71,33 @@ export default const _BillingDashboard = () {
     setError(null);
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -158,7 +202,7 @@ export default const _BillingDashboard = () {
         { id: "PKG-009", code: "SURGERY-HERNIA", name: "Hernia Surgery Package", description: "Includes consultations, surgery, 3 days stay, medications", totalPrice: 35000, discountPercentage: 10, active: true },
         { id: "PKG-010", code: "SURGERY-GALL", name: "Gallbladder Surgery Package", description: "Includes consultations, laparoscopic surgery, 3 days stay, medications", totalPrice: 45000, discountPercentage: 10, active: true }
       ];
-    }
+
   };
 
   const generateDiscountsData = () => {
@@ -175,7 +219,7 @@ export default const _BillingDashboard = () {
         { id: "DISC-009", code: "FIRST-VISIT", name: "First Visit Discount", description: "Discount for first-time patients", discountType: "fixed", discountValue: 500, minBillAmount: 2000, maxDiscountAmount: 500, active: true },
         { id: "DISC-010", code: "REFERRAL", name: "Referral Discount", description: "Discount for patients referred by existing patients", discountType: "fixed", discountValue: 300, minBillAmount: 1000, maxDiscountAmount: 300, active: true }
       ];
-    }
+
   };
 
   // Filter functions;
@@ -279,7 +323,6 @@ export default const _BillingDashboard = () {
         <span className="ml-2">Loading billing dashboard...</span>;
       </div>;
     );
-  }
 
   // Render error state;
   if (!session.user) {
@@ -291,7 +334,6 @@ export default const _BillingDashboard = () {
         <Button className="mt-4" onClick={fetchBillingData}>Retry</Button>;
       </div>;
     );
-  }
 
   return();
     >;

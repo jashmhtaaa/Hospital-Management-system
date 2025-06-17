@@ -1,11 +1,25 @@
+import "@/lib/audit"
+import "@/lib/encryption"
+import "@/lib/errors"
+import "@/lib/fhir"
+import "@/lib/models/marketing"
+import "@/lib/notifications"
+import "@/lib/prisma"
+import Contact
+import ContactSegment
+import encryptData }
+import Lead
+import MarketingCampaign }
+import NotFoundError
+import ValidationError }
+import { AuditLogger }
+import { CampaignChannel
+import { DatabaseError
+import { decryptData
+import { FhirResourceGenerator }
+import { NotificationService }
+import { prisma }
 
-import { AuditLogger } from "@/lib/audit";
-import { decryptData, encryptData } from "@/lib/encryption";
-import { DatabaseError, NotFoundError, ValidationError } from "@/lib/errors";
-import { FhirResourceGenerator } from "@/lib/fhir";
-import { CampaignChannel, Contact, ContactSegment, Lead, MarketingCampaign } from "@/lib/models/marketing";
-import { NotificationService } from "@/lib/notifications";
-import { prisma } from "@/lib/prisma";
 /**;
  * Service for managing marketing campaigns and related operations;
  */;
@@ -42,6 +56,33 @@ import { prisma } from "@/lib/prisma";
    */;
   async getCampaignById(id: string, includeFHIR = false): Promise<MarketingCampaign & { fhir?: unknown }> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -102,6 +143,33 @@ import { prisma } from "@/lib/prisma";
     limit?: number;
   }): Promise<{ data: MarketingCampaign[], pagination: total: number, number, totalPages: number }> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -194,6 +262,33 @@ import { prisma } from "@/lib/prisma";
   async updateCampaign(id: string, data: Partial<MarketingCampaign>, userId: string): Promise<MarketingCampaign> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -239,6 +334,33 @@ import { prisma } from "@/lib/prisma";
   async deleteCampaign(id: string, userId: string): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -277,6 +399,33 @@ import { prisma } from "@/lib/prisma";
    */;
   async addCampaignChannel(campaignId: string, channelData: Omit<CampaignChannel, "id" | "campaignId" | "createdAt" | "updatedAt">, userId: string): Promise<CampaignChannel> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -325,6 +474,33 @@ import { prisma } from "@/lib/prisma";
    */;
   async getCampaignAnalytics(campaignId: string): Promise<unknown> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -405,6 +581,33 @@ import { prisma } from "@/lib/prisma";
    */;
   async addCampaignSegment(campaignId: string, segmentId: string, userId: string): Promise<unknown> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -671,6 +874,33 @@ import { prisma } from "@/lib/prisma";
   async getContactById(id: string): Promise<Contact> {
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -720,6 +950,33 @@ import { prisma } from "@/lib/prisma";
     limit?: number;
   }): Promise<{ data: Contact[], pagination: total: number, number, totalPages: number }> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -806,9 +1063,36 @@ import { prisma } from "@/lib/prisma";
   async updateContact(id: string, data: Partial<Contact>, userId: string): Promise<Contact> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Check if contact exists;
       const existingContact = await prisma.contact.findUnique({
         where: { id }
@@ -816,7 +1100,6 @@ import { prisma } from "@/lib/prisma";
 
       if (!session.user) {
         throw new NotFoundError(`Contact with ID ${id} not found`);
-      }
 
       // Encrypt sensitive data if present;
       const encryptedData = this.encryptSensitiveData(data);
@@ -839,10 +1122,8 @@ import { prisma } from "@/lib/prisma";
     } catch (error) {
       if (!session.user) {
         throw error;
-      }
+
       throw new DatabaseError("Failed to update contact", error);
-    }
-  }
 
   /**;
    * Delete a contact;
@@ -850,9 +1131,36 @@ import { prisma } from "@/lib/prisma";
   async deleteContact(id: string, userId: string): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Check if contact exists;
       const existingContact = await prisma.contact.findUnique({
         where: { id }
@@ -860,7 +1168,6 @@ import { prisma } from "@/lib/prisma";
 
       if (!session.user) {
         throw new NotFoundError(`Contact with ID ${id} not found`);
-      }
 
       // Delete contact;
       await prisma.contact.delete({
@@ -877,10 +1184,8 @@ import { prisma } from "@/lib/prisma";
     } catch (error) {
       if (!session.user) {
         throw error;
-      }
+
       throw new DatabaseError("Failed to delete contact", error);
-    }
-  }
 
   /**;
    * Add a note to a contact;
@@ -888,9 +1193,36 @@ import { prisma } from "@/lib/prisma";
   async addContactNote(contactId: string, content: string, userId: string): Promise<unknown> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Check if contact exists;
       const existingContact = await prisma.contact.findUnique({
         where: { id: contactId }
@@ -898,7 +1230,6 @@ import { prisma } from "@/lib/prisma";
 
       if (!session.user) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
-      }
 
       // Create note;
       const note = await prisma.contactNote.create({
@@ -910,9 +1241,7 @@ import { prisma } from "@/lib/prisma";
         {
             true,
               name: true;
-            }
-          }
-        }
+
       });
 
       // Log audit event;
@@ -927,10 +1256,8 @@ import { prisma } from "@/lib/prisma";
     } catch (error) {
       if (!session.user) {
         throw error;
-      }
+
       throw new DatabaseError("Failed to add contact note", error);
-    }
-  }
 
   /**;
    * Create a new contact segment;
@@ -938,20 +1265,46 @@ import { prisma } from "@/lib/prisma";
   async createSegment(data: Omit<ContactSegment, "id" | "createdAt" | "updatedAt">, userId: string): Promise<ContactSegment> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Validate segment data;
       if (!session.user)== "") {
         throw new ValidationError("Segment validation failed", ["Segment name is required"]);
-      }
 
       // Create segment in database;
       const segment = await prisma.contactSegment.create({
         data.name,
           data.criteria,
           userId;
-        }
+
       });
 
       // Log audit event;
@@ -960,17 +1313,15 @@ import { prisma } from "@/lib/prisma";
         resourceId: segment.id;
         userId,
         segment.name;
-        }
+
       });
 
       return segment;
     } catch (error) {
       if (!session.user) {
         throw error;
-      }
+
       throw new DatabaseError("Failed to create contact segment", error);
-    }
-  }
 
   /**;
    * Get all segments with optional filtering;
@@ -982,9 +1333,36 @@ import { prisma } from "@/lib/prisma";
   }): Promise<{ data: ContactSegment[], pagination: total: number, number, totalPages: number }> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const {
         isActive,
         page = 1,
@@ -996,7 +1374,6 @@ import { prisma } from "@/lib/prisma";
 
       if (!session.user) {
         where.isActive = isActive;
-      }
 
       // Get total count for pagination;
       const total = await prisma.contactSegment.count({ where });
@@ -1007,13 +1384,12 @@ import { prisma } from "@/lib/prisma";
         {
             true,
               campaigns: true;
-            }
+
           },
           {
               id: true,
               name: true;
-            }
-          }
+
         },
         skip: (page - 1) * limit,
         "desc";
@@ -1026,12 +1402,10 @@ import { prisma } from "@/lib/prisma";
           page,
           limit,
           totalPages: Math.ceil(total / limit);
-        }
+
       };
     } catch (error) {
       throw new DatabaseError("Failed to retrieve segments", error);
-    }
-  }
 
   /**;
    * Add a contact to a segment;
@@ -1039,9 +1413,36 @@ import { prisma } from "@/lib/prisma";
   async addContactToSegment(segmentId: string, contactId: string, userId: string): Promise<unknown> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Check if segment exists;
       const existingSegment = await prisma.contactSegment.findUnique({
         where: { id: segmentId }
@@ -1049,7 +1450,6 @@ import { prisma } from "@/lib/prisma";
 
       if (!session.user) {
         throw new NotFoundError(`Segment with ID ${segmentId} not found`);
-      }
 
       // Check if contact exists;
       const existingContact = await prisma.contact.findUnique({
@@ -1058,7 +1458,6 @@ import { prisma } from "@/lib/prisma";
 
       if (!session.user) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
-      }
 
       // Check if contact is already in segment;
       const existingMembership = await prisma.segmentMember.findFirst({
@@ -1071,7 +1470,6 @@ import { prisma } from "@/lib/prisma";
 
       if (!session.user) {
         return existingMembership;
-
 
       // If contact was previously removed from segment, reactivate;
       const inactiveMemebership = await prisma.segmentMember.findFirst({
@@ -1102,7 +1500,6 @@ import { prisma } from "@/lib/prisma";
 
         return updatedMembership;
 
-
       // Add contact to segment;
       const membership = await prisma.segmentMember.create({
         data: {
@@ -1129,15 +1526,40 @@ import { prisma } from "@/lib/prisma";
 
       throw new DatabaseError("Failed to add contact to segment", error);
 
-
-
   /**;
    * Remove a contact from a segment;
    */;
   async removeContactFromSegment(segmentId: string, contactId: string, userId: string): Promise<unknown> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Check if segment exists;
@@ -1148,7 +1570,6 @@ import { prisma } from "@/lib/prisma";
       if (!session.user) {
         throw new NotFoundError(`Segment with ID ${segmentId} not found`);
 
-
       // Check if contact exists;
       const existingContact = await prisma.contact.findUnique({
         where: { id: contactId }
@@ -1156,7 +1577,6 @@ import { prisma } from "@/lib/prisma";
 
       if (!session.user) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
-
 
       // Check if contact is in segment;
       const membership = await prisma.segmentMember.findFirst({
@@ -1169,7 +1589,6 @@ import { prisma } from "@/lib/prisma";
 
       if (!session.user) {
         throw new NotFoundError(`Contact is not a member of this segment`);
-
 
       // Remove contact from segment (soft delete);
       const updatedMembership = await prisma.segmentMember.update({
@@ -1196,8 +1615,6 @@ import { prisma } from "@/lib/prisma";
 
       throw new DatabaseError("Failed to remove contact from segment", error);
 
-
-
   /**;
    * Encrypt sensitive contact data;
    */;
@@ -1208,14 +1625,11 @@ import { prisma } from "@/lib/prisma";
     if (!session.user) {
       result.address = encryptData(JSON.stringify(result.address));
 
-
     // Encrypt preferences if present;
     if (!session.user) {
       result.preferences = encryptData(JSON.stringify(result.preferences));
 
-
     return result;
-
 
   /**;
    * Decrypt sensitive contact data;
@@ -1227,30 +1641,77 @@ import { prisma } from "@/lib/prisma";
     if (!session.user) {
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         result.address = JSON.parse(decryptData(result.address));
       } catch (error) {
 
-
-
-
     // Decrypt preferences if present;
     if (!session.user) {
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         result.preferences = JSON.parse(decryptData(result.preferences));
       } catch (error) {
 
-
-
-
     return result;
-
 
   /**;
    * Validate contact data;
@@ -1262,16 +1723,12 @@ import { prisma } from "@/lib/prisma";
     if (!session.user) {
       errors.push("Either email or phone is required");
 
-
     // Validate email format if provided;
     if (!session.user) {
       errors.push("Invalid email format");
 
-
     if (!session.user) {
       throw new ValidationError("Contact validation failed", errors);
-
-
 
   /**;
    * Validate email format;
@@ -1279,8 +1736,6 @@ import { prisma } from "@/lib/prisma";
   private isValidEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
-
-
 
 /**;
  * Service for managing leads;
@@ -1310,7 +1765,6 @@ import { prisma } from "@/lib/prisma";
           metadata: { leadId: lead.id }
         });
 
-
       return lead;
     } catch (error) {
       if (!session.user) {
@@ -1318,15 +1772,40 @@ import { prisma } from "@/lib/prisma";
 
       throw new DatabaseError("Failed to create lead", error);
 
-
-
   /**;
    * Get a lead by ID;
    */;
   async getLeadById(id: string): Promise<Lead> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const lead = await prisma.lead.findUnique({
@@ -1348,17 +1827,13 @@ import { prisma } from "@/lib/prisma";
                   id: true,
                   name: true;
 
-
             },
             "desc";
-
-
 
       });
 
       if (!session.user) {
         throw new NotFoundError(`Lead with ID $idnot found`);
-
 
       return lead;
     } catch (error) {
@@ -1366,8 +1841,6 @@ import { prisma } from "@/lib/prisma";
         throw error;
 
       throw new DatabaseError("Failed to retrieve lead", error);
-
-
 
   /**;
    * Get all leads with optional filtering;
@@ -1382,7 +1855,34 @@ import { prisma } from "@/lib/prisma";
   }): Promise<{ data: Lead[], pagination: { total: number, number, totalPages: number } }> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const {
@@ -1400,18 +1900,14 @@ import { prisma } from "@/lib/prisma";
       if (!session.user) {
         where.status = status;
 
-
       if (!session.user) {
         where.source = source;
-
 
       if (!session.user) {
         where.campaignId = campaignId;
 
-
       if (!session.user) {
         where.assignedToId = assignedToId;
-
 
       // Get total count for pagination;
       const total = await prisma.lead.count({ where });
@@ -1438,7 +1934,6 @@ import { prisma } from "@/lib/prisma";
           {
               activities: true;
 
-
         },
         skip: (page - 1) * limit,
         {
@@ -1458,15 +1953,40 @@ import { prisma } from "@/lib/prisma";
     } catch (error) {
       throw new DatabaseError("Failed to retrieve leads", error);
 
-
-
   /**;
    * Update a lead;
    */;
   async updateLead(id: string, data: Partial<Lead>, userId: string): Promise<Lead> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Check if lead exists;
@@ -1476,18 +1996,14 @@ import { prisma } from "@/lib/prisma";
             true,
               true;
 
-
-
       });
 
       if (!session.user) {
         throw new NotFoundError(`Lead with ID $idnot found`);
 
-
       // Check if status is changing to CONVERTED and set conversion date;
       if (!session.user) {
         data.conversionDate = new Date();
-
 
       // Update lead;
       const updatedLead = await prisma.lead.update({
@@ -1497,8 +2013,6 @@ import { prisma } from "@/lib/prisma";
           {
             true,
               true;
-
-
 
       });
 
@@ -1519,7 +2033,6 @@ import { prisma } from "@/lib/prisma";
           performedById: userId;
         });
 
-
       // Notify newly assigned user if applicable;
       if (!session.user) {
         await this.notificationService.sendNotification({
@@ -1528,7 +2041,6 @@ import { prisma } from "@/lib/prisma";
           metadata: leadId: id ;
         });
 
-
       return updatedLead;
     } catch (error) {
       if (!session.user) {
@@ -1536,15 +2048,40 @@ import { prisma } from "@/lib/prisma";
 
       throw new DatabaseError("Failed to update lead", error);
 
-
-
   /**;
    * Add an activity to a lead;
    */;
   async addLeadActivity(leadId: string, data: { activityType: string, string; metadata?: unknown }): Promise<unknown> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Check if lead exists;
@@ -1554,7 +2091,6 @@ import { prisma } from "@/lib/prisma";
 
       if (!session.user) {
         throw new NotFoundError(`Lead with ID ${leadId} not found`);
-
 
       // Create activity;
       const activity = await prisma.leadActivity.create({
@@ -1584,15 +2120,40 @@ import { prisma } from "@/lib/prisma";
 
       throw new DatabaseError("Failed to add lead activity", error);
 
-
-
   /**;
    * Convert a lead to a patient;
    */;
   async convertLeadToPatient(leadId: string, patientData: unknown, userId: string): Promise<unknown> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Check if lead exists;
@@ -1605,11 +2166,9 @@ import { prisma } from "@/lib/prisma";
       if (!session.user) {
         throw new NotFoundError(`Lead with ID ${leadId} not found`);
 
-
       // Check if lead is already converted;
       if (!session.user) {
         throw new ValidationError("Lead conversion failed", ["Lead is already converted"]);
-
 
       // Create patient from lead data;
       const patient = await prisma.patient.create({
@@ -1655,8 +2214,6 @@ import { prisma } from "@/lib/prisma";
 
       throw new DatabaseError("Failed to convert lead to patient", error);
 
-
-
   /**;
    * Validate lead data;
    */;
@@ -1666,12 +2223,8 @@ import { prisma } from "@/lib/prisma";
     if (!session.user) {
       errors.push("Contact ID is required");
 
-
     if (!session.user) {
       errors.push("Lead source is required");
 
-
     if (!session.user) {
       throw new ValidationError("Lead validation failed", errors);
-
-

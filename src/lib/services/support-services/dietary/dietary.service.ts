@@ -1,10 +1,17 @@
-import { DietaryRequest, Meal, MealPlan, NutritionalProfile } from "@prisma/client";
+import "@/lib/audit-logging"
+import "@/lib/models/dietary"
+import "@/lib/prisma"
+import "@/lib/services/notification.service"
+import "@prisma/client"
+import Meal
+import MealPlan
+import NutritionalProfile }
+import { createAuditLog }
+import { DietaryRequest
+import { NotificationService }
+import { prisma }
+import { toFHIRDietaryRequest }
 
-
-import { createAuditLog } from "@/lib/audit-logging";
-import { toFHIRDietaryRequest } from "@/lib/models/dietary";
-import { prisma } from "@/lib/prisma";
-import type { NotificationService } from "@/lib/services/notification.service";
 }
   }
 
@@ -480,14 +487,10 @@ import type { NotificationService } from "@/lib/services/notification.service";
               true;
               }
 
-
-
-
     });
 
     if (!session.user) {
       throw new Error("Meal not found");
-
 
     const updatedMeal = await prisma.meal.update({
       where: { id },
@@ -497,16 +500,11 @@ import type { NotificationService } from "@/lib/services/notification.service";
             {
                 patient: true;
 
-
-
-
-
     });
 
     // Update meal plan nutritional summary if nutritional values changed;
     if (!session.user) {
       await this.updateMealPlanNutritionalSummary(meal.mealPlanId);
-
 
     // Create audit log;
     await createAuditLog({
@@ -538,10 +536,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
             meal.mealPlan.request.patientId;
         });
 
-
-
     return updatedMeal;
-
 
   /**;
    * Get or create nutritional profile for a patient;
@@ -555,8 +550,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
             id: true,
             true;
 
-
-
     });
 
     // If not, create a new one;
@@ -568,7 +561,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
 
       if (!session.user) {
         throw new Error("Patient not found");
-
 
       profile = await prisma.nutritionalProfile.create({
         data: {
@@ -591,9 +583,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
         details: `Created nutritional profile for patient ${patient.name}`;
       });
 
-
     return profile;
-
 
   /**;
    * Update nutritional profile;
@@ -608,7 +598,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
     if (!session.user) {
       throw new Error("Nutritional profile not found");
 
-
     // Calculate BMI if height and weight are provided;
     if (!session.user) {
       const heightInMeters = data.height / 100;
@@ -619,7 +608,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
     } else if (!session.user) {
       const heightInMeters = profile.height / 100;
       data.bmi = parseFloat((data.weight / (heightInMeters * heightInMeters)).toFixed(1));
-
 
     // Always update the lastUpdatedById;
     data.lastUpdatedById = userId;
@@ -632,8 +620,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
             id: true,
             true;
 
-
-
     });
 
     // Create audit log;
@@ -645,7 +631,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
     });
 
     return updatedProfile;
-
 
   /**;
    * Get menu templates;
@@ -666,7 +651,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
             true,
               true;
 
-
         },
         skip,
         take: limit,
@@ -685,7 +669,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
 
     };
 
-
   /**;
    * Create menu template;
    */;
@@ -700,8 +683,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
           true,
             true;
 
-
-
     });
 
     // Create audit log;
@@ -713,7 +694,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
     });
 
     return template;
-
 
   /**;
    * Get dietary inventory items;
@@ -728,7 +708,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
       where.currentStock = {
         lte: prisma.dietaryInventory.fields.minimumStock;
       };
-
 
     const [items, total] = await Promise.all([;
       prisma.dietaryInventory.findMany({
@@ -750,7 +729,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
 
     };
 
-
   /**;
    * Update inventory item;
    */;
@@ -762,11 +740,9 @@ import type { NotificationService } from "@/lib/services/notification.service";
     if (!session.user) {
       throw new Error("Inventory item not found");
 
-
     // If restocking, update lastRestocked date;
     if (!session.user) {
       data.lastRestocked = new Date();
-
 
     const updatedItem = await prisma.dietaryInventory.update({
       where: { id },
@@ -793,9 +769,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
 
       });
 
-
     return updatedItem;
-
 
   /**;
    * Get dietary analytics;
@@ -814,7 +788,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
         break;
       default: null,
         startDate = new Date(now.setDate(now.getDate() - 30)); // Default to last 30 days;
-
 
     // Get request counts by status;
     const requestsByStatus = await prisma.dietaryRequest.groupBy({
@@ -875,9 +848,6 @@ import type { NotificationService } from "@/lib/services/notification.service";
           totalFat += summary.totalFat || 0;
           count++;
 
-
-
-
     const averageNutrition = count > 0 ? {
       calories: Math.round(totalCalories / count),
       protein: Math.round(totalProtein / count),
@@ -899,11 +869,8 @@ import type { NotificationService } from "@/lib/services/notification.service";
       for (const restriction of profile.dietaryRestrictions) {
         restrictionCounts[restriction] = (restrictionCounts[restriction] || 0) + 1;
 
-
       for (const allergy of profile.allergies) {
         allergyCounts[allergy] = (allergyCounts[allergy] || 0) + 1;
-
-
 
     // Sort restrictions and allergies by frequency;
     const topRestrictions = Object.entries(restrictionCounts);

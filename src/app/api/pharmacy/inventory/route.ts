@@ -1,12 +1,20 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "../../../../lib/audit"
+import "../../../../lib/error-handler"
+import "../../../../lib/security.service"
+import "../../../../lib/validation/pharmacy-validation"
+import "../../models/domain-models"
+import "../../models/fhir-mappers"
+import "next/server"
+import NextRequest
+import NextResponse }
+import { auditLog }
+import { encryptionService }
+import { errorHandler }
+import { FHIRMapper }
+import { PharmacyDomain }
+import { type
+import { validateInventoryRequest }
 
-
-import { auditLog } from "../../../../lib/audit";
-import { errorHandler } from "../../../../lib/error-handler";
-import { encryptionService } from "../../../../lib/security.service";
-import { validateInventoryRequest } from "../../../../lib/validation/pharmacy-validation";
-import { PharmacyDomain } from "../../models/domain-models";
-import { FHIRMapper } from "../../models/fhir-mappers";
 }
 
 /**;
@@ -34,8 +42,35 @@ const inventoryRepository = {
  * GET /api/pharmacy/inventory;
  * List inventory with stock levels and filtering options;
  */;
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -99,18 +134,44 @@ export const GET = async (req: NextRequest) => {
   } catch (error) {
     return errorHandler(error, "Error retrieving inventory");
   }
-}
 
 /**;
  * POST /api/pharmacy/inventory;
  * Add new inventory item;
  */;
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Validate request;
     const data = await req.json();
     const validationResult = validateInventoryRequest(data);
@@ -119,13 +180,11 @@ export const POST = async (req: NextRequest) => {
         { error: "Validation failed", details: validationResult.errors },
         { status: 400 }
       );
-    }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -154,7 +213,6 @@ export const POST = async (req: NextRequest) => {
         });
       );
 
-
     // Save inventory item;
     const inventoryItemId = await inventoryRepository.save(inventoryItem);
 
@@ -177,4 +235,3 @@ export const POST = async (req: NextRequest) => {
     );
   } catch (error) {
     return errorHandler(error, "Error creating inventory item");
-

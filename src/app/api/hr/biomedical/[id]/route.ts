@@ -1,14 +1,45 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/hr/biomedical-service"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { biomedicalService }
+import { type
+import { z }
 
-
-import { biomedicalService } from "@/lib/hr/biomedical-service";
 // GET handler for retrieving a specific biomedical equipment;
 export const _GET = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -76,14 +107,41 @@ const biomedicalUpdateSchema = z.object({
 
 // PUT handler for updating biomedical equipment;
 export const _PUT = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // Parse request body;
     const body = await request.json();
 
@@ -94,7 +152,6 @@ export const _PUT = async();
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
       );
-    }
 
     const data = validationResult.data;
 
@@ -116,17 +173,42 @@ export const _PUT = async();
       { error: "Failed to update biomedical equipment", details: error.message },
       { status: 500 }
     );
-  }
-}
 
 // DELETE handler for deleting biomedical equipment;
 export const _DELETE = async();
-  request: NextRequest;
+  request: any;
   { params }: { id: string }
 ) => {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     await biomedicalService.deleteBiomedicalEquipment(params.id);
@@ -138,5 +220,3 @@ export const _DELETE = async();
       { error: "Failed to delete biomedical equipment", details: error.message },
       { status: 500 }
     );
-
-

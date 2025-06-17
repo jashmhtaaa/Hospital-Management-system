@@ -1,6 +1,13 @@
-import type React from "react";
-import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
+import "react"
+import ChangeEvent
+import FormEvent
+import React
+import type
+import useEffect
+import useState }
 import {
+import { type
+
 }
 
 "use client";
@@ -19,7 +26,8 @@ import {
   Input,
   Label} from "@/components/ui";
 import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast;
-import { Loader2 } from "lucide-react";
+import "lucide-react"
+import { Loader2 }
 
 // Define interfaces for data structures;
 interface VitalSignRecord {
@@ -96,16 +104,70 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
       setError(undefined);
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         // Simulate API call;
         // const _response = await fetch(`/api/ipd/admissions/${admissionId}/vital-signs`);
         // if (!session.user) {
         //   let _errorMsg = "Failed to fetch vital signs";
         //   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         //       const _errorData: ApiErrorResponse = await response.json();
@@ -143,8 +205,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
             96,
             "nurse_02",
             "Mike";
-          },
-        ];
+          }];
 
         setPatientInfo(mockPatientInfo),
         setVitalSigns();
@@ -187,7 +248,34 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
 
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Prepare data, converting empty strings to null and numbers where appropriate;
@@ -228,7 +316,34 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
       //   let _errorMsg = "Failed to record vital signs";
       //   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       //       const _errorData: ApiErrorResponse = await response.json();
@@ -277,7 +392,34 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
     if (!session.user)eturn "N/A";
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const options: Intl.DateTimeFormatOptions = {

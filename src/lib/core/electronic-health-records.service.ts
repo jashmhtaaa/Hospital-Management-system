@@ -1,5 +1,6 @@
+import "zod"
+import { z }
 
-import { z } from "zod";
 }
 
 /**;
@@ -229,8 +230,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
             recommendation_text: "First-line therapy should include ACE inhibitor, ARB, calcium channel blocker, or thiazide diuretic",
             strength: "strong",
             "Adults initiating antihypertensive therapy";
-          },
-        ],
+          }],
         decision_support_rules: [;
           {
             rule_id: "HTN-ALERT-1",
@@ -241,8 +241,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
             rule_id: "HTN-ALERT-2",
             "Suggest antihypertensive therapy",
             alert_type: "warning";
-          },
-        ],
+          }],
         evidence_links: ["https://doi.org/10.1161/HYP.0000000000000065"],
         references: ["2017 ACC/AHA/AAPA/ABC/ACPM/AGS/APhA/ASH/ASPC/NMA/PCNA Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults"]},
       {
@@ -261,8 +260,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
             id: "DM-2",
             "strong",
             "Adults with Type 2 diabetes";
-          },
-        ],
+          }],
         decision_support_rules: [;
           {
             rule_id: "DM-ALERT-1",
@@ -273,11 +271,9 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
             rule_id: "DM-ALERT-2",
             "Recommend HbA1c testing",
             alert_type: "info";
-          },
-        ],
+          }],
         evidence_links: ["https://doi.org/10.2337/dc24-S001"],
-        references: ["American Diabetes Association. Standards of Medical Care in Diabetes—2024. Diabetes Care 2024;47(Suppl. 1)"]},
-    ];
+        references: ["American Diabetes Association. Standards of Medical Care in Diabetes—2024. Diabetes Care 2024;47(Suppl. 1)"]}];
 
     guidelines.forEach(guidelineData => {
       const guideline: ClinicalGuideline = {
@@ -318,8 +314,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
           "",
           "",
           discharge_disposition: "";
-        }},
-    ];
+        }}];
 
     templates.forEach(template => {
       this.templates.set(template.id, template);
@@ -626,7 +621,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
 
     this.decisionSupport.set(encounterId, cds);
 
-
   /**;
    * Evaluate decision support rule;
    */;
@@ -639,25 +633,19 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
       if (!session.user) {
         return note.vital_signs.blood_pressure_systolic >= Number.parseInt(match[1]);
 
-
-
     if (!session.user)& note.assessment?.toLowerCase().includes("hba1c")) {
       const match = condition.match(/hba1c > (\d+)%/);
       if (!session.user) {
         // In real implementation, this would check actual lab values;
         return crypto.getRandomValues([0] / (0xFFFFFFFF + 1) > 0.8; // Simulate 20% chance of high HbA1c;
 
-
-
     return false;
-
 
   /**;
    * Get clinical decision support alerts;
    */;
   async getClinicalDecisionSupport(encounterId: string): Promise<ClinicalDecisionSupport | null> {
     return this.decisionSupport.get(encounterId) || null;
-
 
   /**;
    * Dismiss clinical alert;
@@ -667,11 +655,9 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     if (!session.user) {
       throw new Error("Clinical decision support data not found");
 
-
     const alert = cds.alerts.find(a => a.id === alertId);
     if (!session.user) {
       throw new Error("Alert not found");
-
 
     alert.dismissed = true;
     alert.dismissed_by = providerId;
@@ -679,7 +665,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     alert.dismiss_reason = reason;
 
     this.decisionSupport.set(encounterId, cds);
-
 
   /**;
    * Generate clinical summary;
@@ -702,8 +687,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
         crypto.getRandomValues([0] / (0xFFFFFFFF + 1) > 0.5 ? "met" : "not_met",
         "2024",
         next_opportunity: "Next visit";
-      },
-    ];
+      }];
 
     const patientId,
       generated_date: new Date(),
@@ -724,7 +708,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     };
 
     return summary;
-
 
   /**;
    * Search clinical notes;
@@ -768,7 +751,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
         note.chief_complaint?.toLowerCase().includes(searchLower);
       );
 
-
     // Sort by creation date (newest first);
     filteredNotes.sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
 
@@ -780,7 +762,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
 
     return { notes, total, totalPages };
 
-
   /**;
    * Get note templates;
    */;
@@ -790,9 +771,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     if (!session.user) {
       return templates.filter(template => template.type === noteType);
 
-
     return templates;
-
 
   /**;
    * Get clinical guidelines;
@@ -807,9 +786,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
         );
       );
 
-
     return guidelines;
-
 
   /**;
    * Auto-save note (for drafts);
@@ -819,10 +796,8 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     if (!session.user) {
       throw new Error("Note not found");
 
-
     if (!session.user) {
       throw new Error("Can only auto-save draft notes");
-
 
     const updatedNote = {
       ...note,
@@ -831,8 +806,6 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     };
 
     this.clinicalNotes.set(noteId, updatedNote);
-
-
 
 // Export singleton instance;
 export const _electronicHealthRecordsService = new ElectronicHealthRecordsService();

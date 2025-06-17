@@ -1,5 +1,8 @@
+import "@prisma/client"
+import MaintenanceRequest
+import MaintenanceWorkOrder }
+import { Asset
 
-import type { Asset, MaintenanceRequest, MaintenanceWorkOrder } from "@prisma/client";
 // FHIR-compliant interfaces for Maintenance Management;
 
 /**;
@@ -34,7 +37,6 @@ import type { Asset, MaintenanceRequest, MaintenanceWorkOrder } from "@prisma/cl
     text: string;
   }[];
 
-
 /**;
  * FHIR-compliant Maintenance Work Order;
  * Maps to FHIR Task resource;
@@ -65,7 +67,6 @@ import type { Asset, MaintenanceRequest, MaintenanceWorkOrder } from "@prisma/cl
     end?: string;
   };
 
-
 /**;
  * FHIR-compliant Asset;
  * Maps to FHIR Device resource;
@@ -91,7 +92,6 @@ import type { Asset, MaintenanceRequest, MaintenanceWorkOrder } from "@prisma/cl
   }[];
   manufactureDate?: string;
   expirationDate?: string;
-
 
 /**;
  * Convert database MaintenanceRequest to FHIR ServiceRequest;
@@ -153,8 +153,6 @@ export const _toFHIRMaintenanceRequest = (unknown;
     authoredOn: request.createdAt.toISOString(),
     note: request.notes ? [text: request.notes ] : [];
 
-
-
 /**;
  * Convert database MaintenanceWorkOrder to FHIR Task;
  */;
@@ -200,7 +198,6 @@ export const _toFHIRMaintenanceWorkOrder = (MaintenanceRequest;
     workOrder.startTime?.toISOString(),
       end: workOrder.endTime?.toISOString();
   };
-
 
 /**;
  * Convert database Asset to FHIR Device;
@@ -248,4 +245,3 @@ export const _toFHIRAsset = (unknown;
     note: [],
     manufactureDate: asset.purchaseDate?.toISOString(),
     expirationDate: asset.warrantyExpiry?.toISOString();
-

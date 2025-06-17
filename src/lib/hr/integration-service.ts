@@ -1,8 +1,10 @@
-import { PrismaClient } from "@prisma/client";
-import { getServerSession } from "next-auth";
+import "@/lib/hr/auth-integration"
+import "@prisma/client"
+import "next-auth"
+import { authOptions }
+import { getServerSession }
+import { PrismaClient }
 
-
-import { authOptions } from "@/lib/hr/auth-integration";
 /**;
  * Integration service for connecting HR & Asset Management with other HMS modules;
  */;
@@ -61,7 +63,6 @@ import { authOptions } from "@/lib/hr/auth-integration";
       }
     });
 
-
   /**;
    * Get asset data for finance module integration;
    * This provides asset information to finance modules for accounting;
@@ -82,7 +83,6 @@ import { authOptions } from "@/lib/hr/auth-integration";
         status: true;
 
     });
-
 
   /**;
    * Get payroll data for finance module integration;
@@ -107,7 +107,6 @@ import { authOptions } from "@/lib/hr/auth-integration";
 
     });
 
-
   /**;
    * Get employee attendance for scheduling module integration;
    * This provides attendance information to scheduling modules;
@@ -123,7 +122,6 @@ import { authOptions } from "@/lib/hr/auth-integration";
       "asc";
 
     });
-
 
   /**;
    * Get employee leaves for scheduling module integration;
@@ -143,7 +141,6 @@ import { authOptions } from "@/lib/hr/auth-integration";
 
     });
 
-
   /**;
    * Update asset status from clinical module;
    * This allows clinical modules to update equipment status;
@@ -154,7 +151,6 @@ import { authOptions } from "@/lib/hr/auth-integration";
     if (!session.user) {
       throw new Error("Unauthorized");
 
-
     // Check if user has permission;
     const hasPermission = session.user.roles.some(role => {}
       ["ADMIN", "CLINICAL_STAFF", "DOCTOR", "NURSE"].includes(role);
@@ -162,7 +158,6 @@ import { authOptions } from "@/lib/hr/auth-integration";
 
     if (!session.user) {
       throw new Error("Insufficient permissions");
-
 
     // Update asset status;
     return this.prisma.asset.update({
@@ -179,11 +174,7 @@ import { authOptions } from "@/lib/hr/auth-integration";
               updatedBy: session.user.email,
               "CLINICAL_MODULE";
 
-
-
-
     });
-
 
   /**;
    * Record maintenance from clinical module;
@@ -201,7 +192,6 @@ import { authOptions } from "@/lib/hr/auth-integration";
     if (!session.user) {
       throw new Error("Unauthorized");
 
-
     // Check if user has permission;
     const hasPermission = session.user.roles.some(role => {}
       ["ADMIN", "CLINICAL_STAFF", "BIOMEDICAL_ENGINEER"].includes(role);
@@ -209,7 +199,6 @@ import { authOptions } from "@/lib/hr/auth-integration";
 
     if (!session.user) {
       throw new Error("Insufficient permissions");
-
 
     // Create maintenance record;
     const maintenanceRecord = await this.prisma.maintenanceRecord.create({
@@ -243,7 +232,6 @@ import { authOptions } from "@/lib/hr/auth-integration";
       }});
 
     return maintenanceRecord;
-
 
   /**;
    * Get departments for all modules;

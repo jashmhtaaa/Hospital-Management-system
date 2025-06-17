@@ -1,17 +1,36 @@
-import { useRouter } from "next/navigation";
-import type React from "react";
-import { useEffect, useState } from "react";
-import { z } from "zod";
+import "@/components/layout/DashboardLayout"
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "@/components/ui/input"
+import "@/components/ui/label"
+import "@/components/ui/select"
+import "@/components/ui/textarea"
+import "@/hooks/use-toast"
+import "next/navigation"
+import "react"
+import "zod"
+import CardContent
+import CardHeader
+import CardTitle }
+import React
+import SelectContent
+import SelectItem
+import SelectTrigger
+import SelectValue }
+import type
+import useState }
+import { Button }
+import { Card
+import { DashboardLayout }
+import { Input }
+import { Label }
+import { Select
+import { Textarea }
+import { useEffect
+import { useRouter }
+import { useToast }
+import { z }
 
-
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 }
 
 // src/app/dashboard/patients/new/page.tsx;
@@ -80,9 +99,36 @@ export default const _AddPatientPage = () {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch("/api/patients/register", {
         method: "POST",
         headers: {
@@ -94,7 +140,6 @@ export default const _AddPatientPage = () {
 
       if (!session.user) {
         throw new Error(result.error || "Failed to register patient");
-      }
 
       toast({
         title: "Patient Registered",

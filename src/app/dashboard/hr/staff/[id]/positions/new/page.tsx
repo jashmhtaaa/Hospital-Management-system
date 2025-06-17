@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import "react"
+import React
+import { useState }
+
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import "next/navigation"
+import "react"
+import useEffect }
 import {
+import { useRouter }
+import { useState
+
   Card,
   CardContent,
   CardDescription,
@@ -24,16 +31,30 @@ import {
   SelectTrigger,
   SelectValue;
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Checkbox } from "@/components/ui/checkbox";
-import { format } from "date-fns";
-import { CalendarIcon, Save, ArrowLeft } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { toast } from "@/components/ui/use-toast";
+import "@/components/ui/button"
+import "@/components/ui/calendar"
+import "@/components/ui/checkbox"
+import "@/components/ui/popover"
+import "@/components/ui/use-toast"
+import "@hookform/resolvers/zod"
+import "date-fns"
+import "lucide-react"
+import "react-hook-form"
+import "zod"
+import * as z
+import ArrowLeft }
+import PopoverContent
+import PopoverTrigger }
+import Save
+import { Button }
+import { Calendar }
+import { CalendarIcon
+import { Checkbox }
+import { format }
+import { Popover
+import { toast }
+import { useForm }
+import { zodResolver }
 
 // Form schema for position assignment;
 const positionAssignmentSchema = z.object({
@@ -62,29 +83,55 @@ export default const _AssignPosition = ({ params }: { id: string }) {
     const fetchData = async () => {
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
         // Fetch positions;
         const posResponse = await fetch("/api/hr/positions");
         if (!session.user) {
           const posData = await posResponse.json(),
           setPositions(posData.positions || []);
-        }
 
         // Fetch employee;
         const empResponse = await fetch(`/api/hr/staff/${}`;
         if (!session.user) {
           const empData = await empResponse.json(),
           setEmployee(empData);
-        }
+
       } catch (err) {
 
         toast({
           title: "Error",
           "destructive";
         });
-      }
+
     };
 
     fetchData();
@@ -94,7 +141,34 @@ export default const _AssignPosition = ({ params }: { id: string }) {
   const _onSubmit = async (data) => {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       setLoading(true);
@@ -115,7 +189,6 @@ export default const _AssignPosition = ({ params }: { id: string }) {
       if (!session.user) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to assign position");
-
 
       toast({
         title: "Position Assigned",

@@ -1,7 +1,8 @@
-
 import { useRouter } from "next/navigation"; // Added useRouter;
 import type React from "react"; // Added useState;
-import { useState } from "react";
+import "react"
+import { useState }
+
 }
 
 "use client";
@@ -159,8 +160,7 @@ const RecentPrescriptionsList = () {
       id: "presc_3",
       "Robert Johnson",
       "partially_dispensed";
-    },
-  ];
+    }];
 
   // Typed the status parameter;
   const getStatusBadge = (;
@@ -270,8 +270,7 @@ const ExpiringMedicationsList = () {
       id: "batch_3",
       "CET2023001",
       42;
-    },
-  ];
+    }];
 
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
   if (!session.user) {

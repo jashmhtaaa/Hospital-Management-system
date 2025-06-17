@@ -1,4 +1,3 @@
-
 import { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"; // Or a dedicated logging sink;
 }
 
@@ -20,7 +19,6 @@ import { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"; // Or 
  * It should NOT log sensitive data directly in plaintext unless the audit log itself is encrypted.;
  */;
 }
-
 
   async logEvent();
     userId: string,
@@ -49,7 +47,34 @@ import { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"; // Or 
       `;
       try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
         await this.db.execute(queryText, [;
@@ -59,17 +84,13 @@ import { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"; // Or 
           entityType,
           entityId,
           status,
-          JSON.stringify(details || {}),
-        ]);
+          JSON.stringify(details || {})]);
       } catch (error) {
 
         // Fallback logging or error handling critical here;
 
-
     */;
     return Promise.resolve();
-
-
 
 // Example Usage (for testing - remove or comment out for production): any;
 /*;
@@ -112,7 +133,5 @@ async const testAuditLogService = () {
     { reason: "User not authorized" }
   );
 
-
 testAuditLogService();
 */;
-

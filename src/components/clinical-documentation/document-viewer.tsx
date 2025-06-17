@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from "react";
+import "next/navigation"
+import "react"
+import React
+import useEffect }
 import {
-import { useRouter } from "next/navigation";
+import { useRouter }
+import { useState
+
   Card,
   CardContent,
   CardDescription,
@@ -22,14 +27,26 @@ import { useRouter } from "next/navigation";
   TabsContent,
   TabsList,
   TabsTrigger} from "../ui/tabs";
-import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
-import { Textarea } from "../ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { Label } from "../ui/label";
-import { Checkbox } from "../ui/checkbox";
-import { useToast } from "../../hooks/use-toast";
-import { format } from "date-fns";
+import "../../hooks/use-toast"
+import "../ui/badge"
+import "../ui/button"
+import "../ui/checkbox"
+import "../ui/label"
+import "../ui/select"
+import "../ui/textarea"
+import "date-fns"
+import SelectContent
+import SelectItem
+import SelectTrigger
+import SelectValue }
+import { Badge }
+import { Button }
+import { Checkbox }
+import { format }
+import { Label }
+import { Select
+import { Textarea }
+import { useToast }
 
 interface DocumentSection {
   id: string,
@@ -116,6 +133,33 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -149,9 +193,36 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch(`/api/clinical-documentation/${documentId}/sign`, {
         method: "POST",
         headers: {
@@ -162,7 +233,6 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
       if (!session.user) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to sign document");
-      }
 
       toast({
         title: "Success",
@@ -187,7 +257,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
       });
     } finally {
       setSubmitting(false);
-    }
+
   };
 
   // Handle create amendment;
@@ -196,9 +266,36 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch(`/api/clinical-documentation/${documentId}/amend`, {
         method: "POST",
         headers: {
@@ -209,7 +306,6 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
       if (!session.user) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to create amendment");
-      }
 
       toast({
         title: "Success",
@@ -234,7 +330,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
       });
     } finally {
       setSubmitting(false);
-    }
+
   };
 
   // Get status badge variant;
@@ -251,7 +347,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
       case "Canceled": any;
         return "destructive";
       default: return "default";
-    }
+
   };
 
   // Handle edit document;
@@ -279,7 +375,6 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
       </Card>;
     );
 
-
   if (!session.user) {
     return();
       >;
@@ -296,7 +391,6 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
         </CardFooter>;
       </Card>;
     );
-
 
   return();
     >;

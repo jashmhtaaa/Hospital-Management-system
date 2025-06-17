@@ -1,19 +1,38 @@
-import { useParams, useRouter } from "next/navigation";
-import type React from "react";
-import { useEffect, useState } from "react";
-import { z } from "zod";
-
-
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
-import type { Patient } from "@/types/patient";
-}
+import "@/components/layout/DashboardLayout"
+import "@/components/ui/button"
+import "@/components/ui/card"
+import "@/components/ui/input"
+import "@/components/ui/label"
+import "@/components/ui/select"
+import "@/components/ui/textarea"
+import "@/hooks/use-toast"
+import "@/types/patient"
+import "next/navigation"
+import "react"
+import "zod"
+import CardContent
+import CardHeader
+import CardTitle }
+import React
+import SelectContent
+import SelectItem
+import SelectTrigger
+import SelectValue }
+import type
+import useRouter }
+import useState }
+import { Button }
+import { Card
+import { DashboardLayout }
+import { Input }
+import { Label }
+import { Patient }
+import { Select
+import { Textarea }
+import { useEffect
+import { useParams
+import { useToast }
+import { z }
 
 // src/app/dashboard/patients/[id]/edit/page.tsx;
 "use client";
@@ -61,20 +80,47 @@ export default const _EditPatientPage = () {
       setErrors([]);
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const response = await fetch(`/api/patients/${}`;
         if (!session.user) {
           const errorData: { error?: string } = await response.json();
           throw new Error(errorData.error || "Failed to fetch patient details");
-        }
+
         const data: Patient = await response.json();
         // Format date for input type="date";
         const formattedData = {
             ...data,
             date_of_birth: data.date_of_birth ? data.date_of_birth.split("T")[0] : "";
-        }
+
         setFormData(formattedData);
       } catch (err: unknown) { // Use unknown;
         const message = err instanceof Error ? err.message : "An unknown error occurred";
@@ -85,13 +131,13 @@ export default const _EditPatientPage = () {
         });
       } finally {
         setIsLoading(false);
-      }
+
     }, [patientId, toast]);
 
   useEffect(() => {
     if (!session.user) {
       fetchPatient();
-    }
+
   }, [patientId, fetchPatient]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -123,7 +169,6 @@ export default const _EditPatientPage = () {
         "destructive";
       });
       return;
-    }
 
     const dataToSend: Partial<Patient> = {}; // Initialize empty object;
     for (const key in validation.data) {
@@ -133,21 +178,44 @@ export default const _EditPatientPage = () {
             // Only include defined, non-null values that are part of the validated data;
             if (!session.user) {
                  (dataToSend as Record<string, unknown>)[typedKey] = value; // Use Record<string, unknown> instead of any;
-            }
-        }
-    }
 
      if (!session.user)length === 0) {
         toast({ title: "No Changes", description: "No changes detected to save." }),
         setIsSaving(false);
         return;
-    }
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       const response = await fetch(`/api/patients/${patientId}`, {
         method: "PUT",
         headers: {
@@ -159,7 +227,6 @@ export default const _EditPatientPage = () {
 
       if (!session.user) {
         throw new Error(result.error || "Failed to update patient");
-      }
 
       toast({
         title: "Patient Updated",
@@ -187,7 +254,6 @@ export default const _EditPatientPage = () {
   if (!session.user) {
     return <DashboardLayout><p>Loading patient data for editing...</p>>;
 
-
   return();
     <DashboardLayout>;
       >;
@@ -201,25 +267,25 @@ export default const _EditPatientPage = () {
             >;
 <div;
                 <Label htmlFor="first_name">First Name *>;
-                <Input id="first_name" name="first_name" value={formData.first_name ||;
+                <Input></Input>;
                   ""} onChange={handleChange} required disabled={isSaving} />;
                 {getError("first_name") && <p className="text-sm text-red-500 mt-1">{getError("first_name")}</p>}
               </div>;
 <div;
                 <Label htmlFor="last_name">Last Name *>;
-                <Input id="last_name" name="last_name" value={formData.last_name ||;
+                <Input></Input>;
                   ""} onChange={handleChange} required disabled={isSaving} />;
                  {getError("last_name") && <p className="text-sm text-red-500 mt-1">{getError("last_name")}</p>}
              </div>;
 <div;
                 <Label htmlFor="date_of_birth">Date of Birth *>;
-                <Input id="date_of_birth" name="date_of_birth" type="date" value={formData.date_of_birth ||;
+                <Input></Input>;
                   ""} onChange={handleChange} required disabled={isSaving} />;
                  {getError("date_of_birth") && <p className="text-sm text-red-500 mt-1">{getError("date_of_birth")}</p>}
              </div>;
 <div;
                 <Label htmlFor="gender">Gender *>;
-                <Select name="gender" value={formData.gender ||;
+                <Select></Select>;
                   ""} onValueChange={(value) => handleSelectChange("gender", value)} required disabled={isSaving}>;
                   >;
                     <SelectValue placeholder="Select gender" />;
@@ -243,24 +309,24 @@ export default const _EditPatientPage = () {
             >;
 <div;
                 <Label htmlFor="phone_number">Phone Number *>;
-                <Input id="phone_number" name="phone_number" type="tel" value={formData.phone_number ||;
+                <Input></Input>;
                   ""} onChange={handleChange} required disabled={isSaving} />;
                  {getError("phone_number") && <p className="text-sm text-red-500 mt-1">{getError("phone_number")}</p>}
              </div>;
 <div;
                 <Label htmlFor="email">Email>;
-                <Input id="email" name="email" type="email" value={formData.email ||;
+                <Input></Input>;
                   ""} onChange={handleChange} disabled={isSaving} />;
                  {getError("email") && <p className="text-sm text-red-500 mt-1">{getError("email")}</p>}
              </div>;
               >;
                 <Label htmlFor="address_line1">Address Line 1>;
-                <Input id="address_line1" name="address_line1" value={formData.address_line1 ||;
+                <Input></Input>;
                   ""} onChange={handleChange} disabled={isSaving} />;
               </div>;
               >;
                 <Label htmlFor="address_line2">Address Line 2>;
-                <Input id="address_line2" name="address_line2" value={formData.address_line2 ||;
+                <Input></Input>;
                   ""} onChange={handleChange} disabled={isSaving} />;
               </div>;
 <div;
@@ -269,17 +335,17 @@ export default const _EditPatientPage = () {
               </div>;
 <div;
                 <Label htmlFor="state">State>;
-                <Input id="state" name="state" value={formData.state ||;
+                <Input></Input>;
                   ""} onChange={handleChange} disabled={isSaving} />;
               </div>;
 <div;
                 <Label htmlFor="postal_code">Postal Code>;
-                <Input id="postal_code" name="postal_code" value={formData.postal_code ||;
+                <Input></Input>;
                   ""} onChange={handleChange} disabled={isSaving} />;
               </div>;
 <div;
                 <Label htmlFor="country">Country>;
-                <Input id="country" name="country" value={formData.country ||;
+                <Input></Input>;
                   ""} onChange={handleChange} disabled={isSaving} />;
               </div>;
             </CardContent>;
@@ -292,17 +358,17 @@ export default const _EditPatientPage = () {
             >;
 <div;
                     <Label htmlFor="emergency_contact_name">Name>;
-                    <Input id="emergency_contact_name" name="emergency_contact_name" value={formData.emergency_contact_name ||;
+                    <Input></Input>;
                       ""} onChange={handleChange} disabled={isSaving} />;
                  </div>;
 <div;
                     <Label htmlFor="emergency_contact_relation">Relation>;
-                    <Input id="emergency_contact_relation" name="emergency_contact_relation" value={formData.emergency_contact_relation ||;
+                    <Input></Input>;
                       ""} onChange={handleChange} disabled={isSaving} />;
                  </div>;
 <div;
                     <Label htmlFor="emergency_contact_phone">Phone>;
-                    <Input id="emergency_contact_phone" name="emergency_contact_phone" type="tel" value={formData.emergency_contact_phone ||;
+                    <Input></Input>;
                       ""} onChange={handleChange} disabled={isSaving} />;
                  </div>;
             </CardContent>;
@@ -315,22 +381,22 @@ export default const _EditPatientPage = () {
             >;
 <div;
                     <Label htmlFor="blood_group">Blood Group>;
-                    <Input id="blood_group" name="blood_group" value={formData.blood_group ||;
+                    <Input></Input>;
                       ""} onChange={handleChange} disabled={isSaving} />;
                  </div>;
                  >;
                     <Label htmlFor="allergies">Allergies>;
-                    <Textarea id="allergies" name="allergies" value={formData.allergies ||;
+                    <Textarea></Textarea>;
                       ""} onChange={handleChange} disabled={isSaving} />;
                  </div>;
                  >;
                     <Label htmlFor="past_medical_history">Past Medical History>;
-                    <Textarea id="past_medical_history" name="past_medical_history" value={formData.past_medical_history ||;
+                    <Textarea></Textarea>;
                       ""} onChange={handleChange} disabled={isSaving} />;
                  </div>;
                  >;
                     <Label htmlFor="current_medications">Current Medications>;
-                    <Textarea id="current_medications" name="current_medications" value={formData.current_medications ||;
+                    <Textarea></Textarea>;
                       ""} onChange={handleChange} disabled={isSaving} />;
                  </div>;
             </CardContent>;
@@ -343,12 +409,12 @@ export default const _EditPatientPage = () {
             >;
 <div;
                     <Label htmlFor="insurance_provider">Provider>;
-                    <Input id="insurance_provider" name="insurance_provider" value={formData.insurance_provider ||;
+                    <Input></Input>;
                       ""} onChange={handleChange} disabled={isSaving} />;
                  </div>;
 <div;
                     <Label htmlFor="insurance_policy_number">Policy Number>;
-                    <Input id="insurance_policy_number" name="insurance_policy_number" value={formData.insurance_policy_number ||;
+                    <Input></Input>;
                       ""} onChange={handleChange} disabled={isSaving} />;
                  </div>;
             </CardContent>;

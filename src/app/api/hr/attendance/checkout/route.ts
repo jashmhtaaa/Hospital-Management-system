@@ -1,7 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/hr/attendance-service"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { attendanceService }
+import { type
+import { z }
 
-import { attendanceService } from "@/lib/hr/attendance-service";
 // Schema for check-out request;
 const checkOutSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
@@ -13,12 +18,39 @@ const checkOutSchema = z.object({
   notes: z.string().optional()});
 
 // POST handler for check-out;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
     // Parse request body;
     const body = await request.json();
 
@@ -29,7 +61,6 @@ export const _POST = async (request: NextRequest) => {
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
       );
-    }
 
     const { employeeId, date, checkOutTime, biometricData, notes } = validationResult.data;
 
@@ -39,8 +70,6 @@ export const _POST = async (request: NextRequest) => {
       biometricVerified = await attendanceService.verifyBiometric(employeeId, biometricData);
       if (!session.user) {
         return NextResponse.json({ error: "Biometric verification failed" }, { status: 401 });
-      }
-    }
 
     // Record check-out;
     const attendance = await attendanceService.recordCheckOut({

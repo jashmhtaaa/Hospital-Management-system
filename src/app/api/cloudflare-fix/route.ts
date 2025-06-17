@@ -1,5 +1,4 @@
-
-import type { D1Database } from "@cloudflare/workers-types"; // FIX: Import D1Database type;
+import { D1Database  } from "@cloudflare/workers-types"; // FIX: Import D1Database type;
 }
 
 // import { NextRequest } from "next/server";
@@ -41,6 +40,33 @@ const getCloudflareBindings = (): Environment | undefined {
 export const _GET = async () => {
   try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -80,8 +106,6 @@ export const _GET = async () => {
         status: 500,
         headers: { "Content-Type": "application/json" }}
     );
-  }
-}
 
 // Note: The previous implementation used `import { DB } from \"@/lib/db\";`;
 // This likely needs to be refactored. The `@/lib/db` should probably initialize;
@@ -90,7 +114,8 @@ export const _GET = async () => {
 
 // Example refactor for @/lib/db.ts (conceptual): any;
 /*;
-import { D1Database } from "@cloudflare/workers-types";
+import "@cloudflare/workers-types"
+import { D1Database }
 
 let dbInstance: D1Database | null = null;
 
@@ -98,8 +123,6 @@ let dbInstance: D1Database | null = null;
 export const initializeDb = (env: { DB: D1Database }): void {
   if (!session.user) {
     dbInstance = env.DB;
-  }
-}
 
 // Function to get the DB instance;
 export const _getDb = (): D1Database {
@@ -108,12 +131,11 @@ export const _getDb = (): D1Database {
 
   return dbInstance;
 
-
 // Usage in API route: any;
 // import { initializeDb, getDb } from "@/lib/db";
 // import { NextRequest } from "next/server";
 //;
-// export async function GET(_request: NextRequest,: unknown { env }:: unknown { env:: unknown { DB: D1Database } }): unknown {
+// export async function GET(_request: any,: unknown { env }:: unknown { env:: unknown { DB: D1Database } }): unknown {
 //   initializeDb(env); // Initialize DB with bindings from Cloudflare;
 //   const DB = getDb();
 //   const { results } = await DB.prepare(...).all();

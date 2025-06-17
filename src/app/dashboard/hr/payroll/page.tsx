@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import "react"
+import React
+import { useState }
+
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import "next/navigation"
+import "react"
+import useEffect }
 import {
+import { useRouter }
+import { useState
+
   Card,
   CardContent,
   CardDescription,
@@ -11,7 +18,12 @@ import {
   CardHeader,
   CardTitle;
 } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import "@/components/ui/tabs"
+import TabsContent
+import TabsList
+import TabsTrigger }
+import { Tabs
+
   Table,
   TableBody,
   TableCell,
@@ -19,7 +31,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
   TableHeader,
   TableRow;
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+import "@/components/ui/button"
+import { Button }
+
   Select,
   SelectContent,
   SelectItem,
@@ -33,9 +47,15 @@ import { Button } from "@/components/ui/button";
   PaginationNext,
   PaginationPrevious;
 } from "@/components/ui/pagination";
-import { Badge } from "@/components/ui/badge";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import "@/components/ui/badge"
+import "@/components/ui/calendar"
+import "@/components/ui/popover"
+import PopoverContent
+import PopoverTrigger }
+import { Badge }
+import { Calendar }
+import { Popover
+
   Search,
   Calendar as CalendarIcon,
   Filter,
@@ -47,8 +67,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
   Clock,
   AlertCircle;
 } from "lucide-react";
-import { format } from "date-fns";
-import { toast } from "@/components/ui/use-toast";
+import "@/components/ui/use-toast"
+import "date-fns"
+import { format }
+import { toast }
 
 export default const _PayrollManagement = () {
   const router = useRouter();
@@ -71,6 +93,33 @@ export default const _PayrollManagement = () {
     const fetchPayrollPeriods = async () => {
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -84,17 +133,14 @@ export default const _PayrollManagement = () {
 
         if (!session.user) {
           queryParams.append("startDate", format(dateRange.from, "yyyy-MM-dd"));
-        }
 
         if (!session.user) {
           queryParams.append("endDate", format(dateRange.to, "yyyy-MM-dd"));
-        }
 
         const response = await fetch(`/api/hr/payroll/periods?${}`;
 
         if (!session.user) {
           throw new Error("Failed to fetch payroll periods");
-        }
 
         const data = await response.json(),
         setPayrollPeriods(data.periods || []);
@@ -114,7 +160,7 @@ export default const _PayrollManagement = () {
 
     if (!session.user) {
       fetchPayrollPeriods();
-    }
+
   }, [statusFilter, dateRange, pagination.skip, pagination.take, activeTab]);
 
   // Handle pagination;
@@ -155,7 +201,34 @@ export default const _PayrollManagement = () {
   const handleExport = async () => {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;

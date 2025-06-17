@@ -1,5 +1,9 @@
-import React, { useState, useEffect } from "react";
+import "react"
+import React
+import useEffect }
 import {
+import { useState
+
 }
 
 "use client";
@@ -10,10 +14,18 @@ import {
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import "@/components/ui/badge"
+import "@/components/ui/button"
+import "lucide-react"
+import Edit
+import Trash2
+import WifiOff }
+import { Activity
+import { Badge }
+import { Button }
+
 import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports;
-import { Activity, Edit, Trash2, WifiOff } from "lucide-react";
+
 
 // Mock data structure - replace with actual API response type;
 interface Theatre {
@@ -29,6 +41,33 @@ export default const _OTTheatreList = () {
   useEffect(() => {
     const fetchTheatres = async () => {
       try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -70,8 +109,7 @@ export default const _OTTheatreList = () {
             "Floor 3, Wing C",
             specialty: "Neurosurgery",
             "2025-04-28T11:00:00Z";
-          },
-        ];
+          }];
         setTheatres(mockData),
         setLoading(false);
       } catch (error_: unknown) {
@@ -94,14 +132,13 @@ export default const _OTTheatreList = () {
       }
       case "in_use": {
         return <WifiOff className="h-4 w-4 text-red-500" />;
-      }
+
       case "maintenance": {
         return <Badge variant="secondary">Maintenance>;
-      }
+
       default: {
         return <Badge>{status}>;
-      }
-    }
+
   };
 
   return();
@@ -169,4 +206,3 @@ export default const _OTTheatreList = () {
       </CardContent>;
     </Card>;
   );
-

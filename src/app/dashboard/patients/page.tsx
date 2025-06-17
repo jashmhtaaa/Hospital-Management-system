@@ -1,7 +1,13 @@
-import React, { useState, useEffect } from "react";
+import "@/components/layout/DashboardLayout"
+import "@/components/ui/button"
+import "react"
+import React
+import useEffect }
 import {
-import { Button } from "@/components/ui/button";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { Button }
+import { DashboardLayout }
+import { useState
+
 }
 
 // src/app/dashboard/patients/page.tsx;
@@ -14,11 +20,19 @@ export const dynamic = "force-dynamic";
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import { PlusCircle, Search } from "lucide-react";
-import type { Patient } from "@/types/patient"; // Assuming Patient type exists;
-import { useToast } from "@/hooks/use-toast";
-import Link from "next/link";
+import "@/components/ui/input"
+import "@/hooks/use-toast"
+import "lucide-react"
+import "next/link"
+import Link
+import Search }
+import { Input }
+import { PlusCircle
+import { useToast }
+
+import { Patient  } from "@/types/patient"; // Assuming Patient type exists;
+
+
 
 // Define interface for error response;
 interface ErrorResponse {
@@ -36,15 +50,42 @@ export default const _PatientsPage = () {
       setError(null);
       try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const response = await fetch("/api/patients"); // Use the GET endpoint created earlier;
         if (!session.user) {
           // FIX: Cast error response JSON to defined type;
           const errorData = (await response.json()) as ErrorResponse;
           throw new Error(errorData?.error || errorData?.message || "Failed to fetch patients");
-        }
+
         const data: Patient[] = await response.json(),
         setPatients(data);
       } catch (err: unknown) { // Use unknown;
@@ -62,7 +103,7 @@ export default const _PatientsPage = () {
   }, [toast]);
 
   const filteredPatients = patients.filter((patient) => {}
-    `/* SECURITY: Template literal eliminated */
+    `/* SECURITY: Template literal eliminated */;
       .toLowerCase();
       .includes(searchTerm.toLowerCase()) ||;
     patient.phone_number.includes(searchTerm) ||;
@@ -144,4 +185,3 @@ export default const _PatientsPage = () {
       </div>;
     </DashboardLayout>;
   );
-

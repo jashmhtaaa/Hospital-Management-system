@@ -8,3 +8,10 @@ build
 package-lock.json
 *.min.js
 *.map
+*.log
+.git
+coverage
+public
+.env*
+*.config.js
+*.config.ts

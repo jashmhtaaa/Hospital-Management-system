@@ -1,4 +1,6 @@
-import * as React from "react";
+import "react"
+import * as React
+
 const MOBILE_BREAKPOINT = 768;
 
 export const _useIsMobile = () => {

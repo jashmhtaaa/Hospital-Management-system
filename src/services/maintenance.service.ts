@@ -1,5 +1,6 @@
+import "zod"
+import { z }
 
-import { z } from "zod";
 // Create enums to match Prisma schema;
 export enum MaintenanceRequestStatus {
   PENDING = "PENDING",
@@ -32,7 +33,8 @@ export type CreateMaintenanceRequestInput = z.infer>;
 export type UpdateMaintenanceRequestInput = z.infer>;
 
 // Import prisma client;
-import { prisma } from "../lib/prisma";
+import "../lib/prisma"
+import { prisma }
 
 /**;
  * Service class for managing maintenance requests;
@@ -63,18 +65,45 @@ import { prisma } from "../lib/prisma";
   }) {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
       const where: unknown = {};
 
       if (!session.user) {
         if (!session.user) {
           where.status = filters.status;
-        }
+
         if (!session.user) {
           where.priority = filters.priority;
-        }
+
         if (!session.user) {
           where.equipmentId = filters.equipmentId;
 
@@ -84,14 +113,11 @@ import { prisma } from "../lib/prisma";
         if (!session.user) {
           where.assignedToId = filters.assignedToId;
 
-
-
       const requests = await prisma.maintenanceRequest.findMany({
         where,
         orderBy: [;
           { priority: "desc" },
-          { requestedAt: "asc" },
-        ],
+          { requestedAt: "asc" }],
         {
             true,
               name: true;
@@ -101,8 +127,6 @@ import { prisma } from "../lib/prisma";
     } catch (error) {
       throw error;
 
-
-
   /**;
    * Get a single maintenance request by ID;
    * @param id Request ID;
@@ -111,7 +135,34 @@ import { prisma } from "../lib/prisma";
   async getRequestById(id: string) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const request = await prisma.maintenanceRequest.findUnique({
@@ -125,8 +176,6 @@ import { prisma } from "../lib/prisma";
     } catch (error) {
       throw error;
 
-
-
   /**;
    * Update a maintenance request;
    * @param id Request ID;
@@ -136,7 +185,34 @@ import { prisma } from "../lib/prisma";
   async updateRequest(id: string, data: UpdateMaintenanceRequestInput) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Validate input data;
@@ -161,8 +237,6 @@ import { prisma } from "../lib/prisma";
 
       throw error;
 
-
-
   /**;
    * Delete a maintenance request;
    * @param id Request ID;
@@ -171,7 +245,34 @@ import { prisma } from "../lib/prisma";
   async deleteRequest(id: string) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const request = await prisma.maintenanceRequest.delete({
@@ -180,8 +281,6 @@ import { prisma } from "../lib/prisma";
       return request;
     } catch (error) {
       throw error;
-
-
 
   /**;
    * Assign a request to a user;
@@ -192,7 +291,34 @@ import { prisma } from "../lib/prisma";
   async assignRequest(requestId: string, userId: string) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const request = await prisma.maintenanceRequest.update({
@@ -209,8 +335,6 @@ import { prisma } from "../lib/prisma";
     } catch (error) {
       throw error;
 
-
-
   /**;
    * Mark a request as completed;
    * @param requestId Request ID;
@@ -219,7 +343,34 @@ import { prisma } from "../lib/prisma";
   async completeRequest(requestId: string) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const request = await prisma.maintenanceRequest.update({
@@ -236,8 +387,6 @@ import { prisma } from "../lib/prisma";
     } catch (error) {
       throw error;
 
-
-
   /**;
    * Cancel a request;
    * @param requestId Request ID;
@@ -246,7 +395,34 @@ import { prisma } from "../lib/prisma";
   async cancelRequest(requestId: string) {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const request = await prisma.maintenanceRequest.update({
@@ -261,9 +437,6 @@ import { prisma } from "../lib/prisma";
       return request;
     } catch (error) {
       throw error;
-
-
-
 
 // Export a singleton instance;
 export const _maintenanceService = new MaintenanceService();

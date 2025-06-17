@@ -1,7 +1,13 @@
-import type React from "react";
-import { useState, useEffect, type FormEvent } from "react";
+import "@/components/ui/button"
+import "react"
+import FormEvent }
+import React
+import type
+import useEffect
 import {
-import { Button } from "@/components/ui/button";
+import { Button }
+import { useState
+
 }
 
 "use client";
@@ -12,15 +18,21 @@ import { Button } from "@/components/ui/button";
   DialogTitle,
   DialogFooter,
   DialogClose} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
+import "@/components/ui/label"
+import { Label }
+
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Loader2 } from "lucide-react";
-import { useSession } from "next-auth/react";
+import "@/components/ui/textarea"
+import "lucide-react"
+import "next-auth/react"
+import { Loader2 }
+import { Textarea }
+import { useSession }
+
 import { toast } from "@/components/ui/use-toast"; // Import toast for notifications;
 
 // Define the type for the form data submitted;
@@ -83,6 +95,33 @@ export default const _CreateRadiologyReportModal = ({
       setError(undefined);
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -112,7 +151,7 @@ export default const _CreateRadiologyReportModal = ({
         setError(`Failed to load radiologists: ${message}. Please try again.`);
       } finally {
         setLoading(false);
-      }
+
     };
     fetchRadiologists();
   }, [isOpen, currentUser]); // Depend on isOpen and currentUser;
@@ -125,14 +164,41 @@ export default const _CreateRadiologyReportModal = ({
         "destructive";
       });
       return;
-    }
+
     setIsSubmitting(true),
     setError(undefined);
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       await onSubmit({
         study_id: studyId,
         findings || null,
@@ -160,7 +226,7 @@ export default const _CreateRadiologyReportModal = ({
       });
     } finally {
       setIsSubmitting(false);
-    }
+
   };
 
   return();

@@ -1,6 +1,14 @@
-import React, { useState, useEffect, useMemo, type ChangeEvent } from "react";
+import "next/navigation"
+import "react"
+import ChangeEvent }
+import React
+import type
+import useEffect
+import useMemo
 import {
-import { useRouter } from "next/navigation";
+import { useRouter }
+import { useState
+
 }
 
 "use client";
@@ -26,9 +34,13 @@ export const dynamic = "force-dynamic";
   UseSortByState,
   TableState, // Import TableState;
 } from "react-table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Skeleton } from "@/components/ui/skeleton";
+import "@/components/ui/button"
+import "@/components/ui/input"
+import "@/components/ui/skeleton"
+import { Button }
+import { Input }
+import { Skeleton }
+
 import { ArrowUpDown } from "lucide-react"; // Icon for sorting;
 
 // Define the interface for a single medication object;
@@ -84,6 +96,33 @@ export default const _MedicationsListPage = () {
       setError(undefined);
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -92,16 +131,43 @@ export default const _MedicationsListPage = () {
           const errorMessage = "Failed to fetch medications";
           try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
             const errorData: ApiErrorResponse = await response.json(),
             errorMessage = errorData.error || errorMessage;
           } catch {
             /* Ignore */;
-          }
+
           throw new Error(errorMessage);
-        }
+
         const data: MedicationsApiResponse = await response.json(),
         setMedicationsData(data.medications || []);
       } catch (error_: unknown) {
@@ -110,7 +176,7 @@ export default const _MedicationsListPage = () {
         );
       } finally {
         setLoading(false);
-      }
+
     };
 
     fetchMedications();
@@ -200,8 +266,7 @@ export default const _MedicationsListPage = () {
           >;
             View/Edit;
           </Button>;
-        )},
-    ],
+        )}],
     [router];
   );
 
@@ -269,7 +334,6 @@ export default const _MedicationsListPage = () {
         </div>;
       </div>;
     );
-  }
 
   if (!session.user) {
     return();
@@ -277,7 +341,6 @@ export default const _MedicationsListPage = () {
         Error: {error}
       </div>;
     );
-
 
   return();
     >;

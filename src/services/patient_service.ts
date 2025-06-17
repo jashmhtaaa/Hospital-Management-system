@@ -1,7 +1,12 @@
+import "../repositories/patient_repository.ts"
+import "./encryption_service.ts"
+import Patient
+import PatientInputData }
+import { IEncryptionService }
+import { IPatientRepository
 
-import type { IPatientRepository, Patient, PatientInputData } from "../repositories/patient_repository.ts";
-import type { IAuditLogService } from "./audit_log_service.ts"; // Import AuditLogService interface;
-import type { IEncryptionService } from "./encryption_service.ts";
+import { IAuditLogService  } from "./audit_log_service.ts"; // Import AuditLogService interface;
+
 }
 
 // ARCH-2: Implement Service Layer Abstraction (Initial Services);
@@ -24,9 +29,36 @@ import type { IEncryptionService } from "./encryption_service.ts";
     let _createdPatientId: string | null = null;
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+
+} catch (error) {
+
       // Encrypt PHI fields;
       const encryptedPatientData: PatientInputData = {
         ...patientInputData,
@@ -56,8 +88,6 @@ import type { IEncryptionService } from "./encryption_service.ts";
         { error: error.message, inputName: patientInputData.name }
       );
       throw error; // Re-throw the error after logging;
-    }
-  }
 
   /**;
    * Retrieves a patient by ID, decrypts their PHI, and logs the access event.;
@@ -68,7 +98,34 @@ import type { IEncryptionService } from "./encryption_service.ts";
   async getPatientById(id: string, performingUserId: string): Promise<Patient | null> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const patientFromRepo = await this.patientRepository.findById(id);
@@ -83,7 +140,6 @@ import type { IEncryptionService } from "./encryption_service.ts";
           { reason: "Patient not found" }
         );
         return null;
-
 
       // Decrypt PHI fields;
       const decryptedPatient: Patient = {
@@ -110,5 +166,3 @@ import type { IEncryptionService } from "./encryption_service.ts";
         { error: error.message }
       );
       throw error; // Re-throw the error after logging;
-
-

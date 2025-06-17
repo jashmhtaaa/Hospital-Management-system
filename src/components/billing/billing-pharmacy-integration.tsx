@@ -1,6 +1,11 @@
+import "react"
+import ChangeEvent
+import React
+import type
+import useEffect
+import useState }
+import { type
 
-import type React from "react";
-import { type ChangeEvent, useEffect, useState } from "react";
 }
 
 "use client";
@@ -48,6 +53,33 @@ const BillingPharmacyIntegration: React.FC<;
       setLoading(true);
       try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
 }
 } catch (error) {
 }
@@ -80,8 +112,7 @@ const BillingPharmacyIntegration: React.FC<;
             7,
             "2025-04-28T10:15:00Z",
             billed: false;
-          },
-        ];
+          }];
         const records = mockRecords.filter((r) => !r.billed); // Ensure only unbilled are processed initially;
 
         setDispensingRecords(mockRecords); // Store all records for display later;
@@ -132,9 +163,36 @@ const BillingPharmacyIntegration: React.FC<;
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Simulate API call to create a bill;
       // const _response = await fetch("/api/billing/pharmacy-bill", {
       //   method: "POST";
@@ -184,7 +242,7 @@ const BillingPharmacyIntegration: React.FC<;
       /* SECURITY: Console statement removed */;
     } finally {
       setLoading(false);
-    }
+
   };
 
   const handleSelectAllChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -192,7 +250,7 @@ const BillingPharmacyIntegration: React.FC<;
       setSelectedItems([...unbilledItems]);
     } else {
       setSelectedItems([]);
-    }
+
   };
 
   if (!session.user) {
@@ -201,7 +259,6 @@ const BillingPharmacyIntegration: React.FC<;
         Loading pharmacy billing data...;
       </div>;
     );
-  }
 
   const recentlyBilledItems = dispensingRecords.filter();
     (record) => record.billed;

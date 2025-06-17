@@ -1,7 +1,12 @@
-import type React from "react";
-import { useState, useEffect } from "react";
+import "next/navigation"
+import "react"
+import React
+import type
+import useEffect }
 import {
-import { useRouter } from "next/navigation";
+import { useRouter }
+import { useState
+
   Table,
   TableBody,
   TableCaption,
@@ -24,18 +29,28 @@ import { useRouter } from "next/navigation";
   CardHeader,
   CardTitle;
 } from "../ui/card";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import "../ui/button"
+import "../ui/input"
+import { Button }
+import { Input }
+
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue;
 } from "../ui/select";
-import { Badge } from "../ui/badge";
-import { Search, RefreshCw, UserPlus, Filter } from "lucide-react";
-import { format } from "date-fns";
-import { useToast } from "../../hooks/use-toast";
+import "../../hooks/use-toast"
+import "../ui/badge"
+import "date-fns"
+import "lucide-react"
+import Filter }
+import RefreshCw
+import UserPlus
+import { Badge }
+import { format }
+import { Search
+import { useToast }
 
 // Define patient status colors;
 const statusColors: Record<string, string> = {
@@ -104,9 +119,36 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
 
     try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
       // Build query parameters;
       const params = new URLSearchParams();
       params.append("page", page.toString());
@@ -125,7 +167,6 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
 
       if (!session.user) {
         throw new Error("Failed to fetch patients");
-      }
 
       const data = await response.json();
 
@@ -143,7 +184,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
       });
     } finally {
       setLoading(false);
-    }
+
   };
 
   // Handle filter change;
@@ -202,9 +243,36 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
   const formatDate = (date: string) => {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       return format(new Date(date), "MMM d, yyyy");
     } catch (error) {
       return "Invalid date";
@@ -215,7 +283,34 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
   const calculateAge = (dateOfBirth: string) => {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       const birthDate = new Date(dateOfBirth);
@@ -225,7 +320,6 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
 
       if (!session.user) birthDate.getDate())) {
         age--;
-
 
       return age;
     } catch (error) {

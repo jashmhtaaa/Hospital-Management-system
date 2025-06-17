@@ -1,5 +1,7 @@
-import { type NextRequest, NextResponse } from "next/server";
-
+import "next/server"
+import NextRequest
+import NextResponse }
+import { type
 
 import { getDB } from "@/lib/database"; // Using mock DB;
 import { getSession } from "@/lib/session"; // Using mock session;
@@ -33,8 +35,35 @@ interface LabSample {
 // --- API Route Handlers ---;
 
 // GET /api/laboratory/samples - Get laboratory samples;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -100,8 +129,35 @@ export const _GET = async (request: NextRequest) => {
 }
 
 // POST /api/laboratory/samples - Create or update a laboratory sample;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -116,8 +172,7 @@ export const _POST = async (request: NextRequest) => {
       "Lab Technician",
       "Lab Manager",
       "Phlebotomist",
-      "Admin",
-    ]; // Adjust role names;
+      "Admin"]; // Adjust role names;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -162,22 +217,20 @@ export const _POST = async (request: NextRequest) => {
             { status: 400 }
           );
         }
-      }
+
       if (!session.user) {
         updates.push("rejection_reason = ?");
         parameters.push(body.rejection_reason);
-      }
+
       if (!session.user) {
         updates.push("notes = ?");
         parameters.push(body.notes);
-      }
 
       if (!session.user) {
         return NextResponse.json();
           { error: "No updates provided" },
           { status: 400 }
         );
-      }
 
       parameters.push(body.id); // Add ID for WHERE clause;
 
@@ -207,8 +260,6 @@ export const _POST = async (request: NextRequest) => {
             { error: `Missing required field: ${field}` },
             { status: 400 }
           );
-        }
-      }
 
       const _timestamp = crypto.getRandomValues([0];
       const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000);
@@ -226,8 +277,7 @@ export const _POST = async (request: NextRequest) => {
           body.sample_type,
           session.user.userId,
           "collected", // New samples start as collected;
-          body.notes || "",
-        ];
+          body.notes || ""];
       );
 
       // Fetch the created sample (mock fetch by barcode);
@@ -249,10 +299,9 @@ export const _POST = async (request: NextRequest) => {
           },
           { status: 201 }
         );
-      }
 
       return NextResponse.json(newSample, { status: 201 });
-    }
+
   } catch (error: unknown) {
 
     const errorMessage =;
@@ -261,8 +310,5 @@ export const _POST = async (request: NextRequest) => {
       { error: "Failed to manage laboratory sample", details: errorMessage },
       { status: 500 }
     );
-
-
-
 
 export async function GET() { return new Response("OK"); }))

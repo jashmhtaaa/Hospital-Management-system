@@ -1,8 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import "@/lib/hr/biomedical-service"
+import "next/server"
+import "zod"
+import NextRequest
+import NextResponse }
+import { biomedicalService }
+import { type
+import { z }
 
-
-import { biomedicalService } from "@/lib/hr/biomedical-service";
 // Schema for biomedical equipment creation;
 const biomedicalSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -46,8 +50,35 @@ const biomedicalSchema = z.object({
   })});
 
 // POST handler for creating biomedical equipment;
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: any) => {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -62,7 +93,6 @@ export const _POST = async (request: NextRequest) => {
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
       );
-    }
 
     const data = validationResult.data;
 
@@ -84,16 +114,41 @@ export const _POST = async (request: NextRequest) => {
       { error: "Failed to create biomedical equipment", details: error.message },
       { status: 500 }
     );
-  }
-}
 
 // GET handler for listing biomedical equipment;
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: any) => {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     const searchParams = request.nextUrl.searchParams;
 
     // Parse pagination parameters;
@@ -128,5 +183,3 @@ export const _GET = async (request: NextRequest) => {
       { error: "Failed to fetch biomedical equipment", details: error.message },
       { status: 500 }
     );
-
-

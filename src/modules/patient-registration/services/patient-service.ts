@@ -1,8 +1,10 @@
-import { Prisma } from "@prisma/client";
+import "@/lib/audit/audit-service"
+import "@/lib/prisma"
+import "@prisma/client"
+import { AuditService }
+import { Prisma }
+import { prisma }
 
-
-import { AuditService } from "@/lib/audit/audit-service";
-import { prisma } from "@/lib/prisma";
 // src/modules/patient-registration/services/patient-service.ts;
 }
 }
@@ -39,7 +41,6 @@ import { prisma } from "@/lib/prisma";
 
     return patient;
 
-
   static async updatePatient(data: UpdatePatientData, updatedBy?: string) {
     const { id, ...updateData } = data;
 
@@ -49,7 +50,6 @@ import { prisma } from "@/lib/prisma";
 
     if (!session.user) {
       throw new Error("Patient not found");
-
 
     const patient = await prisma.patient.update({
       where: { id },
@@ -66,9 +66,7 @@ import { prisma } from "@/lib/prisma";
         patient;
       );
 
-
     return patient;
-
 
   static async findPatientByMRN(mrn: string) {
     return await prisma.patient.findUnique({
@@ -77,7 +75,6 @@ import { prisma } from "@/lib/prisma";
         true;
 
     });
-
 
   static async searchPatients();
     query: string,
@@ -95,7 +92,6 @@ import { prisma } from "@/lib/prisma";
       "desc" ;
     });
 
-
   static async getPatientStats() {
     const [total, newToday, emergency] = await Promise.all([;
       prisma.patient.count(),
@@ -103,16 +99,12 @@ import { prisma } from "@/lib/prisma";
         {
             gte: new Date(new Date().setHours(0, 0, 0, 0));
 
-
       }),
       prisma.emergencyVisit.count({
         "ACTIVE",
           new Date(new Date().setHours(0, 0, 0, 0));
 
-
       });
     ]);
 
     return { total, newToday, emergency };
-
-

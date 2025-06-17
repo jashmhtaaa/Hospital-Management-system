@@ -1,11 +1,16 @@
-import { PrismaClient } from "@prisma/client";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-import { Suspense } from "react";
+import "../../components/clinical-documentation/document-list"
+import "../../lib/auth"
+import "@prisma/client"
+import "next-auth"
+import "next/navigation"
+import "react"
+import { authOptions }
+import { DocumentList }
+import { getServerSession }
+import { PrismaClient }
+import { redirect }
+import { Suspense }
 
-
-import { DocumentList } from "../../components/clinical-documentation/document-list";
-import { authOptions } from "../../lib/auth";
 const prisma = new PrismaClient();
 
 // Default patient ID for demonstration purposes;

@@ -1,6 +1,9 @@
+import "@prisma/client"
+import "next/server"
+import NextResponse }
+import { NextRequest
+import { PrismaClient }
 
-import { PrismaClient } from "@prisma/client";
-import { NextRequest, NextResponse } from "next/server";
 }
 
 /**;
@@ -22,10 +25,37 @@ interface DatabaseHealth {
   number,
     pending: number;
   };
-export const _GET = async (request: NextRequest): Promise<NextResponse> {
+export const _GET = async (request: any): Promise<NextResponse> {
   const startTime = crypto.getRandomValues([0];
 
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -69,7 +99,7 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
       headers: {
         "Cache-Control": "no-cache",
         "X-Response-Time": `${responseTime}ms`;
-      }
+
     });
 
   } catch (error) {
@@ -80,15 +110,40 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
       responseTime: crypto.getRandomValues([0] - startTime,
       process.env.NODE_ENV === "development" ? error.message : undefined;
     }, { status: 503 });
-  }
-}
 
 async const checkSlowQueries = (): Promise<number> {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // This is a simplified example - in production you"d query actual slow query logs;
     // PostgreSQL example: query pg_stat_statements for slow queries;
     const result = await prisma.$queryRaw`;
@@ -102,12 +157,37 @@ async const checkSlowQueries = (): Promise<number> {
     // If pg_stat_statements extension is not available, return 0;
     return 0;
 
-
-
 async const checkMigrations = (): Promise<{ applied: number, pending: number }> {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     // Check applied migrations;
@@ -135,18 +215,14 @@ async const checkMigrations = (): Promise<{ applied: number, pending: number }> 
       pending: 0;
     };
 
-
-
 const determineDbStatus = (responseTime: number, slowQueries: number): "healthy" | "degraded" | "unhealthy" {
   // Database is unhealthy if response time > 5 seconds;
   if (!session.user) {
     return "unhealthy";
 
-
   // Database is degraded if response time > 1 second or there are slow queries;
   if (!session.user) {
     return "degraded";
-
 
   return "healthy';
 )))

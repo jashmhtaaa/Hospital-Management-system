@@ -1,4 +1,8 @@
-import { type NextRequest, NextResponse } from "next/server";
+import "next/server"
+import NextRequest
+import NextResponse }
+import { type
+
 // import { getRequestContext } from "@cloudflare/next-on-pages"; // Cloudflare specific;
 
 // Define interface for triage input data;
@@ -24,14 +28,41 @@ const mockTriageAssessments: Triage[] = [];
 
 // GET /api/er/visits/[id]/triage - Get triage assessment(s) for a specific ER visit;
 export const _GET = async();
-  _request: NextRequest, // FIX: Prefixed as unused, changed Request to NextRequest;
+  _request: any, // FIX: Prefixed as unused, changed Request to NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
 }
 } catch (error) {
 }
+} catch (error) {
+
     // const { env } = getRequestContext(); // Cloudflare specific;
     // const db = env.DB; // Cloudflare specific;
     const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+);
@@ -61,18 +92,43 @@ export const _GET = async();
       { error: "Failed to fetch triage assessments", details: errorMessage },
       { status: 500 }
     );
-  }
-}
 
 // POST /api/er/visits/[id]/triage - Create a new triage assessment for an ER visit;
 export const _POST = async();
-  request: NextRequest, // Use NextRequest for json() => { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
+  request: any, // Use NextRequest for json() => { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
     // const { env } = getRequestContext(); // Cloudflare specific;
     // const db = env.DB; // Cloudflare specific;
     const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+);
@@ -94,7 +150,6 @@ export const _POST = async();
         { error: "Invalid ESI level (must be 1-5)" },
         { status: 400 }
       );
-
 
     // Placeholder for database insert;
     /*;
@@ -136,4 +191,3 @@ export const _POST = async();
       { error: "Failed to create triage assessment", details: errorMessage },
       { status: 500 }
     );
-

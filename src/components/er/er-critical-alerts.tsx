@@ -1,5 +1,9 @@
-import React, { useState, useEffect } from "react";
+import "react"
+import React
+import useEffect }
 import {
+import { useState
+
 }
 
 // src/components/er/ERCriticalAlerts.tsx;
@@ -11,10 +15,15 @@ import {
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import "@/components/ui/badge"
+import "@/components/ui/button"
+import "lucide-react"
+import { AlertTriangle }
+import { Badge }
+import { Button }
+
 import { useToast } from "@/components/ui/use-toast"; // Changed import;
-import { AlertTriangle } from "lucide-react";
+
 
 // Mock data structure - replace with API data;
 interface CriticalAlert {
@@ -55,8 +64,7 @@ const mockAlerts: CriticalAlert[] = [;
     "Room 5",
     [0] - 5 * 60 * 1000).toISOString(),
     "Potassium: 6.8 mmol/L";
-  },
-];
+  }];
 
 // FIX: Adjust return type to match allowed Badge variants;
 const getAlertBadgeVariant = (;
@@ -95,9 +103,36 @@ export default const _ERCriticalAlerts = () {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Simulate API call;
       await new Promise((resolve) => setTimeout(resolve, 500));
       setAlerts((previousAlerts) => {}
@@ -123,7 +158,34 @@ export default const _ERCriticalAlerts = () {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Simulate API call;

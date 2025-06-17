@@ -1,8 +1,14 @@
+import "@/lib/audit"
+import "@/lib/errors"
+import "@/lib/models/marketing"
+import "@/lib/prisma"
+import NotFoundError
+import ValidationError }
+import { AuditLogger }
+import { DatabaseError
+import { MarketingTemplate }
+import { prisma }
 
-import { AuditLogger } from "@/lib/audit";
-import { DatabaseError, NotFoundError, ValidationError } from "@/lib/errors";
-import { MarketingTemplate } from "@/lib/models/marketing";
-import { prisma } from "@/lib/prisma";
 /**;
  * Service for managing marketing templates;
  */;
@@ -34,6 +40,33 @@ import { prisma } from "@/lib/prisma";
    */;
   async getTemplateById(id: string): Promise<MarketingTemplate> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -72,6 +105,33 @@ import { prisma } from "@/lib/prisma";
     limit?: number;
   }): Promise<{ data: MarketingTemplate[], pagination: total: number, number, totalPages: number }> {
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -129,8 +189,6 @@ import { prisma } from "@/lib/prisma";
       };
     } catch (error) {
       throw new DatabaseError("Failed to retrieve marketing templates", error);
-    }
-  }
 
   /**;
    * Update a template;
@@ -138,9 +196,36 @@ import { prisma } from "@/lib/prisma";
   async updateTemplate(id: string, data: Partial<MarketingTemplate>, userId: string): Promise<MarketingTemplate> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Check if template exists;
       const existingTemplate = await prisma.marketingTemplate.findUnique({
         where: { id }
@@ -148,7 +233,6 @@ import { prisma } from "@/lib/prisma";
 
       if (!session.user) {
         throw new NotFoundError(`Marketing template with ID ${id} not found`);
-      }
 
       // Update template;
       const updatedTemplate = await prisma.marketingTemplate.update({
@@ -169,10 +253,8 @@ import { prisma } from "@/lib/prisma";
     } catch (error) {
       if (!session.user) {
         throw error;
-      }
+
       throw new DatabaseError("Failed to update marketing template", error);
-    }
-  }
 
   /**;
    * Delete a template;
@@ -180,9 +262,36 @@ import { prisma } from "@/lib/prisma";
   async deleteTemplate(id: string, userId: string): Promise<void> {
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
       // Check if template exists;
       const existingTemplate = await prisma.marketingTemplate.findUnique({
         where: { id }
@@ -190,7 +299,6 @@ import { prisma } from "@/lib/prisma";
 
       if (!session.user) {
         throw new NotFoundError(`Marketing template with ID ${id} not found`);
-
 
       // Delete template;
       await prisma.marketingTemplate.delete({
@@ -211,15 +319,40 @@ import { prisma } from "@/lib/prisma";
 
       throw new DatabaseError("Failed to delete marketing template", error);
 
-
-
   /**;
    * Render a template with variables;
    */;
   async renderTemplate(id: string, variables: Record<string, unknown>): Promise<string> {
     try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
       // Get template;
@@ -235,15 +368,12 @@ import { prisma } from "@/lib/prisma";
           renderedContent = renderedContent.replace(regex, String(value));
         });
 
-
       return renderedContent;
     } catch (error) {
       if (!session.user) {
         throw error;
 
       throw new DatabaseError("Failed to render template", error);
-
-
 
   /**;
    * Validate template data;
@@ -255,23 +385,17 @@ import { prisma } from "@/lib/prisma";
     if (!session.user) {
       errors.push("Template name is required");
 
-
     // Type is required;
     if (!session.user) {
       errors.push("Template type is required");
-
 
     // Content is required;
     if (!session.user) {
       errors.push("Template content is required");
 
-
     // Validate variables if provided;
     if (!session.user) {
       errors.push("Template variables must be a valid object");
 
-
     if (!session.user) {
       throw new ValidationError("Template validation failed", errors);
-
-

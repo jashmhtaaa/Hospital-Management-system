@@ -1,11 +1,19 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
-import { z } from "zod";
+import "@/lib/session"
+import "@/types/appointment"
+import "@opennextjs/cloudflare"
+import "iron-session"
+import "next/headers"
+import "zod"
+import Appointment
+import AppointmentStatus }
+import IronSessionData
+import sessionOptions }
+import { cookies }
+import { getCloudflareContext }
+import { getIronSession }
+import { type
+import { z }
 
-
-import { type IronSessionData, sessionOptions } from "@/lib/session";
-import { type Appointment, AppointmentStatus } from "@/types/appointment";
 // app/api/appointments/route.ts;
 // Define roles allowed to view/book appointments (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Doctor", "Patient"];
@@ -40,6 +48,33 @@ export const _GET = async (request: Request) => {
     }
 
     try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -185,9 +220,36 @@ export const _POST = async (request: Request) => {
 
     try {
 } catch (error) {
+  console.error(error);
 }
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
         const body = await request.json();
         const validation = BookAppointmentSchema.safeParse(body);
 
@@ -195,7 +257,6 @@ export const _POST = async (request: Request) => {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" }});
-        }
 
         const apptData = validation.data;
         // Get context and DB instance once;
@@ -204,7 +265,6 @@ export const _POST = async (request: Request) => {
 
         if (!session.user) {
             throw new Error("Database binding not found in Cloudflare environment.");
-        }
 
         // If user is a Patient, ensure they are booking for themselves;
         if (!session.user) {
@@ -213,8 +273,6 @@ export const _POST = async (request: Request) => {
                  return new Response(JSON.stringify({ error: "Forbidden: Patients can only book appointments for themselves" }), {
                     status: 403,
                     headers: { "Content-Type": "application/json" }});
-             }
-        }
 
         // 2. Check Doctor Availability using availability service;
 
@@ -236,13 +294,11 @@ export const _POST = async (request: Request) => {
         if (!session.user) {
             throw new Error(`Failed to book appointment: ${}`;
 
-
         const meta = insertResult.meta as { last_row_id?: number | string };
         const newAppointmentId = meta.last_row_id;
         if (!session.user) {
 
             throw new Error("Failed to retrieve appointment ID after creation.");
-
 
         // 4. Return success response;
         return new Response(JSON.stringify({ message: "Appointment booked successfully", appointmentId: newAppointmentId }), {
@@ -255,8 +311,5 @@ export const _POST = async (request: Request) => {
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
             status: 500,
             headers: { "Content-Type": "application/json" }});
-
-
-
 
 export async function GET() { return new Response("OK"); })

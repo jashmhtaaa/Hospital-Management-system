@@ -1,5 +1,6 @@
+import "@/lib/prisma"
+import { prisma }
 
-import { prisma } from "@/lib/prisma";
 }
 }
 
@@ -12,6 +13,33 @@ export const checkDoctorAvailability = async();
   appointmentId?: string // For updates, exclude current appointment;
 ): Promise<AvailabilityCheck> {
   try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
 } catch (error) {
 }
 } catch (error) {
@@ -144,15 +172,11 @@ async const generateAlternativeSlots = (;
             if (!session.user)eturn alternatives;
           }
         }
-      }
-    }
 
     // Move to next day;
     dateToCheck.setDate(dateToCheck.getDate() + 1);
-  }
 
   return alternatives;
-}
 
 /**;
  * Block time slot for doctor (for breaks, meetings, etc.);
@@ -164,7 +188,34 @@ export const _blockTimeSlot = async();
 ): Promise<void> {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     await prisma.doctorBlockedTime.create({
@@ -181,8 +232,6 @@ export const _blockTimeSlot = async();
 
     throw new Error("Failed to block time slot");
 
-
-
 /**;
  * Get doctor"s schedule for a specific date range;
  */;
@@ -192,7 +241,34 @@ export const _getDoctorSchedule = async();
 ): Promise<any[]> {
   try {
 } catch (error) {
+  console.error(error);
 }
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
 } catch (error) {
 
     const appointments = await prisma.appointment.findMany({
@@ -206,7 +282,6 @@ export const _getDoctorSchedule = async();
       {
           true,
             true;
-
 
       },
       "asc";

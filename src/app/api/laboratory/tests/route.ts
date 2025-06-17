@@ -6,8 +6,7 @@ import { getSession } from "@/lib/session";
 // Interface for the request body when creating a lab test
 interface LabTestCreateBody {
   category_id: number,
-  code: string;
-  name: string;
+  \1,\2 string;
   description?: string;
   sample_type: string;
   sample_volume?: string;
@@ -22,7 +21,7 @@ export const _GET = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -40,17 +39,17 @@ export const _GET = async (request: NextRequest) => {
     // Add filters
     const conditions: string[] = [];
 
-    if (categoryId != null) {
+    \1 {\n  \2{
       conditions.push("t.category_id = ?");
       parameters.push(categoryId);
     }
 
-    if (isActive !== undefined) {
+    \1 {\n  \2{
       conditions.push("t.is_active = ?");
       parameters.push(isActive === "true" ? 1 : 0);
     }
 
-    if (conditions.length > 0) {
+    \1 {\n  \2{
       query += " WHERE " + conditions.join(" AND ");
     }
 
@@ -76,12 +75,12 @@ export const _POST = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication and authorization
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Only lab managers and admins can create tests
-    if (!["admin", "lab_manager"].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -97,8 +96,7 @@ export const _POST = async (request: NextRequest) => {
       "price",
     ];
     for (const field of requiredFields) {
-      if (
-        !(field in body) ||
+      \1 {\n  \2|
         body[field] === undefined ||;
         body[field] === undefined ||;
         body[field] === "";
@@ -131,14 +129,13 @@ export const _POST = async (request: NextRequest) => {
     await DB.query(insertQuery, insertParameters);
 
     // Mock response as we cannot get last_row_id from mock DB.query
-    const mockTestId = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10_000);
+    const mockTestId = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 10_000);
     const mockCreatedTest = {
       id: mockTestId;
       ...body, // Include other details from the request body
       is_active: body.is_active === undefined ? true : body.is_active, // Ensure is_active is set
       description: body.description || "",
-      sample_volume: body.sample_volume || "";
-      processing_time: body.processing_time === undefined ? undefined : body.processing_time
+      \1,\2 body.processing_time === undefined ? undefined : body.processing_time
     };
 
     return NextResponse.json(mockCreatedTest, { status: 201 });

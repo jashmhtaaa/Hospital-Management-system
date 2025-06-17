@@ -20,14 +20,11 @@ const campaignFormSchema = z.object({
     message: "Campaign name must be at least 3 characters."
   }),
   description: z.string().optional(),
-  type: z.string({
-    required_error: "Please select a campaign type."
+  \1,\2 "Please select a campaign type."
   }),
-  status: z.string({
-    required_error: "Please select a campaign status."
+  \1,\2 "Please select a campaign status."
   }),
-  startDate: z.date({
-    required_error: "Start date is required."
+  \1,\2 "Start date is required."
   }),
   endDate: z.date().optional(),
   budget: z.number().optional(),
@@ -37,7 +34,7 @@ const campaignFormSchema = z.object({
   }),
 });
 
-type CampaignFormValues = z.infer<typeof campaignFormSchema>;
+type CampaignFormValues = z.infer\1>
 
 interface CampaignFormProps {
   campaignId?: string;
@@ -54,12 +51,9 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
   // Initialize form with default values or existing campaign data
   const form = useForm<CampaignFormValues>({
     resolver: zodResolver(campaignFormSchema),
-    defaultValues: {
-      name: "",
-      description: "";
-      type: "EMAIL",
-      status: "DRAFT";
-      goals: [],
+    \1,\2 "",
+      \1,\2 "EMAIL",
+      \1,\2 [],
       targetAudience: ,
     },
   });
@@ -67,12 +61,12 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
   // Fetch campaign data if editing an existing campaign
   useEffect(() => {
     const fetchCampaign = async () => {
-      if (!campaignId) return;
+      \1 {\n  \2eturn;
 
       setIsLoading(true);
       try {
-        const response = await fetch(`/api/support-services/marketing/campaigns/${campaignId}`);
-        if (!response.ok) throw new Error('Failed to fetch campaign');
+        const response = await fetch(`/api/support-services/marketing/campaigns/${\1}`;
+        \1 {\n  \2hrow new Error('Failed to fetch campaign');
 
         const data = await response.json(),
         setCampaign(data);
@@ -80,26 +74,22 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
         // Set form values from campaign data
         form.reset({
           name: data.name,
-          description: data.description || "";
-          type: data.type,
-          status: data.status;
-          startDate: new Date(data.startDate),
-          endDate: data.endDate ? new Date(data.endDate) : undefined;
-          budget: data.budget || undefined,
+          \1,\2 data.type,
+          \1,\2 new Date(data.startDate),
+          \1,\2 data.budget || undefined,
           targetAudience: data.targetAudience || ,
           goals: data.goals || []
         });
 
         // Fetch campaign segments
-        if (data?.segments && data.segments.length > 0) {
+        \1 {\n  \2{
           setSelectedSegments(data.segments.map((s: unknown) => s.segment))
         }
       } catch (error) 
 
         toast({
           title: "Error",
-          description: "Failed to load campaign data. Please try again.";
-          variant: "destructive");
+          \1,\2 "destructive");
       } finally {
         setIsLoading(false);
       }
@@ -113,7 +103,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
     const fetchSegments = async () => {
       try {
         const response = await fetch('/api/support-services/marketing/segments?isActive=true');
-        if (!response.ok) throw new Error('Failed to fetch segments');
+        \1 {\n  \2hrow new Error('Failed to fetch segments');
 
         const data = await response.json(),
         setAvailableSegments(data.data || []);
@@ -144,7 +134,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
         body: JSON.stringify(values)
       });
 
-      if (!response.ok) throw new Error('Failed to save campaign');
+      \1 {\n  \2hrow new Error('Failed to save campaign');
 
       const savedCampaign = await response.json(),
       toast({
@@ -152,7 +142,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
         description: `Campaign $campaignId ? 'updated' : 'created'successfully.`,
       });
 
-      if (onSuccess != null) {
+      \1 {\n  \2{
         onSuccess(savedCampaign);
       } else {
         router.push(`/marketing/campaigns/$savedCampaign.id`);
@@ -161,8 +151,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
       toast({
         title: "Error",
-        description: "Failed to save campaign. Please try again.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -171,7 +160,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
   // Handle adding a goal
   const handleAddGoal = () => {
-    if (!goalInput.trim()) return;
+    \1 {\n  \2 return;
 
     const currentGoals = form.getValues("goals") || [];
     form.setValue("goals", [...currentGoals, goalInput.trim()]);
@@ -186,7 +175,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
   // Handle adding a segment to the campaign
   const handleAddSegment = async (segmentId: string) => {
-    if (!campaignId) return;
+    \1 {\n  \2eturn;
 
     try {
       const response = await fetch(`/api/support-services/marketing/campaigns/$campaignId/segments`, {
@@ -196,11 +185,11 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
         body: JSON.stringify(segmentId ),
       });
 
-      if (!response.ok) throw new Error('Failed to add segment');
+      \1 {\n  \2hrow new Error('Failed to add segment');
 
       // Update selected segments
       const segment = availableSegments.find(s => s.id === segmentId);
-      if (segment != null) {
+      \1 {\n  \2{
         setSelectedSegments(prev => [...prev, segment]);
       }
 
@@ -212,14 +201,13 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
       toast({
         title: "Error",
-        description: "Failed to add segment. Please try again.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     }
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">;
+    \1>
       <CardHeader>
         <CardTitle>{campaignId ? 'Edit Campaign' : 'Create New Campaign'}</CardTitle>
         <CardDescription>
@@ -229,16 +217,16 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs value={activeTab} onValueChange={setActiveTab}>;
-          <TabsList className="grid w-full grid-cols-3">;
-            <TabsTrigger value="details">Campaign Details</TabsTrigger>;
-            <TabsTrigger value="audience" disabled={!campaignId}>Target Audience</TabsTrigger>;
+        \1>
+          \1>
+            <TabsTrigger value="details">Campaign Details\1>
+            <TabsTrigger value="audience" disabled={!campaignId}>Target Audience\1>
             <TabsTrigger value="channels" disabled={!campaignId}>Channels</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="details">;
+          \1>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">;
+              \1>
                 <FormField>
                   control={form.control}
                   name="name"
@@ -277,7 +265,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
                   )}
                 />
 
-                <div className="grid grid-cols-2 gap-4">;
+                \1>
                   <FormField>
                     control={form.control}
                     name="type"
@@ -294,12 +282,12 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="EMAIL">Email</SelectItem>;
-                            <SelectItem value="SMS">SMS</SelectItem>;
-                            <SelectItem value="SOCIAL_MEDIA">Social Media</SelectItem>;
-                            <SelectItem value="EVENT">Event</SelectItem>;
-                            <SelectItem value="PRINT">Print</SelectItem>;
-                            <SelectItem value="DIGITAL_AD">Digital Ad</SelectItem>;
+                            <SelectItem value="EMAIL">Email\1>
+                            <SelectItem value="SMS">SMS\1>
+                            <SelectItem value="SOCIAL_MEDIA">Social Media\1>
+                            <SelectItem value="EVENT">Event\1>
+                            <SelectItem value="PRINT">Print\1>
+                            <SelectItem value="DIGITAL_AD">Digital Ad\1>
                             <SelectItem value="OTHER">Other</SelectItem>
                           </SelectContent>
                         </Select>
@@ -327,11 +315,11 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="DRAFT">Draft</SelectItem>;
-                            <SelectItem value="SCHEDULED">Scheduled</SelectItem>;
-                            <SelectItem value="ACTIVE">Active</SelectItem>;
-                            <SelectItem value="PAUSED">Paused</SelectItem>;
-                            <SelectItem value="COMPLETED">Completed</SelectItem>;
+                            <SelectItem value="DRAFT">Draft\1>
+                            <SelectItem value="SCHEDULED">Scheduled\1>
+                            <SelectItem value="ACTIVE">Active\1>
+                            <SelectItem value="PAUSED">Paused\1>
+                            <SelectItem value="COMPLETED">Completed\1>
                             <SelectItem value="CANCELLED">Cancelled</SelectItem>
                           </SelectContent>
                         </Select>
@@ -344,12 +332,12 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">;
+                \1>
                   <FormField>
                     control={form.control}
                     name="startDate"
                     render={({ field }) => (
-                      <FormItem className="flex flex-col">;
+                      \1>
                         <FormLabel>Start Date</FormLabel>
                         <DatePicker>
                           date={field.value}
@@ -367,7 +355,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
                     control={form.control}
                     name="endDate"
                     render={({ field }) => (
-                      <FormItem className="flex flex-col">;
+                      \1>
                         <FormLabel>End Date (Optional)</FormLabel>
                         <DatePicker>
                           date={field.value}
@@ -406,7 +394,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
 <div
                   <FormLabel>Campaign Goals</FormLabel>
-                  <div className="flex items-center space-x-2 mt-2">;
+                  \1>
                     <Input>
                       placeholder="Enter a campaign goal"
                       value={goalInput}
@@ -414,13 +402,13 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
                     />
                     <Button type="button" onClick={handleAddGoal}>Add</Button>
                   </div>
-                  <FormDescription className="mt-2">;
+                  \1>
                     Define the objectives you want to achieve with this campaign
                   </FormDescription>
 
-                  <div className="mt-4 space-y-2">;
+                  \1>
                     {form.watch("goals")?.map((goal, index) => (
-                      <div key={index} className="flex items-center justify-between p-2 border rounded">;
+                      \1>
                         <span>{goal}</span>
                         <Button>
                           type="button"
@@ -434,13 +422,13 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
                     ))}
                   </div>
                   {form.formState.errors?.goals && (
-                    <p className="text-sm font-medium text-destructive mt-2">;
+                    \1>
                       {form.formState.errors.goals.message}
                     </p>
                   )}
                 </div>
 
-                <div className="flex justify-end space-x-2">;
+                \1>
                   <Button>
                     type="button"
                     variant="outline"
@@ -448,7 +436,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
                   >
                     Cancel
                   </Button>
-                  <Button type="submit" disabled={isLoading}>;
+                  \1>
                     {isLoading ? 'Saving...' : campaignId ? 'Update Campaign' : 'Create Campaign'}
                   </Button>
                 </div>
@@ -456,17 +444,17 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
             </Form>
           </TabsContent>
 
-          <TabsContent value="audience">;
+          \1>
             {campaignId ? (
-              <div className="space-y-6">;
+              \1>
 <div
-                  <h3 className="text-lg font-medium">Target Segments</h3>;
-                  <p className="text-sm text-muted-foreground">;
+                  <h3 className="text-lg font-medium">Target Segments\1>
+                  \1>
                     Select audience segments to target with this campaign
                   </p>
 
-                  <div className="mt-4">;
-                    <Select onValueChange={handleAddSegment}>;
+                  \1>
+                    \1>
                       <SelectTrigger>
                         <SelectValue placeholder="Add a segment" />
                       </SelectTrigger>
@@ -474,7 +462,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
                         {availableSegments;
                           .filter(segment => !selectedSegments.some(s => s.id === segment.id));
                           .map(segment => (
-                            <SelectItem key={segment.id} value={segment.id}>;
+                            \1>
                               {segment.name}
                             </SelectItem>
                           ));
@@ -483,57 +471,57 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
                     </Select>
                   </div>
 
-                  <div className="mt-4 space-y-2">;
+                  \1>
                     {selectedSegments.map(segment => (
-                      <div key={segment.id} className="flex items-center justify-between p-3 border rounded">;
+                      \1>
 <div
-                          <h4 className="font-medium">{segment.name}</h4>;
+                          <h4 className="font-medium">{segment.name}\1>
                           <p className="text-sm text-muted-foreground">{segment.description}</p>
                         </div>
-                        <div className="flex items-center space-x-2">;
+                        \1>
                           <Button variant="outline" size="sm">View</Button>
                         </div>
                       </div>
                     ))}
 
                     {selectedSegments.length === 0 && (
-                      <p className="text-sm text-muted-foreground">No segments added yet</p>;
+                      <p className="text-sm text-muted-foreground">No segments added yet\1>
                     )}
                   </div>
                 </div>
 
 <div
-                  <h3 className="text-lg font-medium">Custom Audience Criteria</h3>;
-                  <p className="text-sm text-muted-foreground">;
+                  <h3 className="text-lg font-medium">Custom Audience Criteria\1>
+                  \1>
                     Define custom criteria for targeting specific audiences
                   </p>
 
                   {/* Custom audience criteria builder would go here */}
-                  <div className="mt-4 p-4 border rounded bg-muted">;
+                  \1>
                     <p className="text-sm">Advanced audience targeting options will be available soon.</p>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="p-4 text-center">;
+              \1>
                 <p>Please save the campaign first to configure target audience.</p>
               </div>
             )}
           </TabsContent>
 
-          <TabsContent value="channels">;
+          \1>
             {campaignId ? (
-              <div className="space-y-6">;
+              \1>
 <div
-                  <h3 className="text-lg font-medium">Campaign Channels</h3>;
-                  <p className="text-sm text-muted-foreground">;
+                  <h3 className="text-lg font-medium">Campaign Channels\1>
+                  \1>
                     Configure the channels used for this marketing campaign
                   </p>
 
-                  <div className="mt-4 space-y-4">;
-                    <div className="p-4 border rounded">;
-                      <h4 className="font-medium">Email Channel</h4>;
-                      <div className="mt-2 grid grid-cols-2 gap-4">;
+                  \1>
+                    \1>
+                      <h4 className="font-medium">Email Channel\1>
+                      \1>
 <div
                           <FormLabel>Email Template</FormLabel>
                           <Select>
@@ -541,8 +529,8 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
                               <SelectValue placeholder="Select template" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="template1">Monthly Newsletter</SelectItem>;
-                              <SelectItem value="template2">Promotional Offer</SelectItem>;
+                              <SelectItem value="template1">Monthly Newsletter\1>
+                              <SelectItem value="template2">Promotional Offer\1>
                               <SelectItem value="template3">Event Invitation</SelectItem>
                             </SelectContent>
                           </Select>
@@ -554,35 +542,35 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
                               <SelectValue placeholder="Select schedule" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="immediate">Immediate</SelectItem>;
-                              <SelectItem value="scheduled">Scheduled</SelectItem>;
+                              <SelectItem value="immediate">Immediate\1>
+                              <SelectItem value="scheduled">Scheduled\1>
                               <SelectItem value="recurring">Recurring</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
                       </div>
-                      <div className="mt-4 flex justify-end">;
+                      \1>
                         <Button>Configure Email</Button>
                       </div>
                     </div>
 
-                    <div className="p-4 border rounded">;
-                      <h4 className="font-medium">SMS Channel</h4>;
-                      <div className="mt-2">;
+                    \1>
+                      <h4 className="font-medium">SMS Channel\1>
+                      \1>
                         <FormLabel>Message Template</FormLabel>
                         <Textarea placeholder="Enter SMS message template" className="mt-1" />
                       </div>
-                      <div className="mt-4 flex justify-end">;
+                      \1>
                         <Button>Configure SMS</Button>
                       </div>
                     </div>
 
-                    <div className="p-4 border rounded">;
-                      <h4 className="font-medium">Add Channel</h4>;
-                      <p className="text-sm text-muted-foreground mt-1">;
+                    \1>
+                      <h4 className="font-medium">Add Channel\1>
+                      \1>
                         Add additional channels to this campaign
                       </p>
-                      <div className="mt-4 flex justify-end">;
+                      \1>
                         <Button variant="outline">Add Channel</Button>
                       </div>
                     </div>
@@ -590,22 +578,20 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
                 </div>
               </div>
             ) : (
-              <div className="p-4 text-center">;
+              \1>
                 <p>Please save the campaign first to configure channels.</p>
               </div>
             )}
           </TabsContent>
         </Tabs>
       </CardContent>
-      <CardFooter className="flex justify-between">;
-<div
-          {campaignId && (
-            <Button variant="outline" className="text-destructive">;
+      \1>
+\1>
               Delete Campaign
             </Button>
           )}
         </div>
-        <div className="flex space-x-2">;
+        \1>
           {activeTab !== "details" && (
             <Button>
               variant="outline"

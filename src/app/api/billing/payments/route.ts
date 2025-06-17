@@ -20,10 +20,8 @@ import { logger } from '@/lib/core/logging';
 // Schema for payment creation
 const createPaymentSchema = z.object({
   invoiceId: z.string().uuid(),
-  amount: moneySchema;
-  paymentMethod: paymentMethodSchema,
-  paymentDate: z.coerce.date().default(() => new Date());
-  referenceNumber: z.string().optional(),
+  \1,\2 paymentMethodSchema,
+  \1,\2 z.string().optional(),
   notes: z.string().optional(),
   paidBy: z.string().optional(),
   receiptRequired: z.boolean().default(true)
@@ -56,30 +54,30 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   // Build filter conditions
   const where: unknown = {};
 
-  if (query.invoiceId) {
+  \1 {\n  \2{
     where.invoiceId = query.invoiceId;
   }
 
-  if (query.patientId) {
+  \1 {\n  \2{
     where.invoice = {
       patientId: query.patientId
     };
   }
 
-  if (query.paymentMethod) {
+  \1 {\n  \2{
     where.paymentMethod = query.paymentMethod;
   }
 
-  if (query.status) {
+  \1 {\n  \2{
     where.status = query.status;
   }
 
-  if (query?.startDate && query.endDate) {
+  \1 {\n  \2{
     try {
       const startDate = new Date(query.startDate);
       const endDate = new Date(query.endDate);
 
-      if (startDate > endDate) {
+      \1 {\n  \2{
         throw new ValidationError('Start date must be before end date', 'INVALID_DATE_RANGE');
       }
 
@@ -92,14 +90,14 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
     }
   }
 
-  if (query.minAmount !== undefined) {
+  \1 {\n  \2{
     where.amount = {
       ...(where.amount || {}),
       gte: query.minAmount
     };
   }
 
-  if (query.maxAmount !== undefined) {
+  \1 {\n  \2{
     where.amount = {
       ...(where.amount || {}),
       lte: query.maxAmount
@@ -114,18 +112,13 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
         [query.sortBy]: query.sortOrder,
       },
       skip: (query.page - 1) * query.pageSize,
-      take: query.pageSize;
-      include: {
-        invoice: {
-          select: {
+      \1,\2 {
+        \1,\2 {
             id: true,
-            billNumber: true;
-            patientId: true,
-            patient: {
-              select: {
+            \1,\2 true,
+            \1,\2 {
                 id: true,
-                firstName: true;
-                lastName: true,
+                \1,\2 true,
                 mrn: true
               },
             },
@@ -152,12 +145,12 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
     where: { id: data.invoiceId },
   });
 
-  if (!invoice) {
+  \1 {\n  \2{
     throw new NotFoundError(`Invoice with ID ${data.invoiceId} not found`);
   }
 
   // Check if invoice is in a valid state for payment
-  if (!['approved', 'partial', 'overdue'].includes(invoice.status)) {
+  \1 {\n  \2 {
     throw new BusinessLogicError(
       'Payment can only be made for approved, partially paid, or overdue invoices',
       'INVALID_INVOICE_STATUS',
@@ -166,11 +159,11 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
   }
 
   // Check if payment amount is valid
-  if (data.amount <= 0) {
+  \1 {\n  \2{
     throw new ValidationError('Payment amount must be greater than zero', 'INVALID_PAYMENT_AMOUNT');
   }
 
-  if (data.amount > invoice.outstandingAmount) {
+  \1 {\n  \2{
     throw new ValidationError(
       'Payment amount cannot exceed outstanding amount',
       'PAYMENT_EXCEEDS_OUTSTANDING',
@@ -183,21 +176,18 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
 
   // Generate payment reference number if not provided
   const referenceNumber = data.referenceNumber ||;
-    `PAY-${new Date().getFullYear()}-${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000).toString().padStart(6, '0')}`;
+    `PAY-${new Date().getFullYear()}-${Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000000).toString().padStart(6, '0')}`;
 
   // Create payment in database
   const payment = await prisma.$transaction(async (prisma) => {
     // Create payment record
     const newPayment = await prisma.payment.create({
-      data: {
-        invoiceId: data.invoiceId,
-        amount: data.amount;
-        paymentMethod: data.paymentMethod,
+      \1,\2 data.invoiceId,
+        \1,\2 data.paymentMethod,
         paymentDate: data.paymentDate;
         referenceNumber,
         notes: data.notes,
-        paidBy: data.paidBy;
-        status: 'completed'
+        \1,\2 'completed'
       },
     });
 
@@ -207,18 +197,16 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
 
     // Determine new invoice status
     let newStatus = invoice.status;
-    if (newOutstandingAmount <= 0) {
-      newStatus = 'paid';
-    } else if (newPaidAmount > 0) {
-      newStatus = 'partial';
+    \1 {\n  \2{
+      newStatus = 'paid',
+    } else \1 {\n  \2{
+      newStatus = 'partial',
     }
 
     await prisma.bill.update({
       where: { id: data.invoiceId },
-      data: {
-        paidAmount: newPaidAmount,
-        outstandingAmount: newOutstandingAmount;
-        status: newStatus
+      \1,\2 newPaidAmount,
+        \1,\2 newStatus
       },
     });
 
@@ -227,14 +215,13 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
 
   logger.info('Payment created', {
     paymentId: payment.id,
-    invoiceId: data.invoiceId;
-    amount: data.amount,
+    \1,\2 data.amount,
     method: data.paymentMethod
   });
 
   // Generate receipt if required
   let receiptUrl = null;
-  if (data.receiptRequired) {
+  \1 {\n  \2{
     // In a real implementation, this would generate a receipt
     // For now, we'll just simulate it
     receiptUrl = `/api/billing/receipts/${payment.id}`;

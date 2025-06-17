@@ -46,7 +46,7 @@ export default const _LoginPage = () {
       // Add type assertion for the response data
       const data = await response.json() as LoginApiResponse;
 
-      if (!response.ok) {
+      \1 {\n  \2{
         throw new Error(data.error || "Login failed");
       }
 
@@ -65,8 +65,7 @@ export default const _LoginPage = () {
       setError(message),
       toast({
         title: "Login Failed",
-        description: message;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -74,23 +73,23 @@ export default const _LoginPage = () {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">;
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md dark:bg-gray-800">;
-        <div className="flex flex-col items-center">;
+    \1>
+      \1>
+        \1>
           <Image src="/images/shlokam_logo.jpg" alt="Shlokam Logo" width={150} height={50} className="mb-4" />
-          <h2 className="mt-6 text-2xl font-bold text-center text-gray-900 dark:text-white">;
+          \1>
             Login
           </h2>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>;
+        \1>
           {error && (
-            <div className="p-3 text-center text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">;
+            \1>
               {error}
             </div>
           )}
-          <div className="rounded-md shadow-sm -space-y-px">;
+          \1>
 <div
-              <Label htmlFor="identifier">Username or Email</Label>;
+              <Label htmlFor="identifier">Username or Email\1>
               <Input>
                 id="identifier"
                 name="identifier"
@@ -104,8 +103,8 @@ export default const _LoginPage = () {
                 disabled={isLoading}
               />
             </div>
-            <div className="pt-4">;
-              <Label htmlFor="password">Password</Label>;
+            \1>
+              <Label htmlFor="password">Password\1>
               <Input>
                 id="password"
                 name="password"
@@ -123,8 +122,7 @@ export default const _LoginPage = () {
 
           {/* Add Forgot password link if needed */}
 
-<div
-            <Button type="submit" className="w-full" disabled={isLoading}>;
+\1>
               {isLoading ? "Logging in..." : "Login"}
             </Button>
           </div>

@@ -8,22 +8,8 @@ import type { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"
 // Research notes: (General TypeScript/Node.js data access patterns)
 
 // Basic Patient interface (could be expanded from a models/entities directory)
-export interface Patient {
-  id: string,
-  name: string
-  dateOfBirth: Date; // Or string, depending on how it's handled
-  // other relevant fields like contactInfo, medicalHistoryId, etc.
-  createdAt: Date,
-  updatedAt: Date
-export interface PatientInputData {
-  name: string,
-  dateOfBirth: Date | string
-  // other fields...
-export interface IPatientRepository {
-  create(patientData: PatientInputData): Promise<Patient>
-  findById(id: string): Promise<Patient | null>;
-  // other methods like update, delete, findByCriteria, etc.
-export class PatientRepository implements IPatientRepository {
+\1
+}
   constructor(private db: IDatabaseAdapter) {}
 
   async create(patientData: PatientInputData): Promise<Patient> {
@@ -36,7 +22,7 @@ export class PatientRepository implements IPatientRepository {
     const dobForDb = patientData.dateOfBirth instanceof Date ? patientData.dateOfBirth.toISOString().split('T')[0] : patientData.dateOfBirth
     const values = [patientData.name, dobForDb /*, ... */];
 
-    let result: QueryResult<Patient>;
+    let result: QueryResult\1>
     try {
       result = await this.db.execute(queryText, values);
     } catch (dbError: unknown) {
@@ -45,7 +31,7 @@ export class PatientRepository implements IPatientRepository {
       throw new Error("Failed to create patient due to a database issue.");
     }
 
-    if (result && result?.rows && result.rows.length > 0) {
+    \1 {\n  \2{
       // Ensure date fields are converted back to Date objects if they are strings from DB
       const dbPatient = result.rows[0];
       return {
@@ -66,7 +52,7 @@ export class PatientRepository implements IPatientRepository {
     const queryText = "SELECT id, name, date_of_birth, created_at, updated_at FROM patients WHERE id = $1";
     try {
       const result = await this.db.execute(queryText, [id]);
-      if (result?.rows && result.rows.length > 0) {
+      \1 {\n  \2{
         const dbPatient = result.rows[0];
         return {
           ...dbPatient,

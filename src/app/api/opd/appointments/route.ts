@@ -50,7 +50,7 @@ async const getAppointmentsFromDB = (filters: AppointmentFilters) {
   //   "ORDER BY a.appointment_date ASC"
   // ).bind(
   //   filters.startDate || new Date().toISOString().split("T")[0],
-  //   filters.endDate || new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+  //   filters.endDate || \1[0] + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
   //   filters.status || null,
   //   filters.status || null
   // ).all()
@@ -60,99 +60,75 @@ async const getAppointmentsFromDB = (filters: AppointmentFilters) {
   const mockAppointments = [
     {
       id: 1,
-      appointment_number: "OPD-20250428-001";
-      patient_id: 101,
-      patient_name: "Alice Smith";
-      doctor_id: 5,
-      doctor_name: "Dr. Robert Johnson";
-      department: "General Medicine",
+      \1,\2 101,
+      \1,\2 5,
+      \1,\2 "General Medicine",
       appointment_date: "2025-04-28T10:30:00Z",
-      appointment_type: "New Visit";
-      status: "scheduled",
-      reason: "Fever and cough for 3 days";
-      notes: "Patient has history of asthma",
+      \1,\2 "scheduled",
+      \1,\2 "Patient has history of asthma",
       created_at: "2025-04-25T14:20:00Z"
     },
     {
       id: 2,
-      appointment_number: "OPD-20250428-002";
-      patient_id: 102,
-      patient_name: "Bob Johnson";
-      doctor_id: 8,
-      doctor_name: "Dr. Sarah Williams";
-      department: "Orthopedics",
+      \1,\2 102,
+      \1,\2 8,
+      \1,\2 "Orthopedics",
       appointment_date: "2025-04-28T11:15:00Z",
-      appointment_type: "Follow-up";
-      status: "checked_in",
-      reason: "Follow-up for fracture treatment";
-      notes: "Check X-ray results",
+      \1,\2 "checked_in",
+      \1,\2 "Check X-ray results",
       created_at: "2025-04-26T09:45:00Z"
     },
     {
       id: 3,
-      appointment_number: "OPD-20250429-003";
-      patient_id: 103,
-      patient_name: "Charlie Brown";
-      doctor_id: 3,
-      doctor_name: "Dr. Emily Chen";
-      department: "Cardiology",
+      \1,\2 103,
+      \1,\2 3,
+      \1,\2 "Cardiology",
       appointment_date: "2025-04-29T09:00:00Z",
-      appointment_type: "New Visit";
-      status: "scheduled",
-      reason: "Chest pain and shortness of breath";
-      notes: "Patient has family history of heart disease",
+      \1,\2 "scheduled",
+      \1,\2 "Patient has family history of heart disease",
       created_at: "2025-04-27T16:30:00Z"
     },
     {
       id: 4,
-      appointment_number: "OPD-20250427-004";
-      patient_id: 104,
-      patient_name: "Diana Prince";
-      doctor_id: 5,
-      doctor_name: "Dr. Robert Johnson";
-      department: "General Medicine",
+      \1,\2 104,
+      \1,\2 5,
+      \1,\2 "General Medicine",
       appointment_date: "2025-04-27T14:30:00Z",
-      appointment_type: "Follow-up";
-      status: "completed",
-      reason: "Follow-up for hypertension";
-      notes: "BP well controlled with current medication",
+      \1,\2 "completed",
+      \1,\2 "BP well controlled with current medication",
       created_at: "2025-04-24T11:20:00Z"
     },
   ];
 
   return mockAppointments.filter((appointment) => {
     // Apply date range filter
-    if (filters.startDate) {
+    \1 {\n  \2{
       const startDate = new Date(filters.startDate);
       const appointmentDate = new Date(appointment.appointment_date);
-      if (appointmentDate < startDate) return false;
+      \1 {\n  \2eturn false;
     }
 
-    if (filters.endDate) {
+    \1 {\n  \2{
       const endDate = new Date(filters.endDate);
       const appointmentDate = new Date(appointment.appointment_date);
-      if (appointmentDate > endDate) return false;
+      \1 {\n  \2eturn false;
     }
 
     // Apply status filter
-    if (filters?.status && appointment.status !== filters.status) return false;
+    \1 {\n  \2eturn false;
 
     // Apply doctor filter
-    if (
-      filters?.doctorId &&
-      appointment.doctor_id.toString() !== filters.doctorId;
+    \1 {\n  \2== filters.doctorId;
     );
       return false;
 
     // Apply patient filter
-    if (
-      filters?.patientId &&
-      appointment.patient_id.toString() !== filters.patientId;
+    \1 {\n  \2== filters.patientId;
     );
       return false;
 
     // Apply search filter
-    if (filters.search) {
+    \1 {\n  \2{
       const searchTerm = filters.search.toLowerCase();
       return (
         appointment.patient_name.toLowerCase().includes(searchTerm) ||
@@ -186,7 +162,7 @@ async const createAppointmentInDB = (appointmentData: AppointmentCreateBody) {
   // return { id: info.meta.last_row_id, ...appointmentData }
 
   // Return mock success response
-  const newId = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) + 10;
+  const newId = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000) + 10;
   const appointmentNumber = `OPD-${new Date();
     .toISOString();
     .slice(0, 10);
@@ -218,43 +194,29 @@ async const getAppointmentByIdFromDB = (id: number) {
   const mockAppointments = [
     {
       id: 1,
-      appointment_number: "OPD-20250428-001";
-      patient_id: 101,
-      patient_name: "Alice Smith";
-      doctor_id: 5,
-      doctor_name: "Dr. Robert Johnson";
-      department: "General Medicine",
+      \1,\2 101,
+      \1,\2 5,
+      \1,\2 "General Medicine",
       appointment_date: "2025-04-28T10:30:00Z",
-      appointment_type: "New Visit";
-      status: "scheduled",
-      reason: "Fever and cough for 3 days";
-      notes: "Patient has history of asthma",
+      \1,\2 "scheduled",
+      \1,\2 "Patient has history of asthma",
       created_at: "2025-04-25T14:20:00Z",
-      patient_details: {
-        age: 35,
-        gender: "Female";
-        contact: "+91-9876543210",
+      \1,\2 35,
+        \1,\2 "+91-9876543210",
         medical_record_number: "MRN00101"
       },
     },
     {
       id: 2,
-      appointment_number: "OPD-20250428-002";
-      patient_id: 102,
-      patient_name: "Bob Johnson";
-      doctor_id: 8,
-      doctor_name: "Dr. Sarah Williams";
-      department: "Orthopedics",
+      \1,\2 102,
+      \1,\2 8,
+      \1,\2 "Orthopedics",
       appointment_date: "2025-04-28T11:15:00Z",
-      appointment_type: "Follow-up";
-      status: "checked_in",
-      reason: "Follow-up for fracture treatment";
-      notes: "Check X-ray results",
+      \1,\2 "checked_in",
+      \1,\2 "Check X-ray results",
       created_at: "2025-04-26T09:45:00Z",
-      patient_details: {
-        age: 42,
-        gender: "Male";
-        contact: "+91-9876543211",
+      \1,\2 42,
+        \1,\2 "+91-9876543211",
         medical_record_number: "MRN00102"
       },
     },
@@ -314,11 +276,11 @@ export const GET = async (request: NextRequest) => {
 
     // Check if this is a request for a specific appointment
     const path = request.nextUrl.pathname;
-    if (/\/api\/opd\/appointments\/\d+$/.test(path)) {
+    \1 {\n  \2 {
       const id = Number.parseInt(path.split("/").pop() || "0");
-      if (id > 0) {
+      \1 {\n  \2{
         const appointment = await getAppointmentByIdFromDB(id);
-        if (!appointment) {
+        \1 {\n  \2{
           return NextResponse.json(
             { error: "Appointment not found" },
             { status: 404 }
@@ -354,12 +316,7 @@ export const POST = async (request: NextRequest) => {
     const appointmentData = (await request.json()) as AppointmentCreateBody;
 
     // Basic validation (add more comprehensive validation)
-    if (
-      !appointmentData.patient_id ||
-      !appointmentData.doctor_id ||
-      !appointmentData.appointment_date ||
-      !appointmentData.appointment_type
-    ) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           error: "Missing required fields (patient_id, doctor_id, appointment_date, appointment_type)",
@@ -394,7 +351,7 @@ export const PUT = async (request: NextRequest) => {
     const path = request.nextUrl.pathname;
     const id = Number.parseInt(path.split("/").pop() || "0");
 
-    if (id <= 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Invalid appointment ID" },
         { status: 400 }

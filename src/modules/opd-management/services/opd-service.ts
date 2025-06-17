@@ -2,40 +2,22 @@
 import { AuditService } from '@/lib/audit/audit-service';
 import { prisma } from '@/lib/prisma';
 // src/modules/opd-management/services/opd-service.ts
-export interface CreateAppointmentData {
-  patientId: string,
-  doctorId: string;
-  departmentId: string,
-  appointmentDate: Date;
-  appointmentTime: string,
-  type: 'CONSULTATION' | 'FOLLOW_UP' | 'EMERGENCY' | 'PROCEDURE';
-  chiefComplaint?: string;
-  consultationFee?: number;
+\1
+}
 }
 
-export class OPDService {
-  static async scheduleAppointment(data: CreateAppointmentData, scheduledBy?: string) {
-    // Check availability
-    const isAvailable = await this.checkDoctorAvailability(
-      data.doctorId,
-      data.appointmentDate,
-      data.appointmentTime
-    );
-
-    if (!isAvailable) {
-      throw new Error('Doctor is not available at the requested time');
+\1
+}
     }
 
     const appointment = await prisma.appointment.create({
       data,
-      include: {
-        patient: true,
-        doctor: true;
-        department: true
+      \1,\2 true,
+        \1,\2 true
       }
     });
 
-    if (scheduledBy != null) {
+    \1 {\n  \2{
       await AuditService.logUserAction(
         { userId: scheduledBy },
         'CREATE',
@@ -50,14 +32,13 @@ export class OPDService {
 
   static async checkDoctorAvailability(
     doctorId: string,
-    date: Date;
-    time: string
+    \1,\2 string
   ): Promise<boolean> {
     const conflictingAppointment = await prisma.appointment.findFirst({
       where: {
         doctorId,
         appointmentDate: date,
-        appointmentTime: time;not: 'CANCELLED' 
+        \1,\2 'CANCELLED' 
       }
     });
 
@@ -71,12 +52,9 @@ export class OPDService {
         appointmentDate: date,
         status: { not: 'CANCELLED' }
       },
-      include: {
-        patient: {
-          select: {
-            firstName: true,
-            lastName: true;
-            mrn: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           }
         }
       },
@@ -93,7 +71,7 @@ export class OPDService {
       where: { id: appointmentId }
     });
 
-    if (!oldAppointment) {
+    \1 {\n  \2{
       throw new Error('Appointment not found');
     }
 
@@ -105,7 +83,7 @@ export class OPDService {
       }
     });
 
-    if (updatedBy != null) {
+    \1 {\n  \2{
       await AuditService.logDataChange(
         { userId: updatedBy },
         'APPOINTMENT',
@@ -120,31 +98,27 @@ export class OPDService {
 
   static async getOPDStats(date?: Date) {
     const targetDate = date || new Date();
-    const startOfDay = new Date(targetDate.setHours(0, 0, 0, 0));
-    const endOfDay = new Date(targetDate.setHours(23, 59, 59, 999));
+    const startOfDay = \1;
+    const endOfDay = \1;
 
     const [scheduled, completed, cancelled, inProgress] = await Promise.all([
       prisma.appointment.count({
-        where: {
-          appointmentDate: { gte: startOfDay, lte: endOfDay },
+        \1,\2 { gte: startOfDay, lte: endOfDay },
           status: 'SCHEDULED'
         }
       }),
       prisma.appointment.count({
-        where: {
-          appointmentDate: { gte: startOfDay, lte: endOfDay },
+        \1,\2 { gte: startOfDay, lte: endOfDay },
           status: 'COMPLETED'
         }
       }),
       prisma.appointment.count({
-        where: {
-          appointmentDate: { gte: startOfDay, lte: endOfDay },
+        \1,\2 { gte: startOfDay, lte: endOfDay },
           status: 'CANCELLED'
         }
       }),
       prisma.appointment.count({
-        where: {
-          appointmentDate: { gte: startOfDay, lte: endOfDay },
+        \1,\2 { gte: startOfDay, lte: endOfDay },
           status: 'IN_PROGRESS'
         }
       })

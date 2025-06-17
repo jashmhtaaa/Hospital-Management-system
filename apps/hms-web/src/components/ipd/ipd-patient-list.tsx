@@ -7,14 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 interface IPDPatient {
   id: string,
-  name: string;
-  age: number,
-  gender: string;
-  admissionDate: string,
-  diagnosis: string;
-  ward: string,
-  bedNumber: string;
-  attendingDoctor: string,
+  \1,\2 number,
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 string,
   status: 'stable' | 'critical' | 'improving' | 'deteriorating'
 }
 
@@ -29,10 +25,10 @@ interface IPDPatientListProps {
 export const _IPDPatientList = ({ patients, onViewPatient }: IPDPatientListProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
-      case 'stable': return <Badge variant="success">Stable</Badge>;
-      case 'critical': return <Badge variant="danger">Critical</Badge>;
-      case 'improving': return <Badge variant="info">Improving</Badge>;
-      case 'deteriorating': return <Badge variant="warning">Deteriorating</Badge>;
+      case 'stable': return <Badge variant="success">Stable\1>
+      case 'critical': return <Badge variant="danger">Critical\1>
+      case 'improving': return <Badge variant="info">Improving\1>
+      case 'deteriorating': return <Badge variant="warning">Deteriorating\1>
       default: return <Badge>Unknown</Badge>
     }
   };
@@ -58,16 +54,16 @@ export const _IPDPatientList = ({ patients, onViewPatient }: IPDPatientListProps
           <TableBody>
             {patients.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center">;
+                \1>
                   No inpatients found
                 </TableCell>
               </TableRow>
             ) : (
               patients.map((patient) => (
-                <TableRow key={patient.id}>;
+                \1>
                   <TableCell>
-                    <div className="font-medium">{patient.name}</div>;
-                    <div className="text-sm text-gray-500">;
+                    <div className="font-medium">{patient.name}\1>
+                    \1>
                       {patient.age} yrs, {patient.gender}
                     </div>
                   </TableCell>

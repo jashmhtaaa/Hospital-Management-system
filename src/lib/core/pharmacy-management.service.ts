@@ -16,8 +16,7 @@ export const DrugSchema = z.object({
   therapeutic_class: z.string(),
   controlled_substance_schedule: z.enum(['I', 'II', 'III', 'IV', 'V', 'none']).default('none'),
   dosage_forms: z.array(z.string()),
-  strengths: z.array(z.string());
-  route_of_administration: z.array(z.string()),
+  \1,\2 z.array(z.string()),
   manufacturer: z.string(),
   dea_schedule: z.string().optional(),
   pregnancy_category: z.enum(['A', 'B', 'C', 'D', 'X', 'unknown']).default('unknown'),
@@ -98,14 +97,12 @@ export const AllergySchema = z.object({
 
 export type Drug = z.infer<typeof DrugSchema> & {
   id: string,
-  created_at: Date;
-  updated_at: Date
+  \1,\2 Date
 };
 
 export type Prescription = z.infer<typeof PrescriptionSchema> & {
   id: string,
-  prescription_number: string;
-  status: 'pending' | 'verified' | 'dispensed' | 'picked_up' | 'cancelled' | 'expired';
+  \1,\2 'pending' | 'verified' | 'dispensed' | 'picked_up' | 'cancelled' | 'expired';
   verification_date?: Date;
   dispensing_date?: Date;
   pickup_date?: Date;
@@ -125,56 +122,18 @@ export type InventoryItem = z.infer<typeof InventorySchema> & {
 
 export type DispensingRecord = z.infer<typeof DispensingSchema> & {
   id: string,
-  refill_number: number;
-  total_cost: number,
-  copay_amount: number;
-  insurance_amount: number,
-  created_at: Date;
-  updated_at: Date
+  \1,\2 number,
+  \1,\2 number,
+  \1,\2 Date
 };
 
 export type PatientAllergy = z.infer<typeof AllergySchema> & {
   id: string,
-  created_at: Date;
-  updated_at: Date
+  \1,\2 Date
 };
 
-export interface DrugInteraction {
-  drug1_ndc: string,
-  drug1_name: string;
-  drug2_ndc: string,
-  drug2_name: string;
-  severity: 'minor' | 'moderate' | 'major' | 'contraindicated',
-  mechanism: string;
-  clinical_effect: string,
-  management: string;
-  documentation_level: 'poor' | 'fair' | 'good' | 'excellent'
-export interface ClinicalAlert {
-  id: string,
-  patient_id: string;
-  prescription_id: string,
-  alert_type: 'drug_allergy' | 'drug_interaction' | 'duplicate_therapy' | 'dosing_concern' | 'contraindication';
-  severity: 'low' | 'medium' | 'high' | 'critical',
-  message: string;
-  recommendation: string;
-  override_reason?: string;
-  overridden_by?: string;
-  override_date?: Date;
-  acknowledged: boolean;
-  acknowledged_by?: string;
-  acknowledged_date?: Date;
-  created_at: Date
-export class PharmacyManagementService {
-  private drugs: Map<string, Drug> = new Map(),
-  private prescriptions: Map<string, Prescription> = new Map(),
-  private inventory: Map<string, InventoryItem> = new Map(),
-  private dispensingRecords: Map<string, DispensingRecord[]> = new Map(),
-  private allergies: Map<string, PatientAllergy[]> = new Map(),
-  private drugInteractions: DrugInteraction[] = [];
-  private clinicalAlerts: Map<string, ClinicalAlert[]> = new Map(),
-  constructor() {
-    this.initializeDrugDatabase();
-    this.initializeDrugInteractions();
+\1
+}
   }
 
   /**
@@ -184,71 +143,47 @@ export class PharmacyManagementService {
     const commonDrugs: Omit<Drug, 'id' | 'created_at' | 'updated_at'>[] = [
       {
         ndc: '0781-1506-01',
-        generic_name: 'Lisinopril';
-        brand_name: 'Prinivil',
-        drug_class: 'ACE Inhibitor';
-        therapeutic_class: 'Cardiovascular',
-        controlled_substance_schedule: 'none';
-        dosage_forms: ['tablet'],
+        \1,\2 'Prinivil',
+        \1,\2 'Cardiovascular',
+        \1,\2 ['tablet'],
         strengths: ['5mg', '10mg', '20mg'],
         route_of_administration: ['oral'],
-        manufacturer: 'Sandoz';
-        pregnancy_category: 'C',
-        black_box_warning: false;
-        formulary_status: 'preferred',
-        cost_per_unit: 0.15;
-        is_active: true
+        \1,\2 'C',
+        \1,\2 'preferred',
+        \1,\2 true
       },
       {
         ndc: '0071-0222-23',
-        generic_name: 'Atorvastatin';
-        brand_name: 'Lipitor',
-        drug_class: 'HMG-CoA Reductase Inhibitor';
-        therapeutic_class: 'Cardiovascular',
-        controlled_substance_schedule: 'none';
-        dosage_forms: ['tablet'],
+        \1,\2 'Lipitor',
+        \1,\2 'Cardiovascular',
+        \1,\2 ['tablet'],
         strengths: ['10mg', '20mg', '40mg', '80mg'],
         route_of_administration: ['oral'],
-        manufacturer: 'Pfizer';
-        pregnancy_category: 'X',
-        black_box_warning: false;
-        formulary_status: 'preferred',
-        cost_per_unit: 0.25;
-        is_active: true
+        \1,\2 'X',
+        \1,\2 'preferred',
+        \1,\2 true
       },
       {
         ndc: '0093-7267-56',
-        generic_name: 'Metformin';
-        brand_name: 'Glucophage',
-        drug_class: 'Biguanide';
-        therapeutic_class: 'Antidiabetic',
-        controlled_substance_schedule: 'none';
-        dosage_forms: ['tablet', 'extended-release tablet'],
+        \1,\2 'Glucophage',
+        \1,\2 'Antidiabetic',
+        \1,\2 ['tablet', 'extended-release tablet'],
         strengths: ['500mg', '850mg', '1000mg'],
         route_of_administration: ['oral'],
-        manufacturer: 'Teva';
-        pregnancy_category: 'B',
-        black_box_warning: true;
-        formulary_status: 'preferred',
-        cost_per_unit: 0.12;
-        is_active: true
+        \1,\2 'B',
+        \1,\2 'preferred',
+        \1,\2 true
       },
       {
         ndc: '0172-4368-70',
-        generic_name: 'Oxycodone';
-        brand_name: 'OxyContin',
-        drug_class: 'Opioid Analgesic';
-        therapeutic_class: 'Pain Management',
-        controlled_substance_schedule: 'II';
-        dosage_forms: ['tablet', 'extended-release tablet'],
+        \1,\2 'OxyContin',
+        \1,\2 'Pain Management',
+        \1,\2 ['tablet', 'extended-release tablet'],
         strengths: ['5mg', '10mg', '15mg', '20mg', '30mg'],
         route_of_administration: ['oral'],
-        manufacturer: 'Purdue Pharma';
-        dea_schedule: 'II',
-        pregnancy_category: 'C';
-        black_box_warning: true,
-        formulary_status: 'restricted';
-        cost_per_unit: 2.50,
+        \1,\2 'II',
+        \1,\2 true,
+        \1,\2 2.50,
         is_active: true
       },
     ];
@@ -274,22 +209,17 @@ export class PharmacyManagementService {
         drug1_name: 'Lisinopril',
         drug2_ndc: '0093-7267-56', // Metformin
         drug2_name: 'Metformin',
-        severity: 'moderate';
-        mechanism: 'Additive hypotensive effects',
-        clinical_effect: 'May cause excessive blood pressure lowering';
-        management: 'Monitor blood pressure closely when initiating therapy',
+        \1,\2 'Additive hypotensive effects',
+        \1,\2 'Monitor blood pressure closely when initiating therapy',
         documentation_level: 'good'
       },
       {
         drug1_ndc: '0071-0222-23', // Atorvastatin
         drug2_ndc: '0172-4368-70', // Oxycodone
         drug1_name: 'Atorvastatin',
-        drug2_name: 'Oxycodone';
-        severity: 'minor',
-        mechanism: 'CYP3A4 competition';
-        clinical_effect: 'Possible increased statin levels',
-        management: 'Monitor for muscle pain or weakness';
-        documentation_level: 'fair'
+        \1,\2 'minor',
+        \1,\2 'Possible increased statin levels',
+        \1,\2 'fair'
       },
     ];
   }
@@ -300,7 +230,7 @@ export class PharmacyManagementService {
   async addDrug(drugData: z.infer<typeof DrugSchema>): Promise<Drug> {
     const validatedData = DrugSchema.parse(drugData);
 
-    if (this.drugs.has(validatedData.ndc)) {
+    \1 {\n  \2 {
       throw new Error(`Drug with NDC ${validatedData.ndc} already exists`);
     }
 
@@ -323,7 +253,7 @@ export class PharmacyManagementService {
     const searchQuery = query.toLowerCase();
 
     return drugs.filter(drug => {
-      if (activeOnly && !drug.is_active) return false;
+      \1 {\n  \2eturn false;
 
       return (
         drug.generic_name.toLowerCase().includes(searchQuery) ||
@@ -342,7 +272,7 @@ export class PharmacyManagementService {
 
     // Validate drug exists
     const drug = this.drugs.get(validatedData.drug_ndc);
-    if (!drug) {
+    \1 {\n  \2{
       throw new Error(`Drug with NDC ${validatedData.drug_ndc} not found`);
     }
 
@@ -352,8 +282,7 @@ export class PharmacyManagementService {
     const prescription: Prescription = {
       ...validatedData,
       id: prescriptionId,
-      prescription_number: prescriptionNumber;
-      status: 'pending',
+      \1,\2 'pending',
       created_at: new Date(),
       updated_at: new Date()
     };
@@ -370,8 +299,8 @@ export class PharmacyManagementService {
    * Generate prescription number;
    */
   private generatePrescriptionNumber(): string {
-    const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
-    const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10000).toString().padStart(4, '0');
+    const _timestamp = crypto.getRandomValues(\1[0].toString().slice(-6);
+    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 10000).toString().padStart(4, '0');
     return `RX/* SECURITY: Template literal eliminated */
   }
 
@@ -384,7 +313,7 @@ export class PharmacyManagementService {
     // Check for drug allergies
     const patientAllergies = this.allergies.get(prescription.patient_id) || [];
     const drugAllergyAlert = this.checkDrugAllergy(prescription, patientAllergies);
-    if (drugAllergyAlert != null) {
+    \1 {\n  \2{
       alerts.push(drugAllergyAlert);
     }
 
@@ -397,12 +326,12 @@ export class PharmacyManagementService {
 
     // Check for duplicate therapy
     const duplicateAlert = this.checkDuplicateTherapy(prescription, patientPrescriptions);
-    if (duplicateAlert != null) {
+    \1 {\n  \2{
       alerts.push(duplicateAlert);
     }
 
     // Store alerts
-    if (alerts.length > 0) {
+    \1 {\n  \2{
       this.clinicalAlerts.set(prescription.id, alerts);
     }
   }
@@ -412,7 +341,7 @@ export class PharmacyManagementService {
    */
   private checkDrugAllergy(prescription: Prescription, allergies: PatientAllergy[]): ClinicalAlert | null {
     const drug = this.drugs.get(prescription.drug_ndc);
-    if (!drug) return null;
+    \1 {\n  \2eturn null;
 
     const drugAllergy = allergies.find(allergy =>
       allergy.allergen_type === 'drug' &&;
@@ -422,17 +351,14 @@ export class PharmacyManagementService {
        allergy.allergen.toLowerCase() === drug.drug_class.toLowerCase());
     );
 
-    if (drugAllergy != null) {
+    \1 {\n  \2{
       return {
         id: uuidv4(),
-        patient_id: prescription.patient_id;
-        prescription_id: prescription.id,
-        alert_type: 'drug_allergy';
-        severity: drugAllergy.severity === 'life-threatening' ? 'critical' : 'high',
+        \1,\2 prescription.id,
+        \1,\2 drugAllergy.severity === 'life-threatening' ? 'critical' : 'high',
         message: `Patient has documented allergy to $drugAllergy.allergen- $drugAllergy.reaction`,
         recommendation: 'Consider alternative medication. Review allergy history with patient.',
-        acknowledged: false;
-        created_at: new Date()
+        \1,\2 new Date()
       };
     }
 
@@ -446,28 +372,26 @@ export class PharmacyManagementService {
     const alerts: ClinicalAlert[] = [];
 
     for (const existingRx of existingPrescriptions) {
-      if (existingRx.id === prescription.id) continue;
+      \1 {\n  \2ontinue;
 
       const interaction = this.drugInteractions.find(di =>
         (di.drug1_ndc === prescription?.drug_ndc && di.drug2_ndc === existingRx.drug_ndc) ||;
         (di.drug2_ndc === prescription?.drug_ndc && di.drug1_ndc === existingRx.drug_ndc);
       );
 
-      if (interaction != null) {
+      \1 {\n  \2{
         const severity = interaction.severity === 'contraindicated' ? 'critical' :
                         interaction.severity === 'major' ? 'high' :
                         interaction.severity === 'moderate' ? 'medium' : 'low';
 
         alerts.push({
           id: uuidv4(),
-          patient_id: prescription.patient_id;
-          prescription_id: prescription.id,
+          \1,\2 prescription.id,
           alert_type: 'drug_interaction';
           severity,
           message: `Drug interaction: $interaction.drug1_nameand $interaction.drug2_name- $interaction.clinical_effect`,
           recommendation: interaction.management,
-          acknowledged: false;
-          created_at: new Date()
+          \1,\2 new Date()
         });
       }
     }
@@ -480,7 +404,7 @@ export class PharmacyManagementService {
    */
   private checkDuplicateTherapy(prescription: Prescription, existingPrescriptions: Prescription[]): ClinicalAlert | null {
     const newDrug = this.drugs.get(prescription.drug_ndc);
-    if (!newDrug) return null;
+    \1 {\n  \2eturn null;
 
     const duplicateTherapy = existingPrescriptions.find(existingRx => {
       const existingDrug = this.drugs.get(existingRx.drug_ndc);
@@ -490,17 +414,14 @@ export class PharmacyManagementService {
              existingRx.status !== 'cancelled';
     });
 
-    if (duplicateTherapy != null) {
+    \1 {\n  \2{
       return {
         id: uuidv4(),
-        patient_id: prescription.patient_id;
-        prescription_id: prescription.id,
-        alert_type: 'duplicate_therapy';
-        severity: 'medium',
+        \1,\2 prescription.id,
+        \1,\2 'medium',
         message: `Potential duplicate therapy: $newDrug.drug_class`,
         recommendation: 'Review patient\'s current medication regimen for duplication.',
-        acknowledged: false;
-        created_at: new Date()
+        \1,\2 new Date()
       };
     }
 
@@ -518,30 +439,30 @@ export class PharmacyManagementService {
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ prescriptions: Prescription[], total: number; totalPages: number }> {
+  }): Promise<{ prescriptions: Prescription[], \1,\2 number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredPrescriptions = Array.from(this.prescriptions.values());
 
     // Apply filters
-    if (searchFilters.patient_id) {
+    \1 {\n  \2{
       filteredPrescriptions = filteredPrescriptions.filter(rx => rx.patient_id === searchFilters.patient_id);
     }
 
-    if (searchFilters.prescriber_id) {
+    \1 {\n  \2{
       filteredPrescriptions = filteredPrescriptions.filter(rx => rx.prescriber_id === searchFilters.prescriber_id);
     }
 
-    if (searchFilters.status) {
+    \1 {\n  \2{
       filteredPrescriptions = filteredPrescriptions.filter(rx => rx.status === searchFilters.status);
     }
 
-    if (searchFilters.date_from) {
+    \1 {\n  \2{
       const fromDate = new Date(searchFilters.date_from);
       filteredPrescriptions = filteredPrescriptions.filter(rx => rx.created_at >= fromDate);
     }
 
-    if (searchFilters.date_to) {
+    \1 {\n  \2{
       const toDate = new Date(searchFilters.date_to);
       filteredPrescriptions = filteredPrescriptions.filter(rx => rx.created_at <= toDate);
     }
@@ -563,11 +484,11 @@ export class PharmacyManagementService {
    */
   async verifyPrescription(prescriptionId: string, pharmacistId: string): Promise<Prescription> {
     const prescription = this.prescriptions.get(prescriptionId);
-    if (!prescription) {
+    \1 {\n  \2{
       throw new Error('Prescription not found');
     }
 
-    if (prescription.status !== 'pending') {
+    \1 {\n  \2{
       throw new Error('Prescription is not in pending status');
     }
 
@@ -575,7 +496,7 @@ export class PharmacyManagementService {
     const alerts = this.clinicalAlerts.get(prescriptionId) || [];
     const criticalAlerts = alerts.filter(alert => alert.severity === 'critical' && !alert.acknowledged);
 
-    if (criticalAlerts.length > 0) {
+    \1 {\n  \2{
       throw new Error('Cannot verify prescription with unacknowledged critical alerts');
     }
 
@@ -594,17 +515,17 @@ export class PharmacyManagementService {
     const validatedData = DispensingSchema.parse(dispensingData);
 
     const prescription = this.prescriptions.get(validatedData.prescription_id);
-    if (!prescription) {
+    \1 {\n  \2{
       throw new Error('Prescription not found');
     }
 
-    if (prescription.status !== 'verified') {
+    \1 {\n  \2{
       throw new Error('Prescription must be verified before dispensing');
     }
 
     // Check inventory availability
     const inventoryItem = this.checkInventoryAvailability(prescription.drug_ndc, validatedData.quantity_dispensed);
-    if (!inventoryItem) {
+    \1 {\n  \2{
       throw new Error('Insufficient inventory to dispense medication');
     }
 
@@ -621,10 +542,8 @@ export class PharmacyManagementService {
     const dispensingRecord: DispensingRecord = {
       ...validatedData,
       id: uuidv4(),
-      refill_number: refillNumber;
-      total_cost: totalCost,
-      copay_amount: copayAmount;
-      insurance_amount: insuranceAmount,
+      \1,\2 totalCost,
+      \1,\2 insuranceAmount,
       created_at: new Date(),
       updated_at: new Date()
     };
@@ -666,7 +585,7 @@ export class PharmacyManagementService {
     let remainingQuantity = quantityDispensed;
 
     for (const item of inventoryItems) {
-      if (remainingQuantity <= 0) break;
+      \1 {\n  \2reak;
 
       const quantityFromThisLot = Math.min(item.quantity_on_hand, remainingQuantity);
       item.quantity_on_hand -= quantityFromThisLot;
@@ -718,11 +637,11 @@ export class PharmacyManagementService {
     // Find alert across all prescriptions
     for (const [prescriptionId, alerts] of this.clinicalAlerts.entries()) {
       const alert = alerts.find(a => a.id === alertId);
-      if (alert != null) {
+      \1 {\n  \2{
         alert.acknowledged = true;
         alert.acknowledged_by = pharmacistId;
         alert.acknowledged_date = new Date();
-        if (reason != null) {
+        \1 {\n  \2{
           alert.override_reason = reason;
         }
         this.clinicalAlerts.set(prescriptionId, alerts);
@@ -738,21 +657,18 @@ export class PharmacyManagementService {
    */
   async getPharmacyStatistics(dateFrom?: string, dateTo?: string): Promise<{
     totalPrescriptions: number,
-    dispensedPrescriptions: number;
-    pendingPrescriptions: number,
-    totalClinicalAlerts: number;
-    criticalAlerts: number,
-    averageProcessingTime: number;
-    totalRevenue: number
+    \1,\2 number,
+    \1,\2 number,
+    \1,\2 number
   }> {
     const prescriptions = Array.from(this.prescriptions.values());
 
     let filteredPrescriptions = prescriptions;
-    if (dateFrom != null) {
+    \1 {\n  \2{
       const fromDate = new Date(dateFrom);
       filteredPrescriptions = filteredPrescriptions.filter(rx => rx.created_at >= fromDate);
     }
-    if (dateTo != null) {
+    \1 {\n  \2{
       const toDate = new Date(dateTo);
       filteredPrescriptions = filteredPrescriptions.filter(rx => rx.created_at <= toDate);
     }
@@ -773,7 +689,7 @@ export class PharmacyManagementService {
     let totalProcessingHours = 0;
     let processedCount = 0;
     filteredPrescriptions.forEach(rx => {
-      if (rx?.dispensing_date && rx.verification_date) {
+      \1 {\n  \2{
         const hours = (rx.dispensing_date.getTime() - rx.verification_date.getTime()) / (1000 * 60 * 60);
         totalProcessingHours += hours;
         processedCount++;

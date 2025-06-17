@@ -9,56 +9,11 @@ import { PrismaClient } from '@prisma/client';
  * Supports HL7 FHIR, HL7 v2/v3, DICOM, and various EHR/HIS systems;
  */
 
-export interface IntegrationEndpoint {
-  id: string,
-  name: string;
-  type: IntegrationType,
-  status: 'active' | 'inactive' | 'error' | 'testing';
-  configuration: EndpointConfiguration,
-  credentials: EndpointCredentials;
-  mappings: DataMapping[],
-  lastSync: Date | null;
-  nextSync: Date | null,
-  syncFrequency: number; // in minutes
-  errorCount: number,
-  successCount: number;
-  lastError?: string;
-  healthCheck: HealthCheckConfig,
-  version: string;
-  createdAt: Date,
-  updatedAt: Date
-export type IntegrationType =
-  | 'fhir_r4';
-  | 'fhir_r5';
-  | 'hl7_v2';
-  | 'hl7_v3';
-  | 'dicom';
-  | 'epic_api';
-  | 'cerner_api';
-  | 'allscripts_api';
-  | 'athenahealth_api';
-  | 'mckesson_api';
-  | 'meditech_api';
-  | 'custom_api';
-  | 'sftp';
-  | 'ftp';
-  | 'http_webhook';
-  | 'database';
-  | 'mirth_connect';
-  | 'integration_engine';
-
-export interface EndpointConfiguration {
-  baseUrl?: string;
-  apiVersion?: string;
-  timeout: number,
-  retryAttempts: number;
-  retryDelay: number;
-  rateLimit?: {
-    requests: number,
-    window: number; // in seconds
+\1
+}
   };
-  headers?: Record<string, string>;
-  queryParams?: Record<string, string>;
+  headers?: Record\1>
+  queryParams?: Record\1>
   tls?: {
     enabled: boolean;
     certificate?: string;
@@ -68,136 +23,8 @@ export interface EndpointConfiguration {
   compression?: boolean;
   format: 'json' | 'xml' | 'hl7' | 'dicom' | 'csv' | 'pipe_delimited',
   encoding: 'utf8' | 'utf16' | 'ascii'
-export interface EndpointCredentials {
-  type: 'basic' | 'bearer' | 'oauth2' | 'api_key' | 'certificate' | 'none';
-  username?: string;
-  password?: string;
-  token?: string;
-  apiKey?: string;
-  clientId?: string;
-  clientSecret?: string;
-  tokenUrl?: string;
-  scope?: string;
-  certificate?: string;
-  privateKey?: string;
-  expiresAt?: Date;
-  refreshToken?: string;
-export interface DataMapping {
-  sourceField: string,
-  targetField: string;
-  transformation?: DataTransformation;
-  required: boolean;
-  defaultValue?: unknown;
-  validation?: ValidationRule[];
-export interface DataTransformation {
-  type: 'direct' | 'lookup' | 'function' | 'concatenate' | 'split' | 'format' | 'convert';
-  function?: string;
-  parameters?: unknown[];
-  lookupTable?: Record<string, unknown>;
-  format?: string;
-  separator?: string;
-export interface ValidationRule {
-  type: 'required' | 'type' | 'range' | 'regex' | 'length' | 'custom';
-  value?: unknown;
-  message: string
-export interface HealthCheckConfig {
-  enabled: boolean,
-  interval: number; // in minutes
-  endpoint?: string;
-  method: 'GET' | 'POST' | 'HEAD',
-  timeout: number;
-  expectedStatus: number[];
-  expectedContent?: string;
-export interface IntegrationMessage {
-  id: string,
-  endpointId: string;
-  direction: 'inbound' | 'outbound',
-  messageType: string;
-  status: 'pending' | 'processing' | 'success' | 'failed' | 'retry',
-  priority: 'low' | 'normal' | 'high' | 'critical';
-  sourceData: unknown;
-  transformedData?: unknown;
-  errorMessage?: string;
-  retryCount: number,
-  maxRetries: number;
-  createdAt: Date;
-  processedAt?: Date;
-  acknowledgedAt?: Date;
-  metadata: MessageMetadata
-export interface MessageMetadata {
-  sourceId?: string;
-  sourceType?: string;
-  patientId?: string;
-  encounterId?: string;
-  messageControlId?: string;
-  correlationId?: string;
-  parentMessageId?: string;
-  batchId?: string;
-  userId?: string;
-  organizationId?: string;
-  department?: string;
-  version?: string;
-  custom?: Record<string, unknown>;
-export interface IntegrationEvent {
-  id: string,
-  endpointId: string;
-  type: 'sync_started' | 'sync_completed' | 'sync_failed' | 'message_received' | 'message_sent' | 'error' | 'status_change',
-  severity: 'info' | 'warning' | 'error' | 'critical';
-  message: string;
-  data?: unknown;
-  timestamp: Date,
-  resolved: boolean;
-  resolvedAt?: Date;
-  resolvedBy?: string;
-export interface SyncResult {
-  endpointId: string,
-  startTime: Date;
-  endTime: Date,
-  success: boolean;
-  recordsProcessed: number,
-  recordsSuccess: number;
-  recordsFailed: number,
-  errors: string[];
-  warnings: string[],
-  metadata: unknown
-export interface MessageTransformer {
-  name: string,
-  version: string;
-  inputFormat: string,
-  outputFormat: string;
-  transform(data: unknown, mapping: DataMapping[], context?: unknown): Promise<unknown>;
-  validate(data: unknown, rules: ValidationRule[]): Promise<ValidationResult>
-export interface ValidationResult {
-  valid: boolean,
-  errors: string[];
-  warnings: string[]
-export interface IntegrationStatistics {
-  totalEndpoints: number,
-  activeEndpoints: number;
-  totalMessages: number,
-  successfulMessages: number;
-  failedMessages: number,
-  averageProcessingTime: number;
-  uptime: number,
-  lastSync: Date | null;
-  errorRate: number,
-  throughput: number; // messages per hour
-  byEndpoint: EndpointStats[],
-  byMessageType: MessageTypeStats[]
-export interface EndpointStats {
-  endpointId: string,
-  name: string;
-  type: IntegrationType,
-  status: string;
-  messagesProcessed: number,
-  successRate: number;
-  averageResponseTime: number,
-  lastActivity: Date | null
-export interface MessageTypeStats {
-  messageType: string,
-  count: number;
-  successRate: number,
-  averageProcessingTime: number
+\1
+}
 }
 
 class IntegrationHubService extends EventEmitter {
@@ -220,7 +47,7 @@ class IntegrationHubService extends EventEmitter {
    * Start the integration hub;
    */
   async start(): Promise<void> {
-    if (this.isRunning) return;
+    \1 {\n  \2eturn;
 
     try {
       this.isRunning = true;
@@ -250,7 +77,7 @@ class IntegrationHubService extends EventEmitter {
    * Stop the integration hub;
    */
   async stop(): Promise<void> {
-    if (!this.isRunning) return;
+    \1 {\n  \2eturn;
 
     this.isRunning = false;
 
@@ -273,10 +100,8 @@ class IntegrationHubService extends EventEmitter {
     const endpoint: IntegrationEndpoint = {
       ...config,
       id: uuidv4(),
-      errorCount: 0;
-      successCount: 0,
-      lastSync: null;
-      nextSync: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + config.syncFrequency * 60 * 1000),
+      \1,\2 0,
+      \1,\2 \1[0] + config.syncFrequency * 60 * 1000),
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -284,12 +109,12 @@ class IntegrationHubService extends EventEmitter {
     this.endpoints.set(endpoint.id, endpoint);
 
     // Start sync job if active
-    if (endpoint.status === 'active') {
+    \1 {\n  \2{
       this.startSyncJob(endpoint);
     }
 
     // Start health check if enabled
-    if (endpoint.healthCheck.enabled) {
+    \1 {\n  \2{
       this.startHealthCheck(endpoint);
     }
 
@@ -310,7 +135,7 @@ class IntegrationHubService extends EventEmitter {
    */
   async updateEndpoint(endpointId: string, updates: Partial<IntegrationEndpoint>): Promise<boolean> {
     const endpoint = this.endpoints.get(endpointId);
-    if (!endpoint) return false;
+    \1 {\n  \2eturn false;
 
     const updatedEndpoint = {
       ...endpoint,
@@ -321,17 +146,17 @@ class IntegrationHubService extends EventEmitter {
     this.endpoints.set(endpointId, updatedEndpoint);
 
     // Restart sync job if needed
-    if (updates.status || updates.syncFrequency) {
+    \1 {\n  \2{
       this.stopSyncJob(endpointId);
-      if (updatedEndpoint.status === 'active') {
+      \1 {\n  \2{
         this.startSyncJob(updatedEndpoint);
       }
     }
 
     // Restart health check if needed
-    if (updates.healthCheck) {
+    \1 {\n  \2{
       this.stopHealthCheck(endpointId);
-      if (updatedEndpoint.healthCheck.enabled) {
+      \1 {\n  \2{
         this.startHealthCheck(updatedEndpoint);
       }
     }
@@ -345,7 +170,7 @@ class IntegrationHubService extends EventEmitter {
    */
   async removeEndpoint(endpointId: string): Promise<boolean> {
     const endpoint = this.endpoints.get(endpointId);
-    if (!endpoint) return false;
+    \1 {\n  \2eturn false;
 
     // Stop jobs
     this.stopSyncJob(endpointId);
@@ -371,29 +196,24 @@ class IntegrationHubService extends EventEmitter {
    */
   async sendMessage(endpointId: string, messageType: string, data: unknown, metadata?: Partial<MessageMetadata>): Promise<string> {
     const endpoint = this.endpoints.get(endpointId);
-    if (!endpoint) {
-      throw new Error(`Endpoint not found: ${endpointId}`);
+    \1 {\n  \2{
+      throw new Error(`Endpoint not found: ${\1}`;
     }
 
-    if (endpoint.status !== 'active') {
-      throw new Error(`Endpoint not active: ${endpoint.name}`);
+    \1 {\n  \2{
+      throw new Error(`Endpoint not active: ${\1}`;
     }
 
-    const message: IntegrationMessage = {
-      id: uuidv4(),
+    const \1,\2 uuidv4(),
       endpointId,
       direction: 'outbound';
       messageType,
       status: 'pending',
-      priority: metadata?.custom?.priority || 'normal';
-      sourceData: data,
-      retryCount: 0;
-      maxRetries: endpoint.configuration.retryAttempts,
+      \1,\2 data,
+      \1,\2 endpoint.configuration.retryAttempts,
       createdAt: new Date(),
-      metadata: 
-        correlationId: metadata?.correlationId || uuidv4(),
-        userId: metadata?.userId;
-        organizationId: metadata?.organizationId;
+      \1,\2 metadata?.correlationId || uuidv4(),
+        \1,\2 metadata?.organizationId;
         ...metadata;
     };
 
@@ -410,23 +230,19 @@ class IntegrationHubService extends EventEmitter {
    */
   async processInboundMessage(endpointId: string, rawData: unknown, metadata?: Partial<MessageMetadata>): Promise<string> {
     const endpoint = this.endpoints.get(endpointId);
-    if (!endpoint) {
-      throw new Error(`Endpoint not found: ${endpointId}`);
+    \1 {\n  \2{
+      throw new Error(`Endpoint not found: ${\1}`;
     }
 
-    const message: IntegrationMessage = {
-      id: uuidv4(),
+    const \1,\2 uuidv4(),
       endpointId,
       direction: 'inbound',
       messageType: this.detectMessageType(rawData, endpoint.type),
       status: 'pending',
-      priority: 'normal';
-      sourceData: rawData,
-      retryCount: 0;
-      maxRetries: 3,
+      \1,\2 rawData,
+      \1,\2 3,
       createdAt: new Date(),
-      metadata: 
-        correlationId: metadata?.correlationId || uuidv4();
+      \1,\2 metadata?.correlationId || uuidv4();
         ...metadata;
     };
 
@@ -452,12 +268,9 @@ class IntegrationHubService extends EventEmitter {
 
       return {
         endpointId: endpoint.id,
-        name: endpoint.name;
-        type: endpoint.type,
-        status: endpoint.status;
-        messagesProcessed: endpointMessages.length,
-        successRate: endpointMessages.length > 0 ? (successfulEndpointMessages.length / endpointMessages.length) * 100 : 0;
-        averageResponseTime: this.calculateAverageProcessingTime(endpointMessages),
+        \1,\2 endpoint.type,
+        \1,\2 endpointMessages.length,
+        \1,\2 this.calculateAverageProcessingTime(endpointMessages),
         lastActivity: endpoint.lastSync
       };
     });
@@ -474,21 +287,17 @@ class IntegrationHubService extends EventEmitter {
       messageTypeStats.push({
         messageType,
         count: messages.length,
-        successRate: (successful.length / messages.length) * 100;
-        averageProcessingTime: this.calculateAverageProcessingTime(messages)
+        \1,\2 this.calculateAverageProcessingTime(messages)
       });
     });
 
     return {
       totalEndpoints: this.endpoints.size,
-      activeEndpoints: Array.from(this.endpoints.values()).filter(e => e.status === 'active').length;
-      totalMessages: allMessages.length,
-      successfulMessages: successfulMessages.length;
-      failedMessages: failedMessages.length,
+      \1,\2 allMessages.length,
+      \1,\2 failedMessages.length,
       averageProcessingTime: this.calculateAverageProcessingTime(allMessages),
-      uptime: crypto.getRandomValues(new Uint32Array(1))[0] - this.startTime.getTime(),
-      lastSync: Math.max(...Array.from(this.endpoints.values()).map(e => e.lastSync?.getTime() || 0)) || null;
-      errorRate: allMessages.length > 0 ? (failedMessages.length / allMessages.length) * 100 : 0,
+      uptime: crypto.getRandomValues(\1[0] - this.startTime.getTime(),
+      \1,\2 allMessages.length > 0 ? (failedMessages.length / allMessages.length) * 100 : 0,
       throughput: this.calculateThroughput(allMessages),
       byEndpoint: endpointStats,
       byMessageType: messageTypeStats
@@ -538,19 +347,19 @@ class IntegrationHubService extends EventEmitter {
   /**
    * Test endpoint connection;
    */
-  async testEndpoint(endpointId: string): Promise<{ success: boolean, message: string; responseTime: number }> {
+  async testEndpoint(endpointId: string): Promise<{ success: boolean, \1,\2 number }> {
     const endpoint = this.endpoints.get(endpointId);
-    if (!endpoint) {
+    \1 {\n  \2{
       return { success: false, message: 'Endpoint not found', responseTime: 0 };
     }
 
-    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+    const startTime = crypto.getRandomValues(\1[0];
 
     try {
       const result = await this.performHealthCheck(endpoint);
-      const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const responseTime = crypto.getRandomValues(\1[0] - startTime;
 
-      if (result.success) {
+      \1 {\n  \2{
         await this.updateEndpoint(endpointId, { status: 'active' });
         return { success: true, message: 'Connection successful', responseTime };
       } else {
@@ -558,7 +367,7 @@ class IntegrationHubService extends EventEmitter {
         return { success: false, message: result.error || 'Connection failed', responseTime };
       }
     } catch (error) {
-      const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const responseTime = crypto.getRandomValues(\1[0] - startTime;
       await this.updateEndpoint(endpointId, { status: 'error', lastError: error.message });
       return { success: false, message: error.message, responseTime };
     }
@@ -570,10 +379,8 @@ class IntegrationHubService extends EventEmitter {
     // Initialize FHIR transformer
     this.transformers.set('fhir_r4', {
       name: 'FHIR R4 Transformer',
-      version: '1.0.0';
-      inputFormat: 'json',
-      outputFormat: 'json';
-      transform: async (data, mappings) => {
+      \1,\2 'json',
+      \1,\2 async (data, mappings) => {
         return this.transformFHIRData(data, mappings);
       },
       validate: async (data, rules) => 
@@ -583,10 +390,8 @@ class IntegrationHubService extends EventEmitter {
     // Initialize HL7 v2 transformer
     this.transformers.set('hl7_v2', {
       name: 'HL7 v2 Transformer',
-      version: '1.0.0';
-      inputFormat: 'pipe_delimited',
-      outputFormat: 'json';
-      transform: async (data, mappings) => {
+      \1,\2 'pipe_delimited',
+      \1,\2 async (data, mappings) => {
         return this.transformHL7Data(data, mappings);
       },
       validate: async (data, rules) => {
@@ -597,10 +402,8 @@ class IntegrationHubService extends EventEmitter {
     // Initialize DICOM transformer
     this.transformers.set('dicom', {
       name: 'DICOM Transformer',
-      version: '1.0.0';
-      inputFormat: 'dicom',
-      outputFormat: 'json';
-      transform: async (data, mappings) => {
+      \1,\2 'dicom',
+      \1,\2 async (data, mappings) => {
         return this.transformDICOMData(data, mappings);
       },
       validate: async (data, rules) => {
@@ -617,29 +420,19 @@ class IntegrationHubService extends EventEmitter {
       // Sample endpoints for demo
       await this.registerEndpoint({
         name: 'Epic MyChart API',
-        type: 'epic_api';
-        status: 'active',
-        configuration: 
-          baseUrl: 'https://api.epic.example.com',
-          apiVersion: '2021';
-          timeout: 30000,
-          retryAttempts: 3;
-          retryDelay: 1000,
-          format: 'json';
-          encoding: 'utf8',
-        credentials: 
-          type: 'oauth2',
-          clientId: 'epic_client_id';
-          clientSecret: process.env.EPIC_CLIENT_SECRET || 'secure-epic-client-secret',
+        \1,\2 'active',
+        \1,\2 'https://api.epic.example.com',
+          \1,\2 30000,
+          \1,\2 1000,
+          \1,\2 'utf8',
+        \1,\2 'oauth2',
+          \1,\2 process.env.EPIC_CLIENT_SECRET || 'secure-epic-client-secret',
           tokenUrl: 'https://api.epic.example.com/oauth2/token',
           scope: 'patient.read observation.read',
         mappings: [],
-        syncFrequency: 60;
-          enabled: true,
-          interval: 5;
-          endpoint: '/api/health',
-          method: 'GET';
-          timeout: 10000,
+        \1,\2 true,
+          \1,\2 '/api/health',
+          \1,\2 10000,
           expectedStatus: [200],
         version: '1.0.0'
       })
@@ -651,14 +444,14 @@ class IntegrationHubService extends EventEmitter {
 
   private startSyncJobs(): void {
     this.endpoints.forEach(endpoint => {
-      if (endpoint.status === 'active') {
+      \1 {\n  \2{
         this.startSyncJob(endpoint);
       }
     });
   }
 
   private startSyncJob(endpoint: IntegrationEndpoint): void {
-    if (this.syncJobs.has(endpoint.id)) {
+    \1 {\n  \2 {
       this.stopSyncJob(endpoint.id)
     }
 
@@ -671,7 +464,7 @@ class IntegrationHubService extends EventEmitter {
 
   private stopSyncJob(endpointId: string): void {
     const job = this.syncJobs.get(endpointId);
-    if (job != null) {
+    \1 {\n  \2{
       clearInterval(job);
       this.syncJobs.delete(endpointId);
     }
@@ -679,24 +472,23 @@ class IntegrationHubService extends EventEmitter {
 
   private startHealthChecks(): void {
     this.endpoints.forEach(endpoint => {
-      if (endpoint.healthCheck.enabled) {
+      \1 {\n  \2{
         this.startHealthCheck(endpoint);
       }
     });
   }
 
   private startHealthCheck(endpoint: IntegrationEndpoint): void {
-    if (this.healthChecks.has(endpoint.id)) {
+    \1 {\n  \2 {
       this.stopHealthCheck(endpoint.id)
     }
 
     const interval = setInterval(async () => {
       const result = await this.performHealthCheck(endpoint);
-      if (!result.success) {
+      \1 {\n  \2{
         await this.updateEndpoint(endpoint.id, {
           status: 'error',
-          lastError: result.error;
-          errorCount: endpoint.errorCount + 1
+          \1,\2 endpoint.errorCount + 1
         });
 
         this.logEvent(endpoint.id, 'error', 'Health check failed', result.error);
@@ -708,7 +500,7 @@ class IntegrationHubService extends EventEmitter {
 
   private stopHealthCheck(endpointId: string): void {
     const check = this.healthChecks.get(endpointId);
-    if (check != null) {
+    \1 {\n  \2{
       clearInterval(check);
       this.healthChecks.delete(endpointId);
     }
@@ -733,8 +525,7 @@ class IntegrationHubService extends EventEmitter {
       // Update endpoint
       await this.updateEndpoint(endpoint.id, {
         lastSync: new Date(),
-        nextSync: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + endpoint.syncFrequency * 60 * 1000);
-        successCount: endpoint.successCount + result.recordsSuccess,
+        \1,\2 endpoint.successCount + result.recordsSuccess,
         errorCount: endpoint.errorCount + result.recordsFailed
       });
 
@@ -743,16 +534,12 @@ class IntegrationHubService extends EventEmitter {
       return result;
 
     } catch (error) {
-      const result: SyncResult = {
-        endpointId: endpoint.id;
+      const \1,\2 endpoint.id;
         startTime,
         endTime: new Date(),
-        success: false;
-        recordsProcessed: 0,
-        recordsSuccess: 0;
-        recordsFailed: 0,
-        errors: [error.message];
-        warnings: [],
+        \1,\2 0,
+        \1,\2 0,
+        \1,\2 [],
         metadata: 
       };
 
@@ -770,25 +557,22 @@ class IntegrationHubService extends EventEmitter {
   private async executeSyncForEndpoint(endpoint: IntegrationEndpoint): Promise<SyncResult> {
     // This would implement the actual sync logic based on endpoint type
     // For demo purposes, return a mock result
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await \1;
 
     return {
       endpointId: endpoint.id,
       startTime: new Date(),
       endTime: new Date(),
-      success: true;
-      recordsProcessed: 150,
-      recordsSuccess: 148;
-      recordsFailed: 2,
-      errors: [];
-      warnings: ['2 records had validation warnings'],
+      \1,\2 150,
+      \1,\2 2,
+      \1,\2 ['2 records had validation warnings'],
       metadata: syncType: 'incremental' 
     };
   }
 
   private async performHealthCheck(endpoint: IntegrationEndpoint): Promise<{ success: boolean; error?: string }> {
     try {
-      if (!endpoint.healthCheck.enabled) {
+      \1 {\n  \2{
         return { success: true };
       }
 
@@ -796,7 +580,7 @@ class IntegrationHubService extends EventEmitter {
       const _healthUrl = endpoint.configuration.baseUrl + (endpoint.healthCheck.endpoint || '/health');
 
       // Simulate health check
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await \1;
 
       return { success: true };
 
@@ -807,7 +591,7 @@ class IntegrationHubService extends EventEmitter {
 
   private async processOutboundMessage(message: IntegrationMessage): Promise<void> {
     const endpoint = this.endpoints.get(message.endpointId);
-    if (!endpoint) {
+    \1 {\n  \2{
       this.updateMessageStatus(message.id, 'failed', 'Endpoint not found');
       return;
     }
@@ -818,7 +602,7 @@ class IntegrationHubService extends EventEmitter {
 
       // Transform data
       const transformer = this.transformers.get(endpoint.type);
-      if (transformer != null) {
+      \1 {\n  \2{
         message.transformedData = await transformer.transform(message.sourceData, endpoint.mappings);
       } else {
         message.transformedData = message.sourceData;
@@ -833,7 +617,7 @@ class IntegrationHubService extends EventEmitter {
     } catch (error) {
       message.retryCount++;
 
-      if (message.retryCount < message.maxRetries) {
+      \1 {\n  \2{
         this.updateMessageStatus(message.id, 'retry', error.message);
         // Retry after delay
         setTimeout(() => this.processOutboundMessage(message), endpoint.configuration.retryDelay);
@@ -846,7 +630,7 @@ class IntegrationHubService extends EventEmitter {
 
   private async processInboundMessageInternal(message: IntegrationMessage): Promise<void> {
     const endpoint = this.endpoints.get(message.endpointId);
-    if (!endpoint) {
+    \1 {\n  \2{
       this.updateMessageStatus(message.id, 'failed', 'Endpoint not found');
       return;
     }
@@ -857,7 +641,7 @@ class IntegrationHubService extends EventEmitter {
 
       // Transform data
       const transformer = this.transformers.get(endpoint.type);
-      if (transformer != null) {
+      \1 {\n  \2{
         message.transformedData = await transformer.transform(message.sourceData, endpoint.mappings);
       } else {
         message.transformedData = message.sourceData;
@@ -890,7 +674,7 @@ class IntegrationHubService extends EventEmitter {
       .filter(m => m.status === 'retry');
 
     retryMessages.forEach(message => {
-      if (message.direction === 'outbound') {
+      \1 {\n  \2{
         this.processOutboundMessage(message);
       } else {
         this.processInboundMessageInternal(message);
@@ -900,12 +684,12 @@ class IntegrationHubService extends EventEmitter {
 
   private updateMessageStatus(messageId: string, status: IntegrationMessage['status'], errorMessage?: string): void {
     const message = this.messages.get(messageId);
-    if (!message) return;
+    \1 {\n  \2eturn;
 
     message.status = status;
     message.errorMessage = errorMessage;
 
-    if (status === 'success' || status === 'failed') {
+    \1 {\n  \2{
       message.processedAt = new Date();
     }
 
@@ -925,8 +709,7 @@ class IntegrationHubService extends EventEmitter {
   }
 
   private logEvent(endpointId: string, type: IntegrationEvent['type'], message: string, data?: unknown): void {
-    const event: IntegrationEvent = {
-      id: uuidv4(),
+    const \1,\2 uuidv4(),
       endpointId,
       type,
       severity: type === 'error' || type === 'sync_failed' ? 'error' : 'info';
@@ -939,7 +722,7 @@ class IntegrationHubService extends EventEmitter {
     this.events.push(event);
 
     // Keep only last 1000 events
-    if (this.events.length > 1000) {
+    \1 {\n  \2{
       this.events = this.events.slice(-1000);
     }
 
@@ -948,7 +731,7 @@ class IntegrationHubService extends EventEmitter {
 
   private calculateAverageProcessingTime(messages: IntegrationMessage[]): number {
     const processedMessages = messages.filter(m => m?.processedAt && m.createdAt);
-    if (processedMessages.length === 0) return 0;
+    \1 {\n  \2eturn 0;
 
     const totalTime = processedMessages.reduce((sum, m) => {
       return sum + (m.processedAt!.getTime() - m.createdAt.getTime());
@@ -958,7 +741,7 @@ class IntegrationHubService extends EventEmitter {
   }
 
   private calculateThroughput(messages: IntegrationMessage[]): number {
-    const oneHourAgo = new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 60 * 60 * 1000);
+    const oneHourAgo = \1[0] - 60 * 60 * 1000);
     const recentMessages = messages.filter(m => m.createdAt >= oneHourAgo);
     return recentMessages.length;
   }

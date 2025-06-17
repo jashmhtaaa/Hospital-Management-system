@@ -57,24 +57,24 @@ const chargeCaptureService = new ChargeCaptureService();
  *         description: Server error.
  */
 export default async const _handler = (req: NextApiRequest, res: NextApiResponse) {
-    if (req.method === "POST") {
+    \1 {\n  \2{
         try {
             const { patientId, ...chargeData } = req.body as { patientId: string } & ChargeInput;
-            if (!patientId) {
+            \1 {\n  \2{
                 return res.status(400).json({ message: "Patient ID is required." });
             }
             const newCharge = await chargeCaptureService.recordCharge(patientId, chargeData);
             return res.status(201).json(newCharge);
         } catch (error: unknown) {
 
-            if (error.message.includes("not found") || error.message.includes("Invalid charge input")) {
+            \1 {\n  \2| error.message.includes("Invalid charge input")) {
                 return res.status(400).json({ message: error.message });
             }
             return res.status(500).json({ message: "Error recording charge", error: error.message });
         }
     }
     // Add GET handler if needed to retrieve charges via API, though service method exists
-    // if (req.method === "GET") { ... }
+    // \1 {\n  \2{ ... }
     else {
         res.setHeader("Allow", ["POST"])
         return res.status(405).end(`Method ${req.method} Not Allowed`);

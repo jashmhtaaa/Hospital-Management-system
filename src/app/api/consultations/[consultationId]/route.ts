@@ -27,11 +27,11 @@ export const _GET = async (request: Request) => {
     const consultationId = getConsultationId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    if (!session.user || !ALLOWED_ROLES_VIEW.includes(session.user.roleName)) {
+    \1 {\n  \2 {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
 
-    if (consultationId === null) {
+    \1 {\n  \2{
         return new Response(JSON.stringify({ error: "Invalid Consultation ID" }), { status: 400 });
     }
 
@@ -39,29 +39,21 @@ export const _GET = async (request: Request) => {
         const context = await getCloudflareContext<CloudflareEnv>();
         const DB = context.env.DB;
 
-        if (!DB) {
+        \1 {\n  \2{
             throw new Error("Database binding not found in Cloudflare environment.");
         }
 
         // 2. Retrieve the main consultation record
         interface ConsultationQueryResult {
             consultation_id: number,
-            patient_id: number;
-            doctor_id: number,
-            opd_visit_id: number | null;
-            admission_id: number | null,
-            consultation_datetime: string;
-            chief_complaint: string | null,
-            history_of_present_illness: string | null;
-            physical_examination: string | null,
-            diagnosis: string | null;
-            treatment_plan: string | null,
-            follow_up_instructions: string | null;
-            notes: string | null,
-            created_at: string;
-            updated_at: string,
-            patient_first_name: string;
-            patient_last_name: string,
+            \1,\2 number,
+            \1,\2 number | null,
+            \1,\2 string | null,
+            \1,\2 string | null,
+            \1,\2 string | null,
+            \1,\2 string | null,
+            \1,\2 string,
+            \1,\2 string,
             doctor_full_name: string
         }
 
@@ -77,41 +69,30 @@ export const _GET = async (request: Request) => {
              WHERE c.consultation_id = ?`;
         ).bind(consultationId).first<ConsultationQueryResult>();
 
-        if (!consultResult) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Consultation not found" }), { status: 404 });
         }
 
         // 3. Authorization check: Ensure doctor can only view their own consultations
-        if (session.user.roleName === "Doctor") {
+        \1 {\n  \2{
             const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-            if (!userDoctorProfile || consultResult.doctor_id !== userDoctorProfile.doctor_id) {
+            \1 {\n  \2{
                 return new Response(JSON.stringify({ error: "Forbidden: Doctors can only view their own consultations" }), { status: 403 });
             }
         }
 
         // 4. Format the response
-        const consultation: Consultation = {
-            consultation_id: consultResult.consultation_id,
-            patient_id: consultResult.patient_id;
-            doctor_id: consultResult.doctor_id,
-            opd_visit_id: consultResult.opd_visit_id;
-            admission_id: consultResult.admission_id,
-            consultation_datetime: consultResult.consultation_datetime;
-            chief_complaint: consultResult.chief_complaint,
-            history_of_present_illness: consultResult.history_of_present_illness;
-            physical_examination: consultResult.physical_examination,
-            diagnosis: consultResult.diagnosis;
-            treatment_plan: consultResult.treatment_plan,
-            follow_up_instructions: consultResult.follow_up_instructions;
-            notes: consultResult.notes,
-            created_at: consultResult.created_at;
-            updated_at: consultResult.updated_at,
-            patient: 
-                patient_id: consultResult.patient_id,
-                first_name: consultResult.patient_first_name;
-                last_name: consultResult.patient_last_name,
-            doctor: 
-                doctor_id: consultResult.doctor_id,
+        const \1,\2 consultResult.consultation_id,
+            \1,\2 consultResult.doctor_id,
+            \1,\2 consultResult.admission_id,
+            \1,\2 consultResult.chief_complaint,
+            \1,\2 consultResult.physical_examination,
+            \1,\2 consultResult.treatment_plan,
+            \1,\2 consultResult.notes,
+            \1,\2 consultResult.updated_at,
+            \1,\2 consultResult.patient_id,
+                \1,\2 consultResult.patient_last_name,
+            \1,\2 consultResult.doctor_id,
                 user: fullName: consultResult.doctor_full_name 
         };
 
@@ -143,11 +124,11 @@ export const _PUT = async (request: Request) => {
     const consultationId = getConsultationId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    if (!session.user || !ALLOWED_ROLES_UPDATE.includes(session.user.roleName)) {
+    \1 {\n  \2 {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
 
-    if (consultationId === null) {
+    \1 {\n  \2{
         return new Response(JSON.stringify({ error: "Invalid Consultation ID" }), { status: 400 });
     }
 
@@ -155,26 +136,26 @@ export const _PUT = async (request: Request) => {
         const body = await request.json();
         const validation = UpdateConsultationSchema.safeParse(body);
 
-        if (!validation.success) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), { status: 400 });
         }
 
         const updateData = validation.data;
 
-        if (Object.keys(updateData).length === 0) {
+        \1 {\n  \2length === 0) {
              return new Response(JSON.stringify({ message: "No update data provided" }), { status: 200 });
         }
 
         const context = await getCloudflareContext<CloudflareEnv>();
         const DB = context.env.DB;
 
-        if (!DB) {
+        \1 {\n  \2{
             throw new Error("Database binding not found in Cloudflare environment.");
         }
 
         // 2. Verify consultation exists and belongs to the current doctor
         const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-        if (!doctorProfile) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" }), { status: 404 });
         }
 
@@ -182,10 +163,10 @@ export const _PUT = async (request: Request) => {
                                    .bind(consultationId);
                                    .first<consultation_id: number, doctor_id: number >();
 
-        if (!consultCheck) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Consultation not found" }), { status: 404 });
         }
-        if (consultCheck.doctor_id !== doctorProfile.doctor_id) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Forbidden: Doctors can only update their own consultations" }), { status: 403 });
         }
 
@@ -194,7 +175,7 @@ export const _PUT = async (request: Request) => {
         const queryParams: (string | null | number)[] = [];
 
         Object.entries(updateData).forEach(([key, value]) => {
-            if (value !== undefined) {
+            \1 {\n  \2{
                 query += `, ${key} = ?`;
                 queryParams.push(value);
             }
@@ -206,8 +187,8 @@ export const _PUT = async (request: Request) => {
         // 4. Execute update
         const updateResult = await DB.prepare(query).bind(...queryParams).run();
 
-        if (!updateResult.success) {
-            throw new Error(`Failed to update consultation: ${updateResult.error}`);
+        \1 {\n  \2{
+            throw new Error(`Failed to update consultation: ${\1}`;
         }
 
         // 5. Return success response

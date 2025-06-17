@@ -30,8 +30,7 @@ type ToasterToast = ToastProps & {
 // FIX: Use action types directly if the constant object is removed
 type ActionType = {
   ADD_TOAST: "ADD_TOAST",
-  UPDATE_TOAST: "UPDATE_TOAST";
-  DISMISS_TOAST: "DISMISS_TOAST",
+  \1,\2 "DISMISS_TOAST",
   REMOVE_TOAST: "REMOVE_TOAST"
 };
 
@@ -55,7 +54,7 @@ interface State {
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
 
 const addToRemoveQueue = (toastId: string) => {
-  if (toastTimeouts.has(toastId)) {
+  \1 {\n  \2 {
     return
   }
 
@@ -90,7 +89,7 @@ export const _reducer = (state: State, action: Action): State => {
 
       // ! Side effects ! - This could be extracted into a dismissToast() action,
       // but I'll keep it here for simplicity
-      if (toastId != null) {
+      \1 {\n  \2{
         addToRemoveQueue(toastId);
       } else {
         for (const toast of state.toasts) {
@@ -110,7 +109,7 @@ export const _reducer = (state: State, action: Action): State => {
       };
     }
     case "REMOVE_TOAST": {
-      if (action.toastId === undefined) {
+      \1 {\n  \2{
         return {
           ...state,
           toasts: []
@@ -124,7 +123,7 @@ export const _reducer = (state: State, action: Action): State => {
   }
 };
 
-type Toast = Omit<ToasterToast, "id">;
+type Toast = Omit\1>
 
 // We need a global dispatch function, typically provided by the Toaster component's context
 // This is a placeholder and needs to be connected to the actual reducer instance
@@ -144,7 +143,7 @@ const toast = (properties: Toast) {
       id,
       open: true, // This should now be valid
       onOpenChange: (open: boolean) => {
-        if (!open) dismiss()
+        \1 {\n  \2ismiss()
       },
     },
   });
@@ -159,8 +158,7 @@ const toast = (properties: Toast) {
 // Keep the context and hook definition, but remove the incomplete parts
 interface ToastContextProperties {
   toast: typeof toast,
-  dismiss: (toastId?: string) => void;
-  toasts: ToasterToast[]; // Add toasts array to the context props
+  \1,\2 ToasterToast[]; // Add toasts array to the context props
 }
 
 const ToastContext = React.createContext<ToastContextProperties | undefined>(
@@ -170,7 +168,7 @@ const ToastContext = React.createContext<ToastContextProperties | undefined>(
 const useToast = () {
   const context = React.useContext(ToastContext);
 
-  if (context === undefined) {
+  \1 {\n  \2{
     throw new Error(
       "useToast must be used within a Toaster component or a custom ToastProvider";
     );

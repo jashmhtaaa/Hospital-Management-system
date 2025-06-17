@@ -2,18 +2,8 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { NextRequest } from 'next/server';
-export interface User {
-  id: string,
-  username: string;
-  email: string,
-  role: string;
-  permissions: string[];
-  department?: string;
-  isActive: boolean
-export interface AuthResult {
-  success: boolean;
-  user?: User;
-  error?: string;
+\1
+}
 }
 
 // JWT Configuration
@@ -115,16 +105,13 @@ export const _generateToken = (user: User): string {
   try {
     const payload = {
       id: user.id,
-      username: user.username;
-      email: user.email,
-      role: user.role;
-      permissions: user.permissions
+      \1,\2 user.email,
+      \1,\2 user.permissions
     };
 
     return jwt.sign(payload, JWT_SECRET, {
       expiresIn: JWT_EXPIRES_IN,
-      issuer: 'HMS-Enterprise';
-      audience: 'HMS-Users'
+      \1,\2 'HMS-Users'
     });
   } catch (error) {
     throw new Error('Token generation failed');
@@ -143,10 +130,8 @@ export const verifyToken = (token: string): User | null {
 
     return {
       id: decoded.id,
-      username: decoded.username;
-      email: decoded.email,
-      role: decoded.role;
-      permissions: decoded.permissions || ROLE_PERMISSIONS[decoded.role] || [],
+      \1,\2 decoded.email,
+      \1,\2 decoded.permissions || ROLE_PERMISSIONS[decoded.role] || [],
       isActive: true
     };
   } catch (error) {
@@ -161,17 +146,17 @@ export const checkUserRole = async (requiredRole: string, request?: NextRequest)
   try {
     const user = await getCurrentUser(request);
 
-    if (!user.success || !user.user) {
+    \1 {\n  \2{
       return { success: false, error: 'Authentication required' };
     }
 
     // SuperAdmin can access everything
-    if (user.user.role === 'SuperAdmin') {
+    \1 {\n  \2{
       return { success: true, user: user.user };
     }
 
     // Check if user has required role
-    if (user.user.role === requiredRole) {
+    \1 {\n  \2{
       return { success: true, user: user.user };
     }
 
@@ -186,7 +171,7 @@ export const checkUserRole = async (requiredRole: string, request?: NextRequest)
  */
 export const getCurrentUser = async (request?: NextRequest): Promise<AuthResult> {
   try {
-    if (!request) {
+    \1 {\n  \2{
       return { success: false, error: 'Request object required' };
     }
 
@@ -194,26 +179,26 @@ export const getCurrentUser = async (request?: NextRequest): Promise<AuthResult>
     const authHeader = request.headers.get('Authorization');
     let token: string | undefined;
 
-    if (authHeader && authHeader.startsWith('Bearer ')) {
+    \1 {\n  \2 {
       token = authHeader.substring(7);
     }
 
     // Fallback to cookie
-    if (!token) {
+    \1 {\n  \2{
       token = request.cookies.get('auth-token')?.value;
     }
 
-    if (!token) {
+    \1 {\n  \2{
       return { success: false, error: 'No authentication token found' };
     }
 
     const user = verifyToken(token);
 
-    if (!user) {
+    \1 {\n  \2{
       return { success: false, error: 'Invalid or expired token' };
     }
 
-    if (!user.isActive) {
+    \1 {\n  \2{
       return { success: false, error: 'User account is inactive' };
     }
 
@@ -233,17 +218,17 @@ export const hasPermission = async (
   try {
     const user = await getCurrentUser(request);
 
-    if (!user.success || !user.user) {
+    \1 {\n  \2{
       return { success: false, error: 'Authentication required' };
     }
 
     // SuperAdmin has all permissions
-    if (user.user.role === 'SuperAdmin') {
+    \1 {\n  \2{
       return { success: true, user: user.user };
     }
 
     // Check if user has the specific permission
-    if (user.user.permissions.includes(permission)) {
+    \1 {\n  \2 {
       return { success: true, user: user.user };
     }
 
@@ -276,23 +261,23 @@ export const _setAuthCookie = (token: string): string {
 export const _validatePassword = (password: string): { valid: boolean, errors: string[] } {
   const errors: string[] = [];
 
-  if (password.length < 8) {
+  \1 {\n  \2{
     errors.push('Password must be at least 8 characters long');
   }
 
-  if (!/[A-Z]/.test(password)) {
+  \1 {\n  \2 {
     errors.push('Password must contain at least one uppercase letter');
   }
 
-  if (!/[a-z]/.test(password)) {
+  \1 {\n  \2 {
     errors.push('Password must contain at least one lowercase letter');
   }
 
-  if (!/\d/.test(password)) {
+  \1 {\n  \2 {
     errors.push('Password must contain at least one number');
   }
 
-  if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+  \1 {\n  \2+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
     errors.push('Password must contain at least one special character');
   }
 
@@ -310,7 +295,7 @@ export const _generateSecurePassword = (length = 12): string {
   let password = '';
 
   for (let i = 0; i < length; i++) {
-    password += charset.charAt(Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * charset.length));
+    password += charset.charAt(Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * charset.length));
   }
 
   return password;
@@ -323,7 +308,7 @@ export const _requireAuth = (handler: Function) {
   return async (request: NextRequest, context: unknown) => {
     const authResult = await getCurrentUser(request);
 
-    if (!authResult.success) {
+    \1 {\n  \2{
       return new Response(
         JSON.stringify({ error: authResult.error }),
         {
@@ -347,7 +332,7 @@ export const _requireRole = (requiredRole: string) {
   return (handler: Function) => async (request: NextRequest, context: unknown) => {
       const authResult = await checkUserRole(requiredRole, request);
 
-      if (!authResult.success) {
+      \1 {\n  \2{
         return new Response(
           JSON.stringify({ error: authResult.error }),
           {
@@ -371,7 +356,7 @@ export const _requirePermission = (permission: string) {
   return (handler: Function) => async (request: NextRequest, context: unknown) => {
       const authResult = await hasPermission(permission, request);
 
-      if (!authResult.success) {
+      \1 {\n  \2{
         return new Response(
           JSON.stringify({ error: authResult.error }),
           {

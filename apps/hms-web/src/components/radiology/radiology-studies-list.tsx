@@ -8,14 +8,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 }
 interface RadiologyStudy {
   id: string,
-  patientName: string;
-  patientId: string,
-  studyDate: string;
-  studyType: string,
-  modality: string;
-  bodyPart: string,
-  status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled';
-  technician: string
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 string
 }
 
 interface RadiologyStudiesListProps {
@@ -29,10 +25,10 @@ interface RadiologyStudiesListProps {
 export const _RadiologyStudiesList = ({ studies, onViewStudy }: RadiologyStudiesListProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
-      case 'scheduled': return <Badge variant="secondary">Scheduled</Badge>;
-      case 'in-progress': return <Badge variant="warning">In Progress</Badge>;
-      case 'completed': return <Badge variant="success">Completed</Badge>;
-      case 'cancelled': return <Badge variant="danger">Cancelled</Badge>;
+      case 'scheduled': return <Badge variant="secondary">Scheduled\1>
+      case 'in-progress': return <Badge variant="warning">In Progress\1>
+      case 'completed': return <Badge variant="success">Completed\1>
+      case 'cancelled': return <Badge variant="danger">Cancelled\1>
       default: return <Badge>Unknown</Badge>
     }
   };
@@ -59,15 +55,15 @@ export const _RadiologyStudiesList = ({ studies, onViewStudy }: RadiologyStudies
           <TableBody>
             {studies.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-center">;
+                \1>
                   No radiology studies found
                 </TableCell>
               </TableRow>
             ) : (
               studies.map((study) => (
-                <TableRow key={study.id}>;
+                \1>
                   <TableCell>
-                    <div className="font-medium">{study.patientName}</div>;
+                    <div className="font-medium">{study.patientName}\1>
                     <div className="text-sm text-gray-500">ID: {study.patientId}</div>
                   </TableCell>
                   <TableCell>{study.studyDate}</TableCell>

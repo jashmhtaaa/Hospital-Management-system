@@ -55,8 +55,7 @@ export default const _StaffManagement = () {
   const [positions, setPositions] = useState<any[]>([]);
   const [pagination, setPagination] = useState({
     skip: 0,
-    take: 10;
-    total: 0
+    \1,\2 0
   });
 
   // Fetch employees
@@ -69,13 +68,13 @@ export default const _StaffManagement = () {
           take: pagination.take.toString()
         });
 
-        if (search != null) queryParams.append('search', search);
-        if (departmentFilter != null) queryParams.append('departmentId', departmentFilter);
-        if (positionFilter != null) queryParams.append('positionId', positionFilter);
+        \1 {\n  \2ueryParams.append('search', search);
+        \1 {\n  \2ueryParams.append('departmentId', departmentFilter);
+        \1 {\n  \2ueryParams.append('positionId', positionFilter);
 
-        const response = await fetch(`/api/hr/staff?${queryParams.toString()}`);
+        const response = await fetch(`/api/hr/staff?${\1}`;
 
-        if (!response.ok) {
+        \1 {\n  \2{
           throw new Error('Failed to fetch employees');
         }
 
@@ -101,14 +100,14 @@ export default const _StaffManagement = () {
       try {
         // Fetch departments
         const deptResponse = await fetch('/api/hr/departments');
-        if (deptResponse.ok) {
+        \1 {\n  \2{
           const deptData = await deptResponse.json(),
           setDepartments(deptData.departments || []);
         }
 
         // Fetch positions
         const posResponse = await fetch('/api/hr/positions');
-        if (posResponse.ok) {
+        \1 {\n  \2{
           const posData = await posResponse.json(),
           setPositions(posData.positions || []);
         }
@@ -122,7 +121,7 @@ export default const _StaffManagement = () {
 
   // Handle pagination
   const handlePreviousPage = () => {
-    if (pagination.skip - pagination.take >= 0) {
+    \1 {\n  \2{
       setPagination(prev => ({
         ...prev,
         skip: prev.skip - prev.take
@@ -131,7 +130,7 @@ export default const _StaffManagement = () {
   };
 
   const handleNextPage = () => {
-    if (pagination.skip + pagination.take < pagination.total) {
+    \1 {\n  \2{
       setPagination(prev => ({
         ...prev,
         skip: prev.skip + prev.take
@@ -151,7 +150,7 @@ export default const _StaffManagement = () {
 
   // Navigate to employee details
   const handleViewEmployee = (id: unknown) => {
-    router.push(`/dashboard/hr/staff/${id}`)
+    router.push(`/dashboard/hr/staff/${\1}`
   };
 
   // Navigate to add employee form
@@ -160,18 +159,18 @@ export default const _StaffManagement = () {
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:p-8">;
-      <div className="flex flex-col gap-2">;
-        <h1 className="text-3xl font-bold">Staff Management</h1>;
-        <p className="text-muted-foreground">;
+    \1>
+      \1>
+        <h1 className="text-3xl font-bold">Staff Management\1>
+        \1>
           Manage employee profiles, departments, and roles
         </p>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-4 justify-between">;
-        <div className="flex flex-col md:flex-row gap-2 md:items-center">;
-          <form onSubmit={handleSearch} className="flex gap-2">;
-            <div className="relative">;
+      \1>
+        \1>
+          \1>
+            \1>
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input>
                 type="search"
@@ -181,42 +180,42 @@ export default const _StaffManagement = () {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <Button type="submit" variant="secondary">;
+            \1>
               Search
             </Button>
           </form>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-2">;
-          <Select value={departmentFilter} onValueChange={setDepartmentFilter}>;
-            <SelectTrigger className="w-full md:w-[200px]">;
+        \1>
+          \1>
+            \1>
               <SelectValue placeholder="Filter by Department" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Departments</SelectItem>;
+              <SelectItem value="">All Departments\1>
               {departments.map((dept) => (
-                <SelectItem key={dept.id} value={dept.id}>;
+                \1>
                   {dept.name}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
 
-          <Select value={positionFilter} onValueChange={setPositionFilter}>;
-            <SelectTrigger className="w-full md:w-[200px]">;
+          \1>
+            \1>
               <SelectValue placeholder="Filter by Position" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Positions</SelectItem>;
+              <SelectItem value="">All Positions\1>
               {positions.map((pos) => (
-                <SelectItem key={pos.id} value={pos.id}>;
+                \1>
                   {pos.title}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
 
-          <Button onClick={handleAddEmployee}>;
+          \1>
             <UserPlus className="mr-2 h-4 w-4" />
             Add Employee
           </Button>
@@ -224,10 +223,10 @@ export default const _StaffManagement = () {
       </div>
 
       <Card>
-        <CardHeader className="pb-2">;
-          <div className="flex justify-between items-center">;
+        \1>
+          \1>
             <CardTitle>Employee Directory</CardTitle>
-            <div className="flex gap-2">;
+            \1>
               <Button variant="outline" size="sm" onClick={() => router.push('/dashboard/hr/departments')}>
                 <Building2 className="mr-2 h-4 w-4" />
                 Departments
@@ -244,15 +243,15 @@ export default const _StaffManagement = () {
         </CardHeader>
         <CardContent>
           {error ? (
-            <div className="text-center py-4 text-red-500">;
+            \1>
               Error: {error}
             </div>
           ) : loading ? (
-            <div className="text-center py-4">;
+            \1>
               Loading...
             </div>
           ) : employees.length === 0 ? (
-            <div className="text-center py-4">;
+            \1>
               No employees found. Try adjusting your filters or add a new employee.
             </div>
           ) : (
@@ -269,7 +268,7 @@ export default const _StaffManagement = () {
               </TableHeader>
               <TableBody>
                 {employees.map((employee) => (
-                  <TableRow key={employee.id}>;
+                  \1>
                     <TableCell>{employee.employeeId}</TableCell>
                     <TableCell>
                       {employee.firstName} {employee.lastName}
@@ -284,7 +283,7 @@ export default const _StaffManagement = () {
                         : 'Not Assigned'}
                     </TableCell>
                     <TableCell>
-                      <Badge variant={employee.active ? "success" : "destructive"}>;
+                      \1>
                         {employee.active ? 'Active' : 'Inactive'}
                       </Badge>
                     </TableCell>
@@ -313,7 +312,7 @@ export default const _StaffManagement = () {
                 />
               </PaginationItem>
               <PaginationItem>
-                <span className="text-sm">;
+                \1>
                   Page {Math.floor(pagination.skip / pagination.take) + 1} of {Math.ceil(pagination.total / pagination.take)}
                 </span>
               </PaginationItem>

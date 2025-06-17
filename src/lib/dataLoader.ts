@@ -132,4 +132,4 @@ export const createLoaders = () {
 /**
  * Type definition for the data loaders;
  */
-export type Loaders = ReturnType<typeof createLoaders>;
+export type Loaders = ReturnType\1>

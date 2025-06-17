@@ -14,7 +14,7 @@ export const GET = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -57,37 +57,37 @@ export const GET = async (request: NextRequest) => {
         const params: unknown[] = [];
 
         // Add filters
-        if (patientId != null) {
+        \1 {\n  \2{
           query += ' AND i.patient_id = ?';
           params.push(patientId);
         }
 
-        if (studyInstanceUid != null) {
+        \1 {\n  \2{
           query += ' AND i.study_instance_uid = ?';
           params.push(studyInstanceUid);
         }
 
-        if (seriesInstanceUid != null) {
+        \1 {\n  \2{
           query += ' AND i.series_instance_uid = ?';
           params.push(seriesInstanceUid);
         }
 
-        if (modality != null) {
+        \1 {\n  \2{
           query += ' AND i.modality = ?';
           params.push(modality);
         }
 
-        if (accessionNumber != null) {
+        \1 {\n  \2{
           query += ' AND i.accession_number = ?';
           params.push(accessionNumber);
         }
 
-        if (fromDate != null) {
+        \1 {\n  \2{
           query += ' AND i.study_date >= ?';
           params.push(fromDate);
         }
 
-        if (toDate != null) {
+        \1 {\n  \2{
           query += ' AND i.study_date <= ?';
           params.push(toDate);
         }
@@ -118,8 +118,7 @@ export const GET = async (request: NextRequest) => {
         // Log access
         await auditLog({
           userId: session.user.id,
-          action: 'read';
-          resource: 'pacs_images',
+          \1,\2 'pacs_images',
           details: { patientId, studyInstanceUid, modality, page, pageSize }
         });
 
@@ -154,12 +153,12 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
   try {
     // Authentication
     const session = await getSession();
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const id = parseInt(params.id);
-    if (isNaN(id)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
 
@@ -183,17 +182,15 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
 
         const result = await DB.query(query, [id]);
 
-        if (result.results.length === 0) {
+        \1 {\n  \2{
           throw new Error('Image not found');
         }
 
         // Log access
         await auditLog({
           userId: session.user.id,
-          action: 'read';
-          resource: 'pacs_images',
-          resourceId: id;
-          details: { id }
+          \1,\2 'pacs_images',
+          \1,\2 { id }
         });
 
         return result.results[0];
@@ -219,12 +216,12 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Authorization
-    if (!['admin', 'radiologist', 'radiology_technician', 'radiology_manager'].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -239,7 +236,7 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
     } = body;
 
     // Validate required fields
-    if (!patientId && !accessionNumber && !studyInstanceUid) {
+    \1 {\n  \2{
       return NextResponse.json({
         error: 'At least one of patientId, accessionNumber, or studyInstanceUid is required'
       }, { status: 400 });
@@ -254,7 +251,7 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
 
     const pacsConfigResult = await DB.query(pacsConfigQuery);
 
-    if (pacsConfigResult.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json({
         error: 'PACS not configured'
       }, { status: 400 });
@@ -264,65 +261,62 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
     // For this example, we'll simulate a successful retrieval
 
     // Simulate retrieval delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await \1;
 
     // Simulate retrieved images
     const retrievedImages = [];
 
     // If we have a study instance UID, simulate retrieving that specific study
-    if (studyInstanceUid != null) {
+    \1 {\n  \2{
       // Generate a random number of series (1-5)
-      const seriesCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 5) + 1
+      const seriesCount = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 5) + 1
 
       for (let i = 0; i < seriesCount; i++) {
         // Generate a random number of instances (5-20)
-        const instanceCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 16) + 5
+        const instanceCount = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 16) + 5
 
-        const seriesInstanceUid = `1.2.840.10008.5.1.4.1.1.$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)`;
+        const seriesInstanceUid = `1.2.840.10008.5.1.4.1.1.$Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).$Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000)`;
 
         for (let j = 0; j < instanceCount; j++) {
           retrievedImages.push({
             studyInstanceUid,
             seriesInstanceUid,
-            sopInstanceUid: `1.2.840.10008.5.1.4.1.1.$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).$j + 1`,
+            sopInstanceUid: `1.2.840.10008.5.1.4.1.1.$Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).$Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).$j + 1`,
             instanceNumber: j + 1,
-            modality: modality || 'CT';
-            studyDate: studyDate || new Date().toISOString().split('T')[0],
-            studyTime: new Date().toISOString().split('T')[1].split('.')[0];
-            seriesNumber: i + 1,
+            \1,\2 studyDate || new Date().toISOString().split('T')[0],
+            \1,\2 i + 1,
             seriesDescription: `Series $i + 1`,
             patientId,
-            accessionNumber: accessionNumber || `ACC$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000)`;
+            accessionNumber: accessionNumber || `ACC$Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000000)`;
           });
         }
       }
     } else {
       // Simulate retrieving multiple studies
-      const studyCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 3) + 1;
+      const studyCount = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 3) + 1;
 
       for (let s = 0; s < studyCount; s++) {
-        const studyInstanceUid = `1.2.840.10008.5.1.4.1.1.$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)`;
-        const seriesCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 3) + 1;
+        const studyInstanceUid = `1.2.840.10008.5.1.4.1.1.$Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000)`;
+        const seriesCount = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 3) + 1;
 
         for (let i = 0; i < seriesCount; i++) {
-          const instanceCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10) + 5;
+          const instanceCount = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 10) + 5;
 
-          const seriesInstanceUid = `1.2.840.10008.5.1.4.1.1.$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)`;
+          const seriesInstanceUid = `1.2.840.10008.5.1.4.1.1.$Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).$Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000)`;
 
           for (let j = 0; j < instanceCount; j++) {
             retrievedImages.push({
               studyInstanceUid,
               seriesInstanceUid,
-              sopInstanceUid: `1.2.840.10008.5.1.4.1.1.$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).$j + 1`,
+              sopInstanceUid: `1.2.840.10008.5.1.4.1.1.$Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).$Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).$j + 1`,
               instanceNumber: j + 1,
-              modality: modality || ['CT', 'MR', 'XR'][Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 3)],
+              modality: modality || ['CT', 'MR', 'XR'][Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 3)],
               studyDate: studyDate ||
-                new Date(crypto.getRandomValues(new Uint32Array(1))[0] - Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 30) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                \1[0] - Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 30) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
               studyTime: new Date().toISOString().split('T')[1].split('.')[0],
-              seriesNumber: i + 1;
-              seriesDescription: `Series $i + 1`,
+              \1,\2 `Series $i + 1`,
               patientId,
-              accessionNumber: accessionNumber || `ACC$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000)`;
+              accessionNumber: accessionNumber || `ACC$Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000000)`;
             });
           }
         }
@@ -335,8 +329,7 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
     // Log retrieval
     await auditLog({
       userId: session.user.id,
-      action: 'retrieve';
-      resource: 'pacs_images',
+      \1,\2 'pacs_images',
       details: {
         patientId,
         accessionNumber,
@@ -350,8 +343,7 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
       message: `Successfully retrieved $retrievedImages.lengthimages`,
       retrievedImages: retrievedImages.slice(0, 10), // Return only first 10 for brevity
       totalImages: retrievedImages.length,
-      uniqueStudies: new Set(retrievedImages.map(img => img.studyInstanceUid)).size;
-      uniqueSeries: new Set(retrievedImages.map(img => img.seriesInstanceUid)).size
+      \1,\2 \1.size
     });
   } catch (error) {
 
@@ -370,12 +362,12 @@ export const _POST_STORE = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Authorization
-    if (!['admin', 'radiologist', 'radiology_technician', 'radiology_manager'].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -393,7 +385,7 @@ export const _POST_STORE = async (request: NextRequest) => {
     } = body;
 
     // Validate required fields
-    if (!patientId || !modality || !studyInstanceUid || !seriesInstanceUid || !sopInstanceUid || !imageData) {
+    \1 {\n  \2{
       return NextResponse.json({
         error: 'Patient ID, modality, study instance UID, series instance UID, SOP instance UID, and image data are required'
       }, { status: 400 });
@@ -408,7 +400,7 @@ export const _POST_STORE = async (request: NextRequest) => {
 
     const pacsConfigResult = await DB.query(pacsConfigQuery);
 
-    if (pacsConfigResult.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json({
         error: 'PACS not configured'
       }, { status: 400 });
@@ -416,14 +408,14 @@ export const _POST_STORE = async (request: NextRequest) => {
 
     // Check if patient exists
     const patientCheck = await DB.query('SELECT id FROM patients WHERE id = ?', [patientId]);
-    if (patientCheck.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
     }
 
     // Check if order exists if provided
-    if (orderId != null) {
+    \1 {\n  \2{
       const orderCheck = await DB.query('SELECT id FROM radiology_orders WHERE id = ?', [orderId]);
-      if (orderCheck.results.length === 0) {
+      \1 {\n  \2{
         return NextResponse.json({ error: 'Order not found' }, { status: 404 });
       }
     }
@@ -432,7 +424,7 @@ export const _POST_STORE = async (request: NextRequest) => {
     // For this example, we'll simulate a successful storage
 
     // Simulate storage delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await \1;
 
     // Insert image record
     const query = `;
@@ -465,8 +457,7 @@ export const _POST_STORE = async (request: NextRequest) => {
     // Log storage
     await auditLog({
       userId: session.user.id,
-      action: 'store';
-      resource: 'pacs_images',
+      \1,\2 'pacs_images',
       resourceId: result.insertId;
         patientId,
         orderId,
@@ -480,8 +471,7 @@ export const _POST_STORE = async (request: NextRequest) => {
 
     return NextResponse.json({
       success: true,
-      message: 'Image successfully stored to PACS';
-      imageId: result.insertId;
+      \1,\2 result.insertId;
       studyInstanceUid,
       seriesInstanceUid,
       sopInstanceUid;
@@ -503,17 +493,17 @@ export const _POST_ANNOTATIONS = async (request: NextRequest, { params }: { para
   try {
     // Authentication
     const session = await getSession();
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Authorization
-    if (!['admin', 'radiologist', 'radiology_technician'].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     const id = Number.parseInt(params.id);
-    if (isNaN(id)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
 
@@ -529,7 +519,7 @@ export const _POST_ANNOTATIONS = async (request: NextRequest, { params }: { para
     } = body;
 
     // Validate required fields
-    if (!annotationType || !coordinates) {
+    \1 {\n  \2{
       return NextResponse.json({
         error: 'Annotation type and coordinates are required'
       }, { status: 400 });
@@ -537,7 +527,7 @@ export const _POST_ANNOTATIONS = async (request: NextRequest, { params }: { para
 
     // Check if image exists
     const imageCheck = await DB.query('SELECT * FROM pacs_images WHERE id = ?', [id]);
-    if (imageCheck.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Image not found' }, { status: 404 });
     }
 
@@ -566,10 +556,8 @@ export const _POST_ANNOTATIONS = async (request: NextRequest, { params }: { para
     // Log annotation
     await auditLog({
       userId: session.user.id,
-      action: 'create';
-      resource: 'pacs_image_annotations',
-      resourceId: result.insertId;
-        imageId: id;
+      \1,\2 'pacs_image_annotations',
+      \1,\2 id;
         annotationType,
         hasText: !!text,
         hasMeasurements: !!measurements
@@ -607,12 +595,12 @@ export const _GET_ANNOTATIONS = async (request: NextRequest, { params }: { param
   try {
     // Authentication
     const session = await getSession();
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const id = Number.parseInt(params.id);
-    if (isNaN(id)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
 
@@ -625,7 +613,7 @@ export const _GET_ANNOTATIONS = async (request: NextRequest, { params }: { param
       async () => {
         // Check if image exists
         const imageCheck = await DB.query('SELECT id FROM pacs_images WHERE id = ?', [id]);
-        if (imageCheck.results.length === 0) {
+        \1 {\n  \2{
           throw new Error('Image not found');
         }
 
@@ -650,8 +638,7 @@ export const _GET_ANNOTATIONS = async (request: NextRequest, { params }: { param
         // Log access
         await auditLog({
           userId: session.user.id,
-          action: 'read';
-          resource: 'pacs_image_annotations',
+          \1,\2 'pacs_image_annotations',
           details: imageId: id 
         });
 

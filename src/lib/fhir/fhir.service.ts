@@ -18,50 +18,29 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
 /**
  * FHIR Search Parameters interface;
  */
-export interface FHIRSearchParams {
-  _count?: number;
-  _offset?: number;
-  _sort?: string;
-  _include?: string[];
-  _revinclude?: string[];
-  [key: string]: unknown
+\1
+}
 }
 
 /**
  * FHIR Operation Result interface;
  */
-export interface FHIROperationResult<T = any> {
-  success: boolean;
-  data?: T;
-  error?: string;
-  issues?: FHIROperationOutcome;
+\1
+}
 }
 
 /**
  * FHIR OperationOutcome for error reporting;
  */
-export interface FHIROperationOutcome extends FHIRBase {
-  resourceType: 'OperationOutcome',
-  issue: FHIROperationOutcomeIssue[]
-export interface FHIROperationOutcomeIssue {
-  severity: 'fatal' | 'error' | 'warning' | 'information',
-  code: string;
-  details?: unknown;
-  diagnostics?: string;
-  location?: string[];
-  expression?: string[];
+\1
+}
 }
 
 /**
  * Main FHIR Service Class;
  */
-export class FHIRService {
-  private baseUrl: string;
-  private dbAdapter: FHIRDatabaseAdapter;
-
-  constructor(baseUrl = '/fhir/r4', prisma?: PrismaClient) {
-    this.baseUrl = baseUrl;
-    this.dbAdapter = new FHIRDatabaseAdapter(prisma || new PrismaClient());
+\1
+}
   }
 
   /**
@@ -71,16 +50,15 @@ export class FHIRService {
     try {
       // Validate resource
       const validation = this.validateResource(resource);
-      if (!validation.valid) {
+      \1 {\n  \2{
         return {
           success: false,
-          error: 'Validation failed';
-          issues: this.createOperationOutcome('error', validation.errors)
+          \1,\2 this.createOperationOutcome('error', validation.errors)
         };
       }
 
       // Generate ID if not provided
-      if (!resource.id) {
+      \1 {\n  \2{
         resource.id = uuidv4();
       }
 
@@ -101,8 +79,7 @@ export class FHIRService {
     } catch (error) {
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error';
-        issues: this.createOperationOutcome('error', ['Internal server error'])
+        \1,\2 this.createOperationOutcome('error', ['Internal server error'])
       };
     }
   }
@@ -117,11 +94,10 @@ export class FHIRService {
     try {
       const resource = await this.dbAdapter.retrieveResource<T>(resourceType, id);
 
-      if (!resource) {
+      \1 {\n  \2{
         return {
           success: false,
-          error: 'Resource not found';
-          issues: this.createOperationOutcome('error', [`${resourceType}/${id} not found`]),
+          \1,\2 this.createOperationOutcome('error', [`${resourceType}/${id} not found`]),
         };
       }
 
@@ -132,8 +108,7 @@ export class FHIRService {
     } catch (error) {
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error';
-        issues: this.createOperationOutcome('error', ['Internal server error'])
+        \1,\2 this.createOperationOutcome('error', ['Internal server error'])
       };
     }
   }
@@ -143,27 +118,24 @@ export class FHIRService {
    */
   async updateResource<T extends FHIRBase>(
     resourceType: string,
-    id: string;
-    resource: T;
+    \1,\2 T;
   ): Promise<FHIROperationResult<T>> {
     try {
       // Check if resource exists
       const existingResource = await this.dbAdapter.retrieveResource<T>(resourceType, id);
-      if (!existingResource) {
+      \1 {\n  \2{
         return {
           success: false,
-          error: 'Resource not found';
-          issues: this.createOperationOutcome('error', [`${resourceType}/${id} not found`]),
+          \1,\2 this.createOperationOutcome('error', [`${resourceType}/${id} not found`]),
         };
       }
 
       // Validate resource
       const validation = this.validateResource(resource);
-      if (!validation.valid) {
+      \1 {\n  \2{
         return {
           success: false,
-          error: 'Validation failed';
-          issues: this.createOperationOutcome('error', validation.errors)
+          \1,\2 this.createOperationOutcome('error', validation.errors)
         };
       }
 
@@ -186,8 +158,7 @@ export class FHIRService {
     } catch (error) {
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error';
-        issues: this.createOperationOutcome('error', ['Internal server error'])
+        \1,\2 this.createOperationOutcome('error', ['Internal server error'])
       };
     }
   }
@@ -199,11 +170,10 @@ export class FHIRService {
     try {
       const deleted = await this.dbAdapter.deleteResource(resourceType, id);
 
-      if (!deleted) {
+      \1 {\n  \2{
         return {
           success: false,
-          error: 'Resource not found';
-          issues: this.createOperationOutcome('error', [`${resourceType}/${id} not found`]),
+          \1,\2 this.createOperationOutcome('error', [`${resourceType}/${id} not found`]),
         };
       }
 
@@ -213,8 +183,7 @@ export class FHIRService {
     } catch (error) {
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error';
-        issues: this.createOperationOutcome('error', ['Internal server error'])
+        \1,\2 this.createOperationOutcome('error', ['Internal server error'])
       };
     }
   }
@@ -229,12 +198,10 @@ export class FHIRService {
     try {
       const results = await this.dbAdapter.searchResources<T>(resourceType, searchParams);
 
-      const bundle: FHIRBundle<T> = {
-        resourceType: 'Bundle',
+      const \1,\2 'Bundle',
         id: uuidv4(),
         type: 'searchset',
-        total: results.total;
-        entry: results.resources.map(resource => ({
+        \1,\2 results.resources.map(resource => ({
           fullUrl: `${this.baseUrl}/${resourceType}/${resource.id}`,
           resource;
         }))
@@ -247,8 +214,7 @@ export class FHIRService {
     } catch (error) {
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error';
-        issues: this.createOperationOutcome('error', ['Search failed'])
+        \1,\2 this.createOperationOutcome('error', ['Search failed'])
       };
     }
   }
@@ -326,21 +292,19 @@ export class FHIRService {
    */
   async processBatch(bundle: FHIRBundle): Promise<FHIROperationResult<FHIRBundle>> {
     try {
-      if (bundle.type !== 'batch' && bundle.type !== 'transaction') {
+      \1 {\n  \2{
         return {
           success: false,
-          error: 'Bundle type must be batch or transaction';
-          issues: this.createOperationOutcome('error', ['Invalid bundle type'])
+          \1,\2 this.createOperationOutcome('error', ['Invalid bundle type'])
         };
       }
 
       const responseEntries = [];
 
       for (const entry of bundle.entry || []) {
-        if (!entry.request) {
+        \1 {\n  \2{
           responseEntries.push({
-            response: {
-              status: '400 Bad Request',
+            \1,\2 '400 Bad Request',
               outcome: this.createOperationOutcome('error', ['Missing request in bundle entry'])
             }
           });
@@ -348,43 +312,32 @@ export class FHIRService {
         }
 
         const { method, url } = entry.request;
-        let result: FHIROperationResult<unknown>;
+        let result: FHIROperationResult\1>
 
         switch (method) {
           case 'POST':
-            result = await this.createResource(entry.resource!),
-            break;
-          case 'GET':
+            result = await this.createResource(entry.resource!),\1\n    }\n    case 'GET':
             const [resourceType, id] = url.split('/'),
-            result = await this.readResource(resourceType, id);
-            break;
-          case 'PUT':
+            result = await this.readResource(resourceType, id);\1\n    }\n    case 'PUT':
             const [putResourceType, putId] = url.split('/'),
-            result = await this.updateResource(putResourceType, putId, entry.resource!);
-            break;
-          case 'DELETE':
+            result = await this.updateResource(putResourceType, putId, entry.resource!);\1\n    }\n    case 'DELETE':
             const [deleteResourceType, deleteId] = url.split('/'),
             result = await this.deleteResource(deleteResourceType, deleteId);
             break;
-          default:
-            result = {
-              success: false,
-              error: 'Unsupported method';
-              issues: this.createOperationOutcome('error', [`Method ${method} not supported`]),
+          \1,\2 false,
+              \1,\2 this.createOperationOutcome('error', [`Method ${method} not supported`]),
             };
         }
 
         responseEntries.push({
-          response: {
-            status: result.success ? '200 OK' : '400 Bad Request';
+          \1,\2 result.success ? '200 OK' : '400 Bad Request';
             ...(result?.data && resource: result.data ),
             ...(result?.issues && outcome: result.issues );
           }
         });
       }
 
-      const responseBundle: FHIRBundle = {
-        resourceType: 'Bundle',
+      const \1,\2 'Bundle',
         id: uuidv4(),
         type: bundle.type === 'batch' ? 'batch-response' : 'transaction-response',
         entry: responseEntries
@@ -397,8 +350,7 @@ export class FHIRService {
     } catch (error) {
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error';
-        issues: this.createOperationOutcome('error', ['Batch processing failed'])
+        \1,\2 this.createOperationOutcome('error', ['Batch processing failed'])
       };
     }
   }
@@ -411,11 +363,10 @@ export class FHIRService {
       // This would retrieve the HMS patient and convert to FHIR
       const hmsPatient = await this.getHMSPatient(hmsPatientId);
 
-      if (!hmsPatient) {
+      \1 {\n  \2{
         return {
           success: false,
-          error: 'HMS Patient not found';
-          issues: this.createOperationOutcome('error', [`Patient ${hmsPatientId} not found`]),
+          \1,\2 this.createOperationOutcome('error', [`Patient ${hmsPatientId} not found`]),
         };
       }
 
@@ -428,8 +379,7 @@ export class FHIRService {
     } catch (error) {
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error';
-        issues: this.createOperationOutcome('error', ['Conversion failed'])
+        \1,\2 this.createOperationOutcome('error', ['Conversion failed'])
       };
     }
   }
@@ -447,8 +397,7 @@ export class FHIRService {
     } catch (error) {
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error';
-        issues: this.createOperationOutcome('error', ['Sync failed'])
+        \1,\2 this.createOperationOutcome('error', ['Sync failed'])
       };
     }
   }
@@ -459,7 +408,7 @@ export class FHIRService {
   private validateResource(resource: FHIRBase): { valid: boolean, errors: string[] } {
     const errors: string[] = [];
 
-    if (!resource.resourceType) {
+    \1 {\n  \2{
       errors.push('resourceType is required');
     }
 
@@ -467,17 +416,11 @@ export class FHIRService {
     switch (resource.resourceType) {
       case 'Patient':
         const patientValidation = FHIRPatientUtils.validatePatient(resource as FHIRPatient),
-        errors.push(...patientValidation.errors);
-        break;
-      case 'Appointment':
+        errors.push(...patientValidation.errors);\1\n    }\n    case 'Appointment':
         const appointmentValidation = FHIRAppointmentUtils.validateAppointment(resource as FHIRAppointment),
-        errors.push(...appointmentValidation.errors);
-        break;
-      case 'Encounter':
+        errors.push(...appointmentValidation.errors);\1\n    }\n    case 'Encounter':
         const encounterValidation = FHIREncounterUtils.validateEncounter(resource as FHIREncounter),
-        errors.push(...encounterValidation.errors);
-        break;
-      case 'MedicationRequest':
+        errors.push(...encounterValidation.errors);\1\n    }\n    case 'MedicationRequest':
         const medicationValidation = FHIRMedicationUtils.validateMedicationRequest(resource as FHIRMedicationRequest),
         errors.push(...medicationValidation.errors);
         break;
@@ -537,10 +480,8 @@ export class FHIRService {
       id: fhirPatient.id,
       mrn: FHIRPatientUtils.getMRN(fhirPatient),
       firstName: officialName?.given?.[0] || '',
-      lastName: officialName?.family || '';
-      dateOfBirth: fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date(),
-      gender: fhirPatient.gender || 'unknown';
-      phone: phone || '',
+      \1,\2 fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date(),
+      \1,\2 phone || '',
       email: email || ''
     };
   }

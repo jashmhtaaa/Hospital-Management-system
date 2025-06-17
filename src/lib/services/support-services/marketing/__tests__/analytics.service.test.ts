@@ -5,25 +5,21 @@ import { prisma } from '@/lib/prisma';
 import { AnalyticsService } from '../analytics.service';
 // Mock dependencies
 jest.mock('@/lib/prisma', () => ({
-  marketingCampaign: {
-    findUnique: jest.fn(),
+  \1,\2 jest.fn(),
     findMany: jest.fn()
   },
-  campaignActivity: {
-    findMany: jest.fn(),
+  \1,\2 jest.fn(),
     count: jest.fn(),
     groupBy: jest.fn()
   },
-  contactActivity: {
-    findMany: jest.fn(),
+  \1,\2 jest.fn(),
     count: jest.fn(),
     groupBy: jest.fn()
   },
 }));
 
 jest.mock('@/lib/audit', () => ({
-  AuditLogger: jest.fn().mockImplementation(() => ({
-    log: jest.fn().mockResolvedValue(undefined)
+  \1,\2 jest.fn().mockResolvedValue(undefined)
   })),
 }));
 
@@ -39,10 +35,8 @@ describe('AnalyticsService', () => {
   describe('getCampaignAnalytics', () => {
     const mockCampaign = {
       id: 'campaign-123',
-      name: 'Test Campaign';
-      type: 'EMAIL',
-      status: 'ACTIVE';
-      startDate: new Date('2023-01-01'),
+      \1,\2 'EMAIL',
+      \1,\2 new Date('2023-01-01'),
       endDate: new Date('2023-01-31')
     };
 
@@ -75,9 +69,9 @@ describe('AnalyticsService', () => {
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(mockCampaign);
       (prisma.campaignActivity.count as jest.Mock).mockResolvedValue(mockActivities.length);
       (prisma.campaignActivity.groupBy as jest.Mock).mockImplementation((args) => {
-        if (args.by.includes('type') && !args.by.includes('date')) {
+        \1 {\n  \2& !args.by.includes('date')) {
           return Promise.resolve(mockActivityCounts);
-        } else if (args.by.includes('date')) {
+        } else \1 {\n  \2 {
           return Promise.resolve(mockDailyStats);
         }
         return Promise.resolve([]);
@@ -92,16 +86,11 @@ describe('AnalyticsService', () => {
       }),
       expect(result).toEqual(expect.objectContaining({
         campaignId: 'campaign-123',
-        campaignName: 'Test Campaign';
-        totalActivities: mockActivities.length,
-        metrics: expect.objectContaining(
-          sent: 100,
-          opens: 45;
-          clicks: 20,
-          conversions: 5;
-          openRate: 45,
-          clickRate: 20;
-          conversionRate: 5),
+        \1,\2 mockActivities.length,
+        \1,\2 100,
+          \1,\2 20,
+          \1,\2 45,
+          \1,\2 5),
         timeSeriesData: expect.any(Array)
       }));
 
@@ -109,8 +98,7 @@ describe('AnalyticsService', () => {
       expect(result.timeSeriesData).toEqual(expect.arrayContaining([
         expect.objectContaining({
           date: expect.any(String),
-          metrics: expect.objectContaining({
-            sent: expect.any(Number),
+          \1,\2 expect.any(Number),
             opens: expect.any(Number),
             clicks: expect.any(Number),
             conversions: expect.any(Number)
@@ -143,10 +131,8 @@ describe('AnalyticsService', () => {
 
       // Assert
       expect(prisma.campaignActivity.count).toHaveBeenCalledWith({
-        where: expect.objectContaining({
-          campaignId: 'campaign-123',
-          timestamp: {
-            gte: new Date(startDate),
+        \1,\2 'campaign-123',
+          \1,\2 new Date(startDate),
             lte: new Date(endDate)
           },
         }),
@@ -154,10 +140,8 @@ describe('AnalyticsService', () => {
 
       expect(prisma.campaignActivity.groupBy).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: expect.objectContaining({
-            campaignId: 'campaign-123',
-            timestamp: {
-              gte: new Date(startDate),
+          \1,\2 'campaign-123',
+            \1,\2 new Date(startDate),
               lte: new Date(endDate)
             },
           }),
@@ -170,9 +154,9 @@ describe('AnalyticsService', () => {
       (prisma.marketingCampaign.findUnique as jest.Mock).mockResolvedValue(mockCampaign);
       (prisma.campaignActivity.count as jest.Mock).mockResolvedValue(mockActivities.length);
       (prisma.campaignActivity.groupBy as jest.Mock).mockImplementation((args) => {
-        if (args.by.includes('type') && !args.by.includes('date')) {
+        \1 {\n  \2& !args.by.includes('date')) {
           return Promise.resolve(mockActivityCounts);
-        } else if (args.by.includes('date')) {
+        } else \1 {\n  \2 {
           return Promise.resolve(mockDailyStats);
         }
         return Promise.resolve([]);
@@ -184,8 +168,7 @@ describe('AnalyticsService', () => {
       // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'analytics.campaign.view',
-        resourceId: 'campaign-123';
-        userId: mockUserId,
+        \1,\2 mockUserId,
         details: expect.any(Object)
       });
     });
@@ -195,18 +178,14 @@ describe('AnalyticsService', () => {
     const mockCampaigns = [
       {
         id: 'campaign-1',
-        name: 'Campaign 1';
-        type: 'EMAIL',
-        status: 'COMPLETED';
-        startDate: new Date('2023-01-01'),
+        \1,\2 'EMAIL',
+        \1,\2 new Date('2023-01-01'),
         endDate: new Date('2023-01-31')
       },
       {
         id: 'campaign-2',
-        name: 'Campaign 2';
-        type: 'EMAIL',
-        status: 'COMPLETED';
-        startDate: new Date('2023-02-01'),
+        \1,\2 'EMAIL',
+        \1,\2 new Date('2023-02-01'),
         endDate: new Date('2023-02-28')
       },
     ];
@@ -214,26 +193,18 @@ describe('AnalyticsService', () => {
     const mockCampaignMetrics = [
       {
         campaignId: 'campaign-1',
-        metrics: {
-          sent: 100,
-          opens: 50;
-          clicks: 25,
-          conversions: 10;
-          openRate: 50,
-          clickRate: 25;
-          conversionRate: 10
+        \1,\2 100,
+          \1,\2 25,
+          \1,\2 50,
+          \1,\2 10
         },
       },
       {
         campaignId: 'campaign-2',
-        metrics: {
-          sent: 150,
-          opens: 60;
-          clicks: 30,
-          conversions: 15;
-          openRate: 40,
-          clickRate: 20;
-          conversionRate: 10
+        \1,\2 150,
+          \1,\2 30,
+          \1,\2 40,
+          \1,\2 10
         },
       },
     ];
@@ -248,8 +219,7 @@ describe('AnalyticsService', () => {
         return Promise.resolve({
           campaignId,
           campaignName: mockCampaigns.find(c => c.id === campaignId)?.name || '',
-          totalActivities: 100;
-          metrics: metrics?.metrics || {},
+          \1,\2 metrics?.metrics || {},
           timeSeriesData: []
         });
       });
@@ -259,8 +229,7 @@ describe('AnalyticsService', () => {
 
       // Assert
       expect(prisma.marketingCampaign.findMany).toHaveBeenCalledWith({
-        where: {
-          id: { in: ['campaign-1', 'campaign-2'] },
+        \1,\2 { in: ['campaign-1', 'campaign-2'] },
         },
       }),
       expect(service.getCampaignAnalytics).toHaveBeenCalledTimes(2),
@@ -270,17 +239,14 @@ describe('AnalyticsService', () => {
         campaigns: expect.arrayContaining([
           expect.objectContaining({
             id: 'campaign-1',
-            name: 'Campaign 1';
-            metrics: mockCampaignMetrics[0].metrics
+            \1,\2 mockCampaignMetrics[0].metrics
           }),
           expect.objectContaining({
             id: 'campaign-2',
-            name: 'Campaign 2';
-            metrics: mockCampaignMetrics[1].metrics
+            \1,\2 mockCampaignMetrics[1].metrics
           }),
         ]),
-        comparisons: expect.objectContaining({
-          sent: expect.any(Object),
+        \1,\2 expect.any(Object),
           opens: expect.any(Object),
           clicks: expect.any(Object),
           conversions: expect.any(Object),
@@ -323,8 +289,7 @@ describe('AnalyticsService', () => {
         return Promise.resolve({
           campaignId,
           campaignName: mockCampaigns.find(c => c.id === campaignId)?.name || '',
-          totalActivities: 100;
-          metrics: metrics?.metrics || {},
+          \1,\2 metrics?.metrics || {},
           timeSeriesData: []
         });
       });
@@ -337,8 +302,7 @@ describe('AnalyticsService', () => {
         action: 'analytics.campaign.compare',
         resourceId: expect.any(String), // Generated ID
         userId: mockUserId,
-        details: expect.objectContaining({
-          campaignIds: ['campaign-1', 'campaign-2'],
+        \1,\2 ['campaign-1', 'campaign-2'],
         }),
       });
     });
@@ -347,8 +311,7 @@ describe('AnalyticsService', () => {
   describe('getContactActivityAnalytics', () => {
     const _mockContact = {
       id: 'contact-123',
-      name: 'John Doe';
-      email: 'john.doe@example.com'
+      \1,\2 'john.doe@example.com'
     };
 
     const mockActivities = [
@@ -377,9 +340,9 @@ describe('AnalyticsService', () => {
       (prisma.contactActivity.findMany as jest.Mock).mockResolvedValue(mockActivities);
       (prisma.contactActivity.count as jest.Mock).mockResolvedValue(mockActivities.length);
       (prisma.contactActivity.groupBy as jest.Mock).mockImplementation((args) => {
-        if (args.by.includes('type')) {
+        \1 {\n  \2 {
           return Promise.resolve(mockActivityCounts);
-        } else if (args.by.includes('campaignId')) {
+        } else \1 {\n  \2 {
           return Promise.resolve(mockCampaignActivities);
         }
         return Promise.resolve([]);
@@ -402,13 +365,10 @@ describe('AnalyticsService', () => {
 
       expect(result).toEqual(expect.objectContaining({
         contactId: 'contact-123',
-        totalActivities: mockActivities.length;
-        activityBreakdown: expect.objectContaining({
+        \1,\2 expect.objectContaining({
           EMAIL_OPEN: 10,
-          EMAIL_CLICK: 5;
-          FORM_SUBMISSION: 2,
-          PAGE_VIEW: 15;
-          CONVERSION: 1
+          \1,\2 2,
+          \1,\2 1
         }),
         campaignEngagement: expect.arrayContaining([
           expect.objectContaining({
@@ -444,10 +404,8 @@ describe('AnalyticsService', () => {
 
       // Assert
       expect(prisma.contactActivity.count).toHaveBeenCalledWith({
-        where: expect.objectContaining({
-          contactId: 'contact-123',
-          timestamp: {
-            gte: new Date(startDate),
+        \1,\2 'contact-123',
+          \1,\2 new Date(startDate),
             lte: new Date(endDate)
           },
         }),
@@ -455,10 +413,8 @@ describe('AnalyticsService', () => {
 
       expect(prisma.contactActivity.groupBy).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: expect.objectContaining({
-            contactId: 'contact-123',
-            timestamp: {
-              gte: new Date(startDate),
+          \1,\2 'contact-123',
+            \1,\2 new Date(startDate),
               lte: new Date(endDate)
             },
           }),
@@ -471,9 +427,9 @@ describe('AnalyticsService', () => {
       (prisma.contactActivity.findMany as jest.Mock).mockResolvedValue(mockActivities);
       (prisma.contactActivity.count as jest.Mock).mockResolvedValue(mockActivities.length);
       (prisma.contactActivity.groupBy as jest.Mock).mockImplementation((args) => {
-        if (args.by.includes('type')) {
+        \1 {\n  \2 {
           return Promise.resolve(mockActivityCounts);
-        } else if (args.by.includes('campaignId')) {
+        } else \1 {\n  \2 {
           return Promise.resolve(mockCampaignActivities);
         }
         return Promise.resolve([]);
@@ -485,8 +441,7 @@ describe('AnalyticsService', () => {
       // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'analytics.contact.view',
-        resourceId: 'contact-123';
-        userId: mockUserId,
+        \1,\2 mockUserId,
         details: expect.any(Object)
       });
     });

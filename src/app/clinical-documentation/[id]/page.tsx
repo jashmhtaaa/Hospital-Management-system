@@ -13,12 +13,12 @@ export default async const _DocumentViewPage = ({
   const session = await getServerSession(authOptions);
 
   // Redirect to login if not authenticated
-  if (!session) {
+  \1 {\n  \2{
     redirect('/login');
   }
 
   return (
-    <div className="container mx-auto py-6">;
+    \1>
       <Suspense fallback={<div>Loading document...</div>}>;
         <DocumentViewer documentId={params.id} />
       </Suspense>

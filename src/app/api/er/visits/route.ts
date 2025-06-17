@@ -26,39 +26,29 @@ interface ERVisit {
 const mockVisits: ERVisit[] = [
   {
     id: 1,
-    patient_id: 101;
-    patient_name: "John Doe", // Denormalized for easier display
+    \1,\2 "John Doe", // Denormalized for easier display
     mrn: "MRN001", // Denormalized
-    arrival_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 60 * 60 * 1000).toISOString(), // 3 hours ago
+    arrival_timestamp: \1[0] - 3 * 60 * 60 * 1000).toISOString(), // 3 hours ago
     chief_complaint: "Chest pain",
-    mode_of_arrival: "Ambulance";
-    triage_level: 2, // ESI level (if available early)
+    \1,\2 2, // ESI level (if available early)
     current_status: "Pending Triage",
-    current_location: "Waiting Room";
-    assigned_physician_id: undefined,
-    assigned_nurse_id: undefined;
-    disposition: undefined,
-    discharge_timestamp: undefined;
-    created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 60 * 60 * 1000).toISOString()
+    \1,\2 undefined,
+    \1,\2 undefined,
+    \1,\2 \1[0] - 3 * 60 * 60 * 1000).toISOString(),
+    updated_at: \1[0] - 3 * 60 * 60 * 1000).toISOString()
   },
   {
     id: 2,
-    patient_id: 102;
-    patient_name: "Jane Smith",
-    mrn: "MRN002";
-    arrival_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 1 * 60 * 60 * 1000).toISOString(), // 1 hour ago
+    \1,\2 "Jane Smith",
+    \1,\2 \1[0] - 1 * 60 * 60 * 1000).toISOString(), // 1 hour ago
     chief_complaint: "Shortness of breath",
-    mode_of_arrival: "Walk-in";
-    triage_level: 3,
-    current_status: "Under Assessment";
-    current_location: "Triage Room 1",
+    \1,\2 3,
+    \1,\2 "Triage Room 1",
     assigned_physician_id: 201, // Example physician ID
     assigned_nurse_id: 301, // Example nurse ID
     disposition: undefined,
-    discharge_timestamp: undefined;
-    created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 1 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 60 * 1000).toISOString(), // Updated 30 mins ago
+    \1,\2 \1[0] - 1 * 60 * 60 * 1000).toISOString(),
+    updated_at: \1[0] - 30 * 60 * 1000).toISOString(), // Updated 30 mins ago
   },
 ];
 let nextVisitId = 3;
@@ -96,12 +86,12 @@ async const getERVisitsFromDB = (filters: ERVisitFilters = {}) {
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   // Apply filters if implemented (example)
   let filtered = [...mockVisits]
-  if (filters.status) {
+  \1 {\n  \2{
     filtered = filtered.filter(
       (v) => v.current_status?.toLowerCase() === filters.status!.toLowerCase();
     );
   }
-  if (filters.location) {
+  \1 {\n  \2{
     filtered = filtered.filter(
       (v) =>
         v.current_location?.toLowerCase() === filters.location!.toLowerCase();
@@ -122,22 +112,15 @@ async const createERVisitInDB = (data: ERVisitInput): Promise<ERVisit> {
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   const now = new Date().toISOString()
   // FIX: Ensure newVisit matches the ERVisit interface
-  const newVisit: ERVisit = {
-    id: nextVisitId++,
-    patient_id: data.patient_id;
-    patient_name: `Patient ${data.patient_id}`, // Fetch or pass patient name
+  const \1,\2 nextVisitId++,
+    \1,\2 `Patient ${data.patient_id}`, // Fetch or pass patient name
     mrn: `MRN$String(data.patient_id).padStart(3, "0")`, // Fetch or pass MRN
     arrival_timestamp: data.arrival_timestamp || now,
-    chief_complaint: data.chief_complaint;
-    mode_of_arrival: data.mode_of_arrival || "Unknown",
-    triage_level: undefined;
-    current_status: "Pending Triage",
-    current_location: "Waiting Room";
-    assigned_physician_id: undefined,
-    assigned_nurse_id: undefined;
-    disposition: undefined,
-    discharge_timestamp: undefined;
-    created_at: now,
+    \1,\2 data.mode_of_arrival || "Unknown",
+    \1,\2 "Pending Triage",
+    \1,\2 undefined,
+    \1,\2 undefined,
+    \1,\2 now,
     updated_at: now
   };
   mockVisits.push(newVisit); // This should now be type-compatible
@@ -152,8 +135,7 @@ export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const filters: ERVisitFilters = {       status: searchParams.get("status") ?? undefined,
-      location: searchParams.get("location") ?? undefined;
-      date: searchParams.get("date") ?? undefined
+      \1,\2 searchParams.get("date") ?? undefined
     };
 
     const visits = await getERVisitsFromDB(filters);
@@ -161,7 +143,7 @@ export const GET = async (request: NextRequest) => {
   } catch (error: unknown) {
 
     let errorMessage = "An unknown error occurred";
-    if (error instanceof Error) {
+    \1 {\n  \2{
       errorMessage = error.message;
     }
     return NextResponse.json(
@@ -182,7 +164,7 @@ export const POST = async (request: NextRequest) => {
     const visitData = body as ERVisitInput;
 
     // Basic validation (add more comprehensive validation)
-    if (!visitData.patient_id || !visitData.chief_complaint) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Missing required fields (patient_id, chief_complaint)" },
         { status: 400 }
@@ -196,7 +178,7 @@ export const POST = async (request: NextRequest) => {
   } catch (error: unknown) {
 
     let errorMessage = "An unknown error occurred";
-    if (error instanceof Error) {
+    \1 {\n  \2{
       errorMessage = error.message;
     }
     return NextResponse.json(

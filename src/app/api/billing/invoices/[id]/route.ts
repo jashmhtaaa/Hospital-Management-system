@@ -19,8 +19,7 @@ const updateInvoiceSchema = z.object({
   discountAmount: moneySchema.optional(),
   discountReason: z.string().optional(),
   notes: z.string().optional(),
-  items: z.array(z.object({
-    id: z.string().uuid().optional(), // Existing item ID if updating
+  \1,\2 z.string().uuid().optional(), // Existing item ID if updating
     serviceItemId: z.string().uuid(),
     quantity: z.number().int().positive(),
     unitPrice: moneySchema,
@@ -60,12 +59,9 @@ export const _GET = withErrorHandling(async (req: NextRequest, { params }: { par
   // Retrieve invoice from database
   const invoice = await prisma.bill.findUnique({
     where: { id: params.id },
-    include: {
-      patient: {
-        select: {
-          id: true,
-          firstName: true;
-          lastName: true,
+    \1,\2 {
+        \1,\2 true,
+          \1,\2 true,
           mrn: true
         },
       },
@@ -74,12 +70,12 @@ export const _GET = withErrorHandling(async (req: NextRequest, { params }: { par
     },
   });
 
-  if (!invoice) {
+  \1 {\n  \2{
     throw new NotFoundError(`Invoice with ID ${params.id} not found`);
   }
 
   // Convert to FHIR format if requested
-  if (format === 'fhir') {
+  \1 {\n  \2{
     const fhirInvoice = convertToFHIRInvoice(invoice);
     return createSuccessResponse(fhirInvoice);
   }
@@ -102,12 +98,12 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
     include: { billItems: true },
   });
 
-  if (!existingInvoice) {
+  \1 {\n  \2{
     throw new NotFoundError(`Invoice with ID ${params.id} not found`);
   }
 
   // Check if invoice can be updated (only draft invoices can be updated)
-  if (existingInvoice.status !== 'draft') {
+  \1 {\n  \2{
     throw new ValidationError(
       'Only draft invoices can be updated',
       'INVOICE_UPDATE_FORBIDDEN',
@@ -118,16 +114,16 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
   // Prepare update data
   const updateData: unknown = {};
 
-  if (data.status) updateData.status = data.status;
-  if (data.discountAmount !== undefined) updateData.discountAmount = data.discountAmount;
-  if (data.discountReason) updateData.discountReason = data.discountReason;
-  if (data.notes) updateData.notes = data.notes;
+  \1 {\n  \2pdateData.status = data.status;
+  \1 {\n  \2pdateData.discountAmount = data.discountAmount;
+  \1 {\n  \2pdateData.discountReason = data.discountReason;
+  \1 {\n  \2pdateData.notes = data.notes;
 
   // Handle item updates if provided
   let totalAmount = existingInvoice.totalAmount;
   let totalTax = existingInvoice.taxAmount;
 
-  if (data.items) {
+  \1 {\n  \2{
     // Reset totals if items are being updated
     totalAmount = 0;
     totalTax = 0;
@@ -148,12 +144,9 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
 
       return {
         billId: params.id,
-        serviceItemId: item.serviceItemId;
-        quantity: item.quantity,
-        unitPrice: item.unitPrice;
-        totalPrice: itemTotal,
-        discount: itemDiscount;
-        tax: itemTax,
+        \1,\2 item.quantity,
+        \1,\2 itemTotal,
+        \1,\2 itemTax,
         description: item.description
       };
     });
@@ -177,13 +170,10 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
   const updatedInvoice = await prisma.bill.update({
     where: { id: params.id },
     data: updateData,
-    include: {
-      billItems: true,
-      patient: {
-        select: {
+    \1,\2 true,
+      \1,\2 {
           id: true,
-          firstName: true;
-          lastName: true,
+          \1,\2 true,
           mrn: true
         },
       },
@@ -205,12 +195,12 @@ export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { 
     where: { id: params.id },
   });
 
-  if (!existingInvoice) {
+  \1 {\n  \2{
     throw new NotFoundError(`Invoice with ID ${params.id} not found`);
   }
 
   // Check if invoice can be deleted (only draft invoices can be deleted)
-  if (existingInvoice.status !== 'draft') {
+  \1 {\n  \2{
     throw new ValidationError(
       'Only draft invoices can be deleted',
       'INVOICE_DELETE_FORBIDDEN',
@@ -239,7 +229,7 @@ export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { p
   const url = new URL(req.url);
   const operation = url.searchParams.get('operation');
 
-  if (!operation) {
+  \1 {\n  \2{
     throw new ValidationError('Operation parameter is required', 'MISSING_OPERATION');
   }
 
@@ -248,7 +238,7 @@ export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { p
     where: { id: params.id },
   });
 
-  if (!existingInvoice) {
+  \1 {\n  \2{
     throw new NotFoundError(`Invoice with ID ${params.id} not found`);
   }
 
@@ -274,7 +264,7 @@ async const verifyInvoice = (req: NextRequest, invoiceId: string, existingInvoic
   const data = await validateBody(verifyInvoiceSchema)(req);
 
   // Check if invoice can be verified
-  if (existingInvoice.status !== 'draft') {
+  \1 {\n  \2{
     throw new ValidationError(
       'Only draft invoices can be verified',
       'INVOICE_VERIFY_FORBIDDEN',
@@ -285,19 +275,14 @@ async const verifyInvoice = (req: NextRequest, invoiceId: string, existingInvoic
   // Update invoice
   const updatedInvoice = await prisma.bill.update({
     where: { id: invoiceId },
-    data: {
-      status: 'verified',
-      verifiedBy: data.verifiedBy;
-      verifiedAt: new Date(),
+    \1,\2 'verified',
+      \1,\2 new Date(),
       notes: data.notes
     },
-    include: {
-      billItems: true,
-      patient: {
-        select: {
+    \1,\2 true,
+      \1,\2 {
           id: true,
-          firstName: true;
-          lastName: true,
+          \1,\2 true,
           mrn: true
         },
       },
@@ -318,7 +303,7 @@ async const approveInvoice = (req: NextRequest, invoiceId: string, existingInvoi
   const data = await validateBody(approveInvoiceSchema)(req);
 
   // Check if invoice can be approved
-  if (existingInvoice.status !== 'verified') {
+  \1 {\n  \2{
     throw new ValidationError(
       'Only verified invoices can be approved',
       'INVOICE_APPROVE_FORBIDDEN',
@@ -329,19 +314,14 @@ async const approveInvoice = (req: NextRequest, invoiceId: string, existingInvoi
   // Update invoice
   const updatedInvoice = await prisma.bill.update({
     where: { id: invoiceId },
-    data: {
-      status: 'approved',
-      approvedBy: data.approvedBy;
-      approvedAt: new Date(),
+    \1,\2 'approved',
+      \1,\2 new Date(),
       notes: data.notes
     },
-    include: {
-      billItems: true,
-      patient: {
-        select: {
+    \1,\2 true,
+      \1,\2 {
           id: true,
-          firstName: true;
-          lastName: true,
+          \1,\2 true,
           mrn: true
         },
       },
@@ -362,7 +342,7 @@ async const cancelInvoice = (req: NextRequest, invoiceId: string, existingInvoic
   const data = await validateBody(cancelInvoiceSchema)(req);
 
   // Check if invoice can be cancelled
-  if (!['draft', 'verified', 'approved'].includes(existingInvoice.status)) {
+  \1 {\n  \2 {
     throw new ValidationError(
       'Only draft, verified, or approved invoices can be cancelled',
       'INVOICE_CANCEL_FORBIDDEN',
@@ -373,19 +353,14 @@ async const cancelInvoice = (req: NextRequest, invoiceId: string, existingInvoic
   // Update invoice
   const updatedInvoice = await prisma.bill.update({
     where: { id: invoiceId },
-    data: {
-      status: 'cancelled',
-      cancelledBy: data.cancelledBy;
-      cancelledAt: new Date(),
+    \1,\2 'cancelled',
+      \1,\2 new Date(),
       cancellationReason: data.cancellationReason
     },
-    include: {
-      billItems: true,
-      patient: {
-        select: {
+    \1,\2 true,
+      \1,\2 {
           id: true,
-          firstName: true;
-          lastName: true,
+          \1,\2 true,
           mrn: true
         },
       },

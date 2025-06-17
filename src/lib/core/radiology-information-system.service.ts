@@ -111,8 +111,7 @@ export const QualityAssuranceSchema = z.object({
 
 export type ImagingStudy = z.infer<typeof ImagingStudySchema> & {
   id: string,
-  accession_number: string;
-  study_instance_uid: string,
+  \1,\2 string,
   status: 'scheduled' | 'arrived' | 'in_progress' | 'completed' | 'cancelled' | 'no_show';
   arrival_time?: Date;
   start_time?: Date;
@@ -134,8 +133,7 @@ export type ImagingStudy = z.infer<typeof ImagingStudySchema> & {
 
 export type ImagingReport = z.infer<typeof ImagingReportSchema> & {
   id: string,
-  report_number: string;
-  status: 'draft' | 'preliminary' | 'final' | 'amended';
+  \1,\2 'draft' | 'preliminary' | 'final' | 'amended';
   dictated_at?: Date;
   transcribed_at?: Date;
   signed_at?: Date;
@@ -151,10 +149,8 @@ export type ImagingReport = z.infer<typeof ImagingReportSchema> & {
 
 export type DicomSeries = z.infer<typeof DicomSeriesSchema> & {
   id: string,
-  series_instance_uid: string;
-  created_at: Date,
-  updated_at: Date;
-  transfer_syntax: string;
+  \1,\2 Date,
+  \1,\2 string;
   compression_type?: string;
   file_size_mb: number,
   verification_status: 'pending' | 'verified' | 'failed';
@@ -169,57 +165,14 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
   updated_at: Date
 };
 
-export interface RadiologyWorklistItem {
-  study: ImagingStudy,
-  priority_score: number;
-  estimated_read_time: number,
-  complexity_level: 'low' | 'medium' | 'high';
-  subspecialty_required?: string;
-  prior_studies_count: number,
-  critical_finding_likelihood: number
-export interface RadiologyMetrics {
-  daily_volume: number,
-  average_read_time: number;
-  turnaround_time_stat: number; // minutes
-  turnaround_time_routine: number; // minutes
-  critical_results_percentage: number,
-  repeat_rate: number;
-  no_show_rate: number,
-  equipment_utilization: number;
-  radiologist_productivity: {
-    radiologist_id: string,
-    studies_read: number;
-    average_read_time: number,
-    critical_results: number;
-    amendments: number
+\1
+}
   }[];
-  modality_distribution: {
-    modality: string,
-    count: number;
-    percentage: number
+  \1,\2 string,
+    \1,\2 number
   }[];
-export interface PACSIntegration {
-  study_id: string,
-  pacs_server: string;
-  transfer_status: 'pending' | 'in_progress' | 'completed' | 'failed';
-  transfer_start_time?: Date;
-  transfer_completion_time?: Date;
-  error_message?: string;
-  retry_count: number,
-  file_count: number;
-  total_size_mb: number;
-  verification_hash?: string;
-export class RadiologyInformationSystemService {
-  private imagingStudies: Map<string, ImagingStudy> = new Map(),
-  private imagingReports: Map<string, ImagingReport> = new Map(),
-  private dicomSeries: Map<string, DicomSeries[]> = new Map(),
-  private qualityAssurance: Map<string, QualityAssurance> = new Map(),
-  private pacsIntegrations: Map<string, PACSIntegration> = new Map(),
-  private reportTemplates: Map<string, any> = new Map(),
-  private equipmentSchedule: Map<string, any[]> = new Map(),
-  constructor() {
-    this.initializeReportTemplates();
-    this.initializeEquipmentSchedule();
+\1
+}
   }
 
   /**
@@ -229,10 +182,8 @@ export class RadiologyInformationSystemService {
     const templates = [
       {
         id: 'chest-xray',
-        name: 'Chest X-Ray Report';
-        modality: 'x_ray',
-        body_part: 'chest';
-        template: {
+        \1,\2 'x_ray',
+        \1,\2 {
           technique: 'PA and lateral chest radiographs were obtained.',
           findings_sections: [
             'Lungs and pleura',
@@ -244,10 +195,8 @@ export class RadiologyInformationSystemService {
       },
       {
         id: 'ct-head',
-        name: 'CT Head Report';
-        modality: 'ct_scan',
-        body_part: 'head';
-        template: {
+        \1,\2 'ct_scan',
+        \1,\2 {
           technique: 'Axial CT images of the head were obtained without intravenous contrast.',
           findings_sections: [
             'Brain parenchyma',
@@ -260,10 +209,8 @@ export class RadiologyInformationSystemService {
       },
       {
         id: 'mri-brain',
-        name: 'MRI Brain Report';
-        modality: 'mri',
-        body_part: 'brain';
-        template: {
+        \1,\2 'mri',
+        \1,\2 {
           technique: 'Multiplanar, multisequence MRI of the brain was performed.',
           findings_sections: [
             'Brain parenchyma',
@@ -305,10 +252,8 @@ export class RadiologyInformationSystemService {
     const study: ImagingStudy = {
       ...validatedData,
       id: studyId,
-      accession_number: accessionNumber;
-      study_instance_uid: studyInstanceUID,
-      status: 'scheduled';
-      created_at: new Date(),
+      \1,\2 studyInstanceUID,
+      \1,\2 new Date(),
       updated_at: new Date()
     };
 
@@ -324,8 +269,8 @@ export class RadiologyInformationSystemService {
    * Generate accession number;
    */
   private generateAccessionNumber(): string {
-    const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-8);
-    const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100).toString().padStart(2, '0');
+    const _timestamp = crypto.getRandomValues(\1[0].toString().slice(-8);
+    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 100).toString().padStart(2, '0');
     return `/* SECURITY: Template literal eliminated */
   }
 
@@ -334,7 +279,7 @@ export class RadiologyInformationSystemService {
    */
   private generateStudyInstanceUID(): string {
     // Simplified UID generation - in real implementation, use proper DICOM UID
-    return `1.2.840.113619.2.1.$crypto.getRandomValues(new Uint32Array(1))[0].$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000)`;
+    return `1.2.840.113619.2.1.$crypto.getRandomValues(\1[0].$Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000000)`;
   }
 
   /**
@@ -358,14 +303,13 @@ export class RadiologyInformationSystemService {
                (studyEnd > appointmentStart && studyEnd <= appointmentEnd);
       });
 
-      if (isAvailable != null) {
+      \1 {\n  \2{
         // Schedule the equipment
         schedule.push({
           study_id: study.id,
           start_time: scheduledDateTime.toISOString(),
           end_time: new Date(scheduledDateTime.getTime() + study.estimated_duration * 60000).toISOString(),
-          study_type: study.study_type;
-          patient_id: study.patient_id
+          \1,\2 study.patient_id
         });
 
         this.equipmentSchedule.set(equipmentId, schedule);
@@ -401,11 +345,11 @@ export class RadiologyInformationSystemService {
    */
   async patientArrival(studyId: string): Promise<ImagingStudy> {
     const study = this.imagingStudies.get(studyId);
-    if (!study) {
+    \1 {\n  \2{
       throw new Error('Study not found');
     }
 
-    if (study.status !== 'scheduled') {
+    \1 {\n  \2{
       throw new Error('Study is not in scheduled status');
     }
 
@@ -422,11 +366,11 @@ export class RadiologyInformationSystemService {
    */
   async startImagingStudy(studyId: string, technologistId: string): Promise<ImagingStudy> {
     const study = this.imagingStudies.get(studyId);
-    if (!study) {
+    \1 {\n  \2{
       throw new Error('Study not found');
     }
 
-    if (study.status !== 'arrived') {
+    \1 {\n  \2{
       throw new Error('Patient must be arrived before starting study');
     }
 
@@ -444,19 +388,18 @@ export class RadiologyInformationSystemService {
    */
   async completeImagingStudy(
     studyId: string,
-    completionData: {
-      total_images: number,
+    \1,\2 number,
       study_size_mb: number;
       radiation_dose_total?: number;
       notes?: string;
     }
   ): Promise<ImagingStudy> {
     const study = this.imagingStudies.get(studyId);
-    if (!study) {
+    \1 {\n  \2{
       throw new Error('Study not found');
     }
 
-    if (study.status !== 'in_progress') {
+    \1 {\n  \2{
       throw new Error('Study must be in progress to complete');
     }
 
@@ -480,14 +423,11 @@ export class RadiologyInformationSystemService {
    */
   private async initiatePACSTransfer(studyId: string): Promise<void> {
     const study = this.imagingStudies.get(studyId);
-    if (!study) return;
+    \1 {\n  \2eturn;
 
-    const pacsIntegration: PACSIntegration = {
-      study_id: studyId,
-      pacs_server: 'PACS-MAIN';
-      transfer_status: 'pending',
-      retry_count: 0;
-      file_count: study.total_images || 0,
+    const \1,\2 studyId,
+      \1,\2 'pending',
+      \1,\2 study.total_images || 0,
       total_size_mb: study.study_size_mb || 0
     };
 
@@ -504,7 +444,7 @@ export class RadiologyInformationSystemService {
    */
   private async completePACSTransfer(studyId: string): Promise<void> {
     const pacsIntegration = this.pacsIntegrations.get(studyId);
-    if (!pacsIntegration) return;
+    \1 {\n  \2eturn;
 
     pacsIntegration.transfer_status = 'completed';
     pacsIntegration.transfer_completion_time = new Date();
@@ -517,7 +457,7 @@ export class RadiologyInformationSystemService {
    * Generate verification hash;
    */
   private generateVerificationHash(): string {
-    return crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 15) + crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 15);
+    return crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 15) + crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 15);
   }
 
   /**
@@ -527,7 +467,7 @@ export class RadiologyInformationSystemService {
     const validatedData = ImagingReportSchema.parse(reportData);
 
     const study = this.imagingStudies.get(validatedData.study_id);
-    if (!study) {
+    \1 {\n  \2{
       throw new Error('Study not found');
     }
 
@@ -537,8 +477,7 @@ export class RadiologyInformationSystemService {
     const report: ImagingReport = {
       ...validatedData,
       id: reportId,
-      report_number: reportNumber;
-      status: 'draft',
+      \1,\2 'draft',
       created_at: new Date(),
       updated_at: new Date()
     };
@@ -557,8 +496,8 @@ export class RadiologyInformationSystemService {
    * Generate report number;
    */
   private generateReportNumber(): string {
-    const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
-    const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    const _timestamp = crypto.getRandomValues(\1[0].toString().slice(-6);
+    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
     return `RPT/* SECURITY: Template literal eliminated */
   }
 
@@ -567,11 +506,11 @@ export class RadiologyInformationSystemService {
    */
   async signImagingReport(reportId: string, radiologistId: string): Promise<ImagingReport> {
     const report = this.imagingReports.get(reportId);
-    if (!report) {
+    \1 {\n  \2{
       throw new Error('Report not found');
     }
 
-    if (report.status === 'final') {
+    \1 {\n  \2{
       throw new Error('Report is already signed');
     }
 
@@ -582,14 +521,14 @@ export class RadiologyInformationSystemService {
     report.updated_at = now;
 
     // Calculate read time
-    if (report.dictated_at) {
+    \1 {\n  \2{
       report.read_time_minutes = Math.round((now.getTime() - report.dictated_at.getTime()) / (1000 * 60));
     }
 
     this.imagingReports.set(reportId, report);
 
     // Handle critical results
-    if (report?.critical_result && !report.critical_result_communicated) {
+    \1 {\n  \2{
       await this.handleCriticalResult(report);
     }
 
@@ -603,10 +542,8 @@ export class RadiologyInformationSystemService {
     // In real implementation, this would trigger alerts and notifications
 
       report_id: report.id,
-      study_id: report.study_id;
-      radiologist: report.radiologist_id,
-      findings: report.findings;
-      impression: report.impression
+      \1,\2 report.radiologist_id,
+      \1,\2 report.impression
     });
 
     // Mark as communicated (simplified)
@@ -628,8 +565,7 @@ export class RadiologyInformationSystemService {
     const series: DicomSeries = {
       ...validatedData,
       id: seriesId,
-      series_instance_uid: seriesInstanceUID;
-      created_at: new Date(),
+      \1,\2 new Date(),
       updated_at: new Date(),
       transfer_syntax: '1.2.840.10008.1.2.1', // Explicit VR Little Endian
       file_size_mb: validatedData.image_count * 0.5, // Estimate 0.5MB per image
@@ -649,7 +585,7 @@ export class RadiologyInformationSystemService {
    * Generate series instance UID;
    */
   private generateSeriesInstanceUID(): string {
-    return `1.2.840.113619.2.1.$crypto.getRandomValues(new Uint32Array(1))[0].$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000).1`;
+    return `1.2.840.113619.2.1.$crypto.getRandomValues(\1[0].$Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000000).1`;
   }
 
   /**
@@ -663,12 +599,9 @@ export class RadiologyInformationSystemService {
     // Calculate overall score
     const scores = {
       excellent: 100,
-      good: 85;
-      acceptable: 70,
-      poor: 50;
-      non_diagnostic: 0,
-      optimal: 100;
-      suboptimal: 60
+      \1,\2 70,
+      \1,\2 0,
+      \1,\2 60
     };
 
     const imageQualityScore = scores[validatedData.image_quality as keyof typeof scores] || 0;
@@ -678,11 +611,11 @@ export class RadiologyInformationSystemService {
     let overallScore = (imageQualityScore + positioningScore + exposureScore) / 3;
 
     // Apply penalties
-    if (validatedData.artifacts_present) overallScore -= 10;
-    if (validatedData.motion_artifact) overallScore -= 15;
-    if (validatedData.repeat_required) overallScore -= 20;
-    if (!validatedData.patient_preparation_adequate) overallScore -= 10;
-    if (!validatedData.equipment_functioning) overallScore -= 25;
+    \1 {\n  \2verallScore -= 10;
+    \1 {\n  \2verallScore -= 15;
+    \1 {\n  \2verallScore -= 20;
+    \1 {\n  \2verallScore -= 10;
+    \1 {\n  \2verallScore -= 25;
 
     overallScore = Math.max(0, Math.min(100, overallScore));
 
@@ -721,14 +654,11 @@ export class RadiologyInformationSystemService {
       let priorityScore = 50; // Base score
 
       switch (study.urgency) {
-        case 'stat': priorityScore += 50; break;
-        case 'urgent': priorityScore += 30; break;
-        case 'add_on': priorityScore += 20; break;
-        case 'routine': break;
+        case 'stat': priorityScore += 50;\1\n    }\n    case 'urgent': priorityScore += 30;\1\n    }\n    case 'add_on': priorityScore += 20;\1\n    }\n    case 'routine': break;
       }
 
       // Add time-based priority
-      const hoursWaiting = (crypto.getRandomValues(new Uint32Array(1))[0] - (study.completion_time?.getTime() || 0)) / (1000 * 60 * 60);
+      const hoursWaiting = (crypto.getRandomValues(\1[0] - (study.completion_time?.getTime() || 0)) / (1000 * 60 * 60);
       priorityScore += Math.min(hoursWaiting * 2, 30);
 
       // Estimate read time based on study type
@@ -747,19 +677,18 @@ export class RadiologyInformationSystemService {
 
       // Determine complexity
       let complexityLevel: 'low' | 'medium' | 'high' = 'medium';
-      if (study.study_type === 'x_ray' || study.study_type === 'ultrasound') {
-        complexityLevel = 'low';
-      } else if (study.study_type === 'mri' || study.study_type === 'pet_scan') {
-        complexityLevel = 'high';
+      \1 {\n  \2{
+        complexityLevel = 'low',
+      } else \1 {\n  \2{
+        complexityLevel = 'high',
       }
 
       return {
         study,
         priority_score: priorityScore,
-        estimated_read_time: estimatedReadTime;
-        complexity_level: complexityLevel,
+        \1,\2 complexityLevel,
         prior_studies_count: 0, // Simplified
-        critical_finding_likelihood: crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 20, // Simplified percentage
+        critical_finding_likelihood: crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 20, // Simplified percentage
       };
     });
 
@@ -769,11 +698,11 @@ export class RadiologyInformationSystemService {
     // Apply filters
     let filteredItems = worklistItems;
 
-    if (urgency != null) {
+    \1 {\n  \2{
       filteredItems = filteredItems.filter(item => item.study.urgency === urgency);
     }
 
-    if (subspecialty != null) {
+    \1 {\n  \2{
       filteredItems = filteredItems.filter(item => item.subspecialty_required === subspecialty);
     }
 
@@ -790,13 +719,13 @@ export class RadiologyInformationSystemService {
     let filteredStudies = studies;
     let filteredReports = reports;
 
-    if (dateFrom != null) {
+    \1 {\n  \2{
       const fromDate = new Date(dateFrom);
       filteredStudies = filteredStudies.filter(study => study.created_at >= fromDate);
       filteredReports = filteredReports.filter(report => report.created_at >= fromDate);
     }
 
-    if (dateTo != null) {
+    \1 {\n  \2{
       const toDate = new Date(dateTo);
       filteredStudies = filteredStudies.filter(study => study.created_at <= toDate);
       filteredReports = filteredReports.filter(report => report.created_at <= toDate);
@@ -816,7 +745,7 @@ export class RadiologyInformationSystemService {
 
     const turnaroundTimeStat = statStudies.length > 0 ?;
       statStudies.reduce((sum, study) => {
-        if (study?.completion_time && study.start_time) {
+        \1 {\n  \2{
           return sum + (study.completion_time.getTime() - study.start_time.getTime()) / (1000 * 60);
         }
         return sum;
@@ -824,7 +753,7 @@ export class RadiologyInformationSystemService {
 
     const turnaroundTimeRoutine = routineStudies.length > 0 ?;
       routineStudies.reduce((sum, study) => {
-        if (study?.completion_time && study.start_time) {
+        \1 {\n  \2{
           return sum + (study.completion_time.getTime() - study.start_time.getTime()) / (1000 * 60);
         }
         return sum;
@@ -851,30 +780,26 @@ export class RadiologyInformationSystemService {
     // Radiologist productivity
     const radiologistStats = new Map<string, any>();
     filteredReports.forEach(report => {
-      if (!report.radiologist_id) return;
+      \1 {\n  \2eturn;
 
       const current = radiologistStats.get(report.radiologist_id) || {
         radiologist_id: report.radiologist_id,
-        studies_read: 0;
-        total_read_time: 0,
-        critical_results: 0;
-        amendments: 0
+        \1,\2 0,
+        \1,\2 0
       };
 
       current.studies_read++;
       current.total_read_time += report.read_time_minutes || 0;
-      if (report.critical_result) current.critical_results++;
-      if (report.status === 'amended') current.amendments++;
+      \1 {\n  \2urrent.critical_results++;
+      \1 {\n  \2urrent.amendments++;
 
       radiologistStats.set(report.radiologist_id, current);
     });
 
     const _radiologistProductivity = Array.from(radiologistStats.values()).map(stats => ({
       radiologist_id: stats.radiologist_id,
-      studies_read: stats.studies_read;
-      average_read_time: stats.studies_read > 0 ? stats.total_read_time / stats.studies_read : 0,
-      critical_results: stats.critical_results;
-      amendments: stats.amendments
+      \1,\2 stats.studies_read > 0 ? stats.total_read_time / stats.studies_read : 0,
+      \1,\2 stats.amendments
     }));
 
     // Modality distribution
@@ -891,12 +816,9 @@ export class RadiologyInformationSystemService {
 
     return {
       daily_volume: dailyVolume,
-      average_read_time: Math.round(averageReadTime * 100) / 100;
-      turnaround_time_stat: Math.round(turnaroundTimeStat * 100) / 100,
-      turnaround_time_routine: Math.round(turnaroundTimeRoutine * 100) / 100;
-      critical_results_percentage: Math.round(criticalResultsPercentage * 100) / 100,
-      repeat_rate: Math.round(repeatRate * 100) / 100;
-      no_show_rate: Math.round(noShowRate * 100) / 100,
+      \1,\2 Math.round(turnaroundTimeStat * 100) / 100,
+      \1,\2 Math.round(criticalResultsPercentage * 100) / 100,
+      \1,\2 Math.round(noShowRate * 100) / 100,
       equipment_utilization: equipmentUtilization;
       radiologist_productivity,
       modality_distribution: modalityDistribution.map(m => ({
@@ -918,17 +840,17 @@ export class RadiologyInformationSystemService {
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ studies: ImagingStudy[], total: number; totalPages: number }> {
+  }): Promise<{ studies: ImagingStudy[], \1,\2 number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredStudies = Array.from(this.imagingStudies.values());
 
     // Apply filters
     Object.entries(searchFilters).forEach(([key, value]) => {
-      if (value != null) {
+      \1 {\n  \2{
         filteredStudies = filteredStudies.filter(study => {
           const studyValue = (study as any)[key];
-          if (key.includes('date')) {
+          \1 {\n  \2 {
             return new Date(studyValue) >= new Date(value as string);
           }
           return studyValue === value;
@@ -958,11 +880,11 @@ export class RadiologyInformationSystemService {
   async getReportTemplates(modality?: string, bodyPart?: string): Promise<any[]> {
     let templates = Array.from(this.reportTemplates.values());
 
-    if (modality != null) {
+    \1 {\n  \2{
       templates = templates.filter(template => template.modality === modality);
     }
 
-    if (bodyPart != null) {
+    \1 {\n  \2{
       templates = templates.filter(template => template.body_part === bodyPart);
     }
 

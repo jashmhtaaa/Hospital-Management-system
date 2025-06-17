@@ -24,11 +24,9 @@ type CarouselProps = {
 }
 
 type CarouselContextProps = {
-  carouselRef: ReturnType<typeof useEmblaCarousel>[0]
-  api: ReturnType<typeof useEmblaCarousel>[1]
+  \1,\2 ReturnType<typeof useEmblaCarousel>[1]
   scrollPrev: () => void,
-  scrollNext: () => void;
-  canScrollPrev: boolean,
+  \1,\2 boolean,
   canScrollNext: boolean
 } & CarouselProps;
 
@@ -37,7 +35,7 @@ const CarouselContext = React.createContext<CarouselContextProps | null>(null);
 const useCarousel = () {
   const context = React.useContext(CarouselContext);
 
-  if (!context) {
+  \1 {\n  \2{
     throw new Error("useCarousel must be used within a <Carousel />");
   }
 
@@ -71,7 +69,7 @@ const Carousel = React.forwardRef<;
     const [canScrollNext, setCanScrollNext] = React.useState(false);
 
     const onSelect = React.useCallback((api: CarouselApi) => {
-      if (!api) {
+      \1 {\n  \2{
         return
       }
 
@@ -89,10 +87,10 @@ const Carousel = React.forwardRef<;
 
     const handleKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLDivElement>) => {
-        if (event.key === "ArrowLeft") {
+        \1 {\n  \2{
           event.preventDefault(),
           scrollPrev();
-        } else if (event.key === "ArrowRight") {
+        } else \1 {\n  \2{
           event.preventDefault(),
           scrollNext();
         }
@@ -101,7 +99,7 @@ const Carousel = React.forwardRef<;
     );
 
     React.useEffect(() => {
-      if (!api || !setApi) {
+      \1 {\n  \2{
         return;
       }
 
@@ -109,7 +107,7 @@ const Carousel = React.forwardRef<;
     }, [api, setApi]);
 
     React.useEffect(() => {
-      if (!api) {
+      \1 {\n  \2{
         return;
       }
 
@@ -158,7 +156,7 @@ const CarouselContent = React.forwardRef<;
   const { carouselRef, orientation } = useCarousel();
 
   return (
-    <div ref={carouselRef} className="overflow-hidden">;
+    \1>
 <div
         ref={ref}
         className={cn(

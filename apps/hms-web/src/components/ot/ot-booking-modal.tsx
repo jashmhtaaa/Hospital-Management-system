@@ -10,8 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 }
 interface OTBookingModalProps {
   isOpen: boolean,
-  onClose: () => void;
-  onSubmit: (data: unknown) => void
+  \1,\2 (data: unknown) => void
 }
 
 /**
@@ -26,14 +25,14 @@ export const _OTBookingModal = ({ isOpen, onClose, onSubmit }: OTBookingModalPro
 
   return (
     <Dialog>
-      <DialogContent className="sm:max-w-[500px]">;
+      \1>
         <DialogHeader>
           <DialogTitle>Schedule Surgery</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>;
-          <div className="grid gap-4 py-4">;
-            <div className="space-y-2">;
-              <Label htmlFor="patientId">Patient</Label>;
+        \1>
+          \1>
+            \1>
+              <Label htmlFor="patientId">Patient\1>
               <Select>
                 id="patientId"
                 options={[
@@ -42,8 +41,8 @@ export const _OTBookingModal = ({ isOpen, onClose, onSubmit }: OTBookingModalPro
               />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="surgeryType">Surgery Type</Label>;
+            \1>
+              <Label htmlFor="surgeryType">Surgery Type\1>
               <Select>
                 id="surgeryType"
                 options={[
@@ -52,8 +51,8 @@ export const _OTBookingModal = ({ isOpen, onClose, onSubmit }: OTBookingModalPro
               />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="surgeon">Surgeon</Label>;
+            \1>
+              <Label htmlFor="surgeon">Surgeon\1>
               <Select>
                 id="surgeon"
                 options={[
@@ -62,8 +61,8 @@ export const _OTBookingModal = ({ isOpen, onClose, onSubmit }: OTBookingModalPro
               />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="theatre">Theatre</Label>;
+            \1>
+              <Label htmlFor="theatre">Theatre\1>
               <Select>
                 id="theatre"
                 options={[
@@ -72,29 +71,29 @@ export const _OTBookingModal = ({ isOpen, onClose, onSubmit }: OTBookingModalPro
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">;
-              <div className="space-y-2">;
-                <Label htmlFor="date">Date</Label>;
+            \1>
+              \1>
+                <Label htmlFor="date">Date\1>
                 <Input id="date" type="date" />
               </div>
-              <div className="space-y-2">;
-                <Label htmlFor="time">Time</Label>;
+              \1>
+                <Label htmlFor="time">Time\1>
                 <Input id="time" type="time" />
               </div>
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="duration">Estimated Duration</Label>;
+            \1>
+              <Label htmlFor="duration">Estimated Duration\1>
               <Input id="duration" placeholder="e.g., 2 hours" />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="notes">Notes</Label>;
+            \1>
+              <Label htmlFor="notes">Notes\1>
               <Textarea id="notes" placeholder="Additional information" />
             </div>
           </div>
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose}>;
+            \1>
               Cancel
             </Button>
             <Button type="submit">Schedule</Button>

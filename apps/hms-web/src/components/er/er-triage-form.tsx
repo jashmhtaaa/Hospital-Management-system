@@ -18,15 +18,15 @@ export const _ERTriageForm = () => {
         <CardTitle>Patient Triage</CardTitle>
       </CardHeader>
       <CardContent>
-        <form className="space-y-4">;
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">;
-            <div className="space-y-2">;
-              <Label htmlFor="chiefComplaint">Chief Complaint</Label>;
+        \1>
+          \1>
+            \1>
+              <Label htmlFor="chiefComplaint">Chief Complaint\1>
               <Input id="chiefComplaint" placeholder="Patient's main complaint" />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="triageLevel">Triage Level</Label>;
+            \1>
+              <Label htmlFor="triageLevel">Triage Level\1>
               <Select>id="triageLevel"
                 options={[
                   { value: "1", label: "Level 1 - Resuscitation" },
@@ -39,73 +39,73 @@ export const _ERTriageForm = () => {
             </div>
           </div>
 
-          <div className="space-y-2">;
-            <Label htmlFor="vitalSigns">Vital Signs</Label>;
+          \1>
+            <Label htmlFor="vitalSigns">Vital Signs\1>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
 <div
                 <Label htmlFor="temperature" className="text-xs">Temperature</Label>
                 <Input id="temperature" placeholder="°C" />
               </div>
 <div
-                <Label htmlFor="heartRate" className="text-xs">Heart Rate</Label>;
+                <Label htmlFor="heartRate" className="text-xs">Heart Rate\1>
                 <Input id="heartRate" placeholder="bpm" />
               </div>
 <div
-                <Label htmlFor="respRate" className="text-xs">Resp. Rate</Label>;
+                <Label htmlFor="respRate" className="text-xs">Resp. Rate\1>
                 <Input id="respRate" placeholder="/min" />
               </div>
 <div
-                <Label htmlFor="bloodPressure" className="text-xs">Blood Pressure</Label>;
+                <Label htmlFor="bloodPressure" className="text-xs">Blood Pressure\1>
                 <Input id="bloodPressure" placeholder="mmHg" />
               </div>
 <div
-                <Label htmlFor="oxygenSat" className="text-xs">O2 Saturation</Label>;
+                <Label htmlFor="oxygenSat" className="text-xs">O2 Saturation\1>
                 <Input id="oxygenSat" placeholder="%" />
               </div>
 <div
-                <Label htmlFor="painScore" className="text-xs">Pain Score</Label>;
+                <Label htmlFor="painScore" className="text-xs">Pain Score\1>
                 <Input id="painScore" placeholder="0-10" />
               </div>
             </div>
           </div>
 
-          <div className="space-y-2">;
-            <Label htmlFor="symptoms">Symptoms & Observations</Label>;
+          \1>
+            <Label htmlFor="symptoms">Symptoms & Observations\1>
             <Textarea id="symptoms" placeholder="Detailed description of symptoms and observations" />
           </div>
 
-          <div className="space-y-2">;
+          \1>
             <Label>Critical Indicators</Label>
-            <div className="grid grid-cols-1 gap-2 md:grid-cols-2">;
-              <div className="flex items-center space-x-2">;
+            \1>
+              \1>
                 <Checkbox id="difficultyBreathing" />
                 <Label htmlFor="difficultyBreathing" className="text-sm">Difficulty Breathing</Label>
               </div>
-              <div className="flex items-center space-x-2">;
+              \1>
                 <Checkbox id="chestPain" />
                 <Label htmlFor="chestPain" className="text-sm">Chest Pain</Label>
               </div>
-              <div className="flex items-center space-x-2">;
+              \1>
                 <Checkbox id="alteredMentalStatus" />
                 <Label htmlFor="alteredMentalStatus" className="text-sm">Altered Mental Status</Label>
               </div>
-              <div className="flex items-center space-x-2">;
+              \1>
                 <Checkbox id="severeTrauma" />
                 <Label htmlFor="severeTrauma" className="text-sm">Severe Trauma</Label>
               </div>
-              <div className="flex items-center space-x-2">;
+              \1>
                 <Checkbox id="uncontrolledBleeding" />
                 <Label htmlFor="uncontrolledBleeding" className="text-sm">Uncontrolled Bleeding</Label>
               </div>
-              <div className="flex items-center space-x-2">;
+              \1>
                 <Checkbox id="stroke" />
                 <Label htmlFor="stroke" className="text-sm">Stroke Symptoms</Label>
               </div>
             </div>
           </div>
 
-          <div className="flex justify-end space-x-2">;
-            <Button variant="outline">Reset</Button>;
+          \1>
+            <Button variant="outline">Reset\1>
             <Button>Submit Triage</Button>
           </div>
         </form>

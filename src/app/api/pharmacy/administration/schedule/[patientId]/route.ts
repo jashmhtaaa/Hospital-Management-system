@@ -15,8 +15,7 @@ import type { PharmacyDomain } from '../../../../models/domain-models';
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
+const \1,\2 getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
@@ -24,8 +23,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   delete: () => Promise.resolve(true)
 }
 
-const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
-  findById: getPrescriptionById,
+const \1,\2 getPrescriptionById,
   findByPatientId: () => Promise.resolve([]),
   findByPrescriberId: () => Promise.resolve([]),
   findByMedicationId: () => Promise.resolve([]),
@@ -35,8 +33,7 @@ const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
   delete: () => Promise.resolve(true)
 };
 
-const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
-  findById: () => Promise.resolve(null),
+const \1,\2 () => Promise.resolve(null),
   findByPatientId: () => Promise.resolve([]),
   findByPrescriptionId: () => Promise.resolve([]),
   findByMedicationId: () => Promise.resolve([]),
@@ -57,7 +54,7 @@ export const GET = async (
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -66,7 +63,7 @@ export const GET = async (
 
     // Get patient ID from params
     const { patientId } = params;
-    if (!patientId) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Patient ID is required' }, { status: 400 });
     }
 
@@ -89,7 +86,7 @@ export const GET = async (
 
     for (const prescription of activePrescriptions) {
       const medication = await medicationRepository.findById(prescription.medicationId);
-      if (!medication) continue;
+      \1 {\n  \2ontinue;
 
       // Parse frequency to generate schedule times
       const frequency = prescription.dosage.frequency;
@@ -112,30 +109,26 @@ export const GET = async (
         });
 
         // Skip completed administrations if not requested
-        if (matchingAdministration && matchingAdministration.status === 'completed' && !includeCompleted) {
+        \1 {\n  \2{
           continue;
         }
 
         // Determine status
         let status = 'scheduled';
-        if (matchingAdministration != null) {
+        \1 {\n  \2{
           status = matchingAdministration.status;
-        } else if (scheduleTime < new Date()) {
-          status = 'overdue';
+        } else \1 {\n  \2 {
+          status = 'overdue',
         }
 
         schedule.push({
           prescriptionId: prescription.id,
-          medicationId: medication.id;
-          medicationName: medication.name,
-          dose: prescription.dosage.value;
-          unit: prescription.dosage.unit,
-          route: prescription.dosage.route;
-          scheduledTime: scheduleTime;
+          \1,\2 medication.name,
+          \1,\2 prescription.dosage.unit,
+          \1,\2 scheduleTime;
           status,
           administrationId: matchingAdministration?.id,
-          administeredAt: matchingAdministration?.administeredAt;
-          administeredBy: matchingAdministration?.administeredBy,
+          \1,\2 matchingAdministration?.administeredBy,
           notes: matchingAdministration?.notes
         });
       }
@@ -147,10 +140,8 @@ export const GET = async (
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
       action: 'SCHEDULE_VIEW',
-      resourceType: 'MedicationAdministration';
-      userId: userId,
-      patientId: patientId;
-        count: schedule.length,
+      \1,\2 userId,
+      \1,\2 schedule.length,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString()
     });
@@ -169,93 +160,93 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
   const times: Date[] = [];
 
   // Parse frequency
-  if (frequency.includes('daily')) {
+  \1 {\n  \2 {
     // Once daily - default to 9 AM
     const time = new Date(start);
     time.setHours(9, 0, 0, 0);
-    if (time > start && time < end) {
+    \1 {\n  \2{
       times.push(time);
     }
-  } else if (frequency.includes('twice daily') || frequency.includes('BID')) {
+  } else \1 {\n  \2| frequency.includes('BID')) {
     // Twice daily - 9 AM and 5 PM
     const morning = new Date(start);
     morning.setHours(9, 0, 0, 0);
-    if (morning > start && morning < end) {
+    \1 {\n  \2{
       times.push(morning);
     }
 
     const evening = new Date(start);
     evening.setHours(17, 0, 0, 0);
-    if (evening > start && evening < end) {
+    \1 {\n  \2{
       times.push(evening);
     }
-  } else if (frequency.includes('three times daily') || frequency.includes('TID')) {
+  } else \1 {\n  \2| frequency.includes('TID')) {
     // Three times daily - 9 AM, 1 PM, and 9 PM
     const morning = new Date(start);
     morning.setHours(9, 0, 0, 0);
-    if (morning > start && morning < end) {
+    \1 {\n  \2{
       times.push(morning);
     }
 
     const afternoon = new Date(start);
     afternoon.setHours(13, 0, 0, 0);
-    if (afternoon > start && afternoon < end) {
+    \1 {\n  \2{
       times.push(afternoon);
     }
 
     const evening = new Date(start);
     evening.setHours(21, 0, 0, 0);
-    if (evening > start && evening < end) {
+    \1 {\n  \2{
       times.push(evening);
     }
-  } else if (frequency.includes('four times daily') || frequency.includes('QID')) {
+  } else \1 {\n  \2| frequency.includes('QID')) {
     // Four times daily - 9 AM, 1 PM, 5 PM, and 9 PM
     const morning = new Date(start);
     morning.setHours(9, 0, 0, 0);
-    if (morning > start && morning < end) {
+    \1 {\n  \2{
       times.push(morning);
     }
 
     const noon = new Date(start);
     noon.setHours(13, 0, 0, 0);
-    if (noon > start && noon < end) {
+    \1 {\n  \2{
       times.push(noon);
     }
 
     const afternoon = new Date(start);
     afternoon.setHours(17, 0, 0, 0);
-    if (afternoon > start && afternoon < end) {
+    \1 {\n  \2{
       times.push(afternoon);
     }
 
     const evening = new Date(start);
     evening.setHours(21, 0, 0, 0);
-    if (evening > start && evening < end) {
+    \1 {\n  \2{
       times.push(evening);
     }
-  } else if (frequency.includes('every') && frequency.includes('hours')) {
+  } else \1 {\n  \2& frequency.includes('hours')) {
     // Every X hours
     const match = frequency.match(/every\s+(\d+)\s+hours/i);
-    if (match && match[1]) {
+    \1 {\n  \2{
       const hours = Number.parseInt(match[1], 10);
       const time = new Date(start);
       time.setMinutes(0, 0, 0);
       time.setHours(Math.ceil(time.getHours() / hours) * hours);
 
       while (time < end) {
-        if (time > start) {
-          times.push(new Date(time));
+        \1 {\n  \2{
+          times.push(\1;
         }
         time.setHours(time.getHours() + hours);
       }
     }
-  } else if (frequency.includes('PRN') || frequency.includes('as needed')) {
+  } else \1 {\n  \2| frequency.includes('as needed')) {
     // PRN - no scheduled times
   } else {
     // Default to once daily at 9 AM
     const time = new Date(start);
     time.setHours(9, 0, 0, 0);
-    if (time > start && time < end) {
+    \1 {\n  \2{
       times.push(time);
     }
   }

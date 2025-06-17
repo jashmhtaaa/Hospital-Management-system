@@ -59,32 +59,32 @@ const IPDPatientDetails: React.FC<IPDPatientDetailsProperties> = ({
       onValueChange={setActiveDetailTab}
       className="w-full"
     >
-      <TabsList className="mb-4 grid w-full grid-cols-3 sm:grid-cols-5">;
+      \1>
         {" "}
         {/* Responsive grid */}
-        <TabsTrigger value="progress-notes">Progress Notes</TabsTrigger>;
-        <TabsTrigger value="nursing-notes">Nursing Notes</TabsTrigger>;
-        <TabsTrigger value="vital-signs">Vital Signs</TabsTrigger>;
-        <TabsTrigger value="medications">Medications</TabsTrigger>;
+        <TabsTrigger value="progress-notes">Progress Notes\1>
+        <TabsTrigger value="nursing-notes">Nursing Notes\1>
+        <TabsTrigger value="vital-signs">Vital Signs\1>
+        <TabsTrigger value="medications">Medications\1>
         <TabsTrigger value="discharge">Discharge</TabsTrigger>
       </TabsList>
-      <TabsContent value="progress-notes">;
+      \1>
         {/* FIX: Pass admissionId as string */}
         <PatientProgressNotes admissionId={admissionIdString} />
       </TabsContent>
-      <TabsContent value="nursing-notes">;
+      \1>
         {/* FIX: Pass admissionId as string */}
         <NursingNotes admissionId={admissionIdString} />
       </TabsContent>
-      <TabsContent value="vital-signs">;
+      \1>
         {/* FIX: Pass admissionId as string */}
         <VitalSigns admissionId={admissionIdString} />
       </TabsContent>
-      <TabsContent value="medications">;
+      \1>
         {/* FIX: Pass admissionId as string */}
         <MedicationAdministration admissionId={admissionIdString} />
       </TabsContent>
-      <TabsContent value="discharge">;
+      \1>
         {/* FIX: Pass admissionId as string */}
         <DischargeSummary admissionId={admissionIdString} />
       </TabsContent>
@@ -111,24 +111,24 @@ const IPDPage = () => {
   };
 
   return (
-    <div className="space-y-6">;
+    \1>
       {/* Title might be provided by layout, remove if redundant */}
       {/* <h1 className="text-2xl font-bold">Inpatient Department (IPD)</h1> */}
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">;
-        <TabsList className="mb-4 grid w-full grid-cols-2 sm:grid-cols-3">;
+      \1>
+        \1>
           {" "}
           {/* Responsive grid */}
-          <TabsTrigger value="dashboard">Dashboard</TabsTrigger>;
-          <TabsTrigger value="new-admission">New Admission</TabsTrigger>;
+          <TabsTrigger value="dashboard">Dashboard\1>
+          <TabsTrigger value="new-admission">New Admission\1>
           {/* Only show Patient Details tab when an admission is selected */}
           {selectedAdmission && (
-            <TabsTrigger value="patient-details">Patient Details</TabsTrigger>;
+            <TabsTrigger value="patient-details">Patient Details\1>
           )}
         </TabsList>
 
         {/* Dashboard Tab */}
-        <TabsContent value="dashboard" className="space-y-6">;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Bed Management</CardTitle>
@@ -151,16 +151,16 @@ const IPDPage = () => {
         </TabsContent>
 
         {/* New Admission Tab */}
-        <TabsContent value="new-admission">;
+        \1>
           {/* Assuming AdmissionForm doesn't need props or handles its own state */}
           <AdmissionForm />
         </TabsContent>
 
         {/* Patient Details Tab - Conditionally Rendered */}
         {selectedAdmission && (
-          <TabsContent value="patient-details">;
+          \1>
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between">;
+              \1>
                 {/* FIX: Add check for selectedAdmission before accessing properties */}
                 <CardTitle>
                   Details for Admission ID: {selectedAdmission.admissionId}

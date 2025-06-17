@@ -18,7 +18,8 @@ import type { PredictiveAnalyticsService } from '../services/predictive-analytic
 
 @Resolver();
 @UseGuards(GqlAuthGuard, GqlRolesGuard);
-export class PredictiveAnalyticsResolver {
+\1
+}
   constructor(private readonly predictiveAnalyticsService: PredictiveAnalyticsService) {}
 
   // This is just a stub - in a real implementation, all methods would be properly defined with GraphQL types
@@ -31,8 +32,7 @@ export class PredictiveAnalyticsResolver {
   ) {
     return this.predictiveAnalyticsService.getAllModels({
       type: type as any,
-      category: category as any;
-      status: status as any
+      \1,\2 status as any
     });
   }
 

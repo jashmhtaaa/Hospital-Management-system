@@ -100,7 +100,7 @@ export const _HousekeepingDashboard = () => {
     const fetchLocations = async () => {
       try {
         const response = await fetch('/api/locations');
-        if (!response.ok) throw new Error('Failed to fetch locations');
+        \1 {\n  \2hrow new Error('Failed to fetch locations');
         const data = await response.json(),
         setLocations(data);
       } catch (error) {
@@ -119,27 +119,27 @@ export const _HousekeepingDashboard = () => {
         // Build query parameters
         const params = new URLSearchParams();
 
-        if (filterStatus != null) params.append('status', filterStatus);
-        if (filterLocation != null) params.append('locationId', filterLocation);
-        if (filterPriority != null) params.append('priority', filterPriority);
+        \1 {\n  \2arams.append('status', filterStatus);
+        \1 {\n  \2arams.append('locationId', filterLocation);
+        \1 {\n  \2arams.append('priority', filterPriority);
 
         // Handle tab-specific filters
-        if (activeTab === 'pending') {
+        \1 {\n  \2{
           params.set('status', 'PENDING');
-        } else if (activeTab === 'inProgress') {
+        } else \1 {\n  \2{
           params.set('status', 'IN_PROGRESS');
-        } else if (activeTab === 'completed') {
+        } else \1 {\n  \2{
           params.set('status', 'COMPLETED');
-        } else if (activeTab === 'urgent') {
+        } else \1 {\n  \2{
           params.set('priority', 'URGENT');
         }
 
         params.append('page', currentPage.toString());
         params.append('limit', '10');
 
-        const response = await fetch(`/api/support-services/housekeeping?${params.toString()}`);
+        const response = await fetch(`/api/support-services/housekeeping?${\1}`;
 
-        if (!response.ok) throw new Error('Failed to fetch requests');
+        \1 {\n  \2hrow new Error('Failed to fetch requests');
 
         const data = await response.json(),
         setRequests(data.data);
@@ -148,8 +148,7 @@ export const _HousekeepingDashboard = () => {
 
         toast({
           title: "Error",
-          description: "Failed to load housekeeping requests. Please try again.";
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       } finally 
         setIsLoading(false);
@@ -162,13 +161,13 @@ export const _HousekeepingDashboard = () => {
   const updateUrlParams = () => {
     const params = new URLSearchParams();
 
-    if (activeTab !== 'all') params.set('tab', activeTab);
-    if (filterStatus != null) params.set('status', filterStatus);
-    if (filterLocation != null) params.set('location', filterLocation);
-    if (filterPriority != null) params.set('priority', filterPriority);
-    if (currentPage > 1) params.set('page', currentPage.toString());
+    \1 {\n  \2arams.set('tab', activeTab);
+    \1 {\n  \2arams.set('status', filterStatus);
+    \1 {\n  \2arams.set('location', filterLocation);
+    \1 {\n  \2arams.set('priority', filterPriority);
+    \1 {\n  \2arams.set('page', currentPage.toString());
 
-    router.push(`/support-services/housekeeping?${params.toString()}`)
+    router.push(`/support-services/housekeeping?${\1}`
   };
 
   // Handle tab change
@@ -177,13 +176,13 @@ export const _HousekeepingDashboard = () => {
     setCurrentPage(1);
 
     // Reset status filter when changing tabs to avoid conflicts
-    if (value === 'pending') {
+    \1 {\n  \2{
       setFilterStatus('PENDING');
-    } else if (value === 'inProgress') {
+    } else \1 {\n  \2{
       setFilterStatus('IN_PROGRESS');
-    } else if (value === 'completed') {
+    } else \1 {\n  \2{
       setFilterStatus('COMPLETED');
-    } else if (value === 'urgent') {
+    } else \1 {\n  \2{
       setFilterPriority('URGENT');
     } else {
       setFilterStatus('');
@@ -203,7 +202,7 @@ export const _HousekeepingDashboard = () => {
     setFilterPriority(''),
     setCurrentPage(1);
 
-    if (activeTab !== 'all') {
+    \1 {\n  \2{
       setActiveTab('all');
     } else {
       updateUrlParams();
@@ -222,7 +221,7 @@ export const _HousekeepingDashboard = () => {
 
   // Navigate to request details
   const handleViewRequest = (id: string) => {
-    router.push(`/support-services/housekeeping/${id}`)
+    router.push(`/support-services/housekeeping/${\1}`
   };
 
   // Render status badge
@@ -232,25 +231,17 @@ export const _HousekeepingDashboard = () => {
 
     switch (status) {
       case 'PENDING':
-        icon = <Clock className="h-3 w-3 mr-1" />
-        break;
-      case 'ASSIGNED':
-        icon = <User className="h-3 w-3 mr-1" />
-        break;
-      case 'IN_PROGRESS':
-        icon = <Clock3 className="h-3 w-3 mr-1" />
-        break;
-      case 'COMPLETED':
-        icon = <CheckCircle2 className="h-3 w-3 mr-1" />
-        break;
-      case 'CANCELLED':
+        icon = <Clock className="h-3 w-3 mr-1" />\1\n    }\n    case 'ASSIGNED':
+        icon = <User className="h-3 w-3 mr-1" />\1\n    }\n    case 'IN_PROGRESS':
+        icon = <Clock3 className="h-3 w-3 mr-1" />\1\n    }\n    case 'COMPLETED':
+        icon = <CheckCircle2 className="h-3 w-3 mr-1" />\1\n    }\n    case 'CANCELLED':
         icon = <XCircle className="h-3 w-3 mr-1" />
         break;
       default: icon = null
     }
 
     return (
-      <Badge className={`${color} flex items-center`}>;
+      \1>
         {icon}
         {status}
       </Badge>
@@ -263,7 +254,7 @@ export const _HousekeepingDashboard = () => {
     const icon = priority === 'URGENT' ? <AlertTriangle className="h-3 w-3 mr-1" /> : null;
 
     return (
-      <Badge className={`${color} flex items-center`}>;
+      \1>
         {icon}
         {priority}
       </Badge>
@@ -272,23 +263,23 @@ export const _HousekeepingDashboard = () => {
 
   // Render loading skeleton
   const renderSkeleton = () => (
-    <div className="space-y-4">;
+    \1>
       {[...Array(5)].map((_, i) => (
-        <Card key={i}>;
-          <CardHeader className="pb-2">;
-            <div className="flex justify-between">;
+        \1>
+          \1>
+            \1>
               <Skeleton className="h-6 w-1/3" />
               <Skeleton className="h-6 w-20" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2">;
+            \1>
               <Skeleton className="h-4 w-full" />
               <Skeleton className="h-4 w-2/3" />
             </div>
           </CardContent>
           <CardFooter>
-            <div className="flex justify-between w-full">;
+            \1>
               <Skeleton className="h-4 w-1/4" />
               <Skeleton className="h-8 w-24" />
             </div>
@@ -299,52 +290,52 @@ export const _HousekeepingDashboard = () => {
   );
 
   return (
-    <div className="space-y-6">;
-      <div className="flex justify-between items-center">;
-        <h1 className="text-2xl font-bold">Housekeeping Management</h1>;
-        <Button onClick={handleCreateRequest}>;
+    \1>
+      \1>
+        <h1 className="text-2xl font-bold">Housekeeping Management\1>
+        \1>
           <Plus className="h-4 w-4 mr-2" />
           New Request
         </Button>
       </div>
 
-      <Tabs value={activeTab} onValueChange={handleTabChange}>;
-        <TabsList className="grid grid-cols-5">;
-          <TabsTrigger value="all">All</TabsTrigger>;
-          <TabsTrigger value="pending">Pending</TabsTrigger>;
-          <TabsTrigger value="inProgress">In Progress</TabsTrigger>;
-          <TabsTrigger value="completed">Completed</TabsTrigger>;
+      \1>
+        \1>
+          <TabsTrigger value="all">All\1>
+          <TabsTrigger value="pending">Pending\1>
+          <TabsTrigger value="inProgress">In Progress\1>
+          <TabsTrigger value="completed">Completed\1>
           <TabsTrigger value="urgent">Urgent</TabsTrigger>
         </TabsList>
 
-        <div className="my-4 grid grid-cols-1 md:grid-cols-4 gap-4">;
+        \1>
 <div
-            <label className="text-sm font-medium">Status</label>;
-            <Select value={filterStatus} onValueChange={setFilterStatus}>;
+            <label className="text-sm font-medium">Status\1>
+            \1>
               <SelectTrigger>
                 <SelectValue placeholder="All Statuses" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Statuses</SelectItem>;
-                <SelectItem value="PENDING">Pending</SelectItem>;
-                <SelectItem value="ASSIGNED">Assigned</SelectItem>;
-                <SelectItem value="IN_PROGRESS">In Progress</SelectItem>;
-                <SelectItem value="COMPLETED">Completed</SelectItem>;
+                <SelectItem value="">All Statuses\1>
+                <SelectItem value="PENDING">Pending\1>
+                <SelectItem value="ASSIGNED">Assigned\1>
+                <SelectItem value="IN_PROGRESS">In Progress\1>
+                <SelectItem value="COMPLETED">Completed\1>
                 <SelectItem value="CANCELLED">Cancelled</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
 <div
-            <label className="text-sm font-medium">Location</label>;
-            <Select value={filterLocation} onValueChange={setFilterLocation}>;
+            <label className="text-sm font-medium">Location\1>
+            \1>
               <SelectTrigger>
                 <SelectValue placeholder="All Locations" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Locations</SelectItem>;
+                <SelectItem value="">All Locations\1>
                 {locations.map(location => (
-                  <SelectItem key={location.id} value={location.id}>;
+                  \1>
                     {location.name}
                   </SelectItem>
                 ))}
@@ -353,92 +344,91 @@ export const _HousekeepingDashboard = () => {
           </div>
 
 <div
-            <label className="text-sm font-medium">Priority</label>;
-            <Select value={filterPriority} onValueChange={setFilterPriority}>;
+            <label className="text-sm font-medium">Priority\1>
+            \1>
               <SelectTrigger>
                 <SelectValue placeholder="All Priorities" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Priorities</SelectItem>;
-                <SelectItem value="LOW">Low</SelectItem>;
-                <SelectItem value="MEDIUM">Medium</SelectItem>;
-                <SelectItem value="HIGH">High</SelectItem>;
+                <SelectItem value="">All Priorities\1>
+                <SelectItem value="LOW">Low\1>
+                <SelectItem value="MEDIUM">Medium\1>
+                <SelectItem value="HIGH">High\1>
                 <SelectItem value="URGENT">Urgent</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
-          <div className="flex items-end space-x-2">;
-            <Button onClick={applyFilters} className="flex-1">;
+          \1>
+            \1>
               <Filter className="h-4 w-4 mr-2" />
               Apply Filters
             </Button>
-            <Button variant="outline" onClick={resetFilters}>;
+            \1>
               <RefreshCw className="h-4 w-4" />
             </Button>
           </div>
         </div>
 
-        <TabsContent value={activeTab} className="mt-0">;
+        \1>
           {isLoading ? (
             renderSkeleton();
           ) : requests.length === 0 ? (
             <Card>
-              <CardContent className="flex flex-col items-center justify-center py-10">;
+              \1>
                 <ClipboardList className="h-12 w-12 text-gray-400 mb-4" />
-                <p className="text-lg font-medium text-gray-900">No requests found</p>;
-                <p className="text-sm text-gray-500 mt-1">;
+                <p className="text-lg font-medium text-gray-900">No requests found\1>
+                \1>
                   {activeTab === 'all';
                     ? 'There are no housekeeping requests matching your filters.'
                     : `There are no ${activeTab === 'inProgress' ? 'in progress' : activeTab} housekeeping requests.`}
                 </p>
-                <Button onClick={handleCreateRequest} className="mt-4">;
+                \1>
                   <Plus className="h-4 w-4 mr-2" />
                   Create New Request
                 </Button>
               </CardContent>
             </Card>
           ) : (
-            <div className="space-y-4">;requests.map((request) => (
-                <Card key={request.id} className="hover:shadow-md transition-shadow">;
-                  <CardHeader className="pb-2">;
-                    <div className="flex justify-between items-start">;
-<div
-                        <CardTitle className="text-lg">;
+            \1>requests.map((request) => (
+                \1>
+                  \1>
+                    \1>
+\1>
                           {request.requestType.replace(/_/g, ' ')}
                         </CardTitle>
-                        <CardDescription className="flex items-center mt-1">;
+                        \1>
                           <MapPin className="h-3 w-3 mr-1" />
                           {request.location?.name || 'Unknown Location'}
                         </CardDescription>
                       </div>
-                      <div className="flex space-x-2">;
+                      \1>
                         {renderPriorityBadge(request.priority)}
                         {renderStatusBadge(request.status)}
                       </div>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm line-clamp-2">{request.description}</p>;
-                    <div className="flex flex-wrap gap-4 mt-3 text-xs text-gray-500">;
-                      <div className="flex items-center">;
+                    <p className="text-sm line-clamp-2">{request.description}\1>
+                    \1>
+                      \1>
                         <Calendar className="h-3 w-3 mr-1" />
                         Created: {format(new Date(request.createdAt), 'MMM d, yyyy')}
                       </div>
                       {request?.scheduledDate && (
-                        <div className="flex items-center">;
+                        \1>
                           <Clock className="h-3 w-3 mr-1" />
                           Scheduled: {format(new Date(request.scheduledDate), 'MMM d, yyyy')}
                         </div>
                       )}
-                      <div className="flex items-center">;
+                      \1>
                         <User className="h-3 w-3 mr-1" />
                         By: {request.requestedByUser?.name || 'Unknown'}
                       </div>
                     </div>
                   </CardContent>
-                  <CardFooter className="flex justify-between pt-0">;
-                    <div className="text-xs text-gray-500">;
+                  \1>
+                    \1>
                       {request.tasks?.length || 0} task(s)
                     </div>
                     <Button>

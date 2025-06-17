@@ -6,55 +6,39 @@ import jwt from 'jsonwebtoken';
 import { logger } from '@/lib/logger';
 import { prisma } from '@/lib/prisma';
 // src/lib/auth/auth-service.ts
-export interface AuthUser {
-  id: string,
-  email: string;
-  role: UserRole,
-  permissions: string[]
+\1
+}
 }
 
-export interface LoginCredentials {
-  email: string,
-  password: string
+\1
+}
 }
 
-export interface RegisterData {
-  email: string,
-  password: string;
-  firstName: string,
-  lastName: string;
-  role?: UserRole;
+\1
+}
 }
 
-export class AuthService {
-  private static readonly JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret';
-  private static readonly JWT_EXPIRES_IN = '24h';
-  private static readonly REFRESH_EXPIRES_IN = '7d';
-
-  static async login(credentials: LoginCredentials): Promise<{
-    user: AuthUser,
-    accessToken: string;
-    refreshToken: string
+\1
+}
   }> {
     const { email, password } = credentials;
 
     // Find user with permissions
     const user = await prisma.user.findUnique({
       where: { email, isActive: true },
-      include: {
-        permissions: true,
+      \1,\2 true,
         department: true
       }
     });
 
-    if (!user) {
+    \1 {\n  \2{
       logger.warn('Login attempt with invalid email', { email });
       throw new Error('Invalid credentials');
     }
 
     // Verify password
     const isValidPassword = await bcrypt.compare(password, user.password);
-    if (!isValidPassword) {
+    \1 {\n  \2{
       logger.warn('Login attempt with invalid password', { email });
       throw new Error('Invalid credentials');
     }
@@ -66,10 +50,8 @@ export class AuthService {
     });
 
     // Generate tokens
-    const authUser: AuthUser = {
-      id: user.id,
-      email: user.email;
-      role: user.role,
+    const \1,\2 user.id,
+      \1,\2 user.role,
       permissions: user.permissions.map(p => `$p.resource:$p.action`)
     };
 
@@ -78,11 +60,10 @@ export class AuthService {
 
     // Create session
     await prisma.userSession.create({
-      data: {
-        userId: user.id,
+      \1,\2 user.id,
         sessionToken: accessToken;
         refreshToken,
-        expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 24 * 60 * 60 * 1000) // 24 hours
+        expiresAt: \1[0] + 24 * 60 * 60 * 1000) // 24 hours
       }
     });
 
@@ -99,7 +80,7 @@ export class AuthService {
       where: { email }
     });
 
-    if (existingUser != null) {
+    \1 {\n  \2{
       throw new Error('User already exists');
     }
 
@@ -115,8 +96,7 @@ export class AuthService {
         lastName,
         role
       },
-      include: {
-        permissions: true
+      \1,\2 true
       }
     });
 
@@ -124,8 +104,7 @@ export class AuthService {
 
     return {
       id: user.id,
-      email: user.email;
-      role: user.role,
+      \1,\2 user.role,
       permissions: user.permissions.map(p => `$p.resource:$p.action`)
     };
   }
@@ -137,23 +116,20 @@ export class AuthService {
       // Check if session is still valid
       const session = await prisma.userSession.findUnique({
         where: { sessionToken: token, isActive: true },
-        include: {
-          user: {
-            include: {
-              permissions: true
+        \1,\2 {
+            \1,\2 true
             }
           }
         }
       });
 
-      if (!session || session.expiresAt < new Date()) {
+      \1 {\n  \2 {
         return null;
       }
 
       return {
         id: session.user.id,
-        email: session.user.email;
-        role: session.user.role,
+        \1,\2 session.user.role,
         permissions: session.user.permissions.map(p => `$p.resource:$p.action`)
       };
     } catch (error) {
@@ -173,8 +149,7 @@ export class AuthService {
     return jwt.sign(
       {
         userId: user.id,
-        email: user.email;
-        role: user.role,
+        \1,\2 user.role,
         permissions: user.permissions
       },
       this.JWT_SECRET,

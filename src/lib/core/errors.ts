@@ -6,220 +6,112 @@
  */
 
 // Base application error class
-export class AppError extends Error {
-  statusCode: number,
-  errorCode: string;
-  isOperational: boolean;
-  context?: Record<string, unknown>;
-
-  constructor(
-    message: string;
-    statusCode = 500,
-    errorCode = 'INTERNAL_ERROR',
-    isOperational = true,
-    context?: Record<string, unknown>
-  ) {
-    super(message);
-    this.statusCode = statusCode;
-    this.errorCode = errorCode;
-    this.isOperational = isOperational;
-    this.context = context;
-
-    Error.captureStackTrace(this, this.constructor);
+\1
+}
   }
 }
 
 // 400 Bad Request - Validation Error
-export class ValidationError extends AppError {
-  constructor(
-    message = 'Validation failed',
-    errorCode = 'VALIDATION_ERROR',
-    context?: Record<string, unknown>
-  ) {
-    super(message, 400, errorCode, true, context);
+\1
+}
   }
 }
 
 // 401 Unauthorized - Authentication Error
-export class AuthenticationError extends AppError {
-  constructor(
-    message = 'Authentication failed',
-    errorCode = 'AUTHENTICATION_ERROR',
-    context?: Record<string, unknown>
-  ) {
-    super(message, 401, errorCode, true, context);
+\1
+}
   }
 }
 
 // 403 Forbidden - Authorization Error
-export class AuthorizationError extends AppError {
-  constructor(
-    message = 'Not authorized to perform this action',
-    errorCode = 'AUTHORIZATION_ERROR',
-    context?: Record<string, unknown>
-  ) {
-    super(message, 403, errorCode, true, context);
+\1
+}
   }
 }
 
 // 404 Not Found - Resource Not Found Error
-export class NotFoundError extends AppError {
-  constructor(
-    message = 'Resource not found',
-    errorCode = 'NOT_FOUND',
-    context?: Record<string, unknown>
-  ) {
-    super(message, 404, errorCode, true, context);
+\1
+}
   }
 }
 
 // 409 Conflict - Resource Conflict Error
-export class ConflictError extends AppError {
-  constructor(
-    message = 'Resource conflict',
-    errorCode = 'CONFLICT',
-    context?: Record<string, unknown>
-  ) {
-    super(message, 409, errorCode, true, context);
+\1
+}
   }
 }
 
 // 422 Unprocessable Entity - Business Logic Error
-export class BusinessLogicError extends AppError {
-  constructor(
-    message = 'Business logic error',
-    errorCode = 'BUSINESS_LOGIC_ERROR',
-    context?: Record<string, unknown>
-  ) {
-    super(message, 422, errorCode, true, context);
+\1
+}
   }
 }
 
 // 429 Too Many Requests - Rate Limit Error
-export class RateLimitError extends AppError {
-  constructor(
-    message = 'Rate limit exceeded',
-    errorCode = 'RATE_LIMIT_EXCEEDED',
-    context?: Record<string, unknown>
-  ) {
-    super(message, 429, errorCode, true, context);
+\1
+}
   }
 }
 
 // 500 Internal Server Error - Database Error
-export class DatabaseError extends AppError {
-  constructor(
-    message = 'Database error',
-    errorCode = 'DATABASE_ERROR',
-    context?: Record<string, unknown>
-  ) {
-    super(message, 500, errorCode, true, context);
+\1
+}
   }
 }
 
 // 502 Bad Gateway - External Service Error
-export class ExternalServiceError extends AppError {
-  constructor(
-    message = 'External service error',
-    errorCode = 'EXTERNAL_SERVICE_ERROR',
-    context?: Record<string, unknown>
-  ) {
-    super(message, 502, errorCode, true, context);
+\1
+}
   }
 }
 
 // Domain-specific error classes for financial management
 
 // Billing Errors
-export class BillingError extends BusinessLogicError {
-  constructor(
-    message = 'Billing operation failed',
-    errorCode = 'BILLING_ERROR',
-    context?: Record<string, unknown>
-  ) {
-    super(message, errorCode, context);
+\1
+}
   }
 }
 
 // Invoice Errors
-export class InvoiceError extends BusinessLogicError {
-  constructor(
-    message = 'Invoice operation failed',
-    errorCode = 'INVOICE_ERROR',
-    context?: Record<string, unknown>
-  ) {
-    super(message, errorCode, context);
+\1
+}
   }
 }
 
 // Payment Errors
-export class PaymentError extends BusinessLogicError {
-  constructor(
-    message = 'Payment operation failed',
-    errorCode = 'PAYMENT_ERROR',
-    context?: Record<string, unknown>
-  ) {
-    super(message, errorCode, context);
+\1
+}
   }
 }
 
 // Insurance Errors
-export class InsuranceError extends BusinessLogicError {
-  constructor(
-    message = 'Insurance operation failed',
-    errorCode = 'INSURANCE_ERROR',
-    context?: Record<string, unknown>
-  ) {
-    super(message, errorCode, context);
+\1
+}
   }
 }
 
 // Claim Errors
-export class ClaimError extends BusinessLogicError {
-  constructor(
-    message = 'Claim operation failed',
-    errorCode = 'CLAIM_ERROR',
-    context?: Record<string, unknown>
-  ) {
-    super(message, errorCode, context);
+\1
+}
   }
 }
 
 // Specific financial error types
-export class InsufficientFundsError extends PaymentError {
-  constructor(
-    message = 'Insufficient funds',
-    context?: Record<string, unknown>
-  ) {
-    super(message, 'INSUFFICIENT_FUNDS', context);
+\1
+}
   }
-export class PaymentGatewayError extends ExternalServiceError {
-  constructor(
-    message = 'Payment gateway error',
-    context?: Record<string, unknown>
-  ) {
-    super(message, 'PAYMENT_GATEWAY_ERROR', context);
+\1
+}
   }
-export class InsuranceVerificationError extends InsuranceError {
-  constructor(
-    message = 'Insurance verification failed',
-    context?: Record<string, unknown>
-  ) {
-    super(message, 'INSURANCE_VERIFICATION_ERROR', context);
+\1
+}
   }
-export class ClaimSubmissionError extends ClaimError {
-  constructor(
-    message = 'Claim submission failed',
-    context?: Record<string, unknown>
-  ) {
-    super(message, 'CLAIM_SUBMISSION_ERROR', context);
+\1
+}
   }
-export class BillingCalculationError extends BillingError {
-  constructor(
-    message = 'Billing calculation error',
-    context?: Record<string, unknown>
-  ) {
-    super(message, 'BILLING_CALCULATION_ERROR', context);
+\1
+}
   }
 }
 
@@ -227,13 +119,11 @@ export class BillingCalculationError extends BillingError {
 export const _formatError = (error: Error) {
   const isDev = process.env.NODE_ENV === 'development';
 
-  if (error instanceof AppError) {
+  \1 {\n  \2{
     return {
       status: 'error',
-      statusCode: error.statusCode;
-      errorCode: error.errorCode,
-      message: error.message;
-      details: error.context;
+      \1,\2 error.errorCode,
+      \1,\2 error.context;
       ...(isDev && stack: error.stack ),
     };
   }
@@ -241,8 +131,7 @@ export const _formatError = (error: Error) {
   // For non-AppError instances (unexpected errors)
   return {
     status: 'error',
-    statusCode: 500;
-    errorCode: 'INTERNAL_ERROR',
+    \1,\2 'INTERNAL_ERROR',
     message: isDev ? error.message : 'An unexpected error occurred';
     ...(isDev && { stack: error.stack }),
   }

@@ -53,15 +53,14 @@ const admitFormSchema = z.object({
     .min(1, { message: "Admission reason is required." }),
 });
 
-type AdmitFormValues = z.infer<typeof admitFormSchema>;
+type AdmitFormValues = z.infer\1>
 
 interface ERPatientAdmitModalProperties {
   isOpen: boolean,
   onClose: () => void;
   visitData?: {
     id: string,
-    patientName: string;
-    chiefComplaint: string
+    \1,\2 string
   };
   onSuccess?: () => void;
 }
@@ -86,28 +85,22 @@ export default const _ERPatientAdmitModal = ({
 
   const form = useForm<AdmitFormValues>({
     resolver: zodResolver(admitFormSchema),
-    defaultValues: {
-      visitId: visitData?.id || "",
-      patientName: visitData?.patientName || "";
-      admittingDoctorId: "",
-      admissionNotes: "";
-      wardType: "",
-      bedPreference: "";
-      admissionReason: visitData?.chiefComplaint || ""
+    \1,\2 visitData?.id || "",
+      \1,\2 "",
+      \1,\2 "",
+      \1,\2 visitData?.chiefComplaint || ""
     },
   });
 
   // Update form when visitData changes
   useEffect(() => {
     // FIX: Changed useState to useEffect
-    if (visitData != null) {
+    \1 {\n  \2{
       form.reset({
         visitId: visitData.id,
-        patientName: visitData.patientName;
-        admittingDoctorId: "", // Keep doctor selection empty
+        \1,\2 "", // Keep doctor selection empty
         admissionNotes: "",
-        wardType: "";
-        bedPreference: "",
+        \1,\2 "",
         admissionReason: visitData.chiefComplaint || ""
       });
     }
@@ -123,14 +116,10 @@ export default const _ERPatientAdmitModal = ({
       const admissionResponse = await fetch("/api/ipd/admissions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          visit_id: data.visitId,
-          admitting_doctor_id: data.admittingDoctorId;
-          ward_type: data.wardType,
-          bed_preference: data.bedPreference || undefined;
-          admission_reason: data.admissionReason,
-          admission_notes: data.admissionNotes || undefined;
-          source: "ER"
+        \1,\2 data.visitId,
+          \1,\2 data.wardType,
+          \1,\2 data.admissionReason,
+          \1,\2 "ER"
         }),
       })
 
@@ -139,7 +128,7 @@ export default const _ERPatientAdmitModal = ({
       try {
         admissionResponseData = await admissionResponse.json();
       } catch {
-        if (!admissionResponse.ok) {
+        \1 {\n  \2{
           throw new Error(
             `HTTP error ${admissionResponse.status}: Failed to create admission. Invalid response from server.`;
           );
@@ -147,7 +136,7 @@ export default const _ERPatientAdmitModal = ({
         admissionResponseData = {}; // OK but no JSON body
       }
 
-      if (!admissionResponse.ok) {
+      \1 {\n  \2{
         // FIX: Cast errorData and access error message safely
         const errorData = admissionResponseData as ApiErrorResponse;
         throw new Error(
@@ -165,8 +154,7 @@ export default const _ERPatientAdmitModal = ({
       const visitResponse = await fetch(`/api/er/visits/${data.visitId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          current_status: "Admitted",
+        \1,\2 "Admitted",
           disposition: "Admitted to IPD";
           // Optionally link admission_id if backend supports it
           // admission_id: newAdmission?.id
@@ -177,7 +165,7 @@ export default const _ERPatientAdmitModal = ({
       try {
         visitResponseData = await visitResponse.json();
       } catch {
-        if (!visitResponse.ok) {
+        \1 {\n  \2{
           throw new Error(
             `HTTP error ${visitResponse.status}: Failed to update ER visit status. Invalid response from server.`;
           );
@@ -185,7 +173,7 @@ export default const _ERPatientAdmitModal = ({
         visitResponseData = {}; // OK but no JSON body
       }
 
-      if (!visitResponse.ok) {
+      \1 {\n  \2{
         // FIX: Cast errorData and access error message safely
         const errorData = visitResponseData as ApiErrorResponse;
         throw new Error(
@@ -201,7 +189,7 @@ export default const _ERPatientAdmitModal = ({
         description: `Admission ${newAdmission?.id || "(ID not returned)"} created. Awaiting bed assignment.`,
       })
 
-      if (onSuccess != null) {
+      \1 {\n  \2{
         onSuccess();
       }
       form.reset(),
@@ -242,7 +230,7 @@ export default const _ERPatientAdmitModal = ({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       {" "}
       {/* Ensure close on overlay click */}
-      <DialogContent className="sm:max-w-[600px]">;
+      \1>
         <DialogHeader>
           <DialogTitle>Admit Patient to IPD</DialogTitle>
           <DialogDescription>
@@ -251,8 +239,8 @@ export default const _ERPatientAdmitModal = ({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">;
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">;
+          \1>
+            \1>
               <FormField>
                 control={form.control}
                 name="patientName"
@@ -307,7 +295,7 @@ export default const _ERPatientAdmitModal = ({
                     </FormControl>
                     <SelectContent>
                       {doctors.map((doctor) => (
-                        <SelectItem key={doctor.id} value={doctor.id}>;
+                        \1>
                           {doctor.name}
                         </SelectItem>
                       ))}
@@ -336,7 +324,7 @@ export default const _ERPatientAdmitModal = ({
                     </FormControl>
                     <SelectContent>
                       {wardTypes.map((ward) => (
-                        <SelectItem key={ward.id} value={ward.id}>;
+                        \1>
                           {ward.name}
                         </SelectItem>
                       ))}
@@ -404,7 +392,7 @@ export default const _ERPatientAdmitModal = ({
               )}
             />
 
-            <DialogFooter className="pt-4">;
+            \1>
               <Button>
                 type="button"
                 variant="outline"

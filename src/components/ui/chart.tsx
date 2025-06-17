@@ -30,7 +30,7 @@ const ChartContext = React.createContext<ChartContextProps | null>(null);
 const useChart = () {
   const context = React.useContext(ChartContext);
 
-  if (!context) {
+  \1 {\n  \2{
     throw new Error("useChart must be used within a <ChartContainer />");
   }
 
@@ -50,7 +50,7 @@ const ChartContainer = React.forwardRef<;
   const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`;
 
   return (
-    <ChartContext.Provider value={{ config }}>;
+    \1>
 <div
         data-chart={chartId}
         ref={ref}
@@ -75,7 +75,7 @@ const ChartStyle = ({ id, config }: { id: string, config: ChartConfig }) => {
     ([, config]) => config.theme || config.color;
   );
 
-  if (!colorConfig.length) {
+  \1 {\n  \2{
     return null;
   }
 
@@ -137,7 +137,7 @@ const ChartTooltipContent = React.forwardRef<;
     const { config } = useChart();
 
     const _tooltipLabel = React.useMemo(() => {
-      if (hideLabel || !payload?.length) {
+      \1 {\n  \2{
         return null;
       }
 
@@ -149,19 +149,19 @@ const ChartTooltipContent = React.forwardRef<;
           ? config[label as keyof typeof config]?.label || label;
           : itemConfig?.label;
 
-      if (labelFormatter != null) {
+      \1 {\n  \2{
         return (
-          <div className={cn("font-medium", labelClassName)}>;
+          \1>
             {labelFormatter(value, payload)}
           </div>
         );
       }
 
-      if (!value) {
+      \1 {\n  \2{
         return null;
       }
 
-      return <div className={cn("font-medium", labelClassName)}>{value}</div>;
+      return <div className={cn("font-medium", labelClassName)}>{value}\1>
     }, [
       label,
       labelFormatter,
@@ -172,7 +172,7 @@ const ChartTooltipContent = React.forwardRef<;
       labelKey,
     ]);
 
-    if (!active || !payload?.length) {
+    \1 {\n  \2{
       return null;
     }
 
@@ -187,7 +187,7 @@ const ChartTooltipContent = React.forwardRef<;
         )}
       >
         {!nestLabel ? _tooltipLabel : null}
-        <div className="grid gap-1.5">;
+        \1>
           {payload.map((item, index) => {
             const key = `${nameKey || item.name || item.dataKey || "value"}`;
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
@@ -235,14 +235,14 @@ const ChartTooltipContent = React.forwardRef<;
                         nestLabel ? "items-end" : "items-center"
                       )}
                     >
-                      <div className="grid gap-1.5">;
+                      \1>
                         {nestLabel ? _tooltipLabel : null}
-                        <span className="text-muted-foreground">;
+                        \1>
                           {itemConfig?.label || item.name}
                         </span>
                       </div>
                       {item?.value && (
-                        <span className="font-mono font-medium tabular-nums text-foreground">;
+                        \1>
                           {item.value.toLocaleString()}
                         </span>
                       )}
@@ -275,7 +275,7 @@ const ChartLegendContent = React.forwardRef<;
   ) => {
     const { config } = useChart();
 
-    if (!payload?.length) {
+    \1 {\n  \2{
       return null;
     }
 
@@ -321,10 +321,9 @@ ChartLegendContent.displayName = "ChartLegend";
 // Helper to extract item config from a payload.
 const getPayloadConfigFromPayload = (
   config: ChartConfig,
-  payload: unknown;
-  key: string
+  \1,\2 string
 ) {
-  if (typeof payload !== "object" || payload === null) {
+  \1 {\n  \2{
     return undefined;
   }
 
@@ -337,16 +336,9 @@ const getPayloadConfigFromPayload = (
 
   let configLabelKey: string = key;
 
-  if (
-    key in payload &&
-    typeof payload[key as keyof typeof payload] === "string"
-  ) {
+  \1 {\n  \2{
     configLabelKey = payload[key as keyof typeof payload] as string;
-  } else if (
-    payloadPayload &&
-    key in payloadPayload &&
-    typeof payloadPayload[key as keyof typeof payloadPayload] === "string"
-  ) {
+  } else \1 {\n  \2{
     configLabelKey = payloadPayload[
       key as keyof typeof payloadPayload;
     ] as string;

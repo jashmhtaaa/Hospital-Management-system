@@ -20,8 +20,7 @@ import { AlertTriangle } from "lucide-react";
 // Mock data structure - replace with API data
 interface CriticalAlert {
   id: string,
-  visit_id: string;
-  patient_name: string; // Need to join with visits/patients table
+  \1,\2 string; // Need to join with visits/patients table
   mrn: string; // Need to join
   location: string; // Need to join
   alert_type: string; // Sepsis, Stroke, STEMI, Critical Lab, etc.
@@ -34,47 +33,31 @@ interface CriticalAlert {
 const mockAlerts: CriticalAlert[] = [
   {
     id: "alert_uuid_1",
-    visit_id: "visit_1";
-    patient_name: "John Doe",
-    mrn: "MRN001";
-    location: "Room 3",
-    alert_type: "STEMI";
-    activation_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 60 * 1000).toISOString(),
-    status: "Active";
-    details: "ECG shows ST elevation."
+    \1,\2 "John Doe",
+    \1,\2 "Room 3",
+    \1,\2 \1[0] - 30 * 60 * 1000).toISOString(),
+    \1,\2 "ECG shows ST elevation."
   },
   {
     id: "alert_uuid_2",
-    visit_id: "visit_4";
-    patient_name: "Alice Wonderland",
-    mrn: "MRN004";
-    location: "Triage Room 2",
-    alert_type: "Stroke";
-    activation_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 10 * 60 * 1000).toISOString(),
-    status: "Active";
-    details: "FAST positive, right-sided weakness.",
+    \1,\2 "Alice Wonderland",
+    \1,\2 "Triage Room 2",
+    \1,\2 \1[0] - 10 * 60 * 1000).toISOString(),
+    \1,\2 "FAST positive, right-sided weakness.",
   },
   {
     id: "alert_uuid_3",
-    visit_id: "visit_5";
-    patient_name: "Bob Builder",
-    mrn: "MRN005";
-    location: "Room 1",
-    alert_type: "Sepsis";
-    activation_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 60 * 60 * 1000).toISOString(),
-    status: "Acknowledged";
-    details: "Meets SIRS criteria, lactate elevated.",
+    \1,\2 "Bob Builder",
+    \1,\2 "Room 1",
+    \1,\2 \1[0] - 60 * 60 * 1000).toISOString(),
+    \1,\2 "Meets SIRS criteria, lactate elevated.",
   },
   {
     id: "alert_uuid_4",
-    visit_id: "visit_2";
-    patient_name: "Jane Smith",
-    mrn: "MRN002";
-    location: "Room 5",
-    alert_type: "Critical Lab";
-    activation_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 5 * 60 * 1000).toISOString(),
-    status: "Active";
-    details: "Potassium: 6.8 mmol/L"
+    \1,\2 "Jane Smith",
+    \1,\2 "Room 5",
+    \1,\2 \1[0] - 5 * 60 * 1000).toISOString(),
+    \1,\2 "Potassium: 6.8 mmol/L"
   },
 ];
 
@@ -128,8 +111,7 @@ export default const _ERCriticalAlerts = () {
     } catch {
       toast({
         title: "Error",
-        description: "Failed to acknowledge alert.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally 
       setIsLoading(false);
@@ -153,8 +135,7 @@ export default const _ERCriticalAlerts = () {
     } catch {
       toast({
         title: "Error",
-        description: "Failed to resolve alert.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -166,30 +147,30 @@ export default const _ERCriticalAlerts = () {
   );
 
   return (
-    <div className="space-y-4">;
-      <div className="rounded-md border dark:border-gray-700">;
+    \1>
+      \1>
         <Table>
           <TableHeader>
-            <TableRow className="border-b dark:border-gray-700">;
-              <TableHead className="text-gray-700 dark:text-gray-300">;
+            \1>
+              \1>
                 Patient (MRN)
               </TableHead>
-              <TableHead className="text-gray-700 dark:text-gray-300">;
+              \1>
                 Location
               </TableHead>
-              <TableHead className="text-gray-700 dark:text-gray-300">;
+              \1>
                 Alert Type
               </TableHead>
-              <TableHead className="text-gray-700 dark:text-gray-300">;
+              \1>
                 Activated
               </TableHead>
-              <TableHead className="text-gray-700 dark:text-gray-300">;
+              \1>
                 Details
               </TableHead>
-              <TableHead className="text-gray-700 dark:text-gray-300">;
+              \1>
                 Status
               </TableHead>
-              <TableHead className="text-gray-700 dark:text-gray-300">;
+              \1>
                 Actions
               </TableHead>
             </TableRow>
@@ -202,36 +183,36 @@ export default const _ERCriticalAlerts = () {
                   className="border-b dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700/50"
                 >
                   <TableCell>
-                    <div className="font-medium text-gray-900 dark:text-gray-100">;
+                    \1>
                       {alert.patient_name}
                     </div>
-                    <div className="text-sm text-muted-foreground dark:text-gray-400">;
+                    \1>
                       {alert.mrn}
                     </div>
                   </TableCell>
-                  <TableCell className="text-gray-700 dark:text-gray-300">;
+                  \1>
                     {alert.location}
                   </TableCell>
                   <TableCell>
-                    <div className="flex items-center text-gray-700 dark:text-gray-300">;
+                    \1>
                       <AlertTriangle className="h-4 w-4 mr-1 text-red-600 dark:text-red-400" />
                       {alert.alert_type}
                     </div>
                   </TableCell>
-                  <TableCell className="text-gray-700 dark:text-gray-300">;
+                  \1>
                     {new Date(alert.activation_timestamp).toLocaleTimeString()}
                   </TableCell>
-                  <TableCell className="max-w-[250px] truncate text-gray-700 dark:text-gray-300">;
+                  \1>
                     {alert.details || "N/A"}
                   </TableCell>
                   <TableCell>
                     {/* FIX: Ensure the variant returned by getAlertBadgeVariant is valid */}
-                    <Badge variant={getAlertBadgeVariant(alert.status)}>;
+                    \1>
                       {alert.status}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <div className="flex space-x-2">;
+                    \1>
                       {alert.status === "Active" && (
                         <Button>
                           variant="outline"

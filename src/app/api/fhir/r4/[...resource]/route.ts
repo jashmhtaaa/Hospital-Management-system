@@ -15,8 +15,7 @@ import { FHIRPatient } from '@/lib/fhir/patient';
  */
 
 interface RouteParams {
-  params: {
-    resource: string[]
+  \1,\2 string[]
   };
 }
 
@@ -39,10 +38,10 @@ export const GET = async (request: NextRequest, { params }: RouteParams) => {
     };
 
     // Read specific resource by ID
-    if (resourceId != null) {
+    \1 {\n  \2{
       const result = await fhirService.readResource(resourceType, resourceId);
 
-      if (!result.success) {
+      \1 {\n  \2{
         return NextResponse.json(
           result.issues || { error: result.error },
           {
@@ -60,19 +59,15 @@ export const GET = async (request: NextRequest, { params }: RouteParams) => {
 
     switch (resourceType) {
       case 'Patient':
-        searchResult = await fhirService.searchPatients(searchParams),
-        break;
-      case 'Appointment':
-        searchResult = await fhirService.searchAppointments(searchParams),
-        break;
-      case 'Encounter':
+        searchResult = await fhirService.searchPatients(searchParams),\1\n    }\n    case 'Appointment':
+        searchResult = await fhirService.searchAppointments(searchParams),\1\n    }\n    case 'Encounter':
         searchResult = await fhirService.searchEncounters(searchParams),
         break;
       default:
         searchResult = await fhirService.searchResources(resourceType, searchParams)
     }
 
-    if (!searchResult.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         searchResult.issues || { error: searchResult.error },
         { status: 400, headers }
@@ -86,10 +81,8 @@ export const GET = async (request: NextRequest, { params }: RouteParams) => {
     return NextResponse.json(
       {
         resourceType: 'OperationOutcome',
-        issue: [{
-          severity: 'error',
-          code: 'exception';
-          diagnostics: error instanceof Error ? error.message : 'Internal server error'
+        \1,\2 'error',
+          \1,\2 error instanceof Error ? error.message : 'Internal server error'
         }]
       },
       {
@@ -111,14 +104,12 @@ export const POST = async (request: NextRequest, { params }: RouteParams) => {
     const body = await request.json();
 
     // Validate resource type matches URL
-    if (body.resourceType !== resourceType) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           resourceType: 'OperationOutcome',
-          issue: [{
-            severity: 'error',
-            code: 'invalid';
-            diagnostics: `Resource type in body (${body.resourceType}) does not match URL (${resourceType})`;
+          \1,\2 'error',
+            \1,\2 `Resource type in body (${body.resourceType}) does not match URL (${resourceType})`;
           }]
         },
         {
@@ -132,21 +123,15 @@ export const POST = async (request: NextRequest, { params }: RouteParams) => {
 
     switch (resourceType) {
       case 'Patient':
-        result = await fhirService.createPatient(body as FHIRPatient),
-        break;
-      case 'Appointment':
-        result = await fhirService.createAppointment(body as FHIRAppointment),
-        break;
-      case 'Encounter':
-        result = await fhirService.createEncounter(body as FHIREncounter),
-        break;
-      case 'MedicationRequest':
+        result = await fhirService.createPatient(body as FHIRPatient),\1\n    }\n    case 'Appointment':
+        result = await fhirService.createAppointment(body as FHIRAppointment),\1\n    }\n    case 'Encounter':
+        result = await fhirService.createEncounter(body as FHIREncounter),\1\n    }\n    case 'MedicationRequest':
         result = await fhirService.createMedicationRequest(body as FHIRMedicationRequest),
         break;
       default: result = await fhirService.createResource(body)
     }
 
-    if (!result.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         result.issues || { error: result.error },
         {
@@ -173,10 +158,8 @@ export const POST = async (request: NextRequest, { params }: RouteParams) => {
     return NextResponse.json(
       {
         resourceType: 'OperationOutcome',
-        issue: [{
-          severity: 'error',
-          code: 'exception';
-          diagnostics: error instanceof Error ? error.message : 'Internal server error'
+        \1,\2 'error',
+          \1,\2 error instanceof Error ? error.message : 'Internal server error'
         }]
       },
       {
@@ -196,14 +179,12 @@ export const PUT = async (request: NextRequest, { params }: RouteParams) => {
     const resourceType = resource[0];
     const resourceId = resource[1];
 
-    if (!resourceId) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           resourceType: 'OperationOutcome',
-          issue: [{
-            severity: 'error',
-            code: 'required';
-            diagnostics: 'Resource ID is required for PUT operation'
+          \1,\2 'error',
+            \1,\2 'Resource ID is required for PUT operation'
           }]
         },
         {
@@ -216,14 +197,12 @@ export const PUT = async (request: NextRequest, { params }: RouteParams) => {
     const body = await request.json();
 
     // Validate resource type matches URL
-    if (body.resourceType !== resourceType) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           resourceType: 'OperationOutcome',
-          issue: [{
-            severity: 'error',
-            code: 'invalid';
-            diagnostics: `Resource type in body (${body.resourceType}) does not match URL (${resourceType})`;
+          \1,\2 'error',
+            \1,\2 `Resource type in body (${body.resourceType}) does not match URL (${resourceType})`;
           }]
         },
         {
@@ -237,19 +216,15 @@ export const PUT = async (request: NextRequest, { params }: RouteParams) => {
 
     switch (resourceType) {
       case 'Patient':
-        result = await fhirService.updatePatient(resourceId, body as FHIRPatient),
-        break;
-      case 'Appointment':
-        result = await fhirService.updateAppointment(resourceId, body as FHIRAppointment),
-        break;
-      case 'Encounter':
+        result = await fhirService.updatePatient(resourceId, body as FHIRPatient),\1\n    }\n    case 'Appointment':
+        result = await fhirService.updateAppointment(resourceId, body as FHIRAppointment),\1\n    }\n    case 'Encounter':
         result = await fhirService.updateEncounter(resourceId, body as FHIREncounter),
         break;
       default:
         result = await fhirService.updateResource(resourceType, resourceId, body)
     }
 
-    if (!result.success) {
+    \1 {\n  \2{
       const status = result.error === 'Resource not found' ? 404 : 400;
       return NextResponse.json(
         result.issues || { error: result.error },
@@ -272,10 +247,8 @@ export const PUT = async (request: NextRequest, { params }: RouteParams) => {
     return NextResponse.json(
       {
         resourceType: 'OperationOutcome',
-        issue: [{
-          severity: 'error',
-          code: 'exception';
-          diagnostics: error instanceof Error ? error.message : 'Internal server error'
+        \1,\2 'error',
+          \1,\2 error instanceof Error ? error.message : 'Internal server error'
         }]
       },
       {
@@ -295,14 +268,12 @@ export const DELETE = async (request: NextRequest, { params }: RouteParams) => {
     const resourceType = resource[0];
     const resourceId = resource[1];
 
-    if (!resourceId) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           resourceType: 'OperationOutcome',
-          issue: [{
-            severity: 'error',
-            code: 'required';
-            diagnostics: 'Resource ID is required for DELETE operation'
+          \1,\2 'error',
+            \1,\2 'Resource ID is required for DELETE operation'
           }]
         },
         {
@@ -314,7 +285,7 @@ export const DELETE = async (request: NextRequest, { params }: RouteParams) => {
 
     const result = await fhirService.deleteResource(resourceType, resourceId);
 
-    if (!result.success) {
+    \1 {\n  \2{
       const status = result.error === 'Resource not found' ? 404 : 400;
       return NextResponse.json(
         result.issues || { error: result.error },
@@ -333,10 +304,8 @@ export const DELETE = async (request: NextRequest, { params }: RouteParams) => {
     return NextResponse.json(
       {
         resourceType: 'OperationOutcome',
-        issue: [{
-          severity: 'error',
-          code: 'exception';
-          diagnostics: error instanceof Error ? error.message : 'Internal server error'
+        \1,\2 'error',
+          \1,\2 error instanceof Error ? error.message : 'Internal server error'
         }]
       },
       {
@@ -356,14 +325,12 @@ export const PATCH = async (request: NextRequest, { params }: RouteParams) => {
     const resourceType = resource[0];
     const resourceId = resource[1];
 
-    if (!resourceId) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           resourceType: 'OperationOutcome',
-          issue: [{
-            severity: 'error',
-            code: 'required';
-            diagnostics: 'Resource ID is required for PATCH operation'
+          \1,\2 'error',
+            \1,\2 'Resource ID is required for PATCH operation'
           }]
         },
         {
@@ -376,7 +343,7 @@ export const PATCH = async (request: NextRequest, { params }: RouteParams) => {
     // Get current resource
     const currentResult = await fhirService.readResource(resourceType, resourceId);
 
-    if (!currentResult.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         currentResult.issues || { error: currentResult.error },
         {
@@ -388,7 +355,7 @@ export const PATCH = async (request: NextRequest, { params }: RouteParams) => {
 
     const contentType = request.headers.get('content-type');
 
-    if (contentType?.includes('application/json-patch+json')) {
+    \1 {\n  \2 {
       // Handle JSON Patch
       const _patches = await request.json();
       // Apply JSON patches to the resource
@@ -397,10 +364,8 @@ export const PATCH = async (request: NextRequest, { params }: RouteParams) => {
       return NextResponse.json(
         {
           resourceType: 'OperationOutcome',
-          issue: [{
-            severity: 'error',
-            code: 'not-supported';
-            diagnostics: 'JSON Patch not yet implemented'
+          \1,\2 'error',
+            \1,\2 'JSON Patch not yet implemented'
           }]
         },
         {
@@ -413,10 +378,8 @@ export const PATCH = async (request: NextRequest, { params }: RouteParams) => {
       return NextResponse.json(
         {
           resourceType: 'OperationOutcome',
-          issue: [{
-            severity: 'error',
-            code: 'not-supported';
-            diagnostics: 'FHIR Patch not yet implemented'
+          \1,\2 'error',
+            \1,\2 'FHIR Patch not yet implemented'
           }]
         },
         {
@@ -431,10 +394,8 @@ export const PATCH = async (request: NextRequest, { params }: RouteParams) => {
     return NextResponse.json(
       {
         resourceType: 'OperationOutcome',
-        issue: [{
-          severity: 'error',
-          code: 'exception';
-          diagnostics: error instanceof Error ? error.message : 'Internal server error'
+        \1,\2 'error',
+          \1,\2 error instanceof Error ? error.message : 'Internal server error'
         }]
       },
       {

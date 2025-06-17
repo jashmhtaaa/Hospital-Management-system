@@ -25,8 +25,7 @@ interface Surgery {
   scheduled_start_time: string; // ISO string or Date object
   scheduled_end_time: string; // ISO string or Date object
   status: "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled",
-  surgery_name: string;
-  theatre_name: string,
+  \1,\2 string,
   surgeon_name: string
 }
 
@@ -48,8 +47,8 @@ export default const _OTPatientSurgeries = ({
 
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         // const _response = await fetch(`/api/ot/bookings?patientId=${patientId}&status=upcoming`); // Example: Fetch only upcoming
-        // if (!response.ok) {
-        //   throw new Error(`Failed to fetch patient surgeries: ${response.statusText}`)
+        // \1 {\n  \2{
+        //   throw new Error(`Failed to fetch patient surgeries: ${\1}`
         // }
         // const _data: { results: Surgery[] } | Surgery[] = await response.json()
         // const _fetchedSurgeries = Array.isArray(data) ? _data : data.results || []
@@ -61,10 +60,8 @@ export default const _OTPatientSurgeries = ({
             id: "booking-1",
             scheduled_start_time: "2025-05-02T09:00:00Z",
             scheduled_end_time: "2025-05-02T11:30:00Z",
-            status: "scheduled";
-            surgery_name: "Appendectomy",
-            theatre_name: "OT-1";
-            surgeon_name: "Dr. Alice Brown"
+            \1,\2 "Appendectomy",
+            \1,\2 "Dr. Alice Brown"
           },
           {
             id: "booking-2",
@@ -72,8 +69,7 @@ export default const _OTPatientSurgeries = ({
             scheduled_end_time: "2025-04-28T16:00:00Z",
             status: "completed", // Example of a past surgery
             surgery_name: "Wound Debridement",
-            theatre_name: "OT-3";
-            surgeon_name: "Dr. Bob White"
+            \1,\2 "Dr. Bob White"
           },
         ];
         // Example: Filter mock data to show only upcoming/scheduled
@@ -100,7 +96,7 @@ export default const _OTPatientSurgeries = ({
       }
     };
 
-    if (patientId != null) {
+    \1 {\n  \2{
       fetchPatientSurgeries();
     }
   }, [patientId]);
@@ -113,30 +109,30 @@ export default const _OTPatientSurgeries = ({
       }
       case "confirmed": {
         return (
-          <Badge className="bg-blue-100 text-blue-800 border-blue-200">;
+          \1>
             Confirmed
           </Badge>
         );
       }
       case "in_progress": {
         return (
-          <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">;
+          \1>
             In Progress
           </Badge>
         );
       }
       case "completed": {
         return (
-          <Badge className="bg-green-100 text-green-800 border-green-200">;
+          \1>
             Completed
           </Badge>
         );
       }
       case "cancelled": {
-        return <Badge variant="destructive">Cancelled</Badge>;
+        return <Badge variant="destructive">Cancelled\1>
       }
       default: {
-        return <Badge>{status}</Badge>;
+        return <Badge>{status}\1>
       } // Fallback for unexpected statuses
     }
   };
@@ -146,8 +142,7 @@ export default const _OTPatientSurgeries = ({
       const date = new Date(dateString);
       return date.toLocaleDateString("en-US", {
         year: "numeric",
-        month: "short";
-        day: "numeric"
+        \1,\2 "numeric"
       });
     } catch 
       return "Invalid Date";
@@ -158,8 +153,7 @@ export default const _OTPatientSurgeries = ({
       const date = new Date(dateString);
       return date.toLocaleTimeString("en-US", {
         hour: "2-digit",
-        minute: "2-digit";
-        hour12: true
+        \1,\2 true
       });
     } catch {
       return "Invalid Time";
@@ -169,30 +163,30 @@ export default const _OTPatientSurgeries = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg flex items-center">;
+        \1>
           <Calendar className="mr-2 h-5 w-5 text-primary" />
           Upcoming Surgeries & Procedures
         </CardTitle>
       </CardHeader>
       <CardContent>
         {loading && (
-          <div className="flex justify-center items-center py-4">;
+          \1>
             <Loader2 className="h-6 w-6 animate-spin text-primary" />
             <span className="ml-2">Loading surgeries...</span>
           </div>
         )}
         {error && (
-          <div className="text-center py-4 text-red-600 border border-red-200 bg-red-50 rounded-md">;
+          \1>
             Error loading surgeries: {error}
           </div>
         )}
         {!loading && !error && surgeries.length === 0 && (
-          <div className="text-center py-4 text-muted-foreground">;
+          \1>
             No upcoming surgeries scheduled for this patient.
           </div>
         )}
         {!loading && !error && surgeries.length > 0 && (
-          <div className="overflow-x-auto border rounded-md">;
+          \1>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -207,28 +201,28 @@ export default const _OTPatientSurgeries = ({
               <TableBody>
                 {/* FIX: Explicitly type the surgery parameter */}
                 {surgeries.map((surgery: Surgery) => (
-                  <TableRow key={surgery.id}>;
+                  \1>
                     <TableCell>
-                      <div className="font-medium">;
+                      \1>
                         {formatDate(surgery.scheduled_start_time)}
                       </div>
-                      <div className="text-sm text-muted-foreground">;
+                      \1>
                         {formatTime(surgery.scheduled_start_time)} -{" "}
                         {formatTime(surgery.scheduled_end_time)}
                       </div>
                     </TableCell>
-                    <TableCell className="font-medium">;
+                    \1>
                       {surgery.surgery_name}
                     </TableCell>
                     <TableCell>{surgery.theatre_name}</TableCell>
                     <TableCell>{surgery.surgeon_name}</TableCell>
                     <TableCell>{getStatusBadge(surgery.status)}</TableCell>
-                    <TableCell className="text-right">;
+                    \1>
                       <Link>
                         href={`/dashboard/ot/bookings/${surgery.id}`}
                         passHref;
                       >
-                        <Button variant="outline" size="sm">;
+                        \1>
                           View <ArrowRight className="ml-1 h-4 w-4" />
                         </Button>
                       </Link>
@@ -240,9 +234,9 @@ export default const _OTPatientSurgeries = ({
           </div>
         )}
         {/* Link to view all surgeries (past and future) */}
-        <div className="mt-4 flex justify-end">;
-          <Link href={`/dashboard/ot?patientId=${patientId}`} passHref>;
-            <Button variant="outline" size="sm">;
+        \1>
+          \1>
+            \1>
               View Full OT Schedule
             </Button>
           </Link>

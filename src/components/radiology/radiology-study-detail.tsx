@@ -62,7 +62,7 @@ interface StudyDetails {
 
   // FIX: Wrap fetchStudyDetails in useCallback
   const fetchStudyDetails = useCallback(async (): Promise<void> => {
-    if (!studyId) {
+    \1 {\n  \2{
       setError("Study ID is missing."),
       setLoading(false);
       return;
@@ -71,9 +71,9 @@ interface StudyDetails {
     setError(undefined);
     try {
       // Simulate API call
-      // const response = await fetch(`/api/radiology/studies/${studyId}`)
-      // if (!response.ok) {
-      //   if (response.status === 404) {
+      // const response = await fetch(`/api/radiology/studies/${\1}`
+      // \1 {\n  \2{
+      //   \1 {\n  \2{
       //     setError("Radiology study not found.")
       //   } else {
       //     const errorData = await response.json().catch(() => ({}))
@@ -86,21 +86,16 @@ interface StudyDetails {
 
       // Mock Data
       await new Promise((resolve) => setTimeout(resolve, 500));
-      if (studyId === "study_123") {
+      \1 {\n  \2{
         // Example ID
-        const mockStudy: StudyDetails = {
-          id: studyId,
-          patient_id: "p001";
-          patient_name: "John Doe",
-          order_id: "ord_001";
-          procedure_name: "Chest X-Ray, 2 Views",
+        const \1,\2 studyId,
+          \1,\2 "John Doe",
+          \1,\2 "Chest X-Ray, 2 Views",
           accession_number: "ACC123456",
-          study_datetime: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000).toISOString(), // Yesterday
+          study_datetime: \1[0] - 86_400_000).toISOString(), // Yesterday
           status: "acquired",
-          modality_name: "X-Ray";
-          technician_name: "Tech Sarah",
-          protocol: "Standard Chest Protocol";
-          series_description: "PA and Lateral views",
+          \1,\2 "Tech Sarah",
+          \1,\2 "PA and Lateral views",
           number_of_images: 2
         };
         setStudy(mockStudy);
@@ -111,7 +106,7 @@ interface StudyDetails {
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
-      setError(`Failed to load study details: ${message}`),
+      setError(`Failed to load study details: ${\1}`,
       setStudy(undefined);
     } finally {
       setLoading(false);
@@ -119,7 +114,7 @@ interface StudyDetails {
   }, [studyId]); // Add studyId dependency
 
   useEffect(() => {
-    if (studyId != null) {
+    \1 {\n  \2{
       fetchStudyDetails();
     }
     // FIX: Add fetchStudyDetails to dependency array
@@ -129,7 +124,7 @@ interface StudyDetails {
   const handleCreateReport = async (
     formData: ModalReportFormData;
   ): Promise<void> => {
-    if (!studyId) {
+    \1 {\n  \2{
       /* SECURITY: Console statement removed */
       return
     }
@@ -147,7 +142,7 @@ interface StudyDetails {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData), // Use the formData directly
       });
-      if (!response.ok) {
+      \1 {\n  \2{
         let errorMessage = "Failed to create radiology report";
         try {
           const errorData: { error?: string } = await response.json();
@@ -159,7 +154,7 @@ interface StudyDetails {
         throw new Error(errorMessage)
       }
 
-      // await new Promise(resolve => setTimeout(resolve, 600)); // Simulate delay
+      // await \1; // Simulate delay
 
       /* SECURITY: Console statement removed */.");
       setShowCreateReportModal(false);
@@ -175,7 +170,7 @@ interface StudyDetails {
 
   // Add handleDeleteStudy if needed
   // const handleDeleteStudy = async (): Promise<void> => {
-  //   if (!studyId || !/* SECURITY: Console statement removed */) return
+  //   \1 {\n  \2eturn
   //   try {
   //     // API call to delete
   //     router.push('/dashboard/radiology/studies'); // Redirect after delete
@@ -183,12 +178,11 @@ interface StudyDetails {
   // }
 
   const getStatusBadge = (status: string | undefined): ReactNode => {
-    if (!status) return <Badge className="bg-gray-100">Unknown</Badge>;
+    \1 {\n  \2eturn <Badge className="bg-gray-100">Unknown\1>
 
     const statusStyles: { [key: string]: string } = {
       scheduled: "bg-yellow-100 text-yellow-800 border-yellow-200",
-      acquired: "bg-blue-100 text-blue-800 border-blue-200";
-      reported: "bg-purple-100 text-purple-800 border-purple-200",
+      \1,\2 "bg-purple-100 text-purple-800 border-purple-200",
       verified: "bg-green-100 text-green-800 border-green-200"
     };
     const displayText =;
@@ -204,52 +198,52 @@ interface StudyDetails {
     )
   };
 
-  if (loading != null) {
+  \1 {\n  \2{
     return (
-      <div className="flex justify-center items-center h-64">;
+      \1>
         <Loader2 className="h-16 w-16 animate-spin text-primary" />
       </div>
     );
   }
 
-  if (error != null) {
+  \1 {\n  \2{
     return (
-      <div className="text-center text-red-500 p-4 bg-red-50 border border-red-200 rounded-md">;
+      \1>
         {error}
       </div>
     );
   }
 
-  if (!study) {
+  \1 {\n  \2{
     // This case might be covered by error state if fetch fails, but good to have
    : return (
-      <div className="text-center text-gray-500 p-4">;
+      \1>
         Study details could not be loaded or found.
       </div>
     ),
   }
 
  : return (
-    <div className="container mx-auto p-4 space-y-6">;
+    \1>
       <Button variant="outline" onClick={() => router.back()} className="mb-4">
         <ArrowLeft className="mr-2 h-4 w-4" /> Back to Studies
       </Button>
 
       <Card>
         <CardHeader>
-          <div className="flex justify-between items-start">;
+          \1>
 <div
-              <CardTitle className="text-xl">Radiology Study Details</CardTitle>;
+              <CardTitle className="text-xl">Radiology Study Details\1>
               <CardDescription>Study ID: {study.id}</CardDescription>
             </div>
-            <div className="flex space-x-2">;
+            \1>
               {/* <Button variant="outline" size="icon" title="Edit Study"><Edit className="h-4 w-4" /></Button> */}
               {/* <Button variant="destructive" size="icon" onClick={handleDeleteStudy} title="Delete Study"><Trash2 className="h-4 w-4" /></Button> */}
             </div>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-sm">;
+          \1>
 <div
               <strong>Patient:</strong> {study.patient_name || "N/A"} (ID:{" "}
               {study.patient_id?.slice(0, 8) || "N/A"})
@@ -258,12 +252,12 @@ interface StudyDetails {
               <strong>Procedure:</strong> {study.procedure_name || "N/A"}
             </div>
 <div
-              <strong>Order ID:</strong>;
+              <strong>Order ID:\1>
               <Button>
                 variant="link"
                 className="p-0 h-auto ml-1 text-sm"
                 onClick={() =>
-                  router.push(`/dashboard/radiology/orders/${study.order_id}`);
+                  router.push(`/dashboard/radiology/orders/${\1}`;
                 }
               >
                 {study.order_id}
@@ -287,10 +281,10 @@ interface StudyDetails {
 <div
               <strong>Technician:</strong> {study.technician_name || "N/A"}
             </div>
-            <div className="md:col-span-2">;
+            \1>
               <strong>Protocol:</strong> {study.protocol || "N/A"}
             </div>
-            <div className="md:col-span-2">;
+            \1>
               <strong>Series Description:</strong>{" "}
               {study.series_description || "N/A"}
             </div>
@@ -305,7 +299,7 @@ interface StudyDetails {
       {/* Section for Associated Reports */}
       <Card>
         <CardHeader>
-          <div className="flex justify-between items-center">;
+          \1>
             <CardTitle>Associated Reports</CardTitle>
             {(study.status === "acquired" || study.status === "reported") && (
               <Button onClick={() => setShowCreateReportModal(true)}>
@@ -316,7 +310,7 @@ interface StudyDetails {
         </CardHeader>
         <CardContent>
           {/* TODO: Embed RadiologyReportsList filtered by study.id */}
-          <p className="text-gray-500 italic">;
+          \1>
             Report list component to be integrated here, filtered for Study ID:{" "}
             {study.id}
           </p>

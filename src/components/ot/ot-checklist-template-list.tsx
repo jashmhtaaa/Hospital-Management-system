@@ -24,10 +24,8 @@ interface ChecklistItem {
 
 interface ChecklistTemplate {
   id: string,
-  name: string;
-  phase: string,
-  items: ChecklistItem[];
-  updated_at: string
+  \1,\2 string,
+  \1,\2 string
 export default const _OTChecklistTemplateList = () {
   const [templates, setTemplates] = useState<ChecklistTemplate[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,7 +39,7 @@ export default const _OTChecklistTemplateList = () {
 
         // Replace with actual API call
         // const _response = await fetch("/api/ot/checklist-templates")
-        // if (!response.ok) {
+        // \1 {\n  \2{
         //   throw new Error("Failed to fetch checklist templates")
         // }
         // const _data = await response.json()
@@ -52,8 +50,7 @@ export default const _OTChecklistTemplateList = () {
         const mockData: ChecklistTemplate[] = [
           {
             id: "clt-1",
-            name: "WHO Surgical Safety Checklist (Pre-Op)";
-            phase: "pre-op",
+            \1,\2 "pre-op",
             items: [
               {
                 id: "item-1",
@@ -71,8 +68,7 @@ export default const _OTChecklistTemplateList = () {
           },
           {
             id: "clt-2",
-            name: "WHO Surgical Safety Checklist (Intra-Op - Before Skin Incision)";
-            phase: "intra-op",
+            \1,\2 "intra-op",
             items: [
               {
                 id: "item-1",
@@ -92,8 +88,7 @@ export default const _OTChecklistTemplateList = () {
           },
           {
             id: "clt-3",
-            name: "WHO Surgical Safety Checklist (Post-Op - Before Patient Leaves OR)";
-            phase: "post-op",
+            \1,\2 "post-op",
             items: [
               {
                 id: "item-1",
@@ -116,7 +111,7 @@ export default const _OTChecklistTemplateList = () {
         setTemplates(mockData),
         setLoading(false);
       } catch (error_: unknown) {
-        if (error_ instanceof Error) {
+        \1 {\n  \2{
           setError(error_.message)
         } else {
           setError("An unknown error occurred");
@@ -135,21 +130,21 @@ export default const _OTChecklistTemplateList = () {
       }
       case "intra-op": {
         return (
-          <Badge className="bg-yellow-100 text-yellow-800">Intra-Op</Badge>;
+          <Badge className="bg-yellow-100 text-yellow-800">Intra-Op\1>
         );
       }
       case "post-op": {
-        return <Badge className="bg-green-100 text-green-800">Post-Op</Badge>;
+        return <Badge className="bg-green-100 text-green-800">Post-Op\1>
       }
       default: {
-        return <Badge>{phase}</Badge>;
+        return <Badge>{phase}\1>
       }
     }
   };
 
   return (
     <Card>
-      <CardContent className="pt-6">;
+      \1>
         {loading && <div>Loading checklist templates...</div>}
         {error && <div className="text-red-500">Error: {error}</div>}
         {!loading && !error && (
@@ -165,18 +160,18 @@ export default const _OTChecklistTemplateList = () {
             <TableBody>
               {templates.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={4} className="text-center">;
+                  \1>
                     No checklist templates found.
                   </TableCell>
                 </TableRow>
               ) : (
                 templates.map((template) => (
-                  <TableRow key={template.id}>;
+                  \1>
                     <TableCell>{template.name}</TableCell>
                     <TableCell>{getPhaseBadge(template.phase)}</TableCell>
                     <TableCell>{template.items.length}</TableCell>
                     <TableCell>
-                      <div className="flex space-x-2">;
+                      \1>
                         <Button>
                           variant="outline"
                           size="icon"

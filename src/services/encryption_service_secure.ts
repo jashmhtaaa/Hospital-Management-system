@@ -6,13 +6,8 @@ import * as crypto from 'crypto';
  * Compliant with HIPAA requirements for PHI protection
  */
 
-export interface IEncryptionService {
-  encrypt(text: string, context?: string): Promise<string>;
-  decrypt(encryptedText: string, context?: string): Promise<string>;
-  encryptObject(obj: Record<string, unknown>, fields: string[]): Promise<Record<string, unknown>>;
-  decryptObject(obj: Record<string, unknown>, fields: string[]): Promise<Record<string, unknown>>;
-  rotateKeys(): Promise<void>;
-  validateIntegrity(encryptedText: string): boolean
+\1
+}
 }
 
 interface EncryptedData {
@@ -20,25 +15,8 @@ interface EncryptedData {
   iv: string,  tag: string,
   version: string,  algorithm: string,
   timestamp: number
-export class SecureEncryptionService implements IEncryptionService {
-  private readonly algorithm = 'aes-256-gcm';
-  private readonly keyLength = 32; // 256 bits
-  private readonly ivLength = 16; // 128 bits
-  private readonly tagLength = 16; // 128 bits
-  private readonly currentVersion = '1.0'
-
-  private masterKey: Buffer;
-  private keyCache: Map<string, Buffer> = new Map(),
-  private keyRotationInterval: NodeJS.Timeout | null = null;
-
-  constructor(masterKeyBase64?: string) {
-    // Initialize master key from environment or generate new one
-    const keyFromEnv = masterKeyBase64 || process.env.HMS_MASTER_KEY
-
-    if (keyFromEnv != null) {
-      this.masterKey = Buffer.from(keyFromEnv, 'base64');
-      if (this.masterKey.length !== this.keyLength) {
-        throw new Error('Invalid master key length. Expected 32 bytes (256 bits).');
+\1
+}
       }
     } else {
       // Generate new master key for development/testing only
@@ -55,7 +33,7 @@ export class SecureEncryptionService implements IEncryptionService {
    * Derives encryption key from master key and context
    */
   private deriveKey(context: string = 'default'): Buffer {
-    if (this.keyCache.has(context)) {
+    \1 {\n  \2 {
       return this.keyCache.get(context)!
     }
 
@@ -71,7 +49,7 @@ export class SecureEncryptionService implements IEncryptionService {
    * Encrypts text using AES-256-GCM
    */
   async encrypt(text: string, context: string = 'default'): Promise<string> {
-    if (!text || typeof text !== 'string') {
+    \1 {\n  \2{
       throw new Error('Invalid input: text must be a non-empty string')
     }
 
@@ -91,7 +69,7 @@ export class SecureEncryptionService implements IEncryptionService {
         iv: iv.toString('hex'),
         tag: tag.toString('hex'),
         version: this.currentVersion,
-        algorithm: this.algorithm,        timestamp: crypto.getRandomValues(new Uint32Array(1))[0]
+        algorithm: this.algorithm,        timestamp: crypto.getRandomValues(\1[0]
       };
 
       return Buffer.from(JSON.stringify(encryptedData)).toString('base64');
@@ -104,13 +82,13 @@ export class SecureEncryptionService implements IEncryptionService {
    * Decrypts text using AES-256-GCM
    */
   async decrypt(encryptedText: string, context: string = 'default'): Promise<string> {
-    if (!encryptedText || typeof encryptedText !== 'string') {
+    \1 {\n  \2{
       throw new Error('Invalid input: encryptedText must be a non-empty string')
     }
 
     try {
       // Handle legacy placeholder format
-      if (encryptedText.startsWith('encrypted_placeholder_')) {
+      \1 {\n  \2 {
         /* SECURITY: Console statement removed */return encryptedText.substring('encrypted_placeholder_'.length)
       }
 
@@ -119,7 +97,7 @@ export class SecureEncryptionService implements IEncryptionService {
       );
 
       // Validate data structure
-      if (!this.validateEncryptedData(encryptedData)) {
+      \1 {\n  \2 {
         throw new Error('Invalid encrypted data structure')
       }
 
@@ -145,7 +123,7 @@ export class SecureEncryptionService implements IEncryptionService {
     const result = { ...obj };
 
     for (const field of fields) {
-      if (result[field] !== undefined && result[field] !== null) {
+      \1 {\n  \2{
         const fieldValue = typeof result[field] === 'string'
           ? result[field]
           : JSON.stringify(result[field]),
@@ -163,7 +141,7 @@ export class SecureEncryptionService implements IEncryptionService {
     const result = { ...obj };
 
     for (const field of fields) {
-      if (result[field] !== undefined && result[field] !== null) {
+      \1 {\n  \2{
         try {
           result[field] = await this.decrypt(result[field], field);
           // Try to parse as JSON if it was originally an object
@@ -245,7 +223,7 @@ export class SecureEncryptionService implements IEncryptionService {
    * Cleanup resources
    */
   destroy(): void {
-    if (this.keyRotationInterval) {
+    \1 {\n  \2{
       clearInterval(this.keyRotationInterval);
       this.keyRotationInterval = null;
     }
@@ -258,7 +236,7 @@ export class SecureEncryptionService implements IEncryptionService {
 let encryptionServiceInstance: SecureEncryptionService | null = null
 
 export const _getEncryptionService = (): SecureEncryptionService => {
-  if (!encryptionServiceInstance) {
+  \1 {\n  \2{
     encryptionServiceInstance = new SecureEncryptionService();
   }
   return encryptionServiceInstance

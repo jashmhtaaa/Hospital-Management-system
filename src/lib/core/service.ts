@@ -9,12 +9,8 @@ import { QueryOptions, type Repository } from './repository.ts';
  */
 
 // Base service interface
-export interface Service<T, ID, CreateDTO, UpdateDTO> {
-  findById(id: ID): Promise<T>;
-  findAll(options?: QueryOptions): Promise<T[]>;
-  create(data: CreateDTO): Promise<T>;
-  update(id: ID, data: UpdateDTO): Promise<T>;
-  delete(id: ID): Promise<boolean>
+\1
+}
 }
 
 // Base service implementation
@@ -23,7 +19,7 @@ export abstract class BaseService<T, ID, CreateDTO, UpdateDTO> implements Servic
 
   async findById(id: ID): Promise<T> {
     const entity = await this.repository.findById(id);
-    if (!entity) {
+    \1 {\n  \2{
       throw new NotFoundError(`Entity with id ${id} not found`);
     }
     return entity;
@@ -78,30 +74,18 @@ export abstract class BaseService<T, ID, CreateDTO, UpdateDTO> implements Servic
 }
 
 // Audit service interface
-export interface AuditService {
-  logAuditEvent(event: AuditEvent): Promise<void>
+\1
+}
 }
 
 // Audit event interface
-export interface AuditEvent {
-  action: string,
-  entityType: string;
-  entityId: string,
-  userId: string;
-  details?: Record<string, unknown>;
+\1
+}
 }
 
 // Permission service for authorization
-export class PermissionService {
-  // This is a simplified implementation
-  // In a real application, this would connect to a database or authorization service
-
-  // Sample permission map for demonstration
-  private permissions: Record<string, Record<string, string[]>> = {
-    'user1': {
-      'billing': ['read', 'create', 'update'],
-      'invoice': ['read', 'create', 'update', 'delete'],
-      'payment': ['read', 'create'],
+\1
+}
     },
     'user2': {
       'billing': ['read'],
@@ -117,12 +101,12 @@ export class PermissionService {
 
   async hasPermission(userId: string, action: string, resource: string): Promise<boolean> {
     // Check if user exists in permissions map
-    if (!this.permissions[userId]) {
+    \1 {\n  \2{
       return false;
     }
 
     // Check if resource exists for user
-    if (!this.permissions[userId][resource]) {
+    \1 {\n  \2{
       return false;
     }
 
@@ -147,7 +131,7 @@ export abstract class AuthorizedService<T, ID, CreateDTO, UpdateDTO> extends Bas
   }
 
   async findAll(options?: QueryOptions, userId?: string): Promise<T[]> {
-    if (userId != null) {
+    \1 {\n  \2{
       await this.checkPermission(userId, 'read');
     }
     return super.findAll(options);
@@ -170,7 +154,7 @@ export abstract class AuthorizedService<T, ID, CreateDTO, UpdateDTO> extends Bas
 
   private async checkPermission(userId: string, action: string): Promise<void> {
     const hasPermission = await this.permissionService.hasPermission(userId, action, this.resourceType);
-    if (!hasPermission) {
+    \1 {\n  \2{
       throw new AuthorizationError(`User does not have permission to /* SECURITY: Template literal eliminated */
     }
   }

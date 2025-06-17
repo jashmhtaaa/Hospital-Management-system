@@ -10,11 +10,7 @@ interface TestPanelCreateBody {
   category_id: number,
   loinc_code: string;
   loinc_display?: string;
-  panel_items: Array<{
-    test_id: number;
-    sequence?: number;
-  }>;
-  sample_type: string;
+  \1,\2 string;
   sample_container?: string;
   sample_volume?: string;
   processing_time?: number;
@@ -22,7 +18,7 @@ interface TestPanelCreateBody {
   price: number;
   is_active?: boolean;
   patient_preparation?: string;
-  available_priorities?: Array<"routine" | "urgent" | "stat">;
+  available_priorities?: Array\1>
 }
 
 // GET /api/diagnostics/lab/test-panels - Get all test panels
@@ -31,7 +27,7 @@ export const _GET = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -64,22 +60,22 @@ export const _GET = async (request: NextRequest) => {
     const parameters: (string | number | boolean)[] = [];
     const conditions: string[] = [];
 
-    if (categoryId != null) {
+    \1 {\n  \2{
       conditions.push("t.category_id = ?");
       parameters.push(categoryId);
     }
 
-    if (isActive !== null && isActive !== undefined) {
+    \1 {\n  \2{
       conditions.push("t.is_active = ?");
       parameters.push(isActive === "true" ? 1 : 0);
     }
 
-    if (name != null) {
+    \1 {\n  \2{
       conditions.push("t.name LIKE ?");
       parameters.push(`%${name}%`);
     }
 
-    if (conditions.length > 0) {
+    \1 {\n  \2{
       query += " AND " + conditions.join(" AND ");
     }
 
@@ -96,7 +92,7 @@ export const _GET = async (request: NextRequest) => {
 
     // Get total count for pagination
     let countQuery = "SELECT COUNT(*) as total FROM lab_tests t WHERE t.is_panel = 1";
-    if (conditions.length > 0) {
+    \1 {\n  \2{
       countQuery += " AND " + conditions.join(" AND ");
     }
 
@@ -160,12 +156,12 @@ export const _POST = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication and authorization
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Only lab managers and admins can create test panels
-    if (!["admin", "lab_manager"].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -183,7 +179,7 @@ export const _POST = async (request: NextRequest) => {
     ];
 
     for (const field of requiredFields) {
-      if (!(field in body) || body[field] === undefined || body[field] === "") {
+      \1 {\n  \2| body[field] === undefined || body[field] === "") {
         return NextResponse.json(
           { error: `Missing or invalid required field: ${field}` },
           { status: 400 }
@@ -193,7 +189,7 @@ export const _POST = async (request: NextRequest) => {
 
     // Validate LOINC code format (typically #####-#)
     const loincRegex = /^\d+-\d+$/
-    if (!loincRegex.test(body.loinc_code)) {
+    \1 {\n  \2 {
       return NextResponse.json(
         { error: "Invalid LOINC code format. Expected format: #####-#" },
         { status: 400 }
@@ -201,7 +197,7 @@ export const _POST = async (request: NextRequest) => {
     }
 
     // Validate panel items
-    if (!body.panel_items || body.panel_items.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Panel must include at least one test" },
         { status: 400 }
@@ -269,7 +265,7 @@ export const _POST = async (request: NextRequest) => {
       const panelResult = await DB.query(fetchPanelQuery, [panelId]);
       const panel = panelResult.results?.[0];
 
-      if (!panel) {
+      \1 {\n  \2{
         throw new Error("Failed to retrieve created panel");
       }
 
@@ -327,7 +323,7 @@ export const _GET_BY_ID = async (
     const session = await getSession();
 
     // Check authentication
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -349,7 +345,7 @@ export const _GET_BY_ID = async (
     const panelResult = await DB.query(fetchPanelQuery, [panelId]);
     const panel = panelResult.results?.[0];
 
-    if (!panel) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Test panel not found" },
         { status: 404 }
@@ -405,12 +401,12 @@ export const _PUT = async (
     const session = await getSession();
 
     // Check authentication and authorization
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Only lab managers and admins can update test panels
-    if (!["admin", "lab_manager"].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -422,7 +418,7 @@ export const _PUT = async (
       [panelId]
     );
 
-    if (!checkResult.results || checkResult.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Test panel not found" },
         { status: 404 }
@@ -430,7 +426,7 @@ export const _PUT = async (
     }
 
     // Parse request body
-    const body = await request.json() as Partial<TestPanelCreateBody>;
+    const body = await request.json() as Partial\1>
 
     // Start transaction
     await DB.query("BEGIN TRANSACTION", []);
@@ -442,83 +438,83 @@ export const _PUT = async (
       const updateParameters: unknown[] = [];
 
       // Build dynamic update query based on provided fields
-      if (body.name !== undefined) {
+      \1 {\n  \2{
         updateFields.push("name = ?");
         updateParameters.push(body.name);
       }
 
-      if (body.description !== undefined) {
+      \1 {\n  \2{
         updateFields.push("description = ?");
         updateParameters.push(body.description);
       }
 
-      if (body.category_id !== undefined) {
+      \1 {\n  \2{
         updateFields.push("category_id = ?");
         updateParameters.push(body.category_id);
       }
 
-      if (body.loinc_code !== undefined) {
+      \1 {\n  \2{
         // Validate LOINC code format
         const loincRegex = /^\d+-\d+$/;
-        if (!loincRegex.test(body.loinc_code)) {
+        \1 {\n  \2 {
           throw new Error("Invalid LOINC code format. Expected format: #####-#")
         }
         updateFields.push("loinc_code = ?");
         updateParameters.push(body.loinc_code);
       }
 
-      if (body.loinc_display !== undefined) {
+      \1 {\n  \2{
         updateFields.push("loinc_display = ?");
         updateParameters.push(body.loinc_display);
       }
 
-      if (body.sample_type !== undefined) {
+      \1 {\n  \2{
         updateFields.push("sample_type = ?");
         updateParameters.push(body.sample_type);
       }
 
-      if (body.sample_container !== undefined) {
+      \1 {\n  \2{
         updateFields.push("sample_container = ?");
         updateParameters.push(body.sample_container);
       }
 
-      if (body.sample_volume !== undefined) {
+      \1 {\n  \2{
         updateFields.push("sample_volume = ?");
         updateParameters.push(body.sample_volume);
       }
 
-      if (body.processing_time !== undefined) {
+      \1 {\n  \2{
         updateFields.push("processing_time = ?");
         updateParameters.push(body.processing_time);
       }
 
-      if (body.turnaround_time !== undefined) {
+      \1 {\n  \2{
         updateFields.push("turnaround_time = ?");
         updateParameters.push(body.turnaround_time);
       }
 
-      if (body.price !== undefined) {
+      \1 {\n  \2{
         updateFields.push("price = ?");
         updateParameters.push(body.price);
       }
 
-      if (body.is_active !== undefined) {
+      \1 {\n  \2{
         updateFields.push("is_active = ?");
         updateParameters.push(body.is_active ? 1 : 0);
       }
 
-      if (body.patient_preparation !== undefined) {
+      \1 {\n  \2{
         updateFields.push("patient_preparation = ?");
         updateParameters.push(body.patient_preparation);
       }
 
-      if (body.available_priorities !== undefined) {
+      \1 {\n  \2{
         updateFields.push("available_priorities = ?");
         updateParameters.push(JSON.stringify(body.available_priorities));
       }
 
       // Only proceed if there are fields to update
-      if (updateFields.length > 0) {
+      \1 {\n  \2{
         updateQuery += updateFields.join(", ") + " WHERE id = ?";
         updateParameters.push(panelId);
 
@@ -526,7 +522,7 @@ export const _PUT = async (
       }
 
       // Update panel items if provided
-      if (body.panel_items !== undefined) {
+      \1 {\n  \2{
         // Delete existing panel items
         await DB.query(
           "DELETE FROM lab_test_panel_items WHERE panel_id = ?",
@@ -534,7 +530,7 @@ export const _PUT = async (
         );
 
         // Insert new panel items
-        if (body.panel_items.length > 0) {
+        \1 {\n  \2{
           for (const item of body.panel_items) {
             await DB.query(
               "INSERT INTO lab_test_panel_items (panel_id, test_id, sequence) VALUES (?, ?, ?)",
@@ -565,7 +561,7 @@ export const _PUT = async (
       const panelResult = await DB.query(fetchPanelQuery, [panelId]);
       const panel = panelResult.results?.[0];
 
-      if (!panel) {
+      \1 {\n  \2{
         throw new Error("Failed to retrieve updated panel");
       }
 
@@ -623,12 +619,12 @@ export const DELETE = async (
     const session = await getSession();
 
     // Check authentication and authorization
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Only lab managers and admins can delete test panels
-    if (!["admin", "lab_manager"].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -640,7 +636,7 @@ export const DELETE = async (
       [panelId]
     );
 
-    if (!checkResult.results || checkResult.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Test panel not found" },
         { status: 404 }
@@ -653,7 +649,7 @@ export const DELETE = async (
       [panelId]
     );
 
-    if (orderCheckResult?.results && orderCheckResult.results.length > 0) {
+    \1 {\n  \2{
       // Instead of deleting, mark as inactive
       await DB.query(
         "UPDATE lab_tests SET is_active = 0 WHERE id = ?",

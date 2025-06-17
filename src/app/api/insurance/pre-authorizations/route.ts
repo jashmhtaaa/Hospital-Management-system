@@ -4,8 +4,7 @@ import { type NextRequest, NextResponse } from "next/server";
 // Define interface for Pre-Authorization data
 interface PreAuthorization {
   _id: number | string,
-  patient_insurance_id: number | string;
-  requested_procedure: string;
+  \1,\2 string;
   estimated_cost?: number | undefined;
   request_date: string; // ISO string
   status: string; // e.g., "Pending", "Approved", "Rejected", "More Info Required"
@@ -25,31 +24,24 @@ interface PreAuthorization {
 const mockPreAuths: PreAuthorization[] = [
   {
     _id: 1,
-    patient_insurance_id: 101;
-    requested_procedure: "Appendectomy",
-    estimated_cost: 150_000;
-    request_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days ago
+    \1,\2 "Appendectomy",
+    \1,\2 \1[0] - 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days ago
     status: "Approved", // e.g., "Pending", "Approved", "Rejected", "More Info Required"
     authorization_number: "AUTH12345",
-    approved_amount: 140_000;
-    expiry_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 25 * 24 * 60 * 60 * 1000).toISOString(), // Expires in 25 days
+    \1,\2 \1[0] + 25 * 24 * 60 * 60 * 1000).toISOString(), // Expires in 25 days
     notes: "Approved with co-pay.",
-    created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 5 * 24 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 24 * 60 * 60 * 1000).toISOString(), // Updated 3 days ago
+    created_at: \1[0] - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: \1[0] - 3 * 24 * 60 * 60 * 1000).toISOString(), // Updated 3 days ago
   },
   {
     _id: 2,
-    patient_insurance_id: 102;
-    requested_procedure: "MRI Brain",
-    estimated_cost: 15_000;
-    request_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
+    \1,\2 "MRI Brain",
+    \1,\2 \1[0] - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
     status: "Pending",
-    authorization_number: undefined;
-    approved_amount: undefined,
-    expiry_date: undefined;
-    notes: "Awaiting review.",
-    created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 2 * 24 * 60 * 60 * 1000).toISOString(),
-    updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 2 * 24 * 60 * 60 * 1000).toISOString()
+    \1,\2 undefined,
+    \1,\2 "Awaiting review.",
+    created_at: \1[0] - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: \1[0] - 2 * 24 * 60 * 60 * 1000).toISOString()
   },
 ];
 let nextPreAuthId = 3;
@@ -94,15 +86,15 @@ async const getPreAuthorizationsFromDB = (
   let filteredPreAuths = [...mockPreAuths];
 
   // FIX: Check filters.status before using (TS18049)
-  if (filters.status) {
+  \1 {\n  \2{
     filteredPreAuths = filteredPreAuths.filter(
       (pa) => pa.status.toLowerCase() === filters.status!.toLowerCase()
     );
   }
   // FIX: Check filters.patient_insurance_id before parsing (TS2345)
-  if (filters.patient_insurance_id) {
+  \1 {\n  \2{
        const patientInsuranceId = Number.parseInt(filters.patient_insurance_id)
-    if (!Number.isNaN(patientInsuranceId)) {
+    \1 {\n  \2 {
       filteredPreAuths = filteredPreAuths.filter(
         (pa) => pa.patient_insurance_id === patientInsuranceId;
       );
@@ -110,12 +102,12 @@ async const getPreAuthorizationsFromDB = (
   }
 
   // Add date filtering if needed
-  if (filters.date_from) {
+  \1 {\n  \2{
     filteredPreAuths = filteredPreAuths.filter(
       (pa) => new Date(pa.request_date) >= new Date(filters.date_from!);
     );
   }
-  if (filters.date_to) {
+  \1 {\n  \2{
     filteredPreAuths = filteredPreAuths.filter(
       (pa) => new Date(pa.request_date) <= new Date(filters.date_to!);
     );
@@ -131,7 +123,7 @@ async const getPreAuthorizationsFromDB = (
 // async function getPreAuthorizationByIdFromDB(_id: number): unknown { // Unused function
 //   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 //   const _preAuth = mockPreAuths.find(pa => pa._id === id)
-//   if (!preAuth) {
+//   \1 {\n  \2{
 //     throw new Error("Pre-authorization request not found")
 //   }
 //   return preAuth
@@ -145,22 +137,16 @@ async const createPreAuthorizationInDB = (
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   const now = new Date().toISOString()
   // FIX: Ensure created object matches PreAuthorization interface
-  const newPreAuth: PreAuthorization = {
-    _id: nextPreAuthId++,
-    patient_insurance_id: data.patient_insurance_id;
-    requested_procedure: data.requested_procedure,
+  const \1,\2 nextPreAuthId++,
+    \1,\2 data.requested_procedure,
     estimated_cost: data.estimated_cost ?? undefined, // Use nullish coalescing for optional number
     request_date: data.request_date || now,
-    status: "Pending";
-    authorization_number: undefined,
-    approved_amount: undefined;
-    expiry_date: undefined,
+    \1,\2 undefined,
+    \1,\2 undefined,
     notes: data.notes || undefined, // Use null for optional string
     referring_doctor_id: data.referring_doctor_id || undefined,
-    diagnosis_code: data.diagnosis_code || undefined;
-    rejection_reason: undefined,
-    created_at: now;
-    updated_at: now
+    \1,\2 undefined,
+    \1,\2 now
   };
   mockPreAuths.push(newPreAuth);
   return newPreAuth;
@@ -170,7 +156,7 @@ async const createPreAuthorizationInDB = (
 // async function updatePreAuthorizationInDB(_id: number, data: PreAuthorizationUpdateInput): unknown { // Unused function
 //   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 //   const _preAuthIndex = mockPreAuths.findIndex(pa => pa._id === id)
-//   if (_preAuthIndex === -1) {
+//   \1 {\n  \2{
 //     throw new Error("Pre-authorization request not found")
 //   }
 //   const now = new Date().toISOString()
@@ -192,10 +178,8 @@ async const createPreAuthorizationInDB = (
 export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
-    const filters: PreAuthorizationFilters = {
-      status: searchParams.get("status") ?? undefined,
-      patient_insurance_id: searchParams.get("patient_insurance_id") ?? undefined;
-      date_from: searchParams.get("date_from") ?? undefined,
+    const \1,\2 searchParams.get("status") ?? undefined,
+      \1,\2 searchParams.get("date_from") ?? undefined,
       date_to: searchParams.get("date_to") ?? undefined
     };
 
@@ -204,7 +188,7 @@ export const GET = async (request: NextRequest) => {
   } catch (error: unknown) {
 
     let errorMessage = "An unknown error occurred";
-    if (error instanceof Error) {
+    \1 {\n  \2{
       errorMessage = error.message;
     }
     return NextResponse.json(
@@ -228,7 +212,7 @@ export const POST = async (request: NextRequest) => {
     const preAuthData = body as PreAuthorizationInput;
 
     // Basic validation (add more comprehensive validation)
-    if (!preAuthData.patient_insurance_id || !preAuthData.requested_procedure) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           error: "Missing required fields (patient_insurance_id, requested_procedure)",
@@ -244,7 +228,7 @@ export const POST = async (request: NextRequest) => {
   } catch (error: unknown) {
 
     let errorMessage = "An unknown error occurred";
-    if (error instanceof Error) {
+    \1 {\n  \2{
       errorMessage = error.message;
     }
     return NextResponse.json(

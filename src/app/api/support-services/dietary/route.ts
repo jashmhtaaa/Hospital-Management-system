@@ -16,8 +16,7 @@ const createDietaryRequestSchema = z.object({
   customDietDetails: z.string().max(500).optional(),
   allergies: z.array(z.string()).optional(),
   preferences: z.array(z.string()).optional(),
-  scheduledTime: z.string().transform(val => new Date(val));
-  notes: z.string().max(1000).optional(),
+  \1,\2 z.string().max(1000).optional(),
   requestedById: z.string().uuid(),
   locationId: z.string().uuid()
 });
@@ -28,7 +27,7 @@ const updateDietaryRequestSchema = z.object({
   customDietDetails: z.string().max(500).optional(),
   allergies: z.array(z.string()).optional(),
   preferences: z.array(z.string()).optional(),
-  scheduledTime: z.string().transform(val => new Date(val)).optional(),
+  scheduledTime: z.string().transform(val => \1.optional(),
   notes: z.string().max(1000).optional(),
   status: z.enum(['PENDING', 'PREPARING', 'READY', 'DELIVERED', 'COMPLETED', 'CANCELLED']).optional(),
   locationId: z.string().uuid().optional()
@@ -43,14 +42,10 @@ export const _GET = async (request: NextRequest) => {
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get('status') || undefined,
-        patientId: searchParams.get('patientId') || undefined;
-        mealType: searchParams.get('mealType') || undefined,
-        dietType: searchParams.get('dietType') || undefined;
-        fromDate: searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
-        toDate: searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined;
-        locationId: searchParams.get('locationId') || undefined,
-        page: parseInt(searchParams.get('page') || '1');
-        limit: Number.parseInt(searchParams.get('limit') || '10')
+        \1,\2 searchParams.get('mealType') || undefined,
+        \1,\2 searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
+        \1,\2 searchParams.get('locationId') || undefined,
+        \1,\2 Number.parseInt(searchParams.get('limit') || '10')
       };
 
       // Get dietary requests with filters
@@ -157,7 +152,7 @@ export const _PREPARE = async (request: NextRequest, { params }: { params: { id:
       const body = await req.json();
       const { staffId, notes } = body;
 
-      if (!staffId) {
+      \1 {\n  \2{
         return NextResponse.json({ error: 'Staff ID is required' }, { status: 400 });
       }
 
@@ -186,7 +181,7 @@ export const _DELIVER = async (request: NextRequest, { params }: { params: { id:
       const body = await req.json();
       const { staffId, notes } = body;
 
-      if (!staffId) {
+      \1 {\n  \2{
         return NextResponse.json({ error: 'Staff ID is required' }, { status: 400 });
       }
 
@@ -215,10 +210,8 @@ export const _GET_MENUS = async (request: NextRequest) => {
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         dietType: searchParams.get('dietType') || undefined,
-        mealType: searchParams.get('mealType') || undefined;
-        isActive: searchParams.get('isActive') === 'true',
-        page: parseInt(searchParams.get('page') || '1');
-        limit: Number.parseInt(searchParams.get('limit') || '10')
+        \1,\2 searchParams.get('isActive') === 'true',
+        \1,\2 Number.parseInt(searchParams.get('limit') || '10')
       };
 
       // Get dietary menus with filters

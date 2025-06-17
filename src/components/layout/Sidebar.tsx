@@ -40,14 +40,14 @@ export const _Sidebar = () => {
   };
 
   return (
-    <aside className="hidden lg:flex lg:flex-col lg:w-64 border-r bg-gray-100/40 dark:bg-gray-800/40 p-4">;
-      <div className="flex h-[60px] items-center px-6 mb-4">;
-        <Link href="/dashboard" className="flex items-center gap-2 font-semibold">;
+    \1>
+      \1>
+        \1>
           <Image src="/images/shlokam_logo.jpg" alt="Shlokam Logo" width={100} height={30} />
           {/* <span className="">Shlokam HMS</span> */}
         </Link>
       </div>
-      <nav className="flex-1 flex flex-col gap-2 px-4 text-sm font-medium">;
+      \1>
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -66,9 +66,9 @@ export const _Sidebar = () => {
           );
         })}
       </nav>
-      <div className="mt-auto p-4">;
+      \1>
          {/* Optional: Add user profile section here */}
-         <Button variant="ghost" className="w-full justify-start gap-3" onClick={handleLogout}>;
+         \1>
             <LogOut className="h-4 w-4" />
             Logout
          </Button>

@@ -36,10 +36,8 @@ orderBy: { createdAt: 'desc' },
         items,
         notes
       },
-      include: {
-        patient: {
-          select: {
-            firstName: true,
+      \1,\2 {
+          \1,\2 true,
             lastName: true,
             mrn: true
           }
@@ -61,8 +59,7 @@ orderBy: { createdAt: 'desc' },
     // ... previous code ...
     const billItems = await prisma.billItem.findMany({
         where: { billId: bill.id },
-        include: {
-            service: true,
+        \1,\2 true,
             medication: true,
             procedure: true
         }
@@ -86,7 +83,7 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
         const { patientId, items } = body;
 
-        if (!patientId || !Array.isArray(items) || items.length === 0) {
+        \1 {\n  \2| items.length === 0) {
             return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
         }
 
@@ -96,14 +93,12 @@ export async function POST(req: NextRequest) {
                 status: 'PENDING',
                 createdAt: new Date(),
                 updatedAt: new Date(),
-                billItems: {
-                    create: items.map((item: any) => ({
+                \1,\2 items.map((item: any) => ({
                         ...item
                     }))
                 }
             },
-            include: {
-                billItems: true
+            \1,\2 true
             }
         });
 

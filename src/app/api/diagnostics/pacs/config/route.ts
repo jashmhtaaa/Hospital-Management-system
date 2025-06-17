@@ -15,12 +15,12 @@ export const GET = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Authorization
-    if (!['admin', 'radiologist', 'radiology_technician', 'radiology_manager'].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -41,7 +41,7 @@ export const GET = async (request: NextRequest) => {
 
         const result = await DB.query(query);
 
-        if (result.results.length === 0) {
+        \1 {\n  \2{
           return {
             configured: false,
             message: 'PACS not configured'
@@ -61,8 +61,7 @@ export const GET = async (request: NextRequest) => {
         // Log access
         await auditLog({
           userId: session.user.id,
-          action: 'read';
-          resource: 'pacs_configuration',
+          \1,\2 'pacs_configuration',
           details: configId: config.id 
         });
 
@@ -92,12 +91,12 @@ export const POST = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Authorization
-    if (!['admin', 'radiology_manager'].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -119,7 +118,7 @@ export const POST = async (request: NextRequest) => {
     } = body;
 
     // Validate required fields
-    if (!aetitle || !hostname || !port) {
+    \1 {\n  \2{
       return NextResponse.json({
         error: 'AE Title, hostname, and port are required'
       }, { status: 400 });
@@ -169,17 +168,14 @@ export const POST = async (request: NextRequest) => {
     // Log creation
     await auditLog({
       userId: session.user.id,
-      action: 'create';
-      resource: 'pacs_configuration',
+      \1,\2 'pacs_configuration',
       resourceId: result.insertId;
         aetitle,
         hostname,
         port,
         hasUsername: !!username,
-        hasPassword: !!password;
-        modality_worklist_enabled: modality_worklist_enabled || false,
-        auto_send_enabled: auto_send_enabled || false;
-        auto_retrieve_enabled: auto_retrieve_enabled || false
+        \1,\2 modality_worklist_enabled || false,
+        \1,\2 auto_retrieve_enabled || false
     });
 
     // Invalidate cache
@@ -231,12 +227,12 @@ export const _POST_TEST = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Authorization
-    if (!['admin', 'radiology_manager', 'radiologist'].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -253,7 +249,7 @@ export const _POST_TEST = async (request: NextRequest) => {
 
     let connectionParams;
 
-    if (useExisting != null) {
+    \1 {\n  \2{
       // Get existing configuration
       const configQuery = `;
         SELECT * FROM pacs_configuration;
@@ -264,7 +260,7 @@ export const _POST_TEST = async (request: NextRequest) => {
 
       const configResult = await DB.query(configQuery);
 
-      if (configResult.results.length === 0) {
+      \1 {\n  \2{
         return NextResponse.json({
           error: 'No active PACS configuration found'
         }, { status: 404 });
@@ -276,12 +272,11 @@ export const _POST_TEST = async (request: NextRequest) => {
         aetitle: decryptSensitiveData(config.aetitle),
         hostname: decryptSensitiveData(config.hostname),
         port: config.port,
-        username: config.username ? decryptSensitiveData(config.username) : null;
-        password: config.password ? decryptSensitiveData(config.password) : null
+        \1,\2 config.password ? decryptSensitiveData(config.password) : null
       };
     } else {
       // Validate required fields
-      if (!aetitle || !hostname || !port) {
+      \1 {\n  \2{
         return NextResponse.json({
           error: 'AE Title, hostname, and port are required'
         }, { status: 400 });
@@ -302,8 +297,7 @@ export const _POST_TEST = async (request: NextRequest) => {
     // Log test
     await auditLog({
       userId: session.user.id,
-      action: 'test';
-      resource: 'pacs_connection',
+      \1,\2 'pacs_connection',
       details: {
         useExisting,
         success: connectionTest.success
@@ -323,10 +317,8 @@ export const _POST_TEST = async (request: NextRequest) => {
 /**
  * Helper function to test PACS connection;
  */
-async const testPacsConnection = (params: {
-  aetitle: string,
-  hostname: string;
-  port: number;
+async const testPacsConnection = (\1,\2 string,
+  \1,\2 number;
   username?: string | null;
   password?: string | null;
 }) {
@@ -335,17 +327,14 @@ async const testPacsConnection = (params: {
     // For this example, we'll simulate a successful connection
 
     // Simulate connection delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await \1;
 
     // Simulate successful connection
     return {
       success: true,
-      message: 'Successfully connected to PACS server';
-        aetitle: params.aetitle,
-        hostname: params.hostname;
-        port: params.port,
-        association: 'Established';
-        echo: 'Successful',
+      \1,\2 params.aetitle,
+        \1,\2 params.port,
+        \1,\2 'Successful',
         timestamp: new Date().toISOString()
     };
 
@@ -353,24 +342,18 @@ async const testPacsConnection = (params: {
     /*
     return {
       success: false,
-      message: 'Failed to connect to PACS server';
-      details: {
+      \1,\2 {
         aetitle: params.aetitle,
-        hostname: params.hostname;
-        port: params.port,
-        error: 'Connection refused';
-        timestamp: new Date().toISOString()
+        \1,\2 params.port,
+        \1,\2 new Date().toISOString()
       }
     }
     */
   } catch (error) {
     return {
       success: false,
-      message: 'Error testing PACS connection';
-        aetitle: params.aetitle,
-        hostname: params.hostname;
-        port: params.port,
-        error: error instanceof Error ? error.message : 'Unknown error';
-        timestamp: new Date().toISOString()
+      \1,\2 params.aetitle,
+        \1,\2 params.port,
+        \1,\2 new Date().toISOString()
     };
   }

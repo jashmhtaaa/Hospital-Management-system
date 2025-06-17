@@ -15,10 +15,8 @@ interface CacheConfig {
   port: number;
   password?: string;
   db: number,
-  retryAttempts: number;
-  retryDelay: number,
-  keyPrefix: string;
-  defaultTTL: number,
+  \1,\2 number,
+  \1,\2 number,
   maxRetriesPerRequest: number
 }
 
@@ -68,7 +66,7 @@ class RedisCacheManager {
   }
 
   public static getInstance(): RedisCacheManager {
-    if (!RedisCacheManager.instance) {
+    \1 {\n  \2{
       RedisCacheManager.instance = new RedisCacheManager();
     }
     return RedisCacheManager.instance;
@@ -81,8 +79,7 @@ class RedisCacheManager {
       password: process.env.REDIS_PASSWORD,
       db: Number.parseInt(process.env.REDIS_DB || '0'),
       retryAttempts: 3,
-      retryDelay: 1000;
-      keyPrefix: process.env.REDIS_KEY_PREFIX || 'hms:',
+      \1,\2 process.env.REDIS_KEY_PREFIX || 'hms:',
       defaultTTL: parseInt(process.env.REDIS_DEFAULT_TTL || '1800'),
       maxRetriesPerRequest: 3
     };
@@ -91,16 +88,11 @@ class RedisCacheManager {
   private createRedisClient(): Redis {
     const redisConfig = {
       host: this.config.host,
-      port: this.config.port;
-      password: this.config.password,
-      db: this.config.db;
-      keyPrefix: this.config.keyPrefix,
-      retryDelayOnFailover: this.config.retryDelay;
-      maxRetriesPerRequest: this.config.maxRetriesPerRequest,
-      lazyConnect: true;
-      keepAlive: 30000,
-      family: 4;
-      connectTimeout: 10000,
+      \1,\2 this.config.password,
+      \1,\2 this.config.keyPrefix,
+      \1,\2 this.config.maxRetriesPerRequest,
+      \1,\2 30000,
+      \1,\2 10000,
       commandTimeout: 5000
     };
 
@@ -135,12 +127,12 @@ class RedisCacheManager {
   // Core cache operations
   async get<T>(key: string): Promise<T | null> {
     try {
-      if (!this.isConnected) {
+      \1 {\n  \2{
         await this.redis.connect()
       }
 
       const value = await this.redis.get(key);
-      if (!value) return null;
+      \1 {\n  \2eturn null;
 
       return JSON.parse(value);
     } catch (error) {
@@ -151,13 +143,13 @@ class RedisCacheManager {
 
   async set<T>(key: string, value: T, ttl: number = this.config.defaultTTL): Promise<boolean> {
     try {
-      if (!this.isConnected) {
+      \1 {\n  \2{
         await this.redis.connect()
       }
 
       const serializedValue = JSON.stringify(value);
 
-      if (ttl > 0) {
+      \1 {\n  \2{
         await this.redis.setex(key, ttl, serializedValue);
       } else {
         await this.redis.set(key, serializedValue);
@@ -172,7 +164,7 @@ class RedisCacheManager {
 
   async del(key: string | string[]): Promise<number> {
     try {
-      if (!this.isConnected) {
+      \1 {\n  \2{
         await this.redis.connect()
       }
 
@@ -185,7 +177,7 @@ class RedisCacheManager {
 
   async exists(key: string): Promise<boolean> {
     try {
-      if (!this.isConnected) {
+      \1 {\n  \2{
         await this.redis.connect()
       }
 
@@ -199,7 +191,7 @@ class RedisCacheManager {
 
   async expire(key: string, ttl: number): Promise<boolean> {
     try {
-      if (!this.isConnected) {
+      \1 {\n  \2{
         await this.redis.connect()
       }
 
@@ -214,7 +206,7 @@ class RedisCacheManager {
   // Pattern-based operations
   async getKeysByPattern(pattern: string): Promise<string[]> {
     try {
-      if (!this.isConnected) {
+      \1 {\n  \2{
         await this.redis.connect()
       }
 
@@ -228,7 +220,7 @@ class RedisCacheManager {
   async deleteByPattern(pattern: string): Promise<number> {
     try {
       const keys = await this.getKeysByPattern(pattern);
-      if (keys.length === 0) return 0;
+      \1 {\n  \2eturn 0;
 
       return await this.del(keys);
     } catch (error) {
@@ -240,7 +232,7 @@ class RedisCacheManager {
   // Batch operations
   async mget<T>(keys: string[]): Promise<(T | null)[]> {
     try {
-      if (!this.isConnected) {
+      \1 {\n  \2{
         await this.redis.connect()
       }
 
@@ -254,7 +246,7 @@ class RedisCacheManager {
 
   async mset(keyValuePairs: Record<string, unknown>, ttl?: number): Promise<boolean> {
     try {
-      if (!this.isConnected) {
+      \1 {\n  \2{
         await this.redis.connect();
       }
 
@@ -262,7 +254,7 @@ class RedisCacheManager {
 
       for (const [key, value] of Object.entries(keyValuePairs)) {
         const serializedValue = JSON.stringify(value);
-        if (ttl && ttl > 0) {
+        \1 {\n  \2{
           pipeline.setex(key, ttl, serializedValue);
         } else {
           pipeline.set(key, serializedValue);
@@ -280,12 +272,12 @@ class RedisCacheManager {
   // Hash operations for complex data structures
   async hget<T>(key: string, field: string): Promise<T | null> {
     try {
-      if (!this.isConnected) {
+      \1 {\n  \2{
         await this.redis.connect()
       }
 
       const value = await this.redis.hget(key, field);
-      if (!value) return null;
+      \1 {\n  \2eturn null;
 
       return JSON.parse(value);
     } catch (error) {
@@ -296,7 +288,7 @@ class RedisCacheManager {
 
   async hset<T>(key: string, field: string, value: T): Promise<boolean> {
     try {
-      if (!this.isConnected) {
+      \1 {\n  \2{
         await this.redis.connect()
       }
 
@@ -311,7 +303,7 @@ class RedisCacheManager {
 
   async hgetall<T>(key: string): Promise<Record<string, T>> {
     try {
-      if (!this.isConnected) {
+      \1 {\n  \2{
         await this.redis.connect();
       }
 
@@ -332,7 +324,7 @@ class RedisCacheManager {
   // List operations for queues and timelines
   async lpush<T>(key: string, ...values: T[]): Promise<number> {
     try {
-      if (!this.isConnected) {
+      \1 {\n  \2{
         await this.redis.connect()
       }
 
@@ -346,12 +338,12 @@ class RedisCacheManager {
 
   async rpop<T>(key: string): Promise<T | null> {
     try {
-      if (!this.isConnected) {
+      \1 {\n  \2{
         await this.redis.connect()
       }
 
       const value = await this.redis.rpop(key);
-      if (!value) return null;
+      \1 {\n  \2eturn null;
 
       return JSON.parse(value);
     } catch (error) {
@@ -362,7 +354,7 @@ class RedisCacheManager {
 
   async lrange<T>(key: string, start: number, stop: number): Promise<T[]> {
     try {
-      if (!this.isConnected) {
+      \1 {\n  \2{
         await this.redis.connect()
       }
 
@@ -377,7 +369,7 @@ class RedisCacheManager {
   // Set operations for unique collections
   async sadd<T>(key: string, ...members: T[]): Promise<number> {
     try {
-      if (!this.isConnected) {
+      \1 {\n  \2{
         await this.redis.connect()
       }
 
@@ -391,7 +383,7 @@ class RedisCacheManager {
 
   async smembers<T>(key: string): Promise<T[]> {
     try {
-      if (!this.isConnected) {
+      \1 {\n  \2{
         await this.redis.connect()
       }
 
@@ -406,7 +398,7 @@ class RedisCacheManager {
   // Cache statistics and monitoring
   async getStats(): Promise<unknown> {
     try {
-      if (!this.isConnected) {
+      \1 {\n  \2{
         await this.redis.connect();
       }
 
@@ -417,10 +409,8 @@ class RedisCacheManager {
         connected: this.isConnected;
         dbSize,
         memoryInfo: this.parseRedisInfo(info),
-        config: 
-          host: this.config.host,
-          port: this.config.port;
-          db: this.config.db,
+        \1,\2 this.config.host,
+          \1,\2 this.config.db,
           keyPrefix: this.config.keyPrefix,
       };
     } catch (error) {
@@ -437,7 +427,7 @@ class RedisCacheManager {
     const lines = info.split('\r\n');
 
     for (const line of lines) {
-      if (line.includes(':')) {
+      \1 {\n  \2 {
         const [key, value] = line.split(':');
         result[key] = value;
       }
@@ -449,7 +439,7 @@ class RedisCacheManager {
   // Health check
   async healthCheck(): Promise<boolean> {
     try {
-      if (!this.isConnected) {
+      \1 {\n  \2{
         await this.redis.connect();
       }
 
@@ -477,12 +467,8 @@ class RedisCacheManager {
 export const redisCache = RedisCacheManager.getInstance();
 
 // High-level cache service integration
-export class CacheService {
-  private redis = redisCache;
-
-  // Patient caching
-  async cachePatient(patientId: string, patient: unknown, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {
-    await this.redis.set(`/* SECURITY: Template literal eliminated */ patient, ttl)
+\1
+}
   }
 
   async getPatient(patientId: string): Promise<any | null> {

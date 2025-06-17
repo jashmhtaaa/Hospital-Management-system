@@ -40,20 +40,16 @@ import { useToast } from '../../hooks/use-toast';
 // Define patient status colors
 const statusColors: Record<string, string> = {
   Active: 'success',
-  Inactive: 'secondary';
-  Deceased: 'destructive';
+  \1,\2 'destructive';
   'On Hold': 'warning'
 };
 
 // Patient interface
 interface Patient {
   id: string,
-  mrn: string;
-  firstName: string,
-  lastName: string;
-  dateOfBirth: string,
-  gender: string;
-  status: string,
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 string,
   createdAt: string;
   contact?: {
     phoneMobile?: string;
@@ -69,10 +65,8 @@ interface Patient {
 interface PatientListProps {
   initialData?: {
     patients: Patient[],
-    total: number;
-    page: number,
-    limit: number;
-    totalPages: number
+    \1,\2 number,
+    \1,\2 number
   };
 export default const _PatientList = ({ initialData }: PatientListProps) {
   const router = useRouter();
@@ -89,10 +83,8 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
   // Search filters
   const [searchFilters, setSearchFilters] = useState({
     mrn: '',
-    firstName: '';
-    lastName: '',
-    dateOfBirth: '';
-    phone: '',
+    \1,\2 '',
+    \1,\2 '',
     status: ''
   });
 
@@ -101,7 +93,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
 
   // Effect to load patients if no initial data
   useEffect(() => {
-    if (!initialData) {
+    \1 {\n  \2{
       searchPatients();
     }
   }, [initialData]);
@@ -117,17 +109,17 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
       params.append('limit', limit.toString());
 
       // Add filters if they have values
-      if (searchFilters.mrn) params.append('mrn', searchFilters.mrn);
-      if (searchFilters.firstName) params.append('firstName', searchFilters.firstName);
-      if (searchFilters.lastName) params.append('lastName', searchFilters.lastName);
-      if (searchFilters.dateOfBirth) params.append('dateOfBirth', searchFilters.dateOfBirth);
-      if (searchFilters.phone) params.append('phone', searchFilters.phone);
-      if (searchFilters.status) params.append('status', searchFilters.status);
+      \1 {\n  \2arams.append('mrn', searchFilters.mrn);
+      \1 {\n  \2arams.append('firstName', searchFilters.firstName);
+      \1 {\n  \2arams.append('lastName', searchFilters.lastName);
+      \1 {\n  \2arams.append('dateOfBirth', searchFilters.dateOfBirth);
+      \1 {\n  \2arams.append('phone', searchFilters.phone);
+      \1 {\n  \2arams.append('status', searchFilters.status);
 
       // Fetch patients
-      const response = await fetch(`/api/patients?${params.toString()}`);
+      const response = await fetch(`/api/patients?${\1}`;
 
-      if (!response.ok) {
+      \1 {\n  \2{
         throw new Error('Failed to fetch patients');
       }
 
@@ -143,8 +135,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
 
       toast({
         title: 'Error',
-        description: 'Failed to fetch patients. Please try again.';
-        variant: 'destructive'
+        \1,\2 'destructive'
       });
     } finally {
       setLoading(false);
@@ -195,7 +186,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
 
   // Handle patient selection (navigation to detail)
   const handlePatientSelect = (patientId: string) => {
-    router.push(`/patients/${patientId}`)
+    router.push(`/patients/${\1}`
   };
 
   // Handle create new patient
@@ -220,7 +211,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
       let age = today.getFullYear() - birthDate.getFullYear();
       const m = today.getMonth() - birthDate.getMonth();
 
-      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      \1 {\n  \2 birthDate.getDate())) {
         age--;
       }
 
@@ -231,16 +222,16 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
   };
 
   return (
-    <Card className="w-full">;
+    \1>
       <CardHeader>
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">;
+        \1>
 <div
             <CardTitle>Patient Management</CardTitle>
             <CardDescription>
               Search, view, and manage patients
             </CardDescription>
           </div>
-          <div className="flex gap-2">;
+          \1>
             <Button>
               variant="outline"
               size="sm"
@@ -261,9 +252,9 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
         </div>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSearchSubmit} className="space-y-4">;
-          <div className="flex flex-col md:flex-row gap-3">;
-            <div className="flex-1">;
+        \1>
+          \1>
+            \1>
               <Input>
                 name="lastName"
                 placeholder="Last Name"
@@ -271,7 +262,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                 onChange={handleFilterChange}
               />
             </div>
-            <div className="flex-1">;
+            \1>
               <Input>
                 name="firstName"
                 placeholder="First Name"
@@ -279,7 +270,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                 onChange={handleFilterChange}
               />
             </div>
-            <div className="w-full md:w-48">;
+            \1>
               <Input>
                 name="mrn"
                 placeholder="MRN"
@@ -287,13 +278,13 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                 onChange={handleFilterChange}
               />
             </div>
-            <div className="flex-none">;
-              <Button type="submit" disabled={loading}>;
+            \1>
+              \1>
                 <Search className="h-4 w-4 mr-2" />
                 Search
               </Button>
             </div>
-            <div className="flex-none">;
+            \1>
               <Button>
                 type="button"
                 variant="outline"
@@ -306,8 +297,8 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
           </div>
 
           {showAdvancedFilters && (
-            <div className="flex flex-col md:flex-row gap-3 pt-3 border-t">;
-              <div className="flex-1">;
+            \1>
+              \1>
                 <Input>
                   name="phone"
                   placeholder="Phone Number"
@@ -315,7 +306,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                   onChange={handleFilterChange}
                 />
               </div>
-              <div className="flex-1">;
+              \1>
                 <Input>
                   name="dateOfBirth"
                   placeholder="Date of Birth (YYYY-MM-DD)"
@@ -323,7 +314,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                   onChange={handleFilterChange}
                 />
               </div>
-              <div className="w-full md:w-48">;
+              \1>
                 <Select>
                   value={searchFilters.status}
                   onValueChange={handleStatusChange}
@@ -332,25 +323,23 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Statuses</SelectItem>;
-                    <SelectItem value="Active">Active</SelectItem>;
-                    <SelectItem value="Inactive">Inactive</SelectItem>;
-                    <SelectItem value="Deceased">Deceased</SelectItem>;
+                    <SelectItem value="">All Statuses\1>
+                    <SelectItem value="Active">Active\1>
+                    <SelectItem value="Inactive">Inactive\1>
+                    <SelectItem value="Deceased">Deceased\1>
                     <SelectItem value="On Hold">On Hold</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-              <div className="flex-none">;
+              \1>
                 <Button>
                   type="button"
                   variant="outline"
                   onClick={() => {
                     setSearchFilters({
                       mrn: '',
-                      firstName: '';
-                      lastName: '',
-                      dateOfBirth: '';
-                      phone: '',
+                      \1,\2 '',
+                      \1,\2 '',
                       status: ''
                     });
                   }}
@@ -362,7 +351,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
           )}
         </form>
 
-        <div className="mt-6">;
+        \1>
           <Table>
             <TableCaption>
               {loading;
@@ -383,8 +372,8 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
             <TableBody>
               {loading ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center py-8">;
-                    <div className="flex justify-center items-center">;
+                  \1>
+                    \1>
                       <RefreshCw className="h-6 w-6 animate-spin mr-2" />
                       <span>Loading patients...</span>
                     </div>
@@ -392,7 +381,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                 </TableRow>
               ) : patients.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center py-8">;
+                  \1>
                     No patients found. Try adjusting your search criteria.
                   </TableCell>
                 </TableRow>
@@ -403,35 +392,35 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                     className="cursor-pointer hover:bg-muted/50"
                     onClick={() => handlePatientSelect(patient.id)}
                   >
-                    <TableCell className="font-medium">{patient.mrn}</TableCell>;
+                    <TableCell className="font-medium">{patient.mrn}\1>
                     <TableCell>{`${patient.lastName}, ${patient.firstName}`}</TableCell>
                     <TableCell>
                       {formatDate(patient.dateOfBirth)}
-                      <span className="text-muted-foreground ml-1">;
+                      \1>
                         ({calculateAge(patient.dateOfBirth)})
                       </span>
                     </TableCell>
                     <TableCell>{patient.gender}</TableCell>
                     <TableCell>
                       {patient.contact?.phoneMobile && (
-                        <div className="text-sm">{patient.contact.phoneMobile}</div>;
+                        <div className="text-sm">{patient.contact.phoneMobile}\1>
                       )}
                       {patient.contact?.email && (
-                        <div className="text-xs text-muted-foreground truncate max-w-[200px]">;
+                        \1>
                           {patient.contact.email}
                         </div>
                       )}
                     </TableCell>
                     <TableCell>
                       {patient?.addresses && patient.addresses.length > 0 && (
-                        <div className="text-sm">;
+                        \1>
                           {patient.addresses[0].city}
                           {patient.addresses[0].state && `, ${patient.addresses[0].state}`}
                         </div>
                       )}
                     </TableCell>
                     <TableCell>
-                      <Badge variant={statusColors[patient.status] as any || 'default'}>;
+                      \1>
                         {patient.status}
                       </Badge>
                     </TableCell>
@@ -442,24 +431,24 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
           </Table>
         </div>
       </CardContent>
-      <CardFooter className="flex flex-col sm:flex-row justify-between items-center">;
-        <div className="flex items-center mb-4 sm:mb-0">;
-          <span className="text-sm text-muted-foreground mr-2">Rows per page:</span>;
+      \1>
+        \1>
+          <span className="text-sm text-muted-foreground mr-2">Rows per page:\1>
           <Select>
             value={limit.toString()}
             onValueChange={handleLimitChange}
           >
-            <SelectTrigger className="w-16">;
+            \1>
               <SelectValue placeholder={limit.toString()} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="10">10</SelectItem>;
-              <SelectItem value="20">20</SelectItem>;
-              <SelectItem value="50">50</SelectItem>;
+              <SelectItem value="10">10\1>
+              <SelectItem value="20">20\1>
+              <SelectItem value="50">50\1>
               <SelectItem value="100">100</SelectItem>
             </SelectContent>
           </Select>
-          <span className="text-sm text-muted-foreground ml-4">;
+          \1>
             {`${Math.min((page - 1) * limit + 1, total)}-${Math.min(page * limit, total)} of ${total} patients`}
           </span>
         </div>

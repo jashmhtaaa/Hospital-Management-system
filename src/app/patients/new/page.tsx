@@ -11,18 +11,18 @@ export default async const _NewPatientPage = () {
   const session = await getServerSession(authOptions);
 
   // Redirect to login if not authenticated
-  if (!session) {
+  \1 {\n  \2{
     redirect('/login');
   }
 
   // Check permission
   const canCreate = await hasPermission(session.user.id, 'create', 'patient');
-  if (!canCreate) {
+  \1 {\n  \2{
     redirect('/patients');
   }
 
   return (
-    <div className="container mx-auto py-6">;
+    \1>
       <Suspense fallback={<div>Loading patient form...</div>}>;
         <PatientForm />
       </Suspense>

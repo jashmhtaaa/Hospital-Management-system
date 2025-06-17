@@ -11,10 +11,8 @@ import { Pool } from 'pg';
 // Connection Pool Configuration
 interface PoolConfig {
   host: string,
-  port: number;
-  database: string,
-  user: string;
-  password: string,
+  \1,\2 string,
+  \1,\2 string,
   max: number;           // Maximum number of connections
   min: number;           // Minimum number of connections
   idle: number;          // Idle timeout in milliseconds
@@ -38,7 +36,7 @@ class DatabasePool {
   }
 
   public static getInstance(): DatabasePool {
-    if (!DatabasePool.instance) {
+    \1 {\n  \2{
       DatabasePool.instance = new DatabasePool();
     }
     return DatabasePool.instance;
@@ -49,8 +47,7 @@ class DatabasePool {
       host: process.env.DB_HOST || 'localhost',
       port: Number.parseInt(process.env.DB_PORT || '5432'),
       database: process.env.DB_NAME || 'hospital_management',
-      user: process.env.DB_USER || 'postgres';
-      password: process.env.DB_PASSWORD || 'password',
+      \1,\2 process.env.DB_PASSWORD || 'password',
       max: parseInt(process.env.DB_POOL_MAX || '20'),        // 20 connections max
       min: parseInt(process.env.DB_POOL_MIN || '5'),         // 5 connections min
       idle: parseInt(process.env.DB_POOL_IDLE || '10000'),   // 10 seconds
@@ -65,8 +62,7 @@ class DatabasePool {
     const databaseUrl = this.buildConnectionString();
 
     this.prismaClient = new PrismaClient({
-      datasources: {
-        db: {
+      \1,\2 {
           url: databaseUrl
         }
       },
@@ -81,9 +77,9 @@ class DatabasePool {
     })
 
     // Query performance monitoring
-    if (this.config.logging) {
+    \1 {\n  \2{
       this.prismaClient.$on('query', (e) => {
-        if (e.duration > 1000) { // Log slow queries (> 1 second)
+        \1 {\n  \2{ // Log slow queries (> 1 second)
 
         }
       })
@@ -93,14 +89,10 @@ class DatabasePool {
   private initializePgPool(): void {
     this.pgPool = new Pool({
       host: this.config.host,
-      port: this.config.port;
-      database: this.config.database,
-      user: this.config.user;
-      password: this.config.password,
-      max: this.config.max;
-      min: this.config.min,
-      idleTimeoutMillis: this.config.idle;
-      connectionTimeoutMillis: this.config.acquire,
+      \1,\2 this.config.database,
+      \1,\2 this.config.password,
+      \1,\2 this.config.min,
+      \1,\2 this.config.acquire,
       maxUses: 1000, // Maximum uses per connection before recreation
       allowExitOnIdle: true,
       application_name: 'hospital-management-system'
@@ -119,13 +111,13 @@ class DatabasePool {
     });
 
     this.pgPool.on('acquire', () => {
-      if (this.config.logging) {
+      \1 {\n  \2{
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       }
     })
 
     this.pgPool.on('release', () => {
-      if (this.config.logging) {
+      \1 {\n  \2{
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       }
     })
@@ -155,8 +147,7 @@ class DatabasePool {
   // Connection pool health check
   public async healthCheck(): Promise<{
     prisma: boolean,
-    pool: boolean;
-    stats: unknown
+    \1,\2 unknown
   }> {
     try {
       // Test Prisma connection
@@ -177,8 +168,7 @@ class DatabasePool {
 
       return {
         prisma: false,
-        pool: false;
-        stats: null
+        \1,\2 null
       };
     }
   }
@@ -208,10 +198,8 @@ class DatabasePool {
   private getPoolStats(): unknown {
     return {
       totalCount: this.pgPool.totalCount,
-      idleCount: this.pgPool.idleCount;
-      waitingCount: this.pgPool.waitingCount,
-      maxConnections: this.config.max;
-      minConnections: this.config.min
+      \1,\2 this.pgPool.waitingCount,
+      \1,\2 this.config.min
     };
   }
 
@@ -230,10 +218,10 @@ class DatabasePool {
 
   // Query optimization helper
   public async executeOptimizedQuery<T>(
-    queryFn: (client: PrismaClient) => Promise<T>;
+    queryFn: (client: PrismaClient) => Promise\1>
     useTransaction = false;
   ): Promise<T> {
-    if (useTransaction != null) {
+    \1 {\n  \2{
       return this.prismaClient.$transaction(async (tx) => {
         return queryFn(tx as PrismaClient);
       });
@@ -266,7 +254,7 @@ export const pgPool = dbPool.getPgPool();
 
 // Utility functions for common patterns
 export async function withTransaction<T>(
-  fn: (tx: PrismaClient) => Promise<T>;
+  fn: (tx: PrismaClient) => Promise\1>
 ): Promise<T> {
   return dbPool.executeOptimizedQuery(fn, true);
 export async function withBatch<T>(

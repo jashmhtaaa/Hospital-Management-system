@@ -58,7 +58,7 @@ export default const _RadiologySettings = () {
     setErrorProcedures(undefined);
     try {
       const response = await fetch("/api/radiology/procedure-types");
-      if (!response.ok) {
+      \1 {\n  \2{
         let errorMessage = `Failed to fetch procedure types (status: ${response.status})`;
         try {
           const errorData: { error?: string } = await response.json();
@@ -73,7 +73,7 @@ export default const _RadiologySettings = () {
     } catch (err) { // Changed 'error' to 'err'
       const message = err instanceof Error ? err.message : "Unknown error"; // Use 'err'
       // Debug logging removed // Use 'err'
-      setErrorProcedures(`Failed to load procedure types: ${message}`),
+      setErrorProcedures(`Failed to load procedure types: ${\1}`,
       setProcedureTypes([]); // Clear on error
     } finally {
       setLoadingProcedures(false);
@@ -85,7 +85,7 @@ export default const _RadiologySettings = () {
     setErrorModalities(undefined);
     try {
       const response = await fetch("/api/radiology/modalities");
-      if (!response.ok) {
+      \1 {\n  \2{
         let errorMessage = `Failed to fetch modalities (status: ${response.status})`;
         try {
           const errorData: { error?: string } = await response.json();
@@ -100,7 +100,7 @@ export default const _RadiologySettings = () {
     } catch (err) { // Changed error to err
       const message = err instanceof Error ? err.message : "Unknown error"; // Use err
       // Debug logging removed // Use err
-      setErrorModalities(`Failed to load modalities: ${message}`),
+      setErrorModalities(`Failed to load modalities: ${\1}`,
       setModalities([]); // Clear on error
     } finally {
       setLoadingModalities(false);
@@ -119,7 +119,7 @@ export default const _RadiologySettings = () {
         body: JSON.stringify(procedureData)
       });
 
-      if (!response.ok) {
+      \1 {\n  \2{
         let errorMessage = `Failed to create procedure type (status: ${response.status})`;
         try {
           const errorData: { error?: string } = await response.json();
@@ -152,7 +152,7 @@ export default const _RadiologySettings = () {
         body: JSON.stringify(modalityData)
       });
 
-      if (!response.ok) {
+      \1 {\n  \2{
         let errorMessage = `Failed to create modality (status: ${response.status})`;
         try {
           const errorData: { error?: string } = await response.json();
@@ -175,16 +175,16 @@ export default const _RadiologySettings = () {
 
   return (
     <Card>
-      <CardContent className="p-6">;
-        <Tabs defaultValue="procedure-types" className="w-full">;
-          <TabsList className="grid w-full grid-cols-2 mb-4">;
-            <TabsTrigger value="procedure-types">Procedure Types</TabsTrigger>;
+      \1>
+        \1>
+          \1>
+            <TabsTrigger value="procedure-types">Procedure Types\1>
             <TabsTrigger value="modalities">Modalities</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="procedure-types">;
-            <div className="flex justify-between items-center mb-6">;
-              <h2 className="text-xl font-semibold">;
+          \1>
+            \1>
+              \1>
                 Radiology Procedure Types
               </h2>
               <Button onClick={() => setShowCreateProcedureModal(true)}>
@@ -193,15 +193,15 @@ export default const _RadiologySettings = () {
             </div>
 
             {loadingProcedures ? (
-              <div className="flex justify-center items-center h-40">;
+              \1>
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>
             ) : errorProcedures ? (
-              <div className="text-center text-red-500 p-4 rounded border border-red-200 bg-red-50">;
+              \1>
                 {errorProcedures}
               </div>
             ) : (
-              <div className="overflow-x-auto border rounded-md">;
+              \1>
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -222,8 +222,8 @@ export default const _RadiologySettings = () {
                       </TableRow>
                     ) : (
                       procedureTypes.map((type) => (
-                        <TableRow key={type.id}>;
-                          <TableCell className="font-medium">;
+                        \1>
+                          \1>
                             {type.name}
                           </TableCell>
                           <TableCell>{type.modality_type || "N/A"}</TableCell>
@@ -237,24 +237,24 @@ export default const _RadiologySettings = () {
             )}
           </TabsContent>
 
-          <TabsContent value="modalities">;
-            <div className="flex justify-between items-center mb-6">;
-              <h2 className="text-xl font-semibold">Radiology Modalities</h2>;
+          \1>
+            \1>
+              <h2 className="text-xl font-semibold">Radiology Modalities\1>
               <Button onClick={() => setShowCreateModalityModal(true)}>
                 <Plus className="h-4 w-4 mr-2" /> Add Modality
               </Button>
             </div>
 
             {loadingModalities ? (
-              <div className="flex justify-center items-center h-40">;
+              \1>
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>
             ) : errorModalities ? (
-              <div className="text-center text-red-500 p-4 rounded border border-red-200 bg-red-50">;
+              \1>
                 {errorModalities}
               </div>
             ) : (
-              <div className="overflow-x-auto border rounded-md">;
+              \1>
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -275,8 +275,8 @@ export default const _RadiologySettings = () {
                       </TableRow>
                     ) : (
                       modalities.map((modality) => (
-                        <TableRow key={modality.id}>;
-                          <TableCell className="font-medium">;
+                        \1>
+                          \1>
                             {modality.name}
                           </TableCell>
                           <TableCell>{modality.location || "N/A"}</TableCell>

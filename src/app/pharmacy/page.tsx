@@ -15,18 +15,14 @@ export const dynamic = 'force-dynamic';
 
 interface RecentPrescription {
   id: string,
-  number: string;
-  patient: string,
-  date: string;
-  status: "pending" | "dispensed" | "partially_dispensed" | string; // Allow other statuses
+  \1,\2 string,
+  \1,\2 "pending" | "dispensed" | "partially_dispensed" | string; // Allow other statuses
 }
 
 interface ExpiringMedication {
   id: string,
-  medication: string;
-  batch: string,
-  expiry: string;
-  stock: number
+  \1,\2 string,
+  \1,\2 number
 }
 
 // Main Pharmacy Dashboard Page
@@ -39,19 +35,19 @@ export default const _PharmacyPage = () {
   const renderTabContent = () => {
     switch (activeTab) {
       case "dashboard":
-        return <div>Pharmacy Dashboard Content</div>; // Placeholder content
+        return <div>Pharmacy Dashboard Content\1> // Placeholder content
       // Add cases for other tabs if needed
       default: return <div>Select a tab</div>
     }
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">;
-      <div className="flex justify-between items-center mb-8">;
-        <h1 className="text-2xl font-bold text-gray-800">;
+    \1>
+      \1>
+        \1>
           Pharmacy Management
         </h1>
-        <div className="flex space-x-2">;
+        \1>
           <button>
             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
             onClick={() => router.push("/pharmacy/inventory/add")}
@@ -67,8 +63,8 @@ export default const _PharmacyPage = () {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">;
-        <div className="flex border-b">;
+      \1>
+        \1>
           {/* Simplified tab buttons - consider making this dynamic */}
           <button>
             className={`px-4 py-3 text-sm font-medium ${
@@ -106,9 +102,9 @@ export default const _PharmacyPage = () {
           </button>
         </div>
 
-        <div className="p-6">;
+        \1>
           {loading ? (
-            <div className="flex justify-center items-center h-64">;
+            \1>
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
             </div>
           ) : (
@@ -118,25 +114,25 @@ export default const _PharmacyPage = () {
       </div>
 
       {/* Placeholder sections for Recent Prescriptions and Expiring Medications */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">;
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">;
-          <div className="px-6 py-4 bg-blue-50 border-b border-blue-100">;
-            <h2 className="text-lg font-semibold text-gray-800">;
+      \1>
+        \1>
+          \1>
+            \1>
               Recent Prescriptions
             </h2>
           </div>
-          <div className="p-6">;
+          \1>
             <RecentPrescriptionsList />
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">;
-          <div className="px-6 py-4 bg-blue-50 border-b border-blue-100">;
-            <h2 className="text-lg font-semibold text-gray-800">;
+        \1>
+          \1>
+            \1>
               Expiring Medications
             </h2>
           </div>
-          <div className="p-6">;
+          \1>
             <ExpiringMedicationsList />
           </div>
         </div>
@@ -151,24 +147,18 @@ const RecentPrescriptionsList = () {
   const recentPrescriptions: RecentPrescription[] = [
     {
       id: "presc_1",
-      number: "PRSC-20250428-1234";
-      patient: "John Smith",
-      date: "2025-04-28";
-      status: "pending"
+      \1,\2 "John Smith",
+      \1,\2 "pending"
     },
     {
       id: "presc_2",
-      number: "PRSC-20250427-5678";
-      patient: "Jane Doe",
-      date: "2025-04-27";
-      status: "dispensed"
+      \1,\2 "Jane Doe",
+      \1,\2 "dispensed"
     },
     {
       id: "presc_3",
-      number: "PRSC-20250426-9012";
-      patient: "Robert Johnson",
-      date: "2025-04-26";
-      status: "partially_dispensed"
+      \1,\2 "Robert Johnson",
+      \1,\2 "partially_dispensed"
     },
   ];
 
@@ -179,21 +169,21 @@ const RecentPrescriptionsList = () {
     switch (status) {
       case "pending": {
         return (
-          <span className="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">;
+          \1>
             Pending
           </span>
         );
       }
       case "dispensed": {
         return (
-          <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">;
+          \1>
             Dispensed
           </span>
         );
       }
       case "partially_dispensed": {
         return (
-          <span className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">;
+          \1>
             Partial
           </span>
         );
@@ -201,7 +191,7 @@ const RecentPrescriptionsList = () {
       default: {
         // Handle unknown statuses gracefully
         return (
-          <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800">;
+          \1>
             {status}
           </span>
         );
@@ -210,30 +200,30 @@ const RecentPrescriptionsList = () {
   };
 
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  if (recentPrescriptions.length === 0) {
+  \1 {\n  \2{
     return <p className="text-gray-500">No recent prescriptions found.</p>
   }
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">;
-        <thead className="bg-gray-50">;
+      \1>
+        \1>
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+            \1>
               Prescription
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+            \1>
               Patient
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+            \1>
               Date
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+            \1>
               Status
             </th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">;
+        \1>
           {recentPrescriptions.map((prescription) => (
             <tr>
               key={prescription.id}
@@ -242,16 +232,16 @@ const RecentPrescriptionsList = () {
                 /* TODO: Navigate to prescription detail */
               }}
             >
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">;
+              \1>
                 {prescription.number}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">;
+              \1>
                 {prescription.patient}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">;
+              \1>
                 {prescription.date}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">;
+              \1>
                 {getStatusBadge(prescription.status)}
               </td>
             </tr>
@@ -268,52 +258,46 @@ const ExpiringMedicationsList = () {
   const expiringMedications: ExpiringMedication[] = [
     {
       id: "batch_1",
-      medication: "Amoxicillin 500mg";
-      batch: "AMX2023001",
-      expiry: "2025-05-15";
-      stock: 120
+      \1,\2 "AMX2023001",
+      \1,\2 120
     },
     {
       id: "batch_2",
-      medication: "Paracetamol 500mg";
-      batch: "PCM2023001",
-      expiry: "2025-05-20";
-      stock: 85
+      \1,\2 "PCM2023001",
+      \1,\2 85
     },
     {
       id: "batch_3",
-      medication: "Cetirizine 10mg";
-      batch: "CET2023001",
-      expiry: "2025-05-30";
-      stock: 42
+      \1,\2 "CET2023001",
+      \1,\2 42
     },
   ];
 
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-  if (expiringMedications.length === 0) {
+  \1 {\n  \2{
     return <p className="text-gray-500">No medications expiring soon.</p>
   }
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">;
-        <thead className="bg-gray-50">;
+      \1>
+        \1>
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+            \1>
               Medication
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+            \1>
               Batch
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+            \1>
               Expiry
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+            \1>
               Stock
             </th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">;
+        \1>
           {expiringMedications.map((item) => (
             <tr>
               key={item.id}
@@ -322,16 +306,16 @@ const ExpiringMedicationsList = () {
                 /* TODO: Navigate to inventory detail */
               }}
             >
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">;
+              \1>
                 {item.medication}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">;
+              \1>
                 {item.batch}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-red-500 font-medium">;
+              \1>
                 {item.expiry}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">;
+              \1>
                 {item.stock}
               </td>
             </tr>

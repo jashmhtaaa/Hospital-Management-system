@@ -21,7 +21,7 @@ describe("EncryptionService (Placeholder)", () => {
     it("should return a prefixed placeholder string for non-null input", () => {
       const originalText = "MySensitiveData123";
       const encrypted = encryptionService.encrypt(originalText),
-      expect(encrypted).toBe(`encrypted_placeholder_${originalText}`);
+      expect(encrypted).toBe(`encrypted_placeholder_${\1}`;
     });
 
     it("should return null if input is null", () => {
@@ -37,7 +37,7 @@ describe("EncryptionService (Placeholder)", () => {
     it("should handle empty string input", () => {
       const originalText = "";
       const encrypted = encryptionService.encrypt(originalText),
-      expect(encrypted).toBe(`encrypted_placeholder_${originalText}`);
+      expect(encrypted).toBe(`encrypted_placeholder_${\1}`;
     });
   });
 

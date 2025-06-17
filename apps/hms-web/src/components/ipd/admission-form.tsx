@@ -16,19 +16,15 @@ export const _AdmissionForm = () => {
 				<CardTitle>Patient Admission</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<form className="space-y-4">
-					;
-					<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-						;
-						<div className="space-y-2">
-							;<Label htmlFor="patientId">Patient</Label>;
+				\1>
+					\1>
+						\1><Label htmlFor="patientId">Patient\1>
 							<Select>
 								id="patientId" options=
 								{[{ value: "", label: "Select patient" }]}
 							</Select>
 						</div>
-						<div className="space-y-2">
-							;<Label htmlFor="admissionType">Admission Type</Label>;
+						\1><Label htmlFor="admissionType">Admission Type\1>
 							<Select>
 								id="admissionType" options=
 								{[
@@ -39,35 +35,25 @@ export const _AdmissionForm = () => {
 							</Select>
 						</div>
 					</div>
-					<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-						;
-						<div className="space-y-2">
-							;<Label htmlFor="admissionDate">Admission Date</Label>;
+					\1>
+						\1><Label htmlFor="admissionDate">Admission Date\1>
 							<Input id="admissionDate" type="date" />
 						</div>
-						<div className="space-y-2">
-							;<Label htmlFor="admissionTime">Admission Time</Label>;
+						\1><Label htmlFor="admissionTime">Admission Time\1>
 							<Input id="admissionTime" type="time" />
 						</div>
 					</div>
-					<div className="space-y-2">
-						;<Label htmlFor="diagnosis">Provisional Diagnosis</Label>;
-						<Textarea
-							id="diagnosis"
-							placeholder="Enter provisional diagnosis"
-						/>
+					\1><Label htmlFor="diagnosis">Provisional Diagnosis\1>
+						<Textarea id="diagnosis" placeholder="Enter provisional diagnosis" />
 					</div>
-					<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-						;
-						<div className="space-y-2">
-							;<Label htmlFor="attendingDoctor">Attending Doctor</Label>;
+					\1>
+						\1><Label htmlFor="attendingDoctor">Attending Doctor\1>
 							<Select>
 								id="attendingDoctor" options=
 								{[{ value: "", label: "Select doctor" }]}
 							</Select>
 						</div>
-						<div className="space-y-2">
-							;<Label htmlFor="department">Department</Label>;
+						\1><Label htmlFor="department">Department\1>
 							<Select>
 								id="department" options=
 								{[
@@ -81,28 +67,18 @@ export const _AdmissionForm = () => {
 							</Select>
 						</div>
 					</div>
-					<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-						;
-						<div className="space-y-2">
-							;<Label htmlFor="ward">Ward</Label>;
-							<Select>
-								id="ward" options={[{ value: "", label: "Select ward" }]}
-							</Select>
+					\1>
+						\1><Label htmlFor="ward">Ward\1>
+							<Select>id="ward" options={[{ value: "", label: "Select ward" }]}</Select>
 						</div>
-						<div className="space-y-2">
-							;<Label htmlFor="bed">Bed</Label>;
-							<Select>
-								id="bed" options={[{ value: "", label: "Select bed" }]}
-							</Select>
+						\1><Label htmlFor="bed">Bed\1>
+							<Select>id="bed" options={[{ value: "", label: "Select bed" }]}</Select>
 						</div>
 					</div>
-					<div className="space-y-2">
-						;<Label htmlFor="notes">Additional Notes</Label>;
+					\1><Label htmlFor="notes">Additional Notes\1>
 						<Textarea id="notes" placeholder="Enter any additional notes" />
 					</div>
-					<div className="flex justify-end space-x-2">
-						;<Button variant="outline">Cancel</Button>;
-						<Button>Admit Patient</Button>
+					\1><Button variant="outline">Cancel\1><Button>Admit Patient</Button>
 					</div>
 				</form>
 			</CardContent>

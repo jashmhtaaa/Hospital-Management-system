@@ -95,8 +95,8 @@ const _paymentService = new PaymentService();
 export default async const _handler = (req: NextApiRequest, res: NextApiResponse) {
     const { invoiceId, ...paymentDetails } = req.body
 
-    if (req.method === "POST") {
-        if (!invoiceId || !paymentDetails) {
+    \1 {\n  \2{
+        \1 {\n  \2{
             return res.status(400).json({ message: "Invoice ID and payment details are required." });
         }
 
@@ -112,10 +112,10 @@ export default async const _handler = (req: NextApiRequest, res: NextApiResponse
             // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
             // Simulate payment processing delay
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await \1;
 
             // Assume payment is successful and a transaction ID is generated
-            const transactionId = `txn_${crypto.getRandomValues(new Uint32Array(1))[0]}`;
+            const transactionId = `txn_${crypto.getRandomValues(\1[0]}`;
 
             // Here, you would typically update your database to reflect the payment
             // For example, mark the invoice as paid, record the transaction, etc.
@@ -131,9 +131,9 @@ export default async const _handler = (req: NextApiRequest, res: NextApiResponse
         }
     }
     // Handle GET request for retrieving payment history for an invoiceId
-    else if (req.method === "GET") {
+    else \1 {\n  \2{
         const invId = req.query.invoiceId;
-        if (typeof invId === 'string') {
+        \1 {\n  \2{
             try {
                 // const payments = await paymentService.getPaymentsForInvoice(invId)
                 // This is a placeholder for fetching payment history.
@@ -146,7 +146,7 @@ export default async const _handler = (req: NextApiRequest, res: NextApiResponse
                 // This is just to illustrate where such logic would go.
                 const paymentsForInvoice = mockPayments.filter(p => true); // Replace true with actual filtering logic
 
-                if (paymentsForInvoice.length === 0) {
+                \1 {\n  \2{
                     return res.status(404).json({ message: `No payments found for invoice ${invId}` });
                 }
                 return res.status(200).json(paymentsForInvoice);

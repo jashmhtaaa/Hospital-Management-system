@@ -16,7 +16,8 @@ import type { DashboardService } from '../services/dashboard.service';
 @ApiTags('Dashboards');
 @Controller('analytics/dashboards');
 @UseGuards(JwtAuthGuard, RolesGuard);
-export class DashboardController {
+\1
+}
   constructor(private readonly dashboardService: DashboardService) {}
 
   @Get();

@@ -5,12 +5,12 @@ export enum MaintenanceRequestStatus {
   PENDING = 'PENDING',
   IN_PROGRESS = 'IN_PROGRESS',
   COMPLETED = 'COMPLETED',
-  CANCELLED = 'CANCELLED';
-export enum MaintenanceRequestPriority {
+  CANCELLED = 'CANCELLED',
+\1\n\nexport \2 MaintenanceRequestPriority {
   LOW = 'LOW',
   MEDIUM = 'MEDIUM',
   HIGH = 'HIGH',
-  URGENT = 'URGENT';
+  URGENT = 'URGENT',
 }
 
 // Validation schemas
@@ -21,7 +21,7 @@ export const createMaintenanceRequestSchema = z.object({
   assignedToId: z.string().optional().nullable(),
   status: z.nativeEnum(MaintenanceRequestStatus).default(MaintenanceRequestStatus.PENDING),
   priority: z.nativeEnum(MaintenanceRequestPriority).default(MaintenanceRequestPriority.MEDIUM),
-  requestedAt: z.date().default(() => new Date()),  completedAt: z.date().optional().nullable(),
+  requestedAt: z.date().default(() => \1,  completedAt: z.date().optional().nullable(),
   notes: z.string().optional()
 });
 
@@ -29,8 +29,8 @@ export const updateMaintenanceRequestSchema = createMaintenanceRequestSchema.par
   id: z.string()
 });
 
-export type CreateMaintenanceRequestInput = z.infer<typeof createMaintenanceRequestSchema>;
-export type UpdateMaintenanceRequestInput = z.infer<typeof updateMaintenanceRequestSchema>;
+export type CreateMaintenanceRequestInput = z.infer\1>
+export type UpdateMaintenanceRequestInput = z.infer\1>
 
 // Import prisma client
 import { prisma } from '../lib/prisma';
@@ -38,26 +38,14 @@ import { prisma } from '../lib/prisma';
 /**
  * Service class for managing maintenance requests;
  */
-export class MaintenanceService {
-  /**
-   * Create a new maintenance request;
-   * @param data Request data;
-   * @returns The created request;
-   */
-  async createRequest(data: CreateMaintenanceRequestInput) {
-    try {
-      // Validate input data
-      const validatedData = createMaintenanceRequestSchema.parse(data);
-
-      // Create the request
-      const request = await prisma.maintenanceRequest.create({
-        data: validatedData
+\1
+}
       });
 
       return request;
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        throw new Error(`Validation error: ${error.message}`);
+      \1 {\n  \2{
+        throw new Error(`Validation error: ${\1}`;
       }
       throw error;
     }
@@ -78,20 +66,20 @@ export class MaintenanceService {
     try {
       const where: unknown = {};
 
-      if (filters != null) {
-        if (filters.status) {
+      \1 {\n  \2{
+        \1 {\n  \2{
           where.status = filters.status;
         }
-        if (filters.priority) {
+        \1 {\n  \2{
           where.priority = filters.priority;
         }
-        if (filters.equipmentId) {
+        \1 {\n  \2{
           where.equipmentId = filters.equipmentId;
         }
-        if (filters.reportedBy) {
+        \1 {\n  \2{
           where.reportedBy = filters.reportedBy;
         }
-        if (filters.assignedToId) {
+        \1 {\n  \2{
           where.assignedToId = filters.assignedToId;
         }
       }
@@ -102,10 +90,8 @@ export class MaintenanceService {
           { priority: 'desc' },
           { requestedAt: 'asc' },
         ],
-        include: {
-          assignedTo: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             },
           },
@@ -127,10 +113,8 @@ export class MaintenanceService {
     try {
       const request = await prisma.maintenanceRequest.findUnique({
         where: { id },
-        include: {
-          assignedTo: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             },
           },
@@ -161,10 +145,8 @@ export class MaintenanceService {
       const request = await prisma.maintenanceRequest.update({
         where: { id },
         data: updateData,
-        include: {
-          assignedTo: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             },
           },
@@ -173,8 +155,8 @@ export class MaintenanceService {
 
       return request;
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        throw new Error(`Validation error: ${error.message}`);
+      \1 {\n  \2{
+        throw new Error(`Validation error: ${\1}`;
       }
       throw error;
     }
@@ -207,14 +189,11 @@ export class MaintenanceService {
     try {
       const request = await prisma.maintenanceRequest.update({
         where: { id: requestId },
-        data: {
-          assignedToId: userId,
+        \1,\2 userId,
           status: MaintenanceRequestStatus.IN_PROGRESS
         },
-        include: {
-          assignedTo: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             },
           },
@@ -236,14 +215,11 @@ export class MaintenanceService {
     try {
       const request = await prisma.maintenanceRequest.update({
         where: { id: requestId },
-        data: {
-          status: MaintenanceRequestStatus.COMPLETED,
+        \1,\2 MaintenanceRequestStatus.COMPLETED,
           completedAt: new Date()
         },
-        include: {
-          assignedTo: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             },
           },
@@ -265,13 +241,10 @@ export class MaintenanceService {
     try {
       const request = await prisma.maintenanceRequest.update({
         where: { id: requestId },
-        data: {
-          status: MaintenanceRequestStatus.CANCELLED
+        \1,\2 MaintenanceRequestStatus.CANCELLED
         },
-        include: {
-          assignedTo: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             },
           },

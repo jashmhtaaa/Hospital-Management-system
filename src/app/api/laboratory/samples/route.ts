@@ -17,18 +17,12 @@ interface SampleInput {
 
 interface LabSample {
   id: number,
-  order_id: number;
-  barcode: string,
-  sample_type: string;
-  collected_by: number | null,
-  collected_at: string | null;
-  received_by: number | null,
-  received_at: string | null;
-  status: "collected" | "received" | "processing" | "rejected",
-  rejection_reason: string | null;
-  notes: string | null,
-  created_at: string;
-  updated_at: string;
+  \1,\2 string,
+  \1,\2 number | null,
+  \1,\2 number | null,
+  \1,\2 "collected" | "received" | "processing" | "rejected",
+  \1,\2 string | null,
+  \1,\2 string;
   // Joined fields
   patient_id?: number;
   patient_name?: string;
@@ -42,7 +36,7 @@ interface LabSample {
 export const _GET = async (request: NextRequest) => {
   try {
     const session = await getSession();
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -69,20 +63,20 @@ export const _GET = async (request: NextRequest) => {
     const parameters: (string | number)[] = [];
     const conditions: string[] = [];
 
-    if (orderId != null) {
+    \1 {\n  \2{
       conditions.push("s.order_id = ?");
       parameters.push(orderId);
     }
-    if (barcode != null) {
+    \1 {\n  \2{
       conditions.push("s.barcode = ?");
       parameters.push(barcode);
     }
-    if (status != null) {
+    \1 {\n  \2{
       conditions.push("s.status = ?");
       parameters.push(status);
     }
 
-    if (conditions.length > 0) {
+    \1 {\n  \2{
       query += " WHERE " + conditions.join(" AND ");
     }
     query += " ORDER BY s.created_at DESC";
@@ -105,7 +99,7 @@ export const _GET = async (request: NextRequest) => {
 export const _POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -116,14 +110,14 @@ export const _POST = async (request: NextRequest) => {
       "Phlebotomist",
       "Admin",
     ]; // Adjust role names
-    if (!allowedRoles.includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     const body = (await request.json()) as SampleInput;
     const database = await getDB();
 
-    if (body.id) {
+    \1 {\n  \2{
       // --- Update existing sample ---
       const sampleResult = await database.query(
         "SELECT * FROM lab_samples WHERE id = ?",
@@ -135,7 +129,7 @@ export const _POST = async (request: NextRequest) => {
           : undefined;
       ) as LabSample | null;
 
-      if (!existingSample) {
+      \1 {\n  \2{
         return NextResponse.json(
           { error: "Sample not found" },
           { status: 404 }
@@ -146,39 +140,31 @@ export const _POST = async (request: NextRequest) => {
       // FIX: Use specific type for params
       const parameters: (string | number | boolean)[] = [];
 
-      if (body.status) {
+      \1 {\n  \2{
         updates.push("status = ?");
         parameters.push(body.status);
 
-        if (
-          body.status === "collected" &&;
-          existingSample.status !== "collected";
-        ) 
-          updates.push("collected_by = ?", "collected_at = CURRENT_TIMESTAMP");
+        \1 {\n  \2pdates.push("collected_by = ?", "collected_at = CURRENT_TIMESTAMP");
           parameters.push(session.user.userId);
-        if (
-          body.status === "received" &&;
-          existingSample.status !== "received";
-        ) 
-          updates.push("received_by = ?", "received_at = CURRENT_TIMESTAMP");
+        \1 {\n  \2pdates.push("received_by = ?", "received_at = CURRENT_TIMESTAMP");
           parameters.push(session.user.userId);
-        if (body.status === "rejected" && !body.rejection_reason) {
+        \1 {\n  \2{
           return NextResponse.json(
             { error: "Rejection reason is required when rejecting a sample" },
             { status: 400 }
           );
         }
       }
-      if (body.rejection_reason) {
+      \1 {\n  \2{
         updates.push("rejection_reason = ?");
         parameters.push(body.rejection_reason);
       }
-      if (body.notes) {
+      \1 {\n  \2{
         updates.push("notes = ?");
         parameters.push(body.notes);
       }
 
-      if (updates.length === 0) {
+      \1 {\n  \2{
         return NextResponse.json(
           { error: "No updates provided" },
           { status: 400 }
@@ -208,7 +194,7 @@ export const _POST = async (request: NextRequest) => {
       // --- Create new sample ---
       const requiredFields: (keyof SampleInput)[] = ["order_id", "sample_type"]
       for (const field of requiredFields) {
-        if (!body[field]) {
+        \1 {\n  \2{
           return NextResponse.json(
             { error: `Missing required field: ${field}` },
             { status: 400 }
@@ -216,8 +202,8 @@ export const _POST = async (request: NextRequest) => {
         }
       }
 
-      const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0];
-      const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000);
+      const _timestamp = crypto.getRandomValues(\1[0];
+      const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000);
       const barcode = body.barcode || `LAB/* SECURITY: Template literal eliminated */
 
       // Fixed: Use db.query for insert (mock DB doesn't return last_row_id)
@@ -246,7 +232,7 @@ export const _POST = async (request: NextRequest) => {
           ? newSampleResult.results[0] // Changed .rows to .results
           : undefined;
 
-      if (!newSample) {
+      \1 {\n  \2{
         // Fallback if mock fetch fails
         return NextResponse.json(
           {

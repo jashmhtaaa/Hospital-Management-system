@@ -2,8 +2,7 @@ import React, { type TextareaHTMLAttributes, forwardRef } from 'react';
 
 
 import { cn } from '@/lib/utils';
-}
-export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+\1\n\nexport \2 TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   error?: string;
 }
 
@@ -13,7 +12,7 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
 const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, error, ...props }, ref) => {
     return (
-      <div className="relative">;
+      \1>
         <textarea>
           className={cn(
             "flex min-h-[80px] w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder: text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50";
@@ -24,7 +23,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           {...props}
         />
         {error && (
-          <p className="mt-1 text-sm text-red-500">{error}</p>;
+          <p className="mt-1 text-sm text-red-500">{error}\1>
         )}
       </div>
     );

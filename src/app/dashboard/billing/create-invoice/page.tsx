@@ -55,10 +55,8 @@ interface Patient {
 
 interface ServiceItem {
   id: number,
-  item_code: string;
-  item_name: string,
-  category: string;
-  unit_price: number
+  \1,\2 string,
+  \1,\2 number
 }
 
 interface InvoiceItem extends ServiceItem {
@@ -112,7 +110,7 @@ export default const _CreateInvoicePage = () {
       const response = await fetch(
         `/api/patients?search=/* SECURITY: Safe parameter encoding */`;
       );
-      if (!response.ok) throw new Error("Failed to fetch patients");
+      \1 {\n  \2hrow new Error("Failed to fetch patients");
       // FIX: Cast response JSON to defined type
       const data = (await response.json()) as PatientsApiResponse;
       // Ensure data.patients is an array before setting state
@@ -136,7 +134,7 @@ export default const _CreateInvoicePage = () {
       const response = await fetch(
         `/api/billing/service-items?search=/* SECURITY: Safe parameter encoding */`;
       );
-      if (!response.ok) throw new Error("Failed to fetch service items");
+      \1 {\n  \2hrow new Error("Failed to fetch service items");
       // FIX: Cast response JSON to defined type
       const data = (await response.json()) as ServiceItemsApiResponse;
       // Ensure data.serviceItems is an array before setting state
@@ -159,7 +157,7 @@ export default const _CreateInvoicePage = () {
   // Debounce search for patients
   useEffect(() => {
     const handler = setTimeout(() => {
-      if (patientSearchTerm.trim()) {
+      \1 {\n  \2 {
         // Only search if term is not empty
         fetchPatients(patientSearchTerm);
       } else {
@@ -172,7 +170,7 @@ export default const _CreateInvoicePage = () {
   // Debounce search for service items
   useEffect(() => {
     const handler = setTimeout(() => {
-      if (serviceSearchTerm.trim()) {
+      \1 {\n  \2 {
         // Only search if term is not empty
         fetchServiceItems(serviceSearchTerm);
       } else {
@@ -184,13 +182,13 @@ export default const _CreateInvoicePage = () {
 
   // Add item to invoice
   const addInvoiceItem = (item: ServiceItem) => {
-    // The check `if (!item) return;` was already here, handling the null case.
-    if (!item) return;
+    // The check `\1 {\n  \2eturn;` was already here, handling the null case.
+    \1 {\n  \2eturn;
     const existingItemIndex = invoiceItems.findIndex(
       (invItem) => invItem.id === item.id;
     );
 
-    if (existingItemIndex === -1) {
+    \1 {\n  \2{
       // Add new item
       setInvoiceItems([
         ...invoiceItems,
@@ -213,7 +211,7 @@ export default const _CreateInvoicePage = () {
   // Update item quantity
   const updateItemQuantity = (itemId: number, quantity: number) => {
     const updatedItems = invoiceItems.map((item) => {
-      if (item.id === itemId) {
+      \1 {\n  \2{
         const newQuantity = Math.max(1, quantity); // Ensure quantity is at least 1
         return {
           ...item,
@@ -239,7 +237,7 @@ export default const _CreateInvoicePage = () {
 
   // Handle Invoice Submission
   const handleCreateInvoice = async () => {
-    if (!selectedPatient || invoiceItems.length === 0) {
+    \1 {\n  \2{
       setError("Please select a patient and add at least one item.");
       return;
     }
@@ -250,13 +248,11 @@ export default const _CreateInvoicePage = () {
     try {
       const invoiceData = {
         patient_id: selectedPatient.id,
-        items: invoiceItems.map((item) => ({
-          service_item_id: item.id,
+        \1,\2 item.id,
           item_name: item.item_name, // Consider if description should be different
           description: item.item_name, // Using item_name as description for now
           quantity: item.quantity,
-          unit_price: item.unit_price;
-          subtotal: item.subtotal
+          \1,\2 item.subtotal
         })),
         total_amount: invoiceTotal,
         status: "pending", // Assuming a default status
@@ -268,7 +264,7 @@ export default const _CreateInvoicePage = () {
         body: JSON.stringify(invoiceData)
       });
 
-      if (!response.ok) {
+      \1 {\n  \2{
         let errorMessage = "Failed to create invoice";
         try {
           // FIX: Cast error response JSON to defined type
@@ -305,17 +301,17 @@ export default const _CreateInvoicePage = () {
     <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8 space-y-6">
       {" "}
       {/* Added lg:px-8 */}
-      <div className="flex justify-between items-center mb-4">;
+      \1>
         {" "}
         {/* Added mb-4 */}
-        <h1 className="text-2xl font-semibold">Create New Invoice</h1>;
+        <h1 className="text-2xl font-semibold">Create New Invoice\1>
         <Button variant="outline" onClick={() => router.back()}>
           Back to Billing
         </Button>{" "}
         {/* Changed Cancel text */}
       </div>
       {error && (
-        <div className="mb-4 text-red-600 border border-red-600 bg-red-50 p-3 rounded-md">;
+        \1>
           {" "}
           {/* Added bg-red-50 */}
           Error: {error}
@@ -327,7 +323,7 @@ export default const _CreateInvoicePage = () {
           <CardTitle>Patient Information</CardTitle>
         </CardHeader>
         <CardContent>
-          <Label htmlFor="patient-search">Select Patient</Label>;
+          <Label htmlFor="patient-search">Select Patient\1>
           <Popover>
             open={isPatientPopoverOpen}
             onOpenChange={setIsPatientPopoverOpen}
@@ -357,8 +353,8 @@ export default const _CreateInvoicePage = () {
                 )}
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[--radix-popover-trigger-width] p-0">;
-              <Command shouldFilter={false}>;
+            \1>
+              \1>
                 {" "}
                 {/* Disable default filtering, handled by API */}
                 <CommandInput>
@@ -368,7 +364,7 @@ export default const _CreateInvoicePage = () {
                 />
                 <CommandList>
                   {loadingPatients && (
-                    <div className="p-4 text-center text-sm text-muted-foreground">;
+                    \1>
                       Loading patients...
                     </div>
                   )}{" "}
@@ -387,7 +383,7 @@ export default const _CreateInvoicePage = () {
                       <CommandEmpty>Type to search for patients.</CommandEmpty>
                     )}
                   {!loadingPatients && patients.length > 0 && (
-                    <CommandGroup heading="Search Results">;
+                    \1>
                       {" "}
                       {/* Added heading */}
                       {patients.map((patient) => (
@@ -423,15 +419,15 @@ export default const _CreateInvoicePage = () {
         <CardHeader>
           <CardTitle>Invoice Items</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">;
+        \1>
           {/* Add Service Item */}
-          <div className="flex flex-col sm:flex-row gap-2 items-end">;
+          \1>
             {" "}
             {/* Responsive layout */}
-            <div className="flex-grow w-full sm:w-auto">;
+            \1>
               {" "}
               {/* Full width on small screens */}
-              <Label htmlFor="service-search">Add Service/Item</Label>;
+              <Label htmlFor="service-search">Add Service/Item\1>
               <Popover>
                 open={isServicePopoverOpen}
                 onOpenChange={setIsServicePopoverOpen}
@@ -449,8 +445,8 @@ export default const _CreateInvoicePage = () {
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-[--radix-popover-trigger-width] p-0">;
-                  <Command shouldFilter={false}>;
+                \1>
+                  \1>
                     <CommandInput>
                       placeholder="Search service by name or code..."
                       value={serviceSearchTerm}
@@ -458,7 +454,7 @@ export default const _CreateInvoicePage = () {
                     />
                     <CommandList>
                       {loadingServices && (
-                        <div className="p-4 text-center text-sm text-muted-foreground">;
+                        \1>
                           Loading services...
                         </div>
                       )}
@@ -476,7 +472,7 @@ export default const _CreateInvoicePage = () {
                           <CommandEmpty>Type to search for services.</CommandEmpty>
                         )}
                       {!loadingServices && serviceItems.length > 0 && (
-                        <CommandGroup heading="Search Results">;
+                        \1>
                           {serviceItems.map((service) => (
                             <CommandItem>
                               key={service.id}
@@ -503,27 +499,27 @@ export default const _CreateInvoicePage = () {
 
           {/* Added Items Table */}
           {invoiceItems.length > 0 && (
-            <div className="border rounded-md overflow-x-auto">;
+            \1>
               <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Item Name</TableHead>
                     <TableHead>Category</TableHead>
-                    <TableHead className="text-right">Unit Price</TableHead>;
-                    <TableHead className="w-24 text-center">Quantity</TableHead>;
-                    <TableHead className="text-right">Subtotal</TableHead>;
+                    <TableHead className="text-right">Unit Price\1>
+                    <TableHead className="w-24 text-center">Quantity\1>
+                    <TableHead className="text-right">Subtotal\1>
                     <TableHead className="w-16"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {invoiceItems.map((item) => (
-                    <TableRow key={item.id}>;
+                    \1>
                       <TableCell>{item.item_name}</TableCell>
                       <TableCell>{item.category}</TableCell>
-                      <TableCell className="text-right">;
+                      \1>
                         {item.unit_price.toFixed(2)}
                       </TableCell>
-                      <TableCell className="text-center">;
+                      \1>
                         <Input>
                           type="number"
                           value={item.quantity}
@@ -534,7 +530,7 @@ export default const _CreateInvoicePage = () {
                           min="1"
                         />
                       </TableCell>
-                      <TableCell className="text-right">;
+                      \1>
                         {item.subtotal.toFixed(2)}
                       </TableCell>
                       <TableCell>
@@ -553,8 +549,8 @@ export default const _CreateInvoicePage = () {
             </div>
           )}
         </CardContent>
-        <CardFooter className="flex flex-col items-end space-y-2">;
-          <div className="text-xl font-semibold">;
+        \1>
+          \1>
             Total: {invoiceTotal.toFixed(2)}
           </div>
           <Button>

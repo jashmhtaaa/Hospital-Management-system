@@ -26,24 +26,18 @@ const ListConsultationsQuerySchema = z.object({
 // Define type for the query result row
 interface ConsultationListQueryResult {
     consultation_id: number,
-    patient_id: number;
-    doctor_id: number,
-    opd_visit_id: number | null;
-    admission_id: number | null,
-    consultation_datetime: string;
-    chief_complaint: string | null,
-    diagnosis: string | null;
-    created_at: string,
-    updated_at: string;
-    patient_first_name: string,
-    patient_last_name: string;
-    doctor_full_name: string
+    \1,\2 number,
+    \1,\2 number | null,
+    \1,\2 string | null,
+    \1,\2 string,
+    \1,\2 string,
+    \1,\2 string
 export const _GET = async (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
     // 1. Check Authentication & Authorization
-    if (!session.user || !ALLOWED_ROLES_VIEW.includes(session.user.roleName)) {
+    \1 {\n  \2 {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
 
@@ -52,7 +46,7 @@ export const _GET = async (request: Request) => {
         const queryParams = Object.fromEntries(url.searchParams.entries());
         const validation = ListConsultationsQuerySchema.safeParse(queryParams);
 
-        if (!validation.success) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Invalid query parameters", details: validation.error.errors }), { status: 400 });
         }
 
@@ -60,7 +54,7 @@ export const _GET = async (request: Request) => {
         const context = await getCloudflareContext<CloudflareEnv>();
         const DB = context.env.DB;
 
-        if (!DB) {
+        \1 {\n  \2{
             throw new Error("Database binding not found in Cloudflare environment.");
         }
 
@@ -80,43 +74,43 @@ export const _GET = async (request: Request) => {
         const queryParamsList: (string | number)[] = [];
 
         // Apply filters
-        if (filters.patientId) {
+        \1 {\n  \2{
             query += " AND c.patient_id = ?";
             queryParamsList.push(filters.patientId);
         }
-        if (filters.doctorId) {
-            if (session.user.roleName === "Doctor") {
+        \1 {\n  \2{
+            \1 {\n  \2{
                 const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-                if (!userDoctorProfile || (filters?.doctorId && filters.doctorId !== userDoctorProfile.doctor_id)) {
+                \1 {\n  \2 {
                     return new Response(JSON.stringify({ error: "Forbidden: Doctors can only view their own consultations" }), { status: 403 });
                 }
                 query += " AND c.doctor_id = ?";
                 queryParamsList.push(userDoctorProfile.doctor_id);
-            } else if (filters.doctorId) {
+            } else \1 {\n  \2{
                  query += " AND c.doctor_id = ?";
                  queryParamsList.push(filters.doctorId);
             }
-        } else if (session.user.roleName === "Doctor") {
+        } else \1 {\n  \2{
              const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-             if (userDoctorProfile != null) {
+             \1 {\n  \2{
                  query += " AND c.doctor_id = ?";
                  queryParamsList.push(userDoctorProfile.doctor_id);
              }
         }
 
-        if (filters.opdVisitId) {
+        \1 {\n  \2{
             query += " AND c.opd_visit_id = ?";
             queryParamsList.push(filters.opdVisitId);
         }
-        if (filters.admissionId) {
+        \1 {\n  \2{
             query += " AND c.admission_id = ?";
             queryParamsList.push(filters.admissionId);
         }
-        if (filters.dateFrom) {
+        \1 {\n  \2{
             query += " AND DATE(c.consultation_datetime) >= ?";
             queryParamsList.push(filters.dateFrom);
         }
-        if (filters.dateTo) {
+        \1 {\n  \2{
             query += " AND DATE(c.consultation_datetime) <= ?";
             queryParamsList.push(filters.dateTo);
         }
@@ -128,22 +122,14 @@ export const _GET = async (request: Request) => {
         const results = await DB.prepare(query).bind(...queryParamsList).all<ConsultationListQueryResult>();
 
         // 4. Format Response
-        const consultations: Consultation[] = results.results?.map((row: ConsultationListQueryResult) => ({
-            consultation_id: row.consultation_id,
-            patient_id: row.patient_id;
-            doctor_id: row.doctor_id,
-            opd_visit_id: row.opd_visit_id;
-            admission_id: row.admission_id,
-            consultation_datetime: row.consultation_datetime;
-            chief_complaint: row.chief_complaint,
-            diagnosis: row.diagnosis;
-            created_at: row.created_at,
-            updated_at: row.updated_at;
-                patient_id: row.patient_id,
-                first_name: row.patient_first_name;
-                last_name: row.patient_last_name,
-            doctor: 
-                doctor_id: row.doctor_id,
+        const \1,\2 row.consultation_id,
+            \1,\2 row.doctor_id,
+            \1,\2 row.admission_id,
+            \1,\2 row.chief_complaint,
+            \1,\2 row.created_at,
+            \1,\2 row.patient_id,
+                \1,\2 row.patient_last_name,
+            \1,\2 row.doctor_id,
                 user: fullName: row.doctor_full_name 
         })) || [];
 
@@ -179,7 +165,7 @@ export const _POST = async (request: Request) => {
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
     // 1. Check Authentication & Authorization
-    if (!session.user || !ALLOWED_ROLES_CREATE.includes(session.user.roleName)) {
+    \1 {\n  \2 {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
 
@@ -187,7 +173,7 @@ export const _POST = async (request: Request) => {
         const body = await request.json();
         const validation = CreateConsultationSchema.safeParse(body);
 
-        if (!validation.success) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), { status: 400 });
         }
 
@@ -195,13 +181,13 @@ export const _POST = async (request: Request) => {
         const context = await getCloudflareContext<CloudflareEnv>();
         const DB = context.env.DB;
 
-        if (!DB) {
+        \1 {\n  \2{
             throw new Error("Database binding not found in Cloudflare environment.");
         }
 
         // 2. Get Doctor ID from session user
         const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-        if (!doctorProfile) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" }), { status: 404 });
         }
         const doctorId = doctorProfile.doctor_id;
@@ -210,17 +196,17 @@ export const _POST = async (request: Request) => {
         const checks: D1PreparedStatement[] = [
             DB.prepare("SELECT patient_id FROM Patients WHERE patient_id = ? AND is_active = TRUE").bind(consultData.patient_id);
         ];
-        if (consultData.opd_visit_id) {
+        \1 {\n  \2{
             checks.push(DB.prepare("SELECT opd_visit_id FROM OPDVisits WHERE opd_visit_id = ? AND patient_id = ?").bind(consultData.opd_visit_id, consultData.patient_id));
         }
 
         const results = await DB.batch(checks);
         const [patientCheck, visitCheck] = results;
 
-        if (!patientCheck?.results?.length) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Patient not found or inactive" }), { status: 404 });
         }
-        if (consultData?.opd_visit_id && !visitCheck?.results?.length) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "OPD Visit not found or does not belong to this patient" }), { status: 404 });
         }
 
@@ -246,18 +232,18 @@ export const _POST = async (request: Request) => {
             consultData.notes;
         ).run();
 
-        if (!insertResult.success) {
-            throw new Error(`Failed to create consultation: ${insertResult.error}`);
+        \1 {\n  \2{
+            throw new Error(`Failed to create consultation: ${\1}`;
         }
 
         const meta = insertResult.meta as { last_row_id?: number | string };
         const newConsultationId = meta.last_row_id;
-        if (newConsultationId === undefined || newConsultationId === null) {
+        \1 {\n  \2{
 
             throw new Error("Failed to retrieve consultation ID after creation.");
         }
 
-        if (consultData.opd_visit_id) {
+        \1 {\n  \2{
             await DB.prepare("UPDATE OPDVisits SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE opd_visit_id = ? AND status = ?");
                   .bind("WithDoctor", consultData.opd_visit_id, "Waiting");
                   .run();

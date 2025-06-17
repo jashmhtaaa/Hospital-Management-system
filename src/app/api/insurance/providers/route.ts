@@ -17,21 +17,15 @@ interface InsuranceProvider {
 const mockProviders: InsuranceProvider[] = [
   {
     _id: 1,
-    name: "MediCare Insurance";
-    contact_person: "Alice Brown",
-    contact_email: "alice@medicare.com";
-    contact_phone: "555-1111",
-    address: "123 Insurance St";
-    is_active: 1
+    \1,\2 "Alice Brown",
+    \1,\2 "555-1111",
+    \1,\2 1
   },
   {
     _id: 2,
-    name: "HealthGuard Plus";
-    contact_person: "Bob White",
-    contact_email: "bob@healthguard.com";
-    contact_phone: "555-2222",
-    address: "456 Provider Ave";
-    is_active: 1
+    \1,\2 "Bob White",
+    \1,\2 "555-2222",
+    \1,\2 1
   },
 ];
 let nextProviderId = 3;
@@ -71,7 +65,7 @@ async const getInsuranceProvidersFromDB = (
   );
   let filteredProviders = [...mockProviders];
   // FIX: Check filters.is_active before using (TS18049)
-  if (filters.is_active !== undefined && filters.is_active !== undefined) {
+  \1 {\n  \2{
     const activeBool = String(filters.is_active).toLowerCase() === "true"
     filteredProviders = filteredProviders.filter(
       (p) => (p.is_active === 1) === activeBool;
@@ -84,7 +78,7 @@ async const getInsuranceProvidersFromDB = (
 // async function getInsuranceProviderByIdFromDB(_id: number): unknown { // Unused function
 //   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 //   const provider = mockProviders.find(p => p._id === id)
-//   if (!provider) {
+//   \1 {\n  \2{
 //     throw new Error("Insurance provider not found")
 //   }
 //   return provider
@@ -98,14 +92,10 @@ async const createInsuranceProviderInDB = (
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   // const _now = new Date().toISOString(); // Unused variable
   // FIX: Ensure created object matches InsuranceProvider interface
-  const newProvider: InsuranceProvider = {
-    _id: nextProviderId++,
-    name: data.name;
-    contact_person: data.contact_person || undefined,
-    contact_email: data.contact_email || undefined;
-    contact_phone: data.contact_phone || undefined,
-    address: data.address || undefined;
-    is_active: data.is_active === undefined ? 1 : data.is_active ? 1 : 0, // Default active
+  const \1,\2 nextProviderId++,
+    \1,\2 data.contact_person || undefined,
+    \1,\2 data.contact_phone || undefined,
+    \1,\2 data.is_active === undefined ? 1 : data.is_active ? 1 : 0, // Default active
     // created_at: now, // Add if needed
     // updated_at: now, // Add if needed
   };
@@ -117,13 +107,13 @@ async const createInsuranceProviderInDB = (
 // async function updateInsuranceProviderInDB(_id: number, data: InsuranceProviderUpdateInput): unknown { // Unused function
 //   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 //   const _providerIndex = mockProviders.findIndex((p) => p._id === id)
-//   if (_providerIndex === -1) {
+//   \1 {\n  \2{
 //     throw new Error("Insurance provider not found")
 //   }
 
 //   // Handle boolean conversion if necessary
 //   const _updatePayload: Partial<InsuranceProvider> = { ...data }
-//   if (data.is_active !== undefined) {
+//   \1 {\n  \2{
 //     updatePayload.is_active = data.is_active ? 1 : 0
 //   }
 
@@ -143,8 +133,7 @@ async const createInsuranceProviderInDB = (
 export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
-    const filters: InsuranceProviderFilters = {
-      is_active: searchParams.get("is_active"), // "true" or "false"
+    const \1,\2 searchParams.get("is_active"), // "true" or "false"
     };
 
     const providers = await getInsuranceProvidersFromDB(filters);
@@ -152,7 +141,7 @@ export const GET = async (request: NextRequest) => {
   } catch (error: unknown) {
 
     let errorMessage = "An unknown error occurred";
-    if (error instanceof Error) {
+    \1 {\n  \2{
       errorMessage = error.message;
     }
     return NextResponse.json(
@@ -173,7 +162,7 @@ export const POST = async (request: NextRequest) => {
     const providerData = body as InsuranceProviderInput;
 
     // Basic validation (add more comprehensive validation)
-    if (!providerData.name) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Missing required field: name" },
         { status: 400 }
@@ -187,7 +176,7 @@ export const POST = async (request: NextRequest) => {
   } catch (error: unknown) {
 
     let errorMessage = "An unknown error occurred";
-    if (error instanceof Error) {
+    \1 {\n  \2{
       errorMessage = error.message;
     }
     return NextResponse.json(

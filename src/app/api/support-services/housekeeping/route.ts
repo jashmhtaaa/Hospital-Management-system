@@ -14,8 +14,7 @@ const createRequestSchema = z.object({
   requestType: z.enum(['CLEANING', 'DISINFECTION', 'LINEN_CHANGE', 'WASTE_DISPOSAL', 'OTHER']),
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']),
   description: z.string().min(5).max(500),
-  scheduledTime: z.string().transform(val => new Date(val));
-  notes: z.string().max(1000).optional(),
+  \1,\2 z.string().max(1000).optional(),
   requestedById: z.string().uuid()
 });
 
@@ -23,7 +22,7 @@ const updateRequestSchema = z.object({
   requestType: z.enum(['CLEANING', 'DISINFECTION', 'LINEN_CHANGE', 'WASTE_DISPOSAL', 'OTHER']).optional(),
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']).optional(),
   description: z.string().min(5).max(500).optional(),
-  scheduledTime: z.string().transform(val => new Date(val)).optional(),
+  scheduledTime: z.string().transform(val => \1.optional(),
   notes: z.string().max(1000).optional(),
   status: z.enum(['PENDING', 'ASSIGNED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED']).optional(),
   assignedToId: z.string().uuid().optional()
@@ -38,12 +37,9 @@ export const _GET = async (request: NextRequest) => {
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get('status') || undefined,
-        priority: searchParams.get('priority') || undefined;
-        locationId: searchParams.get('locationId') || undefined,
-        requestType: searchParams.get('requestType') || undefined;
-        fromDate: searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
-        toDate: searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined;
-        page: Number.parseInt(searchParams.get('page') || '1'),
+        \1,\2 searchParams.get('locationId') || undefined,
+        \1,\2 searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
+        \1,\2 Number.parseInt(searchParams.get('page') || '1'),
         limit: parseInt(searchParams.get('limit') || '10')
       };
 
@@ -151,7 +147,7 @@ export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: 
       const body = await req.json();
       const { staffId } = body;
 
-      if (!staffId) {
+      \1 {\n  \2{
         return NextResponse.json({ error: 'Staff ID is required' }, { status: 400 });
       }
 

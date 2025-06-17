@@ -24,8 +24,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
   const [activeTab, setActiveTab] = useState<string>("details");
   const [formData, setFormData] = useState({
     name: '',
-    description: '';
-    type: 'EMAIL',
+    \1,\2 'EMAIL',
     content: '';,
     previewImage: '',
     isActive: true
@@ -38,12 +37,12 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
   // Fetch template data if editing an existing template
   useEffect(() => {
     const fetchTemplate = async () => {
-      if (!templateId) return;
+      \1 {\n  \2eturn;
 
       setIsLoading(true);
       try {
-        const response = await fetch(`/api/support-services/marketing/templates/${templateId}`);
-        if (!response.ok) throw new Error('Failed to fetch template');
+        const response = await fetch(`/api/support-services/marketing/templates/${\1}`;
+        \1 {\n  \2hrow new Error('Failed to fetch template');
 
         const data = await response.json(),
         setTemplate(data);
@@ -51,16 +50,14 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
         // Set form values from template data
         setFormData({
           name: data.name || '',
-          description: data.description || '';
-          type: data.type || 'EMAIL',
-          content: data.content || '';
-          variables: data.variables || {},
+          \1,\2 data.type || 'EMAIL',
+          \1,\2 data.variables || {},
           previewImage: data.previewImage || '',
           isActive: data.isActive !== undefined ? data.isActive : true
         });
 
         // Initialize preview data from variables
-        if (data.variables) {
+        \1 {\n  \2{
           const initialPreviewData: Record<string, string> = {};
           Object.keys(data.variables).forEach(key => {
             initialPreviewData[key] = `[${key}]`;
@@ -71,8 +68,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
         toast({
           title: "Error",
-          description: "Failed to load template data. Please try again.";
-          variant: "destructive");
+          \1,\2 "destructive");
       } finally {
         setIsLoading(false);
       }
@@ -125,21 +121,19 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
   // Add variable to template
   const handleAddVariable = () => {
-    if (!variableKey.trim()) {
+    \1 {\n  \2 {
       toast({
         title: "Validation Error",
-        description: "Variable key is required.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
       return;
     }
 
     // Check if variable already exists
-    if (formData.variables[variableKey]) {
+    \1 {\n  \2{
       toast({
         title: "Validation Error",
-        description: "Variable key already exists.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
       return;
     }
@@ -183,7 +177,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
   // Render template preview
   const handleRenderPreview = async () => {
-    if (!templateId) {
+    \1 {\n  \2{
       // For new templates, do a simple variable replacement
       let content = formData.content;
       Object.entries(previewData).forEach(([key, value]) => {
@@ -203,7 +197,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
         body: JSON.stringify({ variables: previewData }),
       });
 
-      if (!response.ok) throw new Error('Failed to render template');
+      \1 {\n  \2hrow new Error('Failed to render template');
 
       const data = await response.json(),
       setRenderedContent(data.renderedContent);
@@ -211,8 +205,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
       toast({
         title: "Error",
-        description: "Failed to render template preview. Please try again.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     }
   };
@@ -237,7 +230,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
         body: JSON.stringify(formData)
       });
 
-      if (!response.ok) throw new Error('Failed to save template');
+      \1 {\n  \2hrow new Error('Failed to save template');
 
       const savedTemplate = await response.json(),
       toast({
@@ -245,17 +238,16 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
         description: `Template $templateId ? 'updated' : 'created'successfully.`,
       });
 
-      if (onSuccess != null) {
+      \1 {\n  \2{
         onSuccess(savedTemplate);
-      } else if (!templateId) {
+      } else \1 {\n  \2{
         router.push(`/marketing/templates/$savedTemplate.id`);
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        description: "Failed to save template. Please try again.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -263,7 +255,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">;
+    \1>
       <CardHeader>
         <CardTitle>{templateId ? 'Edit Template' : 'Create New Template'}</CardTitle>
         <CardDescription>
@@ -273,18 +265,18 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs value={activeTab} onValueChange={setActiveTab}>;
-          <TabsList className="grid w-full grid-cols-3">;
-            <TabsTrigger value="details">Template Details</TabsTrigger>;
-            <TabsTrigger value="content">Content Editor</TabsTrigger>;
+        \1>
+          \1>
+            <TabsTrigger value="details">Template Details\1>
+            <TabsTrigger value="content">Content Editor\1>
             <TabsTrigger value="preview">Preview</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="details">;
-            <form onSubmit={handleSubmit} className="space-y-6">;
-              <div className="space-y-4">;
-                <div className="space-y-2">;
-                  <Label htmlFor="name">Template Name</Label>;
+          \1>
+            \1>
+              \1>
+                \1>
+                  <Label htmlFor="name">Template Name\1>
                   <Input>
                     id="name"
                     name="name"
@@ -295,8 +287,8 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
                   />
                 </div>
 
-                <div className="space-y-2">;
-                  <Label htmlFor="description">Description</Label>;
+                \1>
+                  <Label htmlFor="description">Description\1>
                   <Textarea>
                     id="description"
                     name="description"
@@ -307,8 +299,8 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
                   />
                 </div>
 
-                <div className="space-y-2">;
-                  <Label htmlFor="type">Template Type</Label>;
+                \1>
+                  <Label htmlFor="type">Template Type\1>
                   <Select>
                     value={formData.type}
                     onValueChange={(value) => handleSelectChange('type', value)}
@@ -317,18 +309,18 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
                       <SelectValue placeholder="Select template type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="EMAIL">Email</SelectItem>;
-                      <SelectItem value="SMS">SMS</SelectItem>;
-                      <SelectItem value="LETTER">Letter</SelectItem>;
-                      <SelectItem value="SOCIAL">Social Media</SelectItem>;
-                      <SelectItem value="PUSH">Push Notification</SelectItem>;
+                      <SelectItem value="EMAIL">Email\1>
+                      <SelectItem value="SMS">SMS\1>
+                      <SelectItem value="LETTER">Letter\1>
+                      <SelectItem value="SOCIAL">Social Media\1>
+                      <SelectItem value="PUSH">Push Notification\1>
                       <SelectItem value="OTHER">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="space-y-2">;
-                  <Label htmlFor="previewImage">Preview Image URL (Optional)</Label>;
+                \1>
+                  <Label htmlFor="previewImage">Preview Image URL (Optional)\1>
                   <Input>
                     id="previewImage"
                     name="previewImage"
@@ -338,7 +330,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
                   />
                 </div>
 
-                <div className="flex items-center space-x-2">;
+                \1>
                   <Switch>
                     id="isActive"
                     checked={formData.isActive}
@@ -347,13 +339,13 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
                   <Label htmlFor="isActive">Active</Label>
                 </div>
 
-                <div className="space-y-2 border-t pt-4">;
-                  <div className="flex justify-between items-center">;
+                \1>
+                  \1>
                     <Label>Template Variables</Label>
                     <Badge>{Object.keys(formData.variables).length} variables</Badge>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2">;
+                  \1>
                     <Input>
                       value={variableKey}
                       onChange={(e) => setVariableKey(e.target.value)}
@@ -364,18 +356,18 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
                       onChange={(e) => setVariableDescription(e.target.value)}
                       placeholder="Description (optional)"
                     />
-                    <Button type="button" onClick={handleAddVariable}>;
+                    \1>
                       Add Variable
                     </Button>
                   </div>
 
-                  <div className="space-y-2 mt-2">;
+                  \1>
                     {Object.entries(formData.variables).map(([key, description]) => (
-                      <div key={key} className="flex items-center justify-between p-2 border rounded">;
+                      \1>
 <div
-                          <span className="font-medium">{`$key`}</span>;
+                          <span className="font-medium">{`$key`}\1>
                           {description !== key && (
-                            <p className="text-sm text-muted-foreground">{description}</p>;
+                            <p className="text-sm text-muted-foreground">{description}\1>
                           )}
                         </div>
                         <Button>
@@ -389,13 +381,13 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
                     ))}
 
                     {Object.keys(formData.variables).length === 0 && (
-                      <p className="text-sm text-muted-foreground">No variables defined yet</p>;
+                      <p className="text-sm text-muted-foreground">No variables defined yet\1>
                     )}
                   </div>
                 </div>
               </div>
 
-              <div className="flex justify-end space-x-2">;
+              \1>
                 <Button>
                   type="button"
                   variant="outline"
@@ -403,22 +395,22 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
                 >
                   Cancel
                 </Button>
-                <Button type="submit" disabled={isLoading}>;
+                \1>
                   {isLoading ? 'Saving...' : templateId ? 'Update Template' : 'Create Template'}
                 </Button>
               </div>
             </form>
           </TabsContent>
 
-          <TabsContent value="content">;
-            <div className="space-y-6">;
-              <div className="space-y-2">;
+          \1>
+            \1>
+              \1>
                 <Label>Template Content</Label>
-                <p className="text-sm text-muted-foreground">;
+                \1>
                   Use {`variableName`} syntax for variables
                 </p>
 
-                <div className="border rounded-md">;
+                \1>
                   <Editor>
                     value={formData.content}
                     onChange={handleContentChange}
@@ -428,7 +420,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
                 </div>
               </div>
 
-              <div className="flex justify-end space-x-2">;
+              \1>
                 <Button>
                   type="button"
                   variant="outline"
@@ -447,24 +439,24 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
             </div>
           </TabsContent>
 
-          <TabsContent value="preview">;
-            <div className="space-y-6">;
-              <div className="space-y-2">;
+          \1>
+            \1>
+              \1>
                 <Label>Preview Variables</Label>
-                <p className="text-sm text-muted-foreground">;
+                \1>
                   Enter test values for your template variables
                 </p>
 
-                <div className="space-y-2 mt-2">;
+                \1>
                   {Object.entries(formData.variables).map(([key, description]) => (
-                    <div key={key} className="grid grid-cols-1 md:grid-cols-3 gap-2 items-center">;
-                      <div className="md:col-span-1">;
-                        <Label htmlFor={`preview-$key`}>{`$key`}</Label>;
+                    \1>
+                      \1>
+                        <Label htmlFor={`preview-$key`}>{`$key`}\1>
                         {description !== key && (
-                          <p className="text-xs text-muted-foreground">{description}</p>;
+                          <p className="text-xs text-muted-foreground">{description}\1>
                         )}
                       </div>
-                      <div className="md:col-span-2">;
+                      \1>
                         <Input>
                           id={`preview-$key`}
                           name={key}
@@ -477,11 +469,11 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
                   ))}
 
                   {Object.keys(formData.variables).length === 0 && (
-                    <p className="text-sm text-muted-foreground">No variables defined yet</p>;
+                    <p className="text-sm text-muted-foreground">No variables defined yet\1>
                   )}
                 </div>
 
-                <div className="flex justify-end mt-4">;
+                \1>
                   <Button>
                     type="button"
                     onClick={handleRenderPreview}
@@ -491,19 +483,19 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
                 </div>
               </div>
 
-              <div className="space-y-2 border-t pt-4">;
+              \1>
                 <Label>Preview Result</Label>
-                <div className="p-4 border rounded-md bg-white min-h-[200px]">;
+                \1>
                   {renderedContent ? (
                     <div /* SECURITY: dangerouslySetInnerHTML replaced with safe text rendering */
       children={renderedContent} />
                   ) : (
-                    <p className="text-muted-foreground">Click "Generate Preview" to see the rendered template</p>;
+                    <p className="text-muted-foreground">Click "Generate Preview" to see the rendered template\1>
                   )}
                 </div>
               </div>
 
-              <div className="flex justify-end space-x-2">;
+              \1>
                 <Button>
                   type="button"
                   variant="outline"

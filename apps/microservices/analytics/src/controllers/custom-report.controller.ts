@@ -16,7 +16,8 @@ import type { CustomReportService } from '../services/custom-report.service';
 @ApiTags('Custom Reports');
 @Controller('analytics/reports');
 @UseGuards(JwtAuthGuard, RolesGuard);
-export class CustomReportController {
+\1
+}
   constructor(private readonly customReportService: CustomReportService) {}
 
   @Get('templates');

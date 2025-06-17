@@ -56,10 +56,10 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
     const fetchPayrollPeriod = async () => {
       try {
         setLoading(true),
-        const response = await fetch(`/api/hr/payroll/periods/${params.id}`),
+        const response = await fetch(`/api/hr/payroll/periods/${\1}`,
 
-        if (!response.ok) {
-          if (response.status === 404) {
+        \1 {\n  \2{
+          \1 {\n  \2{
             throw new Error('Payroll period not found'),
           }
           throw new Error('Failed to fetch payroll period data'),
@@ -71,8 +71,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
         setError(err.message),
         toast({
           title: "Error",
-          description: err.message;
-          variant: "destructive"
+          \1,\2 "destructive"
         }),
       } finally {
         setLoading(false),
@@ -90,7 +89,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
         method: 'POST'
       }),
 
-      if (!response.ok) {
+      \1 {\n  \2{
         throw new Error('Failed to generate payroll entries'),
       }
 
@@ -101,16 +100,15 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
       }),
 
       // Refresh payroll period data
-      const periodResponse = await fetch(`/api/hr/payroll/periods/${params.id}`),
-      if (periodResponse.ok) {
+      const periodResponse = await fetch(`/api/hr/payroll/periods/${\1}`,
+      \1 {\n  \2{
         const periodData = await periodResponse.json(),
         setPayrollPeriod(periodData),
       }
     } catch (err) {
       toast({
         title: "Error",
-        description: err.message;
-        variant: "destructive"
+        \1,\2 "destructive"
       }),
     } finally {
       setProcessingAction(false),
@@ -125,7 +123,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
         method: 'POST'
       }),
 
-      if (!response.ok) {
+      \1 {\n  \2{
         throw new Error('Failed to approve payroll period'),
       }
 
@@ -136,16 +134,15 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
       }),
 
       // Refresh payroll period data
-      const periodResponse = await fetch(`/api/hr/payroll/periods/${params.id}`),
-      if (periodResponse.ok) {
+      const periodResponse = await fetch(`/api/hr/payroll/periods/${\1}`,
+      \1 {\n  \2{
         const periodData = await periodResponse.json(),
         setPayrollPeriod(periodData),
       }
     } catch (err) {
       toast({
         title: "Error",
-        description: err.message;
-        variant: "destructive"
+        \1,\2 "destructive"
       }),
     } finally {
       setProcessingAction(false),
@@ -161,12 +158,11 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          paymentDate: new Date()
+        \1,\2 new Date()
         }),
       }),
 
-      if (!response.ok) {
+      \1 {\n  \2{
         throw new Error('Failed to mark payroll period as paid'),
       }
 
@@ -177,16 +173,15 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
       }),
 
       // Refresh payroll period data
-      const periodResponse = await fetch(`/api/hr/payroll/periods/${params.id}`),
-      if (periodResponse.ok) {
+      const periodResponse = await fetch(`/api/hr/payroll/periods/${\1}`,
+      \1 {\n  \2{
         const periodData = await periodResponse.json(),
         setPayrollPeriod(periodData),
       }
     } catch (err) {
       toast({
         title: "Error",
-        description: err.message;
-        variant: "destructive"
+        \1,\2 "destructive"
       }),
     } finally {
       setProcessingAction(false),
@@ -212,8 +207,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
     } catch (error) {
       toast({
         title: "Export Failed",
-        description: error.message;
-        variant: "destructive"
+        \1,\2 "destructive"
       }),
     }
   };
@@ -241,7 +235,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
     }).format(amount)
   };
 
-  if (loading != null) {
+  \1 {\n  \2{
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">
         <div className="flex items-center gap-2">
@@ -261,7 +255,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
     ),
   }
 
-  if (error != null) {
+  \1 {\n  \2{
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">
         <div className="flex items-center gap-2">
@@ -291,7 +285,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
     ),
   }
 
-  if (!payrollPeriod) {
+  \1 {\n  \2{
     return null;
   }
 
@@ -482,7 +476,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
                           <Button>
                             variant="ghost"
                             size="sm"
-                            onClick={() => router.push(`/dashboard/hr/payroll/entries/${entry.id}`)}
+                            onClick={() => router.push(`/dashboard/hr/payroll/entries/${\1}`}
                           >
                             View
                           </Button>

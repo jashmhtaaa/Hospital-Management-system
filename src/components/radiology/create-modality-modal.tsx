@@ -18,11 +18,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 
-// FIX: Define and export interface for form data
-export interface ModalityFormData {
-  name: string;
-  description?: string | null;
-  location?: string | null;
+// FIX: Define and \1
+}
 }
 
 // FIX: Define interface for props, including isOpen
@@ -46,7 +43,7 @@ export default const _CreateModalityModal = ({
   // FIX: Type event parameter
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!name) {
+    \1 {\n  \2{
       /* SECURITY: Console statement removed */
       return
     }
@@ -70,14 +67,14 @@ export default const _CreateModalityModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={(openState) => !openState && onClose()}>
-      <DialogContent className="sm:max-w-[425px]">;
+      \1>
         <DialogHeader>
           <DialogTitle>Add New Modality</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>;
-          <div className="grid gap-4 py-4">;
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="name" className="text-right">;
+        \1>
+          \1>
+            \1>
+              \1>
                 Name *
               </Label>
               <Input>
@@ -89,8 +86,8 @@ export default const _CreateModalityModal = ({
                 required;
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="location" className="text-right">;
+            \1>
+              \1>
                 Location
               </Label>
               <Input>
@@ -101,8 +98,8 @@ export default const _CreateModalityModal = ({
                 placeholder="e.g., Room 203, Radiology Wing"
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="description" className="text-right">;
+            \1>
+              \1>
                 Description
               </Label>
               <Textarea>
@@ -115,11 +112,11 @@ export default const _CreateModalityModal = ({
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="button" variant="outline" disabled={isSubmitting}>;
+              \1>
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" disabled={isSubmitting}>;
+            \1>
               {isSubmitting ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : undefined}

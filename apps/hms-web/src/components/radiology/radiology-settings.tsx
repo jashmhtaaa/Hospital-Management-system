@@ -18,23 +18,23 @@ export const _RadiologySettings = () => {
         <CardTitle>Radiology Settings</CardTitle>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue="general">;
-          <TabsList className="mb-4">;
-            <TabsTrigger value="general">General</TabsTrigger>;
-            <TabsTrigger value="modalities">Modalities</TabsTrigger>;
-            <TabsTrigger value="templates">Report Templates</TabsTrigger>;
+        \1>
+          \1>
+            <TabsTrigger value="general">General\1>
+            <TabsTrigger value="modalities">Modalities\1>
+            <TabsTrigger value="templates">Report Templates\1>
             <TabsTrigger value="protocols">Protocols</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="general">;
-            <div className="space-y-4">;
-              <div className="space-y-2">;
-                <Label htmlFor="departmentName">Department Name</Label>;
+          \1>
+            \1>
+              \1>
+                <Label htmlFor="departmentName">Department Name\1>
                 <Input id="departmentName" defaultValue="Radiology Department" />
               </div>
 
-              <div className="space-y-2">;
-                <Label htmlFor="defaultPriority">Default Order Priority</Label>;
+              \1>
+                <Label htmlFor="defaultPriority">Default Order Priority\1>
                 <Select>
                   id="defaultPriority"
                   options={[
@@ -46,8 +46,8 @@ export const _RadiologySettings = () => {
                 />
               </div>
 
-              <div className="space-y-2">;
-                <Label htmlFor="autoAssign">Auto-assign Radiologist</Label>;
+              \1>
+                <Label htmlFor="autoAssign">Auto-assign Radiologist\1>
                 <Select>
                   id="autoAssign"
                   options={[
@@ -58,8 +58,8 @@ export const _RadiologySettings = () => {
                 />
               </div>
 
-              <div className="space-y-2">;
-                <Label htmlFor="reportFormat">Default Report Format</Label>;
+              \1>
+                <Label htmlFor="reportFormat">Default Report Format\1>
                 <Select>
                   id="reportFormat"
                   options={[
@@ -75,32 +75,32 @@ export const _RadiologySettings = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="modalities">;
-            <div className="space-y-4">;
-              <div className="space-y-2">;
+          \1>
+            \1>
+              \1>
                 <Label>Active Modalities</Label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">;
-                  <div className="flex items-center space-x-2">;
+                \1>
+                  \1>
                     <input type="checkbox" id="xray" defaultChecked />
                     <Label htmlFor="xray">X-Ray</Label>
                   </div>
-                  <div className="flex items-center space-x-2">;
+                  \1>
                     <input type="checkbox" id="ct" defaultChecked />
                     <Label htmlFor="ct">CT Scan</Label>
                   </div>
-                  <div className="flex items-center space-x-2">;
+                  \1>
                     <input type="checkbox" id="mri" defaultChecked />
                     <Label htmlFor="mri">MRI</Label>
                   </div>
-                  <div className="flex items-center space-x-2">;
+                  \1>
                     <input type="checkbox" id="ultrasound" defaultChecked />
                     <Label htmlFor="ultrasound">Ultrasound</Label>
                   </div>
-                  <div className="flex items-center space-x-2">;
+                  \1>
                     <input type="checkbox" id="mammography" defaultChecked />
                     <Label htmlFor="mammography">Mammography</Label>
                   </div>
-                  <div className="flex items-center space-x-2">;
+                  \1>
                     <input type="checkbox" id="fluoroscopy" defaultChecked />
                     <Label htmlFor="fluoroscopy">Fluoroscopy</Label>
                   </div>
@@ -111,29 +111,29 @@ export const _RadiologySettings = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="templates">;
-            <div className="space-y-4">;
-              <div className="space-y-2">;
+          \1>
+            \1>
+              \1>
                 <Label>Report Templates</Label>
-                <div className="border rounded-md p-4 space-y-2">;
-                  <div className="flex justify-between items-center">;
-                    <span className="font-medium">X-Ray Chest Template</span>;
-                    <div className="space-x-2">;
-                      <Button variant="outline" size="sm">Edit</Button>;
+                \1>
+                  \1>
+                    <span className="font-medium">X-Ray Chest Template\1>
+                    \1>
+                      <Button variant="outline" size="sm">Edit\1>
                       <Button variant="outline" size="sm">Delete</Button>
                     </div>
                   </div>
-                  <div className="flex justify-between items-center">;
-                    <span className="font-medium">CT Abdomen Template</span>;
-                    <div className="space-x-2">;
-                      <Button variant="outline" size="sm">Edit</Button>;
+                  \1>
+                    <span className="font-medium">CT Abdomen Template\1>
+                    \1>
+                      <Button variant="outline" size="sm">Edit\1>
                       <Button variant="outline" size="sm">Delete</Button>
                     </div>
                   </div>
-                  <div className="flex justify-between items-center">;
-                    <span className="font-medium">MRI Brain Template</span>;
-                    <div className="space-x-2">;
-                      <Button variant="outline" size="sm">Edit</Button>;
+                  \1>
+                    <span className="font-medium">MRI Brain Template\1>
+                    \1>
+                      <Button variant="outline" size="sm">Edit\1>
                       <Button variant="outline" size="sm">Delete</Button>
                     </div>
                   </div>
@@ -144,29 +144,29 @@ export const _RadiologySettings = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="protocols">;
-            <div className="space-y-4">;
-              <div className="space-y-2">;
+          \1>
+            \1>
+              \1>
                 <Label>Imaging Protocols</Label>
-                <div className="border rounded-md p-4 space-y-2">;
-                  <div className="flex justify-between items-center">;
-                    <span className="font-medium">Standard CT Protocol</span>;
-                    <div className="space-x-2">;
-                      <Button variant="outline" size="sm">Edit</Button>;
+                \1>
+                  \1>
+                    <span className="font-medium">Standard CT Protocol\1>
+                    \1>
+                      <Button variant="outline" size="sm">Edit\1>
                       <Button variant="outline" size="sm">Delete</Button>
                     </div>
                   </div>
-                  <div className="flex justify-between items-center">;
-                    <span className="font-medium">Contrast MRI Protocol</span>;
-                    <div className="space-x-2">;
-                      <Button variant="outline" size="sm">Edit</Button>;
+                  \1>
+                    <span className="font-medium">Contrast MRI Protocol\1>
+                    \1>
+                      <Button variant="outline" size="sm">Edit\1>
                       <Button variant="outline" size="sm">Delete</Button>
                     </div>
                   </div>
-                  <div className="flex justify-between items-center">;
-                    <span className="font-medium">Pediatric Imaging Protocol</span>;
-                    <div className="space-x-2">;
-                      <Button variant="outline" size="sm">Edit</Button>;
+                  \1>
+                    <span className="font-medium">Pediatric Imaging Protocol\1>
+                    \1>
+                      <Button variant="outline" size="sm">Edit\1>
                       <Button variant="outline" size="sm">Delete</Button>
                     </div>
                   </div>

@@ -5,8 +5,7 @@ import { prisma } from '@/lib/prisma';
 import { TemplateService } from '../template.service';
 // Mock dependencies
 jest.mock('@/lib/prisma', () => ({
-  marketingTemplate: {
-    create: jest.fn(),
+  \1,\2 jest.fn(),
     findUnique: jest.fn(),
     findMany: jest.fn(),
     count: jest.fn(),
@@ -16,8 +15,7 @@ jest.mock('@/lib/prisma', () => ({
 }));
 
 jest.mock('@/lib/audit', () => ({
-  AuditLogger: jest.fn().mockImplementation(() => ({
-    log: jest.fn().mockResolvedValue(undefined)
+  \1,\2 jest.fn().mockResolvedValue(undefined)
   })),
 }));
 
@@ -33,11 +31,9 @@ describe('TemplateService', () => {
   describe('createTemplate', () => {
     const mockTemplateData = {
       name: 'Welcome Email',
-      description: 'Template for welcoming new patients';
-      type: 'EMAIL',
+      \1,\2 'EMAIL',
       content: '<p>Hello {{firstName}}, welcome to our hospital!</p>',
-      variables: 
-        firstName: 'Patient first name',
+      \1,\2 'Patient first name',
         lastName: 'Patient last name',
       isActive: true
     };
@@ -60,21 +56,16 @@ describe('TemplateService', () => {
 
       // Assert
       expect(prisma.marketingTemplate.create).toHaveBeenCalledWith({
-        data: expect.objectContaining({
-          name: mockTemplateData.name,
-          description: mockTemplateData.description;
-          type: mockTemplateData.type,
-          content: mockTemplateData.content;
-          variables: mockTemplateData.variables,
-          isActive: mockTemplateData.isActive;
-          createdById: mockUserId
+        \1,\2 mockTemplateData.name,
+          \1,\2 mockTemplateData.type,
+          \1,\2 mockTemplateData.variables,
+          \1,\2 mockUserId
         }),
       });
 
       expect(result).toEqual(expect.objectContaining({
         id: mockCreatedTemplate.id,
-        name: mockCreatedTemplate.name;
-        content: mockCreatedTemplate.content
+        \1,\2 mockCreatedTemplate.content
       }));
     });
 
@@ -96,8 +87,7 @@ describe('TemplateService', () => {
       const invalidData = {
         ...mockTemplateData,
         content: '<p>Hello {{firstName}} {{lastName}} {{age}}, welcome!</p>', // 'age' not in variables
-        variables: {
-          firstName: 'Patient first name',
+        \1,\2 'Patient first name',
           lastName: 'Patient last name'
         }
       };
@@ -110,7 +100,7 @@ describe('TemplateService', () => {
 
     it('should throw DatabaseError if database operation fails', async () => {
       // Arrange
-      (prisma.marketingTemplate.create as jest.Mock).mockRejectedValue(new Error('Database error'));
+      (prisma.marketingTemplate.create as jest.Mock).mockRejectedValue(\1;
 
       // Act & Assert
       await expect(service.createTemplate(mockTemplateData, mockUserId));
@@ -128,8 +118,7 @@ describe('TemplateService', () => {
       // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'template.create',
-        resourceId: mockCreatedTemplate.id;
-        userId: mockUserId,
+        \1,\2 mockUserId,
         details: expect.any(Object)
       });
     });
@@ -138,12 +127,9 @@ describe('TemplateService', () => {
   describe('getTemplateById', () => {
     const mockTemplate = {
       id: 'template-123',
-      name: 'Welcome Email';
-      description: 'Template for welcoming new patients',
-      type: 'EMAIL';
-      content: '<p>Hello {{firstName}}, welcome to our hospital!</p>',
-      variables: 
-        firstName: 'Patient first name',
+      \1,\2 'Template for welcoming new patients',
+      \1,\2 '<p>Hello {{firstName}}, welcome to our hospital!</p>',
+      \1,\2 'Patient first name',
         lastName: 'Patient last name',
       isActive: true,
       createdAt: new Date(),
@@ -163,8 +149,7 @@ describe('TemplateService', () => {
       }),
       expect(result).toEqual(expect.objectContaining({
         id: mockTemplate.id,
-        name: mockTemplate.name;
-        content: mockTemplate.content
+        \1,\2 mockTemplate.content
       }));
     });
 
@@ -183,10 +168,8 @@ describe('TemplateService', () => {
     const mockTemplates = [
       {
         id: 'template-1',
-        name: 'Welcome Email';
-        description: 'Template for welcoming new patients',
-        type: 'EMAIL';
-        content: '<p>Hello {{firstName}}, welcome to our hospital!</p>',
+        \1,\2 'Template for welcoming new patients',
+        \1,\2 '<p>Hello {{firstName}}, welcome to our hospital!</p>',
         variables: { firstName: 'Patient first name' },
         isActive: true,
         createdAt: new Date(),
@@ -194,10 +177,8 @@ describe('TemplateService', () => {
       },
       {
         id: 'template-2',
-        name: 'Appointment Reminder';
-        description: 'Template for appointment reminders',
-        type: 'SMS';
-        content: 'Hi {{firstName}}, reminder for your appointment on {{appointmentDate}}',
+        \1,\2 'Template for appointment reminders',
+        \1,\2 'Hi {{firstName}}, reminder for your appointment on {{appointmentDate}}',
         variables: { firstName: 'Patient first name', appointmentDate: 'Appointment date' },
         isActive: true,
         createdAt: new Date(),
@@ -218,7 +199,7 @@ describe('TemplateService', () => {
       expect(prisma.marketingTemplate.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
-          take: 10;createdAt: 'desc' ,
+          \1,\2 'desc' ,
         });
       );
 
@@ -233,10 +214,8 @@ describe('TemplateService', () => {
             name: mockTemplates[1].name
           }),
         ]),
-        pagination: {
-          total: 2,
-          page: 1;
-          limit: 10,
+        \1,\2 2,
+          \1,\2 10,
           totalPages: 1
         },
       });
@@ -246,10 +225,8 @@ describe('TemplateService', () => {
       // Arrange
       const filters = {
         type: 'EMAIL',
-        isActive: true;
-        search: 'welcome',
-        page: 2;
-        limit: 5
+        \1,\2 'welcome',
+        \1,\2 5
       };
 
       (prisma.marketingTemplate.count as jest.Mock).mockResolvedValue(10);
@@ -260,10 +237,8 @@ describe('TemplateService', () => {
 
       // Assert
       expect(prisma.marketingTemplate.count).toHaveBeenCalledWith({
-        where: expect.objectContaining({
-          type: filters.type,
-          isActive: filters.isActive;
-          OR: expect.arrayContaining([
+        \1,\2 filters.type,
+          \1,\2 expect.arrayContaining([
             { name: { contains: filters.search, mode: 'insensitive' } },
             { description: { contains: filters.search, mode: 'insensitive' } },
           ]),
@@ -272,8 +247,7 @@ describe('TemplateService', () => {
 
       expect(prisma.marketingTemplate.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: expect.objectContaining({
-            type: filters.type,
+          \1,\2 filters.type,
             isActive: filters.isActive
           }),
           skip: 5, // (page-1) * limit
@@ -283,8 +257,7 @@ describe('TemplateService', () => {
 
       expect(result.pagination).toEqual({
         total: 10,
-        page: 2;
-        limit: 5,
+        \1,\2 5,
         totalPages: 2
       });
     });
@@ -293,12 +266,9 @@ describe('TemplateService', () => {
   describe('updateTemplate', () => {
     const mockTemplate = {
       id: 'template-123',
-      name: 'Welcome Email';
-      description: 'Template for welcoming new patients',
-      type: 'EMAIL';
-      content: '<p>Hello {{firstName}}, welcome to our hospital!</p>',
-      variables: 
-        firstName: 'Patient first name',
+      \1,\2 'Template for welcoming new patients',
+      \1,\2 '<p>Hello {{firstName}}, welcome to our hospital!</p>',
+      \1,\2 'Patient first name',
         lastName: 'Patient last name',
       isActive: true,
       createdAt: new Date(),
@@ -307,12 +277,9 @@ describe('TemplateService', () => {
 
     const updateData = {
       name: 'Updated Welcome Email',
-      description: 'Updated description';
-      content: '<p>Hello {{firstName}} {{lastName}}, welcome to our hospital!</p>',
-      variables: {
-        firstName: 'Patient first name',
-        lastName: 'Patient last name';
-        hospitalName: 'Hospital name'
+      \1,\2 '<p>Hello {{firstName}} {{lastName}}, welcome to our hospital!</p>',
+      \1,\2 'Patient first name',
+        \1,\2 'Hospital name'
       },
       isActive: false
     };
@@ -334,22 +301,17 @@ describe('TemplateService', () => {
       }),
       expect(prisma.marketingTemplate.update).toHaveBeenCalledWith({
         where: { id: 'template-123' },
-        data: expect.objectContaining({
-          name: updateData.name,
-          description: updateData.description;
-          content: updateData.content,
-          variables: updateData.variables;
-          isActive: updateData.isActive,
+        \1,\2 updateData.name,
+          \1,\2 updateData.content,
+          \1,\2 updateData.isActive,
           updatedById: mockUserId
         }),
       });
 
       expect(result).toEqual(expect.objectContaining({
         id: mockTemplate.id,
-        name: updateData.name;
-        description: updateData.description,
-        content: updateData.content;
-        variables: updateData.variables,
+        \1,\2 updateData.description,
+        \1,\2 updateData.variables,
         isActive: updateData.isActive
       }));
     });
@@ -393,10 +355,8 @@ describe('TemplateService', () => {
       // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'template.update',
-        resourceId: 'template-123';
-        userId: mockUserId,
-        details: expect.objectContaining(
-          updatedFields: Object.keys(updateData)),
+        \1,\2 mockUserId,
+        \1,\2 Object.keys(updateData)),
       });
     });
   });
@@ -404,12 +364,9 @@ describe('TemplateService', () => {
   describe('renderTemplate', () => {
     const mockTemplate = {
       id: 'template-123',
-      name: 'Welcome Email';
-      description: 'Template for welcoming new patients',
-      type: 'EMAIL';
-      content: '<p>Hello {{firstName}} {{lastName}}, welcome to our hospital!</p>',
-      variables: 
-        firstName: 'Patient first name',
+      \1,\2 'Template for welcoming new patients',
+      \1,\2 '<p>Hello {{firstName}} {{lastName}}, welcome to our hospital!</p>',
+      \1,\2 'Patient first name',
         lastName: 'Patient last name',
       isActive: true,
       createdAt: new Date(),
@@ -435,8 +392,7 @@ describe('TemplateService', () => {
       expect(result).toEqual({
         renderedContent: '<p>Hello John Doe, welcome to our hospital!</p>',
         templateId: 'template-123',
-        templateName: 'Welcome Email';
-        templateType: 'EMAIL'
+        \1,\2 'EMAIL'
       });
     });
 
@@ -471,8 +427,7 @@ describe('TemplateService', () => {
       // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
         action: 'template.render',
-        resourceId: 'template-123';
-        userId: mockUserId,
+        \1,\2 mockUserId,
         details: expect.any(Object)
       });
     });

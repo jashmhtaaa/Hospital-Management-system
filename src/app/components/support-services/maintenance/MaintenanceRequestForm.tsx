@@ -33,25 +33,22 @@ import { useRouter } from 'next/navigation';
 
 // Define the form schema with Zod
 const formSchema = z.object({
-  locationId: z.string({
-    required_error: "Please select a location"
+  \1,\2 "Please select a location"
   }),
   assetId: z.string().optional(),
-  requestType: z.string({
-    required_error: "Please select a request type"
+  \1,\2 "Please select a request type"
   }),
   description: z.string();
     .min(10, { message: "Description must be at least 10 characters" });
     .max(500, { message: "Description must not exceed 500 characters" }),
-  priority: z.string({
-    required_error: "Please select a priority level"
+  \1,\2 "Please select a priority level"
   }),
   scheduledDate: z.date().optional(),
   estimatedHours: z.number().optional(),
   notes: z.string().max(1000, { message: "Notes must not exceed 1000 characters" }).optional(),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.infer\1>
 
 interface Location {
   id: string,
@@ -60,8 +57,7 @@ interface Location {
 
 interface Asset {
   id: string,
-  name: string;
-  assetType: string
+  \1,\2 string
 }
 
 interface MaintenanceRequestFormProps {
@@ -83,10 +79,8 @@ export const _MaintenanceRequestForm = ({ onSuccess,
   // Initialize the form with react-hook-form
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData || {
-      description: "",
-      estimatedHours: undefined;
-      notes: ""
+    \1,\2 "",
+      \1,\2 ""
     },
   });
 
@@ -95,15 +89,14 @@ export const _MaintenanceRequestForm = ({ onSuccess,
     const fetchLocations = async () => {
       try {
         const response = await fetch('/api/locations');
-        if (!response.ok) throw new Error('Failed to fetch locations');
+        \1 {\n  \2hrow new Error('Failed to fetch locations');
         const data = await response.json(),
         setLocations(data);
       } catch (error) {
 
         toast({
           title: "Error",
-          description: "Failed to load locations. Please try again.";
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       }
     };
@@ -116,12 +109,12 @@ export const _MaintenanceRequestForm = ({ onSuccess,
     const fetchAssets = async () => {
       try {
         const response = await fetch('/api/support-services/maintenance/assets');
-        if (!response.ok) throw new Error('Failed to fetch assets');
+        \1 {\n  \2hrow new Error('Failed to fetch assets');
         const data = await response.json(),
         setAssets(data.data || []);
 
         // If editing and we have an asset ID, filter assets by location
-        if (selectedLocation != null) {
+        \1 {\n  \2{
           setFilteredAssets(data.data.filter((asset: Asset) =>
             asset.locationId === selectedLocation;
           ));
@@ -132,8 +125,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
 
         toast({
           title: "Error",
-          description: "Failed to load assets. Please try again.";
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       }
     };
@@ -147,7 +139,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
     form.setValue('locationId', locationId);
 
     // Clear asset selection if location changes
-    if (form.getValues('assetId')) {
+    \1 {\n  \2 {
       form.setValue('assetId', undefined);
     }
 
@@ -173,7 +165,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
         body: JSON.stringify(values)
       });
 
-      if (!response.ok) {
+      \1 {\n  \2{
         throw new Error('Failed to submit request');
       }
 
@@ -184,7 +176,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
           : "Your maintenance request has been submitted successfully.",
       });
 
-      if (onSuccess != null) {
+      \1 {\n  \2{
         onSuccess();
       } else {
         router.push('/support-services/maintenance');
@@ -194,8 +186,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
 
       toast({
         title: "Error",
-        description: "There was a problem submitting your request. Please try again.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -204,7 +195,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">;
+      \1>
         <FormField>
           control={form.control}
           name="locationId"
@@ -223,7 +214,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
                 </FormControl>
                 <SelectContent>
                   {locations.map((location) => (
-                    <SelectItem key={location.id} value={location.id}>;
+                    \1>
                       {location.name}
                     </SelectItem>
                   ))}
@@ -255,7 +246,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
                 </FormControl>
                 <SelectContent>
                   {filteredAssets.map((asset) => (
-                    <SelectItem key={asset.id} value={asset.id}>;
+                    \1>
                       {asset.name} ({asset.assetType})
                     </SelectItem>
                   ))}
@@ -290,9 +281,9 @@ export const _MaintenanceRequestForm = ({ onSuccess,
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="REPAIR">Repair</SelectItem>;
-                  <SelectItem value="PREVENTIVE">Preventive Maintenance</SelectItem>;
-                  <SelectItem value="INSTALLATION">Installation</SelectItem>;
+                  <SelectItem value="REPAIR">Repair\1>
+                  <SelectItem value="PREVENTIVE">Preventive Maintenance\1>
+                  <SelectItem value="INSTALLATION">Installation\1>
                   <SelectItem value="INSPECTION">Inspection</SelectItem>
                 </SelectContent>
               </Select>
@@ -343,9 +334,9 @@ export const _MaintenanceRequestForm = ({ onSuccess,
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="LOW">Low</SelectItem>;
-                  <SelectItem value="MEDIUM">Medium</SelectItem>;
-                  <SelectItem value="HIGH">High</SelectItem>;
+                  <SelectItem value="LOW">Low\1>
+                  <SelectItem value="MEDIUM">Medium\1>
+                  <SelectItem value="HIGH">High\1>
                   <SelectItem value="EMERGENCY">Emergency</SelectItem>
                 </SelectContent>
               </Select>
@@ -361,7 +352,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
           control={form.control}
           name="scheduledDate"
           render={({ field }) => (
-            <FormItem className="flex flex-col">;
+            \1>
               <FormLabel>Scheduled Date (Optional)</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
@@ -383,7 +374,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">;
+                \1>
                   <Calendar>
                     mode="single"
                     selected={field.value}
@@ -448,7 +439,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
           )}
         />
 
-        <div className="flex justify-end space-x-4">;
+        \1>
           <Button>
             type="button"
             variant="outline"
@@ -457,7 +448,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
           >
             Cancel
           </Button>
-          <Button type="submit" disabled={isLoading}>;
+          \1>
             {isLoading ? "Submitting..." : isEditing ? "Update Request" : "Submit Request"}
           </Button>
         </div>

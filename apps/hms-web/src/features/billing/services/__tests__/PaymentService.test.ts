@@ -18,8 +18,7 @@ describe("PaymentService", () => {
         method: "credit_card",
         cardNumber: "************1234", // Masked or use test card numbers
         expiryDate: "12/27",
-        cvv: "123";
-        amount: 250.00
+        \1,\2 250.00
       };
       // Mock InvoiceService.getInvoiceById(invoiceId) to return an unpaid invoice
       // Mock payment gateway interaction to return a successful response

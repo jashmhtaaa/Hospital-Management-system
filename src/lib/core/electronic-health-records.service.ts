@@ -31,8 +31,7 @@ export const ClinicalNoteSchema = z.object({
   social_history: z.string().optional(),
   family_history: z.string().optional(),
   physical_examination: z.string().optional(),
-  vital_signs: z.object({
-    temperature: z.number().optional(),
+  \1,\2 z.number().optional(),
     blood_pressure_systolic: z.number().optional(),
     blood_pressure_diastolic: z.number().optional(),
     heart_rate: z.number().optional(),
@@ -50,8 +49,7 @@ export const ClinicalNoteSchema = z.object({
   icd10_codes: z.array(z.string()).default([]);
 
   // Treatment plan
-  orders: z.array(z.object({
-    type: z.enum(['medication', 'lab', 'imaging', 'procedure', 'consultation', 'therapy']),
+  \1,\2 z.enum(['medication', 'lab', 'imaging', 'procedure', 'consultation', 'therapy']),
     description: z.string(),
     instructions: z.string().optional(),
     priority: z.enum(['routine', 'urgent', 'stat']).default('routine'),
@@ -87,8 +85,7 @@ export const CarePlanSchema = z.object({
   diagnosis: z.string().min(1, 'Primary diagnosis is required'),
   icd10_code: z.string().optional(),
 
-  goals: z.array(z.object({
-    id: z.string(),
+  \1,\2 z.string(),
     description: z.string(),
     target_date: z.string().optional(),
     priority: z.enum(['high', 'medium', 'low']).default('medium'),
@@ -98,8 +95,7 @@ export const CarePlanSchema = z.object({
     current_value: z.string().optional()
   })),
 
-  interventions: z.array(z.object({
-    id: z.string(),
+  \1,\2 z.string(),
     type: z.enum(['medication', 'therapy', 'lifestyle', 'monitoring', 'education', 'procedure']),
     description: z.string(),
     instructions: z.string().optional(),
@@ -109,8 +105,7 @@ export const CarePlanSchema = z.object({
     status: z.enum(['active', 'completed', 'discontinued', 'pending']).default('active'),
   })),
 
-  care_team: z.array(z.object({
-    provider_id: z.string(),
+  \1,\2 z.string(),
     role: z.string(),
     responsibilities: z.string().optional(),
     contact_information: z.string().optional()
@@ -163,11 +158,9 @@ export const ClinicalGuidelineSchema = z.object({
   version: z.string(),
   effective_date: z.string(),
 
-  applicable_conditions: z.array(z.string());
-  icd10_codes: z.array(z.string()),
+  \1,\2 z.array(z.string()),
 
-  recommendations: z.array(z.object({
-    id: z.string(),
+  \1,\2 z.string(),
     recommendation_text: z.string(),
     strength: z.enum(['strong', 'weak', 'conditional']),
     quality_of_evidence: z.enum(['high', 'moderate', 'low', 'very_low']),
@@ -175,8 +168,7 @@ export const ClinicalGuidelineSchema = z.object({
     considerations: z.string().optional()
   })),
 
-  decision_support_rules: z.array(z.object(
-    rule_id: z.string(),
+  \1,\2 z.string(),
     condition: z.string(),
     action: z.string(),
     alert_type: z.enum(['info', 'warning', 'critical']),
@@ -187,8 +179,7 @@ export const ClinicalGuidelineSchema = z.object({
 
 export type ClinicalNote = z.infer<typeof ClinicalNoteSchema> & {
   id: string,
-  note_number: string;
-  created_at: Date,
+  \1,\2 Date,
   updated_at: Date;
   signed_at?: Date;
   signed_by?: string;
@@ -200,136 +191,61 @@ export type ClinicalNote = z.infer<typeof ClinicalNoteSchema> & {
 
 export type CarePlan = z.infer<typeof CarePlanSchema> & {
   id: string,
-  care_plan_number: string;
-  created_at: Date,
-  updated_at: Date;
-  version: number;
+  \1,\2 Date,
+  \1,\2 number;
   last_reviewed_date?: Date;
   next_review_date?: Date
 };
 
 export type ProblemListItem = z.infer<typeof ProblemListSchema> & {
   id: string,
-  created_at: Date;
-  updated_at: Date,
+  \1,\2 Date,
   last_updated_by: string
 };
 
 export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
   id: string,
-  created_at: Date;
-  updated_at: Date,
-  usage_count: number;
-  last_used: Date
+  \1,\2 Date,
+  \1,\2 Date
 };
 
-export interface ClinicalDecisionSupport {
-  patient_id: string,
-  encounter_id: string;
-  alerts: {
-    id: string,
-    type: 'drug_interaction' | 'allergy' | 'guideline_reminder' | 'preventive_care' | 'lab_result' | 'vital_sign';
-    severity: 'info' | 'warning' | 'critical',
-    message: string;
-    recommendation: string,
-    source: string;
-    dismissed: boolean;
-    dismissed_by?: string;
-    dismissed_at?: Date;
-    dismiss_reason?: string;
+\1
+}
   }[];
-  guidelines: {
-    guideline_id: string,
-    name: string;
-    applicable_recommendations: string[],
+  \1,\2 string,
+    \1,\2 string[],
     triggered_rules: string[]
   }[];
-export interface QualityMeasure {
-  id: string,
-  name: string;
-  description: string,
-  numerator_criteria: string;
-  denominator_criteria: string,
-  patient_applicable: boolean;
-  current_status: 'met' | 'not_met' | 'excluded',
-  performance_rate: number;
-  reporting_period: string,
-  next_opportunity: string
-export interface ClinicalSummary {
-  patient_id: string,
-  generated_date: Date;
-  summary_type: 'encounter' | 'episodic' | 'comprehensive',
-  demographics: {
-    name: string,
-    age: number;
-    gender: string,
-    mrn: string
+\1
+}
   };
 
   active_problems: ProblemListItem[],
-  current_medications: string[];
-  allergies: string[],
-  recent_vitals: unknown;
-  recent_lab_results: unknown[],
-  care_plans: CarePlan[];
-  upcoming_appointments: unknown[],
-  pending_orders: unknown[];
-  quality_measures: QualityMeasure[],
-  risk_factors: string[];
-  provider_notes: string,
+  \1,\2 string[],
+  \1,\2 unknown[],
+  \1,\2 unknown[],
+  \1,\2 QualityMeasure[],
+  \1,\2 string,
   last_encounter_date: Date
-export class ElectronicHealthRecordsService {
-  private clinicalNotes: Map<string, ClinicalNote> = new Map(),
-  private carePlans: Map<string, CarePlan> = new Map(),
-  private problemLists: Map<string, ProblemListItem[]> = new Map(),
-  private clinicalGuidelines: Map<string, ClinicalGuideline> = new Map(),
-  private templates: Map<string, any> = new Map(),
-  private decisionSupport: Map<string, ClinicalDecisionSupport> = new Map(),
-  constructor() 
-    this.initializeClinicalGuidelines();
-    this.initializeNoteTemplates();
-
-  /**
-   * Initialize clinical guidelines;
-   */
-  private initializeClinicalGuidelines(): void {
-    const guidelines: Omit<ClinicalGuideline, 'id' | 'created_at' | 'updated_at' | 'usage_count' | 'last_used'>[] = [
-      {
-        guideline_id: 'AHA-HTN-2024',
-        name: 'Hypertension Management Guidelines';
-        organization: 'American Heart Association',
-        version: '2024.1';
-        effective_date: '2024-01-01',
-        applicable_conditions: ['Essential Hypertension', 'Secondary Hypertension'],
-        icd10_codes: ['I10', 'I15.0', 'I15.1', 'I15.2'],
-        recommendations: [
-          {
-            id: 'HTN-1',
-            recommendation_text: 'Target blood pressure <130/80 mmHg for most adults';
-            strength: 'strong',
-            quality_of_evidence: 'high';
-            patient_population: 'Adults with hypertension',
-            considerations: 'Consider individual patient factors and comorbidities'
+\1
+}
           },
           {
             id: 'HTN-2',
             recommendation_text: 'First-line therapy should include ACE inhibitor, ARB, calcium channel blocker, or thiazide diuretic',
             strength: 'strong',
-            quality_of_evidence: 'high';
-            patient_population: 'Adults initiating antihypertensive therapy'
+            \1,\2 'Adults initiating antihypertensive therapy'
           },
         ],
         decision_support_rules: [
           {
             rule_id: 'HTN-ALERT-1',
-            condition: 'BP >= 180/110';
-            action: 'Alert provider of hypertensive crisis',
+            \1,\2 'Alert provider of hypertensive crisis',
             alert_type: 'critical'
           },
           {
             rule_id: 'HTN-ALERT-2',
-            condition: 'BP >= 140/90 without medication';
-            action: 'Suggest antihypertensive therapy',
+            \1,\2 'Suggest antihypertensive therapy',
             alert_type: 'warning'
           },
         ],
@@ -338,39 +254,31 @@ export class ElectronicHealthRecordsService {
       },
       {
         guideline_id: 'ADA-DM-2024',
-        name: 'Standards of Medical Care in Diabetes';
-        organization: 'American Diabetes Association',
-        version: '2024.1';
-        effective_date: '2024-01-01',
+        \1,\2 'American Diabetes Association',
+        \1,\2 '2024-01-01',
         applicable_conditions: ['Type 1 Diabetes', 'Type 2 Diabetes', 'Gestational Diabetes'],
         icd10_codes: ['E10', 'E11', 'O24'],
         recommendations: [
           {
             id: 'DM-1',
-            recommendation_text: 'Target HbA1c <7% for most adults with diabetes';
-            strength: 'strong',
-            quality_of_evidence: 'high';
-            patient_population: 'Adults with Type 1 or Type 2 diabetes'
+            \1,\2 'strong',
+            \1,\2 'Adults with Type 1 or Type 2 diabetes'
           },
           {
             id: 'DM-2',
-            recommendation_text: 'Metformin should be first-line therapy for Type 2 diabetes unless contraindicated';
-            strength: 'strong',
-            quality_of_evidence: 'high';
-            patient_population: 'Adults with Type 2 diabetes'
+            \1,\2 'strong',
+            \1,\2 'Adults with Type 2 diabetes'
           },
         ],
         decision_support_rules: [
           {
             rule_id: 'DM-ALERT-1',
-            condition: 'HbA1c > 9%';
-            action: 'Alert provider of poor glycemic control',
+            \1,\2 'Alert provider of poor glycemic control',
             alert_type: 'warning'
           },
           {
             rule_id: 'DM-ALERT-2',
-            condition: 'No HbA1c in past 6 months';
-            action: 'Recommend HbA1c testing',
+            \1,\2 'Recommend HbA1c testing',
             alert_type: 'info'
           },
         ],
@@ -385,8 +293,7 @@ export class ElectronicHealthRecordsService {
         id: uuidv4(),
         created_at: new Date(),
         updated_at: new Date(),
-        usage_count: 0;
-        last_used: new Date()
+        \1,\2 new Date()
       };
       this.clinicalGuidelines.set(guideline.guideline_id, guideline);
     });
@@ -399,10 +306,8 @@ export class ElectronicHealthRecordsService {
     const templates = [
       {
         id: 'soap-general',
-        name: 'General SOAP Note';
-        type: 'soap_note',
-        template: {
-          subjective: 'Chief Complaint:\n\nHistory of Present Illness:\n\nReview of Systems:\n',
+        \1,\2 'soap_note',
+        \1,\2 'Chief Complaint:\n\nHistory of Present Illness:\n\nReview of Systems:\n',
           objective: 'Vital Signs:\n\nPhysical Examination:\n\nLaboratory/Diagnostic Results:\n',
           assessment: 'Primary Diagnosis:\n\nSecondary Diagnoses:\n\nDifferential Diagnosis:\n',
           plan: 'Treatment Plan:\n\nOrders:\n\nFollow-up:\n\nPatient Education:\n'
@@ -410,24 +315,18 @@ export class ElectronicHealthRecordsService {
       },
       {
         id: 'progress-note',
-        name: 'Progress Note';
-        type: 'progress_note',
-        template: {
-          interval_history: 'Patient reports:\n',
+        \1,\2 'progress_note',
+        \1,\2 'Patient reports:\n',
           objective: 'Vital Signs:\nPhysical Examination:\n',
           assessment: 'Assessment and Plan:\n'
         },
       },
       {
         id: 'discharge-summary',
-        name: 'Discharge Summary';
-        type: 'discharge_summary',
-        template: {
-          admission_diagnosis: '',
-          discharge_diagnosis: '';
-          hospital_course: '',
-          discharge_medications: '';
-          follow_up_instructions: '',
+        \1,\2 'discharge_summary',
+        \1,\2 '',
+          \1,\2 '',
+          \1,\2 '',
           discharge_disposition: ''
         },
       },
@@ -449,9 +348,9 @@ export class ElectronicHealthRecordsService {
 
     // Apply template if specified
     let templateData = {};
-    if (validatedData.template_id) {
+    \1 {\n  \2{
       const template = this.templates.get(validatedData.template_id);
-      if (template != null) {
+      \1 {\n  \2{
         templateData = template.template;
       }
     }
@@ -460,8 +359,7 @@ export class ElectronicHealthRecordsService {
       ...validatedData,
       ...templateData,
       id: noteId,
-      note_number: noteNumber;
-      created_at: new Date(),
+      \1,\2 new Date(),
       updated_at: new Date(),
       amendments: [],
       version: 1
@@ -479,8 +377,8 @@ export class ElectronicHealthRecordsService {
    * Generate note number;
    */
   private generateNoteNumber(): string {
-    const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
-    const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    const _timestamp = crypto.getRandomValues(\1[0].toString().slice(-6);
+    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
     return `NOTE/* SECURITY: Template literal eliminated */
   }
 
@@ -489,11 +387,11 @@ export class ElectronicHealthRecordsService {
    */
   async updateClinicalNote(noteId: string, updateData: Partial<ClinicalNote>): Promise<ClinicalNote> {
     const existingNote = this.clinicalNotes.get(noteId);
-    if (!existingNote) {
+    \1 {\n  \2{
       throw new Error('Clinical note not found');
     }
 
-    if (existingNote.note_status === 'final' && existingNote.signed_at) {
+    \1 {\n  \2{
       throw new Error('Cannot modify signed note. Create an amendment instead.');
     }
 
@@ -512,11 +410,11 @@ export class ElectronicHealthRecordsService {
    */
   async signClinicalNote(noteId: string, providerId: string): Promise<ClinicalNote> {
     const note = this.clinicalNotes.get(noteId);
-    if (!note) {
+    \1 {\n  \2{
       throw new Error('Clinical note not found');
     }
 
-    if (note.note_status === 'final') {
+    \1 {\n  \2{
       throw new Error('Note is already signed');
     }
 
@@ -534,11 +432,11 @@ export class ElectronicHealthRecordsService {
    */
   async createNoteAmendment(originalNoteId: string, amendmentText: string, providerId: string): Promise<ClinicalNote> {
     const originalNote = this.clinicalNotes.get(originalNoteId);
-    if (!originalNote) {
+    \1 {\n  \2{
       throw new Error('Original note not found');
     }
 
-    if (originalNote.note_status !== 'final') {
+    \1 {\n  \2{
       throw new Error('Can only amend signed notes');
     }
 
@@ -548,14 +446,11 @@ export class ElectronicHealthRecordsService {
     const amendment: ClinicalNote = {
       ...originalNote,
       id: amendmentId,
-      note_number: amendmentNumber;
-      note_status: 'amended',
-      free_text_content: amendmentText;
-      created_at: new Date(),
+      \1,\2 'amended',
+      \1,\2 new Date(),
       updated_at: new Date(),
       signed_at: new Date(),
-      signed_by: providerId;
-      version: originalNote.version + 1,
+      \1,\2 originalNote.version + 1,
       amendments: []
     };
 
@@ -585,8 +480,7 @@ export class ElectronicHealthRecordsService {
     const carePlan: CarePlan = {
       ...validatedData,
       id: carePlanId,
-      care_plan_number: carePlanNumber;
-      created_at: new Date(),
+      \1,\2 new Date(),
       updated_at: new Date(),
       version: 1,
       next_review_date: nextReviewDate.toISOString().split('T')[0]
@@ -600,8 +494,8 @@ export class ElectronicHealthRecordsService {
    * Generate care plan number;
    */
   private generateCarePlanNumber(): string {
-    const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
-    const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    const _timestamp = crypto.getRandomValues(\1[0].toString().slice(-6);
+    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
     return `CP/* SECURITY: Template literal eliminated */
   }
 
@@ -633,15 +527,14 @@ export class ElectronicHealthRecordsService {
    */
   async updateProblemStatus(
     patientId: string,
-    problemId: string;
-    status: ProblemListItem['status'],
+    \1,\2 ProblemListItem['status'],
     providerId: string;
     resolutionDate?: string;
   ): Promise<ProblemListItem> {
     const patientProblems = this.problemLists.get(patientId) || [];
     const problem = patientProblems.find(p => p.id === problemId);
 
-    if (!problem) {
+    \1 {\n  \2{
       throw new Error('Problem not found');
     }
 
@@ -649,7 +542,7 @@ export class ElectronicHealthRecordsService {
     problem.last_updated_by = providerId;
     problem.updated_at = new Date();
 
-    if (status === 'resolved' && resolutionDate) {
+    \1 {\n  \2{
       problem.resolution_date = resolutionDate;
     }
 
@@ -670,35 +563,28 @@ export class ElectronicHealthRecordsService {
    */
   private async triggerClinicalDecisionSupport(
     patientId: string,
-    encounterId: string;
-    note: ClinicalNote;
+    \1,\2 ClinicalNote;
   ): Promise<void> {
     const alerts: ClinicalDecisionSupport['alerts'] = [];
     const guidelines: ClinicalDecisionSupport['guidelines'] = [];
 
     // Check vital signs for alerts
-    if (note.vital_signs) {
-      if (note.vital_signs?.blood_pressure_systolic && note.vital_signs.blood_pressure_systolic >= 180) {
+    \1 {\n  \2{
+      \1 {\n  \2{
         alerts.push({
           id: uuidv4(),
-          type: 'vital_sign';
-          severity: 'critical',
-          message: 'Hypertensive crisis detected';
-          recommendation: 'Immediate evaluation and treatment required',
-          source: 'Clinical Decision Support';
-          dismissed: false
+          \1,\2 'critical',
+          \1,\2 'Immediate evaluation and treatment required',
+          \1,\2 false
         });
       }
 
-      if (note.vital_signs?.temperature && note.vital_signs.temperature >= 102) {
+      \1 {\n  \2{
         alerts.push({
           id: uuidv4(),
-          type: 'vital_sign';
-          severity: 'warning',
-          message: 'High fever detected';
-          recommendation: 'Consider infectious workup and antipyretic therapy',
-          source: 'Clinical Decision Support';
-          dismissed: false
+          \1,\2 'warning',
+          \1,\2 'Consider infectious workup and antipyretic therapy',
+          \1,\2 false
         });
       }
     }
@@ -722,23 +608,20 @@ export class ElectronicHealthRecordsService {
         .filter(rule => this.evaluateRule(rule, note));
         .map(rule => rule.rule_id);
 
-      if (applicableRecommendations.length > 0 || triggeredRules.length > 0) {
+      \1 {\n  \2{
         guidelines.push({
           guideline_id: guideline.guideline_id,
-          name: guideline.name;
-          applicable_recommendations: applicableRecommendations,
+          \1,\2 applicableRecommendations,
           triggered_rules: triggeredRules
         });
 
         // Create alerts for triggered rules
         for (const rule of guideline.decision_support_rules) {
-          if (triggeredRules.includes(rule.rule_id)) {
+          \1 {\n  \2 {
             alerts.push({
               id: uuidv4(),
-              type: 'guideline_reminder';
-              severity: rule.alert_type === 'critical' ? 'critical' : rule.alert_type === 'warning' ? 'warning' : 'info',
-              message: rule.action;
-              recommendation: `Based on ${guideline.name}`,
+              \1,\2 rule.alert_type === 'critical' ? 'critical' : rule.alert_type === 'warning' ? 'warning' : 'info',
+              \1,\2 `Based on ${guideline.name}`,
               source: guideline.organization,
               dismissed: false
             });
@@ -747,8 +630,7 @@ export class ElectronicHealthRecordsService {
       }
     }
 
-    const cds: ClinicalDecisionSupport = {
-      patient_id: patientId,
+    const \1,\2 patientId,
       encounter_id: encounterId;
       alerts,
       guidelines,
@@ -764,18 +646,18 @@ export class ElectronicHealthRecordsService {
     // Simplified rule evaluation - in real implementation, this would be more sophisticated
     const condition = rule.condition.toLowerCase();
 
-    if (condition.includes('bp') && note.vital_signs?.blood_pressure_systolic) {
+    \1 {\n  \2& note.vital_signs?.blood_pressure_systolic) {
       const match = condition.match(/bp >= (\d+)/);
-      if (match != null) {
+      \1 {\n  \2{
         return note.vital_signs.blood_pressure_systolic >= Number.parseInt(match[1]);
       }
     }
 
-    if (condition.includes('hba1c') && note.assessment?.toLowerCase().includes('hba1c')) {
+    \1 {\n  \2& note.assessment?.toLowerCase().includes('hba1c')) {
       const match = condition.match(/hba1c > (\d+)%/);
-      if (match != null) {
+      \1 {\n  \2{
         // In real implementation, this would check actual lab values
-        return crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) > 0.8; // Simulate 20% chance of high HbA1c
+        return crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) > 0.8; // Simulate 20% chance of high HbA1c
       }
     }
 
@@ -794,12 +676,12 @@ export class ElectronicHealthRecordsService {
    */
   async dismissClinical/* SECURITY: Alert removed */: Promise<void> {
     const cds = this.decisionSupport.get(encounterId);
-    if (!cds) {
+    \1 {\n  \2{
       throw new Error('Clinical decision support data not found');
     }
 
     const alert = cds.alerts.find(a => a.id === alertId);
-    if (!alert) {
+    \1 {\n  \2{
       throw new Error('Alert not found');
     }
 
@@ -827,37 +709,28 @@ export class ElectronicHealthRecordsService {
     const qualityMeasures: QualityMeasure[] = [
       {
         id: 'BP-Control',
-        name: 'Blood Pressure Control';
-        description: 'Percentage of patients with controlled blood pressure',
-        numerator_criteria: 'BP < 140/90 mmHg';
-        denominator_criteria: 'Patients with hypertension',
-        patient_applicable: activeProblems.some(p => p.problem_name.toLowerCase().includes('hypertension'));
-        current_status: crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) > 0.5 ? 'met' : 'not_met',
-        performance_rate: 75;
-        reporting_period: '2024',
+        \1,\2 'Percentage of patients with controlled blood pressure',
+        \1,\2 'Patients with hypertension',
+        \1,\2 crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) > 0.5 ? 'met' : 'not_met',
+        \1,\2 '2024',
         next_opportunity: 'Next visit'
       },
     ]
 
-    const summary: ClinicalSummary = {
-      patient_id: patientId,
+    const \1,\2 patientId,
       generated_date: new Date(),
       summary_type: summaryType,
-      demographics: {
-        name: 'Patient Name', // In real implementation, fetch from patient service
+      \1,\2 'Patient Name', // In real implementation, fetch from patient service
         age: 45,
-        gender: 'Male';
-        mrn: `MRN${patientId.slice(-6)}`,
+        \1,\2 `MRN${patientId.slice(-6)}`,
       },
       active_problems: activeProblems,
       current_medications: ['Lisinopril 10mg daily', 'Metformin 500mg BID'], // Simplified
       allergies: ['NKDA'],
       recent_vitals: { bp: '130/80', hr: '72', temp: '98.6' },
       recent_lab_results: [],
-      care_plans: patientCarePlans;
-      upcoming_appointments: [],
-      pending_orders: [];
-      quality_measures: qualityMeasures,
+      \1,\2 [],
+      \1,\2 qualityMeasures,
       risk_factors: ['Hypertension', 'Diabetes'],
       provider_notes: 'Patient stable, continue current management',
       last_encounter_date: new Date()
@@ -879,17 +752,17 @@ export class ElectronicHealthRecordsService {
     status?: ClinicalNote['note_status'];
     page?: number;
     limit?: number;
-  }): Promise<{ notes: ClinicalNote[], total: number; totalPages: number }> {
+  }): Promise<{ notes: ClinicalNote[], \1,\2 number }> {
     const { page = 1, limit = 10, search_text, ...filters } = criteria;
 
     let filteredNotes = Array.from(this.clinicalNotes.values());
 
     // Apply filters
     Object.entries(filters).forEach(([key, value]) => {
-      if (value != null) {
+      \1 {\n  \2{
         filteredNotes = filteredNotes.filter(note => {
           const noteValue = (note as any)[key];
-          if (key.includes('date')) {
+          \1 {\n  \2 {
             return new Date(noteValue) >= new Date(value as string);
           }
           return noteValue === value;
@@ -898,7 +771,7 @@ export class ElectronicHealthRecordsService {
     });
 
     // Text search
-    if (search_text != null) {
+    \1 {\n  \2{
       const searchLower = search_text.toLowerCase();
       filteredNotes = filteredNotes.filter(note =>
         note.subjective?.toLowerCase().includes(searchLower) ||
@@ -927,7 +800,7 @@ export class ElectronicHealthRecordsService {
   async getNoteTemplates(noteType?: string): Promise<any[]> {
     const templates = Array.from(this.templates.values());
 
-    if (noteType != null) {
+    \1 {\n  \2{
       return templates.filter(template => template.type === noteType);
     }
 
@@ -940,7 +813,7 @@ export class ElectronicHealthRecordsService {
   async getClinicalGuidelines(condition?: string): Promise<ClinicalGuideline[]> {
     const guidelines = Array.from(this.clinicalGuidelines.values());
 
-    if (condition != null) {
+    \1 {\n  \2{
       return guidelines.filter(guideline =>
         guideline.applicable_conditions.some(c =>
           c.toLowerCase().includes(condition.toLowerCase());
@@ -956,11 +829,11 @@ export class ElectronicHealthRecordsService {
    */
   async autoSaveNote(noteId: string, draftContent: Partial<ClinicalNote>): Promise<void> {
     const note = this.clinicalNotes.get(noteId);
-    if (!note) {
+    \1 {\n  \2{
       throw new Error('Note not found');
     }
 
-    if (note.note_status !== 'draft') {
+    \1 {\n  \2{
       throw new Error('Can only auto-save draft notes');
     }
 

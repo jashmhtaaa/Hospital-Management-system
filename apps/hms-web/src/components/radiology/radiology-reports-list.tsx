@@ -8,12 +8,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 }
 interface RadiologyReport {
   id: string,
-  patientName: string;
-  patientId: string,
-  reportDate: string;
-  studyType: string,
-  status: 'draft' | 'preliminary' | 'final' | 'amended';
-  radiologist: string
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 string
 }
 
 interface RadiologyReportsListProps {
@@ -27,10 +24,10 @@ interface RadiologyReportsListProps {
 export const _RadiologyReportsList = ({ reports, onViewReport }: RadiologyReportsListProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
-      case 'draft': return <Badge variant="secondary">Draft</Badge>;
-      case 'preliminary': return <Badge variant="warning">Preliminary</Badge>;
-      case 'final': return <Badge variant="success">Final</Badge>;
-      case 'amended': return <Badge variant="info">Amended</Badge>;
+      case 'draft': return <Badge variant="secondary">Draft\1>
+      case 'preliminary': return <Badge variant="warning">Preliminary\1>
+      case 'final': return <Badge variant="success">Final\1>
+      case 'amended': return <Badge variant="info">Amended\1>
       default: return <Badge>Unknown</Badge>
     }
   };
@@ -55,15 +52,15 @@ export const _RadiologyReportsList = ({ reports, onViewReport }: RadiologyReport
           <TableBody>
             {reports.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center">;
+                \1>
                   No radiology reports found
                 </TableCell>
               </TableRow>
             ) : (
               reports.map((report) => (
-                <TableRow key={report.id}>;
+                \1>
                   <TableCell>
-                    <div className="font-medium">{report.patientName}</div>;
+                    <div className="font-medium">{report.patientName}\1>
                     <div className="text-sm text-gray-500">ID: {report.patientId}</div>
                   </TableCell>
                   <TableCell>{report.reportDate}</TableCell>

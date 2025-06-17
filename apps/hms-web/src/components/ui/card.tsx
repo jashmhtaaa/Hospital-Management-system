@@ -2,8 +2,7 @@ import React, { type HTMLAttributes, forwardRef } from 'react';
 
 
 import { cn } from '@/lib/utils';
-}
-export interface CardProps extends HTMLAttributes<HTMLDivElement> {}
+\1\n\nexport \2 CardProps extends HTMLAttributes<HTMLDivElement> {}
 
 const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ className, ...props }, ref) => (

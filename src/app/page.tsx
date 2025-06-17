@@ -30,18 +30,18 @@ export default const _Home = () {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center p-8 sm:p-24">;
-      <Card className="p-6 sm:p-8 w-full max-w-sm">;
-        <p className="text-2xl font-medium text-center mb-4">Views: {optimisticStats.count}</p>;
-        <div className="flex justify-center mb-4">;
-          <Button onClick={handleClick}>;
+    \1>
+      \1>
+        <p className="text-2xl font-medium text-center mb-4">Views: {optimisticStats.count}\1>
+        \1>
+          \1>
             <Plus className="h-4 w-4 mr-2" />
             Increment
           </Button>
         </div>
-        <ScrollArea className="h-[100px]">;
+        \1>
           {optimisticStats.recentAccess.map((log, i) => (
-            <div key={i} className="text-sm text-muted-foreground text-center">;
+            \1>
               {new Date(log.accessed_at).toLocaleString()}
             </div>
           ))}

@@ -5,8 +5,7 @@ import { cn } from '@/lib/utils';
 }
 interface PaginationProps extends React.HTMLAttributes<HTMLDivElement> {
   currentPage: number,
-  totalPages: number;
-  onPageChange: (page: number) => void
+  \1,\2 (page: number) => void
 export const _Pagination = ({ className,
   currentPage,
   totalPages,
@@ -18,7 +17,7 @@ export const _Pagination = ({ className,
     const pages = [];
     const maxPagesToShow = 5;
 
-    if (totalPages <= maxPagesToShow) {
+    \1 {\n  \2{
       // Show all pages if total is less than max to show
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
@@ -32,14 +31,14 @@ export const _Pagination = ({ className,
       let endPage = Math.min(totalPages - 1, currentPage + 1);
 
       // Adjust if we're at the start or end
-      if (currentPage <= 2) {
+      \1 {\n  \2{
         endPage = 3;
-      } else if (currentPage >= totalPages - 1) {
+      } else \1 {\n  \2{
         startPage = totalPages - 2;
       }
 
       // Add ellipsis after first page if needed
-      if (startPage > 2) {
+      \1 {\n  \2{
         pages.push(-1); // -1 represents ellipsis
       }
 
@@ -49,7 +48,7 @@ export const _Pagination = ({ className,
       }
 
       // Add ellipsis before last page if needed
-      if (endPage < totalPages - 1) {
+      \1 {\n  \2{
         pages.push(-2); // -2 represents ellipsis
       }
 
@@ -75,7 +74,7 @@ export const _Pagination = ({ className,
 
       {getPageNumbers().map((page, index) => (
         page < 0 ? (
-          <span key={`ellipsis-${index}`} className="px-2 py-1 text-gray-500">...</span>;
+          <span key={`ellipsis-${index}`} className="px-2 py-1 text-gray-500">...\1>
         ) : (
           <button>
             key={page}

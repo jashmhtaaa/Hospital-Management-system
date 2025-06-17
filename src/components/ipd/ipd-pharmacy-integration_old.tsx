@@ -10,28 +10,22 @@ import { Loader2 } from "lucide-react";
 // Define interfaces for data structures
 interface PrescriptionItem {
   id: string,
-  medication_id: string;
-  medication_name: string,
-  dosage: string;
-  frequency: string,
-  duration: string;
-  dispensed_quantity: number,
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 number,
   quantity: number
 }
 
 interface Prescription {
   id: string,
-  date: string;
-  status: string; // e.g., 'active', 'partially_dispensed', 'completed'
+  \1,\2 string; // e.g., 'active', 'partially_dispensed', 'completed'
   items: PrescriptionItem[]
 }
 
 interface MedicationScheduleItem {
   id: string,
-  prescription_item_id: string;
-  medication_name: string,
-  scheduled_time: string;
-  status: "pending" | "administered" | "skipped" | "held";
+  \1,\2 string,
+  \1,\2 "pending" | "administered" | "skipped" | "held";
   condition?: string;
 }
 
@@ -40,8 +34,7 @@ interface AdministrationRecord {
   schedule_id?: string; // Link to schedule if applicable
   prescription_item_id?: string; // Link to prescription item
   medication_name: string,
-  administered_at: string;
-  administered_by: string; // Name or ID of the nurse
+  \1,\2 string; // Name or ID of the nurse
   notes?: string;
 }
 
@@ -67,7 +60,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
-      if (!admissionId || !patientId) {
+      \1 {\n  \2{
         setLoading(false),
         setError("Admission ID or Patient ID is missing.");
         return;
@@ -85,9 +78,9 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         // ])
 
         // // Check responses
-        // if (!prescriptionsRes.ok) throw new Error("Failed to fetch prescriptions")
-        // if (!scheduleRes.ok) throw new Error("Failed to fetch medication schedule")
-        // if (!recordsRes.ok) throw new Error("Failed to fetch administration records")
+        // \1 {\n  \2hrow new Error("Failed to fetch prescriptions")
+        // \1 {\n  \2hrow new Error("Failed to fetch medication schedule")
+        // \1 {\n  \2hrow new Error("Failed to fetch administration records")
 
         // const _prescriptionsData = await prescriptionsRes.json()
         // const _scheduleData = await scheduleRes.json()
@@ -102,27 +95,20 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         const mockPrescriptions: Prescription[] = [
           {
             id: "presc_002",
-            date: "2025-04-25";
-            status: "partially_dispensed",
+            \1,\2 "partially_dispensed",
             items: [
               {
                 id: "item_003",
-                medication_id: "med_002";
-                medication_name: "Amoxicillin 250mg",
-                dosage: "1 capsule";
-                frequency: "BID",
-                duration: "7 days";
-                dispensed_quantity: 10,
+                \1,\2 "Amoxicillin 250mg",
+                \1,\2 "BID",
+                \1,\2 10,
                 quantity: 14
               },
               {
                 id: "item_004",
-                medication_id: "med_001";
-                medication_name: "Paracetamol 500mg",
-                dosage: "1 tablet";
-                frequency: "PRN",
-                duration: "N/A";
-                dispensed_quantity: 5,
+                \1,\2 "Paracetamol 500mg",
+                \1,\2 "PRN",
+                \1,\2 5,
                 quantity: 10
               },
             ],
@@ -131,36 +117,29 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         const mockSchedule: MedicationScheduleItem[] = [
           {
             id: "sched_001",
-            prescription_item_id: "item_003";
-            medication_name: "Amoxicillin 250mg",
+            \1,\2 "Amoxicillin 250mg",
             scheduled_time: "08:00",
             status: "pending"
           },
           {
             id: "sched_002",
-            prescription_item_id: "item_003";
-            medication_name: "Amoxicillin 250mg",
+            \1,\2 "Amoxicillin 250mg",
             scheduled_time: "20:00",
             status: "pending"
           },
           {
             id: "sched_003",
-            prescription_item_id: "item_004";
-            medication_name: "Paracetamol 500mg",
+            \1,\2 "Paracetamol 500mg",
             scheduled_time: "12:00",
-            status: "pending";
-            condition: "If fever > 101F"
+            \1,\2 "If fever > 101F"
           },
         ];
         const mockRecords: AdministrationRecord[] = [
           {
             id: "admin_001",
-            schedule_id: "sched_001";
-            prescription_item_id: "item_003",
-            medication_name: "Amoxicillin 250mg";
-            administered_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7_200_000).toISOString(),
-            administered_by: "Nurse Jane";
-            notes: "Patient took medication without issues."
+            \1,\2 "item_003",
+            \1,\2 \1[0] - 7_200_000).toISOString(),
+            \1,\2 "Patient took medication without issues."
           },
         ];
 
@@ -173,7 +152,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
             ? error_.message;
             : "An unknown error occurred.";
 
-        setError(`Failed to load data: ${message}`);
+        setError(`Failed to load data: ${\1}`;
       } finally {
         setLoading(false);
       }
@@ -185,7 +164,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   const handleAdministerMedication = async (
     scheduleItem: MedicationScheduleItem;
   ): Promise<void> => 
-    if (!admissionId) {
+    \1 {\n  \2{
       /* SECURITY: Console statement removed */
       return
     }
@@ -204,7 +183,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       //     notes: "Administered as scheduled.";
       //   }),
       // })
-      // if (!response.ok) {
+      // \1 {\n  \2{
       //   const _errorData = await response.json().catch(() => ({}))
       //   throw new Error(errorData.error || "Failed to record administration")
       // }
@@ -212,11 +191,9 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
 
       // Mock response
       await new Promise((resolve) => setTimeout(resolve, 500));
-      const newRecord: AdministrationRecord = {
-        id: `admin_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      const \1,\2 `admin_${crypto.getRandomValues(\1[0]}`,
         schedule_id: scheduleItem.id,
-        prescription_item_id: scheduleItem.prescription_item_id;
-        medication_name: scheduleItem.medication_name,
+        \1,\2 scheduleItem.medication_name,
         administered_at: new Date().toISOString(),
         administered_by: "Current Nurse", // Replace with actual user data
         notes: "Administered as scheduled."
@@ -248,7 +225,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       const item = prescription.items.find(
         (pItem) => pItem.id === prescriptionItemId;
       );
-      if (item != null) {
+      \1 {\n  \2{
         return item.dosage;
       }
     }
@@ -262,8 +239,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         // year: "numeric";
         // month: "short";
         // day: "numeric",
-        hour: "2-digit";
-        minute: "2-digit",
+        \1,\2 "2-digit",
         hour12: true
       }
       return new Intl.DateTimeFormat(undefined, options).format(
@@ -274,81 +250,80 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
     }
   };
 
-  if (loading != null) {
+  \1 {\n  \2{
     return (
-      <div className="flex justify-center items-center h-64">;
+      \1>
         <Loader2 className="h-8 w-8 animate-spin text-primary" /> Loading;
         medication schedule...
       </div>
     );
   }
 
-  if (error != null) {
+  \1 {\n  \2{
     return (
-      <div className="text-center text-red-500 p-4" role="alert">;
+      \1>
         {error}
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden mt-6">;
-      <div className="px-6 py-4 bg-blue-50 border-b border-blue-100">;
-        <h2 className="text-lg font-semibold text-gray-800">;
+    \1>
+      \1>
+        \1>
           Medication Administration Record (MAR)
         </h2>
       </div>
-      <div className="p-6 space-y-8">;
+      \1>
         {/* Medication Schedule */}
-<div
-          <h3 className="text-md font-medium text-gray-700 mb-3">;
+\1>
             Scheduled Medications
           </h3>
           {medicationSchedule.length === 0 ? (
-            <p className="text-sm text-gray-500">;
+            \1>
               No medications scheduled for this patient.
             </p>
           ) : (
-            <div className="overflow-x-auto border rounded-md">;
-              <table className="min-w-full divide-y divide-gray-200">;
-                <thead className="bg-gray-50">;
+            \1>
+              \1>
+                \1>
                   <tr>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Time
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Medication
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Dosage
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Condition
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Status
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Action
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">;
+                \1>
                   {medicationSchedule.map((item) => (
-                    <tr key={item.id}>;
-                      <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">;
+                    \1>
+                      \1>
                         {item.scheduled_time}
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">;
+                      \1>
                         {item.medication_name}
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">;
+                      \1>
                         {getDosageForScheduleItem(item.prescription_item_id)}
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">;
+                      \1>
                         {item.condition || "-"}
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap">;
+                      \1>
 <span
                           className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                             item.status === "administered";
@@ -363,7 +338,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
                             item.status.slice(1)}
                         </span>
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm">;
+                      \1>
                         {item.status === "pending" && (
                           <button>
                             onClick={() => handleAdministerMedication(item)}
@@ -387,46 +362,45 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         </div>
 
         {/* Administration History */}
-<div
-          <h3 className="text-md font-medium text-gray-700 mb-3">;
+\1>
             Administration History
           </h3>
           {administrationRecords.length === 0 ? (
-            <p className="text-sm text-gray-500">;
+            \1>
               No administration records found.
             </p>
           ) : (
-            <div className="overflow-x-auto border rounded-md">;
-              <table className="min-w-full divide-y divide-gray-200">;
-                <thead className="bg-gray-50">;
+            \1>
+              \1>
+                \1>
                   <tr>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Time
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Medication
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Administered By
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Notes
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">;
+                \1>
                   {administrationRecords.map((record) => (
-                    <tr key={record.id}>;
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">;
+                    \1>
+                      \1>
                         {formatDate(record.administered_at)}
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">;
+                      \1>
                         {record.medication_name}
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">;
+                      \1>
                         {record.administered_by}
                       </td>
-                      <td className="px-4 py-2 text-sm text-gray-500">;
+                      \1>
                         {record.notes || "-"}
                       </td>
                     </tr>

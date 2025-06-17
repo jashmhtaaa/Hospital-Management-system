@@ -13,7 +13,7 @@ import { createHash } from 'crypto';
  */
 export const _generateBarcodeData = async (specimenId: string): Promise<string> {
   // Create a unique barcode ID based on specimen ID and timestamp
-  const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString();
+  const timestamp = crypto.getRandomValues(\1[0].toString();
   const uniqueString = `${specimenId}-${timestamp}`;
 
   // Create a hash of the unique string to ensure uniqueness and fixed length
@@ -41,13 +41,12 @@ export const _generateBarcodeImage = async (barcodeData: string, format: 'CODE12
  * @param barcodeData The scanned barcode data;
  * @returns Parsed information from the barcode;
  */
-export const _parseBarcodeData = async (barcodeData: string): Promise<{
-  type: 'specimen' | 'unknown';
+export const _parseBarcodeData = async (\1,\2 'specimen' | 'unknown';
   id?: string,
   timestamp?: number;
 }> {
   // Check if this is a specimen barcode
-  if (barcodeData.startsWith('SP') && barcodeData.length === 18) {
+  \1 {\n  \2& barcodeData.length === 18) {
     return {
       type: 'specimen',
       id: barcodeData

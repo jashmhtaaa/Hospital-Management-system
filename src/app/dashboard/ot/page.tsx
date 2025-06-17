@@ -31,8 +31,8 @@ export default const _OTDashboardPage = () {
   }, []);
 
   return (
-    <div className="container mx-auto py-6">;
-      <div className="flex justify-between items-center mb-6">;
+    \1>
+      \1>
         <h1 className="text-3xl font-bold">Operation Theatre Management</h1>
       </div>
 
@@ -42,22 +42,22 @@ export default const _OTDashboardPage = () {
         onValueChange={setActiveTab}
         className="w-full"
       >
-        <TabsList className="grid grid-cols-5 mb-8">;
-          <TabsTrigger value="dashboard">Dashboard</TabsTrigger>;
-          <TabsTrigger value="bookings">Bookings</TabsTrigger>;
-          <TabsTrigger value="theatres">Theatres</TabsTrigger>;
-          <TabsTrigger value="surgery-types">Surgery Types</TabsTrigger>;
+        \1>
+          <TabsTrigger value="dashboard">Dashboard\1>
+          <TabsTrigger value="bookings">Bookings\1>
+          <TabsTrigger value="theatres">Theatres\1>
+          <TabsTrigger value="surgery-types">Surgery Types\1>
           <TabsTrigger value="checklists">Checklists</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="dashboard" className="space-y-4">;
+        \1>
           {/* Pass refreshKey if stats need refreshing */}
           <OTDashboardStats key={`stats-${refreshKey}`} />
         </TabsContent>
 
-        <TabsContent value="bookings" className="space-y-4">;
-          <div className="flex justify-between items-center mb-4">;
-            <h2 className="text-2xl font-semibold">OT Bookings</h2>;
+        \1>
+          \1>
+            <h2 className="text-2xl font-semibold">OT Bookings\1>
             <OTBookingModal>
               trigger={
                 <Button>
@@ -72,9 +72,9 @@ export default const _OTDashboardPage = () {
           <OTBookingList key={`bookings-${refreshKey}`} />
         </TabsContent>
 
-        <TabsContent value="theatres" className="space-y-4">;
-          <div className="flex justify-between items-center mb-4">;
-            <h2 className="text-2xl font-semibold">Operation Theatres</h2>;
+        \1>
+          \1>
+            <h2 className="text-2xl font-semibold">Operation Theatres\1>
             <OTTheatreModal>
               trigger={
                 <Button>
@@ -89,9 +89,9 @@ export default const _OTDashboardPage = () {
           <OTTheatreList key={`theatres-${refreshKey}`} />
         </TabsContent>
 
-        <TabsContent value="surgery-types" className="space-y-4">;
-          <div className="flex justify-between items-center mb-4">;
-            <h2 className="text-2xl font-semibold">Surgery Types</h2>;
+        \1>
+          \1>
+            <h2 className="text-2xl font-semibold">Surgery Types\1>
             <OTSurgeryTypeModal>
               trigger={
                 <Button>
@@ -106,9 +106,9 @@ export default const _OTDashboardPage = () {
           <OTSurgeryTypeList key={`surgery-types-${refreshKey}`} />
         </TabsContent>
 
-        <TabsContent value="checklists" className="space-y-4">;
-          <div className="flex justify-between items-center mb-4">;
-            <h2 className="text-2xl font-semibold">Checklist Templates</h2>;
+        \1>
+          \1>
+            <h2 className="text-2xl font-semibold">Checklist Templates\1>
             <OTChecklistTemplateModal>
               trigger={
                 <Button>

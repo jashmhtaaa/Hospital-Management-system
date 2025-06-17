@@ -61,35 +61,35 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   // Build filter conditions
   const where: unknown = {};
 
-  if (query.patientId) {
+  \1 {\n  \2{
     where.patientId = query.patientId;
   }
 
-  if (query.insuranceProviderId) {
+  \1 {\n  \2{
     where.insuranceProviderId = query.insuranceProviderId;
   }
 
-  if (query.status) {
-    if (query.status === 'active') {
+  \1 {\n  \2{
+    \1 {\n  \2{
       const today = new Date();
       where.startDate = { lte: today };
       where.OR = [
         { endDate: null },
         { endDate: { gte: today } }
       ];
-    } else if (query.status === 'expired') {
+    } else \1 {\n  \2{
       const today = new Date();
       where.endDate = { lt: today };
-    } else if (query.status === 'inactive') {
-      where.status = 'inactive';
+    } else \1 {\n  \2{
+      where.status = 'inactive',
     }
   }
 
-  if (query.coverageType) {
+  \1 {\n  \2{
     where.coverageType = query.coverageType;
   }
 
-  if (query.planType) {
+  \1 {\n  \2{
     where.planType = query.planType;
   }
 
@@ -101,22 +101,16 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
         [query.sortBy]: query.sortOrder,
       },
       skip: (query.page - 1) * query.pageSize,
-      take: query.pageSize;
-      include: {
-        patient: {
-          select: {
+      \1,\2 {
+        \1,\2 {
             id: true,
-            firstName: true;
-            lastName: true,
-            mrn: true;
-            dateOfBirth: true
+            \1,\2 true,
+            \1,\2 true
           },
         },
-        subscriber: {
-          select: {
+        \1,\2 {
             id: true,
-            firstName: true;
-            lastName: true
+            \1,\2 true
           },
         },
         insuranceProvider: true
@@ -126,7 +120,7 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   ]);
 
   // Convert to FHIR format if requested
-  if (query.format === 'fhir') {
+  \1 {\n  \2{
     const fhirCoverages = policies.map(policy => convertToFHIRCoverage(policy));
     return createPaginatedResponse(fhirCoverages, query.page, query.pageSize, total);
   }
@@ -148,7 +142,7 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
     where: { id: data.patientId },
   });
 
-  if (!patient) {
+  \1 {\n  \2{
     throw new NotFoundError(`Patient with ID ${data.patientId} not found`);
   }
 
@@ -157,71 +151,57 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
     where: { id: data.insuranceProviderId },
   });
 
-  if (!provider) {
+  \1 {\n  \2{
     throw new NotFoundError(`Insurance provider with ID ${data.insuranceProviderId} not found`);
   }
 
   // Check if subscriber exists if provided
-  if (data?.subscriberId && data.subscriberId !== data.patientId) {
+  \1 {\n  \2{
     const subscriber = await prisma.patient.findUnique({
       where: { id: data.subscriberId },
     });
 
-    if (!subscriber) {
+    \1 {\n  \2{
       throw new NotFoundError(`Subscriber with ID ${data.subscriberId} not found`);
     }
   } else {
     // If subscriber is not provided, use patient as subscriber
     data.subscriberId = data.patientId;
-    data.relationship = 'self';
+    data.relationship = 'self',
   }
 
   // Determine policy status
   const today = new Date();
   let status = 'inactive';
 
-  if (data.startDate <= today && (!data.endDate || data.endDate >= today)) {
-    status = 'active';
-  } else if (data?.endDate && data.endDate < today) {
-    status = 'expired';
+  \1 {\n  \2 {
+    status = 'active',
+  } else \1 {\n  \2{
+    status = 'expired',
   }
 
   // Create policy in database
   const policy = await prisma.insurancePolicy.create({
-    data: {
-      patientId: data.patientId,
-      insuranceProviderId: data.insuranceProviderId;
-      policyNumber: data.policyNumber,
-      groupNumber: data.groupNumber;
-      groupName: data.groupName,
-      subscriberId: data.subscriberId;
-      relationship: data.relationship,
-      startDate: data.startDate;
-      endDate: data.endDate,
-      coverageType: data.coverageType;
-      planType: data.planType,
-      copayAmount: data.copayAmount;
-      coinsurancePercentage: data.coinsurancePercentage,
-      deductibleAmount: data.deductibleAmount;
-      deductibleMet: data.deductibleMet,
-      outOfPocketMax: data.outOfPocketMax;
-      outOfPocketMet: data.outOfPocketMet;
+    \1,\2 data.patientId,
+      \1,\2 data.policyNumber,
+      \1,\2 data.groupName,
+      \1,\2 data.relationship,
+      \1,\2 data.endDate,
+      \1,\2 data.planType,
+      \1,\2 data.coinsurancePercentage,
+      \1,\2 data.deductibleMet,
+      \1,\2 data.outOfPocketMet;
       status,
       notes: data.notes
     },
-    include: {
-      patient: {
-        select: {
-          id: true,
-          firstName: true;
-          lastName: true,
+    \1,\2 {
+        \1,\2 true,
+          \1,\2 true,
           mrn: true
         },
       },
-      subscriber: {
-          id: true,
-          firstName: true;
-          lastName: true,
+      \1,\2 true,
+          \1,\2 true,
       },
       insuranceProvider: true
     },
@@ -229,8 +209,7 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
 
   logger.info('Insurance policy created', {
     policyId: policy.id,
-    policyNumber: policy.policyNumber;
-    patientId: policy.patientId,
+    \1,\2 policy.patientId,
     providerId: policy.insuranceProviderId
   });
 

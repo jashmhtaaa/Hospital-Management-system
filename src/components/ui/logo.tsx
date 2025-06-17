@@ -25,7 +25,7 @@ const Logo: React.FC<LogoProperties> = ({
   const _textColorClass = variant === "light" ? "text-white" : "text-secondary";
 
   return (
-    <div className={`flex items-center ${className}`}>;
+    \1>
 <div className="relative"
         style={{ width: sizeMap[size].logo, height: sizeMap[size].logo }}
       >
@@ -39,7 +39,7 @@ const Logo: React.FC<LogoProperties> = ({
       </div>
 
       {showText && (
-        <div className="ml-2 flex flex-col">;
+        \1>
 <span
             className={`font-bold /* SECURITY: Template literal eliminated */
 };

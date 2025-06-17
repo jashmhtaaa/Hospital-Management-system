@@ -9,175 +9,15 @@ import { PrismaClient } from '@prisma/client';
  * Implements evidence-based medicine and clinical guidelines;
  */
 
-export interface CDSSRecommendation {
-  id: string,
-  type: CDSSRecommendationType;
-  priority: 'low' | 'medium' | 'high' | 'critical',
-  title: string;
-  description: string,
-  recommendation: string;
-  evidence: EvidenceBase,
-  clinicalContext: ClinicalContext;
-  patientSpecific: boolean,
-  confidence: number; // 0-100
-  riskScore?: number;
-  timeframe: 'immediate' | 'within_hours' | 'within_days' | 'routine',
-  alerts: CDSSAlert[];
-  references: ClinicalReference[],
-  createdAt: Date;
-  expiresAt?: Date;
-  acknowledgedBy?: string;
-  acknowledgedAt?: Date;
-  dismissed?: boolean;
-  actionTaken?: string;
-export type CDSSRecommendationType =
-  | 'drug_interaction';
-  | 'dosage_adjustment';
-  | 'allergy_alert';
-  | 'duplicate_therapy';
-  | 'contraindication';
-  | 'lab_monitoring';
-  | 'diagnostic_suggestion';
-  | 'treatment_protocol';
-  | 'preventive_care';
-  | 'quality_measure';
-  | 'cost_optimization';
-  | 'clinical_pathway';
-  | 'risk_assessment';
-  | 'discharge_planning';
-
-export interface EvidenceBase {
-  level: 'A' | 'B' | 'C' | 'D'; // Evidence levels
-  source: 'randomized_trial' | 'observational' | 'expert_opinion' | 'guideline';
-  guideline?: string;
-  studies?: StudyReference[];
-  lastUpdated: Date,
-  strength: 'strong' | 'moderate' | 'weak'
-export interface ClinicalContext {
-  patientId: string;
-  encounterId?: string;
-  department: string,
-  provider: string;
-  conditions: string[],
-  medications: MedicationContext[];
-  allergies: AllergyContext[];
-  vitals?: VitalSigns;
-  labResults?: LabResult[];
-  age: number,
-  gender: 'male' | 'female' | 'other';
-  weight?: number;
-  height?: number;
-  kidneyFunction?: number; // eGFR
-  liverFunction?: 'normal' | 'mild' | 'moderate' | 'severe';
-export interface MedicationContext {
-  name: string,
-  dose: string;
-  frequency: string,
-  route: string;
-  startDate: Date;
-  endDate?: Date;
-  prescriber: string;
-  indication?: string;
-export interface AllergyContext {
-  allergen: string,
-  reaction: string;
-  severity: 'mild' | 'moderate' | 'severe' | 'life_threatening',
-  verified: boolean
-export interface VitalSigns {
-  temperature?: number;
-  heartRate?: number;
-  bloodPressure?: {
-    systolic: number,
-    diastolic: number
+\1
+}
   };
   respiratoryRate?: number;
   oxygenSaturation?: number;
   pain?: number; // 0-10 scale
   timestamp: Date
-export interface LabResult {
-  test: string,
-  value: number;
-  unit: string,
-  referenceRange: string;
-  abnormal: boolean,
-  critical: boolean;
-  timestamp: Date
-export interface CDSSAlert {
-  severity: 'info' | 'warning' | 'critical',
-  message: string;
-  actionRequired: boolean,
-  category: 'safety' | 'efficacy' | 'cost' | 'quality'
-export interface ClinicalReference {
-  title: string,
-  authors: string[];
-  journal?: string;
-  year: number;
-  pmid?: string;
-  doi?: string;
-  url?: string;
-  type: 'study' | 'guideline' | 'review' | 'meta_analysis'
-export interface StudyReference {
-  title: string,
-  sampleSize: number;
-  outcome: string,
-  significance: number; // p-value
-  effectSize?: number;
-export interface DrugInteractionCheck {
-  drug1: string,
-  drug2: string;
-  severity: 'minor' | 'moderate' | 'major' | 'contraindicated',
-  mechanism: string;
-  effect: string,
-  management: string;
-  references: ClinicalReference[]
-export interface DosageAdjustment {
-  medication: string,
-  currentDose: string;
-  recommendedDose: string,
-  reason: string;
-  factor: 'age' | 'weight' | 'kidney' | 'liver' | 'drug_interaction';
-  calculation?: string;
-export interface DiagnosticSuggestion {
-  condition: string,
-  probability: number;
-  supportingFactors: string[],
-  recommendedTests: string[];
-  differentialDiagnoses: string[],
-  urgency: 'routine' | 'urgent' | 'emergent'
-export interface TreatmentProtocol {
-  condition: string,
-  protocol: string;
-  steps: ProtocolStep[],
-  duration: string;
-  monitoring: string[],
-  alternatives: string[]
-export interface ProtocolStep {
-  order: number,
-  action: string;
-  timing: string;
-  criteria?: string;
-  alternatives?: string[];
-export interface RiskAssessment {
-  riskFactor: string,
-  score: number;
-  category: 'low' | 'moderate' | 'high' | 'very_high',
-  interventions: string[];
-  timeline: string,
-  reevaluate: string
-export interface QualityMeasure {
-  measure: string,
-  category: 'process' | 'outcome' | 'structure';
-  compliance: boolean;
-  gap?: string;
-  action: string;
-  deadline?: Date;
-export interface PreventiveCare {
-  service: string,
-  indication: string;
-  lastPerformed?: Date;
-  nextDue: Date,
-  overdue: boolean;
-  priority: 'high' | 'medium' | 'low'
+\1
+}
 }
 
 class ClinicalDecisionSupportService extends EventEmitter {
@@ -222,7 +62,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
    * Process clinical data and generate recommendations;
    */
   async processPatientData(context: ClinicalContext): Promise<CDSSRecommendation[]> {
-    if (!this.isInitialized) {
+    \1 {\n  \2{
       throw new Error('CDSS not initialized')
     }
 
@@ -272,11 +112,10 @@ class ClinicalDecisionSupportService extends EventEmitter {
 
       // Emit events for critical recommendations
       const criticalRecs = recommendations.filter(r => r.priority === 'critical');
-      if (criticalRecs.length > 0) {
+      \1 {\n  \2{
         this.emit('critical_recommendations', {
           patientId: context.patientId,
-          count: criticalRecs.length;
-          recommendations: criticalRecs
+          \1,\2 criticalRecs
         });
       }
 
@@ -299,29 +138,23 @@ class ClinicalDecisionSupportService extends EventEmitter {
       for (let j = i + 1; j < medications.length; j++) {
         const interaction = this.findDrugInteraction(medications[i].name, medications[j].name);
 
-        if (interaction != null) {
-          const rec: CDSSRecommendation = {
-            id: `drug_interaction_${crypto.getRandomValues(new Uint32Array(1))[0]}_${i}_${j}`,
+        \1 {\n  \2{
+          const \1,\2 `drug_interaction_${crypto.getRandomValues(\1[0]}_${i}_${j}`,
             type: 'drug_interaction',
             priority: this.mapSeverityToPriority(interaction.severity),
             title: `Drug Interaction: ${interaction.drug1} + ${interaction.drug2}`,
             description: `${interaction.severity.toUpperCase()} interaction detected between ${interaction.drug1} and ${interaction.drug2}`,
             recommendation: interaction.management,
-            evidence: {
-              level: 'B',
-              source: 'guideline';
-              guideline: 'Drug Interaction Database',
+            \1,\2 'B',
+              \1,\2 'Drug Interaction Database',
               lastUpdated: new Date(),
               strength: 'strong'
             },
             clinicalContext: context,
-            patientSpecific: true;
-            confidence: 95,
-            timeframe: interaction.severity === 'contraindicated' ? 'immediate' : 'within_hours';
-            alerts: [{
+            \1,\2 95,
+            \1,\2 [{
               severity: interaction.severity === 'contraindicated' ? 'critical' : 'warning',
-              message: interaction.effect;
-              actionRequired: true,
+              \1,\2 true,
               category: 'safety'
             }],
             references: interaction.references,
@@ -344,25 +177,19 @@ class ClinicalDecisionSupportService extends EventEmitter {
 
     for (const medication of context.medications) {
       for (const allergy of context.allergies) {
-        if (this.checkAllergyMatch(medication.name, allergy.allergen)) {
-          const rec: CDSSRecommendation = {
-            id: `allergy_alert_${crypto.getRandomValues(new Uint32Array(1))[0]}_${medication.name}`,
+        \1 {\n  \2 {
+          const \1,\2 `allergy_alert_${crypto.getRandomValues(\1[0]}_${medication.name}`,
             type: 'allergy_alert',
-            priority: allergy.severity === 'life_threatening' ? 'critical' : 'high';
-            title: `Allergy Alert: ${medication.name}`,
+            \1,\2 `Allergy Alert: ${medication.name}`,
             description: `Patient has documented $allergy.severityallergy to $allergy.allergen`,
             recommendation: `STOP $medication.nameimmediately. Consider alternative therapy.`,
-            evidence: {
-              level: 'A',
-              source: 'expert_opinion';
-              lastUpdated: new Date(),
+            \1,\2 'A',
+              \1,\2 new Date(),
               strength: 'strong'
             },
             clinicalContext: context,
-            patientSpecific: true;
-            confidence: 100,
-            timeframe: 'immediate';
-            alerts: [{
+            \1,\2 100,
+            \1,\2 [{
               severity: 'critical',
               message: `ALLERGY ALERT: $allergy.reaction`,
               actionRequired: true,
@@ -389,27 +216,21 @@ class ClinicalDecisionSupportService extends EventEmitter {
     for (const medication of context.medications) {
       const adjustment = this.calculateDosageAdjustment(medication, context);
 
-      if (adjustment != null) {
-        const rec: CDSSRecommendation = {
-          id: `dosage_adjustment_$crypto.getRandomValues(new Uint32Array(1))[0]_$medication.name`,
+      \1 {\n  \2{
+        const \1,\2 `dosage_adjustment_$crypto.getRandomValues(\1[0]_$medication.name`,
           type: 'dosage_adjustment',
-          priority: 'medium';
-          title: `Dosage Adjustment: $medication.name`,
+          \1,\2 `Dosage Adjustment: $medication.name`,
           description: `Current dose may need adjustment based on $adjustment.reason`,
           recommendation: `Consider adjusting dose from $adjustment.currentDoseto $adjustment.recommendedDose. $adjustment.calculation ||
             ''`,
-          evidence: {
-            level: 'B',
-            source: 'guideline';
-            guideline: 'Dosing Guidelines',
+          \1,\2 'B',
+            \1,\2 'Dosing Guidelines',
             lastUpdated: new Date(),
             strength: 'moderate'
           },
           clinicalContext: context,
-          patientSpecific: true;
-          confidence: 85,
-          timeframe: 'within_days';
-          alerts: [{
+          \1,\2 85,
+          \1,\2 [{
             severity: 'warning',
             message: `Dosage adjustment recommended for ${medication.name}`,
             actionRequired: false,
@@ -435,7 +256,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
     for (const medication of context.medications) {
       const monitoring = this.getLabMonitoringRequirements(medication.name);
 
-      if (monitoring.length > 0) {
+      \1 {\n  \2{
         const overdueLabs = monitoring.filter(lab =>
           !context.labResults?.some(result =>
             result.test === lab?.test &&;
@@ -443,26 +264,20 @@ class ClinicalDecisionSupportService extends EventEmitter {
           );
         );
 
-        if (overdueLabs.length > 0) {
-          const rec: CDSSRecommendation = {
-            id: `lab_monitoring_${crypto.getRandomValues(new Uint32Array(1))[0]}_$medication.name`,
+        \1 {\n  \2{
+          const \1,\2 `lab_monitoring_${crypto.getRandomValues(\1[0]}_$medication.name`,
             type: 'lab_monitoring',
-            priority: 'medium';
-            title: `Lab Monitoring: $medication.name`,
+            \1,\2 `Lab Monitoring: $medication.name`,
             description: `Laboratory monitoring required for ${medication.name}`,
             recommendation: `Order the following labs: $overdueLabs.map(lab => lab.test).join(', ')`,
-            evidence: {
-              level: 'B',
-              source: 'guideline';
-              guideline: 'Drug Monitoring Guidelines',
+            \1,\2 'B',
+              \1,\2 'Drug Monitoring Guidelines',
               lastUpdated: new Date(),
               strength: 'strong'
             },
             clinicalContext: context,
-            patientSpecific: true;
-            confidence: 90,
-            timeframe: 'within_days';
-            alerts: [{
+            \1,\2 90,
+            \1,\2 [{
               severity: 'info',
               message: `Lab monitoring due for ${medication.name}`,
               actionRequired: false,
@@ -501,26 +316,20 @@ class ClinicalDecisionSupportService extends EventEmitter {
     for (const condition of context.conditions) {
       const protocol = this.getTreatmentProtocol(condition);
 
-      if (protocol != null) {
-        const rec: CDSSRecommendation = {
-          id: `treatment_protocol_${crypto.getRandomValues(new Uint32Array(1))[0]}_$condition`,
+      \1 {\n  \2{
+        const \1,\2 `treatment_protocol_${crypto.getRandomValues(\1[0]}_$condition`,
           type: 'treatment_protocol',
-          priority: 'medium';
-          title: `Treatment Protocol: $condition`,
+          \1,\2 `Treatment Protocol: $condition`,
           description: `Evidence-based treatment protocol available for ${condition}`,
           recommendation: `Consider following $protocol.protocolprotocol for ${condition}`,
-          evidence: {
-            level: 'A',
-            source: 'guideline';
-            guideline: protocol.protocol,
+          \1,\2 'A',
+            \1,\2 protocol.protocol,
             lastUpdated: new Date(),
             strength: 'strong'
           },
           clinicalContext: context,
-          patientSpecific: true;
-          confidence: 90,
-          timeframe: 'routine';
-          alerts: [{
+          \1,\2 90,
+          \1,\2 [{
             severity: 'info',
             message: `Treatment protocol available for ${condition}`,
             actionRequired: false,
@@ -546,26 +355,20 @@ class ClinicalDecisionSupportService extends EventEmitter {
     const preventiveServices = this.getPreventiveServices(context.age, context.gender);
 
     for (const service of preventiveServices) {
-      if (service.overdue) {
-        const rec: CDSSRecommendation = {
-          id: `preventive_care_${crypto.getRandomValues(new Uint32Array(1))[0]}_$service.service`,
+      \1 {\n  \2{
+        const \1,\2 `preventive_care_${crypto.getRandomValues(\1[0]}_$service.service`,
           type: 'preventive_care',
-          priority: service.priority === 'high' ? 'medium' : 'low';
-          title: `Preventive Care: $service.service`,
+          \1,\2 `Preventive Care: $service.service`,
           description: `$service.serviceis overdue for this patient`,
           recommendation: `Schedule $service.service. $service.indication`,
-          evidence: {
-            level: 'A',
-            source: 'guideline';
-            guideline: 'USPSTF Guidelines',
+          \1,\2 'A',
+            \1,\2 'USPSTF Guidelines',
             lastUpdated: new Date(),
             strength: 'strong'
           },
           clinicalContext: context,
-          patientSpecific: true;
-          confidence: 95,
-          timeframe: 'routine';
-          alerts: [{
+          \1,\2 95,
+          \1,\2 [{
             severity: 'info',
             message: `$service.serviceoverdue`,
             actionRequired: false,
@@ -617,7 +420,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
   getPatientRecommendations(patientId: string): CDSSRecommendation[] {
     return Array.from(this.recommendations.values());
       .filter(rec => rec.clinicalContext.patientId === patientId);
-      .filter(rec => !rec?.dismissed && (!rec.expiresAt || rec.expiresAt > new Date()));
+      .filter(rec => !rec?.dismissed && (!rec.expiresAt || rec.expiresAt > \1);
   }
 
   /**
@@ -626,7 +429,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
   async acknowledgeRecommendation(id: string, providerId: string, action?: string): Promise<boolean> {
     const recommendation = this.recommendations.get(id);
 
-    if (!recommendation) {
+    \1 {\n  \2{
       return false;
     }
 
@@ -658,7 +461,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
   async dismissRecommendation(id: string, providerId: string, reason?: string): Promise<boolean> {
     const recommendation = this.recommendations.get(id);
 
-    if (!recommendation) {
+    \1 {\n  \2{
       return false;
     }
 
@@ -689,14 +492,12 @@ class ClinicalDecisionSupportService extends EventEmitter {
    */
   getStatistics(): {
     totalRecommendations: number,
-    activeRecommendations: number;
-    criticalRecommendations: number,
-    acknowledgedRecommendations: number;
-    dismissedRecommendations: number,
+    \1,\2 number,
+    \1,\2 number,
     byType: Record<CDSSRecommendationType, number>
   } {
     const all = Array.from(this.recommendations.values());
-    const active = all.filter(r => !r?.dismissed && (!r.expiresAt || r.expiresAt > new Date()));
+    const active = all.filter(r => !r?.dismissed && (!r.expiresAt || r.expiresAt > \1);
     const critical = active.filter(r => r.priority === 'critical');
     const acknowledged = all.filter(r => r?.acknowledgedBy && !r.dismissed);
     const dismissed = all.filter(r => r.dismissed);
@@ -708,10 +509,8 @@ class ClinicalDecisionSupportService extends EventEmitter {
 
     return {
       totalRecommendations: all.length,
-      activeRecommendations: active.length;
-      criticalRecommendations: critical.length,
-      acknowledgedRecommendations: acknowledged.length;
-      dismissedRecommendations: dismissed.length;
+      \1,\2 critical.length,
+      \1,\2 dismissed.length;
       byType
     };
   }
@@ -734,19 +533,14 @@ class ClinicalDecisionSupportService extends EventEmitter {
     this.interactionDatabase = [
       {
         drug1: 'warfarin',
-        drug2: 'aspirin';
-        severity: 'major',
-        mechanism: 'Additive anticoagulant effect';
-        effect: 'Increased bleeding risk',
-        management: 'Monitor INR closely. Consider alternative antiplatelet if needed.';
-        references: []
+        \1,\2 'major',
+        \1,\2 'Increased bleeding risk',
+        \1,\2 []
       },
       {
         drug1: 'simvastatin',
-        drug2: 'clarithromycin';
-        severity: 'contraindicated',
-        mechanism: 'CYP3A4 inhibition';
-        effect: 'Increased statin levels, rhabdomyolysis risk',
+        \1,\2 'contraindicated',
+        \1,\2 'Increased statin levels, rhabdomyolysis risk',
         management: 'Avoid combination. Use alternative antibiotic or suspend statin.',
         references: []
       }
@@ -770,13 +564,11 @@ class ClinicalDecisionSupportService extends EventEmitter {
 
   private calculateDosageAdjustment(medication: MedicationContext, context: ClinicalContext): DosageAdjustment | null {
     // Simplified dosage calculation - in production, this would use comprehensive dosing algorithms
-    if (context?.kidneyFunction && context.kidneyFunction < 60) {
+    \1 {\n  \2{
       return {
         medication: medication.name,
-        currentDose: medication.dose;
-        recommendedDose: '50% of current dose',
-        reason: 'reduced kidney function';
-        factor: 'kidney',
+        \1,\2 '50% of current dose',
+        \1,\2 'kidney',
         calculation: `eGFR $context.kidneyFunctionmL/min/1.73m²`
       };
     }
@@ -812,8 +604,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
     const protocols: Record<string, TreatmentProtocol> = {
       'pneumonia': {
         condition: 'Community-Acquired Pneumonia',
-        protocol: 'CAP Treatment Protocol';
-        steps: [
+        \1,\2 [
           { order: 1, action: 'Assess severity (CURB-65)', timing: 'Initial assessment' },
           { order: 2, action: 'Start empiric antibiotics', timing: 'Within 4 hours' },
           { order: 3, action: 'Monitor clinical response', timing: '48-72 hours' }
@@ -831,21 +622,19 @@ class ClinicalDecisionSupportService extends EventEmitter {
     const services: PreventiveCare[] = [];
 
     // Sample preventive care recommendations
-    if (age >= 50) {
+    \1 {\n  \2{
       services.push({
         service: 'Colonoscopy',
-        indication: 'Colorectal cancer screening';
-        nextDue: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+        \1,\2 \1[0] + 30 * 24 * 60 * 60 * 1000), // 30 days from now
         overdue: true,
         priority: 'high'
       });
     }
 
-    if (gender === 'female' && age >= 40) {
+    \1 {\n  \2{
       services.push({
         service: 'Mammography',
-        indication: 'Breast cancer screening';
-        nextDue: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 24 * 60 * 60 * 1000), // 30 days ago
+        \1,\2 \1[0] - 30 * 24 * 60 * 60 * 1000), // 30 days ago
         overdue: true,
         priority: 'high'
       });

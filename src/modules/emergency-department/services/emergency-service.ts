@@ -2,45 +2,29 @@
 import { AuditService } from '@/lib/audit/audit-service';
 import { prisma } from '@/lib/prisma';
 // src/modules/emergency-department/services/emergency-service.ts
-export interface TriageData {
-  patientId: string,
-  triageLevel: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
-  complaint: string;
-  vitalSigns?: {
-    bloodPressure?: string;
-    heartRate?: number;
-    temperature?: number;
-    respiratoryRate?: number;
-    oxygenSaturation?: number
+\1
+}
   };
 }
 
-export class EmergencyService {
-  static async performTriage(data: TriageData, performedBy?: string) {
-    const emergencyVisit = await prisma.emergencyVisit.create({
-      data: {
-        patientId: data.patientId,
-        triageLevel: data.triageLevel;
-        complaint: data.complaint,
-        status: 'ACTIVE'
+\1
+}
       },
-      include: {
-        patient: true
+      \1,\2 true
       }
     });
 
-    if (performedBy != null) {
+    \1 {\n  \2{
       await AuditService.logUserAction(
         { userId: performedBy },
         'TRIAGE',
         'EMERGENCY_VISIT',
         emergencyVisit.id,
-        `Triage completed - Level: ${data.triageLevel}`
-      );
+        `Triage completed - Level: ${\1}`;
     }
 
     // Auto-alert for critical cases
-    if (data.triageLevel === 'CRITICAL') {
+    \1 {\n  \2{
       await this.triggerCritical/* SECURITY: Alert removed */
     }
 
@@ -56,14 +40,10 @@ export class EmergencyService {
   static async getEmergencyQueue() {
     return await prisma.emergencyVisit.findMany({
       where: { status: 'ACTIVE' },
-      include: {
-        patient: {
-          select: {
-            firstName: true,
-            lastName: true;
-            mrn: true,
-            dateOfBirth: true;
-            gender: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true,
+            \1,\2 true
           }
         }
       },
@@ -83,7 +63,7 @@ export class EmergencyService {
       where: { id: emergencyVisitId }
     });
 
-    if (!oldVisit) {
+    \1 {\n  \2{
       throw new Error('Emergency visit not found');
     }
 
@@ -92,7 +72,7 @@ export class EmergencyService {
       data: { status }
     });
 
-    if (updatedBy != null) {
+    \1 {\n  \2{
       await AuditService.logDataChange(
         { userId: updatedBy },
         'EMERGENCY_VISIT',
@@ -107,24 +87,21 @@ export class EmergencyService {
 
   static async getEmergencyStats(date?: Date) {
     const targetDate = date || new Date();
-    const startOfDay = new Date(targetDate.setHours(0, 0, 0, 0));
-    const endOfDay = new Date(targetDate.setHours(23, 59, 59, 999));
+    const startOfDay = \1;
+    const endOfDay = \1;
 
     const [total, critical, high, active] = await Promise.all([
       prisma.emergencyVisit.count({
-        where: {
-          createdAt: { gte: startOfDay, lte: endOfDay }
+        \1,\2 { gte: startOfDay, lte: endOfDay }
         }
       }),
       prisma.emergencyVisit.count({
-        where: {
-          createdAt: { gte: startOfDay, lte: endOfDay },
+        \1,\2 { gte: startOfDay, lte: endOfDay },
           triageLevel: 'CRITICAL'
         }
       }),
       prisma.emergencyVisit.count({
-        where: {
-          createdAt: { gte: startOfDay, lte: endOfDay },
+        \1,\2 { gte: startOfDay, lte: endOfDay },
           triageLevel: 'HIGH'
         }
       }),

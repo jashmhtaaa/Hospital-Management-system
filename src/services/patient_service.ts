@@ -9,11 +9,8 @@ import type { IEncryptionService } from './encryption_service.ts';
 // SEC-3: Implement Comprehensive Audit Logging (Initial Service & Integration)
 // Research notes: research_notes_service_layer_typescript_docs.md, research_notes_service_layer_clean_architecture.md, research_notes_encryption_service.md, research_notes_audit_logging.md
 
-export class PatientService {
-  constructor(
-    private patientRepository: IPatientRepository;
-    private encryptionService: IEncryptionService;
-    private auditLogService: IAuditLogService // Inject AuditLogService
+\1
+}
   ) {}
 
   /**
@@ -70,7 +67,7 @@ export class PatientService {
     try {
       const patientFromRepo = await this.patientRepository.findById(id);
 
-      if (!patientFromRepo) {
+      \1 {\n  \2{
         await this.auditLogService.logEvent(
           performingUserId,
           "PATIENT_RECORD_VIEW_ATTEMPT",
@@ -86,7 +83,7 @@ export class PatientService {
       const decryptedPatient: Patient = {
         ...patientFromRepo,
         name: this.encryptionService.decrypt(patientFromRepo.name),
-        dateOfBirth: new Date(this.encryptionService.decrypt(patientFromRepo.dateOfBirth.toString()))
+        dateOfBirth: \1)
       };
 
       await this.auditLogService.logEvent(

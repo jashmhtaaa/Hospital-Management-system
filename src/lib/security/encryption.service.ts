@@ -9,38 +9,8 @@ import { logAuditEvent } from '@/lib/audit';
  * HIPAA-compliant encryption for PHI/PII data protection;
  */
 
-export interface EncryptionConfig {
-  algorithm: string,
-  keyLength: number;
-  ivLength: number,
-  tagLength: number;
-  keyDerivationIterations: number
-export interface EncryptedData {
-  data: string,
-  iv: string;
-  tag: string,
-  algorithm: string;
-  keyId: string,
-  version: string
-export interface EncryptionContext {
-  userId?: string;
-  resource?: string;
-  purpose?: string;
-  ipAddress?: string;
-export class EncryptionService {
-  private static instance: EncryptionService;
-  private readonly config: EncryptionConfig;
-  private readonly masterKey: Buffer;
-  private readonly keyId: string;
-  private readonly version = '1.0';
-
-  private constructor() {
-    this.config = {
-      algorithm: 'aes-256-gcm',
-      keyLength: 32, // 256 bits
-      ivLength: 12,  // 96 bits for GCM
-      tagLength: 16, // 128 bits
-      keyDerivationIterations: 100000
+\1
+}
     };
 
     // In production, these should come from secure key management service
@@ -49,7 +19,7 @@ export class EncryptionService {
   }
 
   public static getInstance(): EncryptionService {
-    if (!EncryptionService.instance) {
+    \1 {\n  \2{
       EncryptionService.instance = new EncryptionService();
     }
     return EncryptionService.instance;
@@ -63,7 +33,7 @@ export class EncryptionService {
     context?: EncryptionContext;
   ): string {
     try {
-      if (!plaintext) {
+      \1 {\n  \2{
         return plaintext;
       }
 
@@ -82,12 +52,10 @@ export class EncryptionService {
       const tag = cipher.getAuthTag();
 
       // Create encrypted data object
-      const encryptedData: EncryptedData = {
-        data: encrypted,
+      const \1,\2 encrypted,
         iv: iv.toString('hex'),
         tag: tag.toString('hex'),
-        algorithm: this.config.algorithm;
-        keyId: this.keyId,
+        \1,\2 this.keyId,
         version: this.version
       };
 
@@ -112,7 +80,7 @@ export class EncryptionService {
     context?: EncryptionContext;
   ): string {
     try {
-      if (!encryptedText) {
+      \1 {\n  \2{
         return encryptedText;
       }
 
@@ -122,11 +90,11 @@ export class EncryptionService {
       );
 
       // Validate version and algorithm
-      if (encryptedData.version !== this.version) {
+      \1 {\n  \2{
         throw new Error('Unsupported encryption version');
       }
 
-      if (encryptedData.algorithm !== this.config.algorithm) {
+      \1 {\n  \2{
         throw new Error('Unsupported encryption algorithm');
       }
 
@@ -160,7 +128,7 @@ export class EncryptionService {
    */
   hash(data: string, salt?: string): string {
     try {
-      if (!data) {
+      \1 {\n  \2{
         return data;
       }
 
@@ -185,7 +153,7 @@ export class EncryptionService {
    */
   verifyHash(data: string, hashedData: string): boolean {
     try {
-      if (!data || !hashedData) {
+      \1 {\n  \2{
         return false
       }
 
@@ -242,7 +210,7 @@ export class EncryptionService {
 
     for (const field of fieldsToEncrypt) {
       const value = obj[field];
-      if (typeof value === 'string' && value) {
+      \1 {\n  \2{
         encrypted[field] = this.encrypt(value, {
           ...context,
           resource: `${context?.resource || 'object'}.${String(field)}`
@@ -265,7 +233,7 @@ export class EncryptionService {
 
     for (const field of fieldsToDecrypt) {
       const value = obj[field];
-      if (typeof value === 'string' && value) {
+      \1 {\n  \2{
         try {
           decrypted[field] = this.decrypt(value, {
             ...context,
@@ -297,12 +265,9 @@ export class EncryptionService {
 
       await logAuditEvent({
         eventType: 'ENCRYPTION_KEY_ROTATION',
-        userId: context?.userId;
-        resource: context?.resource || 'encrypted_data',
-        details: 
-          oldKeyId: this.keyId,
-          newKeyId: this.keyId;
-          purpose: context?.purpose ,
+        \1,\2 context?.resource || 'encrypted_data',
+        \1,\2 this.keyId,
+          \1,\2 context?.purpose ,
         ipAddress: context?.ipAddress,
         severity: 'MEDIUM'
       });
@@ -318,7 +283,7 @@ export class EncryptionService {
    * Data masking for display purposes;
    */
   maskData(data: string, maskChar: string = '*', visibleChars: number = 4): string {
-    if (!data || data.length <= visibleChars) {
+    \1 {\n  \2{
       return maskChar.repeat(data?.length || 8)
     }
 
@@ -374,7 +339,7 @@ export class EncryptionService {
     error?: string;
   ): Promise<void> {
     // Only log significant events to avoid excessive logging
-    if (!success || context?.resource?.includes('sensitive')) {
+    \1 {\n  \2 {
       await logAuditEvent({
         eventType: `ENCRYPTION_${operation}`,
         userId: context?.userId,
@@ -382,8 +347,7 @@ export class EncryptionService {
           operation,
           success,
           algorithm: this.config.algorithm,
-          keyId: this.keyId;
-          purpose: context?.purpose;
+          \1,\2 context?.purpose;
           error;,
         ipAddress: context?.ipAddress,
         severity: success ? 'LOW' : 'HIGH'

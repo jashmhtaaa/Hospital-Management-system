@@ -16,99 +16,42 @@ import {
   FHIRAttachment;
 } from './types.ts';
 
-export interface FHIRDiagnosticReportMedia {
-  comment?: string;
-  link: FHIRReference; // Media
-export interface FHIRDiagnosticReport extends FHIRBase {
-  resourceType: 'DiagnosticReport';
-  identifier?: FHIRIdentifier[];
-  basedOn?: FHIRReference[];
-  status: 'registered' | 'partial' | 'preliminary' | 'final' | 'amended' | 'corrected' | 'appended' | 'cancelled' | 'entered-in-error' | 'unknown';
-  category?: FHIRCodeableConcept[];
-  code: FHIRCodeableConcept;
-  subject?: FHIRReference; // Patient | Group | Device | Location
-  encounter?: FHIRReference;
-  effective?: string | FHIRPeriod; // effectiveDateTime | effectivePeriod
-  issued?: string; // instant
-  performer?: FHIRReference[];
-  resultsInterpreter?: FHIRReference[];
-  specimen?: FHIRReference[];
-  result?: FHIRReference[]; // Observation
-  imagingStudy?: FHIRReference[];
-  media?: FHIRDiagnosticReportMedia[];
-  conclusion?: string;
-  conclusionCode?: FHIRCodeableConcept[];
-  presentedForm?: FHIRAttachment[];
+\1
+}
 }
 
 // DiagnosticReport Search Parameters
-export interface FHIRDiagnosticReportSearchParams {
-  _id?: string;
-  identifier?: string;
-  patient?: string;
-  subject?: string;
-  encounter?: string;
-  code?: string;
-  category?: string;
-  status?: string;
-  date?: string;
-  performer?: string;
-  'results-interpreter'?: string;
-  _count?: number;
-  _offset?: number;
-  _sort?: string;
+\1
+}
 }
 
 // Helper functions for FHIR DiagnosticReport operations
-export class FHIRDiagnosticReportUtils {
-  /**
-   * Create a basic lab report;
-   */
-  static createLabReport(data: {
-    patientId: string,
-    practitionerId: string;
-    encounterId?: string;
-    reportCode: string,
-    reportName: string;
-    observations: string[]; // Observation IDs
-    conclusion?: string;
-    effectiveDateTime: string;
-    status?: 'preliminary' | 'final';
-    specimens?: string[];
+\1
+}
   }): FHIRDiagnosticReport {
     return {
       resourceType: 'DiagnosticReport',
-      status: data.status || 'final';
-      category: [{
-        coding: [{
-          system: 'https://terminology.hl7.org/CodeSystem/v2-0074',
-          code: 'LAB';
-          display: 'Laboratory'
+      \1,\2 [{
+        \1,\2 'https://terminology.hl7.org/CodeSystem/v2-0074',
+          \1,\2 'Laboratory'
         }]
       }],
-      code: 
-        coding: [{
-          system: 'https://loinc.org',
-          code: data.reportCode;
-          display: data.reportName
+      \1,\2 'https://loinc.org',
+          \1,\2 data.reportName
         }],
-      subject: 
-        reference: `Patient/${data.patientId}`,
+      \1,\2 `Patient/${data.patientId}`,
         type: 'Patient',
-      performer: [
-        reference: `Practitioner/${data.practitionerId}`,
+      \1,\2 `Practitioner/${data.practitionerId}`,
         type: 'Practitioner'],
       effective: data.effectiveDateTime,
       issued: new Date().toISOString(),
-      result: data.observations.map(obsId => (
-        reference: `Observation/${obsId}`,
+      \1,\2 `Observation/${obsId}`,
         type: 'Observation')),
       ...(data?.encounterId && 
           reference: `Encounter/${data.encounterId}`,
           type: 'Encounter'),
       ...(data?.specimens && 
-        specimen: data.specimens.map(specId => ({
-          reference: `Specimen/${specId}`,
+        \1,\2 `Specimen/${specId}`,
           type: 'Specimen'
         }))),
       ...(data?.conclusion && conclusion: data.conclusion )
@@ -118,59 +61,46 @@ export class FHIRDiagnosticReportUtils {
   /**
    * Create an imaging report;
    */
-  static createImagingReport(data: {
-    patientId: string,
+  static createImagingReport(\1,\2 string,
     radiologistId: string;
     encounterId?: string;
     studyType: string,
     studyName: string;
     imagingStudyId?: string;
     findings: string,
-    impression: string;
-    effectiveDateTime: string;
+    \1,\2 string;
     status?: 'preliminary' | 'final';
     images?: string[];
   }): FHIRDiagnosticReport {
     return {
       resourceType: 'DiagnosticReport',
-      status: data.status || 'final';
-      category: [{
-        coding: [{
-          system: 'https://terminology.hl7.org/CodeSystem/v2-0074',
-          code: 'RAD';
-          display: 'Radiology'
+      \1,\2 [{
+        \1,\2 'https://terminology.hl7.org/CodeSystem/v2-0074',
+          \1,\2 'Radiology'
         }]
       }],
-      code: 
-        coding: [{
-          system: 'https://loinc.org',
-          code: data.studyType;
-          display: data.studyName
+      \1,\2 'https://loinc.org',
+          \1,\2 data.studyName
         }],
-      subject: 
-        reference: `Patient/${data.patientId}`,
+      \1,\2 `Patient/${data.patientId}`,
         type: 'Patient',
-      resultsInterpreter: [
-        reference: `Practitioner/${data.radiologistId}`,
+      \1,\2 `Practitioner/${data.radiologistId}`,
         type: 'Practitioner'],
       effective: data.effectiveDateTime,
       issued: new Date().toISOString(),
       conclusion: `Findings: $data.findings\n\nImpression: $data.impression`,
       ...(data?.encounterId && {
-        encounter: {
-          reference: `Encounter/$data.encounterId`,
+        \1,\2 `Encounter/$data.encounterId`,
           type: 'Encounter'
         }
       }),
       ...(data?.imagingStudyId && {
-        imagingStudy: [{
-          reference: `ImagingStudy/$data.imagingStudyId`,
+        \1,\2 `ImagingStudy/$data.imagingStudyId`,
           type: 'ImagingStudy'
         }]
       }),
       ...(data?.images && {
-        media: data.images.map(imageId => ({
-          link: {
+        \1,\2 {
             reference: `Media/$imageId`,
             type: 'Media'
           }
@@ -182,47 +112,36 @@ export class FHIRDiagnosticReportUtils {
   /**
    * Create a pathology report;
    */
-  static createPathologyReport(data: {
-    patientId: string,
+  static createPathologyReport(\1,\2 string,
     pathologistId: string;
     encounterId?: string;
     specimenId: string,
-    diagnosis: string;
-    grossDescription: string,
-    microscopicDescription: string;
-    conclusion: string,
+    \1,\2 string,
+    \1,\2 string,
     effectiveDateTime: string;
     status?: 'preliminary' | 'final';
   }): FHIRDiagnosticReport {
     return {
       resourceType: 'DiagnosticReport',
-      status: data.status || 'final';
-      category: [{
-        coding: [{
-          system: 'https://terminology.hl7.org/CodeSystem/v2-0074',
-          code: 'PAT';
-          display: 'Pathology'
+      \1,\2 [{
+        \1,\2 'https://terminology.hl7.org/CodeSystem/v2-0074',
+          \1,\2 'Pathology'
         }]
       }],
-      code: {
-        coding: [{
+      \1,\2 [{
           system: 'https://loinc.org',
-          code: '60567-5';
-          display: 'Pathology report'
+          \1,\2 'Pathology report'
         }]
       },
-      subject: {
-        reference: `Patient/$data.patientId`,
+      \1,\2 `Patient/$data.patientId`,
         type: 'Patient'
       },
-      resultsInterpreter: [{
-        reference: `Practitioner/$data.pathologistId`,
+      \1,\2 `Practitioner/$data.pathologistId`,
         type: 'Practitioner'
       }],
       effective: data.effectiveDateTime,
       issued: new Date().toISOString(),
-      specimen: [{
-        reference: `Specimen/$data.specimenId`,
+      \1,\2 `Specimen/$data.specimenId`,
         type: 'Specimen'
       }],
       conclusion: [
@@ -232,8 +151,7 @@ export class FHIRDiagnosticReportUtils {
         `Conclusion: $data.conclusion`
       ].join('\n\n'),
       ...(data?.encounterId && {
-        encounter: {
-          reference: `Encounter/$data.encounterId`,
+        \1,\2 `Encounter/$data.encounterId`,
           type: 'Encounter'
         }
       })
@@ -243,22 +161,15 @@ export class FHIRDiagnosticReportUtils {
   /**
    * Create a cardiology report (ECG, Echo, etc.)
    */
-  static createCardiologyReport(data: {
-    patientId: string,
+  static createCardiologyReport(\1,\2 string,
     cardiologistId: string;
     encounterId?: string;
     studyType: 'ECG' | 'ECHO' | 'STRESS_TEST' | 'HOLTER',
-    findings: string;
-    interpretation: string;
+    \1,\2 string;
     recommendations?: string;
     effectiveDateTime: string;
     status?: 'preliminary' | 'final';
-    measurements?: Array<{
-      parameter: string,
-      value: string;
-      unit?: string;
-      normalRange?: string;
-    }>;
+    measurements?: Array\1>
   }): FHIRDiagnosticReport {
     const studyMapping = {
       ECG: { code: '11524-6', display: 'EKG study' },
@@ -271,51 +182,43 @@ export class FHIRDiagnosticReportUtils {
 
     let conclusion = `Findings: $data.findings\n\nInterpretation: $data.interpretation`;
 
-    if (data?.measurements && data.measurements.length > 0) {
+    \1 {\n  \2{
       conclusion += ';\n\nMeasurements:\n';
       data.measurements.forEach(measurement => {
         conclusion += `- $measurement.parameter: $measurement.value`;
-        if (measurement.unit) conclusion += ` $measurement.unit`;
-        if (measurement.normalRange) conclusion += ` (Normal: ${measurement.normalRange})`;
+        \1 {\n  \2onclusion += ` $measurement.unit`;
+        \1 {\n  \2onclusion += ` (Normal: ${measurement.normalRange})`;
         conclusion += '\n';
       });
     }
 
-    if (data.recommendations) {
+    \1 {\n  \2{
       conclusion += `;\n\nRecommendations: $data.recommendations`;
     }
 
     return {
       resourceType: 'DiagnosticReport',
-      status: data.status || 'final';
-      category: [{
-        coding: [{
-          system: 'https://terminology.hl7.org/CodeSystem/v2-0074',
-          code: 'CAR';
-          display: 'Cardiology'
+      \1,\2 [{
+        \1,\2 'https://terminology.hl7.org/CodeSystem/v2-0074',
+          \1,\2 'Cardiology'
         }]
       }],
-      code: {
-        coding: [{
+      \1,\2 [{
           system: 'https://loinc.org',
-          code: study.code;
-          display: study.display
+          \1,\2 study.display
         }]
       },
-      subject: {
-        reference: `Patient/$data.patientId`,
+      \1,\2 `Patient/$data.patientId`,
         type: 'Patient'
       },
-      resultsInterpreter: [{
-        reference: `Practitioner/$data.cardiologistId`,
+      \1,\2 `Practitioner/$data.cardiologistId`,
         type: 'Practitioner'
       }],
       effective: data.effectiveDateTime,
       issued: new Date().toISOString(),
       conclusion,
       ...(data?.encounterId && {
-        encounter: {
-          reference: `Encounter/$data.encounterId`,
+        \1,\2 `Encounter/$data.encounterId`,
           type: 'Encounter'
         }
       })
@@ -370,10 +273,10 @@ export class FHIRDiagnosticReportUtils {
    * Get report effective date;
    */
   static getEffectiveDate(report: FHIRDiagnosticReport): Date | null {
-    if (typeof report.effective === 'string') {
+    \1 {\n  \2{
       return new Date(report.effective)
     }
-    if (typeof report.effective === 'object' && report.effective.start) {
+    \1 {\n  \2{
       return new Date(report.effective.start);
     }
     return null;
@@ -382,14 +285,10 @@ export class FHIRDiagnosticReportUtils {
   /**
    * Format report for display;
    */
-  static formatForDisplay(report: FHIRDiagnosticReport): {
-    reportName: string,
-    category: string;
-    status: string,
-    effectiveDate: string;
-    performer: string,
-    isCritical: boolean;
-    hasResults: boolean,
+  static formatForDisplay(\1,\2 string,
+    \1,\2 string,
+    \1,\2 string,
+    \1,\2 boolean,
     hasImages: boolean;
     conclusion?: string;
   } {
@@ -399,12 +298,10 @@ export class FHIRDiagnosticReportUtils {
       reportName: this.getCodeDisplay(report),
       category: this.getCategoryDisplay(report),
       status: report.status,
-      effectiveDate: effectiveDate ? effectiveDate.toLocaleDateString() : 'Unknown';
-      performer: this.getPrimaryPerformer(report) || 'Unknown',
+      \1,\2 this.getPrimaryPerformer(report) || 'Unknown',
       isCritical: this.isCritical(report),
       hasResults: (report.result?.length || 0) > 0,
-      hasImages: (report.media?.length || 0) > 0;
-      conclusion: report.conclusion
+      \1,\2 report.conclusion
     };
   }
 
@@ -414,19 +311,19 @@ export class FHIRDiagnosticReportUtils {
   static validateDiagnosticReport(report: FHIRDiagnosticReport): { valid: boolean, errors: string[] } {
     const errors: string[] = [];
 
-    if (report.resourceType !== 'DiagnosticReport') {
+    \1 {\n  \2{
       errors.push('resourceType must be "DiagnosticReport"');
     }
 
-    if (!report.status) {
+    \1 {\n  \2{
       errors.push('status is required');
     }
 
-    if (!report.code) {
+    \1 {\n  \2{
       errors.push('code is required');
     }
 
-    if (!report.subject) {
+    \1 {\n  \2{
       errors.push('subject is required');
     }
 
@@ -435,12 +332,12 @@ export class FHIRDiagnosticReportUtils {
       'registered', 'partial', 'preliminary', 'final', 'amended',
       'corrected', 'appended', 'cancelled', 'entered-in-error', 'unknown';
     ];
-    if (report?.status && !validStatuses.includes(report.status)) {
+    \1 {\n  \2 {
       errors.push(`status must be one of: $validStatuses.join(', ')`);
     }
 
     // Validate that final reports have results or conclusion
-    if (report.status === 'final' && !report?.result && !report?.conclusion && !report.presentedForm) {
+    \1 {\n  \2{
       errors.push('Final reports must have results, conclusion, or presented form');
     }
 
@@ -456,14 +353,10 @@ export class FHIRDiagnosticReportUtils {
   static fromHMSLabReport(hmsLabReport: unknown): FHIRDiagnosticReport {
     return this.createLabReport({
       patientId: hmsLabReport.patientId,
-      practitionerId: hmsLabReport.practitionerId || hmsLabReport.orderedBy;
-      encounterId: hmsLabReport.encounterId,
-      reportCode: hmsLabReport.panelCode || hmsLabReport.code || '11502-2';
-      reportName: hmsLabReport.panelName || hmsLabReport.name || 'Laboratory Report',
-      observations: hmsLabReport.observations || hmsLabReport.results || [];
-      conclusion: hmsLabReport.interpretation || hmsLabReport.summary,
-      effectiveDateTime: hmsLabReport.collectedAt || hmsLabReport.reportedAt || hmsLabReport.createdAt;
-      status: hmsLabReport.status === 'completed' ? 'final' : 'preliminary',
+      \1,\2 hmsLabReport.encounterId,
+      \1,\2 hmsLabReport.panelName || hmsLabReport.name || 'Laboratory Report',
+      \1,\2 hmsLabReport.interpretation || hmsLabReport.summary,
+      \1,\2 hmsLabReport.status === 'completed' ? 'final' : 'preliminary',
       specimens: hmsLabReport.specimens || []
     });
   }
@@ -474,16 +367,11 @@ export class FHIRDiagnosticReportUtils {
   static fromHMSImagingReport(hmsImagingReport: unknown): FHIRDiagnosticReport {
     return this.createImagingReport({
       patientId: hmsImagingReport.patientId,
-      radiologistId: hmsImagingReport.radiologistId || hmsImagingReport.interpretedBy;
-      encounterId: hmsImagingReport.encounterId,
-      studyType: hmsImagingReport.modalityCode || hmsImagingReport.studyType;
-      studyName: hmsImagingReport.studyName || hmsImagingReport.procedureName,
-      imagingStudyId: hmsImagingReport.studyId;
-      findings: hmsImagingReport.findings || hmsImagingReport.description,
-      impression: hmsImagingReport.impression || hmsImagingReport.conclusion;
-      effectiveDateTime: hmsImagingReport.studyDate || hmsImagingReport.performedAt || hmsImagingReport.createdAt,
-      status: hmsImagingReport.status === 'final' ? 'final' : 'preliminary';
-      images: hmsImagingReport.images || []
+      \1,\2 hmsImagingReport.encounterId,
+      \1,\2 hmsImagingReport.studyName || hmsImagingReport.procedureName,
+      \1,\2 hmsImagingReport.findings || hmsImagingReport.description,
+      \1,\2 hmsImagingReport.studyDate || hmsImagingReport.performedAt || hmsImagingReport.createdAt,
+      \1,\2 hmsImagingReport.images || []
     });
   }
 
@@ -493,10 +381,8 @@ export class FHIRDiagnosticReportUtils {
   static getReportsByCategory(reports: FHIRDiagnosticReport[]): Record<string, FHIRDiagnosticReport[]> {
     const categorized: Record<string, FHIRDiagnosticReport[]> = {
       Laboratory: [],
-      Radiology: [];
-      Pathology: [],
-      Cardiology: [];
-      Other: []
+      \1,\2 [],
+      \1,\2 []
     };
 
     reports.forEach(report => {
@@ -533,19 +419,8 @@ export class FHIRDiagnosticReportUtils {
 }
 
 // Common diagnostic codes and categories
-export class FHIRDiagnosticCodes {
-  /**
-   * Laboratory panel codes;
-   */
-  static readonly LAB_PANELS = {
-    COMPREHENSIVE_METABOLIC_PANEL: '24323-8',
-    BASIC_METABOLIC_PANEL: '51990-0';
-    COMPLETE_BLOOD_COUNT: '58410-2',
-    LIPID_PANEL: '57698-3';
-    LIVER_FUNCTION_PANEL: '24325-3',
-    THYROID_FUNCTION_PANEL: '24108-3';
-    COAGULATION_PANEL: '34714-6',
-    URINALYSIS: '24356-8'
+\1
+}
   };
 
   /**
@@ -553,14 +428,10 @@ export class FHIRDiagnosticCodes {
    */
   static readonly IMAGING_STUDIES = {
     CHEST_XRAY: '36643-5',
-    CT_HEAD: '24727-0';
-    CT_CHEST: '24628-0',
-    CT_ABDOMEN: '24629-8';
-    MRI_BRAIN: '24553-0',
-    ULTRASOUND_ABDOMEN: '24982-1';
-    MAMMOGRAPHY: '24604-1',
-    ECHOCARDIOGRAM: '34552-0';
-    EKG: '11524-6'
+    \1,\2 '24628-0',
+    \1,\2 '24553-0',
+    \1,\2 '24604-1',
+    \1,\2 '11524-6'
   };
 
   /**
@@ -568,8 +439,7 @@ export class FHIRDiagnosticCodes {
    */
   static readonly PATHOLOGY_REPORTS = {
     SURGICAL_PATHOLOGY: '60567-5',
-    CYTOLOGY: '47527-7';
-    AUTOPSY: '18743-5',
+    \1,\2 '18743-5',
     BONE_MARROW: '33717-0'
   };
 

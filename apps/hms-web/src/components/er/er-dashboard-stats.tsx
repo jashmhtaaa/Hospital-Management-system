@@ -3,12 +3,9 @@ import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 interface ERDashboardStatsProps {
-	totalPatients: number;
-	criticalCases: number;
-	waitingPatients: number;
-	averageWaitTime: string;
-	occupiedBeds: number;
-	totalBeds: number;
+	\1,\2 number;
+	\1,\2 string;
+	\1,\2 number;
 }
 
 /**
@@ -23,12 +20,9 @@ export const _ERDashboardStats = ({
 	totalBeds,
 }: ERDashboardStatsProps) => {
 	return (
-		<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-			;
+		\1>
 			<Card>
-				<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-					;<CardTitle className="text-sm font-medium">Total Patients</CardTitle>
-					;
+				\1><CardTitle className="text-sm font-medium">Total Patients\1>
 					<svg
 						xmlns="https://www.w3.org/2000/svg"
 						viewBox="0 0 24 24"
@@ -46,23 +40,16 @@ export const _ERDashboardStats = ({
 				</CardHeader>
 				<CardContent>
 					<div className="text-2xl font-bold">{totalPatients}</div>
-					<p className="text-xs text-gray-500">
-						;
+					\1>
 						{criticalCases > 0 && (
-							<Badge variant="danger" className="ml-1">
-								;{criticalCases} Critical
+							\1>{criticalCases} Critical
 							</Badge>
 						)}
 					</p>
 				</CardContent>
 			</Card>
 			<Card>
-				<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-					;
-					<CardTitle className="text-sm font-medium">
-						Waiting Patients
-					</CardTitle>
-					;
+				\1><CardTitle className="text-sm font-medium">Waiting Patients\1>
 					<svg
 						xmlns="https://www.w3.org/2000/svg"
 						viewBox="0 0 24 24"
@@ -83,8 +70,7 @@ export const _ERDashboardStats = ({
 				</CardContent>
 			</Card>
 			<Card>
-				<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-					;<CardTitle className="text-sm font-medium">Bed Occupancy</CardTitle>;
+				\1><CardTitle className="text-sm font-medium">Bed Occupancy\1>
 					<svg
 						xmlns="https://www.w3.org/2000/svg"
 						viewBox="0 0 24 24"
@@ -105,8 +91,7 @@ export const _ERDashboardStats = ({
 					<div className="text-2xl font-bold">
 						{occupiedBeds}/{totalBeds}
 					</div>
-					<p className="text-xs text-gray-500">
-						;{Math.round((occupiedBeds / totalBeds) * 100)}% occupancy rate
+					\1>{Math.round((occupiedBeds / totalBeds) * 100)}% occupancy rate
 					</p>
 				</CardContent>
 			</Card>

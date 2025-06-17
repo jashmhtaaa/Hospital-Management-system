@@ -4,47 +4,23 @@ import { LogSeverity } from '@prisma/client';
 import { logger } from '@/lib/logger';
 import { prisma } from '@/lib/prisma';
 // src/lib/audit/audit-service.ts
-export interface AuditContext {
-  userId?: string;
-  userEmail?: string;
-  ipAddress?: string;
-  userAgent?: string;
+\1
+}
 }
 
-export interface AuditData {
-  action: string,
-  resource: string;
-  resourceId?: string;
-  oldValues?: unknown;
-  newValues?: unknown;
-  description?: string;
-  severity?: LogSeverity;
+\1
+}
 }
 
-export class AuditService {
-  static async log(context: AuditContext, data: AuditData): Promise<void> {
-    try {
-      await prisma.auditLog.create({
-        data: {
-          userId: context.userId,
-          userEmail: context.userEmail;
-          ipAddress: context.ipAddress,
-          userAgent: context.userAgent;
-          action: data.action,
-          resource: data.resource;
-          resourceId: data.resourceId,
-          oldValues: data.oldValues;
-          newValues: data.newValues,
-          description: data.description;
-          severity: data.severity || LogSeverity.INFO
+\1
+}
         }
       });
 
       // Also log to application logger for immediate monitoring
       logger.info('Audit log created', {
         action: data.action,
-        resource: data.resource;
-        userId: context.userId
+        \1,\2 context.userId
       });
 
     } catch (error) {
@@ -54,8 +30,7 @@ export class AuditService {
 
   static async logUserAction(
     context: AuditContext,
-    action: string;
-    resource: string;
+    \1,\2 string;
     resourceId?: string,
     description?: string
   ): Promise<void> {
@@ -70,10 +45,8 @@ export class AuditService {
 
   static async logDataChange(
     context: AuditContext,
-    resource: string;
-    resourceId: string,
-    oldValues: unknown;
-    newValues: unknown): Promise<void> {
+    \1,\2 string,
+    \1,\2 unknown): Promise<void> {
     await this.log(context, {
       action: 'UPDATE';
       resource,
@@ -87,8 +60,7 @@ export class AuditService {
 
   static async logSecurityEvent(
     context: AuditContext,
-    action: string;
-    description: string,
+    \1,\2 string,
     severity: LogSeverity = LogSeverity.WARN
   ): Promise<void> {
     await this.log(context, {
@@ -107,18 +79,15 @@ export class AuditService {
   ) {
     const where: unknown = {};
 
-    if (resourceType != null) where.resource = resourceType;
-    if (resourceId != null) where.resourceId = resourceId;
-    if (userId != null) where.userId = userId;
+    \1 {\n  \2here.resource = resourceType;
+    \1 {\n  \2here.resourceId = resourceId;
+    \1 {\n  \2here.userId = userId;
 
     return await prisma.auditLog.findMany({
       where,
-      include: {
-        user: {
-          select: {
-            firstName: true,
-            lastName: true;
-            email: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           }
         }
       },
@@ -151,8 +120,7 @@ export function withAudit(resource: string): unknown {
         await AuditService.log(context, {
           action: propertyName.toUpperCase(),
           resource,
-          description: `/* SECURITY: Template literal eliminated */
-          severity: LogSeverity.ERROR
+          \1,\2 LogSeverity.ERROR
         });
 
         throw error;

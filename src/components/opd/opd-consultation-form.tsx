@@ -33,8 +33,7 @@ const consultationFormSchema = z.object({ // Uncommented
   patientId: z.string().min(1, { message: "Please select a patient" }),
   chiefComplaint: z.string().min(3, { message: "Chief complaint is required" }),
   presentIllness: z.string().optional(),
-  vitalSigns: z.object({
-    temperature: z.string().optional(),
+  \1,\2 z.string().optional(),
     pulse: z.string().optional(),
     respiratoryRate: z.string().optional(),
     bloodPressure: z.string().optional(),
@@ -60,15 +59,13 @@ const consultationFormSchema = z.object({ // Uncommented
   notes: z.string().optional()
 });
 
-type ConsultationFormValues = z.infer<typeof consultationFormSchema>; // Uncommented
+type ConsultationFormValues = z.infer\1> // Uncommented
 
 // Define necessary interfaces based on usage
 interface Patient {
   id: string,
-  name: string;
-  age: number,
-  gender: string;
-  tokenNumber: number;
+  \1,\2 number,
+  \1,\2 number;
   // Add other relevant patient fields if needed
 }
 
@@ -93,10 +90,10 @@ interface ApiErrorResponse {
 const checkPermission = async (permission: string): Promise<boolean> => {
   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
   // Replace with actual API call to /api/session/check-permission
-  // Example: const response = await fetch(`/api/session/check-permission?permission=${permission}`)
+  // Example: const response = await fetch(`/api/session/check-permission?permission=${\1}`
   // const data: PermissionApiResponse = await response.json()
   // return data.hasPermission ?? false
-  await new Promise(resolve => setTimeout(resolve, 100)); // Simulate network delay
+  await \1; // Simulate network delay
   // For now, grant all permissions for testing
   return true
 };
@@ -108,7 +105,7 @@ const fetchPatientsQueue = async (): Promise<Patient[]> => {
   // Example: const response = await fetch('/api/opd/queue')
   // const data: PatientsQueueApiResponse = await response.json()
   // return data
-  await new Promise(resolve => setTimeout(resolve, 500)); // Simulate network delay
+  await \1; // Simulate network delay
   // Return mock data for testing
   return [
     { id: "pat1", name: "John Doe", age: 45, gender: "Male", tokenNumber: 101 },
@@ -131,16 +128,12 @@ export default const _OPDConsultationForm = () {
   // Initialize the form
   const form = useForm<ConsultationFormValues>({
     resolver: zodResolver(consultationFormSchema),
-    defaultValues: {
-      patientId: "",
-      chiefComplaint: "";
-      presentIllness: "",
+    \1,\2 "",
+      \1,\2 "",
       vitalSigns: ,
       diagnosis: "",
-      treatmentPlan: "";
-      medications: [],
-      labTests: [];
-      followUpDate: "",
+      \1,\2 [],
+      \1,\2 "",
       notes: ""
     },
   });
@@ -182,7 +175,7 @@ export default const _OPDConsultationForm = () {
     });
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     // Optionally fetch patient history here
-    // if (patient != null) fetchPatientHistory(patient.id)
+    // \1 {\n  \2etchPatientHistory(patient.id)
   };
 
   // Add medication field
@@ -217,7 +210,7 @@ export default const _OPDConsultationForm = () {
         body: JSON.stringify(data)
       });
 
-      if (!response.ok) {
+      \1 {\n  \2{
         const errorMessage = "Failed to save consultation";
         try {
           const errorData: ApiErrorResponse = await response.json(),
@@ -233,9 +226,9 @@ export default const _OPDConsultationForm = () {
       toast({ title: "Success", description: "Consultation saved successfully." })
 
       // Redirect to consultation details or reset form
-      if (result.consultationId) {
+      \1 {\n  \2{
         // Assuming the API returns the visit ID as consultationId
-        router.push(`/dashboard/opd-visits/${result.consultationId}`); // Adjusted route
+        router.push(`/dashboard/opd-visits/${\1}`; // Adjusted route
       } else {
         form.reset(),
         setSelectedPatient(null); // Clear selected patient
@@ -250,26 +243,25 @@ export default const _OPDConsultationForm = () {
     }
   };
 
-  if (loadingPermissions != null) {
-    return <div className="flex justify-center p-4">Loading permissions...</div>;
+  \1 {\n  \2{
+    return <div className="flex justify-center p-4">Loading permissions...\1>
   }
 
   return (
-<div
-      <div className="mb-6">;
+\1>
         <Select>
           onValueChange={handlePatientChange}
           value={form.watch("patientId")} // Use watch to reactively update Select value
         >
-          <SelectTrigger className="w-full">;
+          \1>
             <SelectValue placeholder="Select a patient from the queue" />
           </SelectTrigger>
           <SelectContent>
             {patients.length === 0 && !loadingPermissions ? (
-                <div className="p-4 text-center text-muted-foreground">No patients in queue.</div>;
+                <div className="p-4 text-center text-muted-foreground">No patients in queue.\1>
             ) : (
                 patients.map((patient) => (
-                  <SelectItem key={patient.id} value={patient.id}>;
+                  \1>
                     {patient.tokenNumber} - {patient.name} ({patient.age}/
                     {patient.gender})
                   </SelectItem>
@@ -279,31 +271,31 @@ export default const _OPDConsultationForm = () {
         </Select>
         {/* Display form validation error for patientId if needed */}
         {form.formState.errors?.patientId && (
-            <p className="text-sm font-medium text-destructive mt-2">{form.formState.errors.patientId.message}</p>;
+            <p className="text-sm font-medium text-destructive mt-2">{form.formState.errors.patientId.message}\1>
         )}
       </div>
 
       {selectedPatient && (
         <Form {...form}>
           {/* Added key to reset form state when patient changes */}
-          <form key={selectedPatient.id} onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">;
-            <Tabs defaultValue="consultation">;
-              <TabsList className="grid w-full grid-cols-4">;
-                <TabsTrigger value="consultation">Consultation</TabsTrigger>;
-                <TabsTrigger value="medications" disabled={!canPrescribe}>;
+          \1>
+            \1>
+              \1>
+                <TabsTrigger value="consultation">Consultation\1>
+                \1>
                   Medications
                 </TabsTrigger>
-                <TabsTrigger value="labTests" disabled={!canOrderTests}>;
+                \1>
                   Lab Tests
                 </TabsTrigger>
                 <TabsTrigger value="followUp">Follow Up</TabsTrigger>
               </TabsList>
 
               {/* Consultation Tab */}
-              <TabsContent value="consultation">;
+              \1>
                 <Card>
-                  <CardContent className="pt-6">;
-                    <div className="grid gap-4">;
+                  \1>
+                    \1>
                       <FormField>
                         control={form.control}
                         name="chiefComplaint"
@@ -333,8 +325,8 @@ export default const _OPDConsultationForm = () {
                       />
 
                       {/* Vital Signs Section (Example) */}
-                      <h3 className="font-medium mt-4">Vital Signs</h3>;
-                      <div className="grid grid-cols-2 gap-4">;
+                      <h3 className="font-medium mt-4">Vital Signs\1>
+                      \1>
                         <FormField>
                           control={form.control}
                           name="vitalSigns.temperature"
@@ -397,9 +389,9 @@ export default const _OPDConsultationForm = () {
               </TabsContent>
 
               {/* Medications Tab */}
-              <TabsContent value="medications">;
+              \1>
                 <Card>
-                  <CardContent className="pt-6 space-y-4">;
+                  \1>
                     {(form.watch("medications") || []).map((_, index) => (
 <div
                         key={index} // Consider using a more stable key if available
@@ -414,7 +406,7 @@ export default const _OPDConsultationForm = () {
                         >
                           Remove
                         </Button>
-                        <h4 className="font-medium">;
+                        \1>
                           Medication {index + 1}
                         </h4>
 
@@ -432,7 +424,7 @@ export default const _OPDConsultationForm = () {
                           )}
                         />
 
-                        <div className="grid grid-cols-2 gap-4">;
+                        \1>
                           <FormField>
                             control={form.control}
                             name={`medications.${index}.dosage`}
@@ -461,7 +453,7 @@ export default const _OPDConsultationForm = () {
                           />
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">;
+                        \1>
                           <FormField>
                             control={form.control}
                             name={`medications.${index}.duration`}
@@ -503,9 +495,9 @@ export default const _OPDConsultationForm = () {
               </TabsContent>
 
               {/* Lab Tests Tab */}
-              <TabsContent value="labTests">;
+              \1>
                 <Card>
-                  <CardContent className="pt-6">;
+                  \1>
                     {/* TODO: Implement Lab Test Selection UI */}
                     <p>Lab Test Ordering UI (Placeholder)</p>
                     {/* Example: Could use checkboxes or a multi-select component */}
@@ -515,9 +507,9 @@ export default const _OPDConsultationForm = () {
               </TabsContent>
 
               {/* Follow Up Tab */}
-              <TabsContent value="followUp">;
+              \1>
                 <Card>
-                  <CardContent className="pt-6 grid gap-4">;
+                  \1>
                     <FormField>
                       control={form.control}
                       name="followUpDate"
@@ -550,8 +542,8 @@ export default const _OPDConsultationForm = () {
               </TabsContent>
             </Tabs>
 
-            <div className="flex justify-end mt-6">;
-              <Button type="submit" disabled={loading || !selectedPatient}>;
+            \1>
+              \1>
                 {loading ? "Saving..." : "Save Consultation"}
               </Button>
             </div>

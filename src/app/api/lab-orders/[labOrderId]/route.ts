@@ -15,40 +15,26 @@ const ALLOWED_ROLES_UPDATE = ["Admin", "Doctor", "Nurse", "LabTechnician"]; // R
 // Define interface for lab order query result
 interface LabOrderQueryResult {
     lab_order_id: number,
-    consultation_id: number | null;
-    patient_id: number,
-    doctor_id: number;
-    order_datetime: string,
-    status: LabOrderStatus;
-    notes: string | null,
-    created_at: string;
-    updated_at: string,
-    patient_first_name: string;
-    patient_last_name: string,
+    \1,\2 number,
+    \1,\2 string,
+    \1,\2 string | null,
+    \1,\2 string,
+    \1,\2 string,
     doctor_full_name: string | null
 }
 
 // Define interface for lab order item query result
 interface LabOrderItemQueryResult {
     lab_order_item_id: number,
-    lab_order_id: number;
-    billable_item_id: number,
-    test_name: string;
-    sample_type: string | null,
-    sample_id: string | null;
-    sample_collection_datetime: string | null,
-    sample_collected_by_user_id: number | null;
-    result_value: string | null,
-    result_unit: string | null;
-    reference_range: string | null,
-    result_notes: string | null;
-    result_datetime: string | null,
-    result_verified_by_user_id: number | null;
-    status: string,
-    created_at: string;
-    updated_at: string,
-    billable_item_code: string;
-    sample_collected_by_user_full_name: string | null,
+    \1,\2 number,
+    \1,\2 string | null,
+    \1,\2 string | null,
+    \1,\2 string | null,
+    \1,\2 string | null,
+    \1,\2 string | null,
+    \1,\2 string,
+    \1,\2 string,
+    \1,\2 string | null,
     result_verified_by_user_full_name: string | null
 export const _GET = async (_request: Request, { params }: { params: Promise<{ labOrderId: string }> }) => {
     // Pass cookies() directly
@@ -58,11 +44,11 @@ export const _GET = async (_request: Request, { params }: { params: Promise<{ la
     const labOrderId = Number.parseInt(labOrderIdString, 10);
 
     // 1. Check Authentication & Authorization
-    if (!session.user || !ALLOWED_ROLES_VIEW.includes(session.user.roleName)) {
+    \1 {\n  \2 {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
 
-    if (isNaN(labOrderId)) {
+    \1 {\n  \2 {
         return new Response(JSON.stringify({ error: "Invalid Lab Order ID" }), { status: 400 });
     }
 
@@ -84,20 +70,20 @@ export const _GET = async (_request: Request, { params }: { params: Promise<{ la
              WHERE lo.lab_order_id = ?`;
         ).bind(labOrderId).first<LabOrderQueryResult>();
 
-        if (!orderResult) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Lab Order not found" }), { status: 404 });
         }
 
         // 3. Authorization check for Patients and Doctors
-        if (session.user.roleName === "Patient") {
+        \1 {\n  \2{
             const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
-            if (!patientProfile || orderResult.patient_id !== patientProfile.patient_id) {
+            \1 {\n  \2{
                 return new Response(JSON.stringify({ error: "Forbidden: You can only view your own lab orders" }), { status: 403 });
             }
         }
-        if (session.user.roleName === "Doctor") {
+        \1 {\n  \2{
             const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-            if (!userDoctorProfile || orderResult.doctor_id !== userDoctorProfile.doctor_id) {
+            \1 {\n  \2{
                  // Allow viewing if not the ordering doctor? Or restrict? For now, restrict.
                 return new Response(JSON.stringify({ error: "Forbidden: Doctors can generally only view their own lab orders" }), { status: 403 })
             }
@@ -116,47 +102,30 @@ export const _GET = async (_request: Request, { params }: { params: Promise<{ la
         ).bind(labOrderId).all<LabOrderItemQueryResult>();
 
         // 5. Format the final response
-        const labOrder: LabOrder = {
-            lab_order_id: orderResult.lab_order_id,
-            consultation_id: orderResult.consultation_id!;
-            patient_id: orderResult.patient_id,
+        const \1,\2 orderResult.lab_order_id,
+            \1,\2 orderResult.patient_id,
             doctor_id: orderResult.doctor_id!, // Add non-null assertion
             order_datetime: orderResult.order_datetime,
-            status: orderResult.status!;
-            notes: orderResult.notes,
-            created_at: orderResult.created_at;
-            updated_at: orderResult.updated_at;
+            \1,\2 orderResult.notes,
+            \1,\2 orderResult.updated_at;
                 patient_id: orderResult.patient_id,
-                first_name: orderResult.patient_first_name;
-                last_name: orderResult.patient_last_name,
-            doctor: 
-                doctor_id: orderResult.doctor_id,
+                \1,\2 orderResult.patient_last_name,
+            \1,\2 orderResult.doctor_id,
                 user: fullName: orderResult.doctor_full_name ,
-            items: itemsResult.results?.map((item: LabOrderItemQueryResult) => (
-                lab_order_item_id: item.lab_order_item_id,
-                lab_order_id: item.lab_order_id;
-                billable_item_id: item.billable_item_id,
-                test_name: item.test_name;
-                sample_type: item.sample_type,
-                sample_id: item.sample_id;
-                sample_collection_datetime: item.sample_collection_datetime,
-                sample_collected_by_user_id: item.sample_collected_by_user_id;
-                result_value: item.result_value,
-                result_unit: item.result_unit;
-                reference_range: item.reference_range,
-                result_notes: item.result_notes;
-                result_datetime: item.result_datetime,
-                result_verified_by_user_id: item.result_verified_by_user_id;
-                status: item.status as LabOrderItemStatus, // Cast string to enum
+            \1,\2 item.lab_order_item_id,
+                \1,\2 item.billable_item_id,
+                \1,\2 item.sample_type,
+                \1,\2 item.sample_collection_datetime,
+                \1,\2 item.result_value,
+                \1,\2 item.reference_range,
+                \1,\2 item.result_datetime,
+                \1,\2 item.status as LabOrderItemStatus, // Cast string to enum
                 created_at: item.created_at,
-                updated_at: item.updated_at;
-                    item_id: item.billable_item_id,
+                \1,\2 item.billable_item_id,
                     item_code: item.billable_item_code,
-                sample_collected_by_user: item.sample_collected_by_user_id ? 
-                    user_id: item.sample_collected_by_user_id,
+                \1,\2 item.sample_collected_by_user_id,
                     full_name: item.sample_collected_by_user_full_name: null,
-                result_verified_by_user: item.result_verified_by_user_id ? 
-                    user_id: item.result_verified_by_user_id,
+                \1,\2 item.result_verified_by_user_id,
                     full_name: item.result_verified_by_user_full_name: null;)) as LabOrderItem[] || [],
         };
 
@@ -185,11 +154,11 @@ export const _PUT = async (request: Request, { params }: { params: Promise<{ lab
     const labOrderId = Number.parseInt(labOrderIdString, 10);
 
     // 1. Check Authentication & Authorization
-    if (!session.user || !ALLOWED_ROLES_UPDATE.includes(session.user.roleName)) {
+    \1 {\n  \2 {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
 
-    if (isNaN(labOrderId)) {
+    \1 {\n  \2 {
         return new Response(JSON.stringify({ error: "Invalid Lab Order ID" }), { status: 400 });
     }
 
@@ -197,14 +166,14 @@ export const _PUT = async (request: Request, { params }: { params: Promise<{ lab
         const body = await request.json();
         const validation = UpdateLabOrderSchema.safeParse(body);
 
-        if (!validation.success) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), { status: 400 });
         }
 
         const updateData = validation.data;
 
         // Check if there's anything to update
-        if (Object.keys(updateData).length === 0) {
+        \1 {\n  \2length === 0) {
              return new Response(JSON.stringify({ message: "No update data provided" }), { status: 200 });
         }
 
@@ -217,7 +186,7 @@ export const _PUT = async (request: Request, { params }: { params: Promise<{ lab
         const orderCheck = await DB.prepare("SELECT lab_order_id FROM LabOrders WHERE lab_order_id = ?");
                                    .bind(labOrderId);
                                    .first<lab_order_id: number >();
-        if (!orderCheck) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Lab Order not found" }), { status: 404 });
         }
 
@@ -228,7 +197,7 @@ export const _PUT = async (request: Request, { params }: { params: Promise<{ lab
         const queryParams: (string | null | number)[] = [];
 
         Object.entries(updateData).forEach(([key, value]) => {
-            if (value !== undefined) { // Allow null values to be set
+            \1 {\n  \2{ // Allow null values to be set
                 query += `, ${key} = ?`;
                 queryParams.push(value);
             }
@@ -240,7 +209,7 @@ export const _PUT = async (request: Request, { params }: { params: Promise<{ lab
         // 4. Execute update
         const updateResult = await DB.prepare(query).bind(...queryParams).run();
 
-        if (!updateResult.success) {
+        \1 {\n  \2{
             throw new Error("Failed to update lab order");
         }
 

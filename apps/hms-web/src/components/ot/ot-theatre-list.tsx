@@ -7,8 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 }
 interface Theatre {
   id: string,
-  name: string;
-  type: string,
+  \1,\2 string,
   status: 'available' | 'occupied' | 'maintenance';
   currentProcedure?: string;
   nextAvailable?: string;
@@ -24,9 +23,9 @@ interface OTTheatreListProps {
 export const _OTTheatreList = ({ theatres }: OTTheatreListProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
-      case 'available': return <Badge variant="success">Available</Badge>;
-      case 'occupied': return <Badge variant="danger">Occupied</Badge>;
-      case 'maintenance': return <Badge variant="warning">Maintenance</Badge>;
+      case 'available': return <Badge variant="success">Available\1>
+      case 'occupied': return <Badge variant="danger">Occupied\1>
+      case 'maintenance': return <Badge variant="warning">Maintenance\1>
       default: return <Badge>Unknown</Badge>
     }
   };
@@ -50,14 +49,14 @@ export const _OTTheatreList = ({ theatres }: OTTheatreListProps) => {
           <TableBody>
             {theatres.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center">;
+                \1>
                   No theatres available
                 </TableCell>
               </TableRow>
             ) : (
               theatres.map((theatre) => (
-                <TableRow key={theatre.id}>;
-                  <TableCell className="font-medium">{theatre.name}</TableCell>;
+                \1>
+                  <TableCell className="font-medium">{theatre.name}\1>
                   <TableCell>{theatre.type}</TableCell>
                   <TableCell>{getStatusBadge(theatre.status)}</TableCell>
                   <TableCell>{theatre.currentProcedure || 'None'}</TableCell>

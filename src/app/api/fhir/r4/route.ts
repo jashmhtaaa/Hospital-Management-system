@@ -19,14 +19,12 @@ export const POST = async (request: NextRequest) => {
     const bundle: FHIRBundle = await request.json();
 
     // Validate bundle
-    if (!bundle || bundle.resourceType !== 'Bundle') {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           resourceType: 'OperationOutcome',
-          issue: [{
-            severity: 'error',
-            code: 'invalid';
-            diagnostics: 'Request must be a FHIR Bundle resource'
+          \1,\2 'error',
+            \1,\2 'Request must be a FHIR Bundle resource'
           }]
         },
         {
@@ -37,14 +35,12 @@ export const POST = async (request: NextRequest) => {
     }
 
     // Check bundle type
-    if (!['batch', 'transaction'].includes(bundle.type)) {
+    \1 {\n  \2 {
       return NextResponse.json(
         {
           resourceType: 'OperationOutcome',
-          issue: [{
-            severity: 'error',
-            code: 'invalid';
-            diagnostics: 'Bundle type must be "batch" or "transaction"'
+          \1,\2 'error',
+            \1,\2 'Bundle type must be "batch" or "transaction"'
           }]
         },
         {
@@ -57,7 +53,7 @@ export const POST = async (request: NextRequest) => {
     // Process the bundle
     const result = await fhirService.processBatch(bundle);
 
-    if (!result.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         result.issues || { error: result.error },
         {
@@ -76,10 +72,8 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json(
       {
         resourceType: 'OperationOutcome',
-        issue: [{
-          severity: 'error',
-          code: 'exception';
-          diagnostics: error instanceof Error ? error.message : 'Internal server error'
+        \1,\2 'error',
+          \1,\2 error instanceof Error ? error.message : 'Internal server error'
         }]
       },
       {
@@ -97,30 +91,22 @@ export const GET = async () => {
   try {
     const capabilityStatement = {
       resourceType: 'CapabilityStatement',
-      id: 'hms-fhir-server';
-      status: 'active',
+      \1,\2 'active',
       date: new Date().toISOString(),
       publisher: 'Hospital Management System',
-      kind: 'instance';
-        name: 'HMS FHIR Server',
+      \1,\2 'HMS FHIR Server',
         version: '1.0.0',
-      implementation: 
-        description: 'Hospital Management System FHIR R4 Server',
+      \1,\2 'Hospital Management System FHIR R4 Server',
         url: '/fhir/r4',
       fhirVersion: '4.0.1',
       format: ['application/fhir+json', 'application/json'],
-      rest: [
-        mode: 'server',
-        security: 
-          cors: true,
-          service: [
-            coding: [{
+      \1,\2 'server',
+        \1,\2 true,
+          \1,\2 [{
               system: 'https://terminology.hl7.org/CodeSystem/restful-security-service',
-              code: 'OAuth';
-              display: 'OAuth'
+              \1,\2 'OAuth'
             }]],
-        resource: [
-            type: 'Patient',
+        \1,\2 'Patient',
             profile: 'https://hl7.org/fhir/StructureDefinition/Patient',
             interaction: [code: 'read' ,code: 'create' ,code: 'update' ,code: 'delete' ,code: 'search-type' 
             ],
@@ -170,10 +156,8 @@ export const GET = async () => {
     return NextResponse.json(
       {
         resourceType: 'OperationOutcome',
-        issue: [{
-          severity: 'error',
-          code: 'exception';
-          diagnostics: error instanceof Error ? error.message : 'Internal server error'
+        \1,\2 'error',
+          \1,\2 error instanceof Error ? error.message : 'Internal server error'
         }]
       },
       {

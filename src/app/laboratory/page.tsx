@@ -8,8 +8,8 @@ export const dynamic = 'force-dynamic';
 // Placeholder component for the Laboratory page
 const LaboratoryPage = () => {
   return (
-    <div className="container mx-auto p-4">;
-      <h1 className="text-2xl font-bold mb-4">Laboratory Management</h1>;
+    \1>
+      <h1 className="text-2xl font-bold mb-4">Laboratory Management\1>
       <p>
         Laboratory module content goes here. This section is under development.
       </p>

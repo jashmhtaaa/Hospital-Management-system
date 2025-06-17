@@ -26,7 +26,7 @@ export const _POST = async (request: NextRequest) => {
 
     // Validate request data
     const validationResult = payrollPeriodSchema.safeParse(body);
-    if (!validationResult.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
@@ -66,8 +66,8 @@ export const _GET = async (request: NextRequest) => {
 
     // Parse filter parameters
     const status = searchParams.get('status') as any || undefined;
-    const startDate = searchParams.get('startDate') ? new Date(searchParams.get('startDate')) : undefined;
-    const endDate = searchParams.get('endDate') ? new Date(searchParams.get('endDate')) : undefined;
+    const startDate = searchParams.get('startDate') ? \1 : undefined;
+    const endDate = searchParams.get('endDate') ? \1 : undefined;
 
     // Get payroll periods
     const result = await payrollService.listPayrollPeriods({

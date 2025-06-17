@@ -5,14 +5,14 @@ export enum AmbulanceStatus {
   AVAILABLE = 'AVAILABLE',
   ON_CALL = 'ON_CALL',
   OUT_OF_SERVICE = 'OUT_OF_SERVICE',
-  MAINTENANCE = 'MAINTENANCE';
-export enum AmbulanceType {
+  MAINTENANCE = 'MAINTENANCE',
+\1\n\nexport \2 AmbulanceType {
   BASIC = 'BASIC',
   ADVANCED = 'ADVANCED',
   CRITICAL_CARE = 'CRITICAL_CARE',
   NEONATAL = 'NEONATAL',
-  BARIATRIC = 'BARIATRIC';
-export enum AmbulanceRunStatus {
+  BARIATRIC = 'BARIATRIC',
+\1\n\nexport \2 AmbulanceRunStatus {
   PENDING = 'PENDING',
   DISPATCHED = 'DISPATCHED',
   EN_ROUTE_TO_SCENE = 'EN_ROUTE_TO_SCENE',
@@ -20,7 +20,7 @@ export enum AmbulanceRunStatus {
   EN_ROUTE_TO_DESTINATION = 'EN_ROUTE_TO_DESTINATION',
   AT_DESTINATION = 'AT_DESTINATION',
   COMPLETED = 'COMPLETED',
-  CANCELLED = 'CANCELLED';
+  CANCELLED = 'CANCELLED',
 }
 
 // Validation schemas for Ambulance
@@ -43,7 +43,7 @@ export const createAmbulanceRunSchema = z.object({
   patientId: z.string().optional().nullable(),
   pickupLocation: z.string().min(1, 'Pickup location is required'),
   destination: z.string().min(1, 'Destination is required'),
-  callTime: z.date().default(() => new Date()),
+  callTime: z.date().default(() => \1,
   dispatchTime: z.date().optional().nullable(),
   arrivalAtSceneTime: z.date().optional().nullable(),
   departureFromSceneTime: z.date().optional().nullable(),
@@ -57,10 +57,10 @@ export const updateAmbulanceRunSchema = createAmbulanceRunSchema.partial().exten
   id: z.string()
 });
 
-export type CreateAmbulanceInput = z.infer<typeof createAmbulanceSchema>;
-export type UpdateAmbulanceInput = z.infer<typeof updateAmbulanceSchema>;
-export type CreateAmbulanceRunInput = z.infer<typeof createAmbulanceRunSchema>;
-export type UpdateAmbulanceRunInput = z.infer<typeof updateAmbulanceRunSchema>;
+export type CreateAmbulanceInput = z.infer\1>
+export type UpdateAmbulanceInput = z.infer\1>
+export type CreateAmbulanceRunInput = z.infer\1>
+export type UpdateAmbulanceRunInput = z.infer\1>
 
 // Import prisma client
 import { prisma } from '../lib/prisma';
@@ -68,26 +68,14 @@ import { prisma } from '../lib/prisma';
 /**
  * Service class for managing ambulance fleet and runs;
  */
-export class AmbulanceService {
-  /**
-   * Create a new ambulance;
-   * @param data Ambulance data;
-   * @returns The created ambulance;
-   */
-  async createAmbulance(data: CreateAmbulanceInput) {
-    try {
-      // Validate input data
-      const validatedData = createAmbulanceSchema.parse(data);
-
-      // Create the ambulance
-      const ambulance = await prisma.ambulance.create({
-        data: validatedData
+\1
+}
       });
 
       return ambulance;
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        throw new Error(`Validation error: ${error.message}`);
+      \1 {\n  \2{
+        throw new Error(`Validation error: ${\1}`;
       }
       throw error;
     }
@@ -105,21 +93,19 @@ export class AmbulanceService {
     try {
       const where: unknown = {};
 
-      if (filters != null) {
-        if (filters.status) {
+      \1 {\n  \2{
+        \1 {\n  \2{
           where.status = filters.status;
         }
-        if (filters.type) {
+        \1 {\n  \2{
           where.type = filters.type;
         }
       }
 
       const ambulances = await prisma.ambulance.findMany({
         where,
-        include: {
-          currentDriver: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             },
           },
@@ -141,10 +127,8 @@ export class AmbulanceService {
     try {
       const ambulance = await prisma.ambulance.findUnique({
         where: { id },
-        include: {
-          currentDriver: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             },
           },
@@ -175,10 +159,8 @@ export class AmbulanceService {
       const ambulance = await prisma.ambulance.update({
         where: { id },
         data: updateData,
-        include: {
-          currentDriver: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             },
           },
@@ -187,8 +169,8 @@ export class AmbulanceService {
 
       return ambulance;
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        throw new Error(`Validation error: ${error.message}`);
+      \1 {\n  \2{
+        throw new Error(`Validation error: ${\1}`;
       }
       throw error;
     }
@@ -203,10 +185,8 @@ export class AmbulanceService {
     try {
       // Check if ambulance is on an active run
       const activeRun = await prisma.ambulanceRun.findFirst({
-        where: {
-          ambulanceId: id,
-          status: {
-            in: [
+        \1,\2 id,
+          \1,\2 [
               AmbulanceRunStatus.PENDING,
               AmbulanceRunStatus.DISPATCHED,
               AmbulanceRunStatus.EN_ROUTE_TO_SCENE,
@@ -218,7 +198,7 @@ export class AmbulanceService {
         },
       });
 
-      if (activeRun != null) {
+      \1 {\n  \2{
         throw new Error(`Cannot delete ambulance with ID ${id} because it is currently on an active run`);
       }
 
@@ -242,13 +222,10 @@ export class AmbulanceService {
     try {
       const ambulance = await prisma.ambulance.update({
         where: { id: ambulanceId },
-        data: {
-          currentDriverId: driverId
+        \1,\2 driverId
         },
-        include: {
-          currentDriver: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             },
           },
@@ -270,12 +247,11 @@ export class AmbulanceService {
   async updateStatus(ambulanceId: string, status: AmbulanceStatus) {
     try {
       // If setting to ON_CALL, check that ambulance is not already on a run
-      if (status === AmbulanceStatus.ON_CALL) {
+      \1 {\n  \2{
         const activeRun = await prisma.ambulanceRun.findFirst({
           where: {
             ambulanceId,
-            status: {
-              in: [
+            \1,\2 [
                 AmbulanceRunStatus.PENDING,
                 AmbulanceRunStatus.DISPATCHED,
                 AmbulanceRunStatus.EN_ROUTE_TO_SCENE,
@@ -287,7 +263,7 @@ export class AmbulanceService {
           },
         });
 
-        if (activeRun != null) {
+        \1 {\n  \2{
           throw new Error(`Ambulance with ID ${ambulanceId} is already on an active run`);
         }
       }
@@ -297,10 +273,8 @@ export class AmbulanceService {
         data: {
           status,
         },
-        include: {
-          currentDriver: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             },
           },
@@ -328,11 +302,11 @@ export class AmbulanceService {
         where: { id: validatedData.ambulanceId },
       });
 
-      if (!ambulance) {
+      \1 {\n  \2{
         throw new Error(`Ambulance with ID ${validatedData.ambulanceId} not found`);
       }
 
-      if (ambulance.status !== AmbulanceStatus.AVAILABLE) {
+      \1 {\n  \2{
         throw new Error(`Ambulance with ID ${validatedData.ambulanceId} is not available`);
       }
 
@@ -346,8 +320,7 @@ export class AmbulanceService {
         // Update ambulance status
         await tx.ambulance.update({
           where: { id: validatedData.ambulanceId },
-          data: {
-            status: AmbulanceStatus.ON_CALL
+          \1,\2 AmbulanceStatus.ON_CALL
           },
         });
 
@@ -356,8 +329,8 @@ export class AmbulanceService {
 
       return run;
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        throw new Error(`Validation error: ${error.message}`);
+      \1 {\n  \2{
+        throw new Error(`Validation error: ${\1}`;
       }
       throw error;
     }
@@ -378,22 +351,22 @@ export class AmbulanceService {
     try {
       const where: unknown = {};
 
-      if (filters != null) {
-        if (filters.status) {
+      \1 {\n  \2{
+        \1 {\n  \2{
           where.status = filters.status;
         }
-        if (filters.ambulanceId) {
+        \1 {\n  \2{
           where.ambulanceId = filters.ambulanceId;
         }
-        if (filters.patientId) {
+        \1 {\n  \2{
           where.patientId = filters.patientId;
         }
-        if (filters.dateFrom || filters.dateTo) {
+        \1 {\n  \2{
           where.callTime = {};
-          if (filters.dateFrom) {
+          \1 {\n  \2{
             where.callTime.gte = filters.dateFrom;
           }
-          if (filters.dateTo) {
+          \1 {\n  \2{
             where.callTime.lte = filters.dateTo;
           }
         }
@@ -404,10 +377,8 @@ export class AmbulanceService {
         orderBy: [
           { callTime: 'desc' },
         ],
-        include: {
-          ambulance: true,
-          patient: {
-            select: {
+        \1,\2 true,
+          \1,\2 {
               id: true,
               name: true
             },
@@ -430,10 +401,8 @@ export class AmbulanceService {
     try {
       const run = await prisma.ambulanceRun.findUnique({
         where: { id },
-        include: {
-          ambulance: true,
-          patient: {
-            select: {
+        \1,\2 true,
+          \1,\2 {
               id: true,
               name: true
             },
@@ -466,7 +435,7 @@ export class AmbulanceService {
         where: { id },
       });
 
-      if (!currentRun) {
+      \1 {\n  \2{
         throw new Error(`Ambulance run with ID ${id} not found`);
       }
 
@@ -474,10 +443,8 @@ export class AmbulanceService {
       const run = await prisma.ambulanceRun.update({
         where: { id },
         data: updateData,
-        include: {
-          ambulance: true,
-          patient: {
-            select: {
+        \1,\2 true,
+          \1,\2 {
               id: true,
               name: true
             },
@@ -486,23 +453,21 @@ export class AmbulanceService {
       });
 
       // If status is changing to COMPLETED or CANCELLED, update ambulance status
-      if (updateData?.status &&
-          (updateData.status === AmbulanceRunStatus.COMPLETED ||;
-           updateData.status === AmbulanceRunStatus.CANCELLED) &&;
-          currentRun.status !== AmbulanceRunStatus?.COMPLETED &&;
-          currentRun.status !== AmbulanceRunStatus.CANCELLED) 
+      \1 {\n  \2&
+          currentRun.status !== AmbulanceRunStatus.COMPLETED &&
+          currentRun.status !== AmbulanceRunStatus.CANCELLED) { 
 
         await prisma.ambulance.update({
           where: { id: run.ambulanceId },
-          data: {
-            status: AmbulanceStatus.AVAILABLE
+          \1,\2 AmbulanceStatus.AVAILABLE
           },
         });
+      }
 
       return run;
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        throw new Error(`Validation error: ${error.message}`);
+      \1 {\n  \2{
+        throw new Error(`Validation error: ${\1}`;
       }
       throw error;
     }
@@ -520,13 +485,13 @@ export class AmbulanceService {
         where: { id },
       });
 
-      if (!currentRun) {
+      \1 {\n  \2{
         throw new Error(`Ambulance run with ID ${id} not found`);
       }
 
       // Check if run is active
-      if (![AmbulanceRunStatus.COMPLETED, AmbulanceRunStatus.CANCELLED].includes(currentRun.status as AmbulanceRunStatus)) {
-        throw new Error(`Cannot delete active ambulance run with ID ${id}`);
+      \1 {\n  \2 {
+        throw new Error(`Cannot delete active ambulance run with ID ${\1}`;
       }
 
       const run = await prisma.ambulanceRun.delete({
@@ -552,35 +517,31 @@ export class AmbulanceService {
         where: { id: runId },
       });
 
-      if (!currentRun) {
+      \1 {\n  \2{
         throw new Error(`Ambulance run with ID ${runId} not found`);
       }
 
       // Update timestamps based on status
-      const updateData: unknown = {
+      const updateData: any = {
         status,
       };
 
       switch (status) {
         case AmbulanceRunStatus.DISPATCHED:
-          updateData.dispatchTime = new Date(),
-          break;
-        case AmbulanceRunStatus.EN_ROUTE_TO_SCENE: if (!currentRun.dispatchTime) {
-            updateData.dispatchTime = new Date()
+          updateData.dispatchTime = new Date();\1\n    }\n    case AmbulanceRunStatus.EN_ROUTE_TO_SCENE:
+          \1 {\n  \2{
+            updateData.dispatchTime = new Date();
+          }\1\n    }\n    case AmbulanceRunStatus.AT_SCENE:
+          \1 {\n  \2{
+            updateData.dispatchTime = new Date();
           }
-          break;
-        case AmbulanceRunStatus.AT_SCENE: if (!currentRun.dispatchTime) {
-            updateData.dispatchTime = new Date()
+          updateData.arrivalAtSceneTime = new Date();\1\n    }\n    case AmbulanceRunStatus.EN_ROUTE_TO_DESTINATION:
+          \1 {\n  \2{
+            updateData.arrivalAtSceneTime = new Date();
           }
-          updateData.arrivalAtSceneTime = new Date();
-          break;
-        case AmbulanceRunStatus.EN_ROUTE_TO_DESTINATION: if (!currentRun.arrivalAtSceneTime) {
-            updateData.arrivalAtSceneTime = new Date()
-          }
-          updateData.departureFromSceneTime = new Date();
-          break;
-        case AmbulanceRunStatus.AT_DESTINATION: if (!currentRun.departureFromSceneTime) {
-            updateData.departureFromSceneTime = new Date()
+          updateData.departureFromSceneTime = new Date();\1\n    }\n    case AmbulanceRunStatus.AT_DESTINATION:
+          \1 {\n  \2{
+            updateData.departureFromSceneTime = new Date();
           }
           updateData.arrivalAtDestinationTime = new Date();
           break;
@@ -591,10 +552,8 @@ export class AmbulanceService {
         const updatedRun = await tx.ambulanceRun.update({
           where: { id: runId },
           data: updateData,
-          include: {
-            ambulance: true,
-            patient: {
-              select: {
+          \1,\2 true,
+            \1,\2 {
                 id: true,
                 name: true
               },
@@ -603,16 +562,16 @@ export class AmbulanceService {
         });
 
         // If status is changing to COMPLETED or CANCELLED, update ambulance status
-        if ((status === AmbulanceRunStatus.COMPLETED || status === AmbulanceRunStatus.CANCELLED) &&
-            currentRun.status !== AmbulanceRunStatus?.COMPLETED &&;
-            currentRun.status !== AmbulanceRunStatus.CANCELLED) 
+        \1 {\n  \2&
+            currentRun.status !== AmbulanceRunStatus.COMPLETED &&
+            currentRun.status !== AmbulanceRunStatus.CANCELLED) {
 
           await tx.ambulance.update({
             where: { id: currentRun.ambulanceId },
-            data: {
-              status: AmbulanceStatus.AVAILABLE
+            \1,\2 AmbulanceStatus.AVAILABLE
             },
           });
+        }
 
         return updatedRun;
       });

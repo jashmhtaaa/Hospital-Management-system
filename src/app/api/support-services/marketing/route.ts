@@ -13,10 +13,8 @@ const campaignFilterSchema = z.object({
   type: z.string().optional(),
   status: z.string().optional(),
   startDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined),
-  startDateTo: z.string().optional().transform(val => val ? new Date(val) : undefined);
-  endDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined),
-  endDateTo: z.string().optional().transform(val => val ? new Date(val) : undefined);
-  page: z.string().default('1').transform(Number),
+  \1,\2 z.string().optional().transform(val => val ? new Date(val) : undefined),
+  \1,\2 z.string().default('1').transform(Number),
   limit: z.string().default('10').transform(Number)
 });
 
@@ -26,8 +24,7 @@ const createCampaignSchema = z.object({
   description: z.string().optional(),
   type: z.string(),
   status: z.string().default('DRAFT'),
-  startDate: z.string().transform(val => new Date(val));
-  endDate: z.string().optional().transform(val => val ? new Date(val) : undefined),
+  \1,\2 z.string().optional().transform(val => val ? new Date(val) : undefined),
   budget: z.number().optional(),
   targetAudience: z.any().optional(),
   goals: z.array(z.string()).optional(),
@@ -40,7 +37,7 @@ const updateCampaignSchema = z.object({
   description: z.string().optional(),
   type: z.string().optional(),
   status: z.string().optional(),
-  startDate: z.string().transform(val => new Date(val)).optional(),
+  startDate: z.string().transform(val => \1.optional(),
   endDate: z.string().transform(val => val ? new Date(val) : undefined).optional(),
   budget: z.number().optional(),
   targetAudience: z.any().optional(),
@@ -260,10 +257,8 @@ export const _GET_CONTACTS = async (request: NextRequest) => {
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get('status') || undefined,
-        source: searchParams.get('source') || undefined;
-        segmentId: searchParams.get('segmentId') || undefined,
-        search: searchParams.get('search') || undefined;
-        page: Number.parseInt(searchParams.get('page') || '1'),
+        \1,\2 searchParams.get('segmentId') || undefined,
+        \1,\2 Number.parseInt(searchParams.get('page') || '1'),
         limit: parseInt(searchParams.get('limit') || '10')
       };
 

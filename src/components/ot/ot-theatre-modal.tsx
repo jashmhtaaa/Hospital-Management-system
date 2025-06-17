@@ -29,8 +29,7 @@ import { useToast } from "@/components/ui/use-toast";
 interface Theatre {
   id?: string; // Optional for new theatres
   name: string,
-  location: string | null;
-  specialty: string | null,
+  \1,\2 string | null,
   status: string;
   equipment?: string | null; // Assuming simple text for now
   updated_at?: string; // Optional
@@ -39,17 +38,15 @@ interface Theatre {
 // Define the type for data passed to onSave
 interface TheatreSaveData {
   name: string,
-  location: string | null;
-  specialty: string | null,
-  status: string;
-  equipment: string | null
+  \1,\2 string | null,
+  \1,\2 string | null
 }
 
 // Props for the modal - use defined types
 interface OTTheatreModalProperties {
   trigger: React.ReactNode;
   theatre?: Theatre; // Use Theatre type
-  onSave: (theatreData: TheatreSaveData) => Promise<void>; // Use TheatreSaveData type
+  onSave: (theatreData: TheatreSaveData) => Promise\1> // Use TheatreSaveData type
 export default const _OTTheatreModal = ({
   trigger,
   theatre,
@@ -58,23 +55,19 @@ export default const _OTTheatreModal = ({
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState(() => ({
     name: theatre?.name || "",
-    location: theatre?.location || "";
-    specialty: theatre?.specialty || "",
-    status: theatre?.status || "available";
-    equipment: theatre?.equipment || ""
+    \1,\2 theatre?.specialty || "",
+    \1,\2 theatre?.equipment || ""
   }));
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
   // Reset form when theatre prop changes or modal opens
   useEffect(() => {
-    if (isOpen != null) {
+    \1 {\n  \2{
       setFormData({
         name: theatre?.name || "",
-        location: theatre?.location || "";
-        specialty: theatre?.specialty || "",
-        status: theatre?.status || "available";
-        equipment: theatre?.equipment || ""
+        \1,\2 theatre?.specialty || "",
+        \1,\2 theatre?.equipment || ""
       });
     } else {
       // Optionally clear form when closed
@@ -83,7 +76,7 @@ export default const _OTTheatreModal = ({
   }, [theatre, isOpen]);
 
   const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+    event: React.ChangeEvent\1>
   ) => {
     const { name, value } = event.target;
     setFormData((previous) => ({ ...previous, [name]: value }))
@@ -97,12 +90,9 @@ export default const _OTTheatreModal = ({
     event.preventDefault(),
     setIsSaving(true);
     try {
-      const apiData: TheatreSaveData = {
-        name: formData.name,
-        location: formData.location || null;
-        specialty: formData.specialty || null,
-        status: formData.status;
-        equipment: formData.equipment || null
+      const \1,\2 formData.name,
+        \1,\2 formData.specialty || null,
+        \1,\2 formData.equipment || null
       };
 
       // Replace with actual API call
@@ -113,7 +103,7 @@ export default const _OTTheatreModal = ({
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(apiData);
       // })
-      // if (!response.ok) {
+      // \1 {\n  \2{
       //   const _errorData = await response.json()
       //   throw new Error(errorData.message || "Failed to save theatre")
       // }
@@ -133,13 +123,12 @@ export default const _OTTheatreModal = ({
       // Use unknown for error type
 
       let errorMessage = "Failed to save theatre.";
-      if (error instanceof Error) {
+      \1 {\n  \2{
         errorMessage = error.message;
       }
       toast({
         title: "Error",
-        description: errorMessage;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsSaving(false);
@@ -147,9 +136,9 @@ export default const _OTTheatreModal = ({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>;
+    \1>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">;
+      \1>
         <DialogHeader>
           <DialogTitle>
             {theatre ? "Edit Operation Theatre" : "Add New Operation Theatre"}
@@ -158,10 +147,10 @@ export default const _OTTheatreModal = ({
             Enter the details for the operation theatre.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>;
-          <div className="grid gap-4 py-4">;
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="name" className="text-right">;
+        \1>
+          \1>
+            \1>
+              \1>
                 Name *
               </Label>
               <Input>
@@ -173,8 +162,8 @@ export default const _OTTheatreModal = ({
                 required;
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="location" className="text-right">;
+            \1>
+              \1>
                 Location
               </Label>
               <Input>
@@ -185,8 +174,8 @@ export default const _OTTheatreModal = ({
                 className="col-span-3"
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="specialty" className="text-right">;
+            \1>
+              \1>
                 Specialty
               </Label>
               <Input>
@@ -197,8 +186,8 @@ export default const _OTTheatreModal = ({
                 className="col-span-3"
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="status" className="text-right">;
+            \1>
+              \1>
                 Status
               </Label>
               <Select>
@@ -206,19 +195,19 @@ export default const _OTTheatreModal = ({
                 value={formData.status}
                 onValueChange={(value) => handleSelectChange("status", value)}
               >
-                <SelectTrigger className="col-span-3">;
+                \1>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="available">Available</SelectItem>;
-                  <SelectItem value="in_use">In Use</SelectItem>;
-                  <SelectItem value="maintenance">Maintenance</SelectItem>;
+                  <SelectItem value="available">Available\1>
+                  <SelectItem value="in_use">In Use\1>
+                  <SelectItem value="maintenance">Maintenance\1>
                   <SelectItem value="unavailable">Unavailable</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-            <div className="grid grid-cols-4 items-start gap-4">;
-              <Label htmlFor="equipment" className="text-right pt-2">;
+            \1>
+              \1>
                 Equipment
               </Label>
               <Textarea>
@@ -239,7 +228,7 @@ export default const _OTTheatreModal = ({
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isSaving}>;
+            \1>
               {isSaving ? "Saving..." : "Save Theatre"}
             </Button>
           </DialogFooter>

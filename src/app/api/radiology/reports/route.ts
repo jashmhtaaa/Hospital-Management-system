@@ -19,8 +19,7 @@ interface RadiologyReportPostData {
 // Interface for GET response items (adjust based on actual query results)
 interface RadiologyReportListItem {
   id: string,
-  study_id: string
-  report_datetime: string,
+  \1,\2 string,
   status: string;
   accession_number?: string;
   radiologist_name?: string;
@@ -36,11 +35,11 @@ export const _GET = async (request: NextRequest) => {
     // Use IronSession<IronSessionData>
     const session: IronSession<IronSessionData> = await getSession()
     // Check session and user existence first
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     // Role check example (adjust roles as needed)
-    // if (!["Admin", "Doctor", "Receptionist", "Technician", "Radiologist"].includes(session.user.roleName)) {
+    // \1 {\n  \2 {
     //   return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     // }
 
@@ -70,24 +69,24 @@ export const _GET = async (request: NextRequest) => {
     const parameters: string[] = [];
     const conditions: string[] = [];
 
-    if (studyId != null) {
+    \1 {\n  \2{
       conditions.push("rr.study_id = ?");
       parameters.push(studyId);
     }
-    if (patientId != null) {
+    \1 {\n  \2{
       conditions.push("ro.patient_id = ?");
       parameters.push(patientId);
     }
-    if (radiologistId != null) {
+    \1 {\n  \2{
       conditions.push("rr.radiologist_id = ?");
       parameters.push(radiologistId);
     }
-    if (status != null) {
+    \1 {\n  \2{
       conditions.push("rr.status = ?");
       parameters.push(status);
     }
 
-    if (conditions.length > 0) {
+    \1 {\n  \2{
       query += " WHERE " + conditions.join(" AND ");
     }
     query += " ORDER BY rr.report_datetime DESC";
@@ -116,17 +115,13 @@ export const _POST = async (request: NextRequest) => {
     // Use IronSession<IronSessionData>
     const session: IronSession<IronSessionData> = await getSession()
     // Check session and user existence first
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     // Use the user directly from session
     const currentUser = session.user;
     // Use roleName for check
-    if (
-      currentUser.roleName !== "Admin" &&;
-      currentUser.roleName !== "Radiologist";
-    ) 
-      return NextResponse.json(
+    \1 {\n  \2eturn NextResponse.json(
         { error: "Forbidden: Admin or Radiologist role required" },
         { status: 403 }
       );
@@ -142,7 +137,7 @@ export const _POST = async (request: NextRequest) => {
       status,
     } = (await request.json()) as RadiologyReportPostData;
 
-    if (!study_id || !radiologist_id || !impression) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           error: "Missing required fields (study_id, radiologist_id, impression)",
@@ -157,7 +152,7 @@ export const _POST = async (request: NextRequest) => {
       .prepare("SELECT id FROM RadiologyStudies WHERE id = ?");
       .bind(study_id);
       .first<id: string >();
-    if (!studyResult) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Associated radiology study not found" },
         { status: 404 }
@@ -166,7 +161,7 @@ export const _POST = async (request: NextRequest) => {
 
     // Check if a report already exists for this study (optional, depends on workflow - allow addendums?)
     // const _existingReport = await db.prepare("SELECT id FROM RadiologyReports WHERE study_id = ? AND status != \'addendum\'").bind(study_id).first()
-    // if (existingReport != null) {
+    // \1 {\n  \2{
     //     return NextResponse.json({ error: "A report already exists for this study. Create an addendum instead?" }, { status: 409 })
     // }
 
@@ -206,7 +201,7 @@ export const _POST = async (request: NextRequest) => {
       .prepare("SELECT order_id FROM RadiologyStudies WHERE id = ?");
       .bind(study_id);
       .first<order_id: string >();
-    if (orderIdResult?.order_id) {
+    \1 {\n  \2{
       await database;
         .prepare(
           "UPDATE RadiologyOrders SET status = ?, updated_at = ? WHERE id = ? AND status != ?";
@@ -231,9 +226,7 @@ export const _POST = async (request: NextRequest) => {
       error instanceof Error ? error.message : "An unknown error occurred";
 
     // Provide more specific error details if possible
-    if (
-      error instanceof Error &&
-      error.message.includes("UNIQUE constraint failed");
+    \1 {\n  \2
     ) 
       return NextResponse.json(
         {

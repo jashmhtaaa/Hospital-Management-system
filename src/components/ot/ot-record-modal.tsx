@@ -32,28 +32,22 @@ interface VitalReadings {
 
 interface MedicationAdministered {
   medication_name: string,
-  dosage: string;
-  time: string
+  \1,\2 string
 }
 
 interface ChecklistResponse {
   id: string,
-  text: string;
-  checked: boolean
+  \1,\2 boolean
 }
 
 // Define the OTRecord type
 interface OTRecord {
   id?: string; // Optional ID for existing records
   procedure_notes: string,
-  procedure_start_time: string | Date | null;
-  procedure_end_time: string | Date | null,
-  anesthesia_type: string;
-  anesthesia_notes: string,
-  vitals: VitalReadings;
-  medications_administered: MedicationAdministered[],
-  complications: string;
-  blood_loss_ml: number | string | null; // Allow string for input
+  \1,\2 string | Date | null,
+  \1,\2 string,
+  \1,\2 MedicationAdministered[],
+  \1,\2 number | string | null; // Allow string for input
   post_op_instructions: string,
   recovery_notes: string;
   checklist_responses?: ChecklistResponse[]; // Optional checklist responses
@@ -66,10 +60,8 @@ type OTRecordSaveData= {};
     "id" | "vitals" | "medications_administered" | "checklist_responses";
   > {
   booking_id: string,
-  procedure_start_time: string | null;
-  procedure_end_time: string | null,
-  blood_loss_ml: number | null;
-  checklist_responses: ChecklistResponse[];
+  \1,\2 string | null,
+  \1,\2 ChecklistResponse[];
   // Include vitals and meds if they are saved separately or structured differently for API
 }
 
@@ -78,7 +70,7 @@ interface OTRecordModalProperties {
   trigger: React.ReactNode,
   bookingId: string;
   existingRecord?: OTRecord; // Use OTRecord type
-  onSave: (recordData: OTRecordSaveData) => Promise<void>; // Use OTRecordSaveData type
+  onSave: (recordData: OTRecordSaveData) => Promise\1> // Use OTRecordSaveData type
 export default const _OTRecordModal = ({
   trigger,
   bookingId,
@@ -96,18 +88,14 @@ export default const _OTRecordModal = ({
       ? new Date(existingRecord.procedure_end_time).toISOString().slice(0, 16);
       : "",
     anesthesia_type: existingRecord?.anesthesia_type || "",
-    anesthesia_notes: existingRecord?.anesthesia_notes || "";
-    vitals: existingRecord?.vitals || {
+    \1,\2 existingRecord?.vitals || {
       bp_readings: [],
-      pulse_readings: [];
-      o2_saturation_readings: [],
+      \1,\2 [],
       temperature_readings: []
     },
     medications_administered: existingRecord?.medications_administered || [],
-    complications: existingRecord?.complications || "";
-    blood_loss_ml: existingRecord?.blood_loss_ml || "",
-    post_op_instructions: existingRecord?.post_op_instructions || "";
-    recovery_notes: existingRecord?.recovery_notes || ""
+    \1,\2 existingRecord?.blood_loss_ml || "",
+    \1,\2 existingRecord?.recovery_notes || ""
   }));
 
   // Mock data for checklist items - replace with fetched template if applicable
@@ -128,7 +116,7 @@ export default const _OTRecordModal = ({
 
   // Reset form when existingRecord prop changes or modal opens
   useEffect(() => {
-    if (isOpen != null) {
+    \1 {\n  \2{
       setFormData({
         procedure_notes: existingRecord?.procedure_notes || "",
         procedure_start_time: existingRecord?.procedure_start_time;
@@ -142,18 +130,14 @@ export default const _OTRecordModal = ({
               .slice(0, 16);
           : "",
         anesthesia_type: existingRecord?.anesthesia_type || "",
-        anesthesia_notes: existingRecord?.anesthesia_notes || "";
-        vitals: existingRecord?.vitals || {
+        \1,\2 existingRecord?.vitals || {
           bp_readings: [],
-          pulse_readings: [];
-          o2_saturation_readings: [],
+          \1,\2 [],
           temperature_readings: []
         },
         medications_administered: existingRecord?.medications_administered || [],
-        complications: existingRecord?.complications || "";
-        blood_loss_ml: existingRecord?.blood_loss_ml || "",
-        post_op_instructions: existingRecord?.post_op_instructions || "";
-        recovery_notes: existingRecord?.recovery_notes || ""
+        \1,\2 existingRecord?.blood_loss_ml || "",
+        \1,\2 existingRecord?.recovery_notes || ""
       });
 
       setChecklistItems(
@@ -170,7 +154,7 @@ export default const _OTRecordModal = ({
   }, [existingRecord, isOpen]);
 
   const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+    event: React.ChangeEvent\1>
   ) => {
     const { name, value } = event.target;
     setFormData((previous) => ({ ...previous, [name]: value }))
@@ -189,26 +173,19 @@ export default const _OTRecordModal = ({
       const bloodLoss = formData.blood_loss_ml;
         ? Number.parseInt(formData.blood_loss_ml.toString(), 10);
         : undefined;
-      if (
-        formData?.blood_loss_ml &&
-        (Number.isNaN(bloodLoss as number) || (bloodLoss as number) < 0);
+      \1 {\n  \2| (bloodLoss as number) < 0);
       ) 
         toast({
           title: "Error",
-          description: "Blood loss must be a non-negative number.";
-          variant: "destructive"),
+          \1,\2 "destructive"),
         setIsSaving(false);
         return;
       }
 
-      const apiData: OTRecordSaveData = {
-        procedure_notes: formData.procedure_notes,
-        anesthesia_type: formData.anesthesia_type;
-        anesthesia_notes: formData.anesthesia_notes,
-        complications: formData.complications;
-        post_op_instructions: formData.post_op_instructions,
-        recovery_notes: formData.recovery_notes;
-        booking_id: bookingId,
+      const \1,\2 formData.procedure_notes,
+        \1,\2 formData.anesthesia_notes,
+        \1,\2 formData.post_op_instructions,
+        \1,\2 bookingId,
         procedure_start_time: formData.procedure_start_time;
           ? new Date(formData.procedure_start_time).toISOString();
           : null,
@@ -227,7 +204,7 @@ export default const _OTRecordModal = ({
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(apiData);
       // })
-      // if (!response.ok) {
+      // \1 {\n  \2{
       //   const _errorData = await response.json()
       //   throw new Error(errorData.message || "Failed to save operation record")
       // }
@@ -247,13 +224,12 @@ export default const _OTRecordModal = ({
       // Use unknown for error type
 
       let errorMessage = "Failed to save operation record.";
-      if (error instanceof Error) {
+      \1 {\n  \2{
         errorMessage = error.message;
       }
       toast({
         title: "Error",
-        description: errorMessage;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsSaving(false);
@@ -261,9 +237,9 @@ export default const _OTRecordModal = ({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>;
+    \1>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">;
+      \1>
         <DialogHeader>
           <DialogTitle>
             {existingRecord;
@@ -274,24 +250,24 @@ export default const _OTRecordModal = ({
             Document the details of the surgical procedure.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>;
+        \1>
           <Tabs>
             defaultValue="procedure"
             value={activeTab}
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="grid grid-cols-4 mb-4">;
-              <TabsTrigger value="procedure">Procedure</TabsTrigger>;
-              <TabsTrigger value="checklist">Checklist</TabsTrigger>;
-              <TabsTrigger value="vitals">Vitals & Meds</TabsTrigger>;
+            \1>
+              <TabsTrigger value="procedure">Procedure\1>
+              <TabsTrigger value="checklist">Checklist\1>
+              <TabsTrigger value="vitals">Vitals & Meds\1>
               <TabsTrigger value="post-op">Post-Op</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="procedure" className="space-y-4">;
-              <div className="grid grid-cols-2 gap-4">;
+            \1>
+              \1>
 <div
-                  <Label htmlFor="procedure_start_time">Start Time</Label>;
+                  <Label htmlFor="procedure_start_time">Start Time\1>
                   <Input>
                     id="procedure_start_time"
                     name="procedure_start_time"
@@ -302,7 +278,7 @@ export default const _OTRecordModal = ({
                   />
                 </div>
 <div
-                  <Label htmlFor="procedure_end_time">End Time</Label>;
+                  <Label htmlFor="procedure_end_time">End Time\1>
                   <Input>
                     id="procedure_end_time"
                     name="procedure_end_time"
@@ -315,7 +291,7 @@ export default const _OTRecordModal = ({
               </div>
 
 <div
-                <Label htmlFor="procedure_notes">Procedure Notes</Label>;
+                <Label htmlFor="procedure_notes">Procedure Notes\1>
                 <Textarea>
                   id="procedure_notes"
                   name="procedure_notes"
@@ -326,9 +302,9 @@ export default const _OTRecordModal = ({
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">;
+              \1>
 <div
-                  <Label htmlFor="anesthesia_type">Anesthesia Type</Label>;
+                  <Label htmlFor="anesthesia_type">Anesthesia Type\1>
                   <Input>
                     id="anesthesia_type"
                     name="anesthesia_type"
@@ -339,7 +315,7 @@ export default const _OTRecordModal = ({
                   />
                 </div>
 <div
-                  <Label htmlFor="blood_loss_ml">Blood Loss (ml)</Label>;
+                  <Label htmlFor="blood_loss_ml">Blood Loss (ml)\1>
                   <Input>
                     id="blood_loss_ml"
                     name="blood_loss_ml"
@@ -353,7 +329,7 @@ export default const _OTRecordModal = ({
               </div>
 
 <div
-                <Label htmlFor="anesthesia_notes">Anesthesia Notes</Label>;
+                <Label htmlFor="anesthesia_notes">Anesthesia Notes\1>
                 <Textarea>
                   id="anesthesia_notes"
                   name="anesthesia_notes"
@@ -365,7 +341,7 @@ export default const _OTRecordModal = ({
               </div>
 
 <div
-                <Label htmlFor="complications">Complications</Label>;
+                <Label htmlFor="complications">Complications\1>
                 <Textarea>
                   id="complications"
                   name="complications"
@@ -377,13 +353,13 @@ export default const _OTRecordModal = ({
               </div>
             </TabsContent>
 
-            <TabsContent value="checklist" className="space-y-4">;
+            \1>
               <Card>
                 <CardHeader>
                   <CardTitle>Surgical Safety Checklist</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">;
+                  \1>
                     {checklistItems.map((item) => (
 <div
                         key={item.id}
@@ -396,7 +372,7 @@ export default const _OTRecordModal = ({
                             handleChecklistChange(item.id, checked as boolean);
                           }
                         />
-                        <Label htmlFor={`checklist-${item.id}`}>;
+                        \1>
                           {item.text}
                         </Label>
                       </div>
@@ -406,18 +382,18 @@ export default const _OTRecordModal = ({
               </Card>
             </TabsContent>
 
-            <TabsContent value="vitals" className="space-y-4">;
+            \1>
               <Card>
                 <CardHeader>
                   <CardTitle>Vital Signs</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4">;
+                  \1>
                     This section would include vital sign monitoring during the;
                     procedure. In a full implementation, this would be a dynamic;
                     form for recording multiple readings.
                   </p>
-                  <div className="grid grid-cols-2 gap-4">;
+                  \1>
 <div
                       <Label>Blood Pressure</Label>
                       <Input placeholder="e.g., 120/80" disabled />
@@ -446,7 +422,7 @@ export default const _OTRecordModal = ({
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground mb-4">;
+                  \1>
                     This section would list medications administered during the;
                     procedure. In a full implementation, this would allow;
                     adding/editing medication records.
@@ -456,9 +432,8 @@ export default const _OTRecordModal = ({
               </Card>
             </TabsContent>
 
-            <TabsContent value="post-op" className="space-y-4">;
-<div
-                <Label htmlFor="post_op_instructions">;
+            \1>
+\1>
                   Post-Op Instructions
                 </Label>
                 <Textarea>
@@ -471,7 +446,7 @@ export default const _OTRecordModal = ({
                 />
               </div>
 <div
-                <Label htmlFor="recovery_notes">Recovery Notes</Label>;
+                <Label htmlFor="recovery_notes">Recovery Notes\1>
                 <Textarea>
                   id="recovery_notes"
                   name="recovery_notes"
@@ -484,7 +459,7 @@ export default const _OTRecordModal = ({
             </TabsContent>
           </Tabs>
 
-          <DialogFooter className="mt-6">;
+          \1>
             <Button>
               type="button"
               variant="outline"
@@ -493,7 +468,7 @@ export default const _OTRecordModal = ({
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isSaving}>;
+            \1>
               {isSaving;
                 ? "Saving..."
                 : existingRecord;

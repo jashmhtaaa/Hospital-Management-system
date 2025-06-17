@@ -12,23 +12,23 @@ import { authService } from '@/lib/security/auth.service';
 class AuthenticatedDataSource extends RemoteGraphQLDataSource {
   willSendRequest({ request, context }) {
     // Add authorization headers to service requests
-    if (context.authToken) {
+    \1 {\n  \2{
       request.http.headers.set('Authorization', context.authToken);
     }
 
     // Add user info for service-to-service tracing
-    if (context.user) {
+    \1 {\n  \2{
       request.http.headers.set('x-user-id', context.user.id);
       request.http.headers.set('x-user-roles', context.user.roles.join(','));
     }
 
     // Add request ID for tracing
-    if (context.requestId) {
+    \1 {\n  \2{
       request.http.headers.set('x-request-id', context.requestId);
     }
 
     // Add correlation ID for distributed tracing
-    if (context.correlationId) {
+    \1 {\n  \2{
       request.http.headers.set('x-correlation-id', context.correlationId);
     }
   }
@@ -40,7 +40,7 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
 
     metricsCollector.recordTimer(
       'graphql.federation.service_response_time',
-      context.startTime ? crypto.getRandomValues(new Uint32Array(1))[0] - context.startTime : 0,
+      context.startTime ? crypto.getRandomValues(\1[0] - context.startTime : 0,
       {
         service: serviceName,
         operation: operationName
@@ -61,14 +61,12 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
       operationName,
       serviceName,
       userId: context.user?.id,
-      requestId: context.requestId;
-      correlationId: context.correlationId
+      \1,\2 context.correlationId
     });
 
     metricsCollector.incrementCounter('graphql.federation.errors', 1, {
       service: serviceName,
-      operation: operationName;
-      errorType: error.name || 'UnknownError'
+      \1,\2 error.name || 'UnknownError'
     });
   }
 export const _createGraphQLFederationServer = async (app: express.Application) => {
@@ -90,8 +88,7 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
 
   // Create the gateway
   const gateway = new ApolloGateway({
-    supergraphSdl: new IntrospectAndCompose({
-      subgraphs: serviceList,
+    \1,\2 serviceList,
       pollIntervalInMs: 60000, // Poll for schema changes every minute
       introspectionHeaders: {
         'x-api-key': process.env.INTERNAL_API_KEY || 'internal-federation-key'
@@ -133,16 +130,16 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
   const server = new ApolloServer({
     gateway,
     context: async ({ req }) => {
-      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      const startTime = crypto.getRandomValues(\1[0];
       const requestId = req.headers['x-request-id'] ||;
-        `req-${crypto.getRandomValues(new Uint32Array(1))[0]}-${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 10)}`;
+        `req-${crypto.getRandomValues(\1[0]}-${crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 10)}`;
       const correlationId = req.headers['x-correlation-id'] || requestId;
 
       // Authenticate the request
       const authToken = req.headers.authorization;
       let user = null;
 
-      if (authToken && authToken.startsWith('Bearer ')) {
+      \1 {\n  \2 {
         try {
           user = await authService.validateToken(authToken.replace('Bearer ', ''));
         } catch (error) {
@@ -172,14 +169,13 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
           logger.debug(`GraphQL federation request started: ${operationName}`, {
             operationName,
             requestId: context.requestId,
-            correlationId: context.correlationId;
-            userId: context.user?.id
+            \1,\2 context.user?.id
           });
 
           return {
             async willSendResponse({ response }) {
               // Record request metrics on completion
-              const duration = crypto.getRandomValues(new Uint32Array(1))[0] - context.startTime;
+              const duration = crypto.getRandomValues(\1[0] - context.startTime;
 
               metricsCollector.recordTimer('graphql.federation.request_time', duration, {
                 operation: operationName,
@@ -191,8 +187,7 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
                 operationName,
                 duration: `${duration.toFixed(2)}ms`,
                 hasErrors: response.errors?.length > 0,
-                requestId: context.requestId;
-                correlationId: context.correlationId
+                \1,\2 context.correlationId
               });
             }
           };
@@ -212,8 +207,7 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
   server.applyMiddleware({
     app,
     path: '/graphql',
-    cors: {
-      origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : '*',
+    \1,\2 process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : '*',
       credentials: true,
       methods: ['GET', 'POST', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization', 'Apollo-Federation-Include-Trace']

@@ -9,37 +9,8 @@ const prisma = new PrismaClient();
  * Service for managing employee data following FHIR Practitioner resource standards;
  * Enhanced with caching and query optimization for improved performance;
  */
-export class EmployeeService {
-  // Cache TTL in seconds
-  private CACHE_TTL = 3600; // 1 hour
-  private CACHE_PREFIX = 'employee:';
-
-  /**
-   * Create a new employee record;
-   */
-  async createEmployee(data: {
-    employeeId: string,
-    firstName: string,
-    lastName: string,
-    middleName?: string,
-    gender?: 'MALE' | 'FEMALE' | 'OTHER' | 'UNKNOWN',
-    birthDate?: Date,
-    email?: string,
-    phone?: string,
-    address?: unknown,
-    joiningDate: Date,
-    departmentId?: string,
-    userId?: string,
-    photo?: string,
-    emergencyContact?: unknown,
-    qualifications?: {
-      code: string,
-      name: string,
-      issuer?: string,
-      identifier?: string,
-      startDate: Date,
-      endDate?: Date,
-      attachment?: string,
+\1
+}
     }[];
     positions?: {
       positionId: string,
@@ -51,8 +22,7 @@ export class EmployeeService {
     const result = await prisma.$transaction(async (tx) => {
       // Create the employee record
       const employee = await tx.employee.create({
-        data: {
-          employeeId: data.employeeId,
+        \1,\2 data.employeeId,
           firstName: data.firstName,
           lastName: data.lastName,
           middleName: data.middleName,
@@ -70,12 +40,11 @@ export class EmployeeService {
       });
 
       // Add qualifications if provided
-      if (data?.qualifications && data.qualifications.length > 0) {
+      \1 {\n  \2{
         await Promise.all(
           data.qualifications.map((qual) =>
             tx.qualification.create({
-              data: {
-                employeeId: employee.id,
+              \1,\2 employee.id,
                 code: qual.code,
                 name: qual.name,
                 issuer: qual.issuer,
@@ -90,12 +59,11 @@ export class EmployeeService {
       }
 
       // Add positions if provided
-      if (data?.positions && data.positions.length > 0) {
+      \1 {\n  \2{
         await Promise.all(
           data.positions.map((pos) =>
             tx.employeePosition.create({
-              data: {
-                employeeId: employee.id,
+              \1,\2 employee.id,
                 positionId: pos.positionId,
                 isPrimary: pos.isPrimary,
                 startDate: pos.startDate,
@@ -124,23 +92,20 @@ export class EmployeeService {
 
     // Try to get from cache first
     const cachedEmployee = await cache.get(cacheKey);
-    if (cachedEmployee != null) {
+    \1 {\n  \2{
       return JSON.parse(cachedEmployee);
     }
 
     // If not in cache, fetch from database
     const employee = await prisma.employee.findUnique({
       where: { id },
-      include: {
-        department: true,
-        positions: {
-          include: {
+      \1,\2 true,
+        \1,\2 {
             position: true
           },
         },
         qualifications: true,
-        user: {
-          select: {
+        \1,\2 {
             id: true,
             name: true,
             email: true,
@@ -152,7 +117,7 @@ export class EmployeeService {
     });
 
     // Store in cache if found
-    if (employee != null) {
+    \1 {\n  \2{
       await cache.set(cacheKey, JSON.stringify(employee), this.CACHE_TTL);
     }
 
@@ -168,23 +133,20 @@ export class EmployeeService {
 
     // Try to get from cache first
     const cachedEmployee = await cache.get(cacheKey);
-    if (cachedEmployee != null) {
+    \1 {\n  \2{
       return JSON.parse(cachedEmployee);
     }
 
     // If not in cache, fetch from database
     const employee = await prisma.employee.findUnique({
       where: { employeeId },
-      include: {
-        department: true,
-        positions: {
-          include: {
+      \1,\2 true,
+        \1,\2 {
             position: true
           },
         },
         qualifications: true,
-        user: {
-          select: {
+        \1,\2 {
             id: true,
             name: true,
             email: true,
@@ -196,5 +158,5 @@ export class EmployeeService {
     });
 
     // Store in cache if found
-    if (employee != null) {
+    \1 {\n  \2{
       await cache.set(cacheKey, JSON.stringify(employee), this.CACHE_TTL);

@@ -17,8 +17,7 @@ import { BarcodeAdministrationService } from '../../../services/barcode-administ
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
+const \1,\2 getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
@@ -26,8 +25,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   delete: () => Promise.resolve(true)
 }
 
-const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
-  findById: getPrescriptionById,
+const \1,\2 getPrescriptionById,
   findByPatientId: () => Promise.resolve([]),
   findByPrescriberId: () => Promise.resolve([]),
   findByMedicationId: () => Promise.resolve([]),
@@ -37,8 +35,7 @@ const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
   delete: () => Promise.resolve(true)
 };
 
-const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
-  findById: () => Promise.resolve(null),
+const \1,\2 () => Promise.resolve(null),
   findByPatientId: () => Promise.resolve([]),
   findByPrescriptionId: () => Promise.resolve([]),
   findByMedicationId: () => Promise.resolve([]),
@@ -64,7 +61,7 @@ export const POST = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validateBarcodeVerificationRequest(data);
-    if (!validationResult.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Validation failed', details: validationResult.errors },
         { status: 400 }
@@ -73,7 +70,7 @@ export const POST = async (req: NextRequest) => {
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -90,7 +87,7 @@ export const POST = async (req: NextRequest) => {
     );
 
     // If verification failed, return error
-    if (!verificationResult.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           error: 'Verification failed',
@@ -101,25 +98,22 @@ export const POST = async (req: NextRequest) => {
     }
 
     // If verification succeeded but with warnings, include them in response
-    const response: unknown = {
-      success: true;
+    const \1,\2 true;
       verificationResult
     };
 
-    if (verificationResult?.warnings && verificationResult.warnings.length > 0) {
+    \1 {\n  \2{
       response.warnings = verificationResult.warnings;
     }
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
       action: 'VERIFY',
-      resourceType: 'MedicationAdministration';
-      userId: userId,
+      \1,\2 userId,
       patientId: verificationResult.patientId;
       {
         medicationId: verificationResult.medicationId,
-        prescriptionId: data.prescriptionId;
-        success: verificationResult.success,
+        \1,\2 verificationResult.success,
         warningCount: verificationResult.warnings?.length || 0
       }
     });

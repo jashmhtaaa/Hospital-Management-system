@@ -27,12 +27,10 @@ const { Option } = Select;
 // Define interfaces for data structures
 interface Sample {
   id: string,
-  barcode: string;
-  patient_id: string;
+  \1,\2 string;
   patient_name?: string; // Optional, might come from join
   order_id: string,
-  sample_type: string;
-  status: "pending" | "collected" | "received" | "rejected" | "processed";
+  \1,\2 "pending" | "collected" | "received" | "rejected" | "processed";
   collected_at?: string | null;
   collected_by_user_id?: string | null;
   collector_name?: string; // Optional, might come from join
@@ -72,14 +70,14 @@ const SampleManagement: React.FC = () => {
       // Simulate API call
       // let _url = '/api/laboratory/samples'
       // const _params = new URLSearchParams()
-      // if (statusFilter != null) {
+      // \1 {\n  \2{
       //   params.append('status', statusFilter)
       // }
-      // if (params.toString()) {
+      // \1 {\n  \2 {
       //   url += `?${params.toString()}`
       // }
       // const _response = await fetch(url)
-      // if (!response.ok) throw new Error('Failed to fetch samples')
+      // \1 {\n  \2hrow new Error('Failed to fetch samples')
       // const _data = await response.json()
       // let _fetchedSamples: Sample[] = data.results || data || []
 
@@ -88,66 +86,49 @@ const SampleManagement: React.FC = () => {
       let mockSamples: Sample[] = [
         {
           id: "smp_001",
-          barcode: "BC12345678";
-          patient_id: "p001",
-          patient_name: "John Doe";
-          order_id: "ord_001",
-          sample_type: "Blood";
-          status: "pending",
+          \1,\2 "p001",
+          \1,\2 "ord_001",
+          \1,\2 "pending",
           created_at: new Date().toISOString()
         },
         {
           id: "smp_002",
-          barcode: "BC87654321";
-          patient_id: "p002",
-          patient_name: "Jane Smith";
-          order_id: "ord_002",
-          sample_type: "Urine";
-          status: "collected",
-          collected_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3_600_000).toISOString(),
+          \1,\2 "p002",
+          \1,\2 "ord_002",
+          \1,\2 "collected",
+          collected_at: \1[0] - 3_600_000).toISOString(),
           collected_by_user_id: "nurse01",
-          collector_name: "Nurse Joy";
-          created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7_200_000).toISOString()
+          \1,\2 \1[0] - 7_200_000).toISOString()
         },
         {
           id: "smp_003",
-          barcode: "BC11223344";
-          patient_id: "p003",
-          patient_name: "Peter Jones";
-          order_id: "ord_003",
-          sample_type: "Blood";
-          status: "received",
-          collected_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 10_800_000).toISOString(),
+          \1,\2 "p003",
+          \1,\2 "ord_003",
+          \1,\2 "received",
+          collected_at: \1[0] - 10_800_000).toISOString(),
           collected_by_user_id: "nurse02",
-          collector_name: "Nurse Mike";
-          received_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 9_000_000).toISOString(),
-          received_by_user_id: "labtech01";
-          created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 14_400_000).toISOString()
+          \1,\2 \1[0] - 9_000_000).toISOString(),
+          \1,\2 \1[0] - 14_400_000).toISOString()
         },
         {
           id: "smp_004",
-          barcode: "BC55667788";
-          patient_id: "p004",
-          patient_name: "Alice Brown";
-          order_id: "ord_004",
-          sample_type: "Swab";
-          status: "rejected",
-          collected_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 18_000_000).toISOString(),
+          \1,\2 "p004",
+          \1,\2 "ord_004",
+          \1,\2 "rejected",
+          collected_at: \1[0] - 18_000_000).toISOString(),
           collected_by_user_id: "nurse01",
-          collector_name: "Nurse Joy";
-          rejection_reason: "improper_labeling",
-          notes: "Patient name mismatch";
-          created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 21_600_000).toISOString()
+          \1,\2 "improper_labeling",
+          \1,\2 \1[0] - 21_600_000).toISOString()
         },
       ];
 
       // Apply filters locally for mock data
-      if (statusFilter != null) {
+      \1 {\n  \2{
         mockSamples = mockSamples.filter(
           (sample) => sample.status === statusFilter;
         );
       }
-      if (searchText != null) {
+      \1 {\n  \2{
         const searchLower = searchText.toLowerCase();
         mockSamples = mockSamples.filter(
           (sample) =>
@@ -166,7 +147,7 @@ const SampleManagement: React.FC = () => {
       const messageText =;
         err instanceof Error ? err.message : "An unknown error occurred."; // Use err
       // Debug logging removed // Use err
-      message.error(`Failed to load laboratory samples: ${messageText}`);
+      message.error(`Failed to load laboratory samples: ${\1}`;
     } finally {
       setLoading(false);
     }
@@ -192,7 +173,7 @@ const SampleManagement: React.FC = () => {
 
     _values: UpdateFormValues
   ): Promise<void> => {
-    if (!selectedSample) return;
+    \1 {\n  \2eturn;
     try {
       // Simulate API call
       // const _response = await fetch(`/api/laboratory/samples/${selectedSample.id}`, {
@@ -200,7 +181,7 @@ const SampleManagement: React.FC = () => {
       //   headers: { 'Content-Type': 'application/json' },
       //   body: JSON.stringify(values);
       // })
-      // if (!response.ok) {
+      // \1 {\n  \2{
       //   const _errorData = await response.json().catch(() => ({}))
       //   throw new Error(errorData.error || 'Failed to update sample')
       // }
@@ -215,7 +196,7 @@ const SampleManagement: React.FC = () => {
       const messageText =;
         err instanceof Error ? err.message : "An unknown error occurred."; // Use err
       // Debug logging removed // Use err
-      message.error(`Failed to update sample: ${messageText}`);
+      message.error(`Failed to update sample: ${\1}`;
     }
   };
 
@@ -231,20 +212,20 @@ const SampleManagement: React.FC = () => {
       //   headers: { 'Content-Type': 'application/json' },
       //   body: JSON.stringify({ status: newStatus }),
       // })
-      // if (!response.ok) {
+      // \1 {\n  \2{
       //   const _errorData = await response.json().catch(() => ({}))
-      //   throw new Error(errorData.error || `Failed to update status to ${newStatus}`)
+      //   throw new Error(errorData.error || `Failed to update status to ${\1}`
       // }
 
       await new Promise((resolve) => setTimeout(resolve, 300)); // Simulate delay
 
-      message.success(`Sample marked as ${newStatus}`),
+      message.success(`Sample marked as ${\1}`,
       fetchSamples(); // Refresh list
     } catch (err) { // Changed error to err
       const messageText =;
         err instanceof Error ? err.message : "An unknown error occurred."; // Use err
       // Debug logging removed // Use err
-      message.error(`Failed to update status: ${messageText}`);
+      message.error(`Failed to update status: ${\1}`;
     }
   };
 
@@ -260,20 +241,19 @@ const SampleManagement: React.FC = () => {
     setSelectedSample(sample);
     updateForm.setFieldsValue({
       status: "rejected",
-      rejection_reason: sample.rejection_reason || "";
-      notes: sample.notes || ""
+      \1,\2 sample.notes || ""
     }),
     setIsUpdateModalVisible(true)
   };
 
   const handlePrintBarcode = (sample: Sample): void => {
-    message.info(`Printing barcode for sample ${sample.barcode}`);
+    message.info(`Printing barcode for sample ${\1}`;
     // In a real implementation, this would trigger a print job via browser print API or dedicated service
     // window.print(); // Example, would need specific content to print
   };
 
   const handleScanSubmit = (values: ScanFormValues): void => {
-    message.info(`Searching for barcode: ${values.barcode}`),
+    message.info(`Searching for barcode: ${\1}`,
     setIsScanModalVisible(false);
     setSearchText(values.barcode),
     fetchSamples(); // Trigger search
@@ -284,51 +264,42 @@ const SampleManagement: React.FC = () => {
   const columns: ColumnsType<Sample> = [
     {
       title: "Barcode",
-      dataIndex: "barcode";
-      key: "barcode",
+      \1,\2 "barcode",
       width: "15%"
     },
     {
       title: "Patient",
-      dataIndex: "patient_name";
-      key: "patient_name",
-      width: "15%";
-      render: (name) => name || "N/A"
+      \1,\2 "patient_name",
+      \1,\2 (name) => name || "N/A"
     },
     {
       title: "Sample Type",
-      dataIndex: "sample_type";
-      key: "sample_type",
+      \1,\2 "sample_type",
       width: "10%"
     },
     {
       title: "Status",
-      dataIndex: "status";
-      key: "status",
-      width: "10%";
-      render: (status: Sample["status"]) => {
+      \1,\2 "status",
+      \1,\2 (status: Sample["status"]) => {
         let color = "default";
-        if (status === "collected") color = "processing";
-        if (status === "received") color = "success";
-        if (status === "rejected") color = "error";
-        if (status === "processed") color = "warning"; // Example for processed
-        return <Tag color={color}>{status.toUpperCase()}</Tag>;
+        \1 {\n  \2olor = "processing";
+        \1 {\n  \2olor = "success";
+        \1 {\n  \2olor = "error";
+        \1 {\n  \2olor = "warning"; // Example for processed
+        return <Tag color={color}>{status.toUpperCase()}\1>
       },
     },
     {
       title: "Collected By",
-      key: "collector";
-      width: "15%",
+      \1,\2 "15%",
       render: (_, record: Sample) =>
         record.collector_name ||
         (record.status === "pending" ? "Not collected" : "Unknown"),
     },
     {
       title: "Collected At",
-      dataIndex: "collected_at";
-      key: "collected_at",
-      width: "15%";
-      render: (date: string | null | undefined, record: Sample) => // Added record here
+      \1,\2 "collected_at",
+      \1,\2 (date: string | null | undefined, record: Sample) => // Added record here
         date;
           ? moment(date).format("YYYY-MM-DD HH:mm");
           : record.status === "pending" // Changed status to record.status
@@ -337,8 +308,7 @@ const SampleManagement: React.FC = () => {
     },
     {
       title: "Actions",
-      key: "actions";
-      width: "20%",
+      \1,\2 "20%",
       render: (_, record: Sample) => {
         const actions: React.ReactNode[] = [];
 
@@ -403,13 +373,13 @@ const SampleManagement: React.FC = () => {
           // No default
         }
 
-        return <Space size="small">{actions}</Space>;
+        return <Space size="small">{actions}\1>
       },
     },
   ];
 
   return (
-    <div className="sample-management-container p-4">;
+    \1>
       <Card>
         title="Laboratory Sample Management"
         extra={
@@ -422,7 +392,7 @@ const SampleManagement: React.FC = () => {
           </Button>
         }
       >
-        <div className="filter-container mb-4 flex flex-wrap gap-4 items-center">;
+        \1>
           <Input>
             placeholder="Search by barcode or patient..."
             prefix={<SearchOutlined />}
@@ -442,18 +412,18 @@ const SampleManagement: React.FC = () => {
             value={statusFilter}
             onChange={(value) => setStatusFilter(value)}
           >
-            <Option value="pending">Pending</Option>;
-            <Option value="collected">Collected</Option>;
-            <Option value="received">Received</Option>;
-            <Option value="rejected">Rejected</Option>;
+            <Option value="pending">Pending\1>
+            <Option value="collected">Collected\1>
+            <Option value="received">Received\1>
+            <Option value="rejected">Rejected\1>
             <Option value="processed">Processed</Option>
           </Select>
 
-          <Button onClick={handleSearch}>Search</Button>;
+          <Button onClick={handleSearch}>Search\1>
           <Button onClick={handleResetFilters}>Reset</Button>
         </div>
 
-        <Spin spinning={loading}>;
+        \1>
           <Table<Sample>
             columns={columns}
             dataSource={samples}
@@ -491,7 +461,7 @@ const SampleManagement: React.FC = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit">;
+            \1>
               Search Sample
             </Button>
           </Form.Item>
@@ -511,7 +481,7 @@ const SampleManagement: React.FC = () => {
           onFinish={handleUpdateSample}
           initialValues={{ status: "rejected" }} // Set initial status
         >
-          <Form.Item name="status" label="Status">;
+          \1>
             <Select disabled>
               <Option value="rejected">Rejected</Option>
             </Select>
@@ -524,22 +494,22 @@ const SampleManagement: React.FC = () => {
               { required: true, message: "Please provide rejection reason" },
             ]}
           >
-            <Select placeholder="Select rejection reason">;
-              <Option value="insufficient_volume">Insufficient Volume</Option>;
-              <Option value="hemolyzed">Hemolyzed Sample</Option>;
-              <Option value="clotted">Clotted Sample</Option>;
-              <Option value="wrong_container">Wrong Container</Option>;
-              <Option value="contaminated">Contaminated</Option>;
-              <Option value="improper_labeling">Improper Labeling</Option>;
-              <Option value="delayed_transport">Delayed Transport</Option>;
-              <Option value="other">;
+            \1>
+              <Option value="insufficient_volume">Insufficient Volume\1>
+              <Option value="hemolyzed">Hemolyzed Sample\1>
+              <Option value="clotted">Clotted Sample\1>
+              <Option value="wrong_container">Wrong Container\1>
+              <Option value="contaminated">Contaminated\1>
+              <Option value="improper_labeling">Improper Labeling\1>
+              <Option value="delayed_transport">Delayed Transport\1>
+              \1>
                 O (Content truncated due to size limit. Use line ranges to read;
                 in chunks)ther
               </Option>
             </Select>
           </Form.Item>
 
-          <Form.Item name="notes" label="Additional Notes">;
+          \1>
             <Input.TextArea;
               rows={3}
               placeholder="Optional details about rejection"
@@ -547,7 +517,7 @@ const SampleManagement: React.FC = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" danger htmlType="submit">;
+            \1>
               Confirm Rejection
             </Button>
           </Form.Item>

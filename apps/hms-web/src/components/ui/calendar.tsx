@@ -107,8 +107,8 @@ export const Calendar = ({
   };
 
   return (
-    <div className={cn("p-3", className)}>;
-      <div className="flex items-center justify-between">;
+    \1>
+      \1>
         <Button>
           variant="outline"
           size="sm"
@@ -117,7 +117,7 @@ export const Calendar = ({
         >
           &lt
         </Button>
-        <div className="font-medium">;
+        \1>
           {currentMonth.toLocaleString('default', { month: 'long' })} {currentMonth.getFullYear()}
         </div>
         <Button>
@@ -129,7 +129,7 @@ export const Calendar = ({
           &gt
         </Button>
       </div>
-      <div className="mt-4 grid grid-cols-7 gap-1 text-center text-xs">;
+      \1>
         <div>Su</div>
         <div>Mo</div>
         <div>Tu</div>
@@ -138,7 +138,7 @@ export const Calendar = ({
         <div>Fr</div>
         <div>Sa</div>
       </div>
-      <div className="mt-2 grid grid-cols-7 gap-1">;
+      \1>
         {renderCalendarDays()}
       </div>
     </div>

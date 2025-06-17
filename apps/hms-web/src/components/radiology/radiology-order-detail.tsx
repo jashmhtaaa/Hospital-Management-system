@@ -7,12 +7,9 @@ import { Table } from '@/components/ui/table';
 }
 interface RadiologyOrder {
   id: string,
-  patientName: string;
-  patientId: string,
-  orderDate: string;
-  studyType: string,
-  priority: 'routine' | 'urgent' | 'stat';
-  status: 'ordered' | 'scheduled' | 'in-progress' | 'completed' | 'reported',
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 'ordered' | 'scheduled' | 'in-progress' | 'completed' | 'reported',
   requestedBy: string
 }
 
@@ -26,20 +23,20 @@ interface RadiologyOrderDetailProps {
 export const _RadiologyOrderDetail = ({ order }: RadiologyOrderDetailProps) => {
   const getPriorityBadge = (priority: string) => {
     switch(priority) {
-      case 'routine': return <Badge variant="secondary">Routine</Badge>;
-      case 'urgent': return <Badge variant="warning">Urgent</Badge>;
-      case 'stat': return <Badge variant="danger">STAT</Badge>;
+      case 'routine': return <Badge variant="secondary">Routine\1>
+      case 'urgent': return <Badge variant="warning">Urgent\1>
+      case 'stat': return <Badge variant="danger">STAT\1>
       default: return <Badge>Unknown</Badge>
     }
   };
 
   const getStatusBadge = (status: string) => {
     switch(status) {
-      case 'ordered': return <Badge variant="secondary">Ordered</Badge>;
-      case 'scheduled': return <Badge variant="secondary">Scheduled</Badge>;
-      case 'in-progress': return <Badge variant="warning">In Progress</Badge>;
-      case 'completed': return <Badge variant="success">Completed</Badge>;
-      case 'reported': return <Badge variant="success">Reported</Badge>;
+      case 'ordered': return <Badge variant="secondary">Ordered\1>
+      case 'scheduled': return <Badge variant="secondary">Scheduled\1>
+      case 'in-progress': return <Badge variant="warning">In Progress\1>
+      case 'completed': return <Badge variant="success">Completed\1>
+      case 'reported': return <Badge variant="success">Reported\1>
       default: return <Badge>Unknown</Badge>
     }
   };
@@ -50,60 +47,60 @@ export const _RadiologyOrderDetail = ({ order }: RadiologyOrderDetailProps) => {
         <CardTitle>Radiology Order Details</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-6">;
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
+        \1>
+          \1>
 <div
-              <h3 className="text-sm font-medium text-gray-500">Patient Information</h3>;
-              <div className="mt-2 space-y-1">;
-                <p className="text-base font-medium">{order.patientName}</p>;
+              <h3 className="text-sm font-medium text-gray-500">Patient Information\1>
+              \1>
+                <p className="text-base font-medium">{order.patientName}\1>
                 <p className="text-sm text-gray-500">ID: {order.patientId}</p>
               </div>
             </div>
 
 <div
-              <h3 className="text-sm font-medium text-gray-500">Order Information</h3>;
-              <div className="mt-2 space-y-1">;
-                <p className="text-base font-medium">Order #{order.id}</p>;
+              <h3 className="text-sm font-medium text-gray-500">Order Information\1>
+              \1>
+                <p className="text-base font-medium">Order #{order.id}\1>
                 <p className="text-sm text-gray-500">Date: {order.orderDate}</p>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">;
+          \1>
 <div
-              <h3 className="text-sm font-medium text-gray-500">Study Type</h3>;
+              <h3 className="text-sm font-medium text-gray-500">Study Type\1>
               <p className="mt-2 text-base">{order.studyType}</p>
             </div>
 
 <div
-              <h3 className="text-sm font-medium text-gray-500">Priority</h3>;
+              <h3 className="text-sm font-medium text-gray-500">Priority\1>
               <div className="mt-2">{getPriorityBadge(order.priority)}</div>
             </div>
 
 <div
-              <h3 className="text-sm font-medium text-gray-500">Status</h3>;
+              <h3 className="text-sm font-medium text-gray-500">Status\1>
               <div className="mt-2">{getStatusBadge(order.status)}</div>
             </div>
           </div>
 
 <div
-            <h3 className="text-sm font-medium text-gray-500">Requested By</h3>;
+            <h3 className="text-sm font-medium text-gray-500">Requested By\1>
             <p className="mt-2 text-base">{order.requestedBy}</p>
           </div>
 
 <div
-            <h3 className="text-sm font-medium text-gray-500">Clinical Information</h3>;
-            <p className="mt-2 text-base">;
+            <h3 className="text-sm font-medium text-gray-500">Clinical Information\1>
+            \1>
               Patient presented with symptoms requiring radiological investigation.;
               Further clinical details available in patient record.
             </p>
           </div>
 
-          <div className="flex justify-end space-x-2">;
-            <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">;
+          \1>
+            \1>
               Print Order
             </button>
-            <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">;
+            \1>
               Update Status
             </button>
           </div>

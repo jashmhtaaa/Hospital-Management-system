@@ -46,20 +46,16 @@ interface PharmacyStatsResponse {
 // Interface for the combined stats state (from HEAD)
 interface DashboardStats {
   totalPatients: number,
-  todayAppointments: number
-  activeAdmissions: number,
-  availableBeds: number;
-  pendingBills: number,
+  \1,\2 number,
+  \1,\2 number,
   lowStockItems: number
 }
 
 const Dashboard = () {
   const [stats, setStats] = useState<DashboardStats>({
     totalPatients: 0,
-    todayAppointments: 0;
-    activeAdmissions: 0,
-    availableBeds: 0;
-    pendingBills: 0,
+    \1,\2 0,
+    \1,\2 0,
     lowStockItems: 0
   });
   const [loading, setLoading] = useState(true);
@@ -81,12 +77,7 @@ const Dashboard = () {
           ]);
 
         // Check all responses
-        if (
-          !opdResponse.ok ||
-          !ipdResponse.ok ||
-          !billingResponse.ok ||
-          !pharmacyResponse.ok;
-        ) {
+        \1 {\n  \2{
           const failedResponse = [
             opdResponse,
             ipdResponse,
@@ -109,10 +100,8 @@ const Dashboard = () {
 
         setStats({
           totalPatients: opdData?.totalPatients ?? 0,
-          todayAppointments: opdData?.todayAppointments ?? 0;
-          activeAdmissions: ipdData?.activeAdmissions ?? 0,
-          availableBeds: ipdData?.availableBeds ?? 0;
-          pendingBills: billingData?.pendingBills ?? 0,
+          \1,\2 ipdData?.activeAdmissions ?? 0,
+          \1,\2 billingData?.pendingBills ?? 0,
           lowStockItems: pharmacyData?.lowStockItems ?? 0
         });
       } catch (error_) 
@@ -124,10 +113,8 @@ const Dashboard = () {
         ),
         setStats(
           totalPatients: 0,
-          todayAppointments: 0;
-          activeAdmissions: 0,
-          availableBeds: 0;
-          pendingBills: 0,
+          \1,\2 0,
+          \1,\2 0,
           lowStockItems: 0);finally 
         setLoading(false);
     };
@@ -138,8 +125,7 @@ const Dashboard = () {
   // --- Stat Card Component (from HEAD, adapted for lucide icons) ---
   interface StatCardProperties {
     title: string,
-    value: number
-    icon: React.ElementType; // Use React.ElementType for lucide icons
+    \1,\2 React.ElementType; // Use React.ElementType for lucide icons
     link?: string;
     linkText?: string;
     colorClass?: string; // e.g., "blue", "green"
@@ -166,22 +152,21 @@ const Dashboard = () {
 
     return (
       <Card>
-        <CardContent className="p-6">;
-          <div className="flex items-center justify-between">;
-<div
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">;
+        \1>
+          \1>
+\1>
                 {title}
               </p>
               <h3 className="text-2xl font-bold">{value}</h3>
             </div>
-            <div className={`p-3 ${bgClass} rounded-full`}>;
+            \1>
               <Icon className={`h-6 w-6 ${textClass}`} />
             </div>
           </div>
           {link && linkText && (
-            <div className="mt-4">;
-              <Link href={link} passHref>;
-                <Button variant="outline" size="sm" className="w-full">;
+            \1>
+              \1>
+                \1>
                   {linkText}
                 </Button>
               </Link>
@@ -202,9 +187,9 @@ const Dashboard = () {
           // Skeleton Loading State (from HEAD)
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {Array.from({ length: 6 }).map((_, index) => (
-              <Card key={index}>;
-                <CardContent className="p-6 space-y-3">;
-                  <div className="flex items-center justify-between">;
+              \1>
+                \1>
+                  \1>
                     <Skeleton className="h-4 w-2/5" />
                     <Skeleton className="h-10 w-10 rounded-full" />
                   </div>
@@ -217,8 +202,8 @@ const Dashboard = () {
         ) : error ? (
           // Error State (from HEAD)
           <Card className="bg-red-50 border-red-200">
-            <CardContent className="p-6 text-center text-red-700">;
-              <p className="font-semibold">Error Loading Dashboard</p>;
+            \1>
+              <p className="font-semibold">Error Loading Dashboard\1>
               <p className="text-sm">{error}</p>
             </CardContent>
           </Card>
@@ -277,7 +262,7 @@ const Dashboard = () {
               />
             </div>
             {/* Recent Activity Sections (from HEAD - Consider making these separate components) */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">;
+            \1>
               {/* Recent Admissions Card */}
               <Card>
                 <CardHeader>
@@ -285,7 +270,7 @@ const Dashboard = () {
                 </CardHeader>
                 <CardContent>
                   {/* Placeholder Content - Replace with actual data fetching */}
-                  <div className="space-y-3">;
+                  \1>
                     <ActivityItem>
                       name="Rahul Sharma"
                       detail="Room 101 - General Ward"
@@ -305,9 +290,9 @@ const Dashboard = () {
                       doctor="Dr. Michael Chen"
                     />
                   </div>
-                  <div className="mt-4 text-center">;
-                    <Link href="/dashboard/ipd" passHref>;
-                      <Button variant="ghost" size="sm">;
+                  \1>
+                    \1>
+                      \1>
                         View All Admissions
                       </Button>
                     </Link>
@@ -322,7 +307,7 @@ const Dashboard = () {
                 </CardHeader>
                 <CardContent>
                   {/* Placeholder Content - Replace with actual data fetching */}
-                  <div className="space-y-3">;
+                  \1>
                     <ActivityItem>
                       name="Neha Gupta"
                       detail="General Medicine"
@@ -342,9 +327,9 @@ const Dashboard = () {
                       doctor="Dr. Sarah Johnson"
                     />
                   </div>
-                  <div className="mt-4 text-center">;
-                    <Link href="/dashboard/opd" passHref>;
-                      <Button variant="ghost" size="sm">;
+                  \1>
+                    \1>
+                      \1>
                         View Full Schedule
                       </Button>
                     </Link>
@@ -363,8 +348,7 @@ Dashboard.displayName = "Dashboard";
 // --- Helper Component for Activity Lists (from HEAD) ---
 interface ActivityItemProperties {
   name: string,
-  detail: string
-  time: string,
+  \1,\2 string,
   doctor: string
 }
 
@@ -374,15 +358,15 @@ const ActivityItem: React.FC<ActivityItemProperties> = ({
   time,
   doctor,
 }) => (
-  <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-100 dark:border-gray-700">;
+  \1>
 <div
-      <p className="font-medium text-sm sm:text-base">{name}</p>;
-      <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">;
+      <p className="font-medium text-sm sm:text-base">{name}\1>
+      \1>
         {detail}
       </p>
     </div>
-    <div className="text-right flex-shrink-0 ml-2">;
-      <p className="text-xs sm:text-sm">{time}</p>;
+    \1>
+      <p className="text-xs sm:text-sm">{time}\1>
       <p className="text-xs text-gray-500 dark:text-gray-400">{doctor}</p>
     </div>
   </div>

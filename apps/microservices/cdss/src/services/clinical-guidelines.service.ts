@@ -16,592 +16,41 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
  */
 
 // Clinical guideline models
-export interface ClinicalGuideline {
-  id: string,
-  name: string;
-  version: string,
-  status: GuidelineStatus;
-  category: string[],
-  conditions: string[];
-  specialties: string[],
-  populations: Population[];
-  evidenceLevel: EvidenceLevel,
-  recommendations: Recommendation[];
-  decisionRules: DecisionRule[],
-  references: Reference[];
-  createdAt: Date,
-  updatedAt: Date;
-  effectiveDate: Date;
-  expirationDate?: Date;
-  reviewDate: Date,
-  reviewedBy: string[];
-  metadata: GuidelineMetadata
-export enum GuidelineStatus {
-  DRAFT = 'DRAFT',
-  ACTIVE = 'ACTIVE',
-  RETIRED = 'RETIRED',
-  SUPERSEDED = 'SUPERSEDED',
-  UNDER_REVIEW = 'UNDER_REVIEW',
-export enum EvidenceLevel {
-  LEVEL_1A = 'LEVEL_1A', // Systematic review of RCTs
-  LEVEL_1B = 'LEVEL_1B', // Individual RCT
-  LEVEL_2A = 'LEVEL_2A', // Systematic review of cohort studies
-  LEVEL_2B = 'LEVEL_2B', // Individual cohort study
-  LEVEL_3A = 'LEVEL_3A', // Systematic review of case-control studies
-  LEVEL_3B = 'LEVEL_3B', // Individual case-control study
-  LEVEL_4 = 'LEVEL_4',   // Case series
-  LEVEL_5 = 'LEVEL_5',   // Expert opinion
-export = "export" enum = "enum" RecommendationStrength = "RecommendationStrength" {
-  STRONG = 'STRONG',
-  MODERATE = 'MODERATE',
-  WEAK = 'WEAK',
-  CONDITIONAL = 'CONDITIONAL',
-  AGAINST = 'AGAINST',
-export interface Population {
-  description: string;
+\1
+}
   ageRange?: { min?: number; max?: number };
   gender?: string[];
   conditions?: string[];
   medications?: string[];
   exclusionCriteria?: string[];
   riskFactors?: string[];
-export interface Recommendation {
-  id: string,
-  summary: string;
-  details: string,
-  strength: RecommendationStrength;
-  evidenceLevel: EvidenceLevel,
-  eligibilityCriteria: string[];
-  actions: Action[];
-  conditionalLogic?: string;
-  contraindications: string[],
-  warnings: string[];
-  monitoringParameters: string[],
-  outcomeMetrics: string[];
-  patientPreferences: PatientPreference[]
-export interface Action {
-  type: ActionType,
-  description: string;
-  code?: string;
-  codeSystem?: string;
-  frequency?: string;
-  duration?: string;
-  dose?: string;
-  alternativeActions?: string[];
-  orderSetReference?: string;
-  documentationRequired?: boolean;
-export enum ActionType {
-  MEDICATION = 'MEDICATION',
-  PROCEDURE = 'PROCEDURE',
-  LABORATORY = 'LABORATORY',
-  IMAGING = 'IMAGING',
-  REFERRAL = 'REFERRAL',
-  NURSING = 'NURSING',
-  EDUCATION = 'EDUCATION',
-  MONITORING = 'MONITORING',
-  FOLLOW_UP = 'FOLLOW_UP',
-  LIFESTYLE = 'LIFESTYLE',
-  PREVENTION = 'PREVENTION',
-  SCREENING = 'SCREENING',
-  IMMUNIZATION = 'IMMUNIZATION',
-  OTHER = 'OTHER',
-export interface PatientPreference {
-  factor: string,
-  description: string;
-  impactOnDecision: string;
-  alternativeOptions?: string[];
-export interface DecisionRule {
-  id: string,
-  name: string;
-  description: string,
-  conditions: Condition[];
-  action: Action,
-  priority: number;
-  conflictResolution?: string;
-export interface Condition {
-  parameter: string,
-  operator: Operator;
-  value: unknown;
-  unit?: string;
-  valueType: ValueType
-export enum Operator {
-  EQUALS = 'EQUALS',
-  NOT_EQUALS = 'NOT_EQUALS',
-  GREATER_THAN = 'GREATER_THAN',
-  LESS_THAN = 'LESS_THAN',
-  GREATER_THAN_OR_EQUAL = 'GREATER_THAN_OR_EQUAL',
-  LESS_THAN_OR_EQUAL = 'LESS_THAN_OR_EQUAL',
-  IN = 'IN',
-  NOT_IN = 'NOT_IN',
-  CONTAINS = 'CONTAINS',
-  NOT_CONTAINS = 'NOT_CONTAINS',
-  EXISTS = 'EXISTS',
-  NOT_EXISTS = 'NOT_EXISTS',
-  MATCHES_REGEX = 'MATCHES_REGEX',
-export enum ValueType {
-  STRING = 'STRING',
-  NUMBER = 'NUMBER',
-  BOOLEAN = 'BOOLEAN',
-  DATE = 'DATE',
-  ARRAY = 'ARRAY',
-  OBJECT = 'OBJECT',
-export = "export" interface = "interface" Reference = "Reference" 
-  citation: string;
-  url?: string;
-  pubMedId?: string;
-  doi?: string;
-  type: ReferenceType,
-  relevance: 'PRIMARY' | 'SECONDARY' | 'BACKGROUND'
-export enum ReferenceType {
-  JOURNAL_ARTICLE = 'JOURNAL_ARTICLE',
-  CLINICAL_TRIAL = 'CLINICAL_TRIAL',
-  SYSTEMATIC_REVIEW = 'SYSTEMATIC_REVIEW',
-  META_ANALYSIS = 'META_ANALYSIS',
-  BOOK = 'BOOK',
-  WEBSITE = 'WEBSITE',
-  GUIDELINE = 'GUIDELINE',
-  REPORT = 'REPORT',
-  OTHER = 'OTHER',
-export = "export" interface = "interface" GuidelineMetadata = "GuidelineMetadata" 
-  author: string,
-  organization: string;
-  contributors: string[],
-  endorsements: string[];
-  fundingSource?: string;
-  disclosures?: string[];
-  implementationConsiderations: string[];
-  localization?: Record<string, any>;
-  adaptations?: Record<string, any>;
-  relatedGuidelines: RelatedGuideline[],
-  updateHistory: UpdateRecord[];
-  usageStatistics: UsageStatistics
-export interface RelatedGuideline {
-  id: string,
-  name: string;
-  relationship: 'PREDECESSOR' | 'SUCCESSOR' | 'SUPPLEMENT' | 'ALTERNATIVE' | 'REFERENCED';
-  notes?: string;
-export interface UpdateRecord {
-  date: Date,
-  version: string;
-  changes: string[],
-  changedBy: string;
-  approvedBy: string,
-  rationale: string
-export interface UsageStatistics {
-  implementationCount: number,
-  alertCount: number;
-  overrideCount: number,
-  adherenceRate: number;
-  outcomeImpact: Record<string, any>,
-  userFeedback: UserFeedback[]
-export interface UserFeedback {
-  userId: string,
-  date: Date;
-  rating: number;
-  comments?: string;
-  usabilityScore?: number;
-  clinicalRelevanceScore?: number;
+\1
+}
 }
 
 // Patient evaluation models
-export interface PatientEvaluation {
-  patientId: string;
-  encounterId?: string;
-  guidelineId: string,
-  evaluationDate: Date;
-  evaluatedBy: string,
-  context: EvaluationContext;
-  patientData: PatientData,
-  recommendations: EvaluationRecommendation[];
-  alerts: EvaluationAlert[],
-  overallCompliance: number;
-  applicationDetails: ApplicationDetails,
-  userActions: UserAction[]
-export interface EvaluationContext {
-  setting: 'INPATIENT' | 'OUTPATIENT' | 'EMERGENCY' | 'HOME' | 'TELEHEALTH',
-  specialty: string;
-  reason: string,
-  carePhase: 'PREVENTION' | 'DIAGNOSIS' | 'TREATMENT' | 'FOLLOW_UP' | 'PALLIATIVE';
-  urgency: 'ROUTINE' | 'URGENT' | 'EMERGENCY',
-  userRole: string
-export interface PatientData {
-  demographics: PatientDemographics,
-  vitalSigns: VitalSign[];
-  conditions: PatientCondition[],
-  medications: PatientMedication[];
-  allergies: PatientAllergy[],
-  procedures: PatientProcedure[];
-  labResults: LabResult[],
-  socialFactors: SocialFactor[];
-  familyHistory: FamilyHistory[]
-export interface PatientDemographics {
-  age: number,
-  gender: string;
-  ethnicity?: string[];
-  race?: string[];
-  weight?: number;
-  height?: number;
-  bmi?: number;
-  smokingStatus?: string;
-  pregnancyStatus?: string;
-  lactationStatus?: string;
-export interface VitalSign {
-  type: string,
-  value: number;
-  unit: string,
-  dateRecorded: Date;
-  abnormal: boolean
-export interface PatientCondition {
-  code: string,
-  codeSystem: string;
-  name: string,
-  status: 'ACTIVE' | 'RESOLVED' | 'INACTIVE';
-  onsetDate?: Date;
-  endDate?: Date;
-  severity?: string;
-  stage?: string;
-export interface PatientMedication {
-  code: string,
-  codeSystem: string;
-  name: string,
-  dosage: string;
-  route: string,
-  frequency: string;
-  startDate: Date;
-  endDate?: Date;
-  status: 'ACTIVE' | 'COMPLETED' | 'DISCONTINUED'
-export interface PatientAllergy {
-  allergen: string,
-  allergenType: 'DRUG' | 'FOOD' | 'ENVIRONMENTAL';
-  reaction?: string;
-  severity?: string;
-  status: 'ACTIVE' | 'INACTIVE'
-export interface PatientProcedure {
-  code: string,
-  codeSystem: string;
-  name: string,
-  date: Date;
-  status: 'COMPLETED' | 'IN_PROGRESS' | 'PLANNED';
-  performer?: string;
-export interface LabResult {
-  code: string,
-  codeSystem: string;
-  name: string,
-  value: string;
-  unit?: string;
-  referenceRange?: string;
-  abnormalFlag?: string;
-  datePerformed: Date
-export interface SocialFactor {
-  category: string,
-  value: string;
-  impact: 'HIGH' | 'MEDIUM' | 'LOW'
-export interface FamilyHistory {
-  relationship: string,
-  condition: string;
-  status: 'PRESENT' | 'ABSENT' | 'UNKNOWN';
-  onsetAge?: number;
-export interface EvaluationRecommendation {
-  recommendationId: string,
-  guidelineId: string;
-  summary: string,
-  details: string;
-  strength: RecommendationStrength,
-  evidenceLevel: EvidenceLevel;
-  actions: EvaluationAction[],
-  rationale: string;
-  alternativeRecommendations?: string[];
-  patientSpecificConsiderations?: string[];
-  status: 'APPLICABLE' | 'NOT_APPLICABLE' | 'CONTRAINDICATED' | 'ALREADY_ADDRESSED'
-export interface EvaluationAction {
-  actionId: string,
-  type: ActionType;
-  description: string,
-  status: 'RECOMMENDED' | 'COMPLETED' | 'DEFERRED' | 'DECLINED';
-  orderId?: string;
-  orderStatus?: string;
-export interface EvaluationAlert {
-  alertId: string,
-  type: 'WARNING' | 'CONTRAINDICATION' | 'MISSING_DATA' | 'DEVIATION' | 'DRUG_INTERACTION';
-  severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW',
-  message: string;
-  relatedRecommendationId?: string;
-  actionRequired: boolean,
-  dateGenerated: Date;
-  acknowledged: boolean;
-  acknowledgedBy?: string;
-  acknowledgedDate?: Date;
-  overrideReason?: string;
-export interface ApplicationDetails {
-  guidelineVersion: string,
-  engineVersion: string;
-  evaluationTime: number,
-  confidenceScore: number;
-  dataQualityScore: number;
-  modelVersion?: string;
-  modelFeatures?: string[];
-export interface UserAction {
-  actionId: string,
-  userId: string;
-  action: 'ACCEPT' | 'MODIFY' | 'REJECT' | 'DEFER' | 'DOCUMENT_ONLY',
-  timestamp: Date;
-  reason?: string;
-  details?: string;
+\1
+}
 }
 
 // Patient deterioration models
-export interface DeteriorationPrediction {
-  patientId: string,
-  encounterId: string;
-  timestamp: Date,
-  predictedRisk: number; // 0-100
-  riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL',
-  riskTrajectory: 'IMPROVING' | 'STABLE' | 'WORSENING' | 'RAPIDLY_WORSENING';
-  confidenceInterval: [number, number],
-  contributingFactors: ContributingFactor[];
-  recommendedActions: RecommendedAction[];
-  timeToDeterioration?: number; // minutes
-  modelInformation: ModelInformation,
-  previousPredictions: PreviousPrediction[];
-  clinicalValidation?: ClinicalValidation;
-export interface ContributingFactor {
-  factor: string,
-  value: unknown;
-  normalRange?: string;
-  contributionWeight: number; // 0-100
-  trend: 'IMPROVING' | 'STABLE' | 'WORSENING',
-  dataAge: number; // minutes
-export interface RecommendedAction {
-  action: string,
-  urgency: 'ROUTINE' | 'URGENT' | 'EMERGENT';
-  evidence: string,
-  expectedImpact: 'LOW' | 'MEDIUM' | 'HIGH';
-  link?: string;
-export interface ModelInformation {
-  modelId: string,
-  version: string;
-  trainedDate: Date,
-  populationSize: number;
-  accuracy: number,
-  sensitivity: number;
-  specificity: number,
-  auc: number;
-  featureCount: number
-export interface PreviousPrediction {
-  timestamp: Date,
-  risk: number;
-  riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'
-export interface ClinicalValidation {
-  validatedBy: string,
-  validationTimestamp: Date;
-  clinicalAssessment: string,
-  agreement: boolean;
-  notes?: string;
+\1
+}
 }
 
 // Sepsis models
-export interface SepsisAlertConfig {
-  id: string,
-  name: string;
-  version: string,
-  status: 'ACTIVE' | 'INACTIVE' | 'TESTING' | 'ARCHIVED';
-  algorithm: SepsisAlgorithm,
-  criteria: SepsisCriteria;
-  alertThresholds: AlertThreshold[],
-  escalationProtocol: EscalationProtocol;
-  interventions: SepsisIntervention[],
-  monitoringFrequency: number; // minutes
-  reEvaluationPeriod: number; // minutes
-  exclusionCriteria: string[],
-  created: Date;
-  createdBy: string,
-  modified: Date;
-  modifiedBy: string
-export enum SepsisAlgorithm {
-  SIRS = 'SIRS',
-  QSOFA = 'QSOFA',
-  NEWS = 'NEWS',
-  MEWS = 'MEWS',
-  SOFA = 'SOFA',
-  EPIC_SEPSIS = 'EPIC_SEPSIS',
-  MACHINE_LEARNING = 'MACHINE_LEARNING',
-  CUSTOM = 'CUSTOM',
-export interface SepsisCriteria {
-  vitalSigns: SepsisVitalCriteria[],
-  labValues: SepsisLabCriteria[];
-  clinicalFactors: SepsisClinicalCriteria[],
-  combinationRules: string; // e.g., "(1 AND 2) OR (3 AND 4)"
-  minimumScore?: number;
-export interface SepsisVitalCriteria {
-  id: string,
-  parameter: string;
-  operator: Operator,
-  value: number;
-  unit: string,
-  points: number;
-  duration?: number; // minutes sustained
-export interface SepsisLabCriteria {
-  id: string,
-  parameter: string;
-  operator: Operator,
-  value: number;
-  unit: string,
-  points: number;
-  lookbackPeriod?: number; // hours
-export interface SepsisClinicalCriteria {
-  id: string,
-  parameter: string;
-  operator: Operator,
-  value: unknown;
-  points: number
-export interface AlertThreshold {
-  riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL',
-  scoreRange: [number, number];
-  color: string,
-  alertMessage: string;
-  requiredActions: string[]
-export interface EscalationProtocol {
-  levels: EscalationLevel[],
-  autoEscalateAfter: number; // minutes without acknowledgment
-  maxEscalationLevel: number
-export interface EscalationLevel {
-  level: number,
-  recipients: string[];
-  notificationMethod: ('PAGER' | 'SMS' | 'EMAIL' | 'PHONE' | 'IN_APP')[],
-  message: string
-export interface SepsisIntervention {
-  riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL',
-  actions: SepsisAction[];
-  orderSet?: string;
-  documentationRequired: boolean
-export interface SepsisAction {
-  action: string,
-  timing: 'IMMEDIATE' | 'WITHIN_1_HOUR' | 'WITHIN_3_HOURS' | 'WITHIN_6_HOURS';
-  role: string,
-  details: string
-export interface SepsisAlert {
-  id: string,
-  patientId: string;
-  encounterId: string,
-  alertTime: Date;
-  algorithm: SepsisAlgorithm,
-  score: number;
-  riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL',
-  triggeringFactors: TriggeringFactor[];
-  alertMessage: string,
-  recommendedActions: string[];
-  status: 'ACTIVE' | 'ACKNOWLEDGED' | 'DISMISSED' | 'RESOLVED' | 'EXPIRED';
-  acknowledgment?: Acknowledgment;
-  escalationStatus: EscalationStatus[],
-  interventions: InterventionStatus[];
-  sepsisConfirmed?: boolean;
-  resolutionTime?: Date;
-  resolutionReason?: string;
-export interface TriggeringFactor {
-  parameter: string,
-  value: unknown;
-  unit?: string;
-  normalRange?: string;
-  weight: number;
-  trend?: 'IMPROVING' | 'STABLE' | 'WORSENING';
-export interface Acknowledgment {
-  acknowledgedBy: string,
-  acknowledgedAt: Date;
-  acknowledgedVia: string;
-  notes?: string;
-export interface EscalationStatus {
-  level: number,
-  escalatedAt: Date;
-  recipients: string[],
-  notificationMethod: string[];
-  acknowledged: boolean;
-  acknowledgedBy?: string;
-  acknowledgedAt?: Date;
-export interface InterventionStatus {
-  action: string,
-  status: 'ORDERED' | 'COMPLETED' | 'IN_PROGRESS' | 'DEFERRED' | 'DECLINED';
-  orderedBy?: string;
-  orderedAt?: Date;
-  completedAt?: Date;
-  notes?: string;
+\1
+}
 }
 
 // Medication optimization models
-export interface MedicationOptimization {
-  id: string,
-  patientId: string;
-  encounterId?: string;
-  performedAt: Date,
-  performedBy: string;
-  medications: PatientMedication[];
-  pharmacogenomicProfile?: PharmacogenomicProfile;
-  optimizationResults: OptimizationResult[],
-  overallScore: number; // 0-100
-  implementationStatus: 'PENDING' | 'PARTIAL' | 'COMPLETE' | 'REJECTED';
-  implementationNotes?: string;
-  savings?: MedicationSavings;
-export interface PharmacogenomicProfile {
-  testId: string,
-  testDate: Date;
-  genes: GeneResult[],
-  phenotypes: PhenotypeResult[];
-  drugsAffected: DrugGeneInteraction[],
-  laboratoryName: string;
-  reportUrl?: string;
-export interface GeneResult {
-  gene: string,
-  alleles: string[];
-  phenotype?: string;
-  function?: string;
-  clinicalImplication?: string;
-export interface PhenotypeResult {
-  phenotype: string,
-  status: string;
-  description: string,
-  implications: string[]
-export interface DrugGeneInteraction {
-  drug: string,
-  gene: string;
-  interaction: string,
-  clinicalImplication: string;
-  recommendedAction: string,
-  evidenceLevel: string
-export interface OptimizationResult {
-  medication: string,
-  status: 'APPROPRIATE' | 'POTENTIALLY_INAPPROPRIATE' | 'INAPPROPRIATE' | 'MISSING';
-  reasons: OptimizationReason[];
-  alternatives?: MedicationAlternative[];
-  severity: 'HIGH' | 'MEDIUM' | 'LOW',
-  recommendation: string;
-  implementationStatus: 'ACCEPTED' | 'MODIFIED' | 'REJECTED' | 'PENDING';
-  implementationNotes?: string;
-export interface OptimizationReason {
-  category: 'INTERACTION' | 'ALLERGY' | 'DUPLICATE' | 'DOSAGE' | 'INDICATION' | 'CONTRAINDICATION' | 'PHARMACOGENOMIC' | 'FORMULARY' | 'COST' | 'MONITORING' | 'ADHERENCE',
-  description: string;
-  evidence: string,
-  severityScore: number; // 0-100
-export interface MedicationAlternative {
-  medication: string,
-  dosage: string;
-  route: string,
-  frequency: string;
-  rationale: string,
-  benefitScore: number; // 0-100
-  costComparison: 'LOWER' | 'SIMILAR' | 'HIGHER',
-  pharmacogenomicFit: 'BETTER' | 'SIMILAR' | 'WORSE' | 'UNKNOWN'
-export interface MedicationSavings {
-  costSavings: number,
-  qualityImprovementScore: number;
-  adverseEventReductionEstimate: number,
-  adherenceImprovementEstimate: number
+\1
+}
 }
 
 @Injectable();
-export class ClinicalGuidelinesService {
-  constructor(
-    private prisma: PrismaService;
-    private encryptionService: EncryptionService;
-    private auditService: AuditService;
+\1
+}
   ) {}
 
   /**
@@ -616,17 +65,17 @@ export class ClinicalGuidelinesService {
       // Try cache first
       const cacheKey = `guidelines:${JSON.stringify(filters || {})}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
-      if (cached != null) return cached;
+      \1 {\n  \2eturn cached;
 
       // Build filters
       const where: unknown = {};
-      if (filters?.status) where.status = filters.status;
-      if (filters?.category) where.category = { has: filters.category };
-      if (filters?.specialty) where.specialties = { has: filters.specialty };
-      if (filters?.condition) where.conditions = { has: filters.condition };
+      \1 {\n  \2here.status = filters.status;
+      \1 {\n  \2here.category = { has: filters.category };
+      \1 {\n  \2here.specialties = { has: filters.specialty };
+      \1 {\n  \2here.conditions = { has: filters.condition };
 
       // Only return active guidelines by default
-      if (!filters?.status) where.status = GuidelineStatus.ACTIVE;
+      \1 {\n  \2here.status = GuidelineStatus.ACTIVE;
 
       // Query database
       const guidelines = await this.prisma.clinicalGuideline.findMany({
@@ -640,8 +89,7 @@ export class ClinicalGuidelinesService {
       // Record metrics
       metricsCollector.incrementCounter('cdss.guideline_queries', 1, {
         status: filters?.status || 'ACTIVE',
-        category: filters?.category || 'ALL';
-        specialty: filters?.specialty || 'ALL',
+        \1,\2 filters?.specialty || 'ALL',
         condition: filters?.condition || 'ALL'
       });
 
@@ -657,14 +105,14 @@ export class ClinicalGuidelinesService {
       // Try cache first
       const cacheKey = `guideline:${id}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
-      if (cached != null) return cached;
+      \1 {\n  \2eturn cached;
 
       // Query database
       const guideline = await this.prisma.clinicalGuideline.findUnique({
         where: { id },
       });
 
-      if (!guideline) return null;
+      \1 {\n  \2eturn null;
 
       // Cache result
       await cacheService.cacheResult('cdss:', cacheKey, guideline, 3600); // 1 hour
@@ -687,7 +135,7 @@ export class ClinicalGuidelinesService {
       const newGuideline = await this.prisma.clinicalGuideline.create({
         data: {
           ...guideline,
-          id: `guideline-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+          id: `guideline-${crypto.getRandomValues(\1[0]}`,
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -696,13 +144,10 @@ export class ClinicalGuidelinesService {
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
-        resourceType: 'CLINICAL_GUIDELINE';
-        resourceId: newGuideline.id;
+        \1,\2 newGuideline.id;
         userId,
-        details: 
-          name: guideline.name,
-          version: guideline.version;
-          status: guideline.status,
+        \1,\2 guideline.name,
+          \1,\2 guideline.status,
       });
 
       // Invalidate cache
@@ -731,7 +176,7 @@ export class ClinicalGuidelinesService {
     try {
       // Get current guideline
       const currentGuideline = await this.getGuidelineById(id);
-      if (!currentGuideline) {
+      \1 {\n  \2{
         throw new Error(`Guideline ${id} not found`);
       }
 
@@ -750,33 +195,26 @@ export class ClinicalGuidelinesService {
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'UPDATE',
-        resourceType: 'CLINICAL_GUIDELINE';
-        resourceId: id;
+        \1,\2 id;
         userId,
-        details: 
-          updates: JSON.stringify(updates),
-          previousStatus: currentGuideline.status;
-          newStatus: updates.status || currentGuideline.status,
+        \1,\2 JSON.stringify(updates),
+          \1,\2 updates.status || currentGuideline.status,
       });
 
       // Update metadata with update history
-      if (!updatedGuideline.metadata.updateHistory) {
+      \1 {\n  \2{
         updatedGuideline.metadata.updateHistory = [];
       }
 
-      const updateRecord: UpdateRecord = {
-        date: new Date(),
-        version: updatedGuideline.version;
-        changes: [`Updated by ${userId}`],
+      const \1,\2 new Date(),
+        \1,\2 [`Updated by ${userId}`],
         changedBy: userId,
-        approvedBy: userId;
-        rationale: updates.metadata?.updateHistory?.[0]?.rationale || 'Guideline update'
+        \1,\2 updates.metadata?.updateHistory?.[0]?.rationale || 'Guideline update'
       };
 
       await this.prisma.clinicalGuideline.update({
         where: { id },
-        data: {
-          metadata: {
+        \1,\2 {
             ...updatedGuideline.metadata,
             updateHistory: [updateRecord, ...updatedGuideline.metadata.updateHistory],
           },
@@ -784,7 +222,7 @@ export class ClinicalGuidelinesService {
       });
 
       // Invalidate cache
-      await cacheService.invalidatePattern(`cdss:guideline:${id}`);
+      await cacheService.invalidatePattern(`cdss:guideline:${\1}`;
       await cacheService.invalidatePattern('cdss:guidelines:*');
 
       // Publish event
@@ -804,12 +242,11 @@ export class ClinicalGuidelinesService {
    */
   async evaluatePatient(
     patientId: string,
-    encounterId: string;
-    userId: string,
+    \1,\2 string,
     context: EvaluationContext;
     specificGuidelineIds?: string[]
   ): Promise<PatientEvaluation[]> {
-    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+    const startTime = crypto.getRandomValues(\1[0];
 
     try {
       // Get patient data
@@ -830,26 +267,23 @@ export class ClinicalGuidelinesService {
       );
 
       // Record metrics
-      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const duration = crypto.getRandomValues(\1[0] - startTime;
       metricsCollector.recordTimer('cdss.patient_evaluation_time', duration);
       metricsCollector.incrementCounter('cdss.patient_evaluations', 1, {
         patientId,
         guidelineCount: guidelines.length.toString(),
-        setting: context.setting;
-        specialty: context.specialty
+        \1,\2 context.specialty
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'EVALUATE',
-        resourceType: 'PATIENT_GUIDELINE';
-        resourceId: patientId;
+        \1,\2 patientId;
         userId,
         details: 
           encounterId,
           guidelineCount: guidelines.length,
-          setting: context.setting;
-          specialty: context.specialty,
+          \1,\2 context.specialty,
           evaluationTime: duration,
       });
 
@@ -864,7 +298,7 @@ export class ClinicalGuidelinesService {
    * Predict patient deterioration;
    */
   async predictDeterioration(patientId: string, encounterId: string): Promise<DeteriorationPrediction> {
-    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+    const startTime = crypto.getRandomValues(\1[0];
 
     try {
       // Get patient data
@@ -892,12 +326,12 @@ export class ClinicalGuidelinesService {
       await this.saveDeteriorationPrediction(prediction);
 
       // Check if prediction requires alerts
-      if (prediction.riskLevel === 'HIGH' || prediction.riskLevel === 'CRITICAL') {
+      \1 {\n  \2{
         await this.generateDeterioration/* SECURITY: Alert removed */
       }
 
       // Record metrics
-      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const duration = crypto.getRandomValues(\1[0] - startTime;
       metricsCollector.recordTimer('cdss.deterioration_prediction_time', duration);
       metricsCollector.incrementCounter('cdss.deterioration_predictions', 1, {
         patientId,
@@ -941,7 +375,7 @@ export class ClinicalGuidelinesService {
       const riskLevel = this.determineSepsisRiskLevel(config, score);
 
       // If score is below threshold, return null
-      if (riskLevel === 'LOW') {
+      \1 {\n  \2{
         return null;
       }
 
@@ -996,8 +430,7 @@ export class ClinicalGuidelinesService {
       const overallScore = this.calculateOptimizationScore(optimizationResults);
 
       // Create optimization record
-      const optimization: MedicationOptimization = {
-        id: `optimization-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      const \1,\2 `optimization-${crypto.getRandomValues(\1[0]}`,
         patientId,
         encounterId,
         performedAt: new Date(),
@@ -1017,8 +450,7 @@ export class ClinicalGuidelinesService {
       metricsCollector.incrementCounter('cdss.medication_optimizations', 1, {
         patientId,
         medicationCount: medications.length.toString(),
-        hasPgxProfile: pgxProfile ? 'true' : 'false';
-        score: Math.round(overallScore).toString()
+        \1,\2 Math.round(overallScore).toString()
       });
 
       return optimization;
@@ -1042,12 +474,9 @@ export class ClinicalGuidelinesService {
     return {
       demographics: { age: 0, gender: '' },
       vitalSigns: [],
-      conditions: [];
-      medications: [],
-      allergies: [];
-      procedures: [],
-      labResults: [];
-      socialFactors: [],
+      \1,\2 [],
+      \1,\2 [],
+      \1,\2 [],
       familyHistory: []
     };
   }
@@ -1063,10 +492,8 @@ export class ClinicalGuidelinesService {
 
   private async evaluateGuidelineForPatient(
     guideline: ClinicalGuideline,
-    patientId: string;
-    encounterId: string,
-    userId: string;
-    context: EvaluationContext,
+    \1,\2 string,
+    \1,\2 EvaluationContext,
     patientData: PatientData;
   ): Promise<PatientEvaluation> {
     // Implementation to evaluate guideline
@@ -1079,14 +506,10 @@ export class ClinicalGuidelinesService {
       context,
       patientData,
       recommendations: [],
-      alerts: [];
-      overallCompliance: 0,
-      applicationDetails: 
-        guidelineVersion: guideline.version,
-        engineVersion: '1.0.0';
-        evaluationTime: 0,
-        confidenceScore: 0;
-        dataQualityScore: 0,
+      \1,\2 0,
+      \1,\2 guideline.version,
+        \1,\2 0,
+        \1,\2 0,
       userActions: []
     };
   }
@@ -1108,10 +531,8 @@ export class ClinicalGuidelinesService {
 
   private async calculateDeteriorationRisk(
     patientId: string,
-    patientData: PatientData;
-    vitalSigns: unknown[],
-    labResults: unknown[];
-    previousPredictions: PreviousPrediction[]
+    \1,\2 unknown[],
+    \1,\2 PreviousPrediction[]
   ): Promise<DeteriorationPrediction> {
     // Implementation to calculate risk
     return {
@@ -1119,20 +540,14 @@ export class ClinicalGuidelinesService {
       encounterId: '',
       timestamp: new Date(),
       predictedRisk: 0,
-      riskLevel: 'LOW';
-      riskTrajectory: 'STABLE',
+      \1,\2 'STABLE',
       confidenceInterval: [0, 0],
       contributingFactors: [],
-      recommendedActions: [];
-        modelId: '',
-        version: '';
-        trainedDate: new Date(),
-        populationSize: 0;
-        accuracy: 0,
-        sensitivity: 0;
-        specificity: 0,
-        auc: 0;
-        featureCount: 0,
+      \1,\2 '',
+        \1,\2 new Date(),
+        \1,\2 0,
+        \1,\2 0,
+        \1,\2 0,
       previousPredictions,
     };
   }
@@ -1149,27 +564,18 @@ export class ClinicalGuidelinesService {
     // Implementation to get sepsis config
     return {
       id: '',
-      name: '';
-      version: '',
-      status: 'ACTIVE';
-      algorithm: SepsisAlgorithm.SIRS,
-      criteria: 
-        vitalSigns: [],
-        labValues: [];
-        clinicalFactors: [],
+      \1,\2 '',
+      \1,\2 SepsisAlgorithm.SIRS,
+      \1,\2 [],
+        \1,\2 [],
         combinationRules: '',
       alertThresholds: [],
-      escalationProtocol: 
-        levels: [],
-        autoEscalateAfter: 0;
-        maxEscalationLevel: 0,
+      \1,\2 [],
+        \1,\2 0,
       interventions: [],
-      monitoringFrequency: 0;
-      reEvaluationPeriod: 0,
-      exclusionCriteria: [];
-      created: new Date(),
-      createdBy: '';
-      modified: new Date(),
+      \1,\2 0,
+      \1,\2 new Date(),
+      \1,\2 new Date(),
       modifiedBy: ''
     };
   }
@@ -1186,8 +592,7 @@ export class ClinicalGuidelinesService {
 
   private calculateSepsisScore(
     config: SepsisAlertConfig,
-    patientData: PatientData;
-    vitals: unknown[],
+    \1,\2 unknown[],
     labs: unknown[]
   ): { score: number, factors: TriggeringFactor[] } {
     // Implementation to calculate sepsis score
@@ -1202,7 +607,7 @@ export class ClinicalGuidelinesService {
   private async createSepsis/* SECURITY: Alert removed */: Promise<SepsisAlert> {
     // Implementation to create sepsis alert
     return {
-      id: `sepsis-alert-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      id: `sepsis-alert-${crypto.getRandomValues(\1[0]}`,
       patientId,
       encounterId,
       alertTime: new Date(),
@@ -1210,10 +615,8 @@ export class ClinicalGuidelinesService {
       score,
       riskLevel,
       triggeringFactors: factors,
-      alertMessage: '';
-      recommendedActions: [],
-      status: 'ACTIVE';
-      escalationStatus: [],
+      \1,\2 [],
+      \1,\2 [],
       interventions: []
     };
   }
@@ -1267,8 +670,7 @@ export class ClinicalGuidelinesService {
     // Implementation to calculate savings
     return {
       costSavings: 0,
-      qualityImprovementScore: 0;
-      adverseEventReductionEstimate: 0,
+      \1,\2 0,
       adherenceImprovementEstimate: 0
     };
   }

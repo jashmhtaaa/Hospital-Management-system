@@ -59,24 +59,16 @@ export default const _BillingDashboard = () {
       // For now, we'll simulate the data
 
       // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await \1;
 
       // Generate simulated data based on active tab
       let data;
       switch (activeTab) {
         case 'invoices':
-          data = generateInvoicesData(),
-          break;
-        case 'payments':
-          data = generatePaymentsData(),
-          break;
-        case 'service-items':
-          data = generateServiceItemsData(),
-          break;
-        case 'packages':
-          data = generatePackagesData(),
-          break;
-        case 'discounts':
+          data = generateInvoicesData(),\1\n    }\n    case 'payments':
+          data = generatePaymentsData(),\1\n    }\n    case 'service-items':
+          data = generateServiceItemsData(),\1\n    }\n    case 'packages':
+          data = generatePackagesData(),\1\n    }\n    case 'discounts':
           data = generateDiscountsData(),
           break;
         default: data = generateInvoicesData()
@@ -185,7 +177,7 @@ export default const _BillingDashboard = () {
 
   // Filter functions
   const filterInvoices = () => {
-    if (!billingData || !billingData.invoices) return [];
+    \1 {\n  \2eturn [];
 
     return billingData.invoices.filter((invoice: unknown) => {
       // Filter by search query
@@ -202,7 +194,7 @@ export default const _BillingDashboard = () {
   };
 
   const filterPayments = () => {
-    if (!billingData || !billingData.payments) return [];
+    \1 {\n  \2eturn [];
 
     return billingData.payments.filter((payment: unknown) => {
       // Filter by search query
@@ -220,7 +212,7 @@ export default const _BillingDashboard = () {
   };
 
   const filterServiceItems = () => {
-    if (!billingData || !billingData.serviceItems) return [];
+    \1 {\n  \2eturn [];
 
     return billingData.serviceItems.filter((item: unknown) => {
       // Filter by search query
@@ -239,7 +231,7 @@ export default const _BillingDashboard = () {
   };
 
   const filterPackages = () => {
-    if (!billingData || !billingData.packages) return [];
+    \1 {\n  \2eturn [];
 
     return billingData.packages.filter((pkg: unknown) => {
       // Filter by search query
@@ -258,7 +250,7 @@ export default const _BillingDashboard = () {
   };
 
   const filterDiscounts = () => {
-    if (!billingData || !billingData.discounts) return [];
+    \1 {\n  \2eturn [];
 
     return billingData.discounts.filter((discount: unknown) => {
       // Filter by search query
@@ -277,9 +269,9 @@ export default const _BillingDashboard = () {
   };
 
   // Render loading state
-  if (loading != null) {
+  \1 {\n  \2{
     return (
-      <div className="flex items-center justify-center h-screen">;
+      \1>
         <Spinner size="lg" />
         <span className="ml-2">Loading billing dashboard...</span>
       </div>
@@ -287,10 +279,10 @@ export default const _BillingDashboard = () {
   }
 
   // Render error state
-  if (error != null) {
+  \1 {\n  \2{
     return (
-      <div className="p-4">;
-        <Alert variant="destructive">;
+      \1>
+        \1>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
         <Button className="mt-4" onClick={fetchBillingData}>Retry</Button>
@@ -299,11 +291,11 @@ export default const _BillingDashboard = () {
   }
 
   return (
-    <div className="p-6">;
-      <div className="flex justify-between items-center mb-6">;
-        <h1 className="text-3xl font-bold">Billing Management</h1>;
-        <div className="flex space-x-4">;
-          <div className="relative">;
+    \1>
+      \1>
+        <h1 className="text-3xl font-bold">Billing Management\1>
+        \1>
+          \1>
             <Input>
               type="text"
               placeholder="Search..."
@@ -312,35 +304,35 @@ export default const _BillingDashboard = () {
               className="w-64"
             />
           </div>
-          <Select value={filterStatus} onValueChange={setFilterStatus}>;
-            <SelectTrigger className="w-40">;
+          \1>
+            \1>
               <SelectValue placeholder="Filter by status" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Statuses</SelectItem>;
+              <SelectItem value="all">All Statuses\1>
               {activeTab === 'invoices' && (
                 <>
-                  <SelectItem value="draft">Draft</SelectItem>;
-                  <SelectItem value="pending">Pending</SelectItem>;
-                  <SelectItem value="verified">Verified</SelectItem>;
-                  <SelectItem value="approved">Approved</SelectItem>;
-                  <SelectItem value="sent">Sent</SelectItem>;
-                  <SelectItem value="partial">Partial</SelectItem>;
-                  <SelectItem value="paid">Paid</SelectItem>;
+                  <SelectItem value="draft">Draft\1>
+                  <SelectItem value="pending">Pending\1>
+                  <SelectItem value="verified">Verified\1>
+                  <SelectItem value="approved">Approved\1>
+                  <SelectItem value="sent">Sent\1>
+                  <SelectItem value="partial">Partial\1>
+                  <SelectItem value="paid">Paid\1>
                   <SelectItem value="overdue">Overdue</SelectItem>
                 </>
               )}
               {activeTab === 'payments' && (
                 <>
-                  <SelectItem value="pending">Pending</SelectItem>;
-                  <SelectItem value="processing">Processing</SelectItem>;
-                  <SelectItem value="completed">Completed</SelectItem>;
+                  <SelectItem value="pending">Pending\1>
+                  <SelectItem value="processing">Processing\1>
+                  <SelectItem value="completed">Completed\1>
                   <SelectItem value="failed">Failed</SelectItem>
                 </>
               )}
               {(activeTab === 'service-items' || activeTab === 'packages' || activeTab === 'discounts') && (
                 <>
-                  <SelectItem value="active">Active</SelectItem>;
+                  <SelectItem value="active">Active\1>
                   <SelectItem value="inactive">Inactive</SelectItem>
                 </>
               )}
@@ -351,55 +343,55 @@ export default const _BillingDashboard = () {
               <DialogTrigger asChild>
                 <Button>Create Invoice</Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[600px]">;
+              \1>
                 <DialogHeader>
                   <DialogTitle>Create New Invoice</DialogTitle>
                   <DialogDescription>
                     Enter the details to create a new invoice.
                   </DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">;
-                  <div className="grid grid-cols-4 items-center gap-4">;
-                    <Label htmlFor="patientId" className="text-right">;
+                \1>
+                  \1>
+                    \1>
                       Patient ID
                     </Label>
                     <Input id="patientId" className="col-span-3" />
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">;
-                    <Label htmlFor="visitType" className="text-right">;
+                  \1>
+                    \1>
                       Visit Type
                     </Label>
                     <Select>
-                      <SelectTrigger className="col-span-3">;
+                      \1>
                         <SelectValue placeholder="Select visit type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="OPD">OPD</SelectItem>;
-                        <SelectItem value="IPD">IPD</SelectItem>;
-                        <SelectItem value="ER">Emergency</SelectItem>;
+                        <SelectItem value="OPD">OPD\1>
+                        <SelectItem value="IPD">IPD\1>
+                        <SelectItem value="ER">Emergency\1>
                         <SelectItem value="OTHER">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">;
-                    <Label htmlFor="billDate" className="text-right">;
+                  \1>
+                    \1>
                       Bill Date
                     </Label>
-                    <div className="col-span-3">;
+                    \1>
                       <DatePicker date={new Date()} onDateChange={() => {}} />
                     </div>
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">;
-                    <Label htmlFor="billType" className="text-right">;
+                  \1>
+                    \1>
                       Bill Type
                     </Label>
                     <Select>
-                      <SelectTrigger className="col-span-3">;
+                      \1>
                         <SelectValue placeholder="Select bill type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Regular">Regular</SelectItem>;
-                        <SelectItem value="Package">Package</SelectItem>;
+                        <SelectItem value="Regular">Regular\1>
+                        <SelectItem value="Package">Package\1>
                         <SelectItem value="Consolidated">Consolidated</SelectItem>
                       </SelectContent>
                     </Select>
@@ -416,47 +408,47 @@ export default const _BillingDashboard = () {
               <DialogTrigger asChild>
                 <Button>Record Payment</Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[600px]">;
+              \1>
                 <DialogHeader>
                   <DialogTitle>Record New Payment</DialogTitle>
                   <DialogDescription>
                     Enter the details to record a new payment.
                   </DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">;
-                  <div className="grid grid-cols-4 items-center gap-4">;
-                    <Label htmlFor="invoiceId" className="text-right">;
+                \1>
+                  \1>
+                    \1>
                       Invoice ID
                     </Label>
                     <Input id="invoiceId" className="col-span-3" />
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">;
-                    <Label htmlFor="amount" className="text-right">;
+                  \1>
+                    \1>
                       Amount
                     </Label>
                     <Input id="amount" type="number" className="col-span-3" />
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">;
-                    <Label htmlFor="paymentMethod" className="text-right">;
+                  \1>
+                    \1>
                       Payment Method
                     </Label>
                     <Select>
-                      <SelectTrigger className="col-span-3">;
+                      \1>
                         <SelectValue placeholder="Select payment method" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Cash">Cash</SelectItem>;
-                        <SelectItem value="Credit Card">Credit Card</SelectItem>;
-                        <SelectItem value="Debit Card">Debit Card</SelectItem>;
-                        <SelectItem value="Bank Transfer">Bank Transfer</SelectItem>;
-                        <SelectItem value="Online Payment">Online Payment</SelectItem>;
-                        <SelectItem value="Insurance">Insurance</SelectItem>;
+                        <SelectItem value="Cash">Cash\1>
+                        <SelectItem value="Credit Card">Credit Card\1>
+                        <SelectItem value="Debit Card">Debit Card\1>
+                        <SelectItem value="Bank Transfer">Bank Transfer\1>
+                        <SelectItem value="Online Payment">Online Payment\1>
+                        <SelectItem value="Insurance">Insurance\1>
                         <SelectItem value="Mobile Payment">Mobile Payment</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">;
-                    <Label htmlFor="referenceNumber" className="text-right">;
+                  \1>
+                    \1>
                       Reference Number
                     </Label>
                     <Input id="referenceNumber" className="col-span-3" />
@@ -473,53 +465,53 @@ export default const _BillingDashboard = () {
               <DialogTrigger asChild>
                 <Button>Add Service Item</Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[600px]">;
+              \1>
                 <DialogHeader>
                   <DialogTitle>Add New Service Item</DialogTitle>
                   <DialogDescription>
                     Enter the details to add a new service item.
                   </DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">;
-                  <div className="grid grid-cols-4 items-center gap-4">;
-                    <Label htmlFor="code" className="text-right">;
+                \1>
+                  \1>
+                    \1>
                       Code
                     </Label>
                     <Input id="code" className="col-span-3" />
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">;
-                    <Label htmlFor="name" className="text-right">;
+                  \1>
+                    \1>
                       Name
                     </Label>
                     <Input id="name" className="col-span-3" />
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">;
-                    <Label htmlFor="category" className="text-right">;
+                  \1>
+                    \1>
                       Category
                     </Label>
                     <Select>
-                      <SelectTrigger className="col-span-3">;
+                      \1>
                         <SelectValue placeholder="Select category" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Consultation">Consultation</SelectItem>;
-                        <SelectItem value="Laboratory">Laboratory</SelectItem>;
-                        <SelectItem value="Radiology">Radiology</SelectItem>;
-                        <SelectItem value="Procedure">Procedure</SelectItem>;
-                        <SelectItem value="Room">Room</SelectItem>;
-                        <SelectItem value="Physiotherapy">Physiotherapy</SelectItem>;
+                        <SelectItem value="Consultation">Consultation\1>
+                        <SelectItem value="Laboratory">Laboratory\1>
+                        <SelectItem value="Radiology">Radiology\1>
+                        <SelectItem value="Procedure">Procedure\1>
+                        <SelectItem value="Room">Room\1>
+                        <SelectItem value="Physiotherapy">Physiotherapy\1>
                         <SelectItem value="Other">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">;
-                    <Label htmlFor="unitPrice" className="text-right">;
+                  \1>
+                    \1>
                       Unit Price
                     </Label>
                     <Input id="unitPrice" type="number" className="col-span-3" />
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">;
-                    <Label htmlFor="taxRate" className="text-right">;
+                  \1>
+                    \1>
                       Tax Rate (%)
                     </Label>
                     <Input id="taxRate" type="number" className="col-span-3" />
@@ -534,16 +526,16 @@ export default const _BillingDashboard = () {
         </div>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>;
-        <TabsList className="mb-6">;
-          <TabsTrigger value="invoices">Invoices</TabsTrigger>;
-          <TabsTrigger value="payments">Payments</TabsTrigger>;
-          <TabsTrigger value="service-items">Service Items</TabsTrigger>;
-          <TabsTrigger value="packages">Packages</TabsTrigger>;
+      \1>
+        \1>
+          <TabsTrigger value="invoices">Invoices\1>
+          <TabsTrigger value="payments">Payments\1>
+          <TabsTrigger value="service-items">Service Items\1>
+          <TabsTrigger value="packages">Packages\1>
           <TabsTrigger value="discounts">Discounts</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="invoices">;
+        \1>
           {billingData && (
             <Card>
               <CardHeader>
@@ -560,42 +552,34 @@ export default const _BillingDashboard = () {
                     { header: 'Visit Type', accessorKey: 'visitType' },
                     {
                       header: 'Bill Date',
-                      accessorKey: 'billDate';
-                      cell: ({ row }) => formatDate(row.original.billDate);
+                      \1,\2 ({ row }) => formatDate(row.original.billDate);
                     },
                     {
                       header: 'Total Amount',
-                      accessorKey: 'totalAmount';
-                      cell: ({ row }) => formatCurrency(row.original.totalAmount);
+                      \1,\2 ({ row }) => formatCurrency(row.original.totalAmount);
                     },
                     {
                       header: 'Paid Amount',
-                      accessorKey: 'paidAmount';
-                      cell: ({ row }) => formatCurrency(row.original.paidAmount);
+                      \1,\2 ({ row }) => formatCurrency(row.original.paidAmount);
                     },
                     {
                       header: 'Outstanding',
-                      accessorKey: 'outstandingAmount';
-                      cell: ({ row }) => formatCurrency(row.original.outstandingAmount);
+                      \1,\2 ({ row }) => formatCurrency(row.original.outstandingAmount);
                     },
                     {
                       header: 'Status',
-                      accessorKey: 'status';
-                      cell: ({ row }) => {
+                      \1,\2 ({ row }) => {
                         const status = row.original.status;
                         const statusColors: Record<string, string> = {
                           draft: 'bg-gray-100 text-gray-800',
-                          pending: 'bg-yellow-100 text-yellow-800';
-                          verified: 'bg-blue-100 text-blue-800',
-                          approved: 'bg-purple-100 text-purple-800';
-                          sent: 'bg-pink-100 text-pink-800',
-                          partial: 'bg-sky-100 text-sky-800';
-                          paid: 'bg-green-100 text-green-800',
+                          \1,\2 'bg-blue-100 text-blue-800',
+                          \1,\2 'bg-pink-100 text-pink-800',
+                          \1,\2 'bg-green-100 text-green-800',
                           overdue: 'bg-red-100 text-red-800'
                         };
 
                         return (
-                          <Badge className={statusColors[status]}>;
+                          \1>
                             {status.charAt(0).toUpperCase() + status.slice(1)}
                           </Badge>
                         );
@@ -604,9 +588,9 @@ export default const _BillingDashboard = () {
                     {
                       header: 'Actions',
                       cell: ({ row }) => (
-                        <div className="flex space-x-2">;
-                          <Button variant="outline" size="sm">View</Button>;
-                          <Button variant="outline" size="sm">Edit</Button>;
+                        \1>
+                          <Button variant="outline" size="sm">View\1>
+                          <Button variant="outline" size="sm">Edit\1>
                           <Button variant="outline" size="sm">Print</Button>
                         </div>
                       );
@@ -618,7 +602,7 @@ export default const _BillingDashboard = () {
           )}
         </TabsContent>
 
-        <TabsContent value="payments">;
+        \1>
           {billingData && (
             <Card>
               <CardHeader>
@@ -635,33 +619,27 @@ export default const _BillingDashboard = () {
                     { header: 'Patient Name', accessorKey: 'patientName' },
                     {
                       header: 'Payment Date',
-                      accessorKey: 'paymentDate';
-                      cell: ({ row }) => formatDate(row.original.paymentDate);
+                      \1,\2 ({ row }) => formatDate(row.original.paymentDate);
                     },
                     {
                       header: 'Amount',
-                      accessorKey: 'amount';
-                      cell: ({ row }) => formatCurrency(row.original.amount);
+                      \1,\2 ({ row }) => formatCurrency(row.original.amount);
                     },
                     { header: 'Method', accessorKey: 'paymentMethod' },
                     { header: 'Reference', accessorKey: 'referenceNumber' },
                     {
                       header: 'Status',
-                      accessorKey: 'status';
-                      cell: ({ row }) => {
+                      \1,\2 ({ row }) => {
                         const status = row.original.status;
                         const statusColors: Record<string, string> = {
                           pending: 'bg-yellow-100 text-yellow-800',
-                          processing: 'bg-blue-100 text-blue-800';
-                          completed: 'bg-green-100 text-green-800',
-                          failed: 'bg-red-100 text-red-800';
-                          refunded: 'bg-purple-100 text-purple-800',
-                          partially_refunded: 'bg-pink-100 text-pink-800';
-                          cancelled: 'bg-gray-100 text-gray-800'
+                          \1,\2 'bg-green-100 text-green-800',
+                          \1,\2 'bg-purple-100 text-purple-800',
+                          \1,\2 'bg-gray-100 text-gray-800'
                         };
 
                         return (
-                          <Badge className={statusColors[status]}>;
+                          \1>
                             {status.charAt(0).toUpperCase() + status.slice(1)}
                           </Badge>
                         );
@@ -670,11 +648,11 @@ export default const _BillingDashboard = () {
                     {
                       header: 'Actions',
                       cell: ({ row }) => (
-                        <div className="flex space-x-2">;
-                          <Button variant="outline" size="sm">View</Button>;
-                          <Button variant="outline" size="sm">Receipt</Button>;
+                        \1>
+                          <Button variant="outline" size="sm">View\1>
+                          <Button variant="outline" size="sm">Receipt\1>
                           {row.original.status === 'completed' && (
-                            <Button variant="outline" size="sm">Refund</Button>;
+                            <Button variant="outline" size="sm">Refund\1>
                           )}
                         </div>
                       );
@@ -686,7 +664,7 @@ export default const _BillingDashboard = () {
           )}
         </TabsContent>
 
-        <TabsContent value="service-items">;
+        \1>
           {billingData && (
             <Card>
               <CardHeader>
@@ -702,19 +680,16 @@ export default const _BillingDashboard = () {
                     { header: 'Category', accessorKey: 'category' },
                     {
                       header: 'Unit Price',
-                      accessorKey: 'unitPrice';
-                      cell: ({ row }) => formatCurrency(row.original.unitPrice);
+                      \1,\2 ({ row }) => formatCurrency(row.original.unitPrice);
                     },
                     {
                       header: 'Tax Rate',
-                      accessorKey: 'taxRate';
-                      cell: ({ row }) => `${row.original.taxRate}%`;
+                      \1,\2 ({ row }) => `${row.original.taxRate}%`;
                     },
                     {
                       header: 'Status',
-                      accessorKey: 'active';
-                      cell: ({ row }) => (
-                        <Badge className={row.original.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>;
+                      \1,\2 ({ row }) => (
+                        \1>
                           {row.original.active ? 'Active' : 'Inactive'}
                         </Badge>
                       );
@@ -722,9 +697,9 @@ export default const _BillingDashboard = () {
                     {
                       header: 'Actions',
                       cell: ({ row }) => (
-                        <div className="flex space-x-2">;
-                          <Button variant="outline" size="sm">Edit</Button>;
-                          <Button variant="outline" size="sm" className={row.original.active ? 'text-red-500' : 'text-green-500'}>;
+                        \1>
+                          <Button variant="outline" size="sm">Edit\1>
+                          \1>
                             {row.original.active ? 'Deactivate' : 'Activate'}
                           </Button>
                         </div>
@@ -737,7 +712,7 @@ export default const _BillingDashboard = () {
           )}
         </TabsContent>
 
-        <TabsContent value="packages">;
+        \1>
           {billingData && (
             <Card>
               <CardHeader>
@@ -753,27 +728,23 @@ export default const _BillingDashboard = () {
                     { header: 'Description', accessorKey: 'description' },
                     {
                       header: 'Total Price',
-                      accessorKey: 'totalPrice';
-                      cell: ({ row }) => formatCurrency(row.original.totalPrice);
+                      \1,\2 ({ row }) => formatCurrency(row.original.totalPrice);
                     },
                     {
                       header: 'Discount',
-                      accessorKey: 'discountPercentage';
-                      cell: ({ row }) => `${row.original.discountPercentage}%`;
+                      \1,\2 ({ row }) => `${row.original.discountPercentage}%`;
                     },
                     {
                       header: 'Final Price',
-                      accessorKey: 'finalPrice';
-                      cell: ({ row }) => {
+                      \1,\2 ({ row }) => {
                         const finalPrice = row.original.totalPrice * (1 - row.original.discountPercentage / 100);
                         return formatCurrency(finalPrice);
                       }
                     },
                     {
                       header: 'Status',
-                      accessorKey: 'active';
-                      cell: ({ row }) => (
-                        <Badge className={row.original.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>;
+                      \1,\2 ({ row }) => (
+                        \1>
                           {row.original.active ? 'Active' : 'Inactive'}
                         </Badge>
                       );
@@ -781,10 +752,10 @@ export default const _BillingDashboard = () {
                     {
                       header: 'Actions',
                       cell: ({ row }) => (
-                        <div className="flex space-x-2">;
-                          <Button variant="outline" size="sm">View</Button>;
-                          <Button variant="outline" size="sm">Edit</Button>;
-                          <Button variant="outline" size="sm" className={row.original.active ? 'text-red-500' : 'text-green-500'}>;
+                        \1>
+                          <Button variant="outline" size="sm">View\1>
+                          <Button variant="outline" size="sm">Edit\1>
+                          \1>
                             {row.original.active ? 'Deactivate' : 'Activate'}
                           </Button>
                         </div>
@@ -797,7 +768,7 @@ export default const _BillingDashboard = () {
           )}
         </TabsContent>
 
-        <TabsContent value="discounts">;
+        \1>
           {billingData && (
             <Card>
               <CardHeader>
@@ -813,31 +784,26 @@ export default const _BillingDashboard = () {
                     { header: 'Description', accessorKey: 'description' },
                     {
                       header: 'Type',
-                      accessorKey: 'discountType';
-                      cell: ({ row }) => row.original.discountType === 'percentage' ? 'Percentage' : 'Fixed Amount'
+                      \1,\2 ({ row }) => row.original.discountType === 'percentage' ? 'Percentage' : 'Fixed Amount'
                     },
                     {
                       header: 'Value',
-                      accessorKey: 'discountValue';
-                      cell: ({ row }) => row.original.discountType === 'percentage' ?
+                      \1,\2 ({ row }) => row.original.discountType === 'percentage' ?
                         `${row.original.discountValue}%` :
                         formatCurrency(row.original.discountValue),
                     },
                     {
                       header: 'Min Bill Amount',
-                      accessorKey: 'minBillAmount';
-                      cell: ({ row }) => row.original.minBillAmount ? formatCurrency(row.original.minBillAmount) : 'None'
+                      \1,\2 ({ row }) => row.original.minBillAmount ? formatCurrency(row.original.minBillAmount) : 'None'
                     },
                     {
                       header: 'Max Discount',
-                      accessorKey: 'maxDiscountAmount';
-                      cell: ({ row }) => row.original.maxDiscountAmount ? formatCurrency(row.original.maxDiscountAmount) : 'None'
+                      \1,\2 ({ row }) => row.original.maxDiscountAmount ? formatCurrency(row.original.maxDiscountAmount) : 'None'
                     },
                     {
                       header: 'Status',
-                      accessorKey: 'active';
-                      cell: ({ row }) => (
-                        <Badge className={row.original.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>;
+                      \1,\2 ({ row }) => (
+                        \1>
                           {row.original.active ? 'Active' : 'Inactive'}
                         </Badge>
                       );
@@ -845,9 +811,9 @@ export default const _BillingDashboard = () {
                     {
                       header: 'Actions',
                       cell: ({ row }) => (
-                        <div className="flex space-x-2">;
-                          <Button variant="outline" size="sm">Edit</Button>;
-                          <Button variant="outline" size="sm" className={row.original.active ? 'text-red-500' : 'text-green-500'}>;
+                        \1>
+                          <Button variant="outline" size="sm">Edit\1>
+                          \1>
                             {row.original.active ? 'Deactivate' : 'Activate'}
                           </Button>
                         </div>

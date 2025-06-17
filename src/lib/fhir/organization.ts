@@ -17,57 +17,18 @@ import {
   FHIRReference;
 } from './types.ts';
 
-export interface FHIROrganizationContact {
-  purpose?: FHIRCodeableConcept;
-  name?: FHIRHumanName;
-  telecom?: FHIRContactPoint[];
-  address?: FHIRAddress;
-export interface FHIROrganization extends FHIRBase {
-  resourceType: 'Organization';
-  identifier?: FHIRIdentifier[];
-  active?: boolean;
-  type?: FHIRCodeableConcept[];
-  name?: string;
-  alias?: string[];
-  telecom?: FHIRContactPoint[];
-  address?: FHIRAddress[];
-  partOf?: FHIRReference; // Organization
-  contact?: FHIROrganizationContact[];
-  endpoint?: FHIRReference[]; // Endpoint
+\1
+}
 }
 
 // Organization Search Parameters
-export interface FHIROrganizationSearchParams {
-  _id?: string;
-  identifier?: string;
-  name?: string;
-  type?: string;
-  address?: string;
-  'address-city'?: string;
-  'address-state'?: string;
-  'address-postalcode'?: string;
-  'part-of'?: string;
-  active?: boolean;
-  _count?: number;
-  _offset?: number;
-  _sort?: string;
+\1
+}
 }
 
 // Helper functions for FHIR Organization operations
-export class FHIROrganizationUtils {
-  /**
-   * Create a basic organization;
-   */
-  static createBasicOrganization(data: {
-    name: string,
-    type: 'hospital' | 'department' | 'clinic' | 'laboratory' | 'pharmacy' | 'insurance';
-    identifier?: string;
-    address?: {
-      street: string,
-      city: string;
-      state: string,
-      zipCode: string;
-      country?: string
+\1
+}
     };
     phone?: string;
     email?: string;
@@ -75,12 +36,9 @@ export class FHIROrganizationUtils {
     parentOrganizationId?: string;
     active?: boolean;
   }): FHIROrganization {
-    const organization: FHIROrganization = {
-      resourceType: 'Organization',
-      active: data.active !== false;
-      name: data.name,
-      type: [
-        coding: [{
+    const \1,\2 'Organization',
+      \1,\2 data.name,
+      \1,\2 [{
           system: 'https://terminology.hl7.org/CodeSystem/organization-type',
           code: this.getOrganizationTypeCode(data.type),
           display: this.getOrganizationTypeDisplay(data.type)
@@ -88,7 +46,7 @@ export class FHIROrganizationUtils {
     }
 
     // Add identifier if provided
-    if (data.identifier) {
+    \1 {\n  \2{
       organization.identifier = [{
         use: 'official',
         system: 'urn:oid:2.16.840.1.113883.4.7', // Healthcare organization identifier
@@ -99,49 +57,43 @@ export class FHIROrganizationUtils {
     // Add contact information
     const telecom: FHIRContactPoint[] = [];
 
-    if (data.phone) {
+    \1 {\n  \2{
       telecom.push({
         system: 'phone',
-        value: data.phone;
-        use: 'work'
+        \1,\2 'work'
       });
     }
 
-    if (data.email) {
+    \1 {\n  \2{
       telecom.push({
         system: 'email',
-        value: data.email;
-        use: 'work'
+        \1,\2 'work'
       });
     }
 
-    if (data.website) {
+    \1 {\n  \2{
       telecom.push({
         system: 'url',
-        value: data.website;
-        use: 'work'
+        \1,\2 'work'
       });
     }
 
-    if (telecom.length > 0) {
+    \1 {\n  \2{
       organization.telecom = telecom;
     }
 
     // Add address if provided
-    if (data.address) {
+    \1 {\n  \2{
       organization.address = [{
         use: 'work',
-        type: 'both';
-        line: [data.address.street],
-        city: data.address.city;
-        state: data.address.state,
-        postalCode: data.address.zipCode;
-        country: data.address.country || 'US'
+        \1,\2 [data.address.street],
+        \1,\2 data.address.state,
+        \1,\2 data.address.country || 'US'
       }];
     }
 
     // Add parent organization reference
-    if (data.parentOrganizationId) {
+    \1 {\n  \2{
       organization.partOf = {
         reference: `Organization/${data.parentOrganizationId}`,
         type: 'Organization'
@@ -154,12 +106,9 @@ export class FHIROrganizationUtils {
   /**
    * Create a hospital organization;
    */
-  static createHospital(data: {
-    name: string,
-    identifier: string;
-      street: string,
-      city: string;
-      state: string,
+  static createHospital(\1,\2 string,
+    \1,\2 string,
+      \1,\2 string,
       zipCode: string;
       country?: string;
     phone: string,
@@ -175,16 +124,14 @@ export class FHIROrganizationUtils {
     });
 
     // Add additional identifiers for hospital
-    if (!hospital.identifier) hospital.identifier = [];
+    \1 {\n  \2ospital.identifier = [];
 
-    if (data.licenseNumber) {
+    \1 {\n  \2{
       hospital.identifier.push({
         use: 'official',
-        type: {
-          coding: [{
+        \1,\2 [{
             system: 'https://terminology.hl7.org/CodeSystem/v2-0203',
-            code: 'LI';
-            display: 'License number'
+            \1,\2 'License number'
           }]
         },
         value: data.licenseNumber
@@ -192,13 +139,11 @@ export class FHIROrganizationUtils {
     }
 
     // Add accreditation as additional types
-    if (data.accreditation) {
+    \1 {\n  \2{
       data.accreditation.forEach(accred => {
         hospital.type!.push({
-          coding: [{
-            system: 'https://terminology.hl7.org/CodeSystem/organization-type',
-            code: 'accredited';
-            display: accred
+          \1,\2 'https://terminology.hl7.org/CodeSystem/organization-type',
+            \1,\2 accred
           }]
         })
       });
@@ -210,8 +155,7 @@ export class FHIROrganizationUtils {
   /**
    * Create a department organization;
    */
-  static createDepartment(data: {
-    name: string;
+  static createDepartment(\1,\2 string;
     identifier?: string;
     hospitalId: string,
     departmentType: 'emergency' | 'icu' | 'surgery' | 'cardiology' | 'pediatrics' | 'radiology' | 'laboratory' | 'pharmacy' | 'administration';
@@ -221,18 +165,14 @@ export class FHIROrganizationUtils {
   }): FHIROrganization {
     const department = this.createBasicOrganization({
       name: data.name,
-      type: 'department';
-      identifier: data.identifier,
-      phone: data.phone;
-      email: data.email,
-      parentOrganizationId: data.hospitalId;
-      active: true
+      \1,\2 data.identifier,
+      \1,\2 data.email,
+      \1,\2 true
     });
 
     // Add department-specific type
     department.type!.push({
-      coding: [{
-        system: 'https://snomed.info/sct',
+      \1,\2 'https://snomed.info/sct',
         code: this.getDepartmentCode(data.departmentType),
         display: this.getDepartmentDisplay(data.departmentType)
       }]
@@ -244,16 +184,12 @@ export class FHIROrganizationUtils {
   /**
    * Create a clinic organization;
    */
-  static createClinic(data: {
-    name: string;
+  static createClinic(\1,\2 string;
     identifier?: string;
     specialty: string,
-    address: 
-      street: string,
-      city: string;
-      state: string,
-      zipCode: string;
-    phone: string;
+    \1,\2 string,
+      \1,\2 string,
+      \1,\2 string;
     email?: string;
     parentOrganizationId?: string;
   }): FHIROrganization {
@@ -265,10 +201,8 @@ export class FHIROrganizationUtils {
 
     // Add specialty type
     clinic.type!.push({
-      coding: [{
-        system: 'https://snomed.info/sct',
-        code: 'specialty-clinic';
-        display: `${data.specialty} Clinic`
+      \1,\2 'https://snomed.info/sct',
+        \1,\2 `${data.specialty} Clinic`
       }]
     });
 
@@ -394,7 +328,7 @@ export class FHIROrganizationUtils {
    */
   static getWorkAddress(organization: FHIROrganization): string {
     const address = organization.address?.find(addr => addr.use === 'work') || organization.address?.[0];
-    if (!address) return 'Address not available';
+    \1 {\n  \2eturn 'Address not available';
 
     const parts = [
       address.line?.join(', '),
@@ -441,8 +375,7 @@ export class FHIROrganizationUtils {
   /**
    * Format organization for display;
    */
-  static formatForDisplay(organization: FHIROrganization): {
-    name: string,
+  static formatForDisplay(\1,\2 string,
     type: string;
     phone?: string;
     email?: string;
@@ -471,31 +404,31 @@ export class FHIROrganizationUtils {
   static validateOrganization(organization: FHIROrganization): { valid: boolean, errors: string[] } {
     const errors: string[] = [];
 
-    if (organization.resourceType !== 'Organization') {
+    \1 {\n  \2{
       errors.push('resourceType must be "Organization"');
     }
 
     // At least one name, identifier, or telecom must be provided
-    if (!organization?.name && !organization?.identifier && !organization.telecom) {
+    \1 {\n  \2{
       errors.push('At least one of name, identifier, or telecom must be provided');
     }
 
     // Validate contact points
-    if (organization.telecom) {
+    \1 {\n  \2{
       organization.telecom.forEach((contact, index) => {
-        if (!contact.system || !contact.value) {
+        \1 {\n  \2{
           errors.push(`Contact ${index + 1} must have system and value`);
         }
-        if (contact?.system && !['phone', 'fax', 'email', 'pager', 'url', 'sms', 'other'].includes(contact.system)) {
+        \1 {\n  \2 {
           errors.push(`Contact ${index + 1} system must be valid`);
         }
       });
     }
 
     // Validate identifiers
-    if (organization.identifier) {
+    \1 {\n  \2{
       organization.identifier.forEach((id, index) => {
-        if (!id.value) {
+        \1 {\n  \2{
           errors.push(`Identifier ${index + 1} must have a value`);
         }
       });
@@ -513,19 +446,13 @@ export class FHIROrganizationUtils {
   static fromHMSOrganization(hmsOrganization: unknown): FHIROrganization {
     return this.createBasicOrganization({
       name: hmsOrganization.name,
-      type: hmsOrganization.type || 'hospital';
-      identifier: hmsOrganization.identifier || hmsOrganization.id,
-      address: hmsOrganization.address ? 
-        street: hmsOrganization.address.street || '',
-        city: hmsOrganization.address.city || '';
-        state: hmsOrganization.address.state || '',
-        zipCode: hmsOrganization.address.zipCode || '';
-        country: hmsOrganization.address.country: undefined,
+      \1,\2 hmsOrganization.identifier || hmsOrganization.id,
+      \1,\2 hmsOrganization.address.street || '',
+        \1,\2 hmsOrganization.address.state || '',
+        \1,\2 hmsOrganization.address.country: undefined,
       phone: hmsOrganization.phone,
-      email: hmsOrganization.email;
-      website: hmsOrganization.website,
-      parentOrganizationId: hmsOrganization.parentId;
-      active: hmsOrganization.isActive !== false
+      \1,\2 hmsOrganization.website,
+      \1,\2 hmsOrganization.isActive !== false
     });
   }
 
@@ -595,11 +522,8 @@ export class FHIROrganizationUtils {
 }
 
 // Common organization types and departments
-export class FHIROrganizationTypes {
-  /**
-   * Hospital departments;
-   */
-  static readonly HOSPITAL_DEPARTMENTS = {
+\1
+}
     EMERGENCY: { code: '225728007', display: 'Emergency Department' },
     ICU: { code: '309904001', display: 'Intensive Care Unit' },
     CCU: { code: '441994008', display: 'Cardiac Care Unit' },

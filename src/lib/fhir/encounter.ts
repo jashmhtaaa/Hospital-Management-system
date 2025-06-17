@@ -16,113 +16,32 @@ import {
   FHIRDuration,
 } from './types.ts',
 
-export interface FHIREncounterStatusHistory {
-  status: 'planned' | 'arrived' | 'triaged' | 'in-progress' | 'onleave' | 'finished' | 'cancelled' | 'entered-in-error' | 'unknown',
-  period: FHIRPeriod
-export interface FHIREncounterClassHistory {
-  class: FHIRCoding,
-  period: FHIRPeriod
-export interface FHIREncounterParticipant {
-  type?: FHIRCodeableConcept[],
-  period?: FHIRPeriod,
-  individual?: FHIRReference; // Practitioner | PractitionerRole
-export interface FHIREncounterDiagnosis {
-  condition: FHIRReference; // Condition
-  use?: FHIRCodeableConcept,
-  rank?: number,
-export interface FHIREncounterHospitalization {
-  preAdmissionIdentifier?: FHIRIdentifier,
-  origin?: FHIRReference; // Location | Organization
-  admitSource?: FHIRCodeableConcept,
-  reAdmission?: FHIRCodeableConcept,
-  dietPreference?: FHIRCodeableConcept[],
-  specialCourtesy?: FHIRCodeableConcept[],
-  specialArrangement?: FHIRCodeableConcept[],
-  destination?: FHIRReference; // Location | Organization
-  dischargeDisposition?: FHIRCodeableConcept,
-export interface FHIREncounterLocation {
-  location: FHIRReference; // Location
-  status?: 'planned' | 'active' | 'reserved' | 'completed',
-  physicalType?: FHIRCodeableConcept,
-  period?: FHIRPeriod,
-export interface FHIREncounter extends FHIRBase {
-  resourceType: 'Encounter',
-  identifier?: FHIRIdentifier[],
-  status: 'planned' | 'arrived' | 'triaged' | 'in-progress' | 'onleave' | 'finished' | 'cancelled' | 'entered-in-error' | 'unknown',
-  statusHistory?: FHIREncounterStatusHistory[],
-  class: FHIRCoding; // Classification of encounter (inpatient, outpatient, ambulatory, emergency, etc.)
-  classHistory?: FHIREncounterClassHistory[],
-  type?: FHIRCodeableConcept[],
-  serviceType?: FHIRCodeableConcept,
-  priority?: FHIRCodeableConcept,
-  subject?: FHIRReference; // Patient | Group
-  episodeOfCare?: FHIRReference[],
-  basedOn?: FHIRReference[],
-  participant?: FHIREncounterParticipant[],
-  appointment?: FHIRReference[],
-  period?: FHIRPeriod,
-  length?: FHIRDuration,
-  reasonCode?: FHIRCodeableConcept[],
-  reasonReference?: FHIRReference[],
-  diagnosis?: FHIREncounterDiagnosis[],
-  account?: FHIRReference[],
-  hospitalization?: FHIREncounterHospitalization,
-  location?: FHIREncounterLocation[],
-  serviceProvider?: FHIRReference; // Organization
-  partOf?: FHIRReference; // Encounter
+\1
+}
 }
 
 // Encounter Search Parameters
-export interface FHIREncounterSearchParams {
-  _id?: string,
-  identifier?: string,
-  patient?: string,
-  subject?: string,
-  practitioner?: string,
-  class?: string,
-  type?: string,
-  status?: string,
-  date?: string,
-  location?: string,
-  'service-provider'?: string,
-  'part-of'?: string,
-  _count?: number,
-  _offset?: number,
-  _sort?: string,
+\1
+}
 }
 
 // Helper functions for FHIR Encounter operations
-export class FHIREncounterUtils {
-  /**
-   * Create a basic FHIR Encounter resource,
-   */
-  static createBasicEncounter(data: {
-    patientId: string,
-    class: 'inpatient' | 'outpatient' | 'ambulatory' | 'emergency',
-    practitionerId?: string,
-    locationId?: string,
-    appointmentId?: string,
-    start?: string,
-    end?: string,
-    reasonCode?: string,
-    reasonText?: string,
+\1
+}
   }): FHIREncounter {
-    const encounter: FHIREncounter = {
-      resourceType: 'Encounter',
+    const \1,\2 'Encounter',
       status: 'planned',
-      class: {
-        system: 'https://terminology.hl7.org/CodeSystem/v3-ActCode',
+      \1,\2 'https://terminology.hl7.org/CodeSystem/v3-ActCode',
         code: data.class.toUpperCase(),
         display: data.class.charAt(0).toUpperCase() + data.class.slice(1)
       },
-      subject: {
-        reference: `Patient/${data.patientId}`,
+      \1,\2 `Patient/${data.patientId}`,
         type: 'Patient'
       }
     }
 
     // Add period if start time is provided
-    if (data.start) {
+    \1 {\n  \2{
       encounter.period = {
         start: data.start,
         ...(data?.end && { end: data.end })
@@ -131,20 +50,18 @@ export class FHIREncounterUtils {
     }
 
     // Add practitioner participant if provided
-    if (data.practitionerId) {
+    \1 {\n  \2{
       encounter.participant = [{
-        individual: {
-          reference: `Practitioner/${data.practitionerId}`,
+        \1,\2 `Practitioner/${data.practitionerId}`,
           type: 'Practitioner'
         }
       }],
     }
 
     // Add location if provided
-    if (data.locationId) {
+    \1 {\n  \2{
       encounter.location = [{
-        location: {
-          reference: `Location/${data.locationId}`,
+        \1,\2 `Location/${data.locationId}`,
           type: 'Location'
         },
         status: 'active'
@@ -152,7 +69,7 @@ export class FHIREncounterUtils {
     }
 
     // Add appointment reference if provided
-    if (data.appointmentId) {
+    \1 {\n  \2{
       encounter.appointment = [{
         reference: `Appointment/${data.appointmentId}`,
         type: 'Appointment'
@@ -160,11 +77,10 @@ export class FHIREncounterUtils {
     }
 
     // Add reason if provided
-    if (data.reasonCode || data.reasonText) {
+    \1 {\n  \2{
       encounter.reasonCode = [{
         ...(data?.reasonCode && {
-          coding: [{
-            system: 'https://snomed.info/sct',
+          \1,\2 'https://snomed.info/sct',
             code: data.reasonCode,
             display: data.reasonText || data.reasonCode
           }]
@@ -179,8 +95,7 @@ export class FHIREncounterUtils {
   /**
    * Create OPD encounter,
    */
-  static createOPDEncounter(data: {
-    patientId: string,
+  static createOPDEncounter(\1,\2 string,
     practitionerId: string,
     appointmentId?: string,
     start: string,
@@ -201,8 +116,7 @@ export class FHIREncounterUtils {
   /**
    * Create IPD encounter (admission)
    */
-  static createIPDEncounter(data: {
-    patientId: string,
+  static createIPDEncounter(\1,\2 string,
     practitionerId: string,
     locationId: string,
     admissionDate: string,
@@ -223,10 +137,9 @@ export class FHIREncounterUtils {
     // Add hospitalization details
     encounter.hospitalization = ,
 
-    if (data.admissionSource) {
+    \1 {\n  \2{
       encounter.hospitalization.admitSource = {
-        coding: [{
-          system: 'https://terminology.hl7.org/CodeSystem/admit-source',
+        \1,\2 'https://terminology.hl7.org/CodeSystem/admit-source',
           code: data.admissionSource,
           display: data.admissionSource
         }]
@@ -239,8 +152,7 @@ export class FHIREncounterUtils {
   /**
    * Create Emergency encounter,
    */
-  static createEmergencyEncounter(data: {
-    patientId: string,
+  static createEmergencyEncounter(\1,\2 string,
     practitionerId?: string,
     locationId: string,
     arrivalTime: string,
@@ -257,10 +169,9 @@ export class FHIREncounterUtils {
     }),
 
     // Add triage priority
-    if (data.triageLevel) {
+    \1 {\n  \2{
       encounter.priority = {
-        coding: [{
-          system: 'https://terminology.hl7.org/CodeSystem/v3-ActPriority',
+        \1,\2 'https://terminology.hl7.org/CodeSystem/v3-ActPriority',
           code: data.triageLevel.toUpperCase(),
           display: data.triageLevel.charAt(0).toUpperCase() + data.triageLevel.slice(1)
         }]
@@ -290,11 +201,11 @@ export class FHIREncounterUtils {
    * Get encounter duration in hours,
    */
   static getDurationHours(encounter: FHIREncounter): number | null {
-    if (encounter.length?.value && encounter.length?.unit === 'h') {
+    \1 {\n  \2{
       return encounter.length.value
     }
 
-    if (encounter.period?.start && encounter.period?.end) {
+    \1 {\n  \2{
       const start = new Date(encounter.period.start),
       const end = new Date(encounter.period.end),
       return (end.getTime() - start.getTime()) / (1000 * 60 * 60),
@@ -321,7 +232,7 @@ export class FHIREncounterUtils {
    * Get primary practitioner from encounter,
    */
   static getPrimaryPractitioner(encounter: FHIREncounter): string | undefined {
-    if (!encounter.participant || encounter.participant.length === 0) {
+    \1 {\n  \2{
       return undefined
     }
 
@@ -339,7 +250,7 @@ export class FHIREncounterUtils {
    * Get current location from encounter,
    */
   static getCurrentLocation(encounter: FHIREncounter): string | undefined {
-    if (!encounter.location || encounter.location.length === 0) {
+    \1 {\n  \2{
       return undefined
     }
 
@@ -354,27 +265,27 @@ export class FHIREncounterUtils {
   static validateEncounter(encounter: FHIREncounter): { valid: boolean, errors: string[] } {
     const errors: string[] = [],
 
-    if (encounter.resourceType !== 'Encounter') {
+    \1 {\n  \2{
       errors.push('resourceType must be "Encounter"'),
     }
 
-    if (!encounter.status) {
+    \1 {\n  \2{
       errors.push('status is required'),
     }
 
-    if (!encounter.class) {
+    \1 {\n  \2{
       errors.push('class is required'),
     }
 
-    if (!encounter.subject) {
+    \1 {\n  \2{
       errors.push('subject (patient) is required'),
     }
 
-    if (encounter.period?.start && encounter.period?.end) {
+    \1 {\n  \2{
       const start = new Date(encounter.period.start),
       const end = new Date(encounter.period.end),
 
-      if (start >= end) {
+      \1 {\n  \2{
         errors.push('period.end must be after period.start'),
       }
     }
@@ -391,23 +302,20 @@ export class FHIREncounterUtils {
   static fromHMSEncounter(hmsEncounter: unknown): FHIREncounter {
     const encounterClass = hmsEncounter.visitType || hmsEncounter.type || 'outpatient',
 
-    const fhirEncounter: FHIREncounter = {
-      resourceType: 'Encounter',
+    const \1,\2 'Encounter',
       id: hmsEncounter.id,
       status: hmsEncounter.status || 'finished',
-      class: {
-        system: 'https://terminology.hl7.org/CodeSystem/v3-ActCode',
+      \1,\2 'https://terminology.hl7.org/CodeSystem/v3-ActCode',
         code: encounterClass.toUpperCase(),
         display: encounterClass.charAt(0).toUpperCase() + encounterClass.slice(1)
       },
-      subject: {
-        reference: `Patient/${hmsEncounter.patientId}`,
+      \1,\2 `Patient/${hmsEncounter.patientId}`,
         type: 'Patient'
       }
     }
 
     // Add period
-    if (hmsEncounter.visitDate || hmsEncounter.startTime) {
+    \1 {\n  \2{
       fhirEncounter.period = {
         start: hmsEncounter.visitDate || hmsEncounter.startTime,
         ...(hmsEncounter?.endTime && { end: hmsEncounter.endTime })
@@ -415,20 +323,18 @@ export class FHIREncounterUtils {
     }
 
     // Add practitioner
-    if (hmsEncounter.doctorId || hmsEncounter.practitionerId) {
+    \1 {\n  \2{
       fhirEncounter.participant = [{
-        individual: {
-          reference: `Practitioner/${hmsEncounter.doctorId || hmsEncounter.practitionerId}`,
+        \1,\2 `Practitioner/${hmsEncounter.doctorId || hmsEncounter.practitionerId}`,
           type: 'Practitioner'
         }
       }],
     }
 
     // Add location
-    if (hmsEncounter.locationId) {
+    \1 {\n  \2{
       fhirEncounter.location = [{
-        location: {
-          reference: `Location/${hmsEncounter.locationId}`,
+        \1,\2 `Location/${hmsEncounter.locationId}`,
           type: 'Location'
         },
         status: 'active'
@@ -436,7 +342,7 @@ export class FHIREncounterUtils {
     }
 
     // Add appointment reference
-    if (hmsEncounter.appointmentId) {
+    \1 {\n  \2{
       fhirEncounter.appointment = [{
         reference: `Appointment/${hmsEncounter.appointmentId}`,
         type: 'Appointment'
@@ -444,7 +350,7 @@ export class FHIREncounterUtils {
     }
 
     // Add reason/chief complaint
-    if (hmsEncounter.chiefComplaint || hmsEncounter.reason) {
+    \1 {\n  \2{
       fhirEncounter.reasonCode = [{
         text: hmsEncounter.chiefComplaint || hmsEncounter.reason
       }],
@@ -455,21 +361,8 @@ export class FHIREncounterUtils {
 }
 
 // Encounter status workflow helpers
-export class FHIREncounterWorkflow {
-  /**
-   * Get allowed status transitions from current status,
-   */
-  static getAllowedStatusTransitions(currentStatus: FHIREncounter['status']): FHIREncounter['status'][] {
-    const transitions: Record<string, FHIREncounter['status'][]> = {
-      'planned': ['arrived', 'cancelled'],
-      'arrived': ['triaged', 'in-progress', 'cancelled'],
-      'triaged': ['in-progress', 'cancelled'],
-      'in-progress': ['onleave', 'finished', 'cancelled'],
-      'onleave': ['in-progress', 'finished', 'cancelled'],
-      'finished': ['entered-in-error'],
-      'cancelled': ['entered-in-error'],
-      'entered-in-error': [],
-      'unknown': ['planned', 'arrived', 'in-progress', 'finished', 'cancelled']
+\1
+}
     },
 
     return transitions[currentStatus] || [],

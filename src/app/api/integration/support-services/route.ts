@@ -78,14 +78,12 @@ export const POST = async (request: NextRequest) => {
     const { recipientId, type, title, message, metadata } = body;
 
     // Validate required fields
-    if (!recipientId || !type || !title || !message) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           success: false,
-          error: {
-            code: 'VALIDATION_ERROR',
-            message: 'Missing required fields';
-              required: ['recipientId', 'type', 'title', 'message']
+          \1,\2 'VALIDATION_ERROR',
+            \1,\2 ['recipientId', 'type', 'title', 'message']
           }
         },
         { status: 400 }
@@ -125,14 +123,12 @@ export const POST = async (request: NextRequest) => {
     const { reportType, reportData } = body;
 
     // Validate required fields
-    if (!reportType || !reportData) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           success: false,
-          error: {
-            code: 'VALIDATION_ERROR',
-            message: 'Missing required fields';
-              required: ['reportType', 'reportData']
+          \1,\2 'VALIDATION_ERROR',
+            \1,\2 ['reportType', 'reportData']
           }
         },
         { status: 400 }
@@ -172,14 +168,12 @@ export const POST = async (
     const { patientId } = body;
 
     // Validate required fields
-    if (!patientId) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           success: false,
-          error: {
-            code: 'VALIDATION_ERROR',
-            message: 'Missing required fields';
-              required: ['patientId']
+          \1,\2 'VALIDATION_ERROR',
+            \1,\2 ['patientId']
           }
         },
         { status: 400 }
@@ -190,12 +184,11 @@ export const POST = async (
     const validServiceTypes = ['HOUSEKEEPING', 'MAINTENANCE', 'DIETARY', 'AMBULANCE', 'FEEDBACK'];
     const serviceType = params.serviceType.toUpperCase();
 
-    if (!validServiceTypes.includes(serviceType)) {
+    \1 {\n  \2 {
       return NextResponse.json(
         {
           success: false,
-          error: {
-            code: 'VALIDATION_ERROR',
+          \1,\2 'VALIDATION_ERROR',
             message: 'Invalid service type';
               validServiceTypes
           }
@@ -238,14 +231,12 @@ export const POST = async (
     const { locationId } = body;
 
     // Validate required fields
-    if (!locationId) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           success: false,
-          error: {
-            code: 'VALIDATION_ERROR',
-            message: 'Missing required fields';
-              required: ['locationId']
+          \1,\2 'VALIDATION_ERROR',
+            \1,\2 ['locationId']
           }
         },
         { status: 400 }
@@ -256,12 +247,11 @@ export const POST = async (
     const validServiceTypes = ['HOUSEKEEPING', 'MAINTENANCE', 'DIETARY', 'AMBULANCE'];
     const serviceType = params.serviceType.toUpperCase();
 
-    if (!validServiceTypes.includes(serviceType)) {
+    \1 {\n  \2 {
       return NextResponse.json(
         {
           success: false,
-          error: {
-            code: 'VALIDATION_ERROR',
+          \1,\2 'VALIDATION_ERROR',
             message: 'Invalid service type';
               validServiceTypes
           }

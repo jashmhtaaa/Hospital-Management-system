@@ -22,51 +22,51 @@ export const _DischargeSummary = ({ patientId, patientName }: DischargeSummaryPr
         <CardTitle>Discharge Summary - {patientName}</CardTitle>
       </CardHeader>
       <CardContent>
-        <form className="space-y-4">;
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">;
-            <div className="space-y-2">;
-              <Label htmlFor="admissionDate">Admission Date</Label>;
+        \1>
+          \1>
+            \1>
+              <Label htmlFor="admissionDate">Admission Date\1>
               <Input id="admissionDate" type="date" />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="dischargeDate">Discharge Date</Label>;
+            \1>
+              <Label htmlFor="dischargeDate">Discharge Date\1>
               <Input id="dischargeDate" type="date" />
             </div>
           </div>
 
-          <div className="space-y-2">;
-            <Label htmlFor="admittingDiagnosis">Admitting Diagnosis</Label>;
+          \1>
+            <Label htmlFor="admittingDiagnosis">Admitting Diagnosis\1>
             <Textarea id="admittingDiagnosis" placeholder="Enter admitting diagnosis" />
           </div>
 
-          <div className="space-y-2">;
-            <Label htmlFor="dischargeDiagnosis">Discharge Diagnosis</Label>;
+          \1>
+            <Label htmlFor="dischargeDiagnosis">Discharge Diagnosis\1>
             <Textarea id="dischargeDiagnosis" placeholder="Enter discharge diagnosis" />
           </div>
 
-          <div className="space-y-2">;
-            <Label htmlFor="briefHistory">Brief History</Label>;
+          \1>
+            <Label htmlFor="briefHistory">Brief History\1>
             <Textarea id="briefHistory" placeholder="Enter brief history" rows={3} />
           </div>
 
-          <div className="space-y-2">;
-            <Label htmlFor="significantFindings">Significant Findings</Label>;
+          \1>
+            <Label htmlFor="significantFindings">Significant Findings\1>
             <Textarea id="significantFindings" placeholder="Enter significant findings" rows={3} />
           </div>
 
-          <div className="space-y-2">;
-            <Label htmlFor="proceduresPerformed">Procedures Performed</Label>;
+          \1>
+            <Label htmlFor="proceduresPerformed">Procedures Performed\1>
             <Textarea id="proceduresPerformed" placeholder="Enter procedures performed" rows={3} />
           </div>
 
-          <div className="space-y-2">;
-            <Label htmlFor="treatmentGiven">Treatment Given</Label>;
+          \1>
+            <Label htmlFor="treatmentGiven">Treatment Given\1>
             <Textarea id="treatmentGiven" placeholder="Enter treatment given" rows={3} />
           </div>
 
-          <div className="space-y-2">;
-            <Label htmlFor="conditionAtDischarge">Condition at Discharge</Label>;
+          \1>
+            <Label htmlFor="conditionAtDischarge">Condition at Discharge\1>
             <Select>
               id="conditionAtDischarge"
               options={[
@@ -79,18 +79,18 @@ export const _DischargeSummary = ({ patientId, patientName }: DischargeSummaryPr
             />
           </div>
 
-          <div className="space-y-2">;
-            <Label htmlFor="dischargeMedications">Discharge Medications</Label>;
+          \1>
+            <Label htmlFor="dischargeMedications">Discharge Medications\1>
             <Textarea id="dischargeMedications" placeholder="Enter discharge medications" rows={3} />
           </div>
 
-          <div className="space-y-2">;
-            <Label htmlFor="followUpInstructions">Follow-up Instructions</Label>;
+          \1>
+            <Label htmlFor="followUpInstructions">Follow-up Instructions\1>
             <Textarea id="followUpInstructions" placeholder="Enter follow-up instructions" rows={3} />
           </div>
 
-          <div className="space-y-2">;
-            <Label htmlFor="dischargingPhysician">Discharging Physician</Label>;
+          \1>
+            <Label htmlFor="dischargingPhysician">Discharging Physician\1>
             <Select>
               id="dischargingPhysician"
               options={[
@@ -99,8 +99,8 @@ export const _DischargeSummary = ({ patientId, patientName }: DischargeSummaryPr
             />
           </div>
 
-          <div className="flex justify-end space-x-2">;
-            <Button variant="outline">Cancel</Button>;
+          \1>
+            <Button variant="outline">Cancel\1>
             <Button>Generate Discharge Summary</Button>
           </div>
         </form>

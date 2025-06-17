@@ -47,10 +47,10 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
     const fetchAttendance = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/hr/attendance/${params.id}`);
+        const response = await fetch(`/api/hr/attendance/${\1}`;
 
-        if (!response.ok) {
-          if (response.status === 404) {
+        \1 {\n  \2{
+          \1 {\n  \2{
             throw new Error('Attendance record not found');
           }
           throw new Error('Failed to fetch attendance data');
@@ -62,8 +62,7 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
         setError(err.message),
         toast({
           title: "Error",
-          description: err.message;
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       } finally 
         setLoading(false);
@@ -101,7 +100,7 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
 
   // Calculate hours worked
   const calculateHoursWorked = (checkInTime, checkOutTime) => {
-    if (!checkInTime || !checkOutTime) return '—';
+    \1 {\n  \2eturn '—';
 
     const checkIn = new Date(checkInTime);
     const checkOut = new Date(checkOutTime);
@@ -111,10 +110,10 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
     return `${diffHrs.toFixed(2)} hours`
   };
 
-  if (loading != null) {
+  \1 {\n  \2{
     return (
-      <div className="flex flex-col gap-4 p-4 md:p-8">;
-        <div className="flex items-center gap-2">;
+      \1>
+        \1>
           <Button>
             variant="ghost"
             size="sm"
@@ -124,17 +123,17 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
             Back to Attendance
           </Button>
         </div>
-        <div className="flex justify-center items-center h-64">;
+        \1>
           <p>Loading attendance data...</p>
         </div>
       </div>
     );
   }
 
-  if (error != null) {
+  \1 {\n  \2{
     return (
-      <div className="flex flex-col gap-4 p-4 md:p-8">;
-        <div className="flex items-center gap-2">;
+      \1>
+        \1>
           <Button>
             variant="ghost"
             size="sm"
@@ -145,10 +144,10 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
           </Button>
         </div>
         <Card>
-          <CardContent className="flex flex-col items-center justify-center h-64">;
+          \1>
             <AlertCircle className="h-10 w-10 text-destructive mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Error</h2>;
-            <p className="text-muted-foreground">{error}</p>;
+            <h2 className="text-xl font-semibold mb-2">Error\1>
+            <p className="text-muted-foreground">{error}\1>
             <Button>
               className="mt-4"
               onClick={() => router.push('/dashboard/hr/attendance')}
@@ -161,13 +160,13 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
     );
   }
 
-  if (!attendance) {
+  \1 {\n  \2{
     return null;
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:p-8">;
-      <div className="flex items-center gap-2">;
+    \1>
+      \1>
         <Button>
           variant="ghost"
           size="sm"
@@ -178,44 +177,43 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
         </Button>
       </div>
 
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">;
-<div
-          <h1 className="text-3xl font-bold">;
+      \1>
+\1>
             Attendance Record
           </h1>
-          <p className="text-muted-foreground">;
+          \1>
             {format(new Date(attendance.date), 'PPPP')}
           </p>
         </div>
 
-        <div className="flex gap-2">;
-          <Button variant="outline" onClick={handleEdit}>;
+        \1>
+          \1>
             <Edit className="h-4 w-4 mr-2" />
             Edit Record
           </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">;
-        <Card className="md:col-span-1">;
+      \1>
+        \1>
           <CardHeader>
             <CardTitle>Employee Information</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">;
-            <div className="flex flex-col items-center">;
-              <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center mb-4">;
+          \1>
+            \1>
+              \1>
                 <User className="h-12 w-12 text-muted-foreground" />
               </div>
 
-              <h3 className="text-xl font-semibold">;
+              \1>
                 {attendance.employee.firstName} {attendance.employee.lastName}
               </h3>
-              <p className="text-sm text-muted-foreground mb-2">;
+              \1>
                 {attendance.employee.employeeId}
               </p>
 
               {attendance.employee?.department && (
-                <Badge variant="outline" className="mb-2">;
+                \1>
                   {attendance.employee.department.name}
                 </Badge>
               )}
@@ -223,19 +221,19 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
 
             <Separator />
 
-            <div className="space-y-2">;
-              <div className="flex items-center gap-2">;
+            \1>
+              \1>
                 <Building2 className="h-4 w-4 text-muted-foreground" />
 <div
-                  <p className="text-sm text-muted-foreground">Department</p>;
+                  <p className="text-sm text-muted-foreground">Department\1>
                   <p className="font-medium">{attendance.employee.department?.name || 'Not Assigned'}</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">;
+              \1>
                 <Calendar className="h-4 w-4 text-muted-foreground" />
 <div
-                  <p className="text-sm text-muted-foreground">Date</p>;
+                  <p className="text-sm text-muted-foreground">Date\1>
                   <p className="font-medium">{format(new Date(attendance.date), 'PPP')}</p>
                 </div>
               </div>
@@ -243,24 +241,23 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
           </CardContent>
         </Card>
 
-        <Card className="md:col-span-2">;
+        \1>
           <CardHeader>
             <CardTitle>Attendance Details</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
-              <div className="space-y-2">;
-                <p className="text-sm text-muted-foreground">Status</p>;
-<div
-                  <Badge variant={getStatusBadgeVariant(attendance.status)} className="text-base px-3 py-1">;
+            \1>
+              \1>
+                <p className="text-sm text-muted-foreground">Status\1>
+\1>
                     {attendance.status.replace('_', ' ')}
                   </Badge>
                 </div>
               </div>
 
-              <div className="space-y-2">;
-                <p className="text-sm text-muted-foreground">Biometric Verification</p>;
-                <div className="flex items-center">;
+              \1>
+                <p className="text-sm text-muted-foreground">Biometric Verification\1>
+                \1>
                   {attendance.biometricVerified ? (
                     <>
                       <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
@@ -275,32 +272,32 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
                 </div>
               </div>
 
-              <div className="space-y-2">;
-                <p className="text-sm text-muted-foreground">Check In Time</p>;
-                <div className="flex items-center">;
+              \1>
+                <p className="text-sm text-muted-foreground">Check In Time\1>
+                \1>
                   <Clock className="h-5 w-5 text-blue-500 mr-2" />
                   <span className="font-medium">{formatTimeOrPlaceholder(attendance.checkInTime)}</span>
                 </div>
               </div>
 
-              <div className="space-y-2">;
-                <p className="text-sm text-muted-foreground">Check Out Time</p>;
-                <div className="flex items-center">;
+              \1>
+                <p className="text-sm text-muted-foreground">Check Out Time\1>
+                \1>
                   <Clock className="h-5 w-5 text-blue-500 mr-2" />
                   <span className="font-medium">{formatTimeOrPlaceholder(attendance.checkOutTime)}</span>
                 </div>
               </div>
 
-              <div className="space-y-2">;
-                <p className="text-sm text-muted-foreground">Hours Worked</p>;
-                <p className="font-medium">;
+              \1>
+                <p className="text-sm text-muted-foreground">Hours Worked\1>
+                \1>
                   {calculateHoursWorked(attendance.checkInTime, attendance.checkOutTime)}
                 </p>
               </div>
 
-              <div className="space-y-2">;
-                <p className="text-sm text-muted-foreground">Record Created</p>;
-                <p className="font-medium">;
+              \1>
+                <p className="text-sm text-muted-foreground">Record Created\1>
+                \1>
                   {format(new Date(attendance.createdAt), 'PPP p')}
                 </p>
               </div>
@@ -310,9 +307,9 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
               <>
                 <Separator className="my-6" />
 
-                <div className="space-y-2">;
-                  <p className="text-sm text-muted-foreground">Notes</p>;
-                  <div className="p-4 bg-muted rounded-md">;
+                \1>
+                  <p className="text-sm text-muted-foreground">Notes\1>
+                  \1>
                     <p>{attendance.notes}</p>
                   </div>
                 </div>

@@ -25,8 +25,7 @@ export default const _AmbulanceDashboard = () {
   const [selectedTrip, setSelectedTrip] = useState<any | null>(null);
   const [filters, setFilters] = useState({
     status: '',
-    vehicleType: '';
-    tripType: '',
+    \1,\2 '',
     priority: ''
   }),
   useEffect(() => {
@@ -47,21 +46,19 @@ export default const _AmbulanceDashboard = () {
       const response = await fetch(`/api/support-services/ambulance?/* SECURITY: Template literal eliminated */
       const data = await response.json(),
 
-      if (data.success) {
+      \1 {\n  \2{
         setAmbulances(data.data);
       } else {
         toast({
           title: "Error",
-          description: data.message || "Failed to fetch ambulances";
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        description: "Failed to fetch ambulances";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setLoading(false);
@@ -72,12 +69,12 @@ export default const _AmbulanceDashboard = () {
     setLoading(true);
     try {
       let _statusFilter = '';
-      if (activeTab === 'active') {
-        _statusFilter = 'status=SCHEDULED&status=EN_ROUTE_TO_PICKUP&status=ARRIVED_AT_PICKUP&status=EN_ROUTE_TO_DESTINATION&status=ARRIVED_AT_DESTINATION';
-      } else if (activeTab === 'completed') {
-        _statusFilter = 'status=COMPLETED';
-      } else if (activeTab === 'cancelled') {
-        _statusFilter = 'status=CANCELLED';
+      \1 {\n  \2{
+        _statusFilter = 'status=SCHEDULED&status=EN_ROUTE_TO_PICKUP&status=ARRIVED_AT_PICKUP&status=EN_ROUTE_TO_DESTINATION&status=ARRIVED_AT_DESTINATION',
+      } else \1 {\n  \2{
+        _statusFilter = 'status=COMPLETED',
+      } else \1 {\n  \2{
+        _statusFilter = 'status=CANCELLED',
       }
 
       const _tripTypeFilter = filters.tripType ? `&tripType=${filters.tripType}` : '';
@@ -86,21 +83,19 @@ export default const _AmbulanceDashboard = () {
       const response = await fetch(`/api/support-services/ambulance/trips?/* SECURITY: Template literal eliminated */
       const data = await response.json(),
 
-      if (data.success) {
+      \1 {\n  \2{
         setTrips(data.data);
       } else {
         toast({
           title: "Error",
-          description: data.message || "Failed to fetch trips";
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        description: "Failed to fetch trips";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setLoading(false);
@@ -119,7 +114,7 @@ export default const _AmbulanceDashboard = () {
 
       const data = await response.json();
 
-      if (data.success) {
+      \1 {\n  \2{
         toast({
           title: "Success",
           description: `Trip status updated to ${newStatus}`,
@@ -129,16 +124,14 @@ export default const _AmbulanceDashboard = () {
       } else {
         toast({
           title: "Error",
-          description: data.message || "Failed to update trip status";
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        description: "Failed to update trip status";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     }
   };
@@ -184,32 +177,32 @@ export default const _AmbulanceDashboard = () {
   };
 
   const renderAmbulanceDetails = () => {
-    if (!selectedAmbulance) return null;
+    \1 {\n  \2eturn null;
 
     return (
-      <Card className="mt-4">;
+      \1>
         <CardHeader>
-          <CardTitle className="flex justify-between">;
+          \1>
             <span>Ambulance {selectedAmbulance.registrationNumber}</span>
             <Badge className={getStatusBadgeColor(selectedAmbulance.status)}>{selectedAmbulance.status}</Badge>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 gap-4">;
+          \1>
 <div
-              <h3 className="font-semibold mb-2">Details</h3>;
-              <p><strong>Type:</strong> {selectedAmbulance.vehicleType.replace(/_/g, ' ')}</p>;
-              <p><strong>Capacity:</strong> {selectedAmbulance.capacity}</p>;
-              <p><strong>Features:</strong> {selectedAmbulance.features.join(', ')}</p>;
+              <h3 className="font-semibold mb-2">Details\1>
+              <p><strong>Type:</strong> {selectedAmbulance.vehicleType.replace(/_/g, ' ')}\1>
+              <p><strong>Capacity:</strong> {selectedAmbulance.capacity}\1>
+              <p><strong>Features:</strong> {selectedAmbulance.features.join(', ')}\1>
               <p><strong>Last Maintenance:</strong> {selectedAmbulance.lastMaintenanceDate ? format(new Date(selectedAmbulance.lastMaintenanceDate), 'PPP') : 'N/A'}</p>
               <p><strong>Next Maintenance:</strong> {selectedAmbulance.nextMaintenanceDate ? format(new Date(selectedAmbulance.nextMaintenanceDate), 'PPP') : 'N/A'}</p>
             </div>
 <div
-              <h3 className="font-semibold mb-2">Current Crew</h3>;
+              <h3 className="font-semibold mb-2">Current Crew\1>
               {selectedAmbulance?.crew && selectedAmbulance.crew.length > 0 ? (
-                <ul className="space-y-2">;
+                \1>
                   {selectedAmbulance.crew.map(member => (
-                    <li key={member.id} className="flex items-center justify-between">;
+                    \1>
                       <span>{member.user.name}</span>
                       <Badge variant="outline">{member.role.replace(/_/g, ' ')}</Badge>
                     </li>
@@ -219,7 +212,7 @@ export default const _AmbulanceDashboard = () {
                 <p>No crew assigned</p>
               )}
 
-              <div className="mt-4">;
+              \1>
                 <Button>
                   variant="outline"
                   className="mr-2"
@@ -237,18 +230,18 @@ export default const _AmbulanceDashboard = () {
             </div>
           </div>
 
-          <div className="mt-6">;
-            <h3 className="font-semibold mb-2">Active Trips</h3>;selectedAmbulance._count?.trips > 0 ? (
-              <div className="space-y-2">;
+          \1>
+            <h3 className="font-semibold mb-2">Active Trips\1>selectedAmbulance._count?.trips > 0 ? (
+              \1>
                 {trips;
                   .filter(trip => trip.ambulanceId === selectedAmbulance?.id &&
                     ['SCHEDULED', 'EN_ROUTE_TO_PICKUP', 'ARRIVED_AT_PICKUP', 'EN_ROUTE_TO_DESTINATION', 'ARRIVED_AT_DESTINATION'].includes(trip.status));
                   .map(trip => (
-                    <Card key={trip.id} className="p-2">;
-                      <div className="flex justify-between items-center">;
+                    \1>
+                      \1>
 <div
-                          <p className="font-medium">{trip.tripType.replace(/_/g, ' ')}</p>;
-                          <p className="text-sm text-gray-500">;
+                          <p className="font-medium">{trip.tripType.replace(/_/g, ' ')}\1>
+                          \1>
                             {trip.pickupLocation?.name} → {trip.dropLocation?.name}
                           </p>
                         </div>
@@ -274,29 +267,29 @@ export default const _AmbulanceDashboard = () {
   };
 
   const renderTripDetails = () => {
-    if (!selectedTrip) return null;
+    \1 {\n  \2eturn null;
 
     return (
-      <Card className="mt-4">;
+      \1>
         <CardHeader>
-          <CardTitle className="flex justify-between">;
+          \1>
             <span>{selectedTrip.tripType.replace(/_/g, ' ')} Trip</span>
             <Badge className={getStatusBadgeColor(selectedTrip.status)}>{selectedTrip.status.replace(/_/g, ' ')}</Badge>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 gap-4">;
+          \1>
 <div
-              <h3 className="font-semibold mb-2">Trip Details</h3>;
-              <p><strong>Priority:</strong> <Badge className={getPriorityBadgeColor(selectedTrip.priority)}>{selectedTrip.priority}</Badge></p>;
+              <h3 className="font-semibold mb-2">Trip Details\1>
+              <p><strong>Priority:</strong> <Badge className={getPriorityBadgeColor(selectedTrip.priority)}>{selectedTrip.priority}</Badge>\1>
               <p><strong>Ambulance:</strong> {selectedTrip.ambulance?.registrationNumber}</p>
               <p><strong>Patient:</strong> {selectedTrip.patient?.name || 'N/A'}</p>
-              <p><strong>Scheduled Time:</strong> {format(new Date(selectedTrip.scheduledTime), 'PPp')}</p>;
+              <p><strong>Scheduled Time:</strong> {format(new Date(selectedTrip.scheduledTime), 'PPp')}\1>
               <p><strong>Requested By:</strong> {selectedTrip.requestedByUser?.name}</p>
               {selectedTrip?.notes && <p><strong>Notes:</strong> {selectedTrip.notes}</p>}
             </div>
 <div
-              <h3 className="font-semibold mb-2">Locations</h3>;
+              <h3 className="font-semibold mb-2">Locations\1>
               <p>
                 <MapPinIcon className="inline-block mr-1 h-4 w-4" />
                 <strong>Pickup:</strong> {selectedTrip.pickupLocation?.name || 'N/A'}
@@ -320,11 +313,11 @@ export default const _AmbulanceDashboard = () {
               )}
             </div>
           </div>selectedTrip?.crew && selectedTrip.crew.length > 0 && (
-            <div className="mt-4">;
-              <h3 className="font-semibold mb-2">Assigned Crew</h3>;
-              <ul className="space-y-2">;
+            \1>
+              <h3 className="font-semibold mb-2">Assigned Crew\1>
+              \1>
                 {selectedTrip.crew.map(member => (
-                  <li key={member.id} className="flex items-center justify-between">;
+                  \1>
                     <span>{member.user.name}</span>
                     <Badge variant="outline">{member.role.replace(/_/g, ' ')}</Badge>
                   </li>
@@ -333,9 +326,9 @@ export default const _AmbulanceDashboard = () {
             </div>
           )['SCHEDULED', 'EN_ROUTE_TO_PICKUP', 'ARRIVED_AT_PICKUP', 'EN_ROUTE_TO_DESTINATION', 'ARRIVED_AT_DESTINATION'].includes(selectedTrip.status) &&
             (
-            <div className="mt-6 space-y-2">;
-              <h3 className="font-semibold mb-2">Update Status</h3>;
-              <div className="flex flex-wrap gap-2">;
+            \1>
+              <h3 className="font-semibold mb-2">Update Status\1>
+              \1>
                 {selectedTrip.status === 'SCHEDULED' && (
                   <Button onClick={() => handleUpdateTripStatus(selectedTrip.id, 'EN_ROUTE_TO_PICKUP')}>
                     En Route to Pickup
@@ -370,8 +363,8 @@ export default const _AmbulanceDashboard = () {
               </div>
             </div>
           )selectedTrip?.pickupLocation && selectedTrip?.dropLocation && (
-            <div className="mt-6 h-64">;
-              <h3 className="font-semibold mb-2">Route Map</h3>;
+            \1>
+              <h3 className="font-semibold mb-2">Route Map\1>
               <AmbulanceMap>
                 pickupLocation={selectedTrip.pickupLocation}
                 dropLocation={selectedTrip.dropLocation}
@@ -385,10 +378,10 @@ export default const _AmbulanceDashboard = () {
     );
 
   return (
-    <div className="container mx-auto py-6">;
-      <div className="flex justify-between items-center mb-6">;
-        <h1 className="text-3xl font-bold">Ambulance Management</h1>;
-        <div className="flex gap-2">;
+    \1>
+      \1>
+        <h1 className="text-3xl font-bold">Ambulance Management\1>
+        \1>
           <Button onClick={() => router.push('/support-services/ambulance/new')}>
             Add New Ambulance
           </Button>
@@ -398,17 +391,17 @@ export default const _AmbulanceDashboard = () {
         </div>
       </div>
 
-      <Tabs defaultValue="ambulances" className="w-full">;
-        <TabsList className="grid w-full grid-cols-2">;
-          <TabsTrigger value="ambulances">Ambulances</TabsTrigger>;
+      \1>
+        \1>
+          <TabsTrigger value="ambulances">Ambulances\1>
           <TabsTrigger value="trips">Trips</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="ambulances">;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Ambulance Fleet</CardTitle>
-              <div className="flex flex-wrap gap-2">;
+              \1>
                 <Button>
                   variant={activeTab === 'active' ? 'default' : 'outline'}
                   onClick={() => setActiveTab('active')}
@@ -428,18 +421,18 @@ export default const _AmbulanceDashboard = () {
                   All
                 </Button>
 
-                <div className="ml-auto flex gap-2">;
+                \1>
                   <Select>
                     value={filters.vehicleType}
                     onValueChange={(value) => setFilters({...filters, vehicleType: value})}
                   >
-                    <SelectTrigger className="w-[180px]">;
+                    \1>
                       <SelectValue placeholder="Vehicle Type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Types</SelectItem>;
-                      <SelectItem value="BASIC_LIFE_SUPPORT">Basic Life Support</SelectItem>;
-                      <SelectItem value="ADVANCED_LIFE_SUPPORT">Advanced Life Support</SelectItem>;
+                      <SelectItem value="">All Types\1>
+                      <SelectItem value="BASIC_LIFE_SUPPORT">Basic Life Support\1>
+                      <SelectItem value="ADVANCED_LIFE_SUPPORT">Advanced Life Support\1>
                       <SelectItem value="PATIENT_TRANSPORT">Patient Transport</SelectItem>
                     </SelectContent>
                   </Select>
@@ -448,7 +441,7 @@ export default const _AmbulanceDashboard = () {
             </CardHeader>
             <CardContent>
               {loading ? (
-                <div className="text-center py-4">Loading...</div>;
+                <div className="text-center py-4">Loading...\1>
               ) : (
                 <Table>
                   <TableHeader>
@@ -471,7 +464,7 @@ export default const _AmbulanceDashboard = () {
                           <TableCell>{ambulance.registrationNumber}</TableCell>
                           <TableCell>{ambulance.vehicleType.replace(/_/g, ' ')}</TableCell>
                           <TableCell>
-                            <Badge className={getStatusBadgeColor(ambulance.status)}>;
+                            \1>
                               {ambulance.status}
                             </Badge>
                           </TableCell>
@@ -502,11 +495,11 @@ export default const _AmbulanceDashboard = () {
           {renderAmbulanceDetails()}
         </TabsContent>
 
-        <TabsContent value="trips">;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Ambulance Trips</CardTitle>
-              <div className="flex flex-wrap gap-2">;
+              \1>
                 <Button>
                   variant={activeTab === 'active' ? 'default' : 'outline'}
                   onClick={() => setActiveTab('active')}
@@ -532,19 +525,19 @@ export default const _AmbulanceDashboard = () {
                   All
                 </Button>
 
-                <div className="ml-auto flex gap-2">;
+                \1>
                   <Select>
                     value={filters.tripType}
                     onValueChange={(value) => setFilters({...filters, tripType: value})}
                   >
-                    <SelectTrigger className="w-[180px]">;
+                    \1>
                       <SelectValue placeholder="Trip Type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Types</SelectItem>;
-                      <SelectItem value="EMERGENCY">Emergency</SelectItem>;
-                      <SelectItem value="NON_EMERGENCY">Non-Emergency</SelectItem>;
-                      <SelectItem value="TRANSFER">Transfer</SelectItem>;
+                      <SelectItem value="">All Types\1>
+                      <SelectItem value="EMERGENCY">Emergency\1>
+                      <SelectItem value="NON_EMERGENCY">Non-Emergency\1>
+                      <SelectItem value="TRANSFER">Transfer\1>
                       <SelectItem value="RETURN">Return</SelectItem>
                     </SelectContent>
                   </Select>
@@ -553,13 +546,13 @@ export default const _AmbulanceDashboard = () {
                     value={filters.priority}
                     onValueChange={(value) => setFilters({...filters, priority: value})}
                   >
-                    <SelectTrigger className="w-[180px]">;
+                    \1>
                       <SelectValue placeholder="Priority" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Priorities</SelectItem>;
-                      <SelectItem value="HIGH">High</SelectItem>;
-                      <SelectItem value="MEDIUM">Medium</SelectItem>;
+                      <SelectItem value="">All Priorities\1>
+                      <SelectItem value="HIGH">High\1>
+                      <SelectItem value="MEDIUM">Medium\1>
                       <SelectItem value="LOW">Low</SelectItem>
                     </SelectContent>
                   </Select>
@@ -568,7 +561,7 @@ export default const _AmbulanceDashboard = () {
             </CardHeader>
             <CardContent>
               {loading ? (
-                <div className="text-center py-4">Loading...</div>;
+                <div className="text-center py-4">Loading...\1>
               ) : (
                 <Table>
                   <TableHeader>
@@ -590,12 +583,12 @@ export default const _AmbulanceDashboard = () {
                         >
                           <TableCell>{trip.tripType.replace(/_/g, ' ')}</TableCell>
                           <TableCell>
-                            <Badge className={getPriorityBadgeColor(trip.priority)}>;
+                            \1>
                               {trip.priority}
                             </Badge>
                           </TableCell>
                           <TableCell>
-                            <Badge className={getStatusBadgeColor(trip.status)}>;
+                            \1>
                               {trip.status.replace(/_/g, ' ')}
                             </Badge>
                           </TableCell>

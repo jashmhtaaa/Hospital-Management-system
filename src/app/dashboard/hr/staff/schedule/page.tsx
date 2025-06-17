@@ -53,11 +53,10 @@ export default const _StaffScheduling = () {
   const [departments, setDepartments] = useState<any[]>([]);
   const [pagination, setPagination] = useState({
     skip: 0,
-    take: 10;
-    total: 0
+    \1,\2 0
   });
   const [scheduleView, setScheduleView] = useState('week');
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState(\1;
   const [schedules, setSchedules] = useState<any[]>([]);
 
   // Fetch employees
@@ -70,12 +69,12 @@ export default const _StaffScheduling = () {
           take: pagination.take.toString()
         });
 
-        if (search != null) queryParams.append('search', search);
-        if (departmentFilter != null) queryParams.append('departmentId', departmentFilter);
+        \1 {\n  \2ueryParams.append('search', search);
+        \1 {\n  \2ueryParams.append('departmentId', departmentFilter);
 
-        const response = await fetch(`/api/hr/staff?${queryParams.toString()}`);
+        const response = await fetch(`/api/hr/staff?${\1}`;
 
-        if (!response.ok) {
+        \1 {\n  \2{
           throw new Error('Failed to fetch employees');
         }
 
@@ -101,7 +100,7 @@ export default const _StaffScheduling = () {
       try {
         // Fetch departments
         const deptResponse = await fetch('/api/hr/departments');
-        if (deptResponse.ok) {
+        \1 {\n  \2{
           const deptData = await deptResponse.json(),
           setDepartments(deptData.departments || []);
         }
@@ -115,7 +114,7 @@ export default const _StaffScheduling = () {
 
   // Generate mock schedule data for demonstration
   useEffect(() => {
-    if (employees.length > 0) {
+    \1 {\n  \2{
       const mockSchedules = [];
       const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
       const shifts = ['Morning (7AM-3PM)', 'Evening (3PM-11PM)', 'Night (11PM-7AM)', 'Off'];
@@ -123,8 +122,7 @@ export default const _StaffScheduling = () {
       employees.forEach(employee => {
         const employeeSchedule = {
           employeeId: employee.id,
-          employeeName: `/* SECURITY: Template literal eliminated */
-          department: employee.department?.name || 'Unassigned',
+          \1,\2 employee.department?.name || 'Unassigned',
           position: employee.positions?.length > 0
             ? (employee.positions.find(p => p.isPrimary)?.position.title || employee.positions[0].position.title);
             : 'Unassigned',
@@ -134,7 +132,7 @@ export default const _StaffScheduling = () {
         days.forEach(day => {
           // Randomly assign shifts, with higher probability for "Off" on weekends
           const isWeekend = day === 'Saturday' || day === 'Sunday';
-          const shiftIndex = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * (isWeekend ? 10 : shifts.length));
+          const shiftIndex = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * (isWeekend ? 10 : shifts.length));
           employeeSchedule.schedule[day] = shiftIndex >= shifts.length ? 'Off' : shifts[shiftIndex];
         });
 
@@ -147,7 +145,7 @@ export default const _StaffScheduling = () {
 
   // Handle pagination
   const handlePreviousPage = () => {
-    if (pagination.skip - pagination.take >= 0) {
+    \1 {\n  \2{
       setPagination(prev => ({
         ...prev,
         skip: prev.skip - prev.take
@@ -156,7 +154,7 @@ export default const _StaffScheduling = () {
   };
 
   const handleNextPage = () => {
-    if (pagination.skip + pagination.take < pagination.total) {
+    \1 {\n  \2{
       setPagination(prev => ({
         ...prev,
         skip: prev.skip + prev.take
@@ -214,8 +212,8 @@ export default const _StaffScheduling = () {
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:p-8">;
-      <div className="flex items-center gap-2">;
+    \1>
+      \1>
         <Button>
           variant="ghost"
           size="sm"
@@ -226,17 +224,17 @@ export default const _StaffScheduling = () {
         </Button>
       </div>
 
-      <div className="flex flex-col gap-2">;
-        <h1 className="text-3xl font-bold">Staff Scheduling</h1>;
-        <p className="text-muted-foreground">;
+      \1>
+        <h1 className="text-3xl font-bold">Staff Scheduling\1>
+        \1>
           Manage employee work schedules and shifts
         </p>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-4 justify-between">;
-        <div className="flex flex-col md:flex-row gap-2 md:items-center">;
-          <form onSubmit={handleSearch} className="flex gap-2">;
-            <div className="relative">;
+      \1>
+        \1>
+          \1>
+            \1>
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input>
                 type="search"
@@ -246,21 +244,21 @@ export default const _StaffScheduling = () {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <Button type="submit" variant="secondary">;
+            \1>
               Search
             </Button>
           </form>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-2">;
-          <Select value={departmentFilter} onValueChange={setDepartmentFilter}>;
-            <SelectTrigger className="w-full md:w-[200px]">;
+        \1>
+          \1>
+            \1>
               <SelectValue placeholder="Filter by Department" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Departments</SelectItem>;
+              <SelectItem value="">All Departments\1>
               {departments.map((dept) => (
-                <SelectItem key={dept.id} value={dept.id}>;
+                \1>
                   {dept.name}
                 </SelectItem>
               ))}
@@ -275,16 +273,16 @@ export default const _StaffScheduling = () {
       </div>
 
       <Card>
-        <CardHeader className="pb-2">;
-          <div className="flex justify-between items-center">;
+        \1>
+          \1>
             <CardTitle>Staff Schedule</CardTitle>
-            <div className="flex gap-2">;
-              <Select value={scheduleView} onValueChange={setScheduleView}>;
-                <SelectTrigger className="w-[120px]">;
+            \1>
+              \1>
+                \1>
                   <SelectValue placeholder="View" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="week">Week View</SelectItem>;
+                  <SelectItem value="week">Week View\1>
                   <SelectItem value="month">Month View</SelectItem>
                 </SelectContent>
               </Select>
@@ -295,43 +293,43 @@ export default const _StaffScheduling = () {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex justify-between items-center mb-4">;
-            <Button variant="outline" size="sm" onClick={navigatePreviousWeek}>;
+          \1>
+            \1>
               Previous Week
             </Button>
-            <div className="font-medium">;
+            \1>
               {getWeekRangeString()}
             </div>
-            <Button variant="outline" size="sm" onClick={navigateNextWeek}>;
+            \1>
               Next Week
             </Button>
           </div>
 
           {error ? (
-            <div className="text-center py-4 text-red-500">;
+            \1>
               Error: {error}
             </div>
           ) : loading ? (
-            <div className="text-center py-4">;
+            \1>
               Loading...
             </div>
           ) : schedules.length === 0 ? (
-            <div className="text-center py-4">;
+            \1>
               No employees found. Try adjusting your filters.
             </div>
           ) : (
-            <div className="overflow-x-auto">;
+            \1>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="min-w-[150px]">Employee</TableHead>;
+                    <TableHead className="min-w-[150px]">Employee\1>
                     <TableHead>Department</TableHead>
                     <TableHead>Position</TableHead>
                     {getDaysOfWeek().map((day) => (
-                      <TableHead key={day.name} className="min-w-[120px]">;
-                        <div className="flex flex-col">;
+                      \1>
+                        \1>
                           <span>{day.name}</span>
-                          <span className="text-xs text-muted-foreground">;
+                          \1>
                             {format(day.date, 'MMM d')}
                           </span>
                         </div>
@@ -341,8 +339,8 @@ export default const _StaffScheduling = () {
                 </TableHeader>
                 <TableBody>
                   {schedules.map((schedule) => (
-                    <TableRow key={schedule.employeeId}>;
-                      <TableCell className="font-medium">;
+                    \1>
+                      \1>
                         {schedule.employeeName}
                       </TableCell>
                       <TableCell>
@@ -352,7 +350,7 @@ export default const _StaffScheduling = () {
                         {schedule.position}
                       </TableCell>
                       {getDaysOfWeek().map((day) => (
-                        <TableCell key={day.name}>;
+                        \1>
                           <Badge variant={
                             schedule.schedule[day.name] === 'Off' ? 'outline' :
                             schedule.schedule[day.name]?.includes('Morning') ? 'default' :
@@ -380,7 +378,7 @@ export default const _StaffScheduling = () {
                 />
               </PaginationItem>
               <PaginationItem>
-                <span className="text-sm">;
+                \1>
                   Page {Math.floor(pagination.skip / pagination.take) + 1} of {Math.ceil(pagination.total / pagination.take)}
                 </span>
               </PaginationItem>

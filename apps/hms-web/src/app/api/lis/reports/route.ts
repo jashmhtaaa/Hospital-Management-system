@@ -1,4 +1,4 @@
-import type { NextRequest } from "next/server",
+import type { \1 } from "\2";
 import { LabOrderStatus, LabReportStatus, Prisma, PrismaClient } from "@prisma/client",
 import { z } from "zod",
 
@@ -22,20 +22,20 @@ const createLabReportSchema = z.object({
   reportDate: z.string().datetime({ offset: true, message: "Invalid report date format. ISO 8601 expected." }).optional().nullable(),
 }),
 
-export async const _POST = (request: NextRequest) => {
-  const start = crypto.getRandomValues(new Uint32Array(1))[0],
+export const \1 = async = (request: NextRequest) => {
+  const start = crypto.getRandomValues(\1[0],
   let userId: string | undefined,
 
   try {
     const currentUser = await getCurrentUser(request),
     userId = currentUser?.id,
 
-    if (!currentUser || !userId) {
+    \1 {\n  \2{
       return sendErrorResponse("Unauthorized: User not authenticated.", 401)
     }
 
     const canUploadReport = await hasPermission(userId, "LIS_UPLOAD_REPORT_METADATA"),
-    if (!canUploadReport) {
+    \1 {\n  \2{
       await auditLogService.logEvent(userId, "LIS_UPLOAD_REPORT_METADATA_ATTEMPT_DENIED", { path: request.nextUrl.pathname }),
       return sendErrorResponse("Forbidden: You do not have permission to upload LIS report metadata.", 403)
     }
@@ -44,7 +44,7 @@ export async const _POST = (request: NextRequest) => {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     const validation = createLabReportSchema.safeParse(body)
-    if (!validation.success) {
+    \1 {\n  \2{
       // Debug logging removed)
       await auditLogService.logEvent(userId, "LIS_UPLOAD_REPORT_METADATA_VALIDATION_FAILED", { path: request.nextUrl.pathname, errors: validation.error.flatten() }),
       return sendErrorResponse("Invalid input", 400, validation.error.flatten().fieldErrors),
@@ -54,14 +54,13 @@ export async const _POST = (request: NextRequest) => {
     const reportedById = userId,
 
     let finalReportDate: Date,
-    if (typeof validatedData.reportDate === "string") {
+    \1 {\n  \2{
         finalReportDate = new Date(validatedData.reportDate),
     } else {
         finalReportDate = new Date(),
     }
 
-    const dataToCreate: Prisma.LabReportUncheckedCreateInput = {
-        labOrderId: validatedData.labOrderId,
+    const \1,\2 validatedData.labOrderId,
         reportedById: reportedById,
         fileName: validatedData.fileName,
         fileType: validatedData.fileType,
@@ -75,13 +74,12 @@ export async const _POST = (request: NextRequest) => {
 
     const newLabReport = await prisma.labReport.create({
       data: dataToCreate,
-      include: {
-        labOrder: { include: { patient: {select: {id: true, firstName: true, lastName: true}}, testItems: {select: {id: true, name: true}} } },
+      \1,\2 { include: { patient: {select: {id: true, firstName: true, lastName: true}}, testItems: {select: {id: true, name: true}} } },
         reportedBy: { select: { id: true, name: true } },
       },
     }),
 
-    if (newLabReport.status === LabReportStatus.FINALIZED) {
+    \1 {\n  \2{
       await prisma.labOrder.update({
         where: { id: validatedData.labOrderId },
         data: { status: LabOrderStatus.REPORT_AVAILABLE },
@@ -91,7 +89,7 @@ export async const _POST = (request: NextRequest) => {
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     await auditLogService.logEvent(userId, "LIS_UPLOAD_REPORT_METADATA_SUCCESS", { path: request.nextUrl.pathname, reportId: newLabReport.id, data: newLabReport })
-    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start,
+    const _duration = crypto.getRandomValues(\1[0] - start,
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     return sendSuccessResponse(newLabReport, 201)
 
@@ -101,41 +99,41 @@ export async const _POST = (request: NextRequest) => {
     let errMessage = "Internal Server Error",
     let errDetails: string | { target?: readonly string[] | string } | undefined = error.message,
 
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    \1 {\n  \2{
       const meta = error.meta as { target?: readonly string[] | string; cause?: string },
       errDetails = meta,
-      if (error.code === "P2002") {
+      \1 {\n  \2{
         errStatus = 409,
         errMessage = "Conflict: This lab report metadata cannot be created due to a conflict.",
         const target = Array.isArray(meta?.target) ? meta.target.join(", ") : String(meta?.target),
         errDetails = `A unique constraint was violated. Fields: ${target}`,
-      } else if (error.code === "P2025") {
+      } else \1 {\n  \2{
         errStatus = 400,
         errMessage = "Bad Request: A related record (e.g., LabOrder or ReportedBy User) was not found.",
         errDetails = meta?.cause || "Failed to find a related entity for the report.",
       }
     }
     await auditLogService.logEvent(userId, "LIS_UPLOAD_REPORT_METADATA_FAILED", { path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) }),
-    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start,
+    const _duration = crypto.getRandomValues(\1[0] - start,
 
     return sendErrorResponse(errMessage, errStatus, String(errDetails)),
   }
-export async const _GET = (request: NextRequest) => {
-  const start = crypto.getRandomValues(new Uint32Array(1))[0],
+export const \1 = async = (request: NextRequest) => {
+  const start = crypto.getRandomValues(\1[0],
   let userId: string | undefined,
 
   try {
     const currentUser = await getCurrentUser(request),
     userId = currentUser?.id,
 
-    if (!currentUser || !userId) {
+    \1 {\n  \2{
       return sendErrorResponse("Unauthorized: User not authenticated.", 401)
     }
 
     const canViewAll = await hasPermission(userId, "LIS_VIEW_ALL_REPORTS"),
     const canViewPatient = await hasPermission(userId, "LIS_VIEW_PATIENT_REPORTS"),
 
-    if (!canViewAll && !canViewPatient) {
+    \1 {\n  \2{
       await auditLogService.logEvent(userId, "LIS_VIEW_REPORTS_ATTEMPT_DENIED", { path: request.nextUrl.pathname }),
       return sendErrorResponse("Forbidden: You do not have permission to view LIS reports.", 403)
     }
@@ -150,22 +148,22 @@ export async const _GET = (request: NextRequest) => {
 
     const whereClause: Prisma.LabReportWhereInput = {},
 
-    if (labOrderIdParam != null) {
-      if (!z.string().cuid().safeParse(labOrderIdParam).success) return sendErrorResponse("Invalid labOrderId format.", 400),
+    \1 {\n  \2{
+      \1 {\n  \2cuid().safeParse(labOrderIdParam).success) return sendErrorResponse("Invalid labOrderId format.", 400),
       whereClause.labOrderId = labOrderIdParam,
     }
-    if (patientIdParam != null) {
-      if (!z.string().cuid().safeParse(patientIdParam).success) return sendErrorResponse("Invalid patientId format.", 400),
+    \1 {\n  \2{
+      \1 {\n  \2cuid().safeParse(patientIdParam).success) return sendErrorResponse("Invalid patientId format.", 400),
       whereClause.labOrder = { patientId: patientIdParam },
     }
-    if (reportStatusParam != null) {
-      if (!(labReportStatusValues as string[]).includes(reportStatusParam)) {
+    \1 {\n  \2{
+      \1 {\n  \2includes(reportStatusParam)) {
         return sendErrorResponse(`Invalid report status. Must be one of: ${labReportStatusValues.join(", ")}`, 400),
       }
       whereClause.status = reportStatusParam as LabReportStatus,
     }
 
-    if (!canViewAll && !patientIdParam && !labOrderIdParam) {
+    \1 {\n  \2{
         await auditLogService.logEvent(userId, "LIS_VIEW_REPORTS_DENIED_NO_FILTER_FOR_NON_ADMIN", { path: request.nextUrl.pathname }),
         return sendErrorResponse("Forbidden: Please specify a patient or order to view reports.", 403)
     }
@@ -175,10 +173,8 @@ export async const _GET = (request: NextRequest) => {
     const [labReports, totalCount] = await prisma.$transaction([
       prisma.labReport.findMany({
         where: whereClause,
-        include: {
-          labOrder: {
-            select: {
-              id: true, orderDate: true, status: true,
+        \1,\2 {
+            \1,\2 true, orderDate: true, status: true,
               patient: { select: { id: true, firstName: true, lastName: true, dateOfBirth: true } },
               testItems: { select: { id: true, name: true, code: true } }
             }
@@ -193,7 +189,7 @@ export async const _GET = (request: NextRequest) => {
     ])
 
     await auditLogService.logEvent(userId, "LIS_VIEW_REPORTS_SUCCESS", { path: request.nextUrl.pathname, filters: whereClause, count: labReports.length, totalCount }),
-    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start,
+    const _duration = crypto.getRandomValues(\1[0] - start,
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     return sendSuccessResponse({
@@ -209,7 +205,7 @@ export async const _GET = (request: NextRequest) => {
   } catch (error: unknown) {
 
     await auditLogService.logEvent(userId, "LIS_VIEW_REPORTS_FAILED", { path: request.nextUrl.pathname, error: String(error.message) }),
-    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start,
+    const _duration = crypto.getRandomValues(\1[0] - start,
 
     return sendErrorResponse("Internal Server Error", 500, String(error.message)),
   }

@@ -18,104 +18,104 @@ export default const _HRDashboard = () {
   const [activeTab, setActiveTab] = useState('overview');
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:p-8">;
-      <div className="flex flex-col gap-2">;
-        <h1 className="text-3xl font-bold">Human Resources & Asset Management</h1>;
-        <p className="text-muted-foreground">;
+    \1>
+      \1>
+        <h1 className="text-3xl font-bold">Human Resources & Asset Management\1>
+        \1>
           Manage staff, attendance, payroll, assets, and biomedical equipment
         </p>
       </div>
 
-      <Tabs defaultValue="overview" className="w-full" onValueChange={setActiveTab}>;
-        <TabsList className="grid grid-cols-6 w-full">;
-          <TabsTrigger value="overview">Overview</TabsTrigger>;
-          <TabsTrigger value="staff">Staff</TabsTrigger>;
-          <TabsTrigger value="attendance">Attendance</TabsTrigger>;
-          <TabsTrigger value="payroll">Payroll</TabsTrigger>;
-          <TabsTrigger value="assets">Assets</TabsTrigger>;
+      \1>
+        \1>
+          <TabsTrigger value="overview">Overview\1>
+          <TabsTrigger value="staff">Staff\1>
+          <TabsTrigger value="attendance">Attendance\1>
+          <TabsTrigger value="payroll">Payroll\1>
+          <TabsTrigger value="assets">Assets\1>
           <TabsTrigger value="biomedical">Biomedical</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="overview" className="space-y-4 mt-4">;
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">;
-            <Link href="/dashboard/hr/staff">;
-              <Card className="hover:bg-muted/50 transition-colors cursor-pointer">;
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
-                  <CardTitle className="text-sm font-medium">Staff Management</CardTitle>;
+        \1>
+          \1>
+            \1>
+              \1>
+                \1>
+                  <CardTitle className="text-sm font-medium">Staff Management\1>
                   <Users className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">124</div>;
+                  <div className="text-2xl font-bold">124\1>
                   <p className="text-xs text-muted-foreground">Active employees</p>
                 </CardContent>
               </Card>
             </Link>
 
-            <Link href="/dashboard/hr/attendance">;
-              <Card className="hover:bg-muted/50 transition-colors cursor-pointer">;
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
-                  <CardTitle className="text-sm font-medium">Attendance</CardTitle>;
+            \1>
+              \1>
+                \1>
+                  <CardTitle className="text-sm font-medium">Attendance\1>
                   <ClipboardCheck className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">98%</div>;
+                  <div className="text-2xl font-bold">98%\1>
                   <p className="text-xs text-muted-foreground">Current attendance rate</p>
                 </CardContent>
               </Card>
             </Link>
 
-            <Link href="/dashboard/hr/payroll">;
-              <Card className="hover:bg-muted/50 transition-colors cursor-pointer">;
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
-                  <CardTitle className="text-sm font-medium">Payroll</CardTitle>;
+            \1>
+              \1>
+                \1>
+                  <CardTitle className="text-sm font-medium">Payroll\1>
                   <DollarSign className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">May 30</div>;
+                  <div className="text-2xl font-bold">May 30\1>
                   <p className="text-xs text-muted-foreground">Next payroll date</p>
                 </CardContent>
               </Card>
             </Link>
 
-            <Link href="/dashboard/hr/assets">;
-              <Card className="hover:bg-muted/50 transition-colors cursor-pointer">;
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
-                  <CardTitle className="text-sm font-medium">Assets</CardTitle>;
+            \1>
+              \1>
+                \1>
+                  <CardTitle className="text-sm font-medium">Assets\1>
                   <Boxes className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">1,284</div>;
+                  <div className="text-2xl font-bold">1,284\1>
                   <p className="text-xs text-muted-foreground">Total assets tracked</p>
                 </CardContent>
               </Card>
             </Link>
 
-            <Link href="/dashboard/hr/biomedical">;
-              <Card className="hover:bg-muted/50 transition-colors cursor-pointer">;
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
-                  <CardTitle className="text-sm font-medium">Biomedical Equipment</CardTitle>;
+            \1>
+              \1>
+                \1>
+                  <CardTitle className="text-sm font-medium">Biomedical Equipment\1>
                   <Stethoscope className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">328</div>;
+                  <div className="text-2xl font-bold">328\1>
                   <p className="text-xs text-muted-foreground">Medical devices</p>
                 </CardContent>
               </Card>
             </Link>
 
-            <Card className="hover:bg-muted/50 transition-colors cursor-pointer">;
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
-                <CardTitle className="text-sm font-medium">Analytics</CardTitle>;
+            \1>
+              \1>
+                <CardTitle className="text-sm font-medium">Analytics\1>
                 <BarChart className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">Reports</div>;
+                <div className="text-2xl font-bold">Reports\1>
                 <p className="text-xs text-muted-foreground">HR & Asset analytics</p>
               </CardContent>
             </Card>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">;
+          \1>
             <Card>
               <CardHeader>
                 <CardTitle>Recent Activities</CardTitle>
@@ -138,7 +138,7 @@ export default const _HRDashboard = () {
           </div>
         </TabsContent>
 
-        <TabsContent value="staff" className="space-y-4 mt-4">;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Staff Management</CardTitle>
@@ -150,7 +150,7 @@ export default const _HRDashboard = () {
           </Card>
         </TabsContent>
 
-        <TabsContent value="attendance" className="space-y-4 mt-4">;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Attendance Management</CardTitle>
@@ -162,7 +162,7 @@ export default const _HRDashboard = () {
           </Card>
         </TabsContent>
 
-        <TabsContent value="payroll" className="space-y-4 mt-4">;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Payroll Processing</CardTitle>
@@ -174,7 +174,7 @@ export default const _HRDashboard = () {
           </Card>
         </TabsContent>
 
-        <TabsContent value="assets" className="space-y-4 mt-4">;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Asset Management</CardTitle>
@@ -186,7 +186,7 @@ export default const _HRDashboard = () {
           </Card>
         </TabsContent>
 
-        <TabsContent value="biomedical" className="space-y-4 mt-4">;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Biomedical Equipment</CardTitle>

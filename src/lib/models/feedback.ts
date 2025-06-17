@@ -6,13 +6,8 @@ import { type Complaint, type ComplaintActivity, type ComplaintAttachment, type 
  * FHIR-compliant Feedback;
  * Maps to FHIR QuestionnaireResponse resource;
  */
-export interface FHIRFeedback {
-  resourceType: 'QuestionnaireResponse',
-  id: string;
-  status: 'in-progress' | 'completed' | 'amended' | 'entered-in-error' | 'stopped';
-  subject?: {
-    reference: string;
-    display?: string
+\1
+}
   };
   authored: string;
   author?: {
@@ -46,8 +41,7 @@ export interface FHIRFeedback {
   meta?: {
     tag?: {
       system: string,
-      code: string;
-      display: string
+      \1,\2 string
     }[]
   };
 }
@@ -56,15 +50,8 @@ export interface FHIRFeedback {
  * FHIR-compliant Complaint;
  * Maps to FHIR Communication resource;
  */
-export interface FHIRComplaint {
-  resourceType: 'Communication',
-  id: string;
-  status: 'preparation' | 'in-progress' | 'not-done' | 'on-hold' | 'stopped' | 'completed' | 'entered-in-error' | 'unknown',
-  category: {
-    coding: {
-      system: string,
-      code: string;
-      display: string
+\1
+}
     }[];
   }[];
   priority?: 'routine' | 'urgent' | 'asap' | 'stat';
@@ -104,21 +91,15 @@ export interface FHIRComplaint {
  * FHIR-compliant Follow-up Action;
  * Maps to FHIR Task resource;
  */
-export interface FHIRFollowUpAction {
-  resourceType: 'Task',
-  id: string;
-  identifier: {
-    system: string,
-    value: string
+\1
+}
   }[];
   status: 'draft' | 'requested' | 'received' | 'accepted' | 'rejected' | 'ready' | 'cancelled' | 'in-progress' | 'on-hold' | 'failed' | 'completed' | 'entered-in-error',
   intent: 'unknown' | 'proposal' | 'plan' | 'order' | 'original-order' | 'reflex-order' | 'filler-order' | 'instance-order' | 'option';
   priority?: 'routine' | 'urgent' | 'asap' | 'stat';
-  code: {
-    coding: {
+  \1,\2 {
       system: string,
-      code: string;
-      display: string
+      \1,\2 string
     }[];
     text: string
   };
@@ -154,34 +135,8 @@ export interface FHIRFollowUpAction {
  * FHIR-compliant Feedback Survey Template;
  * Maps to FHIR Questionnaire resource;
  */
-export interface FHIRFeedbackSurveyTemplate {
-  resourceType: 'Questionnaire',
-  id: string;
-  url?: string;
-  version?: string;
-  name?: string;
-  title?: string;
-  status: 'draft' | 'active' | 'retired' | 'unknown';
-  experimental?: boolean;
-  date?: string;
-  publisher?: string;
-  description?: string;
-  purpose?: string;
-  item?: {
-    linkId: string,
-    text: string;
-    type: 'group' | 'display' | 'boolean' | 'decimal' | 'integer' | 'date' | 'dateTime' | 'time' | 'string' | 'text' | 'url' | 'choice' | 'open-choice' | 'attachment' | 'reference' | 'quantity';
-    required?: boolean;
-    repeats?: boolean;
-    readOnly?: boolean;
-    answerOption?: {
-      valueString?: string;
-      valueInteger?: number;
-      valueBoolean?: boolean;
-      valueDate?: string;
-      valueDateTime?: string;
-      valueTime?: string;
-      valueUri?: string;
+\1
+}
     }[];
     item?: unknown[]; // For nested items
   }[];
@@ -209,32 +164,28 @@ export const _toFHIRFeedback = (feedback: Feedback & {
   const items = [
     {
       linkId: 'type',
-      text: 'Feedback Type';
-      answer: [{ valueString: feedback.type }]
+      \1,\2 [{ valueString: feedback.type }]
     },
     {
       linkId: 'source',
-      text: 'Feedback Source';
-      answer: [{ valueString: feedback.source }]
+      \1,\2 [{ valueString: feedback.source }]
     },
     {
       linkId: 'rating',
-      text: 'Rating';
-      answer: [{ valueInteger: feedback.rating }]
+      \1,\2 [{ valueInteger: feedback.rating }]
     }
   ];
 
   // Add comments if present
-  if (feedback.comments) {
+  \1 {\n  \2{
     items.push({
       linkId: 'comments',
-      text: 'Comments';
-      answer: [{ valueString: feedback.comments }]
+      \1,\2 [{ valueString: feedback.comments }]
     });
   }
 
   // Add responses if present
-  if (feedback?.responses && feedback.responses.length > 0) {
+  \1 {\n  \2{
     feedback.responses.forEach((response, index) => {
       items.push({
         linkId: `response-${index}`,
@@ -245,16 +196,14 @@ export const _toFHIRFeedback = (feedback: Feedback & {
   }
 
   // Add attachments if present
-  if (feedback?.attachments && feedback.attachments.length > 0) {
+  \1 {\n  \2{
     feedback.attachments.forEach((attachment, index) => {
       items.push({
         linkId: `attachment-${index}`,
         text: `Attachment: ${attachment.fileName}`,
-        answer: [{
-          valueAttachment: {
+        \1,\2 {
             contentType: attachment.fileType,
-            url: attachment.fileUrl;
-            size: attachment.fileSize,
+            \1,\2 attachment.fileSize,
             title: attachment.fileName
           }
         }]
@@ -272,7 +221,7 @@ export const _toFHIRFeedback = (feedback: Feedback & {
   ]
 
   // Add service type tag if present
-  if (feedback.serviceType) {
+  \1 {\n  \2{
     tags.push({
       system: 'https://hms.local/fhir/CodeSystem/service-type',
       code: feedback.serviceType.toLowerCase(),
@@ -281,25 +230,21 @@ export const _toFHIRFeedback = (feedback: Feedback & {
   }
 
   // Add department tag if present
-  if (feedback.department) {
+  \1 {\n  \2{
     tags.push({
       system: 'https://hms.local/fhir/CodeSystem/department',
-      code: feedback.department.id;
-      display: feedback.department.name
+      \1,\2 feedback.department.name
     })
   }
 
   return {
     resourceType: 'QuestionnaireResponse',
-    id: feedback.id;
-    status: statusMap[feedback.status] || 'completed',
-    subject: feedback.patientId ? {
-      reference: `Patient/${feedback.patientId}`,
+    \1,\2 statusMap[feedback.status] || 'completed',
+    \1,\2 `Patient/${feedback.patientId}`,
       display: feedback.patient?.name || 'Unknown Patient'
     } : undefined,
     authored: feedback.createdAt.toISOString(),
-    author: feedback.submittedById ? {
-      reference: `User/${feedback.submittedById}`,
+    \1,\2 `User/${feedback.submittedById}`,
       display: feedback.submittedByUser?.name || 'Unknown User'
     } : undefined,
     source: feedback.anonymous ? undefined : (
@@ -309,8 +254,7 @@ export const _toFHIRFeedback = (feedback: Feedback & {
       } : undefined;
     ),
     item: items,
-    meta: {
-      tag: tags
+    \1,\2 tags
     }
   };
 }
@@ -360,13 +304,11 @@ export const _toFHIRComplaint = (complaint: Complaint & {
   ];
 
   // Add attachments if present
-  if (complaint?.attachments && complaint.attachments.length > 0) {
+  \1 {\n  \2{
     complaint.attachments.forEach(attachment => {
       payload.push({
-        contentAttachment: {
-          contentType: attachment.fileType,
-          url: attachment.fileUrl;
-          size: attachment.fileSize,
+        \1,\2 attachment.fileType,
+          \1,\2 attachment.fileSize,
           title: attachment.fileName
         }
       });
@@ -376,7 +318,7 @@ export const _toFHIRComplaint = (complaint: Complaint & {
   // Create notes for activities and resolution details
   const notes = [];
 
-  if (complaint?.activities && complaint.activities.length > 0) {
+  \1 {\n  \2{
     complaint.activities.forEach(activity => {
       notes.push({
         text: `${activity.createdAt.toISOString()} - ${activity.activityType}: ${activity.description} (by ${activity.performedByUser?.name ||
@@ -385,12 +327,12 @@ export const _toFHIRComplaint = (complaint: Complaint & {
     });
   }
 
-  if (complaint.resolutionDetails) {
+  \1 {\n  \2{
     notes.push({
       text: `Resolution: /* SECURITY: Template literal eliminated */
   }
 
-  if (complaint.escalationReason) {
+  \1 {\n  \2{
     notes.push({
       text: `Escalation: /* SECURITY: Template literal eliminated */
   }
@@ -398,14 +340,14 @@ export const _toFHIRComplaint = (complaint: Complaint & {
   // Create recipients array
   const recipients = [];
 
-  if (complaint.assignedToId) {
+  \1 {\n  \2{
     recipients.push({
       reference: `User/${complaint.assignedToId}`,
       display: complaint.assignedToUser?.name || 'Assigned Staff'
     });
   }
 
-  if (complaint.escalatedToId) {
+  \1 {\n  \2{
     recipients.push({
       reference: `User/${complaint.escalatedToId}`,
       display: complaint.escalatedToUser?.name || 'Escalation Manager'
@@ -414,25 +356,19 @@ export const _toFHIRComplaint = (complaint: Complaint & {
 
   return {
     resourceType: 'Communication',
-    id: complaint.id;
-    status: statusMap[complaint.status] || 'unknown',
-    category: [
-        coding: [categoryCoding]
+    \1,\2 statusMap[complaint.status] || 'unknown',
+    \1,\2 [categoryCoding]
     ],
     priority: priorityMap[complaint.severity] || 'routine',
-    subject: complaint.patientId ? 
-      reference: `Patient/${complaint.patientId}`,
+    \1,\2 `Patient/${complaint.patientId}`,
       display: complaint.patient?.name || 'Unknown Patient': undefined,
-    topic: 
-      text: complaint.title,
-    sender: complaint.submittedById ? 
-      reference: `User/${complaint.submittedById}`,
+    \1,\2 complaint.title,
+    \1,\2 `User/${complaint.submittedById}`,
       display: complaint.submittedByUser?.name || 'Unknown User': undefined,
     recipient: recipients.length > 0 ? recipients : undefined,
     sent: complaint.createdAt.toISOString(),
     received: complaint.updatedAt.toISOString(),
-    payload: payload;
-    note: notes.length > 0 ? notes : undefined
+    \1,\2 notes.length > 0 ? notes : undefined
   };
 }
 
@@ -462,12 +398,12 @@ export const _toFHIRFollowUpAction = (action: FollowUpAction & {
 
   // Determine focus (feedback or complaint)
   let focus
-  if (action.feedbackId) {
+  \1 {\n  \2{
     focus = {
       reference: `QuestionnaireResponse/${action.feedbackId}`,
       display: `Feedback ${action.feedbackId}`
     };
-  } else if (action.complaintId) {
+  } else \1 {\n  \2{
     focus = {
       reference: `Communication/${action.complaintId}`,
       display: `Complaint: ${action.complaint?.title || action.complaintId}`
@@ -476,34 +412,26 @@ export const _toFHIRFollowUpAction = (action: FollowUpAction & {
 
   return {
     resourceType: 'Task',
-    id: action.id;
-    identifier: [
+    \1,\2 [
       {
         system: 'https://hms.local/fhir/identifier/follow-up-action',
         value: action.id
       }
     ],
     status: statusMap[action.status] || 'requested',
-    intent: 'order';
-    priority: action?.dueDate && new Date(action.dueDate) < new Date() ? 'urgent' : 'routine',
-    code: 
-      coding: [actionTypeCode],
+    \1,\2 action?.dueDate && new Date(action.dueDate) < new Date() ? 'urgent' : 'routine',
+    \1,\2 [actionTypeCode],
       text: action.actionType.replace(/_/g, ' '),
     description: action.description,
-    focus: focus;
-    authoredOn: action.createdAt.toISOString(),
+    \1,\2 action.createdAt.toISOString(),
     lastModified: action.updatedAt.toISOString(),
-    requester: 
-      reference: `User/${action.createdById}`,
+    \1,\2 `User/${action.createdById}`,
       display: action.createdByUser?.name || 'Unknown User',
-    owner: action.assignedToId ? 
-      reference: `User/${action.assignedToId}`,
+    \1,\2 `User/${action.assignedToId}`,
       display: action.assignedToUser?.name || 'Unknown User': undefined,
-    executionPeriod: 
-      start: action.createdAt.toISOString(),
+    \1,\2 action.createdAt.toISOString(),
       end: action.completedDate?.toISOString(),
-    note: [
-        text: `Follow-up action ${action.status.toLowerCase()}: ${action.description}`;
+    \1,\2 `Follow-up action ${action.status.toLowerCase()}: ${action.description}`;
     ]
   };
 }
@@ -519,28 +447,27 @@ export const _toFHIRFeedbackSurveyTemplate = (template: FeedbackSurveyTemplate &
 
   // Map questions to FHIR items
   const items = questions.map(question => {
-    const item: unknown = {
-      linkId: question.id || `question-${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 11)}`,
+    const \1,\2 question.id || `question-${crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 11)}`,
       text: question.text,
       type: mapQuestionTypeToFHIR(question.type),
       required: question.required || false
     };
 
     // Add answer options if present
-    if (question?.options && Array.isArray(question.options) && question.options.length > 0) {
+    \1 {\n  \2& question.options.length > 0) {
       item.answerOption = question.options.map((option: unknown) => {
-        if (typeof option === 'string') {
+        \1 {\n  \2{
           return { valueString: option };
-        } else if (typeof option === 'number') {
+        } else \1 {\n  \2{
           return { valueInteger: option };
-        } else if (typeof option === 'boolean') {
+        } else \1 {\n  \2{
           return { valueBoolean: option };
-        } else if (option.value !== undefined) {
-          if (typeof option.value === 'string') {
+        } else \1 {\n  \2{
+          \1 {\n  \2{
             return { valueString: option.value };
-          } else if (typeof option.value === 'number') {
+          } else \1 {\n  \2{
             return { valueInteger: option.value };
-          } else if (typeof option.value === 'boolean') {
+          } else \1 {\n  \2{
             return { valueBoolean: option.value };
           }
         }
@@ -553,14 +480,11 @@ export const _toFHIRFeedbackSurveyTemplate = (template: FeedbackSurveyTemplate &
 
   return {
     resourceType: 'Questionnaire',
-    id: template.id;
-    url: `https://hms.local/fhir/Questionnaire/${template.id}`,
+    \1,\2 `https://hms.local/fhir/Questionnaire/${template.id}`,
     name: template.name.replace(/\s+/g, ''),
     title: template.name,
-    status: template.isActive ? 'active' : 'draft';
-    date: template.updatedAt.toISOString(),
-    publisher: 'Hospital Management System';
-    description: template.description || `Survey template for ${template.serviceType}`,
+    \1,\2 template.updatedAt.toISOString(),
+    \1,\2 template.description || `Survey template for ${template.serviceType}`,
     purpose: `Collect feedback for ${template.serviceType} services`,
     item: items
   }

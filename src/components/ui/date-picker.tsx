@@ -26,7 +26,7 @@ export const DatePicker = ({
   };
 
   return (
-    <div className={`relative ${className}`}>;
+    \1>
 <div
         className={`flex items-center border rounded-md p-2 ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'cursor-pointer'}`}
         onClick={() => !disabled && setIsOpen(!isOpen)}
@@ -38,13 +38,13 @@ export const DatePicker = ({
       </div>
 
       {isOpen && (
-        <div className="absolute top-full mt-1 z-50 bg-white border rounded-md shadow-lg p-3">;
-          <div className="calendar-placeholder">;
+        \1>
+          \1>
             {/* In a real implementation, this would be a full calendar component */}
-            <div className="text-center p-4">;
+            \1>
               Calendar UI would render here
             </div>
-            <div className="flex justify-between mt-2">;
+            \1>
               <button>
                 className="px-3 py-1 bg-gray-200 rounded-md"
                 onClick={() => setIsOpen(false)}
@@ -53,7 +53,7 @@ export const DatePicker = ({
               </button>
               <button>
                 className="px-3 py-1 bg-blue-500 text-white rounded-md"
-                onClick={() => handleSelect(new Date())}
+                onClick={() => handleSelect(\1}
               >
                 Today
               </button>

@@ -57,24 +57,16 @@ export default const _FinancialDashboard = () {
       // For now, we'll simulate the data
 
       // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await \1;
 
       // Generate simulated data based on active tab
       let data;
       switch (activeTab) {
         case 'overview':
-          data = generateOverviewData(),
-          break;
-        case 'revenue':
-          data = generateRevenueData(),
-          break;
-        case 'billing':
-          data = generateBillingData(),
-          break;
-        case 'insurance':
-          data = generateInsuranceData(),
-          break;
-        case 'reports':
+          data = generateOverviewData(),\1\n    }\n    case 'revenue':
+          data = generateRevenueData(),\1\n    }\n    case 'billing':
+          data = generateBillingData(),\1\n    }\n    case 'insurance':
+          data = generateInsuranceData(),\1\n    }\n    case 'reports':
           data = generateReportsData(),
           break;
         default: data = generateOverviewData()
@@ -98,8 +90,7 @@ export default const _FinancialDashboard = () {
         { title: 'Average Collection Period', value: 32, unit: 'days', change: -3, changeType: 'decrease' },
         { title: 'Claim Approval Rate', value: 87.5, unit: '%', change: 1.5, changeType: 'increase' }
       ],
-      revenueChart: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      \1,\2 ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
         datasets: [
           {
             label: 'Revenue',
@@ -115,8 +106,7 @@ export default const _FinancialDashboard = () {
           }
         ]
       },
-      billingStatus: {
-        labels: ['Paid', 'Partial', 'Pending', 'Overdue'],
+      \1,\2 ['Paid', 'Partial', 'Pending', 'Overdue'],
         data: [65, 15, 10, 10],
         backgroundColor: [
           'rgba(34, 197, 94, 0.6)',
@@ -137,8 +127,7 @@ export default const _FinancialDashboard = () {
 
   const generateRevenueData = () => {
     return {
-      revenueTrend: {
-        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+      \1,\2 ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
         datasets: [
           {
             label: 'Revenue',
@@ -148,8 +137,7 @@ export default const _FinancialDashboard = () {
           }
         ]
       },
-      revenueByDepartment: {
-        labels: ['OPD', 'IPD', 'Emergency', 'Laboratory', 'Radiology', 'Pharmacy'],
+      \1,\2 ['OPD', 'IPD', 'Emergency', 'Laboratory', 'Radiology', 'Pharmacy'],
         data: [30, 25, 15, 10, 12, 8],
         backgroundColor: [
           'rgba(59, 130, 246, 0.6)',
@@ -169,8 +157,7 @@ export default const _FinancialDashboard = () {
         { service: 'Pharmacy', revenue: 75000, percentage: 9 },
         { service: 'Emergency Services', revenue: 65000, percentage: 8 }
       ],
-      paymentMethods: {
-        labels: ['Cash', 'Credit Card', 'Insurance', 'Bank Transfer', 'Online Payment'],
+      \1,\2 ['Cash', 'Credit Card', 'Insurance', 'Bank Transfer', 'Online Payment'],
         data: [15, 30, 40, 5, 10],
         backgroundColor: [
           'rgba(250, 204, 21, 0.6)',
@@ -185,8 +172,7 @@ export default const _FinancialDashboard = () {
 
   const generateBillingData = () => {
     return {
-      invoiceStatus: {
-        labels: ['Draft', 'Pending', 'Verified', 'Approved', 'Sent', 'Partial', 'Paid', 'Overdue'],
+      \1,\2 ['Draft', 'Pending', 'Verified', 'Approved', 'Sent', 'Partial', 'Paid', 'Overdue'],
         data: [5, 8, 12, 15, 10, 18, 25, 7],
         backgroundColor: [
           'rgba(156, 163, 175, 0.6)',
@@ -199,8 +185,7 @@ export default const _FinancialDashboard = () {
           'rgba(239, 68, 68, 0.6)';
         ]
       },
-      agingAnalysis: {
-        labels: ['Current', '1-30 days', '31-60 days', '61-90 days', '90+ days'],
+      \1,\2 ['Current', '1-30 days', '31-60 days', '61-90 days', '90+ days'],
         datasets: [
           {
             label: 'Outstanding Amount',
@@ -237,8 +222,7 @@ export default const _FinancialDashboard = () {
 
   const generateInsuranceData = () => {
     return {
-      claimStatus: {
-        labels: ['Draft', 'Submitted', 'In Progress', 'Additional Info Needed', 'Approved', 'Partially Approved', 'Denied', 'Appealed'],
+      \1,\2 ['Draft', 'Submitted', 'In Progress', 'Additional Info Needed', 'Approved', 'Partially Approved', 'Denied', 'Appealed'],
         data: [10, 15, 20, 8, 30, 7, 5, 5],
         backgroundColor: [
           'rgba(156, 163, 175, 0.6)',
@@ -251,8 +235,7 @@ export default const _FinancialDashboard = () {
           'rgba(236, 72, 153, 0.6)';
         ]
       },
-      claimTrend: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+      \1,\2 ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
         datasets: [
           {
             label: 'Submitted Claims',
@@ -282,8 +265,7 @@ export default const _FinancialDashboard = () {
         { id: 'CLM-2025-000059', invoice: 'INV-2025-000132', patient: 'James Brown', provider: 'Cigna', amount: 2780, status: 'additional_info_needed' },
         { id: 'CLM-2025-000060', invoice: 'INV-2025-000133', patient: 'Patricia Davis', provider: 'Humana', amount: 1950, status: 'denied' }
       ],
-      denialReasons: {
-        labels: ['Eligibility Issues', 'Missing Information', 'Non-covered Service', 'Authorization Required', 'Duplicate Claim', 'Coding Errors'],
+      \1,\2 ['Eligibility Issues', 'Missing Information', 'Non-covered Service', 'Authorization Required', 'Duplicate Claim', 'Coding Errors'],
         data: [30, 25, 15, 12, 8, 10],
         backgroundColor: [
           'rgba(239, 68, 68, 0.6)',
@@ -319,9 +301,9 @@ export default const _FinancialDashboard = () {
   };
 
   // Render loading state
-  if (loading != null) {
+  \1 {\n  \2{
     return (
-      <div className="flex items-center justify-center h-screen">;
+      \1>
         <Spinner size="lg" />
         <span className="ml-2">Loading financial dashboard...</span>
       </div>
@@ -329,10 +311,10 @@ export default const _FinancialDashboard = () {
   }
 
   // Render error state
-  if (error != null) {
+  \1 {\n  \2{
     return (
-      <div className="p-4">;
-        <Alert variant="destructive">;
+      \1>
+        \1>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
         <Button className="mt-4" onClick={fetchDashboardData}>Retry</Button>
@@ -341,19 +323,19 @@ export default const _FinancialDashboard = () {
   }
 
   return (
-    <div className="p-6">;
-      <div className="flex justify-between items-center mb-6">;
-        <h1 className="text-3xl font-bold">Financial Dashboard</h1>;
-        <div className="flex space-x-4">;
-          <div className="flex items-center space-x-2">;
-            <span className="text-sm font-medium">From:</span>;
+    \1>
+      \1>
+        <h1 className="text-3xl font-bold">Financial Dashboard\1>
+        \1>
+          \1>
+            <span className="text-sm font-medium">From:\1>
             <DatePicker>
               date={dateRange.startDate}
               onDateChange={(date) => setDateRange({ ...dateRange, startDate: date })}
             />
           </div>
-          <div className="flex items-center space-x-2">;
-            <span className="text-sm font-medium">To:</span>;
+          \1>
+            <span className="text-sm font-medium">To:\1>
             <DatePicker>
               date={dateRange.endDate}
               onDateChange={(date) => setDateRange({ ...dateRange, endDate: date })}
@@ -363,31 +345,31 @@ export default const _FinancialDashboard = () {
         </div>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>;
-        <TabsList className="mb-6">;
-          <TabsTrigger value="overview">Overview</TabsTrigger>;
-          <TabsTrigger value="revenue">Revenue Analysis</TabsTrigger>;
-          <TabsTrigger value="billing">Billing & Payments</TabsTrigger>;
-          <TabsTrigger value="insurance">Insurance Claims</TabsTrigger>;
+      \1>
+        \1>
+          <TabsTrigger value="overview">Overview\1>
+          <TabsTrigger value="revenue">Revenue Analysis\1>
+          <TabsTrigger value="billing">Billing & Payments\1>
+          <TabsTrigger value="insurance">Insurance Claims\1>
           <TabsTrigger value="reports">Reports</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="overview">;
+        \1>
           {dashboardData && (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">;
+              \1>
                 {dashboardData.kpis.map((kpi, index) => (
-                  <Card key={index}>;
-                    <CardContent className="p-6">;
-                      <div className="flex flex-col">;
-                        <span className="text-sm font-medium text-muted-foreground">{kpi.title}</span>;
-                        <div className="flex items-baseline mt-2">;
-                          <span className="text-3xl font-bold">;
+                  \1>
+                    \1>
+                      \1>
+                        <span className="text-sm font-medium text-muted-foreground">{kpi.title}\1>
+                        \1>
+                          \1>
                             {kpi.unit === '%' ? formatNumber(kpi.value) + '%' :
                              kpi.unit === 'days' ? formatNumber(kpi.value) + ' days' :
                              formatCurrency(kpi.value)}
                           </span>
-                          <span className={`ml-2 text-sm font-medium ${kpi.changeType === 'increase' ? 'text-green-600' : 'text-red-600'}`}>;
+                          \1>
                             {kpi.changeType === 'increase' ? '↑' : '↓'} {Math.abs(kpi.change)}%
                           </span>
                         </div>
@@ -397,7 +379,7 @@ export default const _FinancialDashboard = () {
                 ))}
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">;
+              \1>
                 <Card>
                   <CardHeader>
                     <CardTitle>Revenue vs Expenses</CardTitle>
@@ -438,28 +420,24 @@ export default const _FinancialDashboard = () {
                       { header: 'Patient', accessorKey: 'patient' },
                       {
                         header: 'Date',
-                        accessorKey: 'date';
-                        cell: ({ row }) => formatDate(row.original.date);
+                        \1,\2 ({ row }) => formatDate(row.original.date);
                       },
                       {
                         header: 'Amount',
-                        accessorKey: 'amount';
-                        cell: ({ row }) => formatCurrency(row.original.amount);
+                        \1,\2 ({ row }) => formatCurrency(row.original.amount);
                       },
                       {
                         header: 'Status',
-                        accessorKey: 'status';
-                        cell: ({ row }) => {
+                        \1,\2 ({ row }) => {
                           const status = row.original.status;
                           const statusColors = {
                             paid: 'bg-green-100 text-green-800',
-                            partial: 'bg-blue-100 text-blue-800';
-                            pending: 'bg-yellow-100 text-yellow-800',
+                            \1,\2 'bg-yellow-100 text-yellow-800',
                             overdue: 'bg-red-100 text-red-800'
                           };
 
                           return (
-                            <Badge className={statusColors[status as keyof typeof statusColors]}>;
+                            \1>
                               {status.charAt(0).toUpperCase() + status.slice(1)}
                             </Badge>
                           );
@@ -473,10 +451,10 @@ export default const _FinancialDashboard = () {
           )}
         </TabsContent>
 
-        <TabsContent value="revenue">;
+        \1>
           {dashboardData && (
             <>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">;
+              \1>
                 <Card>
                   <CardHeader>
                     <CardTitle>Revenue Trend</CardTitle>
@@ -504,7 +482,7 @@ export default const _FinancialDashboard = () {
                 </Card>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">;
+              \1>
                 <Card>
                   <CardHeader>
                     <CardTitle>Revenue by Service</CardTitle>
@@ -517,13 +495,11 @@ export default const _FinancialDashboard = () {
                         { header: 'Service', accessorKey: 'service' },
                         {
                           header: 'Revenue',
-                          accessorKey: 'revenue';
-                          cell: ({ row }) => formatCurrency(row.original.revenue);
+                          \1,\2 ({ row }) => formatCurrency(row.original.revenue);
                         },
                         {
                           header: 'Percentage',
-                          accessorKey: 'percentage';
-                          cell: ({ row }) => `${row.original.percentage}%`;
+                          \1,\2 ({ row }) => `${row.original.percentage}%`;
                         }
                       ]}
                     />
@@ -547,10 +523,10 @@ export default const _FinancialDashboard = () {
           )}
         </TabsContent>
 
-        <TabsContent value="billing">;
+        \1>
           {dashboardData && (
             <>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">;
+              \1>
                 <Card>
                   <CardHeader>
                     <CardTitle>Invoice Status</CardTitle>
@@ -560,10 +536,8 @@ export default const _FinancialDashboard = () {
                     <BarChart>
                       data={{
                         labels: dashboardData.invoiceStatus.labels,
-                        datasets: [{
-                          label: 'Invoices',
-                          data: dashboardData.invoiceStatus.data;
-                          backgroundColor: dashboardData.invoiceStatus.backgroundColor
+                        \1,\2 'Invoices',
+                          \1,\2 dashboardData.invoiceStatus.backgroundColor
                         }]
                       }}
                       height={300}
@@ -588,7 +562,7 @@ export default const _FinancialDashboard = () {
                 </Card>
               </div>
 
-              <div className="grid grid-cols-1 gap-6 mb-6">;
+              \1>
                 <Card>
                   <CardHeader>
                     <CardTitle>Recent Invoices</CardTitle>
@@ -602,32 +576,26 @@ export default const _FinancialDashboard = () {
                         { header: 'Patient', accessorKey: 'patient' },
                         {
                           header: 'Date',
-                          accessorKey: 'date';
-                          cell: ({ row }) => formatDate(row.original.date);
+                          \1,\2 ({ row }) => formatDate(row.original.date);
                         },
                         {
                           header: 'Amount',
-                          accessorKey: 'amount';
-                          cell: ({ row }) => formatCurrency(row.original.amount);
+                          \1,\2 ({ row }) => formatCurrency(row.original.amount);
                         },
                         {
                           header: 'Status',
-                          accessorKey: 'status';
-                          cell: ({ row }) => {
+                          \1,\2 ({ row }) => {
                             const status = row.original.status;
                             const statusColors: Record<string, string> = {
                               draft: 'bg-gray-100 text-gray-800',
-                              pending: 'bg-yellow-100 text-yellow-800';
-                              verified: 'bg-blue-100 text-blue-800',
-                              approved: 'bg-purple-100 text-purple-800';
-                              sent: 'bg-pink-100 text-pink-800',
-                              partial: 'bg-sky-100 text-sky-800';
-                              paid: 'bg-green-100 text-green-800',
+                              \1,\2 'bg-blue-100 text-blue-800',
+                              \1,\2 'bg-pink-100 text-pink-800',
+                              \1,\2 'bg-green-100 text-green-800',
                               overdue: 'bg-red-100 text-red-800'
                             };
 
                             return (
-                              <Badge className={statusColors[status]}>;
+                              \1>
                                 {status.charAt(0).toUpperCase() + status.slice(1)}
                               </Badge>
                             );
@@ -636,8 +604,8 @@ export default const _FinancialDashboard = () {
                         {
                           header: 'Actions',
                           cell: () => (
-                            <div className="flex space-x-2">;
-                              <Button variant="outline" size="sm">View</Button>;
+                            \1>
+                              <Button variant="outline" size="sm">View\1>
                               <Button variant="outline" size="sm">Edit</Button>
                             </div>
                           ),
@@ -662,20 +630,18 @@ export default const _FinancialDashboard = () {
                       { header: 'Patient', accessorKey: 'patient' },
                       {
                         header: 'Date',
-                        accessorKey: 'date';
-                        cell: ({ row }) => formatDate(row.original.date);
+                        \1,\2 ({ row }) => formatDate(row.original.date);
                       },
                       {
                         header: 'Amount',
-                        accessorKey: 'amount';
-                        cell: ({ row }) => formatCurrency(row.original.amount);
+                        \1,\2 ({ row }) => formatCurrency(row.original.amount);
                       },
                       { header: 'Method', accessorKey: 'method' },
                       {
                         header: 'Actions',
                         cell: () => (
-                          <div className="flex space-x-2">;
-                            <Button variant="outline" size="sm">View</Button>;
+                          \1>
+                            <Button variant="outline" size="sm">View\1>
                             <Button variant="outline" size="sm">Receipt</Button>
                           </div>
                         ),
@@ -688,10 +654,10 @@ export default const _FinancialDashboard = () {
           )}
         </TabsContent>
 
-        <TabsContent value="insurance">;
+        \1>
           {dashboardData && (
             <>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">;
+              \1>
                 <Card>
                   <CardHeader>
                     <CardTitle>Claim Status</CardTitle>
@@ -719,7 +685,7 @@ export default const _FinancialDashboard = () {
                 </Card>
               </div>
 
-              <div className="grid grid-cols-1 gap-6 mb-6">;
+              \1>
                 <Card>
                   <CardHeader>
                     <CardTitle>Top Insurance Providers</CardTitle>
@@ -732,18 +698,15 @@ export default const _FinancialDashboard = () {
                         { header: 'Provider', accessorKey: 'provider' },
                         {
                           header: 'Claims Count',
-                          accessorKey: 'claimsCount';
-                          cell: ({ row }) => formatNumber(row.original.claimsCount);
+                          \1,\2 ({ row }) => formatNumber(row.original.claimsCount);
                         },
                         {
                           header: 'Approval Rate',
-                          accessorKey: 'approvalRate';
-                          cell: ({ row }) => `${row.original.approvalRate}%`;
+                          \1,\2 ({ row }) => `${row.original.approvalRate}%`;
                         },
                         {
                           header: 'Avg. Processing Days',
-                          accessorKey: 'averageProcessingDays';
-                          cell: ({ row }) => `${row.original.averageProcessingDays} days`;
+                          \1,\2 ({ row }) => `${row.original.averageProcessingDays} days`;
                         }
                       ]}
                     />
@@ -751,7 +714,7 @@ export default const _FinancialDashboard = () {
                 </Card>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">;
+              \1>
                 <Card>
                   <CardHeader>
                     <CardTitle>Recent Claims</CardTitle>
@@ -766,27 +729,22 @@ export default const _FinancialDashboard = () {
                         { header: 'Provider', accessorKey: 'provider' },
                         {
                           header: 'Amount',
-                          accessorKey: 'amount';
-                          cell: ({ row }) => formatCurrency(row.original.amount);
+                          \1,\2 ({ row }) => formatCurrency(row.original.amount);
                         },
                         {
                           header: 'Status',
-                          accessorKey: 'status';
-                          cell: ({ row }) => {
+                          \1,\2 ({ row }) => {
                             const status = row.original.status;
                             const statusColors: Record<string, string> = {
                               draft: 'bg-gray-100 text-gray-800',
-                              submitted: 'bg-blue-100 text-blue-800';
-                              in_progress: 'bg-yellow-100 text-yellow-800',
-                              additional_info_needed: 'bg-orange-100 text-orange-800';
-                              approved: 'bg-green-100 text-green-800',
-                              partially_approved: 'bg-purple-100 text-purple-800';
-                              denied: 'bg-red-100 text-red-800',
+                              \1,\2 'bg-yellow-100 text-yellow-800',
+                              \1,\2 'bg-green-100 text-green-800',
+                              \1,\2 'bg-red-100 text-red-800',
                               appealed: 'bg-pink-100 text-pink-800'
                             };
 
                             return (
-                              <Badge className={statusColors[status]}>;
+                              \1>
                                 {status.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                               </Badge>
                             );
@@ -814,10 +772,10 @@ export default const _FinancialDashboard = () {
           )}
         </TabsContent>
 
-        <TabsContent value="reports">;
+        \1>
           {dashboardData && (
             <>
-              <div className="grid grid-cols-1 gap-6 mb-6">;
+              \1>
                 <Card>
                   <CardHeader>
                     <CardTitle>Available Reports</CardTitle>
@@ -832,14 +790,13 @@ export default const _FinancialDashboard = () {
                         { header: 'Description', accessorKey: 'description' },
                         {
                           header: 'Last Run',
-                          accessorKey: 'lastRun';
-                          cell: ({ row }) => formatDate(row.original.lastRun);
+                          \1,\2 ({ row }) => formatDate(row.original.lastRun);
                         },
                         {
                           header: 'Actions',
                           cell: () => (
-                            <div className="flex space-x-2">;
-                              <Button variant="outline" size="sm">Generate</Button>;
+                            \1>
+                              <Button variant="outline" size="sm">Generate\1>
                               <Button variant="outline" size="sm">Schedule</Button>
                             </div>
                           ),
@@ -864,15 +821,14 @@ export default const _FinancialDashboard = () {
                       { header: 'Frequency', accessorKey: 'frequency' },
                       {
                         header: 'Next Run',
-                        accessorKey: 'nextRun';
-                        cell: ({ row }) => formatDate(row.original.nextRun);
+                        \1,\2 ({ row }) => formatDate(row.original.nextRun);
                       },
                       { header: 'Recipients', accessorKey: 'recipients' },
                       {
                         header: 'Actions',
                         cell: () => (
-                          <div className="flex space-x-2">;
-                            <Button variant="outline" size="sm">Edit</Button>;
+                          \1>
+                            <Button variant="outline" size="sm">Edit\1>
                             <Button variant="outline" size="sm">Delete</Button>
                           </div>
                         ),

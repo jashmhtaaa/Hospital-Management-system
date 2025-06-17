@@ -10,8 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 }
 interface OTTheatreModalProps {
   isOpen: boolean,
-  onClose: () => void;
-  onSubmit: (data: unknown) => void
+  \1,\2 (data: unknown) => void
 }
 
 /**
@@ -26,19 +25,19 @@ export const _OTTheatreModal = ({ isOpen, onClose, onSubmit }: OTTheatreModalPro
 
   return (
     <Dialog>
-      <DialogContent className="sm:max-w-[500px]">;
+      \1>
         <DialogHeader>
           <DialogTitle>Add/Edit Theatre</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>;
-          <div className="grid gap-4 py-4">;
-            <div className="space-y-2">;
-              <Label htmlFor="name">Theatre Name</Label>;
+        \1>
+          \1>
+            \1>
+              <Label htmlFor="name">Theatre Name\1>
               <Input id="name" placeholder="e.g., OT-1" />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="type">Theatre Type</Label>;
+            \1>
+              <Label htmlFor="type">Theatre Type\1>
               <Select>
                 id="type"
                 options={[
@@ -51,18 +50,18 @@ export const _OTTheatreModal = ({ isOpen, onClose, onSubmit }: OTTheatreModalPro
               />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="capacity">Capacity</Label>;
+            \1>
+              <Label htmlFor="capacity">Capacity\1>
               <Input id="capacity" type="number" placeholder="Number of staff" />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="equipment">Equipment</Label>;
+            \1>
+              <Label htmlFor="equipment">Equipment\1>
               <Textarea id="equipment" placeholder="List of available equipment" />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="status">Status</Label>;
+            \1>
+              <Label htmlFor="status">Status\1>
               <Select>
                 id="status"
                 options={[
@@ -73,13 +72,13 @@ export const _OTTheatreModal = ({ isOpen, onClose, onSubmit }: OTTheatreModalPro
               />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="notes">Notes</Label>;
+            \1>
+              <Label htmlFor="notes">Notes\1>
               <Textarea id="notes" placeholder="Additional information" />
             </div>
           </div>
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose}>;
+            \1>
               Cancel
             </Button>
             <Button type="submit">Save</Button>

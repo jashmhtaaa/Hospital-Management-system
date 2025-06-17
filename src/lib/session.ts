@@ -4,9 +4,8 @@ import { cookies } from "next/headers";
 
 import type { User } from "@/types/user";
 // Define and export the shape of the session data
-export interface IronSessionData {
-  user?: User;
-  isLoggedIn?: boolean; // Added isLoggedIn property
+\1
+}
 }
 
 // Augment the iron-session module to include our IronSessionData definition
@@ -24,13 +23,11 @@ const sessionPassword =
   process.env.SECRET_COOKIE_PASSWORD ||
   "complex_password_at_least_32_characters_long_for_dev";
 
-if (!sessionPassword || sessionPassword.length < 32) {
+\1 {\n  \2{
   // Debug logging removed. Using a default insecure password for development."
   );
-export const sessionOptions: SessionOptions = {
-  password: sessionPassword,
-  cookieName: "hms-session";
-    secure: process.env.NODE_ENV === "production",
+export const \1,\2 sessionPassword,
+  \1,\2 process.env.NODE_ENV === "production",
     maxAge: 60 * 60 * 24 * 7, // 1 week,
 };
 
@@ -42,7 +39,7 @@ export const _getSession = async () => {
   );
   // Ensure isLoggedIn reflects the presence of a user
   // This logic might need adjustment based on how login is handled elsewhere
-  if (session?.user && session.isLoggedIn === undefined) {
+  \1 {\n  \2{
     session.isLoggedIn = true;
   }
   return session;

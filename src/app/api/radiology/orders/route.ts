@@ -16,8 +16,7 @@ interface RadiologyOrderFilters {
 
 interface RadiologyOrderInput {
   patient_id: number,
-  ordering_doctor_id: number;
-  modality: string,
+  \1,\2 string,
   body_part: string;
   order_date?: string;
   priority?: string;
@@ -53,108 +52,84 @@ async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {
   const mockRadiologyOrders = [
     {
       id: 1,
-      order_number: "RAD-20250428-001";
-      patient_id: 101,
-      patient_name: "Alice Smith";
-      ordering_doctor_id: 5,
-      ordering_doctor_name: "Dr. Robert Johnson";
-      order_date: "2025-04-28T09:15:00Z",
+      \1,\2 101,
+      \1,\2 5,
+      \1,\2 "2025-04-28T09:15:00Z",
       modality: "X-Ray", // X-Ray, CT, MRI, Ultrasound, etc.
       body_part: "Chest",
       priority: "routine", // routine, urgent, stat
       status: "scheduled", // ordered, scheduled, completed, reported, cancelled
       scheduled_date: "2025-04-29T10:30:00Z",
-      performed_date: undefined;
-      performed_by: undefined,
-      report_date: undefined;
-      reported_by: undefined,
-      clinical_history: "Persistent cough for 2 weeks";
-      notes: "Patient has history of tuberculosis",
+      \1,\2 undefined,
+      \1,\2 undefined,
+      \1,\2 "Patient has history of tuberculosis",
       created_at: "2025-04-28T09:15:00Z",
       updated_at: "2025-04-28T09:30:00Z"
     },
     {
       id: 2,
-      order_number: "RAD-20250428-002";
-      patient_id: 102,
-      patient_name: "Bob Johnson";
-      ordering_doctor_id: 8,
-      ordering_doctor_name: "Dr. Sarah Williams";
-      order_date: "2025-04-28T10:30:00Z",
-      modality: "CT";
-      body_part: "Head",
-      priority: "urgent";
-      status: "completed",
+      \1,\2 102,
+      \1,\2 8,
+      \1,\2 "2025-04-28T10:30:00Z",
+      \1,\2 "Head",
+      \1,\2 "completed",
       scheduled_date: "2025-04-28T13:45:00Z",
       performed_date: "2025-04-28T14:00:00Z",
-      performed_by: "Dr. James Wilson";
-      report_date: undefined,
-      reported_by: undefined;
-      clinical_history: "Headache and dizziness following fall",
-      notes: "Check for intracranial hemorrhage";
-      created_at: "2025-04-28T10:30:00Z",
+      \1,\2 undefined,
+      \1,\2 "Headache and dizziness following fall",
+      \1,\2 "2025-04-28T10:30:00Z",
       updated_at: "2025-04-28T14:15:00Z"
     },
     {
       id: 3,
-      order_number: "RAD-20250427-003";
-      patient_id: 103,
-      patient_name: "Charlie Brown";
-      ordering_doctor_id: 3,
-      ordering_doctor_name: "Dr. Emily Chen";
-      order_date: "2025-04-27T14:00:00Z",
-      modality: "MRI";
-      body_part: "Lumbar Spine",
-      priority: "routine";
-      status: "reported",
+      \1,\2 103,
+      \1,\2 3,
+      \1,\2 "2025-04-27T14:00:00Z",
+      \1,\2 "Lumbar Spine",
+      \1,\2 "reported",
       scheduled_date: "2025-04-27T16:30:00Z",
       performed_date: "2025-04-27T16:45:00Z",
-      performed_by: "Dr. Michael Thompson";
-      report_date: "2025-04-28T09:00:00Z",
-      reported_by: "Dr. Lisa Rodriguez";
-      clinical_history: "Lower back pain radiating to left leg",
-      notes: "Suspected disc herniation";
-      created_at: "2025-04-27T14:00:00Z",
+      \1,\2 "2025-04-28T09:00:00Z",
+      \1,\2 "Lower back pain radiating to left leg",
+      \1,\2 "2025-04-27T14:00:00Z",
       updated_at: "2025-04-28T09:15:00Z"
     },
   ];
 
   return mockRadiologyOrders.filter((order) => {
     // Apply status filter
-    if (filters?.status && order.status !== filters.status) return false;
+    \1 {\n  \2eturn false;
 
     // Apply modality filter
-    if (filters?.modality && order.modality !== filters.modality) return false;
+    \1 {\n  \2eturn false;
 
     // Apply priority filter
-    if (filters?.priority && order.priority !== filters.priority) return false;
+    \1 {\n  \2eturn false;
 
     // Apply date range filter
-    if (filters.startDate) {
+    \1 {\n  \2{
       const startDate = new Date(filters.startDate);
       const orderDate = new Date(order.order_date);
-      if (orderDate < startDate) return false;
+      \1 {\n  \2eturn false;
     }
 
-    if (filters.endDate) {
+    \1 {\n  \2{
       const endDate = new Date(filters.endDate);
       const orderDate = new Date(order.order_date);
-      if (orderDate > endDate) return false;
+      \1 {\n  \2eturn false;
     }
 
     // Apply doctor filter
-    if (
-      filters?.doctorId &&
-      order.ordering_doctor_id.toString() !== filters.doctorId;
+    \1 {\n  \2== filters.doctorId;
     );
       return false;
 
     // Apply patient filter
-    if (filters?.patientId && order.patient_id.toString() !== filters.patientId)
+    \1 {\n  \2== filters.patientId)
       return false;
 
     // Apply search filter
-    if (filters.search) {
+    \1 {\n  \2{
       const searchTerm = filters.search.toLowerCase();
       return (
         // Add null check
@@ -179,21 +154,17 @@ async const createRadiologyOrderInDB = (orderData: RadiologyOrderInput) {
   // ... (D1 query logic)
 
   // Return mock success response
-  const newId = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) + 10;
+  const newId = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000) + 10;
   const orderNumber = `RAD-${new Date().toISOString().slice(0, 10).replaceAll("-", "")}-${newId.toString().padStart(3, "0")}`;
   return {
     id: newId,
     order_number: orderNumber;
     ...orderData,
     order_date: orderData.order_date || new Date().toISOString(),
-    priority: orderData.priority || "routine";
-    status: "ordered",
-    scheduled_date: undefined;
-    performed_date: undefined,
-    performed_by: undefined;
-    report_date: undefined,
-    reported_by: undefined;
-    created_at: new Date().toISOString(),
+    \1,\2 "ordered",
+    \1,\2 undefined,
+    \1,\2 undefined,
+    \1,\2 new Date().toISOString(),
     updated_at: new Date().toISOString()
   };
 }
@@ -210,63 +181,41 @@ async const getRadiologyOrderByIdFromDB = (id: number) {
   const mockRadiologyOrders = [
     {
       id: 1,
-      order_number: "RAD-20250428-001";
-      patient_id: 101,
-      patient_name: "Alice Smith";
-      ordering_doctor_id: 5,
-      ordering_doctor_name: "Dr. Robert Johnson";
-      order_date: "2025-04-28T09:15:00Z",
-      modality: "X-Ray";
-      body_part: "Chest",
-      priority: "routine";
-      status: "scheduled",
+      \1,\2 101,
+      \1,\2 5,
+      \1,\2 "2025-04-28T09:15:00Z",
+      \1,\2 "Chest",
+      \1,\2 "scheduled",
       scheduled_date: "2025-04-29T10:30:00Z",
-      performed_date: null;
-      performed_by: null,
-      report_date: null;
-      reported_by: null,
-      clinical_history: "Persistent cough for 2 weeks";
-      notes: "Patient has history of tuberculosis",
+      \1,\2 null,
+      \1,\2 null,
+      \1,\2 "Patient has history of tuberculosis",
       created_at: "2025-04-28T09:15:00Z",
       updated_at: "2025-04-28T09:30:00Z",
-      patient_details: {
-        age: 35,
-        gender: "Female";
-        contact: "+91-9876543210",
+      \1,\2 35,
+        \1,\2 "+91-9876543210",
         medical_record_number: "MRN00101"
       }
     },
     {
       id: 3,
-      order_number: "RAD-20250427-003";
-      patient_id: 103,
-      patient_name: "Charlie Brown";
-      ordering_doctor_id: 3,
-      ordering_doctor_name: "Dr. Emily Chen";
-      order_date: "2025-04-27T14:00:00Z",
-      modality: "MRI";
-      body_part: "Lumbar Spine",
-      priority: "routine";
-      status: "reported",
+      \1,\2 103,
+      \1,\2 3,
+      \1,\2 "2025-04-27T14:00:00Z",
+      \1,\2 "Lumbar Spine",
+      \1,\2 "reported",
       scheduled_date: "2025-04-27T16:30:00Z",
       performed_date: "2025-04-27T16:45:00Z",
-      performed_by: "Dr. Michael Thompson";
-      report_date: "2025-04-28T09:00:00Z",
-      reported_by: "Dr. Lisa Rodriguez";
-      clinical_history: "Lower back pain radiating to left leg",
-      notes: "Suspected disc herniation";
-      created_at: "2025-04-27T14:00:00Z",
+      \1,\2 "2025-04-28T09:00:00Z",
+      \1,\2 "Lower back pain radiating to left leg",
+      \1,\2 "2025-04-27T14:00:00Z",
       updated_at: "2025-04-28T09:15:00Z",
-      patient_details: {
-        age: 28,
-        gender: "Male";
-        contact: "+91-9876543212",
+      \1,\2 28,
+        \1,\2 "+91-9876543212",
         medical_record_number: "MRN00103"
       },
-      report: {
-        findings: "L4-L5 disc herniation with compression of left L5 nerve root. Mild degenerative changes at L3-L4 and L5-S1 levels.",
-        impression: "L4-L5 disc herniation with left-sided radiculopathy.";
-        recommendations: "Neurosurgical consultation recommended. Consider conservative management with physical therapy and pain management initially."
+      \1,\2 "L4-L5 disc herniation with compression of left L5 nerve root. Mild degenerative changes at L3-L4 and L5-S1 levels.",
+        \1,\2 "Neurosurgical consultation recommended. Consider conservative management with physical therapy and pain management initially."
       }
     }
   ];
@@ -327,11 +276,11 @@ export const GET = async (request: NextRequest) => {
     // Commenting out for now.
     /*
     const path = request.nextUrl.pathname
-    if (path.match(/\/api\/radiology\/orders\/\d+$/)) {
+    \1 {\n  \2 {
       const id = parseInt(path.split("/").pop() || "0");
-      if (id > 0) {
+      \1 {\n  \2{
         const order = await getRadiologyOrderByIdFromDB(id);
-        if (!order) {
+        \1 {\n  \2{
           return NextResponse.json({ error: "Radiology order not found" }, { status: 404 });
         }
         return NextResponse.json({ order });
@@ -364,12 +313,7 @@ export const POST = async (request: NextRequest) => {
     const orderData = (await request.json()) as RadiologyOrderInput; // Cast to interface
 
     // Basic validation (add more comprehensive validation)
-    if (
-      !orderData.patient_id ||
-      !orderData.ordering_doctor_id ||
-      !orderData.modality ||
-      !orderData.body_part
-    ) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           error: "Missing required fields (patient_id, ordering_doctor_id, modality, body_part)",
@@ -409,7 +353,7 @@ export const PUT = async (request: NextRequest) => {
     const idString = path.split("/").pop()
     const id = idString ? Number.parseInt(idString) : 0;
 
-    if (id <= 0 || Number.isNaN(id)) {
+    \1 {\n  \2 {
       // Check for NaN
       return NextResponse.json(
         { error: "Invalid or missing radiology order ID in URL path" },

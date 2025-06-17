@@ -37,14 +37,14 @@ export default const _PatientDetailPage = () {
   const [error, setError] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false),
   useEffect(() => {
-    if (!patientId) return;
+    \1 {\n  \2eturn;
 
     const fetchPatient = async () => {
       setIsLoading(true),
       setError(null);
       try {
-        const response = await fetch(`/api/patients/${patientId}`);
-        if (!response.ok) {
+        const response = await fetch(`/api/patients/${\1}`;
+        \1 {\n  \2{
           const errorData: { error?: string } = await response.json();
           throw new Error(errorData.error || "Failed to fetch patient details");
         }
@@ -55,8 +55,7 @@ export default const _PatientDetailPage = () {
         setError(message),
         toast({
           title: "Error Fetching Patient",
-          description: message;
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       } finally 
         setIsLoading(false);
@@ -72,7 +71,7 @@ export default const _PatientDetailPage = () {
             method: "DELETE"
         });
         const result: { error?: string } = await response.json();
-        if (!response.ok) {
+        \1 {\n  \2{
             throw new Error(result.error || "Failed to deactivate patient");
         }
         toast({
@@ -84,43 +83,42 @@ export default const _PatientDetailPage = () {
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         toast({
             title: "Deactivation Failed",
-            description: message;
-            variant: "destructive"
+            \1,\2 "destructive"
         });
     } finally {
         setIsDeleting(false);
     }
   };
 
-  if (isLoading != null) {
-    return <DashboardLayout><p>Loading patient details...</p></DashboardLayout>;
+  \1 {\n  \2{
+    return <DashboardLayout><p>Loading patient details...</p>\1>
   }
 
-  if (error != null) {
-    return <DashboardLayout><p className="text-red-500">Error: {error}</p></DashboardLayout>;
+  \1 {\n  \2{
+    return <DashboardLayout><p className="text-red-500">Error: {error}</p>\1>
   }
 
-  if (!patient) {
-    return <DashboardLayout><p>Patient not found.</p></DashboardLayout>;
+  \1 {\n  \2{
+    return <DashboardLayout><p>Patient not found.</p>\1>
   }
 
   // Helper to display data or N/A
   const displayData = (data: string | null | undefined) => data ||
-    <span className="text-muted-foreground italic">N/A</span>;
+    <span className="text-muted-foreground italic">N/A\1>
 
   return (
     <DashboardLayout>
-      <div className="flex flex-col gap-6 max-w-4xl mx-auto">;
-        <div className="flex items-center justify-between">;
-          <h1 className="text-2xl font-semibold">Patient Details</h1>;
-          <div className="flex gap-2">;
+      \1>
+        \1>
+          <h1 className="text-2xl font-semibold">Patient Details\1>
+          \1>
             {/* TODO: Link to edit page or enable inline editing */}
             <Button variant="outline" size="sm" onClick={() => router.push(`/dashboard/patients/${patientId}/edit`)}>
                 <Edit className="mr-2 h-4 w-4" /> Edit
             </Button>
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive" size="sm" disabled={isDeleting}>;
+                \1>
                   <Trash2 className="mr-2 h-4 w-4" /> {isDeleting ? "Deactivating..." : "Deactivate"}
                 </Button>
               </AlertDialogTrigger>
@@ -132,8 +130,8 @@ export default const _PatientDetailPage = () {
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>;
-                  <AlertDialogAction onClick={handleDeactivate} disabled={isDeleting} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">;
+                  <AlertDialogCancel disabled={isDeleting}>Cancel\1>
+                  \1>
                     Deactivate Patient
                   </AlertDialogAction>
                 </AlertDialogFooter>
@@ -147,10 +145,10 @@ export default const _PatientDetailPage = () {
             <CardTitle>{patient.first_name} {patient.last_name}</CardTitle>
             <CardDescription>Patient ID: {patient.patient_id}</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">;
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">;
-                <div><Label>Date of Birth:</Label> <p>{patient.date_of_birth}</p></div>;
-                <div><Label>Gender:</Label> <p>{patient.gender}</p></div>;
+          \1>
+            \1>
+                <div><Label>Date of Birth:</Label> <p>{patient.date_of_birth}</p>\1>
+                <div><Label>Gender:</Label> <p>{patient.gender}</p>\1>
                 <div><Label>Blood Group:</Label> <p>{displayData(patient.blood_group)}</p></div>
             </div>
           </CardContent>
@@ -158,10 +156,10 @@ export default const _PatientDetailPage = () {
 
         <Card>
           <CardHeader><CardTitle>Contact Information</CardTitle></CardHeader>
-          <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">;
-            <div><Label>Phone:</Label> <p>{patient.phone_number}</p></div>;
-            <div><Label>Email:</Label> <p>{displayData(patient.email)}</p></div>;
-            <div className="md:col-span-2"><Label>Address:</Label>;
+          \1>
+            <div><Label>Phone:</Label> <p>{patient.phone_number}</p>\1>
+            <div><Label>Email:</Label> <p>{displayData(patient.email)}</p>\1>
+            <div className="md:col-span-2"><Label>Address:\1>
                 <p>{displayData(patient.address_line1)}</p>
                 {patient?.address_line2 && <p>{patient.address_line2}</p>}
                 <p>{[patient.city, patient.state, patient.postal_code].filter(Boolean).join(", ")}</p>
@@ -172,34 +170,34 @@ export default const _PatientDetailPage = () {
 
         <Card>
           <CardHeader><CardTitle>Emergency Contact</CardTitle></CardHeader>
-          <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">;
-            <div><Label>Name:</Label> <p>{displayData(patient.emergency_contact_name)}</p></div>;
-            <div><Label>Relation:</Label> <p>{displayData(patient.emergency_contact_relation)}</p></div>;
+          \1>
+            <div><Label>Name:</Label> <p>{displayData(patient.emergency_contact_name)}</p>\1>
+            <div><Label>Relation:</Label> <p>{displayData(patient.emergency_contact_relation)}</p>\1>
             <div><Label>Phone:</Label> <p>{displayData(patient.emergency_contact_phone)}</p></div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader><CardTitle>Medical Information</CardTitle></CardHeader>
-          <CardContent className="space-y-4">;
-            <div><Label>Allergies:</Label> <p className="whitespace-pre-wrap">{displayData(patient.allergies)}</p></div>;
-            <div><Label>Past Medical History:</Label> <p className="whitespace-pre-wrap">{displayData(patient.past_medical_history)}</p></div>;
+          \1>
+            <div><Label>Allergies:</Label> <p className="whitespace-pre-wrap">{displayData(patient.allergies)}</p>\1>
+            <div><Label>Past Medical History:</Label> <p className="whitespace-pre-wrap">{displayData(patient.past_medical_history)}</p>\1>
             <div><Label>Current Medications:</Label> <p className="whitespace-pre-wrap">{displayData(patient.current_medications)}</p></div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader><CardTitle>Insurance Information</CardTitle></CardHeader>
-          <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">;
-            <div><Label>Provider:</Label> <p>{displayData(patient.insurance_provider)}</p></div>;
+          \1>
+            <div><Label>Provider:</Label> <p>{displayData(patient.insurance_provider)}</p>\1>
             <div><Label>Policy Number:</Label> <p>{displayData(patient.insurance_policy_number)}</p></div>
           </CardContent>
         </Card>
 
          <Card>
           <CardHeader><CardTitle>Registration Details</CardTitle></CardHeader>
-          <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">;
-            <div><Label>Registered On:</Label> <p>{new Date(patient.registration_date).toLocaleString()}</p></div>;
+          \1>
+            <div><Label>Registered On:</Label> <p>{new Date(patient.registration_date).toLocaleString()}</p>\1>
             {/* TODO: Fetch and display name of user who registered the patient */}
             <div><Label>Registered By User ID:</Label> <p>{displayData(patient.registered_by_user_id?.toString())}</p></div>
             <div><Label>Last Updated:</Label> <p>{new Date(patient.updated_at).toLocaleString()}</p></div>

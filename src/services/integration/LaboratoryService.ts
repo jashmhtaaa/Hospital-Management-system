@@ -10,8 +10,7 @@ const prisma = new PrismaClient();
 // Validation schemas
 export const LabOrderSchema = z.object({
   encounterId: z.string().uuid(),
-  tests: z.array(z.object({
-    testId: z.string().uuid(),
+  \1,\2 z.string().uuid(),
     testName: z.string().min(1),
     testCode: z.string().min(1),
     specimenType: z.string().min(1),
@@ -34,33 +33,23 @@ export const LabResultNotificationSchema = z.object({
 /**
  * LaboratoryService class for handling laboratory-related operations;
  */
-export class LaboratoryService {
-  /**
-   * Handle laboratory test order;
-   * @param data Laboratory order data;
-   * @param userId User ID of the person creating the order;
-   * @returns Created laboratory orders;
-   */
-  async createLabOrder(data: z.infer<typeof LabOrderSchema>, userId: string) {
+\1
+}
     logger.info({ method: 'createLabOrder', encounterId: data.encounterId }, 'Creating laboratory order');
 
     // Get encounter details
     const encounter = await prisma.encounter.findUnique({
       where: { id: data.encounterId },
-      include: {
-        patient: {
-          select: {
-            id: true,
-            name: true;
-            mrn: true,
-            dateOfBirth: true;
-            gender: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true,
+            \1,\2 true
           },
         },
       },
     });
 
-    if (!encounter) {
+    \1 {\n  \2{
       throw new Error('Encounter not found');
     }
 
@@ -69,18 +58,12 @@ export class LaboratoryService {
 
     for (const test of data.tests) {
       const order = await prisma.labOrder.create({
-        data: {
-          patientId: encounter.patientId,
-          encounterId: encounter.id;
-          testId: test.testId,
-          testName: test.testName;
-          testCode: test.testCode,
-          specimenType: test.specimenType;
-          priority: test.priority || 'ROUTINE',
-          status: 'ORDERED';
-          orderNotes: test.orderNotes,
-          orderedBy: userId;
-          orderedAt: new Date(),
+        \1,\2 encounter.patientId,
+          \1,\2 test.testId,
+          \1,\2 test.testCode,
+          \1,\2 test.priority || 'ROUTINE',
+          \1,\2 test.orderNotes,
+          \1,\2 new Date(),
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -95,18 +78,15 @@ export class LaboratoryService {
         order.id,
         {
           orderId: order.id,
-          patientId: encounter.patientId;
-          encounterId: encounter.id,
-          testId: test.testId;
-          testName: test.testName
+          \1,\2 encounter.id,
+          \1,\2 test.testName
         }
       );
     }
 
     return {
       success: true,
-      orders: createdOrders;
-      message: `${createdOrders.length} laboratory tests ordered successfully`,
+      \1,\2 `${createdOrders.length} laboratory tests ordered successfully`,
     };
   }
 
@@ -124,22 +104,20 @@ export class LaboratoryService {
       where: { id: data.orderId },
     });
 
-    if (!order) {
+    \1 {\n  \2{
       throw new Error('Laboratory order not found');
     }
 
     // Check if order can be cancelled
-    if (order.status === 'CANCELLED' || order.status === 'COMPLETED' || order.status === 'RESULTED') {
-      throw new Error(`Cannot cancel order with status: ${order.status}`);
+    \1 {\n  \2{
+      throw new Error(`Cannot cancel order with status: ${\1}`;
     }
 
     // Update lab order
     const updatedOrder = await prisma.labOrder.update({
       where: { id: data.orderId },
-      data: {
-        status: 'CANCELLED',
-        cancelReason: data.reason;
-        cancelledBy: userId,
+      \1,\2 'CANCELLED',
+        \1,\2 userId,
         cancelledAt: new Date(),
         updatedAt: new Date()
       },
@@ -152,19 +130,15 @@ export class LaboratoryService {
       order.id,
       {
         orderId: order.id,
-        patientId: order.patientId;
-        encounterId: order.encounterId,
-        testId: order.testId;
-        testName: order.testName,
-        reason: data.reason;
-        action: 'CANCELLED'
+        \1,\2 order.encounterId,
+        \1,\2 order.testName,
+        \1,\2 'CANCELLED'
       }
     );
 
     return {
       success: true,
-      order: updatedOrder;
-      message: 'Laboratory order cancelled successfully'
+      \1,\2 'Laboratory order cancelled successfully'
     };
   }
 
@@ -180,44 +154,37 @@ export class LaboratoryService {
     // Get lab order details
     const order = await prisma.labOrder.findUnique({
       where: { id: data.orderId },
-      include: {
-        patient: {
-          select: {
-            id: true,
-            name: true;
-            mrn: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           },
         },
       },
     });
 
-    if (!order) {
+    \1 {\n  \2{
       throw new Error('Laboratory order not found');
     }
 
     // Create notification for clinical staff
     const notification = await prisma.notification.create({
-      data: {
-        userId: data.notifyUserId || null, // If null, will be sent to all relevant staff
+      \1,\2 data.notifyUserId || null, // If null, will be sent to all relevant staff
         patientId: order.patientId,
-        encounterId: order.encounterId;
-        type: 'LAB_RESULT',
+        \1,\2 'LAB_RESULT',
         title: `Lab Result Available: ${order.testName}`,
         message: `Laboratory results for ${order.testName} are now available for patient ${order.patient.name} (${order.patient.mrn}).`,
         priority: data.criticalResult ? 'HIGH' : 'NORMAL',
-        status: 'UNREAD';
-        actionUrl: `/ipd/patients/${order.patientId}/lab-results/${order.id}`,
+        \1,\2 `/ipd/patients/${order.patientId}/lab-results/${order.id}`,
         createdAt: new Date(),
-        expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 7 * 24 * 60 * 60 * 1000), // 7 days from now
+        expiresAt: \1[0] + 7 * 24 * 60 * 60 * 1000), // 7 days from now
       },
     });
 
     // Update lab order status if not already resulted
-    if (order.status !== 'RESULTED') {
+    \1 {\n  \2{
       await prisma.labOrder.update({
         where: { id: data.orderId },
-        data: {
-          status: 'RESULTED',
+        \1,\2 'RESULTED',
           resultedAt: new Date(),
           updatedAt: new Date()
         },
@@ -231,12 +198,9 @@ export class LaboratoryService {
       notification.id,
       {
         notificationId: notification.id,
-        orderId: order.id;
-        patientId: order.patientId,
-        encounterId: order.encounterId;
-        testId: order.testId,
-        testName: order.testName;
-        criticalResult: data.criticalResult || false
+        \1,\2 order.patientId,
+        \1,\2 order.testId,
+        \1,\2 data.criticalResult || false
       }
     );
 
@@ -283,8 +247,7 @@ export class LaboratoryService {
     logger.info({ method: 'getLabResults', patientId, encounterId, limit, includeDetails }, 'Getting laboratory results');
 
     // Build query
-    const query: unknown = {
-      where: {
+    const \1,\2 {
         patientId,
         status: 'RESULTED'
       },
@@ -293,15 +256,14 @@ export class LaboratoryService {
     };
 
     // Add encounter filter if provided
-    if (encounterId != null) {
+    \1 {\n  \2{
       query.where.encounterId = encounterId;
     }
 
     // Add result details if requested
-    if (includeDetails != null) {
+    \1 {\n  \2{
       query.include = {
-        results: {
-          orderBy: { createdAt: 'desc' },
+        \1,\2 { createdAt: 'desc' },
         },
       };
     }
@@ -311,7 +273,7 @@ export class LaboratoryService {
 
     // Group by test category if results are available
     let _groupedResults = {};
-    if (labResults.length > 0 && includeDetails) {
+    \1 {\n  \2{
       _groupedResults = labResults.reduce((groups, result) => {
         const category = result.testCategory || 'Uncategorized';
         const group = groups[category] || [];
@@ -342,28 +304,23 @@ export class LaboratoryService {
     // Get lab order with results
     const labOrder = await prisma.labOrder.findUnique({
       where: { id: orderId },
-      include: {
-        patient: {
-          select: {
-            id: true,
-            name: true;
-            mrn: true,
-            dateOfBirth: true;
-            gender: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true,
+            \1,\2 true
           },
         },
-        results: {
-          orderBy: { createdAt: 'desc' },
+        \1,\2 { createdAt: 'desc' },
         },
       },
     });
 
-    if (!labOrder) {
+    \1 {\n  \2{
       throw new Error('Laboratory order not found');
     }
 
     // Check if results are available
-    if (labOrder.status !== 'RESULTED' || !labOrder.results || labOrder.results.length === 0) {
+    \1 {\n  \2{
       throw new Error('Laboratory results not available yet');
     }
 
@@ -375,8 +332,7 @@ export class LaboratoryService {
       {
         orderId,
         patientId: labOrder.patientId,
-        encounterId: labOrder.encounterId;
-        testId: labOrder.testId,
+        \1,\2 labOrder.testId,
         testName: labOrder.testName
       }
     );

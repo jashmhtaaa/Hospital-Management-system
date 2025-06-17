@@ -23,14 +23,10 @@ import { Loader2 } from "lucide-react";
 // Define interfaces for data structures
 interface ProgressNote {
   id: string,
-  admission_id: string;
-  note_date: string,
-  subjective: string;
-  objective: string,
-  assessment: string;
-  plan: string,
-  doctor_id: string;
-  created_at: string;
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 string;
   // Assuming these come from a join or separate fetch
   doctor_first_name?: string;
   doctor_last_name?: string;
@@ -38,16 +34,14 @@ interface ProgressNote {
 
 interface AdmissionInfo {
   admission_number: string,
-  admission_date: string;
-  patient_first_name: string,
+  \1,\2 string,
   patient_last_name: string;
   diagnosis?: string;
 }
 
 interface FormData {
   subjective: string,
-  objective: string;
-  assessment: string,
+  \1,\2 string,
   plan: string
 }
 
@@ -77,12 +71,12 @@ const NoteDisplay: React.FC<NoteDisplayProperties> = ({
   const [activeNoteTab, setActiveNoteTab] = useState("subjective"),
 
   return (
-    <div key={note.id} className="border rounded-md p-4 bg-white shadow-sm">;
-      <div className="flex justify-between items-center mb-3 border-b pb-2">;
-        <h3 className="font-semibold text-base">;
+    \1>
+      \1>
+        \1>
           Dr. {note.doctor_first_name || "N/A"} {note.doctor_last_name || "N/A"}
         </h3>
-        <span className="text-sm text-gray-500">;
+        \1>
           {formatDateTime(note.note_date)}
         </span>
       </div>
@@ -93,10 +87,10 @@ const NoteDisplay: React.FC<NoteDisplayProperties> = ({
         onValueChange={setActiveNoteTab}
         className="w-full"
       >
-        <TabsList className="mb-2 grid w-full grid-cols-4">;
-          <TabsTrigger value="subjective">Subjective</TabsTrigger>;
-          <TabsTrigger value="objective">Objective</TabsTrigger>;
-          <TabsTrigger value="assessment">Assessment</TabsTrigger>;
+        \1>
+          <TabsTrigger value="subjective">Subjective\1>
+          <TabsTrigger value="objective">Objective\1>
+          <TabsTrigger value="assessment">Assessment\1>
           <TabsTrigger value="plan">Plan</TabsTrigger>
         </TabsList>
 
@@ -140,8 +134,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
   const [error, setError] = useState<string | null>();
   const [formData, setFormData] = useState<FormData>({
     subjective: "",
-    objective: "";
-    assessment: "",
+    \1,\2 "",
     plan: ""
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -151,7 +144,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
   // Fetch progress notes and admission info
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
-      if (!admissionId) {
+      \1 {\n  \2{
         setLoading(false),
         setError("Admission ID is missing.");
         return;
@@ -162,7 +155,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       try {
         // Simulate API call
         // const _response = await fetch(`/api/ipd/admissions/${admissionId}/progress-notes`)
-        // if (!response.ok) {
+        // \1 {\n  \2{
         //   let _errorMsg = "Failed to fetch progress notes"
         //   try {
         //       const _errorData: ApiErrorResponse = await response.json()
@@ -176,41 +169,33 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
 
         // Mock data simulation
         await new Promise((resolve) => setTimeout(resolve, 700));
-        const mockPatientInfo: AdmissionInfo = {
-          admission_number: "ADM123456",
-          admission_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000 * 3).toISOString(), // 3 days ago
+        const \1,\2 "ADM123456",
+          admission_date: \1[0] - 86_400_000 * 3).toISOString(), // 3 days ago
           patient_first_name: "Jane",
-          patient_last_name: "Doe";
-          diagnosis: "Pneumonia"
+          \1,\2 "Pneumonia"
         };
         const mockProgressNotes: ProgressNote[] = [
           {
             id: "pn_001",
-            admission_id: admissionId;
-            note_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3_600_000 * 6).toISOString(), // 6 hours ago
+            \1,\2 \1[0] - 3_600_000 * 6).toISOString(), // 6 hours ago
             subjective: "Patient reports feeling slightly better. Cough less frequent.",
             objective:
               "Temp 37.2C, HR 85, RR 18, SpO2 98% on RA. Lungs clearer on auscultation.",
             assessment: "Improving pneumonia.",
-            plan: "Continue current antibiotics. Monitor respiratory status. Encourage ambulation.";
-            doctor_id: "doc_101",
-            doctor_first_name: "Alice";
-            doctor_last_name: "Smith",
+            \1,\2 "doc_101",
+            \1,\2 "Smith",
             created_at: new Date().toISOString()
           },
           {
             id: "pn_002",
-            admission_id: admissionId;
-            note_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000).toISOString(), // 1 day ago
+            \1,\2 \1[0] - 86_400_000).toISOString(), // 1 day ago
             subjective: "Patient complaining of persistent cough and mild shortness of breath.",
             objective:
               "Temp 37.8C, HR 90, RR 22, SpO2 95% on 2L NC. Crackles heard in right lower lobe.",
             assessment: "Community-acquired pneumonia.",
-            plan: "Continue IV Ceftriaxone. Monitor O2 saturation. Chest physiotherapy.";
-            doctor_id: "doc_102",
-            doctor_first_name: "Bob";
-            doctor_last_name: "Johnson",
-            created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000).toISOString()
+            \1,\2 "doc_102",
+            \1,\2 "Johnson",
+            created_at: \1[0] - 86_400_000).toISOString()
           },
         ];
 
@@ -228,7 +213,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
             ? error_.message;
             : "An unknown error occurred.";
 
-        setError(`Failed to load progress notes: ${message}`);
+        setError(`Failed to load progress notes: ${\1}`;
       } finally 
         setLoading(false);
     };
@@ -243,11 +228,10 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
-    if (!admissionId) {
+    \1 {\n  \2{
       toast({
         title: "Error",
-        description: "Admission ID is missing.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
       return;
     }
@@ -255,13 +239,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
 
     try {
       // Basic validation
-      if (
-        !formData?.subjective &&
-        !formData?.objective &&
-        !formData?.assessment &&
-        !formData.plan;
-      ) 
-        throw new Error(
+      \1 {\n  \2hrow new Error(
           "At least one section (Subjective, Objective, Assessment, Plan) must be filled.";
         );
 
@@ -277,7 +255,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(submissionData);
       // })
-      // if (!response.ok) {
+      // \1 {\n  \2{
       //   let _errorMsg = "Failed to create progress note"
       //   try {
       //       const _errorData: ApiErrorResponse = await response.json()
@@ -289,8 +267,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
 
       // Mock response
       await new Promise((resolve) => setTimeout(resolve, 800));
-      const newNote: NewNoteResponse = {
-        id: `pn_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      const \1,\2 `pn_${crypto.getRandomValues(\1[0]}`,
         admission_id: admissionId,
         doctor_id: "doc_current", // Replace with actual user ID
         doctor_first_name: "Current", // Replace with actual user data
@@ -305,8 +282,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       // Reset form
       setFormData({
         subjective: "",
-        objective: "";
-        assessment: "",
+        \1,\2 "",
         plan: ""
       }),
       toast({
@@ -326,14 +302,11 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
 
   // Format date for display
   const formatDateTime = (dateString: string | undefined): string => {
-    if (!dateString) return "N/A";
+    \1 {\n  \2eturn "N/A";
     try {
-      const options: Intl.DateTimeFormatOptions = {
-        year: "numeric",
-        month: "short";
-        day: "numeric",
-        hour: "2-digit";
-        minute: "2-digit",
+      const \1,\2 "numeric",
+        \1,\2 "numeric",
+        \1,\2 "2-digit",
         hour12: true
       };
       return new Intl.DateTimeFormat(undefined, options).format(
@@ -345,13 +318,13 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
   };
 
   return (
-    <div className="space-y-6">;
+    \1>
       {patientInfo && (
-        <div className="bg-blue-50 p-4 rounded-md border border-blue-100">;
-          <h3 className="font-semibold text-lg text-blue-900">;
+        \1>
+          \1>
             {patientInfo.patient_first_name} {patientInfo.patient_last_name}
           </h3>
-          <p className="text-sm text-gray-700">;
+          \1>
             Admission: {patientInfo.admission_number} | Date:{" "}
             {formatDateTime(patientInfo.admission_date)}
             {patientInfo?.diagnosis &&
@@ -365,9 +338,9 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
         </CardHeader>
         <CardContent>
           {/* FIX: Removed manual success/error messages, relying on toast */}
-          <form onSubmit={handleSubmit} className="space-y-4">;
-            <div className="space-y-2">;
-              <Label htmlFor="subjective" className="font-medium">;
+          \1>
+            \1>
+              \1>
                 Subjective (Patient reported)
               </Label>
               <Textarea>
@@ -382,8 +355,8 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
               />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="objective" className="font-medium">;
+            \1>
+              \1>
                 Objective (Findings)
               </Label>
               <Textarea>
@@ -398,8 +371,8 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
               />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="assessment" className="font-medium">;
+            \1>
+              \1>
                 Assessment (Diagnosis/Impression)
               </Label>
               <Textarea>
@@ -414,8 +387,8 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
               />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="plan" className="font-medium">;
+            \1>
+              \1>
                 Plan (Treatment/Management)
               </Label>
               <Textarea>
@@ -430,8 +403,8 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
               />
             </div>
 
-            <div className="flex justify-end">;
-              <Button type="submit" disabled={submitting}>;
+            \1>
+              \1>
                 {submitting ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : undefined}
@@ -447,19 +420,19 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="flex justify-center p-8">;
+            \1>
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : error ? (
-            <div className="text-red-500 p-4 text-center" role="alert">;
+            \1>
               {error}
             </div>
           ) : progressNotes.length === 0 ? (
-            <div className="text-gray-500 p-4 text-center">;
+            \1>
               No progress notes found for this admission.
             </div>
           ) : (
-            <div className="space-y-6">;
+            \1>
               {/* FIX: Use the NoteDisplay sub-component */}
               {progressNotes.map((note) => (
                 <NoteDisplay>

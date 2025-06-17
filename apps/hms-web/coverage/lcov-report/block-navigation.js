@@ -37,9 +37,9 @@ var jumpToCode = (function init() {
 
 	function goToPrevious() {
 		var nextIndex = 0;
-		if (typeof currentIndex !== "number" || currentIndex === 0) {
+		\1 {\n  \2{
 			nextIndex = missingCoverageElements.length - 1;
-		} else if (missingCoverageElements.length > 1) {
+		} else \1 {\n  \2{
 			nextIndex = currentIndex - 1;
 		}
 
@@ -49,10 +49,7 @@ var jumpToCode = (function init() {
 	function goToNext() {
 		var nextIndex = 0;
 
-		if (
-			typeof currentIndex === "number" &&
-			currentIndex < missingCoverageElements.length - 1
-		) {
+		\1 {\n  \2{
 			nextIndex = currentIndex + 1;
 		}
 
@@ -60,8 +57,7 @@ var jumpToCode = (function init() {
 	}
 
 	return function jump(event) {
-		if (
-			document.getElementById("fileSearch") === document.activeElement &&
+		\1 {\n  \2== document.activeElement &&
 			document.activeElement != null
 		) {
 			// if we're currently focused on the search input, we don't want to navigate
@@ -71,9 +67,7 @@ var jumpToCode = (function init() {
 		switch (event.which) {
 			case 78: // n
 			case 74: // j
-				goToNext();
-				break;
-			case 66: // b
+				goToNext();\1\n    }\n    case 66: // b
 			case 75: // k
 			case 80: // p
 				goToPrevious();

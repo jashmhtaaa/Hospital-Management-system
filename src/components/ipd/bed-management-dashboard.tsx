@@ -29,8 +29,7 @@ interface Bed {
   bed_number: string;
   room_number?: string | null;
   ward: string,
-  category: "general" | "semi-private" | "private" | "icu";
-  status: "available" | "occupied" | "reserved" | "maintenance",
+  \1,\2 "available" | "occupied" | "reserved" | "maintenance",
   price_per_day: number;
   features?: string | null; // Comma-separated string
   // Add other bed properties if any
@@ -90,13 +89,13 @@ const BedManagementDashboard: React.FC = () => {
 
         const parameters = new URLSearchParams();
         // FIX: Rely on falsiness of "" for "All" filter
-        if (filterWard != null) parameters.append("ward", filterWard),
-        if (filterCategory != null) parameters.append("category", filterCategory);
-        if (filterStatus != null) parameters.append("status", filterStatus);
+        \1 {\n  \2arameters.append("ward", filterWard),
+        \1 {\n  \2arameters.append("category", filterCategory);
+        \1 {\n  \2arameters.append("status", filterStatus);
 
-        const response = await fetch(`/api/ipd/beds?${parameters.toString()}`);
+        const response = await fetch(`/api/ipd/beds?${\1}`;
 
-        if (!response.ok) {
+        \1 {\n  \2{
           const errorMessage = `Failed to fetch beds (status: ${response.status})`;
           try {
             // FIX: Add type for errorData
@@ -118,7 +117,7 @@ const BedManagementDashboard: React.FC = () => {
             ? error_.message;
             : "An unknown error occurred";
 
-        setError(`Failed to load beds: ${message}`),
+        setError(`Failed to load beds: ${\1}`,
         setBeds([]); // Clear beds on error
       } finally {
         setLoading(false);
@@ -184,9 +183,9 @@ const BedManagementDashboard: React.FC = () => {
   ).length;
 
   return (
-    <div className="space-y-6 p-4">;
+    \1>
       {/* Filter Section */}
-      <div className="flex flex-wrap gap-4 items-end">;
+      \1>
 <div
           <label>
             htmlFor="ward-filter"
@@ -198,12 +197,12 @@ const BedManagementDashboard: React.FC = () => {
             value={filterWard || "All"}
             onValueChange={(value) => handleFilterChange(value, "ward")}
           >
-            <SelectTrigger id="ward-filter" className="w-[180px]">;
+            \1>
               <SelectValue placeholder="Select Ward" />
             </SelectTrigger>
             <SelectContent>
               {wardOptions.map((ward) => (
-                <SelectItem key={ward} value={ward}>;
+                \1>
                   {ward}
                 </SelectItem>
               ))}
@@ -222,12 +221,12 @@ const BedManagementDashboard: React.FC = () => {
             value={filterCategory || "All"}
             onValueChange={(value) => handleFilterChange(value, "category")}
           >
-            <SelectTrigger id="category-filter" className="w-[180px]">;
+            \1>
               <SelectValue placeholder="Select Category" />
             </SelectTrigger>
             <SelectContent>
               {categoryOptions.map((category) => (
-                <SelectItem key={category} value={category}>;
+                \1>
                   {category}
                 </SelectItem>
               ))}
@@ -246,11 +245,11 @@ const BedManagementDashboard: React.FC = () => {
             value=filterStatus || "All"
             onValueChange={(value) => handleFilterChange(value, "status")}
           >
-            <SelectTrigger id="status-filter" className="w-[180px]">;
+            \1>
               <SelectValue placeholder="Select Status" />
             </SelectTrigger>
             <SelectContent>statusOptions.map((status) => (
-                <SelectItem key={status} value={status}>;
+                \1>
                   {status}
                 </SelectItem>
               ))
@@ -258,42 +257,42 @@ const BedManagementDashboard: React.FC = () => {
           </Select>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">;
+      \1>
         <Card>
-          <CardContent className="p-4">;
-            <div className="text-2xl font-bold">{availableBeds}</div>;
+          \1>
+            <div className="text-2xl font-bold">{availableBeds}\1>
             <div className="text-sm text-muted-foreground">Available Beds</div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4">;
-            <div className="text-2xl font-bold">{occupiedBeds}</div>;
+          \1>
+            <div className="text-2xl font-bold">{occupiedBeds}\1>
             <div className="text-sm text-muted-foreground">Occupied Beds</div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4">;
-            <div className="text-2xl font-bold">{reservedBeds}</div>;
+          \1>
+            <div className="text-2xl font-bold">{reservedBeds}\1>
             <div className="text-sm text-muted-foreground">Reserved Beds</div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4">;
-            <div className="text-2xl font-bold">{maintenanceBeds}</div>;
-            <div className="text-sm text-muted-foreground">;
+          \1>
+            <div className="text-2xl font-bold">{maintenanceBeds}\1>
+            \1>
               Under Maintenance
             </div>
           </CardContent>
         </Card>
       </div>
       <Card>
-        <CardContent className="p-0">;
+        \1>
           {loading ? (
-            <div className="flex justify-center items-center h-64">;
+            \1>
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-700"></div>
             </div>
           ) : error ? (
-            <div className="text-red-500 p-4 text-center">{error}</div>;
+            <div className="text-red-500 p-4 text-center">{error}\1>
           ) : (
             <Table>
               <TableHeader>
@@ -303,7 +302,7 @@ const BedManagementDashboard: React.FC = () => {
                   <TableHead>Ward</TableHead>
                   <TableHead>Category</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Price/Day</TableHead>;
+                  <TableHead className="text-right">Price/Day\1>
                   <TableHead>Features</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
@@ -311,19 +310,19 @@ const BedManagementDashboard: React.FC = () => {
               <TableBody>
                 {beds.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center h-24">;
+                    \1>
                       No beds found matching criteria
                     </TableCell>
                   </TableRow>
                 ) : (
                   beds.map((bed) => (
-                    <TableRow key={bed.id}>;
-                      <TableCell className="font-medium">;
+                    \1>
+                      \1>
                         {bed.bed_number}
                       </TableCell>
                       <TableCell>{bed.room_number || "N/A"}</TableCell>
                       <TableCell>{bed.ward}</TableCell>
-                      <TableCell className="capitalize">;
+                      \1>
                         {bed.category}
                       </TableCell>
                       <TableCell>
@@ -335,10 +334,10 @@ const BedManagementDashboard: React.FC = () => {
                           {bed.status}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-right">;
+                      \1>
                         ₹{bed.price_per_day?.toFixed(2) ?? "N/A"}
                       </TableCell>
-                      <TableCell className="max-w-xs truncate">;
+                      \1>
                         {bed.features;
                           ? bed.features.split(",").map((feature) => (
                               <Badge>
@@ -360,7 +359,7 @@ const BedManagementDashboard: React.FC = () => {
                           View
                         </Button>
                         {bed.status === "available" && (
-                          <Button size="sm" variant="default" className="h-8">;
+                          \1>
                             Assign
                           </Button>
                         )}

@@ -7,10 +7,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 }
 interface ChecklistTemplate {
   id: string,
-  name: string;
-  surgeryType: string,
-  itemCount: number;
-  lastUpdated: string,
+  \1,\2 string,
+  \1,\2 string,
   status: 'active' | 'draft' | 'archived'
 }
 
@@ -24,9 +22,9 @@ interface OTChecklistTemplateListProps {
 export const _OTChecklistTemplateList = ({ templates }: OTChecklistTemplateListProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
-      case 'active': return <Badge variant="success">Active</Badge>;
-      case 'draft': return <Badge variant="secondary">Draft</Badge>;
-      case 'archived': return <Badge>Archived</Badge>;
+      case 'active': return <Badge variant="success">Active\1>
+      case 'draft': return <Badge variant="secondary">Draft\1>
+      case 'archived': return <Badge>Archived\1>
       default: return <Badge>Unknown</Badge>
     }
   };
@@ -50,14 +48,14 @@ export const _OTChecklistTemplateList = ({ templates }: OTChecklistTemplateListP
           <TableBody>
             {templates.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center">;
+                \1>
                   No checklist templates available
                 </TableCell>
               </TableRow>
             ) : (
               templates.map((template) => (
-                <TableRow key={template.id}>;
-                  <TableCell className="font-medium">{template.name}</TableCell>;
+                \1>
+                  <TableCell className="font-medium">{template.name}\1>
                   <TableCell>{template.surgeryType}</TableCell>
                   <TableCell>{template.itemCount}</TableCell>
                   <TableCell>{template.lastUpdated}</TableCell>

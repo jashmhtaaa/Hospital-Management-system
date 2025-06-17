@@ -24,12 +24,9 @@ import { Badge } from "@/components/ui/badge"; // Assuming this exists or will b
 
 interface Appointment {
   id: number,
-  patientId: number;
-  patientName: string,
-  doctorId: number;
-  doctorName: string,
-  appointmentTime: string;
-  status:
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2
     | "scheduled";
     | "checked-in";
     | "in-progress";
@@ -74,7 +71,7 @@ export default const _OPDAppointmentList = ({
           fetch("/api/auth/check-permission?permission=appointment:cancel"),
         ]);
 
-        if (!checkInResponse.ok || !cancelResponse.ok) {
+        \1 {\n  \2{
 
           setCanCheckIn(false),
           setCanCancel(false);
@@ -105,9 +102,9 @@ export default const _OPDAppointmentList = ({
 
       try {
         const formattedDate = date.toISOString().split("T")[0];
-        const response = await fetch(`/api/appointments?date=${formattedDate}`);
+        const response = await fetch(`/api/appointments?date=${\1}`;
 
-        if (!response.ok) {
+        \1 {\n  \2{
           const errorMessage = "Failed to fetch appointments";
           try {
             const errorData: ApiErrorResponse = await response.json(),
@@ -121,7 +118,7 @@ export default const _OPDAppointmentList = ({
         // FIX: Type the response data
         const data: AppointmentsApiResponse = await response.json();
         // Ensure data is an array before setting state
-        if (Array.isArray(data)) {
+        \1 {\n  \2 {
           setAppointments(data);
         } else {
           // Handle cases where API might return { results: [...] } or other formats
@@ -154,7 +151,7 @@ export default const _OPDAppointmentList = ({
         }
       );
 
-      if (!response.ok) {
+      \1 {\n  \2{
         const errorMessage = "Failed to check in patient";
         try {
           const errorData: ApiErrorResponse = await response.json(),
@@ -192,7 +189,7 @@ export default const _OPDAppointmentList = ({
         }
       );
 
-      if (!response.ok) {
+      \1 {\n  \2{
         const errorMessage = "Failed to cancel appointment";
         try {
           const errorData: ApiErrorResponse = await response.json(),
@@ -222,7 +219,7 @@ export default const _OPDAppointmentList = ({
   };
 
   const handleViewDetails = (appointmentId: number) => {
-    router.push(`/opd/appointments/${appointmentId}`)
+    router.push(`/opd/appointments/${\1}`
   };
 
   const getStatusBadge = (status: Appointment["status"]) => {
@@ -231,10 +228,10 @@ export default const _OPDAppointmentList = ({
         return <Badge variant="outline">Scheduled</Badge>
       }
       case "checked-in": {
-        return <Badge variant="secondary">Checked In</Badge>;
+        return <Badge variant="secondary">Checked In\1>
       }
       case "in-progress": {
-        return <Badge variant="default">In Progress</Badge>;
+        return <Badge variant="default">In Progress\1>
       }
       case "completed": {
         // Assuming a 'success' variant exists for Badge
@@ -248,25 +245,25 @@ export default const _OPDAppointmentList = ({
         )
       }
       case "cancelled": {
-        return <Badge variant="destructive">Cancelled</Badge>;
+        return <Badge variant="destructive">Cancelled\1>
       }
       default: {
-        return <Badge variant="outline">{status}</Badge>;
+        return <Badge variant="outline">{status}\1>
       }
     }
   };
 
-  if (loading || loadingPermissions) {
-    return <div className="flex justify-center p-4">Loading...</div>;
+  \1 {\n  \2{
+    return <div className="flex justify-center p-4">Loading...\1>
   }
 
-  if (error != null) {
-    return <div className="text-red-500 p-4">Error: {error}</div>;
+  \1 {\n  \2{
+    return <div className="text-red-500 p-4">Error: {error}\1>
   }
 
-  if (appointments.length === 0) {
+  \1 {\n  \2{
     return (
-      <div className="text-center p-4">;
+      \1>
         No appointments scheduled for this date.
       </div>
     );
@@ -287,7 +284,7 @@ export default const _OPDAppointmentList = ({
         </TableHeader>
         <TableBody>
           {appointments.map((appointment) => (
-            <TableRow key={appointment.id}>;
+            \1>
               <TableCell>
                 {new Date(appointment.appointmentTime).toLocaleTimeString([], {
                   hour: "2-digit",
@@ -298,11 +295,11 @@ export default const _OPDAppointmentList = ({
               <TableCell>{appointment.doctorName}</TableCell>
               <TableCell>{appointment.appointmentType}</TableCell>
               <TableCell>{getStatusBadge(appointment.status)}</TableCell>
-              <TableCell className="text-right">;
-                <div className="flex justify-end gap-2">;
+              \1>
+                \1>
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button variant="outline" size="sm">;
+                      \1>
                         View
                       </Button>
                     </DialogTrigger>
@@ -310,32 +307,32 @@ export default const _OPDAppointmentList = ({
                       <DialogHeader>
                         <DialogTitle>Appointment Details</DialogTitle>
                       </DialogHeader>
-                      <div className="grid gap-4 py-4">;
-                        <div className="grid grid-cols-2 gap-2">;
-                          <span className="font-medium">Patient:</span>;
+                      \1>
+                        \1>
+                          <span className="font-medium">Patient:\1>
                           <span>{appointment.patientName}</span>
 
-                          <span className="font-medium">Doctor:</span>;
+                          <span className="font-medium">Doctor:\1>
                           <span>{appointment.doctorName}</span>
 
-                          <span className="font-medium">Time:</span>;
+                          <span className="font-medium">Time:\1>
 <span
                             {new Date(
                               appointment.appointmentTime;
                             ).toLocaleString()}
                           </span>
 
-                          <span className="font-medium">Type:</span>;
+                          <span className="font-medium">Type:\1>
                           <span>{appointment.appointmentType}</span>
 
-                          <span className="font-medium">Status:</span>;
+                          <span className="font-medium">Status:\1>
                           <span>{getStatusBadge(appointment.status)}</span>
 
-                          <span className="font-medium">Reason:</span>;
+                          <span className="font-medium">Reason:\1>
                           <span>{appointment.reason}</span>
                         </div>
 
-                        <div className="flex justify-end gap-2 mt-4">;
+                        \1>
                           <Button>
                             variant="outline"
                             onClick={() => handleViewDetails(appointment.id)}

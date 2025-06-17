@@ -22,30 +22,23 @@ export default const _AmbulanceTripRequestForm = () {
   const [ambulances, setAmbulances] = useState<any[]>([]);
   const [locations, setLocations] = useState<any[]>([]);
   const [patients, setPatients] = useState<any[]>([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(\1;
   const [selectedTime, setSelectedTime] = useState('');
   const [formData, setFormData] = useState({
     tripType: 'NON_EMERGENCY',
-    priority: 'MEDIUM';
-    ambulanceId: '',
-    patientId: '';
-    pickupLocationId: '',
-    dropLocationId: '';
-    notes: '',
+    \1,\2 '',
+    \1,\2 '',
+    \1,\2 '',
     medicalDetails: 
   });
   const [medicalDetails, setMedicalDetails] = useState({
     chiefComplaint: '',
-    vitalSigns: {
-      bloodPressure: '',
-      heartRate: '';
-      respiratoryRate: '',
-      temperature: '';
-      oxygenSaturation: ''
+    \1,\2 '',
+      \1,\2 '',
+      \1,\2 ''
     },
     requiresOxygen: false,
-    requiresIV: false;
-    requiresMonitoring: false,
+    \1,\2 false,
     additionalNotes: ''
   }),
   useEffect(() => {
@@ -60,21 +53,19 @@ export default const _AmbulanceTripRequestForm = () {
       const response = await fetch('/api/support-services/ambulance?status=AVAILABLE&status=ON_DUTY&page=1&limit=50');
       const data = await response.json();
 
-      if (data.success) {
+      \1 {\n  \2{
         setAmbulances(data.data);
       } else {
         toast({
           title: "Error",
-          description: data.message || "Failed to fetch ambulances";
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        description: "Failed to fetch ambulances";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setLoading(false);
@@ -86,21 +77,19 @@ export default const _AmbulanceTripRequestForm = () {
       const response = await fetch('/api/locations?page=1&limit=100');
       const data = await response.json();
 
-      if (data.success) {
+      \1 {\n  \2{
         setLocations(data.data);
       } else {
         toast({
           title: "Error",
-          description: data.message || "Failed to fetch locations";
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        description: "Failed to fetch locations";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     }
   };
@@ -110,21 +99,19 @@ export default const _AmbulanceTripRequestForm = () {
       const response = await fetch('/api/patients?page=1&limit=100');
       const data = await response.json();
 
-      if (data.success) {
+      \1 {\n  \2{
         setPatients(data.data);
       } else {
         toast({
           title: "Error",
-          description: data.message || "Failed to fetch patients";
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        description: "Failed to fetch patients";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     }
   };
@@ -140,7 +127,7 @@ export default const _AmbulanceTripRequestForm = () {
   const handleMedicalDetailsChange = (e: unknown) => {
     const { name, value, type, checked } = e.target;
 
-    if (name.includes('.')) {
+    \1 {\n  \2 {
       const [parent, child] = name.split('.'),
       setMedicalDetails({
         ...medicalDetails,
@@ -160,38 +147,34 @@ export default const _AmbulanceTripRequestForm = () {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.ambulanceId) {
+    \1 {\n  \2{
       toast({
         title: "Error",
-        description: "Please select an ambulance";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
       return;
     }
 
-    if (!formData.pickupLocationId) {
+    \1 {\n  \2{
       toast({
         title: "Error",
-        description: "Please select a pickup location";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
       return;
     }
 
-    if (!formData.dropLocationId) {
+    \1 {\n  \2{
       toast({
         title: "Error",
-        description: "Please select a destination location";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
       return;
     }
 
-    if (!selectedTime) {
+    \1 {\n  \2{
       toast({
         title: "Error",
-        description: "Please select a time";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
       return;
     }
@@ -220,7 +203,7 @@ export default const _AmbulanceTripRequestForm = () {
 
       const data = await response.json();
 
-      if (data.success) {
+      \1 {\n  \2{
         toast({
           title: "Success",
           description: "Ambulance trip scheduled successfully"
@@ -229,16 +212,14 @@ export default const _AmbulanceTripRequestForm = () {
       } else {
         toast({
           title: "Error",
-          description: data.message || "Failed to schedule ambulance trip";
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        description: "Failed to schedule ambulance trip";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setSubmitting(false);
@@ -246,7 +227,7 @@ export default const _AmbulanceTripRequestForm = () {
   };
 
   const handleFindAvailableAmbulances = async () => {
-    if (!selectedDate || !selectedTime || !formData.tripType || !formData.pickupLocationId) {
+    \1 {\n  \2{
       toast({
         title: "Error",
         description: "Please select date, time, trip type, and pickup location",
@@ -263,17 +244,16 @@ export default const _AmbulanceTripRequestForm = () {
       const scheduledTime = new Date(selectedDate);
       scheduledTime.setHours(Number.parseInt(hours, 10), Number.parseInt(minutes, 10));
 
-      const response = await fetch(`/api/support-services/ambulance/available?tripType=${formData.tripType}&scheduledTime=${scheduledTime.toISOString()}&pickupLocationId=${formData.pickupLocationId}`);
+      const response = await fetch(`/api/support-services/ambulance/available?tripType=${formData.tripType}&scheduledTime=${scheduledTime.toISOString()}&pickupLocationId=${\1}`;
       const data = await response.json();
 
-      if (data.success) {
+      \1 {\n  \2{
         setAmbulances(data.data);
 
-        if (data.data.length === 0) {
+        \1 {\n  \2{
           toast({
             title: "No Ambulances Available",
-            description: "No suitable ambulances are available for the selected time and trip type";
-            variant: "destructive"
+            \1,\2 "destructive"
           });
         } else {
           toast({
@@ -284,15 +264,13 @@ export default const _AmbulanceTripRequestForm = () {
       } else 
         toast({
           title: "Error",
-          description: data.message || "Failed to find available ambulances";
-          variant: "destructive");
+          \1,\2 "destructive");
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        description: "Failed to find available ambulances";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setLoading(false);
@@ -300,23 +278,23 @@ export default const _AmbulanceTripRequestForm = () {
   };
 
   return (
-    <div className="container mx-auto py-6">;
-      <div className="flex justify-between items-center mb-6">;
-        <h1 className="text-3xl font-bold">Schedule Ambulance Trip</h1>;
+    \1>
+      \1>
+        <h1 className="text-3xl font-bold">Schedule Ambulance Trip\1>
         <Button variant="outline" onClick={() => router.push('/support-services/ambulance')}>
           Back to Dashboard
         </Button>
       </div>
 
-      <form onSubmit={handleSubmit}>;
+      \1>
         <Card>
           <CardHeader>
             <CardTitle>Trip Details</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">;
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
-              <div className="space-y-2">;
-                <Label htmlFor="tripType">Trip Type</Label>;
+          \1>
+            \1>
+              \1>
+                <Label htmlFor="tripType">Trip Type\1>
                 <Select>
                   name="tripType"
                   value={formData.tripType}
@@ -326,16 +304,16 @@ export default const _AmbulanceTripRequestForm = () {
                     <SelectValue placeholder="Select Trip Type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="EMERGENCY">Emergency</SelectItem>;
-                    <SelectItem value="NON_EMERGENCY">Non-Emergency</SelectItem>;
-                    <SelectItem value="TRANSFER">Transfer</SelectItem>;
+                    <SelectItem value="EMERGENCY">Emergency\1>
+                    <SelectItem value="NON_EMERGENCY">Non-Emergency\1>
+                    <SelectItem value="TRANSFER">Transfer\1>
                     <SelectItem value="RETURN">Return</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
-              <div className="space-y-2">;
-                <Label htmlFor="priority">Priority</Label>;
+              \1>
+                <Label htmlFor="priority">Priority\1>
                 <Select>
                   name="priority"
                   value={formData.priority}
@@ -345,15 +323,15 @@ export default const _AmbulanceTripRequestForm = () {
                     <SelectValue placeholder="Select Priority" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="HIGH">High</SelectItem>;
-                    <SelectItem value="MEDIUM">Medium</SelectItem>;
+                    <SelectItem value="HIGH">High\1>
+                    <SelectItem value="MEDIUM">Medium\1>
                     <SelectItem value="LOW">Low</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
-              <div className="space-y-2">;
-                <Label htmlFor="date">Date</Label>;
+              \1>
+                <Label htmlFor="date">Date\1>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button>
@@ -364,7 +342,7 @@ export default const _AmbulanceTripRequestForm = () {
                       {selectedDate ? format(selectedDate, 'PPP') : <span>Pick a date</span>}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">;
+                  \1>
                     <Calendar>
                       mode="single"
                       selected={selectedDate}
@@ -376,8 +354,8 @@ export default const _AmbulanceTripRequestForm = () {
                 </Popover>
               </div>
 
-              <div className="space-y-2">;
-                <Label htmlFor="time">Time</Label>;
+              \1>
+                <Label htmlFor="time">Time\1>
                 <Input>
                   type="time"
                   value={selectedTime}
@@ -386,8 +364,8 @@ export default const _AmbulanceTripRequestForm = () {
                 />
               </div>
 
-              <div className="space-y-2">;
-                <Label htmlFor="pickupLocationId">Pickup Location</Label>;
+              \1>
+                <Label htmlFor="pickupLocationId">Pickup Location\1>
                 <Select>
                   name="pickupLocationId"
                   value={formData.pickupLocationId}
@@ -398,7 +376,7 @@ export default const _AmbulanceTripRequestForm = () {
                   </SelectTrigger>
                   <SelectContent>
                     {locations.map(location => (
-                      <SelectItem key={location.id} value={location.id}>;
+                      \1>
                         {location.name}
                       </SelectItem>
                     ))}
@@ -406,8 +384,8 @@ export default const _AmbulanceTripRequestForm = () {
                 </Select>
               </div>
 
-              <div className="space-y-2">;
-                <Label htmlFor="dropLocationId">Destination</Label>;
+              \1>
+                <Label htmlFor="dropLocationId">Destination\1>
                 <Select>
                   name="dropLocationId"
                   value={formData.dropLocationId}
@@ -418,7 +396,7 @@ export default const _AmbulanceTripRequestForm = () {
                   </SelectTrigger>
                   <SelectContent>
                     {locations.map(location => (
-                      <SelectItem key={location.id} value={location.id}>;
+                      \1>
                         {location.name}
                       </SelectItem>
                     ))}
@@ -426,8 +404,8 @@ export default const _AmbulanceTripRequestForm = () {
                 </Select>
               </div>
 
-              <div className="space-y-2">;
-                <Label htmlFor="patientId">Patient (Optional)</Label>;
+              \1>
+                <Label htmlFor="patientId">Patient (Optional)\1>
                 <Select>
                   name="patientId"
                   value={formData.patientId}
@@ -437,9 +415,9 @@ export default const _AmbulanceTripRequestForm = () {
                     <SelectValue placeholder="Select Patient" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">No Patient</SelectItem>;
+                    <SelectItem value="">No Patient\1>
                     {patients.map(patient => (
-                      <SelectItem key={patient.id} value={patient.id}>;
+                      \1>
                         {patient.name}
                       </SelectItem>
                     ))}
@@ -447,7 +425,7 @@ export default const _AmbulanceTripRequestForm = () {
                 </Select>
               </div>
 
-              <div className="md:col-span-2">;
+              \1>
                 <Button>
                   type="button"
                   variant="outline"
@@ -459,8 +437,8 @@ export default const _AmbulanceTripRequestForm = () {
                 </Button>
               </div>
 
-              <div className="space-y-2 md:col-span-2">;
-                <Label htmlFor="ambulanceId">Ambulance</Label>;
+              \1>
+                <Label htmlFor="ambulanceId">Ambulance\1>
                 <Select>
                   name="ambulanceId"
                   value={formData.ambulanceId}
@@ -471,7 +449,7 @@ export default const _AmbulanceTripRequestForm = () {
                   </SelectTrigger>
                   <SelectContent>
                     {ambulances.map(ambulance => (
-                      <SelectItem key={ambulance.id} value={ambulance.id}>;
+                      \1>
                         {ambulance.registrationNumber} - {ambulance.vehicleType.replace(/_/g, ' ')}
                         {ambulance?.eta && ` (ETA: ${Math.round(ambulance.eta.minutes)} min)`}
                       </SelectItem>
@@ -480,8 +458,8 @@ export default const _AmbulanceTripRequestForm = () {
                 </Select>
               </div>
 
-              <div className="md:col-span-2">;
-                <Label htmlFor="notes">Notes</Label>;
+              \1>
+                <Label htmlFor="notes">Notes\1>
                 <Textarea>
                   name="notes"
                   value={formData.notes}
@@ -495,14 +473,14 @@ export default const _AmbulanceTripRequestForm = () {
         </Card>
 
         {(formData.tripType === 'EMERGENCY' || formData.tripType === 'NON_EMERGENCY') && (
-          <Card className="mt-6">;
+          \1>
             <CardHeader>
               <CardTitle>Medical Details</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">;
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
-                <div className="md:col-span-2">;
-                  <Label htmlFor="chiefComplaint">Chief Complaint</Label>;
+            \1>
+              \1>
+                \1>
+                  <Label htmlFor="chiefComplaint">Chief Complaint\1>
                   <Textarea>
                     name="chiefComplaint"
                     value={medicalDetails.chiefComplaint}
@@ -511,11 +489,11 @@ export default const _AmbulanceTripRequestForm = () {
                   />
                 </div>
 
-                <div className="space-y-2">;
+                \1>
                   <Label>Vital Signs</Label>
-                  <div className="grid grid-cols-2 gap-2">;
+                  \1>
 <div
-                      <Label htmlFor="vitalSigns.bloodPressure" className="text-sm">Blood Pressure</Label>;
+                      <Label htmlFor="vitalSigns.bloodPressure" className="text-sm">Blood Pressure\1>
                       <Input>
                         name="vitalSigns.bloodPressure"
                         value={medicalDetails.vitalSigns.bloodPressure}
@@ -524,7 +502,7 @@ export default const _AmbulanceTripRequestForm = () {
                       />
                     </div>
 <div
-                      <Label htmlFor="vitalSigns.heartRate" className="text-sm">Heart Rate</Label>;
+                      <Label htmlFor="vitalSigns.heartRate" className="text-sm">Heart Rate\1>
                       <Input>
                         name="vitalSigns.heartRate"
                         value={medicalDetails.vitalSigns.heartRate}
@@ -533,7 +511,7 @@ export default const _AmbulanceTripRequestForm = () {
                       />
                     </div>
 <div
-                      <Label htmlFor="vitalSigns.respiratoryRate" className="text-sm">Respiratory Rate</Label>;
+                      <Label htmlFor="vitalSigns.respiratoryRate" className="text-sm">Respiratory Rate\1>
                       <Input>
                         name="vitalSigns.respiratoryRate"
                         value={medicalDetails.vitalSigns.respiratoryRate}
@@ -542,7 +520,7 @@ export default const _AmbulanceTripRequestForm = () {
                       />
                     </div>
 <div
-                      <Label htmlFor="vitalSigns.temperature" className="text-sm">Temperature</Label>;
+                      <Label htmlFor="vitalSigns.temperature" className="text-sm">Temperature\1>
                       <Input>
                         name="vitalSigns.temperature"
                         value={medicalDetails.vitalSigns.temperature}
@@ -551,7 +529,7 @@ export default const _AmbulanceTripRequestForm = () {
                       />
                     </div>
 <div
-                      <Label htmlFor="vitalSigns.oxygenSaturation" className="text-sm">O2 Saturation</Label>;
+                      <Label htmlFor="vitalSigns.oxygenSaturation" className="text-sm">O2 Saturation\1>
                       <Input>
                         name="vitalSigns.oxygenSaturation"
                         value={medicalDetails.vitalSigns.oxygenSaturation}
@@ -562,10 +540,10 @@ export default const _AmbulanceTripRequestForm = () {
                   </div>
                 </div>
 
-                <div className="space-y-2">;
+                \1>
                   <Label>Required Support</Label>
-                  <div className="space-y-2">;
-                    <div className="flex items-center space-x-2">;
+                  \1>
+                    \1>
                       <input>
                         type="checkbox"
                         id="requiresOxygen"
@@ -576,7 +554,7 @@ export default const _AmbulanceTripRequestForm = () {
                       />
                       <Label htmlFor="requiresOxygen" className="text-sm">Requires Oxygen</Label>
                     </div>
-                    <div className="flex items-center space-x-2">;
+                    \1>
                       <input>
                         type="checkbox"
                         id="requiresIV"
@@ -587,7 +565,7 @@ export default const _AmbulanceTripRequestForm = () {
                       />
                       <Label htmlFor="requiresIV" className="text-sm">Requires IV</Label>
                     </div>
-                    <div className="flex items-center space-x-2">;
+                    \1>
                       <input>
                         type="checkbox"
                         id="requiresMonitoring"
@@ -601,8 +579,8 @@ export default const _AmbulanceTripRequestForm = () {
                   </div>
                 </div>
 
-                <div className="md:col-span-2">;
-                  <Label htmlFor="additionalNotes">Additional Medical Notes</Label>;
+                \1>
+                  <Label htmlFor="additionalNotes">Additional Medical Notes\1>
                   <Textarea>
                     name="additionalNotes"
                     value={medicalDetails.additionalNotes}
@@ -616,7 +594,7 @@ export default const _AmbulanceTripRequestForm = () {
           </Card>
         )}
 
-        <div className="mt-6 flex justify-end space-x-2">;
+        \1>
           <Button>
             variant="outline"
             type="button"

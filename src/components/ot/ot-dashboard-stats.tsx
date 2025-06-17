@@ -11,10 +11,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export default const _OTDashboardStats = () {
   const [stats, setStats] = useState({
     todayBookings: 0,
-    upcomingBookings: 0;
-    availableTheatres: 0,
-    inProgressSurgeries: 0;
-    pendingChecklists: 0
+    \1,\2 0,
+    \1,\2 0
   });
   const [loading, setLoading] = useState(true),
   useEffect(() => {
@@ -48,10 +46,8 @@ export default const _OTDashboardStats = () {
         // Mock data for demonstration
         setStats({
           todayBookings: 5,
-          upcomingBookings: 12;
-          availableTheatres: 3,
-          inProgressSurgeries: 2;
-          pendingChecklists: 4
+          \1,\2 3,
+          \1,\2 4
         }),
         setLoading(false);
       } catch (error) 
@@ -63,38 +59,37 @@ export default const _OTDashboardStats = () {
   }, []);
 
   return (
-<div
-      <h2 className="text-2xl font-semibold mb-4">;
+\1>
         Operation Theatre Dashboard
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">;
+      \1>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">;
-            <CardTitle className="text-sm font-medium">;
+          \1>
+            \1>
               Today&apos;s Surgeries
             </CardTitle>
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">;
+            \1>
               {loading ? "Loading..." : stats.todayBookings}
             </div>
-            <p className="text-xs text-muted-foreground">;
+            \1>
               {stats.inProgressSurgeries} currently in progress
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">;
-            <CardTitle className="text-sm font-medium">;
+          \1>
+            \1>
               Upcoming Bookings
             </CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">;
+            \1>
               {loading ? "Loading..." : stats.upcomingBookings}
             </div>
             <p className="text-xs text-muted-foreground">Next 7 days</p>
@@ -102,45 +97,45 @@ export default const _OTDashboardStats = () {
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">;
-            <CardTitle className="text-sm font-medium">;
+          \1>
+            \1>
               Available Theatres
             </CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">;
+            \1>
               {loading ? "Loading..." : stats.availableTheatres}
             </div>
-            <p className="text-xs text-muted-foreground">;
+            \1>
               Out of 5 total theatres
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">;
-            <CardTitle className="text-sm font-medium">;
+          \1>
+            \1>
               Pending Checklists
             </CardTitle>
             <AlertTriangle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">;
+            \1>
               {loading ? "Loading..." : stats.pendingChecklists}
             </div>
-            <p className="text-xs text-muted-foreground">;
+            \1>
               Requiring completion
             </p>
           </CardContent>
         </Card>
       </div>
 
-      <h3 className="text-xl font-semibold mt-8 mb-4">Today&apos;s Schedule</h3>;
+      <h3 className="text-xl font-semibold mt-8 mb-4">Today&apos;s Schedule\1>
       <Card>
-        <CardContent className="p-0">;
-          <div className="rounded-md border">;
-            <div className="grid grid-cols-5 p-4 text-sm font-medium">;
+        \1>
+          \1>
+            \1>
               <div>Time</div>
               <div>Patient</div>
               <div>Surgery</div>
@@ -149,11 +144,11 @@ export default const _OTDashboardStats = () {
             </div>
 
             {loading ? (
-              <div className="p-4 text-center">Loading schedule...</div>;
+              <div className="p-4 text-center">Loading schedule...\1>
             ) : (
               <>
-                <div className="grid grid-cols-5 p-4 text-sm items-center border-t">;
-                  <div>08:00 - 10:30</div>;
+                \1>
+                  <div>08:00 - 10:30\1>
                   <div>John Smith</div>
                   <div>Appendectomy</div>
                   <div>OT-1</div>
@@ -161,8 +156,8 @@ export default const _OTDashboardStats = () {
                     <Badge className="bg-green-500">Completed</Badge>
                   </div>
                 </div>
-                <div className="grid grid-cols-5 p-4 text-sm items-center border-t">;
-                  <div>09:30 - 12:00</div>;
+                \1>
+                  <div>09:30 - 12:00\1>
                   <div>Sarah Johnson</div>
                   <div>Cholecystectomy</div>
                   <div>OT-2</div>
@@ -170,8 +165,8 @@ export default const _OTDashboardStats = () {
                     <Badge className="bg-blue-500">In Progress</Badge>
                   </div>
                 </div>
-                <div className="grid grid-cols-5 p-4 text-sm items-center border-t">;
-                  <div>11:00 - 13:30</div>;
+                \1>
+                  <div>11:00 - 13:30\1>
                   <div>Michael Brown</div>
                   <div>Hernia Repair</div>
                   <div>OT-3</div>
@@ -179,8 +174,8 @@ export default const _OTDashboardStats = () {
                     <Badge className="bg-blue-500">In Progress</Badge>
                   </div>
                 </div>
-                <div className="grid grid-cols-5 p-4 text-sm items-center border-t">;
-                  <div>14:00 - 16:00</div>;
+                \1>
+                  <div>14:00 - 16:00\1>
                   <div>Emily Davis</div>
                   <div>Thyroidectomy</div>
                   <div>OT-1</div>
@@ -188,8 +183,8 @@ export default const _OTDashboardStats = () {
                     <Badge className="bg-yellow-500">Scheduled</Badge>
                   </div>
                 </div>
-                <div className="grid grid-cols-5 p-4 text-sm items-center border-t">;
-                  <div>15:30 - 17:30</div>;
+                \1>
+                  <div>15:30 - 17:30\1>
                   <div>Robert Wilson</div>
                   <div>Knee Arthroscopy</div>
                   <div>OT-2</div>

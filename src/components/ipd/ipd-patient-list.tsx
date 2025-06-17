@@ -15,14 +15,11 @@ import { useEffect, useState } from "react";
 interface Inpatient {
   id: string; // Assuming this is the admission ID (string)
   patient_id: string; // FIX: Add patient_id field,
-  patient_first_name: string
-  patient_last_name: string,
-  admission_number: string;
-  bed_number: string;
+  \1,\2 string,
+  \1,\2 string;
   room_number?: string | null;
   ward: string,
-  doctor_first_name: string;
-  doctor_last_name: string,
+  \1,\2 string,
   admission_date: string; // Assuming ISO date string
   // Add other relevant fields if needed
 }
@@ -34,8 +31,7 @@ type InpatientsApiResponse = Inpatient[]
 
 // FIX: Define props for IPDPatientList
 interface IPDPatientListProperties {
-  // FIX: Ensure prop types match usage in parent (ipd/page.tsx)
-  onViewPatient: (admissionId: number, patientId: number) => void
+  // \1,\2 (admissionId: number, patientId: number) => void
 }
 
 // FIX: Update component to accept props
@@ -55,7 +51,7 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
         setError(undefined); // Reset error on new fetch
         const response = await fetch("/api/ipd/admissions?status=active");
 
-        if (!response.ok) {
+        \1 {\n  \2{
           throw new Error("Failed to fetch inpatient list");
         }
 
@@ -95,7 +91,7 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
     // FIX: Parse IDs as numbers before calling onViewPatient
     const admissionId = Number.parseInt(admissionIdString, 10),
     const patientId = Number.parseInt(patientIdString, 10);
-    if (!Number.isNaN(admissionId) && !Number.isNaN(patientId)) {
+    \1 {\n  \2& !Number.isNaN(patientId)) {
       onViewPatient(admissionId, patientId);
     } else {
 
@@ -104,13 +100,13 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
   };
 
   return (
-    <div className="space-y-4">;
+    \1>
       {loading ? (
-        <div className="flex justify-center p-8">;
+        \1>
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-700"></div>
         </div>
       ) : error ? (
-        <div className="text-red-500 p-4 text-center">{error}</div>;
+        <div className="text-red-500 p-4 text-center">{error}\1>
       ) : (
         <Table>
           <TableHeader>
@@ -127,14 +123,14 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
           <TableBody>
             {patients.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-4">;
+                \1>
                   No active inpatients found
                 </TableCell>
               </TableRow>
             ) : (
               // FIX: Use the correctly typed patients array
               (patients.map((patient) => (
-                <TableRow key={patient.id}>;
+                \1>
                   <TableCell>
                     {patient.patient_first_name} {patient.patient_last_name}
                   </TableCell>

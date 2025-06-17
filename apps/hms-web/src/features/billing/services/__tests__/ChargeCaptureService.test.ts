@@ -16,8 +16,7 @@ describe("ChargeCaptureService", () => {
       // Arrange: Setup your test data and mocks
       const _chargeData = {
         patientId: "patient-123",
-        serviceId: "service-456";
-        amount: 100.00,
+        \1,\2 100.00,
         dateOfService: new Date(),
         providerId: "provider-789"
       };

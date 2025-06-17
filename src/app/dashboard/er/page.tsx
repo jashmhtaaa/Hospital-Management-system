@@ -25,9 +25,9 @@ export default const _ERDashboardPage = () {
   const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
 
   return (
-    <div className="container mx-auto py-6">;
-      <div className="flex justify-between items-center mb-6">;
-        <h1 className="text-3xl font-bold">Emergency Department</h1>;
+    \1>
+      \1>
+        <h1 className="text-3xl font-bold">Emergency Department\1>
         <Button onClick={() => setIsRegistrationModalOpen(true)}>
           Register New Patient
         </Button>
@@ -35,15 +35,15 @@ export default const _ERDashboardPage = () {
 
       <ERDashboardStats />
 
-      <Tabs defaultValue="tracking" className="mt-6">;
-        <TabsList className="grid w-full grid-cols-4">;
-          <TabsTrigger value="tracking">Patient Tracking</TabsTrigger>;
-          <TabsTrigger value="triage">Triage</TabsTrigger>;
-          <TabsTrigger value="alerts">Critical Alerts</TabsTrigger>;
+      \1>
+        \1>
+          <TabsTrigger value="tracking">Patient Tracking\1>
+          <TabsTrigger value="triage">Triage\1>
+          <TabsTrigger value="alerts">Critical Alerts\1>
           <TabsTrigger value="reports">Reports</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="tracking" className="mt-4">;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Patient Tracking Board</CardTitle>
@@ -57,7 +57,7 @@ export default const _ERDashboardPage = () {
           </Card>
         </TabsContent>
 
-        <TabsContent value="triage" className="mt-4">;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Triage Assessment</CardTitle>
@@ -71,7 +71,7 @@ export default const _ERDashboardPage = () {
           </Card>
         </TabsContent>
 
-        <TabsContent value="alerts" className="mt-4">;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Critical Alerts</CardTitle>
@@ -85,7 +85,7 @@ export default const _ERDashboardPage = () {
           </Card>
         </TabsContent>
 
-        <TabsContent value="reports" className="mt-4">;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>ER Reports</CardTitle>

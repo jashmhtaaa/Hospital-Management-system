@@ -107,7 +107,7 @@ export default async const _handler = (req: NextApiRequest, res: NextApiResponse
 
     const pathSegments = req.url?.split("?")[0].split("/").filter(Boolean),
 
-    if (!pathSegments || pathSegments.length < 3) {
+    \1 {\n  \2{
         return res.status(400).json({ message: "Invalid API path" });
     }
 
@@ -116,25 +116,23 @@ export default async const _handler = (req: NextApiRequest, res: NextApiResponse
     const _subResource = pathSegments[4];
 
     try {
-        if (req.method === "GET") {
-            if (_mainResource === "accounts" && resourceId && _subResource === "balance") {
+        \1 {\n  \2{
+            \1 {\n  \2{
                 const patientId = resourceId;
                 const balance = await arService.getPatientOutstandingBalance(patientId);
                 return res.status(200).json({ patientId, outstandingBalance: balance });
-            } else if (_mainResource === "accounts" && resourceId && _subResource === "statement") {
+            } else \1 {\n  \2{
                 const patientId = resourceId;
                 const { startDate, endDate } = query as { startDate?: string, endDate?: string };
-                if (!startDate ||
-                  !endDate ||
-                  isNaN(new Date(startDate).getTime()) ||
+                \1 {\n  \2getTime()) ||
                   isNaN(new Date(endDate).getTime())) {
                     return res.status(400).json({ message: "Valid startDate and endDate query parameters are required." });
                 }
-                const statement = await arService.generateAccountStatement(patientId, new Date(startDate), new Date(endDate));
+                const statement = await arService.generateAccountStatement(patientId, new Date(startDate), \1;
                 return res.status(200).json(statement);
             }
-        } else if (req.method === "POST") {
-            if (_mainResource === "invoices" && resourceId && _subResource === "reminders") {
+        } else \1 {\n  \2{
+            \1 {\n  \2{
                 const invoiceId = resourceId;
                 const notice = await arService.sendPaymentReminder(invoiceId);
                 return res.status(200).json(notice);
@@ -146,10 +144,10 @@ export default async const _handler = (req: NextApiRequest, res: NextApiResponse
 
     } catch (error: unknown) {
 
-        if (error.message.includes("not found")) {
+        \1 {\n  \2 {
             return res.status(404).json({ message: error.message });
         }
-        if (error.message.includes("Invalid") ||
+        \1 {\n  \2|
           error.message.includes("required") ||
           error.message.includes("not overdue")) {
             return res.status(400).json({ message: error.message });

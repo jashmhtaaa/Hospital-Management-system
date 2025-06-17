@@ -11,20 +11,16 @@ import { type OPDVisit, OPDVisitStatus, type OPDVisitType } from "@/types/opd";
 // Define the expected shape of the database query result
 interface OPDVisitQueryResult {
   opd_visit_id: number,
-  patient_id: number;
-  appointment_id: number | null,
+  \1,\2 number | null,
   visit_datetime: string; // Assuming ISO string format
   visit_type: string; // Should ideally be an enum
   doctor_id: number,
-  department: string;
-  status: OPDVisitStatus; // Use the existing enum
+  \1,\2 OPDVisitStatus; // Use the existing enum
   notes: string | null,
-  created_by_user_id: number;
-  created_at: string; // Assuming ISO string format
+  \1,\2 string; // Assuming ISO string format
   updated_at: string; // Assuming ISO string format
   patient_first_name: string,
-  patient_last_name: string;
-  doctor_full_name: string
+  \1,\2 string
 }
 
 // Define roles allowed to view/manage OPD visits (adjust as needed)
@@ -47,14 +43,14 @@ export const _GET = async (request: Request) => {
     const visitId = getVisitId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    if (!session.user || !ALLOWED_ROLES_VIEW.includes(session.user.roleName)) {
+    \1 {\n  \2 {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
 
-    if (visitId === null) {
+    \1 {\n  \2{
         return new Response(JSON.stringify({ error: "Invalid Visit ID" }), {
             status: 400,
             headers: { "Content-Type": "application/json" },
@@ -78,7 +74,7 @@ export const _GET = async (request: Request) => {
              WHERE ov.opd_visit_id = ?`;
         ).bind(visitId).first<OPDVisitQueryResult>(); // Use the defined interface
 
-        if (!visitResult) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "OPD Visit not found" }), {
                 status: 404,
                 headers: { "Content-Type": "application/json" },
@@ -86,25 +82,16 @@ export const _GET = async (request: Request) => {
         }
 
         // 3. Format the response
-        const visit: OPDVisit = {
-            opd_visit_id: visitResult.opd_visit_id,
-            patient_id: visitResult.patient_id;
-            appointment_id: visitResult.appointment_id,
-            visit_datetime: visitResult.visit_datetime;
-            visit_type: visitResult.visit_type as OPDVisitType, // Cast to enum
+        const \1,\2 visitResult.opd_visit_id,
+            \1,\2 visitResult.appointment_id,
+            \1,\2 visitResult.visit_type as OPDVisitType, // Cast to enum
             doctor_id: visitResult.doctor_id,
-            department: visitResult.department;
-            status: visitResult.status,
-            notes: visitResult.notes;
-            created_by_user_id: visitResult.created_by_user_id,
-            created_at: visitResult.created_at;
-            updated_at: visitResult.updated_at,
-            patient: 
-                patient_id: visitResult.patient_id,
-                first_name: visitResult.patient_first_name;
-                last_name: visitResult.patient_last_name,
-            doctor: 
-                doctor_id: visitResult.doctor_id, // No longer need non-null assertion
+            \1,\2 visitResult.status,
+            \1,\2 visitResult.created_by_user_id,
+            \1,\2 visitResult.updated_at,
+            \1,\2 visitResult.patient_id,
+                \1,\2 visitResult.patient_last_name,
+            \1,\2 visitResult.doctor_id, // No longer need non-null assertion
                 user: fullName: visitResult.doctor_full_name 
             // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         }
@@ -138,14 +125,14 @@ export const _PUT = async (request: Request) => {
     const visitId = getVisitId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    if (!session.user || !ALLOWED_ROLES_UPDATE.includes(session.user.roleName)) {
+    \1 {\n  \2 {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
 
-    if (visitId === null) {
+    \1 {\n  \2{
         return new Response(JSON.stringify({ error: "Invalid Visit ID" }), {
             status: 400,
             headers: { "Content-Type": "application/json" },
@@ -156,7 +143,7 @@ export const _PUT = async (request: Request) => {
         const body = await request.json();
         const validation = UpdateVisitSchema.safeParse(body);
 
-        if (!validation.success) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" },
@@ -166,7 +153,7 @@ export const _PUT = async (request: Request) => {
         const updateData = validation.data;
 
         // Check if there's anything to update
-        if (Object.keys(updateData).length === 0) {
+        \1 {\n  \2length === 0) {
              return new Response(JSON.stringify({ message: "No update data provided" }), {
                 status: 200, // Or 304 Not Modified
                 headers: { "Content-Type": "application/json" },
@@ -180,7 +167,7 @@ export const _PUT = async (request: Request) => {
         const visitCheck = await DB.prepare("SELECT opd_visit_id FROM OPDVisits WHERE opd_visit_id = ?");
                                    .bind(visitId);
                                    .first<opd_visit_id: number >();
-        if (!visitCheck) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "OPD Visit not found" }), {
                 status: 404,
                 headers: { "Content-Type": "application/json" },
@@ -194,7 +181,7 @@ export const _PUT = async (request: Request) => {
         const queryParams: (string | null | number)[] = [];
 
         Object.entries(updateData).forEach(([key, value]) => {
-            if (value !== undefined) { // Allow null values to be set
+            \1 {\n  \2{ // Allow null values to be set
                 query += `, ${key} = ?`;
                 queryParams.push(value);
             }
@@ -206,7 +193,7 @@ export const _PUT = async (request: Request) => {
         // 4. Execute update
         const updateResult = await DB.prepare(query).bind(...queryParams).run();
 
-        if (!updateResult.success) {
+        \1 {\n  \2{
             throw new Error("Failed to update OPD visit");
         }
 

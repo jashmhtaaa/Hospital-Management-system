@@ -29,28 +29,21 @@ import { useToast } from "@/components/ui/use-toast";
 interface Booking {
   id?: string; // Optional ID for existing bookings
   patient_id: string,
-  surgery_type_id: string;
-  theatre_id: string,
-  lead_surgeon_id: string;
-  anesthesiologist_id: string,
+  \1,\2 string,
+  \1,\2 string,
   scheduled_start_time: string | Date; // Can be string or Date
   scheduled_end_time: string | Date; // Can be string or Date
   booking_type: string,
-  priority: string;
-  booking_notes: string
+  \1,\2 string
 }
 
 // Define the type for data passed to onSave
 interface BookingSaveData {
   patient_id: string,
-  surgery_type_id: string;
-  theatre_id: string,
-  lead_surgeon_id: string;
-  anesthesiologist_id: string,
-  scheduled_start_time: string | null;
-  scheduled_end_time: string | null,
-  booking_type: string;
-  priority: string,
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 string | null,
+  \1,\2 string,
   booking_notes: string
 }
 
@@ -58,7 +51,7 @@ interface BookingSaveData {
 interface OTBookingModalProperties {
   trigger: React.ReactNode;
   booking?: Booking; // Use Booking type
-  onSave: (bookingData: BookingSaveData) => Promise<void>; // Use BookingSaveData type
+  onSave: (bookingData: BookingSaveData) => Promise\1> // Use BookingSaveData type
 }
 
 // Mock data for dropdowns - replace with API calls
@@ -99,10 +92,8 @@ export default const _OTBookingModal = ({
   // Initialize form data state, handling potential Date objects for time
   const [formData, setFormData] = useState(() => ({
     patient_id: booking?.patient_id || "",
-    surgery_type_id: booking?.surgery_type_id || "";
-    theatre_id: booking?.theatre_id || "",
-    lead_surgeon_id: booking?.lead_surgeon_id || "";
-    anesthesiologist_id: booking?.anesthesiologist_id || "",
+    \1,\2 booking?.theatre_id || "",
+    \1,\2 booking?.anesthesiologist_id || "",
     scheduled_start_time: booking?.scheduled_start_time;
       ? new Date(booking.scheduled_start_time).toISOString().slice(0, 16);
       : "",
@@ -110,21 +101,18 @@ export default const _OTBookingModal = ({
       ? new Date(booking.scheduled_end_time).toISOString().slice(0, 16);
       : "",
     booking_type: booking?.booking_type || "elective",
-    priority: booking?.priority || "routine";
-    booking_notes: booking?.booking_notes || ""
+    \1,\2 booking?.booking_notes || ""
   }));
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
   // Reset form when booking prop changes (for editing) or modal opens
   useEffect(() => {
-    if (isOpen != null) {
+    \1 {\n  \2{
       setFormData({
         patient_id: booking?.patient_id || "",
-        surgery_type_id: booking?.surgery_type_id || "";
-        theatre_id: booking?.theatre_id || "",
-        lead_surgeon_id: booking?.lead_surgeon_id || "";
-        anesthesiologist_id: booking?.anesthesiologist_id || "",
+        \1,\2 booking?.theatre_id || "",
+        \1,\2 booking?.anesthesiologist_id || "",
         scheduled_start_time: booking?.scheduled_start_time;
           ? new Date(booking.scheduled_start_time).toISOString().slice(0, 16);
           : "",
@@ -132,8 +120,7 @@ export default const _OTBookingModal = ({
           ? new Date(booking.scheduled_end_time).toISOString().slice(0, 16);
           : "",
         booking_type: booking?.booking_type || "elective",
-        priority: booking?.priority || "routine";
-        booking_notes: booking?.booking_notes || ""
+        \1,\2 booking?.booking_notes || ""
       });
     } else {
       // Optionally clear form when closed, or keep last state
@@ -142,7 +129,7 @@ export default const _OTBookingModal = ({
   }, [booking, isOpen]);
 
   const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+    event: React.ChangeEvent\1>
   ) => {
     const { name, value } = event.target;
     setFormData((previous) => ({ ...previous, [name]: value }))
@@ -175,7 +162,7 @@ export default const _OTBookingModal = ({
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(apiData);
       // })
-      // if (!response.ok) {
+      // \1 {\n  \2{
       //   const _errorData = await response.json()
       //   throw new Error(errorData.message || "Failed to save booking")
       // }
@@ -195,13 +182,12 @@ export default const _OTBookingModal = ({
       // Use unknown for error type
 
       let errorMessage = "Failed to save booking.";
-      if (error instanceof Error) {
+      \1 {\n  \2{
         errorMessage = error.message;
       }
       toast({
         title: "Error",
-        description: errorMessage;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsSaving(false);
@@ -209,9 +195,9 @@ export default const _OTBookingModal = ({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>;
+    \1>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">;
+      \1>
         <DialogHeader>
           <DialogTitle>
             {booking ? "Edit OT Booking" : "Create New OT Booking"}
@@ -220,11 +206,11 @@ export default const _OTBookingModal = ({
             Fill in the details for the operation theatre booking.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>;
-          <div className="grid gap-4 py-4">;
+        \1>
+          \1>
             {/* Patient Selection */}
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="patient_id" className="text-right">;
+            \1>
+              \1>
                 Patient *
               </Label>
               <Select>
@@ -235,12 +221,12 @@ export default const _OTBookingModal = ({
                 }
                 required;
               >
-                <SelectTrigger className="col-span-3">;
+                \1>
                   <SelectValue placeholder="Select Patient" />
                 </SelectTrigger>
                 <SelectContent>
                   {mockPatients.map((p) => (
-                    <SelectItem key={p.id} value={p.id}>;
+                    \1>
                       {p.name}
                     </SelectItem>
                   ))}
@@ -248,8 +234,8 @@ export default const _OTBookingModal = ({
               </Select>
             </div>
             {/* Surgery Type Selection */}
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="surgery_type_id" className="text-right">;
+            \1>
+              \1>
                 Surgery Type *
               </Label>
               <Select>
@@ -260,12 +246,12 @@ export default const _OTBookingModal = ({
                 }
                 required;
               >
-                <SelectTrigger className="col-span-3">;
+                \1>
                   <SelectValue placeholder="Select Surgery Type" />
                 </SelectTrigger>
                 <SelectContent>
                   {mockSurgeryTypes.map((st) => (
-                    <SelectItem key={st.id} value={st.id}>;
+                    \1>
                       {st.name}
                     </SelectItem>
                   ))}
@@ -273,8 +259,8 @@ export default const _OTBookingModal = ({
               </Select>
             </div>
             {/* Theatre Selection */}
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="theatre_id" className="text-right">;
+            \1>
+              \1>
                 Theatre *
               </Label>
               <Select>
@@ -285,12 +271,12 @@ export default const _OTBookingModal = ({
                 }
                 required;
               >
-                <SelectTrigger className="col-span-3">;
+                \1>
                   <SelectValue placeholder="Select Theatre" />
                 </SelectTrigger>
                 <SelectContent>
                   {mockTheatres.map((t) => (
-                    <SelectItem key={t.id} value={t.id}>;
+                    \1>
                       {t.name}
                     </SelectItem>
                   ))}
@@ -298,8 +284,8 @@ export default const _OTBookingModal = ({
               </Select>
             </div>
             {/* Surgeon Selection */}
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="lead_surgeon_id" className="text-right">;
+            \1>
+              \1>
                 Lead Surgeon *
               </Label>
               <Select>
@@ -310,12 +296,12 @@ export default const _OTBookingModal = ({
                 }
                 required;
               >
-                <SelectTrigger className="col-span-3">;
+                \1>
                   <SelectValue placeholder="Select Lead Surgeon" />
                 </SelectTrigger>
                 <SelectContent>
                   {mockSurgeons.map((s) => (
-                    <SelectItem key={s.id} value={s.id}>;
+                    \1>
                       {s.name}
                     </SelectItem>
                   ))}
@@ -323,8 +309,8 @@ export default const _OTBookingModal = ({
               </Select>
             </div>
             {/* Anesthesiologist Selection */}
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="anesthesiologist_id" className="text-right">;
+            \1>
+              \1>
                 Anesthesiologist
               </Label>
               <Select>
@@ -334,13 +320,13 @@ export default const _OTBookingModal = ({
                   handleSelectChange("anesthesiologist_id", value);
                 }
               >
-                <SelectTrigger className="col-span-3">;
+                \1>
                   <SelectValue placeholder="Select Anesthesiologist (Optional)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">None</SelectItem>;
+                  <SelectItem value="">None\1>
                   {mockAnesthesiologists.map((a) => (
-                    <SelectItem key={a.id} value={a.id}>;
+                    \1>
                       {a.name}
                     </SelectItem>
                   ))}
@@ -348,8 +334,8 @@ export default const _OTBookingModal = ({
               </Select>
             </div>
             {/* Scheduled Times */}
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="scheduled_start_time" className="text-right">;
+            \1>
+              \1>
                 Start Time *
               </Label>
               <Input>
@@ -362,8 +348,8 @@ export default const _OTBookingModal = ({
                 required;
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="scheduled_end_time" className="text-right">;
+            \1>
+              \1>
                 End Time *
               </Label>
               <Input>
@@ -377,9 +363,9 @@ export default const _OTBookingModal = ({
               />
             </div>
             {/* Booking Type & Priority */}
-            <div className="grid grid-cols-2 gap-4">;
-              <div className="grid grid-cols-2 items-center gap-4">;
-                <Label htmlFor="booking_type" className="text-right">;
+            \1>
+              \1>
+                \1>
                   Type
                 </Label>
                 <Select>
@@ -393,13 +379,13 @@ export default const _OTBookingModal = ({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="elective">Elective</SelectItem>;
+                    <SelectItem value="elective">Elective\1>
                     <SelectItem value="emergency">Emergency</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-              <div className="grid grid-cols-2 items-center gap-4">;
-                <Label htmlFor="priority" className="text-right">;
+              \1>
+                \1>
                   Priority
                 </Label>
                 <Select>
@@ -413,16 +399,16 @@ export default const _OTBookingModal = ({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="routine">Routine</SelectItem>;
-                    <SelectItem value="urgent">Urgent</SelectItem>;
+                    <SelectItem value="routine">Routine\1>
+                    <SelectItem value="urgent">Urgent\1>
                     <SelectItem value="emergency">Emergency</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
             {/* Notes */}
-            <div className="grid grid-cols-4 items-start gap-4">;
-              <Label htmlFor="booking_notes" className="text-right pt-2">;
+            \1>
+              \1>
                 Notes
               </Label>
               <Textarea>
@@ -443,7 +429,7 @@ export default const _OTBookingModal = ({
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isSaving}>;
+            \1>
               {isSaving ? "Saving..." : "Save Booking"}
             </Button>
           </DialogFooter>

@@ -7,14 +7,7 @@ import { getSession } from "@/lib/session";
 interface TestWorkflowCreateBody {
   name: string;
   description?: string;
-  steps: Array<{
-    sequence: number,
-    name: string;
-    description?: string;
-    estimated_time?: number; // in minutes
-    requires_verification?: boolean;
-    role_required?: string;
-  }>;
+  steps: Array\1>
   is_active?: boolean;
   applicable_test_ids?: number[];
 }
@@ -25,7 +18,7 @@ export const _GET = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -53,17 +46,17 @@ export const _GET = async (request: NextRequest) => {
     const parameters: unknown[] = [];
     const conditions: string[] = [];
 
-    if (name != null) {
+    \1 {\n  \2{
       conditions.push("w.name LIKE ?");
       parameters.push(`%${name}%`);
     }
 
-    if (isActive !== null && isActive !== undefined) {
+    \1 {\n  \2{
       conditions.push("w.is_active = ?");
       parameters.push(isActive === "true" ? 1 : 0);
     }
 
-    if (testId != null) {
+    \1 {\n  \2{
       query = `;
         SELECT;
           w.*,
@@ -77,10 +70,10 @@ export const _GET = async (request: NextRequest) => {
       `;
       parameters.push(testId);
 
-      if (conditions.length > 0) {
+      \1 {\n  \2{
         query += " AND " + conditions.join(" AND ");
       }
-    } else if (conditions.length > 0) {
+    } else \1 {\n  \2{
       query += " WHERE " + conditions.join(" AND ");
     }
 
@@ -98,7 +91,7 @@ export const _GET = async (request: NextRequest) => {
     // Get total count for pagination
     let countQuery = "SELECT COUNT(*) as total FROM lab_test_workflows w";
 
-    if (testId != null) {
+    \1 {\n  \2{
       countQuery = `;
         SELECT COUNT(*) as total;
         FROM lab_test_workflows w;
@@ -106,10 +99,10 @@ export const _GET = async (request: NextRequest) => {
         WHERE m.test_id = ?;
       `;
 
-      if (conditions.length > 0) {
+      \1 {\n  \2{
         countQuery += " AND " + conditions.join(" AND ");
       }
-    } else if (conditions.length > 0) {
+    } else \1 {\n  \2{
       countQuery += " WHERE " + conditions.join(" AND ");
     }
 
@@ -180,12 +173,12 @@ export const _POST = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication and authorization
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Only lab managers and admins can create test workflows
-    if (!["admin", "lab_manager"].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -193,14 +186,14 @@ export const _POST = async (request: NextRequest) => {
     const body = await request.json() as TestWorkflowCreateBody;
 
     // Validate required fields
-    if (!body.name) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Workflow name is required" },
         { status: 400 }
       );
     }
 
-    if (!body.steps || body.steps.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Workflow must include at least one step" },
         { status: 400 }
@@ -211,7 +204,7 @@ export const _POST = async (request: NextRequest) => {
     const sequences = body.steps.map(step => step.sequence);
     const uniqueSequences = new Set(sequences);
 
-    if (sequences.length !== uniqueSequences.size) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Step sequences must be unique" },
         { status: 400 }
@@ -219,14 +212,14 @@ export const _POST = async (request: NextRequest) => {
     }
 
     // Validate applicable tests if provided
-    if (body?.applicable_test_ids && body.applicable_test_ids.length > 0) {
+    \1 {\n  \2{
       for (const testId of body.applicable_test_ids) {
         const testCheckResult = await DB.query(
           "SELECT id FROM lab_tests WHERE id = ?",
           [testId]
         );
 
-        if (!testCheckResult.results || testCheckResult.results.length === 0) {
+        \1 {\n  \2{
           return NextResponse.json(
             { error: `Test with ID ${testId} not found` },
             { status: 404 }
@@ -279,7 +272,7 @@ export const _POST = async (request: NextRequest) => {
       }
 
       // Insert workflow-test mappings if applicable
-      if (body?.applicable_test_ids && body.applicable_test_ids.length > 0) {
+      \1 {\n  \2{
         for (const testId of body.applicable_test_ids) {
           await DB.query(
             "INSERT INTO lab_test_workflow_mappings (workflow_id, test_id) VALUES (?, ?)",
@@ -299,7 +292,7 @@ export const _POST = async (request: NextRequest) => {
       const workflowFetchResult = await DB.query(fetchWorkflowQuery, [workflowId]);
       const workflow = workflowFetchResult.results?.[0];
 
-      if (!workflow) {
+      \1 {\n  \2{
         throw new Error("Failed to retrieve created workflow");
       }
 
@@ -363,7 +356,7 @@ export const _GET_BY_ID = async (
     const session = await getSession();
 
     // Check authentication
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -377,7 +370,7 @@ export const _GET_BY_ID = async (
     const workflowResult = await DB.query(fetchWorkflowQuery, [workflowId]);
     const workflow = workflowResult.results?.[0];
 
-    if (!workflow) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Test workflow not found" },
         { status: 404 }
@@ -439,12 +432,12 @@ export const _PUT = async (
     const session = await getSession();
 
     // Check authentication and authorization
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Only lab managers and admins can update test workflows
-    if (!["admin", "lab_manager"].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -456,7 +449,7 @@ export const _PUT = async (
       [workflowId]
     );
 
-    if (!checkResult.results || checkResult.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Test workflow not found" },
         { status: 404 }
@@ -464,14 +457,14 @@ export const _PUT = async (
     }
 
     // Parse request body
-    const body = await request.json() as Partial<TestWorkflowCreateBody>;
+    const body = await request.json() as Partial\1>
 
     // Validate step sequences if steps are provided
-    if (body?.steps && body.steps.length > 0) {
+    \1 {\n  \2{
       const sequences = body.steps.map(step => step.sequence);
       const uniqueSequences = new Set(sequences);
 
-      if (sequences.length !== uniqueSequences.size) {
+      \1 {\n  \2{
         return NextResponse.json(
           { error: "Step sequences must be unique" },
           { status: 400 }
@@ -480,14 +473,14 @@ export const _PUT = async (
     }
 
     // Validate applicable tests if provided
-    if (body?.applicable_test_ids && body.applicable_test_ids.length > 0) {
+    \1 {\n  \2{
       for (const testId of body.applicable_test_ids) {
         const testCheckResult = await DB.query(
           "SELECT id FROM lab_tests WHERE id = ?",
           [testId]
         );
 
-        if (!testCheckResult.results || testCheckResult.results.length === 0) {
+        \1 {\n  \2{
           return NextResponse.json(
             { error: `Test with ID ${testId} not found` },
             { status: 404 }
@@ -501,22 +494,22 @@ export const _PUT = async (
 
     try {
       // Update workflow
-      if (body.name !== undefined || body.description !== undefined || body.is_active !== undefined) {
+      \1 {\n  \2{
         let updateQuery = "UPDATE lab_test_workflows SET ";
         const updateFields: string[] = [];
         const updateParameters: unknown[] = [];
 
-        if (body.name !== undefined) {
+        \1 {\n  \2{
           updateFields.push("name = ?");
           updateParameters.push(body.name);
         }
 
-        if (body.description !== undefined) {
+        \1 {\n  \2{
           updateFields.push("description = ?");
           updateParameters.push(body.description);
         }
 
-        if (body.is_active !== undefined) {
+        \1 {\n  \2{
           updateFields.push("is_active = ?");
           updateParameters.push(body.is_active ? 1 : 0);
         }
@@ -533,7 +526,7 @@ export const _PUT = async (
       }
 
       // Update workflow steps if provided
-      if (body.steps !== undefined) {
+      \1 {\n  \2{
         // Delete existing steps
         await DB.query(
           "DELETE FROM lab_test_workflow_steps WHERE workflow_id = ?",
@@ -541,7 +534,7 @@ export const _PUT = async (
         );
 
         // Insert new steps
-        if (body.steps.length > 0) {
+        \1 {\n  \2{
           for (const step of body.steps) {
             const insertStepQuery = `;
               INSERT INTO lab_test_workflow_steps (
@@ -571,7 +564,7 @@ export const _PUT = async (
       }
 
       // Update workflow-test mappings if provided
-      if (body.applicable_test_ids !== undefined) {
+      \1 {\n  \2{
         // Delete existing mappings
         await DB.query(
           "DELETE FROM lab_test_workflow_mappings WHERE workflow_id = ?",
@@ -579,7 +572,7 @@ export const _PUT = async (
         );
 
         // Insert new mappings
-        if (body.applicable_test_ids.length > 0) {
+        \1 {\n  \2{
           for (const testId of body.applicable_test_ids) {
             await DB.query(
               "INSERT INTO lab_test_workflow_mappings (workflow_id, test_id) VALUES (?, ?)",
@@ -600,7 +593,7 @@ export const _PUT = async (
       const workflowResult = await DB.query(fetchWorkflowQuery, [workflowId]);
       const workflow = workflowResult.results?.[0];
 
-      if (!workflow) {
+      \1 {\n  \2{
         throw new Error("Failed to retrieve updated workflow");
       }
 
@@ -664,12 +657,12 @@ export const DELETE = async (
     const session = await getSession();
 
     // Check authentication and authorization
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Only lab managers and admins can delete test workflows
-    if (!["admin", "lab_manager"].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -681,7 +674,7 @@ export const DELETE = async (
       [workflowId]
     );
 
-    if (!checkResult.results || checkResult.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Test workflow not found" },
         { status: 404 }
@@ -694,7 +687,7 @@ export const DELETE = async (
       [workflowId]
     );
 
-    if (usageCheckResult?.results && usageCheckResult.results.length > 0) {
+    \1 {\n  \2{
       // Instead of deleting, mark as inactive
       await DB.query(
         "UPDATE lab_test_workflows SET is_active = 0 WHERE id = ?",

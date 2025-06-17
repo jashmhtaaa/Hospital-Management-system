@@ -14,7 +14,7 @@ const createEmployeeSchema = z.object({
   email: z.string().email("Invalid email format").optional(),
   phone: z.string().optional(),
   address: z.any().optional(),
-  joiningDate: z.string().transform(val => new Date(val)),
+  joiningDate: z.string().transform(val => \1,
   departmentId: z.string().optional(),
   userId: z.string().optional(),
   photo: z.string().optional(),
@@ -25,16 +25,15 @@ const createEmployeeSchema = z.object({
       name: z.string(),
       issuer: z.string().optional(),
       identifier: z.string().optional(),
-      startDate: z.string().transform(val => new Date(val)),
-      endDate: z.string().optional().transform(val => val ? new Date(val) : undefined);
-      attachment: z.string().optional()
+      startDate: z.string().transform(val => \1,
+      \1,\2 z.string().optional()
     });
   ).optional(),
   positions: z.array(
     z.object({
       positionId: z.string(),
       isPrimary: z.boolean(),
-      startDate: z.string().transform(val => new Date(val)),
+      startDate: z.string().transform(val => \1,
       endDate: z.string().optional().transform(val => val ? new Date(val) : undefined)
     });
   ).optional(),
@@ -103,7 +102,7 @@ export const _POST = async (request: NextRequest) => {
   } catch (error: unknown) {
 
     // Handle validation errors
-    if (error.name === 'ZodError') {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Validation error', details: error.errors },
         { status: 400 }

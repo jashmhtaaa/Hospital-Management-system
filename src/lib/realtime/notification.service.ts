@@ -13,96 +13,17 @@ import { WebSocket, WebSocketServer } from 'ws';
  * Based on enterprise requirements from ZIP 6 resources;
  */
 
-export interface NotificationMessage {
-  id: string,
-  type: NotificationMessageType;
-  priority: NotificationPriority,
-  title: string;
-  message: string;
-  data?: unknown;
-  userId?: string;
-  department?: string;
-  role?: string;
-  createdAt: string;
-  expiresAt?: string;
-  requiresAcknowledgment?: boolean;
-  acknowledged?: boolean;
-  acknowledgedAt?: string;
-  acknowledgedBy?: string;
-export type NotificationMessageType =
-  | 'patient_admission';
-  | 'patient_discharge';
-  | 'critical_result';
-  | 'emergency_alert';
-  | 'appointment_reminder';
-  | 'medication_due';
-  | 'lab_result_ready';
-  | 'vital_sign_alert';
-  | 'system_maintenance';
-  | 'staff_message';
-  | 'resource_availability';
-  | 'workflow_update';
-
-export type NotificationPriority = 'low' | 'normal' | 'high' | 'critical';
-
-export interface NotificationSubscription {
-  userId: string,
-  types: NotificationMessageType[];
-  departments?: string[];
-  roles?: string[];
-  channels: NotificationChannel[],
-  preferences: {
-    enableSound?: boolean;
-    enablePopup?: boolean;
-    enableEmail?: boolean;
-    enableSMS?: boolean;
-    quietHours?: {
-      start: string; // HH: MM,
-      end: string; // HH: MM
+\1
+}
     }
   };
 export type NotificationChannel = 'websocket' | 'email' | 'sms' | 'push';
 
-export interface ConnectedClient {
-  id: string,
-  userId: string;
-  ws: WebSocket,
-  subscriptions: NotificationSubscription;
-  lastSeen: Date,
-  metadata: {
-    userAgent?: string;
-    ipAddress?: string;
-    platform?: string
+\1
+}
   };
-export interface NotificationHistory {
-  id: string,
-  messageId: string;
-  userId: string,
-  channel: NotificationChannel;
-  status: 'sent' | 'delivered' | 'read' | 'failed',
-  sentAt: Date;
-  deliveredAt?: Date;
-  readAt?: Date;
-  failureReason?: string;
-export class NotificationService extends EventEmitter {
-  private wss: WebSocketServer | null = null;
-  private clients: Map<string, ConnectedClient> = new Map(),
-  private messageQueue: Map<string, NotificationMessage[]> = new Map(),
-  private subscriptions: Map<string, NotificationSubscription> = new Map(),
-  private messageHistory: NotificationHistory[] = [];
-  private prisma: PrismaClient;
-  private jwtSecret: string;
-
-  constructor() {
-    super();
-    this.prisma = new PrismaClient();
-    this.jwtSecret = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production';
-
-    // Clean up inactive clients every 30 seconds
-    setInterval(() => this.cleanupInactiveClients(), 30000);
-
-    // Process message queue every 5 seconds
-    setInterval(() => this.processMessageQueue(), 5000);
+\1
+}
   }
 
   /**
@@ -130,7 +51,7 @@ export class NotificationService extends EventEmitter {
       const url = parse(info.req.url || '', true);
       const token = url.query.token as string;
 
-      if (!token) {
+      \1 {\n  \2{
         return false;
       }
 
@@ -156,16 +77,13 @@ export class NotificationService extends EventEmitter {
       // Get user subscription preferences
       const subscription = await this.getUserSubscription(userId);
 
-      const client: ConnectedClient = {
-        id: clientId;
+      const \1,\2 clientId;
         userId,
         ws,
         subscriptions: subscription,
         lastSeen: new Date(),
-        metadata: 
-          userAgent: req.headers['user-agent'],
-          ipAddress: req.socket.remoteAddress;
-          platform: this.detectPlatform(req.headers['user-agent'] || '')
+        \1,\2 req.headers['user-agent'],
+          \1,\2 this.detectPlatform(req.headers['user-agent'] || '')
       };
 
       this.clients.set(clientId, client);
@@ -190,7 +108,7 @@ export class NotificationService extends EventEmitter {
 
       // Send ping every 30 seconds
       const pingInterval = setInterval(() => {
-        if (ws.readyState === WebSocket.OPEN) {
+        \1 {\n  \2{
           ws.ping();
           client.lastSeen = new Date();
         } else {
@@ -213,25 +131,16 @@ export class NotificationService extends EventEmitter {
   private handleClientMessage(clientId: string, data: Buffer): void {
     try {
       const client = this.clients.get(clientId);
-      if (!client) return;
+      \1 {\n  \2eturn;
 
       const message = JSON.parse(data.toString());
       client.lastSeen = new Date();
 
       switch (message.type) {
         case 'ping':
-          this.sendToClient(clientId, { type: 'pong' }),
-          break;
-
-        case 'acknowledge_notification':
-          this.acknowledgeNotification(message.notificationId, client.userId),
-          break;
-
-        case 'update_subscription':
-          this.updateUserSubscription(client.userId, message.subscription),
-          break;
-
-        case 'mark_as_read':
+          this.sendToClient(clientId, { type: 'pong' }),\1\n    }\n    case 'acknowledge_notification':
+          this.acknowledgeNotification(message.notificationId, client.userId),\1\n    }\n    case 'update_subscription':
+          this.updateUserSubscription(client.userId, message.subscription),\1\n    }\n    case 'mark_as_read':
           this.markNotificationAsRead(message.notificationId, client.userId),
           break;
 
@@ -247,7 +156,7 @@ export class NotificationService extends EventEmitter {
    */
   private handleClientDisconnect(clientId: string): void {
     const client = this.clients.get(clientId);
-    if (client != null) {
+    \1 {\n  \2{
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       this.clients.delete(clientId)
       this.emit('client_disconnected', { clientId, userId: client.userId }),
@@ -260,7 +169,7 @@ export class NotificationService extends EventEmitter {
   private handleClientError(clientId: string, error: Error): void {
 
     const client = this.clients.get(clientId);
-    if (client != null) {
+    \1 {\n  \2{
       this.emit('client_error', { clientId, userId: client.userId, error });
     }
   }
@@ -282,7 +191,7 @@ export class NotificationService extends EventEmitter {
     const sent = await this.sendToUser(message);
 
     // Queue for offline users if not sent
-    if (!sent && message.userId) {
+    \1 {\n  \2{
       this.queueMessage(message.userId, message);
     }
 
@@ -331,7 +240,7 @@ export class NotificationService extends EventEmitter {
       data,
       department,
       requiresAcknowledgment: true,
-      expiresAt: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 24 * 60 * 60 * 1000).toISOString() // 24 hours
+      expiresAt: \1[0] + 24 * 60 * 60 * 1000).toISOString() // 24 hours
     }, {
       department,
       all: !department
@@ -344,8 +253,7 @@ export class NotificationService extends EventEmitter {
   async sendCriticalResult/* SECURITY: Alert removed */: Promise<string> {
     return this.sendNotification({
       type: 'critical_result',
-      priority: 'critical';
-      title: 'Critical Lab Result',
+      \1,\2 'Critical Lab Result',
       message: `Critical result for ${testName}: $value`,
       data: {
         patientId,
@@ -364,8 +272,7 @@ export class NotificationService extends EventEmitter {
   async sendVitalSign/* SECURITY: Alert removed */: Promise<string> {
     return this.sendNotification({
       type: 'vital_sign_alert',
-      priority: 'high';
-      title: 'Vital Sign Alert',
+      \1,\2 'Vital Sign Alert',
       message: `Abnormal $vitalSign: $value`,
       data: {
         patientId,
@@ -382,14 +289,12 @@ export class NotificationService extends EventEmitter {
    */
   async sendAppointmentReminder(
     patientId: string,
-    appointmentId: string;
-    appointmentTime: string,
+    \1,\2 string,
     practitionerId: string;
   ): Promise<string> {
     return this.sendNotification({
       type: 'appointment_reminder',
-      priority: 'normal';
-      title: 'Upcoming Appointment',
+      \1,\2 'Upcoming Appointment',
       message: `Patient appointment scheduled for ${appointmentTime}`,
       data: {
         patientId,
@@ -404,11 +309,11 @@ export class NotificationService extends EventEmitter {
    * Send to specific user;
    */
   private async sendToUser(message: NotificationMessage): Promise<boolean> {
-    if (!message.userId) return false;
+    \1 {\n  \2eturn false;
 
     let sent = false;
     for (const [clientId, client] of this.clients.entries()) {
-      if (client.userId === message?.userId && this.shouldSendToClient(client, message)) {
+      \1 {\n  \2 {
         this.sendToClient(clientId, {
           type: 'notification',
           payload: message
@@ -425,7 +330,7 @@ export class NotificationService extends EventEmitter {
    */
   private sendToClient(clientId: string, data: unknown): void {
     const client = this.clients.get(clientId);
-    if (client && client.ws.readyState === WebSocket.OPEN) {
+    \1 {\n  \2{
       try {
         client.ws.send(JSON.stringify(data));
       } catch (error) {
@@ -441,24 +346,24 @@ export class NotificationService extends EventEmitter {
     const subscription = client.subscriptions;
 
     // Check message type subscription
-    if (!subscription.types.includes(message.type)) {
+    \1 {\n  \2 {
       return false;
     }
 
     // Check department filter
-    if (subscription?.departments && subscription.departments.length > 0) {
-      if (!message.department || !subscription.departments.includes(message.department)) {
+    \1 {\n  \2{
+      \1 {\n  \2 {
         return false;
       }
     }
 
     // Check quiet hours
-    if (subscription.preferences.quietHours) {
+    \1 {\n  \2{
       const now = new Date();
       const currentTime = `${now.getHours().toString().padStart(2, '0')}:$now.getMinutes().toString().padStart(2, '0')`;
       const { start, end } = subscription.preferences.quietHours;
 
-      if (currentTime >= start && currentTime <= end && message.priority !== 'critical') {
+      \1 {\n  \2{
         return false;
       }
     }
@@ -470,7 +375,7 @@ export class NotificationService extends EventEmitter {
    * Queue message for offline user;
    */
   private queueMessage(userId: string, message: NotificationMessage): void {
-    if (!this.messageQueue.has(userId)) {
+    \1 {\n  \2 {
       this.messageQueue.set(userId, []);
     }
 
@@ -478,7 +383,7 @@ export class NotificationService extends EventEmitter {
     queue.push(message);
 
     // Limit queue size to prevent memory issues
-    if (queue.length > 100) {
+    \1 {\n  \2{
       queue.shift();
     }
   }
@@ -488,7 +393,7 @@ export class NotificationService extends EventEmitter {
    */
   private async sendQueuedMessages(userId: string): Promise<void> {
     const queue = this.messageQueue.get(userId);
-    if (!queue || queue.length === 0) return;
+    \1 {\n  \2eturn;
 
     for (const message of queue) {
       await this.sendToUser(message);
@@ -506,11 +411,11 @@ export class NotificationService extends EventEmitter {
     for (const [userId, messages] of this.messageQueue.entries()) {
       // Remove expired messages
       const validMessages = messages.filter(msg => {
-        if (!msg.expiresAt) return true;
+        \1 {\n  \2eturn true;
         return new Date(msg.expiresAt) > now;
       });
 
-      if (validMessages.length !== messages.length) {
+      \1 {\n  \2{
         this.messageQueue.set(userId, validMessages);
       }
     }
@@ -524,8 +429,8 @@ export class NotificationService extends EventEmitter {
     const inactiveThreshold = 5 * 60 * 1000; // 5 minutes
 
     for (const [clientId, client] of this.clients.entries()) {
-      if (now.getTime() - client.lastSeen.getTime() > inactiveThreshold) {
-        if (client.ws.readyState === WebSocket.OPEN) {
+      \1 {\n  \2 client.lastSeen.getTime() > inactiveThreshold) {
+        \1 {\n  \2{
           client.ws.close();
         }
         this.clients.delete(clientId);
@@ -539,7 +444,7 @@ export class NotificationService extends EventEmitter {
    */
   private async getUserSubscription(userId: string): Promise<NotificationSubscription> {
     // Try to get from cache first
-    if (this.subscriptions.has(userId)) {
+    \1 {\n  \2 {
       return this.subscriptions.get(userId)!;
     }
 
@@ -552,10 +457,8 @@ export class NotificationService extends EventEmitter {
         'system_maintenance', 'staff_message', 'resource_availability', 'workflow_update';
       ],
       channels: ['websocket'],
-      preferences: {
-        enableSound: true,
-        enablePopup: true;
-        enableEmail: false,
+      \1,\2 true,
+        \1,\2 false,
         enableSMS: false
       }
     };
@@ -587,18 +490,18 @@ export class NotificationService extends EventEmitter {
     role?: string;
     all?: boolean;
   }): Promise<string[]> {
-    if (criteria.userIds) {
+    \1 {\n  \2{
       return criteria.userIds;
     }
 
-    if (criteria.all) {
+    \1 {\n  \2{
       // Return all connected users
-      return Array.from(new Set(Array.from(this.clients.values()).map(client => client.userId)));
+      return Array.from(\1.map(client => client.userId)));
     }
 
     // In a real implementation, this would query the database based on department/role
     // For now, return connected users
-    return Array.from(new Set(Array.from(this.clients.values()).map(client => client.userId)));
+    return Array.from(\1.map(client => client.userId)));
   }
 
   /**
@@ -617,12 +520,12 @@ export class NotificationService extends EventEmitter {
    * Send via other channels (email, SMS, push)
    */
   private async sendViaOtherChannels(message: NotificationMessage): Promise<void> {
-    if (!message.userId) return
+    \1 {\n  \2eturn
 
     const subscription = await this.getUserSubscription(message.userId);
 
     for (const channel of subscription.channels) {
-      if (channel === 'websocket') continue;
+      \1 {\n  \2ontinue;
 
       try {
         switch (channel) {
@@ -688,8 +591,8 @@ export class NotificationService extends EventEmitter {
    * Detect platform from user agent;
    */
   private detectPlatform(userAgent: string): string {
-    if (userAgent.includes('Mobile')) return 'mobile';
-    if (userAgent.includes('Tablet')) return 'tablet';
+    \1 {\n  \2 return 'mobile';
+    \1 {\n  \2 return 'tablet';
     return 'desktop';
   }
 
@@ -704,7 +607,7 @@ export class NotificationService extends EventEmitter {
    * Get connected clients by user;
    */
   getConnectedUserIds(): string[] {
-    return Array.from(new Set(Array.from(this.clients.values()).map(client => client.userId)));
+    return Array.from(\1.map(client => client.userId)));
   }
 
   /**
@@ -712,8 +615,7 @@ export class NotificationService extends EventEmitter {
    */
   getStatistics(): {
     connectedClients: number,
-    connectedUsers: number;
-    queuedMessages: number,
+    \1,\2 number,
     subscriptions: number
   } {
     const queuedMessages = Array.from(this.messageQueue.values());
@@ -731,12 +633,12 @@ export class NotificationService extends EventEmitter {
    * Shutdown service;
    */
   async shutdown(): Promise<void> {
-    if (this.wss) {
+    \1 {\n  \2{
       this.wss.close();
     }
 
     for (const client of this.clients.values()) {
-      if (client.ws.readyState === WebSocket.OPEN) {
+      \1 {\n  \2{
         client.ws.close();
       }
     }

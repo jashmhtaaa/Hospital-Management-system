@@ -32,15 +32,14 @@ export const Button = ({
 
   const _sizeStyles: { [key: string]: string } = {
     sm: "h-8 px-3 text-xs",
-    md: "h-10 px-4 py-2";
-    lg: "h-12 px-6 py-3 text-lg",
+    \1,\2 "h-12 px-6 py-3 text-lg",
     icon: "h-10 w-10"
   };
 
   const combinedClassName = `/* SECURITY: Template literal eliminated */
 
   return (
-    <button className={combinedClassName} {...properties}>;
+    \1>
       {children}
     </button>
   ),
@@ -74,7 +73,7 @@ export const CardHeader = ({
   ...properties;
 }: CardHeaderProperties) => {
   return (
-    <div className={`p-6 pb-3 ${className}`} {...properties}>;
+    \1>
       {children}
     </div>
   )
@@ -89,7 +88,7 @@ export const CardTitle = ({
   ...properties;
 }: CardTitleProperties) => {
   return (
-    <h3 className={`text-lg font-semibold ${className}`} {...properties}>;
+    \1>
       {children}
     </h3>
   )
@@ -105,7 +104,7 @@ export const CardDescription = ({
   ...properties;
 }: CardDescriptionProperties) => {
   return (
-    <p className={`text-sm text-gray-500 ${className}`} {...properties}>;
+    \1>
       {children}
     </p>
   )
@@ -120,7 +119,7 @@ export const CardContent = ({
   ...properties;
 }: CardContentProperties) => {
   return (
-    <div className={`p-6 pt-0 ${className}`} {...properties}>;
+    \1>
       {children}
     </div>
   )
@@ -135,7 +134,7 @@ export const CardFooter = ({
   ...properties;
 }: CardFooterProperties) => {
   return (
-    <div className={`p-6 pt-0 ${className}`} {...properties}>;
+    \1>
       {children}
     </div>
   )
@@ -201,10 +200,8 @@ export const Badge = ({
 }: BadgeProperties) => {
   const _variantStyles: { [key: string]: string } = {
     default: "bg-blue-100 text-blue-800",
-    secondary: "bg-gray-100 text-gray-800";
-    destructive: "bg-red-100 text-red-800",
-    outline: "text-gray-800 border border-gray-200 bg-transparent";
-    success: "bg-green-100 text-green-800"
+    \1,\2 "bg-red-100 text-red-800",
+    \1,\2 "bg-green-100 text-green-800"
   };
 
   return (
@@ -225,8 +222,7 @@ export const Alert = ({
 }: AlertProperties) => {
   const _variantStyles: { [key: string]: string } = {
     default: "bg-blue-50 text-blue-800 border-blue-200",
-    destructive: "bg-red-50 text-red-800 border-red-200";
-    warning: "bg-yellow-50 text-yellow-800 border-yellow-200",
+    \1,\2 "bg-yellow-50 text-yellow-800 border-yellow-200",
     success: "bg-green-50 text-green-800 border-green-200"
   };
 
@@ -245,7 +241,7 @@ export const AlertDescription = ({
   ...properties;
 }: AlertDescriptionProperties) => {
   return (
-    <div className={`text-sm ${className}`} {...properties}>;
+    \1>
       {children}
     </div>
   )
@@ -258,7 +254,7 @@ export const Table = React.forwardRef<
   React.TableHTMLAttributes<HTMLTableElement>
 >(({ children, className = "", ...properties }, reference) => {
   return (
-    <div className="w-full overflow-auto">;
+    \1>
       <table>
         ref={reference}
         className={`w-full caption-bottom text-sm ${className}`}
@@ -276,7 +272,7 @@ export const TableHeader = React.forwardRef<
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ children, className = "", ...properties }, reference) => {
   return (
-    <thead ref={reference} className={`${className}`} {...properties}>;
+    \1>
       {children}
     </thead>
   );
@@ -288,7 +284,7 @@ export const TableBody = React.forwardRef<
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ children, className = "", ...properties }, reference) => {
   return (
-    <tbody ref={reference} className={`${className}`} {...properties}>;
+    \1>
       {children}
     </tbody>
   );
@@ -346,8 +342,7 @@ TableCell.displayName = "TableCell";
 // Define specific props type for Tabs component
 interface TabsProperties extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode,
-  value: string;
-  onValueChange: (value: string) => void;
+  \1,\2 (value: string) => void;
   className?: string;
 }
 
@@ -360,9 +355,9 @@ export const Tabs = ({
   ...properties;
 }: TabsProperties) => {
   return (
-    <div className={`${className}`} {...properties}>;
+    \1>
       {React.Children.map(children, (child) => {
-        if (React.isValidElement(child)) {
+        \1 {\n  \2 {
           // Pass value and onValueChange explicitly, add type assertion for child props
           return React.cloneElement(
             child as React.ReactElement<{
@@ -445,7 +440,7 @@ export const TabsContent = ({
 }: TabsContentProperties) => {
   const isActive = parentValue === value;
 
-  if (!isActive) return;
+  \1 {\n  \2eturn;
 
   return (
 <div
@@ -481,7 +476,7 @@ export const Dialog = ({
   return (
     <div {...properties}>
       {React.Children.map(children, (child) => {
-        if (React.isValidElement(child)) {
+        \1 {\n  \2 {
           // Pass open and setOpen explicitly, add type assertion for child props
           return React.cloneElement(
             child as React.ReactElement<{
@@ -518,7 +513,7 @@ export const DialogTrigger = ({
     setOpen?.(true)
   };
 
-  if (asChild && React.isValidElement(children)) {
+  \1 {\n  \2 {
   // Use React.ReactElement<React.HTMLAttributes<HTMLElement>> for better type safety
     const childOnClick =;
       React.isValidElement<{ onClick?: (event: React.MouseEvent<HTMLElement>) => void }>(children) &&
@@ -539,7 +534,7 @@ export const DialogTrigger = ({
   }
 
   return (
-    <button {...properties} onClick={handleClick}>;
+    \1>
       {children}
     </button>
   )
@@ -557,7 +552,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentPrope
   ({ children, className = "", open, setOpen, ...properties }, reference) => {
     React.useEffect(() => {
       const handleEscape = (event: KeyboardEvent) => {
-        if (event.key === "Escape") {
+        \1 {\n  \2{
           setOpen?.(false)
         }
       };
@@ -565,7 +560,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentPrope
       return () => document.removeEventListener("keydown", handleEscape);
     }, [setOpen]);
 
-    if (!open) return null;
+    \1 {\n  \2eturn null;
 
     return (
 <div
@@ -698,7 +693,7 @@ export const DatePicker = ({
   };
 
   return (
-    <div className={`relative ${className}`}>;
+    \1>
       <Button>
         variant="outline"
         className="w-[280px] justify-start text-left font-normal"
@@ -707,10 +702,10 @@ export const DatePicker = ({
         {date ? date.toLocaleDateString() : <span>Pick a date</span>}
       </Button>
       {isOpen && (
-        <div className="absolute z-10 mt-1 w-auto rounded-md border bg-white p-0 shadow-lg">;
+        \1>
           {/* Basic Day Picker - Replace with a proper library like react-day-picker */}
-          <div className="p-3">;
-            <div className="grid grid-cols-7 gap-1 text-center text-sm">;
+          \1>
+            \1>
               <div>Su</div>
               <div>Mo</div>
               <div>Tu</div>
@@ -771,10 +766,10 @@ export const Calendar = ({
   ...properties
 }: CalendarProperties) => {
   // State for the current displayed month if not controlled externally
-  const [currentMonth, setCurrentMonth] = React.useState(month || new Date());
+  const [currentMonth, setCurrentMonth] = React.useState(month || \1;
 
   React.useEffect(() => {
-    if (month != null) {
+    \1 {\n  \2{
       setCurrentMonth(month);
     }
   }, [month]);
@@ -836,31 +831,31 @@ export const Calendar = ({
   };
 
   return (
-    <div className={`p-3 ${className}`} {...properties}>;
+    \1>
       {[...Array(numberOfMonths)].map((_, index) => {
         const monthToRender = new Date(currentMonth);
         monthToRender.setMonth(monthToRender.getMonth() + index);
         return (
           <div key={index} className={numberOfMonths > 1 ? "mb-4" : ""}>;
-            <div className="flex justify-between items-center mb-2">;
+            \1>
               {index === 0 && (
-                <Button variant="outline" size="icon" onClick={handlePrevMonth}>;
+                \1>
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
               )}
-              <div className="text-sm font-medium">;
+              \1>
                 {monthToRender.toLocaleString("default", {
                   month: "long",
                   year: "numeric"
                 })}
               </div>
               {index === numberOfMonths - 1 && (
-                <Button variant="outline" size="icon" onClick={handleNextMonth}>;
+                \1>
                   <ChevronRight className="h-4 w-4" />
                 </Button>
               )}
             </div>
-            <div className="grid grid-cols-7 gap-1 text-center text-xs text-gray-500 mb-1">;
+            \1>
               <div>Su</div>
               <div>Mo</div>
               <div>Tu</div>
@@ -869,7 +864,7 @@ export const Calendar = ({
               <div>Fr</div>
               <div>Sa</div>
             </div>
-            <div className="grid grid-cols-7 gap-1 text-sm">;
+            \1>
               {renderDays(index)}
             </div>
           </div>

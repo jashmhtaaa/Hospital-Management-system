@@ -17,8 +17,7 @@ import type { PharmacyDomain } from '../../../models/domain-models';
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
+const \1,\2 getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
@@ -55,7 +54,7 @@ export const POST = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validateEducationRequest(data);
-    if (!validationResult.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Validation failed', details: validationResult.errors },
         { status: 400 }
@@ -64,7 +63,7 @@ export const POST = async (req: NextRequest) => {
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -73,22 +72,22 @@ export const POST = async (req: NextRequest) => {
 
     // Verify patient exists
     const patient = await getPatientById(data.patientId);
-    if (!patient) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
     }
 
     // Verify medication exists if provided
-    if (data.medicationId) {
+    \1 {\n  \2{
       const medication = await medicationRepository.findById(data.medicationId);
-      if (!medication) {
+      \1 {\n  \2{
         return NextResponse.json({ error: 'Medication not found' }, { status: 404 });
       }
     }
 
     // Verify prescription exists if provided
-    if (data.prescriptionId) {
+    \1 {\n  \2{
       const prescription = await prescriptionRepository.findById(data.prescriptionId);
-      if (!prescription) {
+      \1 {\n  \2{
         return NextResponse.json({ error: 'Prescription not found' }, { status: 404 });
       }
     }
@@ -96,20 +95,13 @@ export const POST = async (req: NextRequest) => {
     // Create education record
     const education = {
       id: data.id || crypto.randomUUID(),
-      patientId: data.patientId;
-      medicationId: data.medicationId,
-      prescriptionId: data.prescriptionId;
-      educationType: data.educationType || 'verbal',
-      topics: data.topics || [];
-      materials: data.materials || [],
-      notes: data.notes || '';
-      patientUnderstanding: data.patientUnderstanding || 'good',
-      educatedBy: userId;
-      educatedAt: new Date(),
-      followUpRequired: data.followUpRequired || false;
-      followUpDate: data.followUpDate ? new Date(data.followUpDate) : null,
-      language: data.language || 'English';
-      interpreter: data.interpreter || false,
+      \1,\2 data.medicationId,
+      \1,\2 data.educationType || 'verbal',
+      \1,\2 data.materials || [],
+      \1,\2 data.patientUnderstanding || 'good',
+      \1,\2 new Date(),
+      \1,\2 data.followUpDate ? new Date(data.followUpDate) : null,
+      \1,\2 data.interpreter || false,
       interpreterName: data.interpreterName
     };
 
@@ -119,14 +111,10 @@ export const POST = async (req: NextRequest) => {
     // Audit logging
     await auditLog('MEDICATION_EDUCATION', {
       action: 'CREATE',
-      resourceType: 'MedicationEducation';
-      resourceId: educationId,
-      userId: userId;
-      patientId: data.patientId,
-      details: 
-        medicationId: data.medicationId,
-        prescriptionId: data.prescriptionId;
-        educationType: data.educationType,
+      \1,\2 educationId,
+      \1,\2 data.patientId,
+      \1,\2 data.medicationId,
+        \1,\2 data.educationType,
         topics: data.topics
     });
 
@@ -151,7 +139,7 @@ export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -170,7 +158,7 @@ export const GET = async (req: NextRequest) => {
     const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
 
     // Require at least patientId filter
-    if (!patientId) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Patient ID is required' },
         { status: 400 }
@@ -179,15 +167,15 @@ export const GET = async (req: NextRequest) => {
 
     // Build filter criteria
     const filter: unknown = { patientId };
-    if (medicationId != null) filter.medicationId = medicationId;
-    if (prescriptionId != null) filter.prescriptionId = prescriptionId;
-    if (educationType != null) filter.educationType = educationType;
+    \1 {\n  \2ilter.medicationId = medicationId;
+    \1 {\n  \2ilter.prescriptionId = prescriptionId;
+    \1 {\n  \2ilter.educationType = educationType;
 
     // Add date range if provided
-    if (startDate || endDate) {
+    \1 {\n  \2{
       filter.educatedAt = {};
-      if (startDate != null) filter.educatedAt.gte = new Date(startDate);
-      if (endDate != null) filter.educatedAt.lte = new Date(endDate);
+      \1 {\n  \2ilter.educatedAt.gte = new Date(startDate);
+      \1 {\n  \2ilter.educatedAt.lte = new Date(endDate);
     }
 
     // Get education records (mock implementation)
@@ -195,20 +183,20 @@ export const GET = async (req: NextRequest) => {
 
     // Apply additional filters
     let filteredRecords = educationRecords;
-    if (medicationId != null) {
+    \1 {\n  \2{
       filteredRecords = filteredRecords.filter(e => e.medicationId === medicationId);
     }
-    if (prescriptionId != null) {
+    \1 {\n  \2{
       filteredRecords = filteredRecords.filter(e => e.prescriptionId === prescriptionId);
     }
-    if (educationType != null) {
+    \1 {\n  \2{
       filteredRecords = filteredRecords.filter(e => e.educationType === educationType);
     }
-    if (startDate != null) {
+    \1 {\n  \2{
       const startDateTime = new Date(startDate).getTime();
       filteredRecords = filteredRecords.filter(e => new Date(e.educatedAt).getTime() >= startDateTime);
     }
-    if (endDate != null) {
+    \1 {\n  \2{
       const endDateTime = new Date(endDate).getTime();
       filteredRecords = filteredRecords.filter(e => new Date(e.educatedAt).getTime() <= endDateTime);
     }
@@ -221,8 +209,7 @@ export const GET = async (req: NextRequest) => {
     // Audit logging
     await auditLog('MEDICATION_EDUCATION', {
       action: 'LIST',
-      resourceType: 'MedicationEducation';
-      userId: userId,
+      \1,\2 userId,
       patientId: patientId;
         filter,
         page,

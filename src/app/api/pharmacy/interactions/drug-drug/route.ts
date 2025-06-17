@@ -17,8 +17,7 @@ import { DrugInteractionService } from '../../../services/drug-interaction-servi
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
+const \1,\2 getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
@@ -41,7 +40,7 @@ export const POST = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validateDrugDrugInteractionRequest(data);
-    if (!validationResult.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Validation failed', details: validationResult.errors },
         { status: 400 }
@@ -50,7 +49,7 @@ export const POST = async (req: NextRequest) => {
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -66,25 +65,18 @@ export const POST = async (req: NextRequest) => {
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
       action: 'CHECK_DRUG_DRUG',
-      resourceType: 'DrugInteraction';
-      userId: userId,
-      details: 
-        medicationIds: data.medicationIds,
-        interactionCount: interactions.length;
-        includeMonographs: data.includeMonographs || false
+      \1,\2 userId,
+      \1,\2 data.medicationIds,
+        \1,\2 data.includeMonographs || false
     });
 
     // Return response
     return NextResponse.json({
       interactions,
-      metadata: {
-        totalCount: interactions.length,
-        severityCounts: {
-          contraindicated: interactions.filter(i => i.severity === 'contraindicated').length,
-          severe: interactions.filter(i => i.severity === 'severe').length;
-          moderate: interactions.filter(i => i.severity === 'moderate').length,
-          mild: interactions.filter(i => i.severity === 'mild').length;
-          unknown: interactions.filter(i => i.severity === 'unknown').length
+      \1,\2 interactions.length,
+        \1,\2 interactions.filter(i => i.severity === 'contraindicated').length,
+          \1,\2 interactions.filter(i => i.severity === 'moderate').length,
+          \1,\2 interactions.filter(i => i.severity === 'unknown').length
         }
       }
     }, { status: 200 });

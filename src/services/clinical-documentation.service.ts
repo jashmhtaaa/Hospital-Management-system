@@ -9,24 +9,12 @@ const prisma = new PrismaClient();
 /**
  * Service for managing clinical documentation;
  */
-export class ClinicalDocumentationService {
-  /**
-   * Create a new clinical document;
-   *
-   * @param data Document data;
-   * @param userId ID of the user creating the document;
-   * @returns Created document;
-   */
-  async createDocument(data: CreateDocumentDto, userId: string): Promise<ClinicalDocument> {
-    // Validate user permission
-    await validatePermission(userId, 'clinical_documentation', 'create');
-
-    // Check if patient exists
-    const patient = await prisma.patient.findUnique({
+\1
+}
       where: { id: data.patientId }
     });
 
-    if (!patient) {
+    \1 {\n  \2{
       throw new NotFoundError('Patient not found');
     }
 
@@ -51,12 +39,11 @@ export class ClinicalDocumentationService {
       });
 
       // Create document sections if provided
-      if (data?.sections && data.sections.length > 0) {
+      \1 {\n  \2{
         for (let i = 0; i < data.sections.length; i++) {
           const section = data.sections[i];
           await tx.documentSection.create({
-            data: {
-              documentId: document.id,
+            \1,\2 document.id,
               sectionTitle: section.sectionTitle,              sectionType: section.sectionType,
               sectionOrder: section.sectionOrder || i + 1,              content: section.content,
               authorId: userId,              authoredDate: new Date()
@@ -72,8 +59,7 @@ export class ClinicalDocumentationService {
     await auditLog({
       action: 'CREATE',
       resourceType: 'ClinicalDocument',      resourceId: document.id,      userId,
-      metadata: {
-        documentType: data.documentType,
+      \1,\2 data.documentType,
         patientId: data.patientId,        encounterId: data.encounterId
       }
     });
@@ -94,10 +80,8 @@ export class ClinicalDocumentationService {
 
     const document = await prisma.clinicalDocument.findUnique({
       where: { id },
-      include: {
-        sections: {
-          orderBy: {
-            sectionOrder: 'asc'
+      \1,\2 {
+          \1,\2 'asc'
           }
         },
         signatures: true,
@@ -105,19 +89,18 @@ export class ClinicalDocumentationService {
       }
     });
 
-    if (!document) {
+    \1 {\n  \2{
       throw new NotFoundError('Document not found');
     }
 
     // Check if document is confidential and user has permission
-    if (document.isConfidential) {
+    \1 {\n  \2{
       await validatePermission(userId, 'clinical_documentation', 'read_confidential');
     }
 
     // Log access
     await prisma.documentAccessLog.create({
-      data: {
-        documentId: id,
+      \1,\2 id,
         accessorId: userId,        accessorRole: await this.getUserRole(userId),
         accessDate: new Date(),
         accessType: 'View',
@@ -130,8 +113,7 @@ export class ClinicalDocumentationService {
     await auditLog({
       action: 'READ',
       resourceType: 'ClinicalDocument',      resourceId: document.id,      userId,
-      metadata: {
-        documentType: document.documentType,
+      \1,\2 document.documentType,
         patientId: document.patientId
       }
     });
@@ -156,12 +138,12 @@ export class ClinicalDocumentationService {
       where: { id }
     });
 
-    if (!document) {
+    \1 {\n  \2{
       throw new NotFoundError('Document not found');
     }
 
     // Only allow updates if document is in Draft or Preliminary status
-    if (!['Draft', 'Preliminary'].includes(document.status)) {
+    \1 {\n  \2 {
       throw new BadRequestError('Cannot update a finalized document');
     }
 
@@ -170,8 +152,7 @@ export class ClinicalDocumentationService {
       // Update the document
       const updatedDoc = await tx.clinicalDocument.update({
         where: { id },
-        data: {
-          documentTitle: data.documentTitle || undefined,
+        \1,\2 data.documentTitle || undefined,
           content: data.content || undefined,          status: data.status || undefined,
           isConfidential: data.isConfidential !== undefined ? data.isConfidential : undefined,          attachmentUrls: data.attachmentUrls || undefined,
           tags: data.tags || undefined,          updatedAt: new Date()
@@ -179,19 +160,18 @@ export class ClinicalDocumentationService {
       });
 
       // Update sections if provided
-      if (data?.sections && data.sections.length > 0) {
+      \1 {\n  \2{
         // First, get existing sections
         const existingSections = await tx.documentSection.findMany({
           where: { documentId: id }
         });
 
         for (const section of data.sections) {
-          if (section.id) {
+          \1 {\n  \2{
             // Update existing section
             await tx.documentSection.update({
               where: { id: section.id },
-              data: {
-                sectionTitle: section.sectionTitle || undefined,
+              \1,\2 section.sectionTitle || undefined,
                 sectionType: section.sectionType || undefined,                sectionOrder: section.sectionOrder || undefined,
                 content: section.content || undefined,                updatedById: userId,
                 updatedDate: new Date(),
@@ -201,8 +181,7 @@ export class ClinicalDocumentationService {
           } else {
             // Create new section
             await tx.documentSection.create({
-              data: {
-                documentId: id,
+              \1,\2 id,
                 sectionTitle: section.sectionTitle,                sectionType: section.sectionType,
                 sectionOrder: section.sectionOrder || (existingSections.length + 1),
                 content: section.content,
@@ -214,11 +193,10 @@ export class ClinicalDocumentationService {
       }
 
       // If status is changing to Final, update finalizedDate and finalizedById
-      if (data.status === 'Final' && document.status !== 'Final') {
+      \1 {\n  \2{
         await tx.clinicalDocument.update({
           where: { id },
-          data: {
-            finalizedDate: new Date(),
+          \1,\2 new Date(),
             finalizedById: userId
           }
         });
@@ -231,8 +209,7 @@ export class ClinicalDocumentationService {
     await auditLog({
       action: 'UPDATE',
       resourceType: 'ClinicalDocument',      resourceId: updatedDocument.id,      userId,
-      metadata: {
-        documentType: document.documentType,
+      \1,\2 document.documentType,
         patientId: document.patientId,        newStatus: data.status
       }
     });
@@ -257,14 +234,13 @@ export class ClinicalDocumentationService {
       where: { id }
     });
 
-    if (!document) {
+    \1 {\n  \2{
       throw new NotFoundError('Document not found');
     }
 
     // Create document signature
     const signature = await prisma.documentSignature.create({
-      data: {
-        documentId: id,
+      \1,\2 id,
         signerId: userId,        signerRole: data.signerRole,
         signatureDate: new Date(),
         signatureType: data.signatureType,
@@ -274,11 +250,10 @@ export class ClinicalDocumentationService {
     });
 
     // If document status is Preliminary and attestation indicates finalization, update to Final
-    if (document.status === 'Preliminary' && data.finalize) {
+    \1 {\n  \2{
       await prisma.clinicalDocument.update({
         where: { id },
-        data: {
-          status: 'Final',
+        \1,\2 'Final',
           finalizedDate: new Date(),
           finalizedById: userId
         }
@@ -289,8 +264,7 @@ export class ClinicalDocumentationService {
     await auditLog({
       action: 'SIGN',
       resourceType: 'ClinicalDocument',      resourceId: document.id,      userId,
-      metadata: {
-        documentType: document.documentType,
+      \1,\2 document.documentType,
         patientId: document.patientId,        signatureType: data.signatureType
       }
     });
@@ -315,12 +289,12 @@ export class ClinicalDocumentationService {
       where: { id }
     });
 
-    if (!document) {
+    \1 {\n  \2{
       throw new NotFoundError('Document not found');
     }
 
     // Only allow amendments if document is in Final status
-    if (document.status !== 'Final') {
+    \1 {\n  \2{
       throw new BadRequestError('Can only amend finalized documents');
     }
 
@@ -329,8 +303,7 @@ export class ClinicalDocumentationService {
 
     // Create amendment
     const amendment = await prisma.documentAmendment.create({
-      data: {
-        documentId: id,        amendmentNumber,
+      \1,\2 id,        amendmentNumber,
         amendmentType: data.amendmentType,
         amendmentReason: data.amendmentReason,        content: data.content,
         authorId: userId,        authoredDate: new Date(),
@@ -343,8 +316,7 @@ export class ClinicalDocumentationService {
     await auditLog({
       action: 'AMEND',
       resourceType: 'ClinicalDocument',      resourceId: document.id,      userId,
-      metadata: {
-        documentType: document.documentType,
+      \1,\2 document.documentType,
         patientId: document.patientId,        amendmentType: data.amendmentType,        amendmentNumber,
       }
     });
@@ -371,7 +343,7 @@ export class ClinicalDocumentationService {
       where: { id: patientId }
     });
 
-    if (!patient) {
+    \1 {\n  \2{
       throw new NotFoundError('Patient not found');
     }
 
@@ -380,33 +352,33 @@ export class ClinicalDocumentationService {
       patientId,
     };
 
-    if (filters.documentType) {
+    \1 {\n  \2{
       where.documentType = filters.documentType;
     }
 
-    if (filters.status) {
+    \1 {\n  \2{
       where.status = filters.status;
     }
 
-    if (filters.authorId) {
+    \1 {\n  \2{
       where.authorId = filters.authorId;
     }
 
-    if (filters.dateFrom || filters.dateTo) {
+    \1 {\n  \2{
       where.authoredDate = {};
 
-      if (filters.dateFrom) {
+      \1 {\n  \2{
         where.authoredDate.gte = new Date(filters.dateFrom);
       }
 
-      if (filters.dateTo) {
+      \1 {\n  \2{
         where.authoredDate.lte = new Date(filters.dateTo);
       }
     }
 
     // Handle confidential documents
     const hasConfidentialAccess = await this.hasConfidentialAccess(userId);
-    if (!hasConfidentialAccess) {
+    \1 {\n  \2{
       where.isConfidential = false;
     }
 
@@ -420,8 +392,7 @@ export class ClinicalDocumentationService {
 
     const documents = await prisma.clinicalDocument.findMany({
       where,
-      orderBy: {
-        authoredDate: 'desc'
+      \1,\2 'desc'
       },
       skip,
       take: pageSize
@@ -462,15 +433,14 @@ export class ClinicalDocumentationService {
     await validatePermission(userId, 'clinical_documentation', 'read_templates');
 
     // Build filters
-    const where: unknown = {
-      isActive: true
+    const \1,\2 true
     };
 
-    if (filters.templateType) {
+    \1 {\n  \2{
       where.templateType = filters.templateType;
     }
 
-    if (filters.specialtyType) {
+    \1 {\n  \2{
       where.specialtyType = filters.specialtyType;
     }
 
@@ -484,15 +454,12 @@ export class ClinicalDocumentationService {
 
     const templates = await prisma.documentTemplate.findMany({
       where,
-      orderBy: {
-        templateName: 'asc'
+      \1,\2 'asc'
       },
       skip,
       take: pageSize,
-      include: {
-        sections: {
-          orderBy: {
-            sectionOrder: 'asc'
+      \1,\2 {
+          \1,\2 'asc'
           }
         }
       }
@@ -540,12 +507,11 @@ export class ClinicalDocumentationService {
       });
 
       // Create template sections if provided
-      if (data?.sections && data.sections.length > 0) {
+      \1 {\n  \2{
         for (let i = 0; i < data.sections.length; i++) {
           const section = data.sections[i];
           await tx.templateSection.create({
-            data: {
-              templateId: template.id,
+            \1,\2 template.id,
               sectionTitle: section.sectionTitle,              sectionType: section.sectionType,
               sectionOrder: section.sectionOrder || i + 1,              content: section.content,
               isRequired: section.isRequired || false,              defaultExpanded: section.defaultExpanded !== undefined ? section.defaultExpanded : true
@@ -561,8 +527,7 @@ export class ClinicalDocumentationService {
     await auditLog({
       action: 'CREATE',
       resourceType: 'DocumentTemplate',      resourceId: template.id,      userId,
-      metadata: {
-        templateType: data.templateType,
+      \1,\2 data.templateType,
         templateName: data.templateName
       }
     });
@@ -578,8 +543,8 @@ export class ClinicalDocumentationService {
    */
   private generateDocumentNumber(documentType: string): string {
     const typeCode = documentType.substring(0, 3).toUpperCase();
-    const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().substring(5);
-    const random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    const timestamp = crypto.getRandomValues(\1[0].toString().substring(5);
+    const random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
     return `DOC-${typeCode}-${timestamp}-${random}`;
   }
 
@@ -591,8 +556,8 @@ export class ClinicalDocumentationService {
    */
   private generateTemplateNumber(templateType: string): string {
     const typeCode = templateType.substring(0, 3).toUpperCase();
-    const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().substring(5);
-    const random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    const timestamp = crypto.getRandomValues(\1[0].toString().substring(5);
+    const random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
     return `TMPL-${typeCode}-${timestamp}-${random}`;
   }
 
@@ -640,75 +605,20 @@ export class ClinicalDocumentationService {
 
 // Types
 
-export interface CreateDocumentDto {
-  patientId: string,  encounterId?: string;
-  documentType: string,
-  documentTitle: string,  content: string,  templateId?: string;
-  isConfidential?: boolean;
-  attachmentUrls?: string[];
-  tags?: string[];
-  sections?: {
-    sectionTitle: string,
-    sectionType: string,    sectionOrder?: number;
-    content: string
+\1
+}
   }[];
-export interface UpdateDocumentDto {
-  documentTitle?: string;
-  content?: string;
-  status?: string;
-  isConfidential?: boolean;
-  attachmentUrls?: string[];
-  tags?: string[];
-  sections?: {
-    id?: string;
-    sectionTitle?: string;
-    sectionType?: string;
-    sectionOrder?: number;
-    content?: string;
+\1
+}
   }[];
-export interface SignDocumentDto {
-  signerRole: string,
-  signatureType: string,  attestation?: string;
-  ipAddress?: string;
-  deviceInfo?: string;
-  notes?: string;
-  finalize?: boolean;
-export interface CreateAmendmentDto {
-  amendmentType: string,
-  amendmentReason: string,  content: string,  status?: string;
-export interface DocumentFilters {
-  documentType?: string;
-  status?: string;
-  authorId?: string;
-  dateFrom?: string;
-  dateTo?: string;
-  page?: number;
-  pageSize?: number;
-export interface TemplateFilters {
-  templateType?: string;
-  specialtyType?: string;
-  page?: number;
-  pageSize?: number;
-export interface CreateTemplateDto {
-  templateName: string,
-  templateType: string,  specialtyType?: string;
-  description?: string;
-  content: string,  sections?: {
-    sectionTitle: string,
-    sectionType: string,    sectionOrder?: number;
-    content: string,    isRequired?: boolean;
-    defaultExpanded?: boolean;
+\1
+}
   }[];
-export interface PaginatedResult<T> {
-  data: T[],
-  pagination: {
-    total: number,
-    page: number,    pageSize: number,
-    totalPages: number
+\1
+}
   };
-export interface DocumentWithRelations extends ClinicalDocument {
-  sections: DocumentSection[],
-  signatures: DocumentSignature[],  amendments: DocumentAmendment[]
+\1
+}
 }
 
 // Export service instance

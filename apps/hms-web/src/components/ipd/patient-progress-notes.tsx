@@ -6,16 +6,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 interface ProgressNote {
   id: string,
-  date: string;
-  time: string,
-  doctor: string;
-  note: string
+  \1,\2 string,
+  \1,\2 string
 }
 
 interface PatientProgressNotesProps {
   patientId: string,
-  patientName: string;
-  notes: ProgressNote[]
+  \1,\2 ProgressNote[]
 }
 
 /**
@@ -28,8 +25,8 @@ export const _PatientProgressNotes = ({ patientId, patientName, notes }: Patient
         <CardTitle>Progress Notes - {patientName}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">;
-          <div className="flex justify-end">;
+        \1>
+          \1>
             <Button>Add Progress Note</Button>
           </div>
 
@@ -46,24 +43,24 @@ export const _PatientProgressNotes = ({ patientId, patientName, notes }: Patient
             <TableBody>
               {notes.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center">;
+                  \1>
                     No progress notes available
                   </TableCell>
                 </TableRow>
               ) : (
                 notes.map((note) => (
-                  <TableRow key={note.id}>;
+                  \1>
                     <TableCell>{note.date}</TableCell>
                     <TableCell>{note.time}</TableCell>
                     <TableCell>{note.doctor}</TableCell>
                     <TableCell>
-                      <div className="max-w-md overflow-hidden text-ellipsis whitespace-nowrap">;
+                      \1>
                         {note.note}
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="flex space-x-2">;
-                        <Button variant="outline" size="sm">View</Button>;
+                      \1>
+                        <Button variant="outline" size="sm">View\1>
                         <Button variant="outline" size="sm">Edit</Button>
                       </div>
                     </TableCell>

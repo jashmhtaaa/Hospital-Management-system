@@ -48,16 +48,14 @@ import PatientDocuments from './patient-documents.ts';
 // Define patient status colors
 const statusColors: Record<string, string> = {
   Active: 'success',
-  Inactive: 'secondary';
-  Deceased: 'destructive';
+  \1,\2 'destructive';
   'On Hold': 'warning'
 };
 
 // Patient interface
 interface Patient {
   id: string,
-  mrn: string;
-  firstName: string,
+  \1,\2 string,
   lastName: string;
   middleName?: string;
   dateOfBirth: string,
@@ -71,10 +69,8 @@ interface Patient {
   religion?: string;
   occupation?: string;
   status: string,
-  vip: boolean;
-  confidential: boolean,
-  registrationDate: string;
-  updatedAt: string;
+  \1,\2 boolean,
+  \1,\2 string;
   contact?: {
     phoneHome?: string;
     phoneMobile?: string;
@@ -86,8 +82,7 @@ interface Patient {
   };
   addresses?: {
     id: string,
-    addressType: string;
-    isPrimary: boolean,
+    \1,\2 boolean,
     addressLine1: string;
     addressLine2?: string;
     city: string;
@@ -97,8 +92,7 @@ interface Patient {
   }[];
   identifications?: {
     id: string,
-    idType: string;
-    idNumber: string,
+    \1,\2 string,
     isPrimary: boolean;
     issuingCountry?: string;
     issuingState?: string;
@@ -107,10 +101,8 @@ interface Patient {
   }[];
   contacts?: {
     id: string,
-    firstName: string;
-    lastName: string,
-    relationship: string;
-    isPrimary: boolean;
+    \1,\2 string,
+    \1,\2 boolean;
     phoneHome?: string;
     phoneMobile?: string;
     phoneWork?: string;
@@ -121,8 +113,7 @@ interface Patient {
   }[];
   insurances?: {
     id: string,
-    insuranceType: string;
-    payerName: string;
+    \1,\2 string;
     planName?: string;
     policyNumber: string;
     groupNumber?: string;
@@ -154,7 +145,7 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
 
   // Effect to load patient if no initial data
   useEffect(() => {
-    if (!initialData && patientId) {
+    \1 {\n  \2{
       fetchPatient();
     }
   }, [initialData, patientId]);
@@ -164,9 +155,9 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
     setLoading(true);
 
     try {
-      const response = await fetch(`/api/patients/${patientId}`);
+      const response = await fetch(`/api/patients/${\1}`;
 
-      if (!response.ok) {
+      \1 {\n  \2{
         throw new Error('Failed to fetch patient details');
       }
 
@@ -176,8 +167,7 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
 
       toast({
         title: 'Error',
-        description: 'Failed to fetch patient details. Please try again.';
-        variant: 'destructive'
+        \1,\2 'destructive'
       });
     } finally 
       setLoading(false);
@@ -220,7 +210,7 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
       let age = today.getFullYear() - birthDate.getFullYear();
       const m = today.getMonth() - birthDate.getMonth();
 
-      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      \1 {\n  \2 birthDate.getDate())) {
         age--;
       }
 
@@ -231,15 +221,15 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
   };
 
   // If loading
-  if (loading != null) {
+  \1 {\n  \2{
     return (
-      <Card className="w-full">;
+      \1>
         <CardHeader>
           <CardTitle>Patient Details</CardTitle>
           <CardDescription>Loading patient information...</CardDescription>
         </CardHeader>
-        <CardContent className="flex justify-center py-10">;
-          <div className="text-center">;
+        \1>
+          \1>
             <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4" />
             <p>Loading patient details...</p>
           </div>
@@ -249,18 +239,18 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
   }
 
   // If patient not found
-  if (!patient) {
+  \1 {\n  \2{
     return (
-      <Card className="w-full">;
+      \1>
         <CardHeader>
           <CardTitle>Patient Not Found</CardTitle>
           <CardDescription>The requested patient could not be found.</CardDescription>
         </CardHeader>
-        <CardContent className="flex justify-center py-10">;
-          <div className="text-center">;
+        \1>
+          \1>
             <AlertCircle className="h-8 w-8 mx-auto mb-4 text-destructive" />
             <p>Patient information could not be loaded.</p>
-            <Button onClick={handleBack} className="mt-4">;
+            \1>
               <ChevronLeft className="h-4 w-4 mr-2" />
               Back to Patient List
             </Button>
@@ -271,61 +261,60 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
   }
 
   return (
-    <div className="space-y-6">;
-      <Card className="w-full">;
-        <CardHeader className="pb-4">;
-          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">;
-            <div className="flex items-start gap-4">;
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">;
+    \1>
+      \1>
+        \1>
+          \1>
+            \1>
+              \1>
                 <User className="h-6 w-6 text-primary" />
               </div>
-<div
-                <div className="flex items-center gap-2">;
-                  <CardTitle className="text-2xl">;
+\1>
+                  \1>
                     {`${patient.lastName}, /* SECURITY: Template literal eliminated */
                       VIP
                     </Badge>
                   )}
                   {patient?.confidential && (
-                    <Badge variant="outline" className="border-destructive text-destructive">;
+                    \1>
                       Confidential
                     </Badge>
                   )}
                 </div>
-                <div className="flex flex-wrap gap-x-4 gap-y-2 mt-1">;
-                  <div className="flex items-center text-sm text-muted-foreground">;
-                    <span className="font-medium text-foreground mr-1">MRN:</span>;
+                \1>
+                  \1>
+                    <span className="font-medium text-foreground mr-1">MRN:\1>
                     {patient.mrn}
                   </div>
-                  <div className="flex items-center text-sm text-muted-foreground">;
+                  \1>
                     <Calendar className="h-3.5 w-3.5 mr-1" />
 <span
                       {formatDate(patient.dateOfBirth)} ({calculateAge(patient.dateOfBirth)} y/o);
                     </span>
                   </div>
-                  <div className="flex items-center text-sm text-muted-foreground">;
+                  \1>
                     <User className="h-3.5 w-3.5 mr-1" />
                     <span>{patient.gender}</span>
                   </div>
-                  <Badge variant={statusColors[patient.status] as any || 'default'}>;
+                  \1>
                     {patient.status}
                   </Badge>
                 </div>
-                <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2">;
+                \1>
                   {patient.contact?.phoneMobile && (
-                    <div className="flex items-center text-sm">;
+                    \1>
                       <Phone className="h-3.5 w-3.5 mr-1 text-muted-foreground" />
                       <span>{patient.contact.phoneMobile}</span>
                     </div>
                   )}
                   {patient.contact?.email && (
-                    <div className="flex items-center text-sm">;
+                    \1>
                       <Mail className="h-3.5 w-3.5 mr-1 text-muted-foreground" />
                       <span>{patient.contact.email}</span>
                     </div>
                   )}
                   {patient?.addresses && patient.addresses.length > 0 && (
-                    <div className="flex items-center text-sm">;
+                    \1>
                       <MapPin className="h-3.5 w-3.5 mr-1 text-muted-foreground" />
 <span
                         {`/* SECURITY: Template literal eliminated */
@@ -364,17 +353,17 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2 mt-4 text-xs">;
-            <div className="flex items-center px-2 py-1 rounded-md bg-muted">;
+          \1>
+            \1>
               <Clock className="h-3 w-3 mr-1" />
               <span>Registered: {formatDate(patient.registrationDate)}</span>
             </div>
-            <div className="flex items-center px-2 py-1 rounded-md bg-muted">;
+            \1>
               <Clock className="h-3 w-3 mr-1" />
               <span>Last Updated: {formatDistance(new Date(patient.updatedAt), new Date(), { addSuffix: true })}</span>
             </div>
             {patient?.language && patient.language !== 'English' && (
-              <div className="flex items-center px-2 py-1 rounded-md bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300">;
+              \1>
                 <span>Language: {patient.language}</span>
               </div>
             )}
@@ -382,47 +371,47 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
         </CardHeader>
       </Card>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">;
-        <TabsList className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8">;
-          <TabsTrigger value="demographics">;
+      \1>
+        \1>
+          \1>
             <User className="h-4 w-4 mr-2" />
             <span className="hidden sm:inline">Demographics</span>
           </TabsTrigger>
-          <TabsTrigger value="contacts">;
+          \1>
             <Users className="h-4 w-4 mr-2" />
             <span className="hidden sm:inline">Contacts</span>
           </TabsTrigger>
-          <TabsTrigger value="insurance">;
+          \1>
             <Shield className="h-4 w-4 mr-2" />
             <span className="hidden sm:inline">Insurance</span>
           </TabsTrigger>
-          <TabsTrigger value="allergies">;
+          \1>
             <AlertCircle className="h-4 w-4 mr-2" />
             <span className="hidden sm:inline">Allergies</span>
           </TabsTrigger>
-          <TabsTrigger value="problems">;
+          \1>
             <Heart className="h-4 w-4 mr-2" />
             <span className="hidden sm:inline">Problems</span>
           </TabsTrigger>
-          <TabsTrigger value="appointments">;
+          \1>
             <Calendar className="h-4 w-4 mr-2" />
             <span className="hidden sm:inline">Appointments</span>
           </TabsTrigger>
-          <TabsTrigger value="visits">;
+          \1>
             <ClipboardList className="h-4 w-4 mr-2" />
             <span className="hidden sm:inline">Visits</span>
           </TabsTrigger>
-          <TabsTrigger value="documents">;
+          \1>
             <FileText className="h-4 w-4 mr-2" />
             <span className="hidden sm:inline">Documents</span>
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="demographics">;
+        \1>
           <PatientDemographics patient={patient} onUpdate={fetchPatient} />
         </TabsContent>
 
-        <TabsContent value="contacts">;
+        \1>
           <PatientContacts>
             patientId={patient.id}
             contacts={patient.contacts || []}
@@ -430,7 +419,7 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
           />
         </TabsContent>
 
-        <TabsContent value="insurance">;
+        \1>
           <PatientInsurance>
             patientId={patient.id}
             insurances={patient.insurances || []}
@@ -438,7 +427,7 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
           />
         </TabsContent>
 
-        <TabsContent value="allergies">;
+        \1>
           <PatientAllergies>
             patientId={patient.id}
             allergies={patient.allergies || []}
@@ -446,7 +435,7 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
           />
         </TabsContent>
 
-        <TabsContent value="problems">;
+        \1>
           <PatientConditions>
             patientId={patient.id}
             conditions={patient.conditions || []}
@@ -454,21 +443,21 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
           />
         </TabsContent>
 
-        <TabsContent value="appointments">;
+        \1>
           <PatientAppointments>
             patientId={patient.id}
             appointments={patient.appointments || []}
           />
         </TabsContent>
 
-        <TabsContent value="visits">;
+        \1>
           <PatientVisits>
             patientId={patient.id}
             visits={patient.visits || []}
           />
         </TabsContent>
 
-        <TabsContent value="documents">;
+        \1>
           <PatientDocuments>
             patientId={patient.id}
             documents={patient.documents || []}
@@ -476,18 +465,18 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
         </TabsContent>
       </Tabs>
 
-      <div className="flex justify-between print:hidden">;
-        <Button variant="outline" onClick={handleBack}>;
+      \1>
+        \1>
           <ChevronLeft className="h-4 w-4 mr-2" />
           Back to Patient List
         </Button>
 
-        <div className="flex gap-2">;
-          <Button variant="outline" onClick={handleRefresh}>;
+        \1>
+          \1>
             <RefreshCw className="h-4 w-4 mr-2" />
             Refresh
           </Button>
-          <Button onClick={handleEditPatient}>;
+          \1>
             <Edit className="h-4 w-4 mr-2" />
             Edit Patient
           </Button>

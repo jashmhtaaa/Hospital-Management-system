@@ -16,270 +16,41 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
  */
 
 // Dashboard models
-export interface Dashboard {
-  id: string,
-  name: string;
-  description: string,
-  category: DashboardCategory;
-  type: DashboardType,
-  layout: LayoutConfig;
-  widgets: DashboardWidget[],
-  filters: DashboardFilter[];
-  refreshInterval?: number; // seconds
-  visibilitySettings: VisibilitySettings,
-  status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED';
-  owner: string,
-  created: Date;
-  updated: Date,
-  tags: string[];
-  favorites: number,
-  views: number;
-  version: string,
-  metadata: DashboardMetadata
-export enum DashboardCategory {
-  EXECUTIVE = 'EXECUTIVE',
-  CLINICAL = 'CLINICAL',
-  FINANCIAL = 'FINANCIAL',
-  OPERATIONAL = 'OPERATIONAL',
-  QUALITY = 'QUALITY',
-  RESEARCH = 'RESEARCH',
-  CUSTOM = 'CUSTOM',
-export enum DashboardType {
-  REAL_TIME = 'REAL_TIME',
-  DAILY = 'DAILY',
-  WEEKLY = 'WEEKLY',
-  MONTHLY = 'MONTHLY',
-  QUARTERLY = 'QUARTERLY',
-  ANNUAL = 'ANNUAL',
-  CUSTOM = 'CUSTOM',
-export = "export" interface = "interface" LayoutConfig = "LayoutConfig" {
-  columns: number,
-  rowHeight: number;
-  compactType: 'vertical' | 'horizontal' | null,
-  preventCollision: boolean;
-    lg: LayoutItem[],
-    md: LayoutItem[];
-    sm: LayoutItem[],
-    xs: LayoutItem[];
-export interface LayoutItem {
-  i: string; // widget id
-  x: number,
-  y: number;
-  w: number,
-  h: number;
-  minW?: number;
-  maxW?: number;
-  minH?: number;
-  maxH?: number;
-  static?: boolean;
-export interface DashboardWidget {
-  id: string,
-  name: string;
-  description: string,
-  type: WidgetType;
-  dataSource: DataSource,
-  visualization: VisualizationType;
-  settings: WidgetSettings,
-  dimensions: string[];
-  measures: string[],
-  filters: WidgetFilter[];
-  actions: WidgetAction[],
-  drilldowns: WidgetDrilldown[];
-  refreshInterval?: number; // seconds
-  status: 'ACTIVE' | 'INACTIVE',
-  created: Date;
-  updated: Date,
-  creator: string
-export enum WidgetType {
-  CHART = 'CHART',
-  TABLE = 'TABLE',
-  METRIC = 'METRIC',
-  MAP = 'MAP',
-  HEATMAP = 'HEATMAP',
-  LIST = 'LIST',
-  TIMELINE = 'TIMELINE',
-  GAUGE = 'GAUGE',
-  TEXT = 'TEXT',
-  ALERT = 'ALERT',
-  PREDICTION = 'PREDICTION',
-  TREND = 'TREND',
-  COMPARISON = 'COMPARISON',
-  CUSTOM = 'CUSTOM',
-export enum DataSource {
-  CLINICAL = 'CLINICAL',
-  FINANCIAL = 'FINANCIAL',
-  OPERATIONAL = 'OPERATIONAL',
-  QUALITY = 'QUALITY',
-  PATIENT = 'PATIENT',
-  INVENTORY = 'INVENTORY',
-  HR = 'HR',
-  CUSTOM = 'CUSTOM',
-  INTEGRATED = 'INTEGRATED',
-export = "export" enum = "enum" VisualizationType = "VisualizationType" 
-  BAR = 'BAR',
-  LINE = 'LINE',
-  PIE = 'PIE',
-  AREA = 'AREA',
-  SCATTER = 'SCATTER',
-  BUBBLE = 'BUBBLE',
-  COLUMN = 'COLUMN',
-  STACKED_BAR = 'STACKED_BAR',
-  STACKED_COLUMN = 'STACKED_COLUMN',
-  SANKEY = 'SANKEY',
-  TREE = 'TREE',
-  TREEMAP = 'TREEMAP',
-  FUNNEL = 'FUNNEL',
-  RADAR = 'RADAR',
-  BOXPLOT = 'BOXPLOT',
-  CANDLESTICK = 'CANDLESTICK',
-  GANTT = 'GANTT',
-  HEATMAP = 'HEATMAP',
-  MAP = 'MAP',
-  TABLE = 'TABLE',
-  METRIC = 'METRIC',
-  GAUGE = 'GAUGE',
-  CARD = 'CARD',
-  TEXT = 'TEXT',
-  CUSTOM = 'CUSTOM',
-export interface WidgetSettings {
-  chartSettings?: ChartSettings;
-  tableSettings?: TableSettings;
-  metricSettings?: MetricSettings;
-  mapSettings?: MapSettings;
-  customSettings?: Record<string, any>;
-  dataLabelSettings?: DataLabelSettings;
-  legendSettings?: LegendSettings;
-  axisSettings?: AxisSettings;
-  colorSettings?: ColorSettings;
-  formatSettings?: FormatSettings;
-  tooltipSettings?: TooltipSettings;
-  predictiveSettings?: PredictiveSettings;
-export interface ChartSettings {
-  chartType: VisualizationType,
-  stacked: boolean;
-  orientation: 'vertical' | 'horizontal',
-  showValues: boolean;
-  showTotal: boolean,
-  showAverage: boolean;
-  showTrendline: boolean,
-  showGoal: boolean;
-  goalValue?: number;
-  goalLine?: 'solid' | 'dashed' | 'dotted';
-  goalColor?: string;
-  interactivity: 'none' | 'hover' | 'click',
-  animation: boolean;
-  animationDuration?: number;
-  sortBy?: string;
-  sortDirection?: 'asc' | 'desc';
-  maxDataPoints?: number;
-  dataZoom: boolean;
-  zoomType?: 'x' | 'y' | 'xy';
-export interface TableSettings {
-  pageSize: number,
-  paginationEnabled: boolean;
-  sortable: boolean,
-  filterable: boolean;
-  exportable: boolean,
-  resizable: boolean;
-  highlightRules: HighlightRule[],
-  columnVisibility: Record<string, boolean>;
-  columnWidth: Record<string, number>,
-  columnAlignment: Record<string, 'left' | 'center' | 'right'>;
-  stickyHeader: boolean,
-  stickyFirstColumn: boolean;
-  groupBy?: string[];
-  aggregations: Record<string, 'sum' | 'avg' | 'min' | 'max' | 'count'>,
-  wrapText: boolean;
-  condensed: boolean,
-  showRowNumbers: boolean
-export interface HighlightRule {
-  column: string,
-  condition: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'between' | 'contains';
-  value: unknown;
-  value2?: unknown; // for 'between' condition
-  backgroundColor?: string;
-  textColor?: string;
-  icon?: string;
-export interface MetricSettings {
-  valueFormat: string,
-  showTrend: boolean;
-  trendPeriod: 'day' | 'week' | 'month' | 'quarter' | 'year' | 'custom';
-  customTrendPeriod?: number;
-  trendValueFormat?: string;
-  showSparkline: boolean,
-  sparklineType: 'line' | 'bar' | 'area';
-  showComparison: boolean,
-  comparisonPeriod: 'previous_period' | 'same_period_last_year' | 'custom';
-  customComparisonPeriod?: string;
-  thresholds: MetricThreshold[];
-  prefix?: string;
-  suffix?: string;
-  backgroundColor?: string;
-  textColor?: string;
-  size: 'small' | 'medium' | 'large',
-  showTarget: boolean;
-  targetValue?: number;
-  iconPosition: 'left' | 'right' | 'top' | 'bottom'
-export interface MetricThreshold {
-  condition: 'less_than' | 'greater_than' | 'equals' | 'between',
-  value: number;
-  value2?: number; // for 'between' condition
-  color: string;
-  icon?: string;
-export interface MapSettings {
-  mapType: 'region' | 'point' | 'heatmap' | 'flow',
-  region: 'world' | 'continent' | 'country' | 'state' | 'county' | 'custom';
-  customGeoJson?: string;
-  showLegend: boolean,
-  showTooltip: boolean;
-  colorScale: 'sequential' | 'diverging' | 'categorical',
-  colorScheme: string;
-  centerLat?: number;
-  centerLng?: number;
-  zoom?: number;
-  pointSize: 'fixed' | 'variable';
-  fixedPointSize?: number;
-  pointSizeField?: string;
-  pointSizeRange?: [number, number];
-  showLabels: boolean;
-  labelField?: string;
-export interface DataLabelSettings {
-  visible: boolean,
-  position: 'inside' | 'outside' | 'auto';
-  rotation?: number;
-  format?: string;
-  font: {
-    family?: string;
-    size?: number;
-    weight?: 'normal' | 'bold' | 'lighter' | 'bolder';
-    style?: 'normal' | 'italic' | 'oblique';
-    color?: string
+\1
+}
   };
   padding?: number;
   backgroundColor?: string;
   borderRadius?: number;
   borderWidth?: number;
   borderColor?: string;
-export interface LegendSettings {
-  visible: boolean,
-  position: 'top' | 'right' | 'bottom' | 'left';
-  alignment: 'start' | 'center' | 'end',
-  orientation: 'horizontal' | 'vertical';
-  font: {
-    family?: string;
-    size?: number;
-    weight?: 'normal' | 'bold' | 'lighter' | 'bolder';
-    style?: 'normal' | 'italic' | 'oblique';
-    color?: string
+\1
+}
   };
   itemGap?: number;
   itemWidth?: number;
   itemHeight?: number;
   icon?: 'circle' | 'rect' | 'roundRect' | 'triangle' | 'diamond' | 'pin' | 'arrow' | 'none';
   scrollable: boolean
-export interface AxisSettings {
-  xAxis: {
-    visible: boolean;
+\1
+}
+    };
+    labelFont?: {
+      family?: string;
+      size?: number;
+      weight?: 'normal' | 'bold' | 'lighter' | 'bolder';
+      style?: 'normal' | 'italic' | 'oblique';
+      color?: string
+    };
+    labelRotation?: number;
+    labelFormat?: string;
+    gridLines: boolean;
+    min?: number;
+    max?: number;
+    logarithmic: boolean,
+    reversed: boolean
+  };
+  \1,\2 boolean;
     title?: string;
     titleFont?: {
       family?: string;
@@ -303,118 +74,27 @@ export interface AxisSettings {
     logarithmic: boolean,
     reversed: boolean
   };
-  yAxis: {
-    visible: boolean;
-    title?: string;
-    titleFont?: {
-      family?: string;
-      size?: number;
-      weight?: 'normal' | 'bold' | 'lighter' | 'bolder';
-      style?: 'normal' | 'italic' | 'oblique';
-      color?: string
-    };
-    labelFont?: {
-      family?: string;
-      size?: number;
-      weight?: 'normal' | 'bold' | 'lighter' | 'bolder';
-      style?: 'normal' | 'italic' | 'oblique';
-      color?: string
-    };
-    labelRotation?: number;
-    labelFormat?: string;
-    gridLines: boolean;
-    min?: number;
-    max?: number;
-    logarithmic: boolean,
-    reversed: boolean
+\1
+}
   };
-export interface ColorSettings {
-  scheme: 'category10' | 'accent' | 'paired' | 'set1' | 'set2' | 'set3' | 'dark2' | 'pastel1' | 'pastel2' | 'tableau10' | 'custom';
-  customColors?: string[];
-  sequential?: string;
-  diverging?: string;
-  background?: string;
-  opacity?: number;
-  highlightColor?: string;
-  selectedColor?: string;
-export interface FormatSettings {
-  numbers: {
-    format: 'standard' | 'compact' | 'engineering' | 'currency' | 'percent' | 'custom';
-    customFormat?: string;
-    precision?: number;
-    locale?: string;
-    currencySymbol?: string;
-    showGrouping: boolean
-  };
-  dates: {
-    format: 'short' | 'medium' | 'long' | 'full' | 'custom';
+  \1,\2 'short' | 'medium' | 'long' | 'full' | 'custom';
     customFormat?: string;
     locale?: string;
     timezone?: string
   };
-  text: {
-    truncation: 'none' | 'ellipsis' | 'character_limit';
+  \1,\2 'none' | 'ellipsis' | 'character_limit';
     characterLimit?: number;
     case?: 'none' | 'uppercase' | 'lowercase' | 'titlecase'
   };
-export interface TooltipSettings {
-  visible: boolean;
-  format?: string;
-  shared: boolean,
-  followCursor: boolean;
-  content?: string; // template for custom content
-  trigger: 'item' | 'axis' | 'none';
-  backgroundColor?: string;
-  borderColor?: string;
-  borderWidth?: number;
-  borderRadius?: number;
-  font?: {
-    family?: string;
-    size?: number;
-    weight?: 'normal' | 'bold' | 'lighter' | 'bolder';
-    style?: 'normal' | 'italic' | 'oblique';
-    color?: string
+\1
+}
   };
   padding?: number;
   showDelay?: number;
   hideDelay?: number;
   animation: boolean
-export interface PredictiveSettings {
-  predictionType: 'forecast' | 'anomaly' | 'trend' | 'segment' | 'classification';
-  forecastPeriods?: number;
-  confidenceInterval?: number; // 0-100
-  algorithm?: 'auto' | 'arima' | 'exponential_smoothing' | 'prophet' | 'linear_regression' | 'random_forest' | 'custom';
-  showConfidenceBand: boolean;
-  confidenceBandColor?: string;
-  confidenceBandOpacity?: number;
-  seasonality?: 'auto' | 'none' | 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year';
-  multipleSeasonality: boolean,
-  trendDamping: boolean;
-  anomalyThreshold?: number; // 0-100
-  compareWithHistorical: boolean;
-  historicalPeriods?: number;
-  includeFeatures?: string[];
-  showPredictionPoints: boolean;
-  predictionLineStyle?: 'solid' | 'dashed' | 'dotted';
-  predictionLineColor?: string;
-export interface DashboardFilter {
-  id: string,
-  name: string;
-  type: FilterType,
-  dataSource: string;
-  field: string,
-  displayName: string;
-  multiSelect: boolean,
-  required: boolean;
-  defaultValue?: unknown;
-  options?: FilterOption[];
-  optionsLoading?: boolean;
-  visibility: 'always' | 'dashboard' | 'expanded' | 'collapsed',
-  sequence: number;
-  affects: string[]; // widget ids affected by this filter
-  dependency?: {
-    dependsOn: string; // filter id
-    mappingField: string
+\1
+}
   };
   dateSettings?: DateFilterSettings;
   measureSettings?: MeasureFilterSettings;
@@ -433,247 +113,42 @@ export enum FilterType {
   SEARCH = 'SEARCH',
   RELATIVE_DATE = 'RELATIVE_DATE',
   RELATIVE_TIME = 'RELATIVE_TIME',
-export interface FilterOption {
-  value: unknown,
-  label: string;
-  icon?: string;
-  disabled?: boolean;
-  children?: FilterOption[];
-export interface DateFilterSettings {
-  format: string,
-  granularity: 'year' | 'quarter' | 'month' | 'week' | 'day' | 'hour' | 'minute' | 'second';
-  min?: Date;
-  max?: Date;
-  presets: DatePreset[]
-export interface DatePreset {
-  label: string,
-  value: string; // e.g., 'last_7_days', 'last_30_days', 'last_quarter'
-export interface MeasureFilterSettings {
-  min?: number;
-  max?: number;
-  step?: number;
-  format?: string;
-  marks?: {
-    value: number,
-    label: string
+\1
+}
   }[];
-export interface WidgetFilter {
-  id: string,
-  field: string;
-  operator: FilterOperator,
-  value: unknown;
-  dynamicValue?: boolean;
-  dynamicValueSource?: string;
-export enum FilterOperator {
-  EQUALS = 'EQUALS',
-  NOT_EQUALS = 'NOT_EQUALS',
-  GREATER_THAN = 'GREATER_THAN',
-  LESS_THAN = 'LESS_THAN',
-  GREATER_THAN_OR_EQUALS = 'GREATER_THAN_OR_EQUALS',
-  LESS_THAN_OR_EQUALS = 'LESS_THAN_OR_EQUALS',
-  BETWEEN = 'BETWEEN',
-  NOT_BETWEEN = 'NOT_BETWEEN',
-  IN = 'IN',
-  NOT_IN = 'NOT_IN',
-  CONTAINS = 'CONTAINS',
-  NOT_CONTAINS = 'NOT_CONTAINS',
-  STARTS_WITH = 'STARTS_WITH',
-  ENDS_WITH = 'ENDS_WITH',
-  IS_NULL = 'IS_NULL',
-  IS_NOT_NULL = 'IS_NOT_NULL',
-  BEFORE = 'BEFORE',
-  AFTER = 'AFTER',
-  BETWEEN_DATES = 'BETWEEN_DATES',
-  RELATIVE_DATE = 'RELATIVE_DATE',
-export interface WidgetAction {
-  id: string,
-  name: string;
-  type: ActionType;
-  icon?: string;
-  tooltip?: string;
-  confirmationMessage?: string;
-  target?: string;
-  url?: string;
-  parameters?: Record<string, any>;
-  requiredRole?: string;
-  customHandler?: string;
-  visible: boolean,
-  enabled: boolean
-export enum ActionType {
-  DRILLDOWN = 'DRILLDOWN',
-  NAVIGATE = 'NAVIGATE',
-  EXPORT = 'EXPORT',
-  REFRESH = 'REFRESH',
-  CUSTOM = 'CUSTOM',
-  API_CALL = 'API_CALL',
-  WORKFLOW = 'WORKFLOW',
-  FILTER = 'FILTER',
-export interface WidgetDrilldown {
-  id: string,
-  name: string;
-  targetWidgetId?: string;
-  targetDashboardId?: string;
-  mappedFields: {
-    sourceField: string,
-    targetField: string
+\1
+}
   }[];
   preserveFilters: boolean,
   openInNewTab: boolean
-export interface VisibilitySettings {
-  roles: string[],
-  departments: string[];
-  users: string[],
-  public: boolean;
-  shareableLink?: string;
-  linkExpiration?: Date;
-  embeddable: boolean,
-  viewMode: 'view' | 'edit' | 'admin'
-export interface DashboardMetadata {
-  creationSource: 'TEMPLATE' | 'CUSTOM' | 'DUPLICATE';
-  templateId?: string;
-  originalDashboardId?: string;
-  version: string,
-  versionHistory: {
-    version: string,
-    date: Date;
-    userId: string,
-    changes: string
+\1
+}
   }[];
   lastPublishedDate?: Date;
   lastPublishedBy?: string;
   dataSourceLastRefreshed?: Date;
-  customProperties?: Record<string, any>;
+  customProperties?: Record\1>
 }
 
 // Dashboard data models
-export interface DashboardData {
-  dashboardId: string,
-  timestamp: Date;
-  filterState: Record<string, any>,
-  widgetData: Record<string, WidgetData>;
-  executionTime: number,
-  executionId: string;
-  userContext: UserContext,
-  refreshType: 'auto' | 'manual' | 'initial'
-export interface WidgetData {
-  widgetId: string,
-  widgetName: string;
-  data: unknown,
-  columns: DataColumn[];
-  totalRows: number;
-  aggregations?: Record<string, any>;
-  executionTime: number,
-  dataStatus: 'SUCCESS' | 'PARTIAL' | 'ERROR' | 'EMPTY';
-  error?: {
-    code: string,
-    message: string;
-    details?: string
+\1
+}
   };
   cachedResult: boolean;
   cacheTtl?: number;
   timestamp: Date;
-  metadata?: Record<string, any>;
+  metadata?: Record\1>
   updateTrigger?: string;
-export interface DataColumn {
-  name: string,
-  label: string;
-  dataType: 'string' | 'number' | 'date' | 'boolean' | 'object' | 'array';
-  format?: string;
-  role?: 'dimension' | 'measure' | 'id' | 'tooltip' | 'annotation' | 'style';
-  aggregation?: 'sum' | 'avg' | 'min' | 'max' | 'count' | 'count_distinct' | 'median' | 'custom';
-  customAggregation?: string;
-  description?: string;
-  semantics?: {
-    conceptType: 'DIMENSION' | 'METRIC';
-    semanticType?: string;
-    semanticGroup?: string
+\1
+}
   };
-export interface UserContext {
-  userId: string,
-  roles: string[];
-  department?: string;
-  preferences: Record<string, any>,
-  timezone: string;
-  language: string,
-  deviceType: 'desktop' | 'tablet' | 'mobile';
-  sessionId: string
+\1
+}
 }
 
 // KPI models
-export interface KPI {
-  id: string,
-  name: string;
-  description: string,
-  category: KPICategory;
-  type: KPIType,
-  unit: string;
-  formula: string,
-  dataSource: string;
-  frequency: 'real-time' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'annual',
-  owner: string;
-  targets: KPITarget[],
-  thresholds: KPIThreshold[];
-  status: 'ACTIVE' | 'INACTIVE' | 'DRAFT',
-  visibility: VisibilitySettings;
-  created: Date,
-  updated: Date;
-  metadata: KPIMetadata,
-  tracking: KPITracking
-export enum KPICategory {
-  FINANCIAL = 'FINANCIAL',
-  OPERATIONAL = 'OPERATIONAL',
-  CLINICAL = 'CLINICAL',
-  QUALITY = 'QUALITY',
-  PATIENT_EXPERIENCE = 'PATIENT_EXPERIENCE',
-  WORKFORCE = 'WORKFORCE',
-  COMPLIANCE = 'COMPLIANCE',
-  STRATEGIC = 'STRATEGIC',
-  CUSTOM = 'CUSTOM',
-export enum KPIType {
-  OUTCOME = 'OUTCOME',
-  PROCESS = 'PROCESS',
-  STRUCTURE = 'STRUCTURE',
-  BALANCED_SCORECARD = 'BALANCED_SCORECARD',
-  LEADING = 'LEADING',
-  LAGGING = 'LAGGING',
-  DIAGNOSTIC = 'DIAGNOSTIC',
-  PREDICTIVE = 'PREDICTIVE',
-export = "export" interface = "interface" KPITarget = "KPITarget" 
-  id: string,
-  value: number;
-  period: string,
-  startDate: Date;
-  endDate: Date,
-  setBy: string;
-  setDate: Date,
-  rationale: string;
-  previousTargetValue?: number;
-  targetType: 'FIXED' | 'RELATIVE' | 'BENCHMARK';
-  benchmark?: {
-    source: string;
-    percentile?: number;
-    comparator?: 'TOP_QUARTILE' | 'MEDIAN' | 'MEAN' | 'CUSTOM';
-export interface KPIThreshold {
-  id: string,
-  name: string;
-  condition: 'less_than' | 'greater_than' | 'equals' | 'between',
-  value1: number;
-  value2?: number; // for 'between' condition
-  color: string,
-  severity: 'CRITICAL' | 'WARNING' | 'SUCCESS' | 'NEUTRAL' | 'CUSTOM';
-  icon?: string;
-  alertEnabled: boolean;
-  alertMessage?: string;
-  alertRecipients?: string[];
-export interface KPIMetadata {
-  creationSource: 'STANDARD' | 'CUSTOM';
-  standardId?: string;
-  version: string,
-  versionHistory: {
-    version: string,
-    date: Date;
-    userId: string,
-    changes: string
+\1
+}
   }[];
   reviewDate?: Date;
   reviewedBy?: string;
@@ -681,263 +156,64 @@ export interface KPIMetadata {
   relatedKPIs?: string[];
   tags: string[];
   references?: string[];
-  customProperties?: Record<string, any>;
-export interface KPITracking {
-  lastCalculated: Date,
-  calculationFrequency: string;
-  nextCalculation?: Date;
-  historicalValues: number,
-  trendDirection: 'IMPROVING' | 'STABLE' | 'WORSENING' | 'UNKNOWN';
-  trendPercentage?: number;
-  currentValue?: number;
-  ytdValue?: number;
-  mtdValue?: number;
-  yearOnYear?: number;
-  periodOnPeriod?: number;
-  targetAchievement?: number; // percentage
-  forecast?: {
-    nextPeriod: number,
-    confidence: number; // 0-100
-    trend: 'IMPROVING' | 'STABLE' | 'WORSENING'
+  customProperties?: Record\1>
+\1
+}
   };
 }
 
 // Clinical Quality Dashboard models
-export interface ClinicalQualityDashboard {
-  id: string,
-  name: string;
-  description: string;
-  specialty?: string;
-  department?: string;
-  measures: QualityMeasure[],
-  benchmarks: QualityBenchmark[];
-  timeframe: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUAL' | 'CUSTOM';
-  customTimeframe?: {
-    start: Date,
-    end: Date
+\1
+}
   };
   filters: DashboardFilter[],
-  stratifications: Stratification[];
-  visualizations: QualityVisualization[],
-  drilldowns: QualityDrilldown[];
-  alertThresholds: QualityAlertThreshold[],
-  status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED';
-  created: Date,
-  updated: Date;
-  createdBy: string,
-  updatedBy: string;
-  visibility: VisibilitySettings,
-  metadata: Record<string, any>;
-export interface QualityMeasure {
-  id: string,
-  name: string;
-  shortName: string,
-  description: string;
-  type: 'PROCESS' | 'OUTCOME' | 'STRUCTURE' | 'PATIENT_EXPERIENCE' | 'EFFICIENCY' | 'CUSTOM',
-  domain: string;
-  source: 'CMS' | 'JCAHO' | 'NCQA' | 'AHRQ' | 'INTERNAL' | 'CUSTOM';
-  sourceId?: string;
-  numerator: string,
-  denominator: string;
-  exclusions?: string;
-  riskAdjustment?: string;
-  dataElements: string[];
-  targetValue?: number;
-  weight?: number;
-  improvement: 'INCREASE' | 'DECREASE',
-  status: 'ACTIVE' | 'INACTIVE'
-export interface QualityBenchmark {
-  id: string,
-  measureId: string;
-  source: 'NATIONAL' | 'STATE' | 'PEER' | 'PREVIOUS_PERIOD' | 'CUSTOM',
-  value: number;
-  period: string;
-  description?: string;
-  targetType: 'FIXED' | 'PERCENTILE';
-  percentile?: number;
-export interface Stratification {
-  id: string,
-  name: string;
-  field: string,
-  type: 'CATEGORICAL' | 'CONTINUOUS';
-  buckets?: {
-    name: string;
-    start?: number;
-    end?: number;
-    value?: string;
+  \1,\2 QualityVisualization[],
+  \1,\2 QualityAlertThreshold[],
+  \1,\2 Date,
+  \1,\2 string,
+  \1,\2 VisibilitySettings,
+  metadata: Record\1>
+\1
+}
   }[];
   enabled: boolean,
   sequence: number
-export interface QualityVisualization {
-  id: string,
-  name: string;
-  type: VisualizationType,
-  measures: string[];
-  dimensions: string[],
-  settings: WidgetSettings;
-  sequence: number
-export interface QualityDrilldown {
-  id: string,
-  name: string;
-  description: string,
-  measures: string[];
-  dimensions: string[],
-  filters: WidgetFilter[];
-  patientList: boolean,
-  patientListColumns: string[];
-  actions: QualityAction[]
-export interface QualityAction {
-  id: string,
-  name: string;
-  type: 'NAVIGATE' | 'EXPORT' | 'API_CALL' | 'CUSTOM';
-  icon?: string;
-  target?: string;
-  parameters?: Record<string, any>;
-  requiredRole?: string;
-export interface QualityAlertThreshold {
-  id: string,
-  measureId: string;
-  condition: 'BELOW' | 'ABOVE' | 'BETWEEN',
-  value1: number;
-  value2?: number;
-  severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL',
-  message: string;
-  recipients: string[],
-  active: boolean
+\1
+}
 }
 
 // Financial Dashboard models
-export interface FinancialDashboard {
-  id: string,
-  name: string;
-  description: string,
-  timeframe: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUAL' | 'CUSTOM';
-  customTimeframe?: {
-    start: Date,
-    end: Date
+\1
+}
   };
   kpis: FinancialKPI[],
-  sections: FinancialSection[];
-  filters: DashboardFilter[],
-  budgetComparison: boolean;
-  forecastEnabled: boolean,
-  status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED';
-  created: Date,
-  updated: Date;
-  createdBy: string,
-  updatedBy: string;
-  visibility: VisibilitySettings
-export interface FinancialKPI {
-  id: string,
-  name: string;
-  type: 'REVENUE' | 'EXPENSE' | 'MARGIN' | 'RATIO' | 'VOLUME' | 'CUSTOM',
-  category: 'PROFITABILITY' | 'LIQUIDITY' | 'EFFICIENCY' | 'GROWTH' | 'CUSTOM';
-  formula: string,
-  unit: 'CURRENCY' | 'PERCENTAGE' | 'RATIO' | 'COUNT' | 'CUSTOM';
-  currencyCode?: string;
-  targetValue?: number;
-  benchmarkValue?: number;
-  sequence: number,
-  visualization: 'NUMBER' | 'TREND' | 'PROGRESS' | 'COMPARISON';
-  thresholds: KPIThreshold[]
-export interface FinancialSection {
-  id: string,
-  name: string;
-  description?: string;
-  type: 'REVENUE' | 'EXPENSE' | 'BALANCE_SHEET' | 'CASH_FLOW' | 'CUSTOM',
-  widgets: FinancialWidget[];
-  sequence: number,
-  expanded: boolean
-export interface FinancialWidget {
-  id: string,
-  name: string;
-  type: 'CHART' | 'TABLE' | 'METRIC' | 'TREND' | 'COMPARISON',
-  dataSource: string;
-  dimensions: string[],
-  measures: string[];
-  visualization: VisualizationType,
-  settings: WidgetSettings;
-  sequence: number,
-  filters: WidgetFilter[];
-  drilldowns: WidgetDrilldown[]
+  \1,\2 DashboardFilter[],
+  \1,\2 boolean,
+  \1,\2 Date,
+  \1,\2 string,
+  \1,\2 VisibilitySettings
+\1
+}
 }
 
 // Operational Dashboard models
-export interface OperationalDashboard {
-  id: string,
-  name: string;
-  description: string;
-  department?: string;
-  areas: OperationalArea[],
-  timeframe: 'REAL_TIME' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'CUSTOM';
-  customTimeframe?: {
-    start: Date,
-    end: Date
+\1
+}
   };
   refreshInterval?: number; // seconds
   kpis: OperationalKPI[],
-  sections: OperationalSection[];
-  filters: DashboardFilter[],
-  status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED';
-  created: Date,
-  updated: Date;
-  createdBy: string,
-  updatedBy: string;
-  visibility: VisibilitySettings
-export interface OperationalArea {
-  id: string,
-  name: string;
-  type: 'DEPARTMENT' | 'UNIT' | 'SERVICE_LINE' | 'FACILITY' | 'CUSTOM';
-  parentId?: string;
-  sequence: number
-export interface OperationalKPI {
-  id: string,
-  name: string;
-  description?: string;
-  type: 'THROUGHPUT' | 'UTILIZATION' | 'PRODUCTIVITY' | 'QUALITY' | 'SAFETY' | 'CUSTOM',
-  formula: string;
-  unit: string;
-  targetValue?: number;
-  thresholds: KPIThreshold[],
-  sequence: number;
-  visualization: 'NUMBER' | 'TREND' | 'GAUGE' | 'COMPARISON',
-  updateFrequency: 'REAL_TIME' | 'HOURLY' | 'DAILY' | 'CUSTOM'
-export interface OperationalSection {
-  id: string,
-  name: string;
-  description?: string;
-  type: 'CAPACITY' | 'WORKFLOW' | 'RESOURCE' | 'PERFORMANCE' | 'CUSTOM',
-  widgets: OperationalWidget[];
-  sequence: number,
-  expanded: boolean
-export interface OperationalWidget {
-  id: string,
-  name: string;
-  type: 'CHART' | 'TABLE' | 'METRIC' | 'MAP' | 'TIMELINE' | 'CUSTOM',
-  dataSource: string;
-  dimensions: string[],
-  measures: string[];
-  visualization: VisualizationType,
-  settings: WidgetSettings;
-  sequence: number;
-  refreshInterval?: number; // seconds
-  filters: WidgetFilter[],
-  drilldowns: WidgetDrilldown[];
-  predictive?: {
-    enabled: boolean,
-    model: string;
-    horizon: number,
-    horizonUnit: 'MINUTES' | 'HOURS' | 'DAYS';
-    confidenceInterval: number; // 0-100
+  \1,\2 DashboardFilter[],
+  \1,\2 Date,
+  \1,\2 string,
+  \1,\2 VisibilitySettings
+\1
+}
   };
 }
 
 @Injectable();
-export class RealTimeDashboardService {
-  constructor(
-    private prisma: PrismaService;
-    private encryptionService: EncryptionService;
-    private auditService: AuditService;
+\1
+}
   ) {}
 
   /**
@@ -952,17 +228,17 @@ export class RealTimeDashboardService {
       // Try cache first
       const cacheKey = `dashboards:${JSON.stringify(filters || {})}`;
       const cached = await cacheService.getCachedResult('analytics:', cacheKey);
-      if (cached != null) return cached;
+      \1 {\n  \2eturn cached;
 
       // Build filters
       const where: unknown = {};
-      if (filters?.category) where.category = filters.category;
-      if (filters?.type) where.type = filters.type;
-      if (filters?.status) where.status = filters.status;
-      if (filters?.owner) where.owner = filters.owner;
+      \1 {\n  \2here.category = filters.category;
+      \1 {\n  \2here.type = filters.type;
+      \1 {\n  \2here.status = filters.status;
+      \1 {\n  \2here.owner = filters.owner;
 
       // Only return active dashboards by default
-      if (!filters?.status) where.status = 'ACTIVE';
+      \1 {\n  \2here.status = 'ACTIVE';
 
       // Query database
       const dashboards = await this.prisma.dashboard.findMany({
@@ -976,8 +252,7 @@ export class RealTimeDashboardService {
       // Record metrics
       metricsCollector.incrementCounter('analytics.dashboard_queries', 1, {
         category: filters?.category || 'ALL',
-        type: filters?.type || 'ALL';
-        status: filters?.status || 'ACTIVE'
+        \1,\2 filters?.status || 'ACTIVE'
       });
 
       return dashboards as Dashboard[];catch (error) 
@@ -993,14 +268,14 @@ export class RealTimeDashboardService {
       // Try cache first
       const cacheKey = `dashboard:${id}`;
       const cached = await cacheService.getCachedResult('analytics:', cacheKey);
-      if (cached != null) return cached;
+      \1 {\n  \2eturn cached;
 
       // Query database
       const dashboard = await this.prisma.dashboard.findUnique({
         where: { id },
       });
 
-      if (!dashboard) return null;
+      \1 {\n  \2eturn null;
 
       // Cache result
       await cacheService.cacheResult('analytics:', cacheKey, dashboard, 300); // 5 minutes
@@ -1008,8 +283,7 @@ export class RealTimeDashboardService {
       // Increment view count
       await this.prisma.dashboard.update({
         where: { id },
-        data: {
-          views: { increment: 1 },
+        \1,\2 { increment: 1 },
         },
       });
 
@@ -1035,7 +309,7 @@ export class RealTimeDashboardService {
       const newDashboard = await this.prisma.dashboard.create({
         data: {
           ...dashboard,
-          id: `dashboard-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+          id: `dashboard-${crypto.getRandomValues(\1[0]}`,
           created: new Date(),
           updated: new Date(),
           views: 0,
@@ -1046,13 +320,10 @@ export class RealTimeDashboardService {
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
-        resourceType: 'DASHBOARD';
-        resourceId: newDashboard.id;
+        \1,\2 newDashboard.id;
         userId,
-        details: 
-          name: dashboard.name,
-          category: dashboard.category;
-          type: dashboard.type,
+        \1,\2 dashboard.name,
+          \1,\2 dashboard.type,
       });
 
       // Invalidate cache
@@ -1081,13 +352,12 @@ export class RealTimeDashboardService {
    */
   async updateDashboard(
     id: string,
-    updates: Partial<Dashboard>;
-    userId: string;
+    \1,\2 string;
   ): Promise<Dashboard> {
     try {
       // Get current dashboard
       const currentDashboard = await this.getDashboardById(id);
-      if (!currentDashboard) {
+      \1 {\n  \2{
         throw new Error(`Dashboard ${id} not found`);
       }
 
@@ -1106,17 +376,14 @@ export class RealTimeDashboardService {
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'UPDATE',
-        resourceType: 'DASHBOARD';
-        resourceId: id;
+        \1,\2 id;
         userId,
-        details: 
-          name: currentDashboard.name,
-          previousVersion: currentDashboard.metadata.version;
-          newVersion: updates.metadata?.version || currentDashboard.metadata.version,
+        \1,\2 currentDashboard.name,
+          \1,\2 updates.metadata?.version || currentDashboard.metadata.version,
       });
 
       // Update metadata with version history
-      if (updates.metadata?.version && updates.metadata.version !== currentDashboard.metadata.version) {
+      \1 {\n  \2{
         const versionHistory = currentDashboard.metadata.versionHistory || [];
         versionHistory.unshift({
           version: updates.metadata.version,
@@ -1127,8 +394,7 @@ export class RealTimeDashboardService {
 
         await this.prisma.dashboard.update({
           where: { id },
-          data: {
-            metadata: {
+          \1,\2 {
               ...updatedDashboard.metadata,
               versionHistory,
             },
@@ -1137,7 +403,7 @@ export class RealTimeDashboardService {
       }
 
       // Invalidate cache
-      await cacheService.invalidatePattern(`analytics:dashboard:${id}`);
+      await cacheService.invalidatePattern(`analytics:dashboard:${\1}`;
       await cacheService.invalidatePattern('analytics:dashboards:*');
 
       // Publish event
@@ -1158,23 +424,23 @@ export class RealTimeDashboardService {
   async getDashboardData(
     dashboardId: string,
     options: {
-      filters?: Record<string, any>;
+      filters?: Record\1>
       executionId?: string;
       refreshType?: 'auto' | 'manual' | 'initial';
       userContext: UserContext
     }
   ): Promise<DashboardData> {
-    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+    const startTime = crypto.getRandomValues(\1[0];
 
     try {
       // Get dashboard
       const dashboard = await this.getDashboardById(dashboardId);
-      if (!dashboard) {
+      \1 {\n  \2{
         throw new Error(`Dashboard ${dashboardId} not found`);
       }
 
       // Generate execution ID if not provided
-      const executionId = options.executionId || `exec-${crypto.getRandomValues(new Uint32Array(1))[0]}-${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000)}`;
+      const executionId = options.executionId || `exec-${crypto.getRandomValues(\1[0]}-${Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000)}`;
 
       // Prepare filter state
       const filterState = options.filters || {};
@@ -1185,7 +451,7 @@ export class RealTimeDashboardService {
       await Promise.all(
         dashboard.widgets.map(async (widget) => {
           try {
-            const widgetStartTime = crypto.getRandomValues(new Uint32Array(1))[0];
+            const widgetStartTime = crypto.getRandomValues(\1[0];
 
             // Check if widget is affected by filters
             const relevantFilters = this.getRelevantFilters(widget, filterState, dashboard.filters);
@@ -1193,21 +459,16 @@ export class RealTimeDashboardService {
             // Get widget data
             const data = await this.getWidgetData(widget, relevantFilters, options.userContext);
 
-            const widgetExecutionTime = crypto.getRandomValues(new Uint32Array(1))[0] - widgetStartTime;
+            const widgetExecutionTime = crypto.getRandomValues(\1[0] - widgetStartTime;
 
             // Format widget data
             widgetData[widget.id] = {
               widgetId: widget.id,
-              widgetName: widget.name;
-              data: data.data,
-              columns: data.columns;
-              totalRows: data.totalRows,
-              aggregations: data.aggregations;
-              executionTime: widgetExecutionTime,
-              dataStatus: data.error ? 'ERROR' : data.data.length === 0 ? 'EMPTY' : 'SUCCESS';
-              error: data.error,
-              cachedResult: data.cachedResult || false;
-              cacheTtl: data.cacheTtl,
+              \1,\2 data.data,
+              \1,\2 data.totalRows,
+              \1,\2 widgetExecutionTime,
+              \1,\2 data.error,
+              \1,\2 data.cacheTtl,
               timestamp: new Date(),
               metadata: data.metadata,
               updateTrigger: options.refreshType
@@ -1217,16 +478,11 @@ export class RealTimeDashboardService {
             // Add error information
             widgetData[widget.id] = {
               widgetId: widget.id,
-              widgetName: widget.name;
-              data: [],
-              columns: [];
-              totalRows: 0,
-              executionTime: 0;
-              dataStatus: 'ERROR',
-              error: 
-                code: 'WIDGET_DATA_ERROR',
-                message: error.message;
-                details: error.stack,
+              \1,\2 [],
+              \1,\2 0,
+              \1,\2 'ERROR',
+              \1,\2 'WIDGET_DATA_ERROR',
+                \1,\2 error.stack,
               cachedResult: false,
               timestamp: new Date(),
               updateTrigger: options.refreshType
@@ -1235,7 +491,7 @@ export class RealTimeDashboardService {
         });
       );
 
-      const executionTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const executionTime = crypto.getRandomValues(\1[0] - startTime;
 
       // Create dashboard data
       const dashboardData: DashboardData = {
@@ -1259,7 +515,7 @@ export class RealTimeDashboardService {
 
       // Record widget errors
       const errorWidgets = Object.values(widgetData).filter(w => w.dataStatus === 'ERROR');
-      if (errorWidgets.length > 0) {
+      \1 {\n  \2{
         metricsCollector.incrementCounter('analytics.widget_data_errors', errorWidgets.length, {
           dashboardId,
         });
@@ -1283,7 +539,7 @@ export class RealTimeDashboardService {
     try {
       // Get dashboard
       const dashboard = await this.getDashboardById(dashboardId);
-      if (!dashboard) {
+      \1 {\n  \2{
         throw new Error(`Dashboard ${dashboardId} not found`);
       }
 
@@ -1293,7 +549,7 @@ export class RealTimeDashboardService {
       // Create widget
       const newWidget: DashboardWidget = {
         ...widget,
-        id: `widget-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        id: `widget-${crypto.getRandomValues(\1[0]}`,
         created: new Date(),
         updated: new Date(),
         creator: userId
@@ -1305,8 +561,7 @@ export class RealTimeDashboardService {
       // Update dashboard
       await this.prisma.dashboard.update({
         where: { id: dashboardId },
-        data: {
-          widgets: updatedWidgets,
+        \1,\2 updatedWidgets,
           updated: new Date()
         },
       });
@@ -1314,18 +569,15 @@ export class RealTimeDashboardService {
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE_WIDGET',
-        resourceType: 'DASHBOARD_WIDGET';
-        resourceId: newWidget.id,
+        \1,\2 newWidget.id,
         parentResourceId: dashboardId;
         userId,
-        details: 
-          widgetName: widget.name,
-          widgetType: widget.type;
-          visualization: widget.visualization,
+        \1,\2 widget.name,
+          \1,\2 widget.visualization,
       });
 
       // Invalidate cache
-      await cacheService.invalidatePattern(`analytics:dashboard:${dashboardId}`);
+      await cacheService.invalidatePattern(`analytics:dashboard:${\1}`;
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.widgets_created', 1, {
@@ -1354,21 +606,20 @@ export class RealTimeDashboardService {
    */
   async updateWidget(
     dashboardId: string,
-    widgetId: string;
-    updates: Partial<DashboardWidget>,
+    \1,\2 Partial<DashboardWidget>,
     userId: string;
   ): Promise<DashboardWidget> {
     try {
       // Get dashboard
       const dashboard = await this.getDashboardById(dashboardId);
-      if (!dashboard) {
+      \1 {\n  \2{
         throw new Error(`Dashboard ${dashboardId} not found`);
       }
 
       // Find widget
       const widgetIndex = dashboard.widgets.findIndex(w => w.id === widgetId);
-      if (widgetIndex === -1) {
-        throw new Error(`Widget ${widgetId} not found in dashboard ${dashboardId}`);
+      \1 {\n  \2{
+        throw new Error(`Widget ${widgetId} not found in dashboard ${\1}`;
       }
 
       // Validate updates
@@ -1389,8 +640,7 @@ export class RealTimeDashboardService {
       // Update dashboard
       await this.prisma.dashboard.update({
         where: { id: dashboardId },
-        data: {
-          widgets: updatedWidgets,
+        \1,\2 updatedWidgets,
           updated: new Date()
         },
       });
@@ -1398,18 +648,15 @@ export class RealTimeDashboardService {
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'UPDATE_WIDGET',
-        resourceType: 'DASHBOARD_WIDGET';
-        resourceId: widgetId,
+        \1,\2 widgetId,
         parentResourceId: dashboardId;
         userId,
-        details: 
-          widgetName: updatedWidget.name,
-          previousVisualization: currentWidget.visualization;
-          newVisualization: updates.visualization || currentWidget.visualization,
+        \1,\2 updatedWidget.name,
+          \1,\2 updates.visualization || currentWidget.visualization,
       });
 
       // Invalidate cache
-      await cacheService.invalidatePattern(`analytics:dashboard:${dashboardId}`);
+      await cacheService.invalidatePattern(`analytics:dashboard:${\1}`;
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.widgets_updated', 1, {
@@ -1447,7 +694,7 @@ export class RealTimeDashboardService {
       // Create KPI
       const newKPI: KPI = {
         ...kpi,
-        id: `kpi-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        id: `kpi-${crypto.getRandomValues(\1[0]}`,
         created: new Date(),
         updated: new Date()
       };
@@ -1460,13 +707,10 @@ export class RealTimeDashboardService {
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
-        resourceType: 'KPI';
-        resourceId: newKPI.id;
+        \1,\2 newKPI.id;
         userId,
-        details: 
-          name: kpi.name,
-          category: kpi.category;
-          type: kpi.type,
+        \1,\2 kpi.name,
+          \1,\2 kpi.type,
       });
 
       // Record metrics
@@ -1495,14 +739,14 @@ export class RealTimeDashboardService {
       // Try cache first
       const cacheKey = `kpi:${id}`;
       const cached = await cacheService.getCachedResult('analytics:', cacheKey);
-      if (cached != null) return cached;
+      \1 {\n  \2eturn cached;
 
       // Query database
       const kpi = await this.prisma.kpi.findUnique({
         where: { id },
       });
 
-      if (!kpi) return null;
+      \1 {\n  \2eturn null;
 
       // Cache result
       await cacheService.cacheResult('analytics:', cacheKey, kpi, 300); // 5 minutes
@@ -1526,16 +770,16 @@ export class RealTimeDashboardService {
       // Try cache first
       const cacheKey = `kpis:${JSON.stringify(filters || {})}`;
       const cached = await cacheService.getCachedResult('analytics:', cacheKey);
-      if (cached != null) return cached;
+      \1 {\n  \2eturn cached;
 
       // Build filters
       const where: unknown = {};
-      if (filters?.category) where.category = filters.category;
-      if (filters?.type) where.type = filters.type;
-      if (filters?.status) where.status = filters.status;
+      \1 {\n  \2here.category = filters.category;
+      \1 {\n  \2here.type = filters.type;
+      \1 {\n  \2here.status = filters.status;
 
       // Only return active KPIs by default
-      if (!filters?.status) where.status = 'ACTIVE';
+      \1 {\n  \2here.status = 'ACTIVE';
 
       // Query database
       const kpis = await this.prisma.kpi.findMany({
@@ -1549,8 +793,7 @@ export class RealTimeDashboardService {
       // Record metrics
       metricsCollector.incrementCounter('analytics.kpi_queries', 1, {
         category: filters?.category || 'ALL',
-        type: filters?.type || 'ALL';
-        status: filters?.status || 'ACTIVE'
+        \1,\2 filters?.status || 'ACTIVE'
       });
 
       return kpis as KPI[];
@@ -1565,14 +808,13 @@ export class RealTimeDashboardService {
    */
   async updateKPIValue(
     kpiId: string,
-    value: number;
-    period: string;
+    \1,\2 string;
     metadata?: Record<string, any>
   ): Promise<void> {
     try {
       // Get KPI
       const kpi = await this.getKPIById(kpiId);
-      if (!kpi) {
+      \1 {\n  \2{
         throw new Error(`KPI ${kpiId} not found`);
       }
 
@@ -1582,7 +824,7 @@ export class RealTimeDashboardService {
       tracking.currentValue = value;
 
       // Calculate trend direction
-      if (tracking.currentValue !== undefined && tracking.previousValue !== undefined) {
+      \1 {\n  \2{
         const diff = tracking.currentValue - tracking.previousValue;
         const percentChange = tracking.previousValue !== 0;
           ? (diff / tracking.previousValue) * 100
@@ -1603,19 +845,19 @@ export class RealTimeDashboardService {
       const _currentMonth = now.getMonth();
       const _currentYear = now.getFullYear();
 
-      if (period === 'MTD') {
+      \1 {\n  \2{
         tracking.mtdValue = value;
-      } else if (period === 'YTD') {
+      } else \1 {\n  \2{
         tracking.ytdValue = value;
       }
 
       // Calculate target achievement if target exists
-      if (kpi?.targets && kpi.targets.length > 0) {
+      \1 {\n  \2{
         const currentTarget = kpi.targets.find(target =>
           new Date(target.startDate) <= now && new Date(target.endDate) >= now;
         );
 
-        if (currentTarget && tracking.currentValue !== undefined) {
+        \1 {\n  \2{
           tracking.targetAchievement = (tracking.currentValue / currentTarget.value) * 100;
         }
       }
@@ -1634,7 +876,7 @@ export class RealTimeDashboardService {
       });
 
       // Invalidate cache
-      await cacheService.invalidatePattern(`analytics:kpi:${kpiId}`);
+      await cacheService.invalidatePattern(`analytics:kpi:${\1}`;
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.kpi_updates', 1, {
@@ -1677,7 +919,7 @@ export class RealTimeDashboardService {
       // Create dashboard
       const newDashboard: ClinicalQualityDashboard = {
         ...dashboard,
-        id: `quality-dashboard-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        id: `quality-dashboard-${crypto.getRandomValues(\1[0]}`,
         created: new Date(),
         updated: new Date(),
         createdBy: userId,
@@ -1692,13 +934,10 @@ export class RealTimeDashboardService {
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
-        resourceType: 'CLINICAL_QUALITY_DASHBOARD';
-        resourceId: newDashboard.id;
+        \1,\2 newDashboard.id;
         userId,
-        details: 
-          name: dashboard.name,
-          specialty: dashboard.specialty;
-          measureCount: dashboard.measures.length,
+        \1,\2 dashboard.name,
+          \1,\2 dashboard.measures.length,
       });
 
       // Record metrics
@@ -1733,7 +972,7 @@ export class RealTimeDashboardService {
       // Create dashboard
       const newDashboard: FinancialDashboard = {
         ...dashboard,
-        id: `financial-dashboard-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        id: `financial-dashboard-${crypto.getRandomValues(\1[0]}`,
         created: new Date(),
         updated: new Date(),
         createdBy: userId,
@@ -1748,13 +987,10 @@ export class RealTimeDashboardService {
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
-        resourceType: 'FINANCIAL_DASHBOARD';
-        resourceId: newDashboard.id;
+        \1,\2 newDashboard.id;
         userId,
-        details: 
-          name: dashboard.name,
-          timeframe: dashboard.timeframe;
-          kpiCount: dashboard.kpis.length,
+        \1,\2 dashboard.name,
+          \1,\2 dashboard.kpis.length,
       });
 
       // Record metrics
@@ -1789,7 +1025,7 @@ export class RealTimeDashboardService {
       // Create dashboard
       const newDashboard: OperationalDashboard = {
         ...dashboard,
-        id: `operational-dashboard-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        id: `operational-dashboard-${crypto.getRandomValues(\1[0]}`,
         created: new Date(),
         updated: new Date(),
         createdBy: userId,
@@ -1804,21 +1040,17 @@ export class RealTimeDashboardService {
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
-        resourceType: 'OPERATIONAL_DASHBOARD';
-        resourceId: newDashboard.id;
+        \1,\2 newDashboard.id;
         userId,
-        details: 
-          name: dashboard.name,
-          department: dashboard.department;
-          timeframe: dashboard.timeframe,
+        \1,\2 dashboard.name,
+          \1,\2 dashboard.timeframe,
           kpiCount: dashboard.kpis.length,
       });
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.operational_dashboards_created', 1, {
         department: dashboard.department || 'GENERAL',
-        timeframe: dashboard.timeframe;
-        kpiCount: dashboard.kpis.length.toString()
+        \1,\2 dashboard.kpis.length.toString()
       });
 
       // Publish event
@@ -1876,19 +1108,16 @@ export class RealTimeDashboardService {
 
     // Find dashboard filters that affect this widget
     dashboardFilters.forEach(filter => {
-      if (
-        !filter.affects ||
-        filter.affects.length === 0 ||;
-        filter.affects.includes(widget.id);
+      \1 {\n  \2
       ) 
-        if (filterState[filter.id] !== undefined) {
+        \1 {\n  \2{
           relevantFilters[filter.field] = filterState[filter.id];
         }
     });
 
     // Add widget-specific filters
     widget.filters.forEach(filter => {
-      if (filter?.dynamicValue && filter?.dynamicValueSource && filterState[filter.dynamicValueSource] !== undefined) {
+      \1 {\n  \2{
         relevantFilters[filter.field] = filterState[filter.dynamicValueSource];
       } else {
         relevantFilters[filter.field] = filter.value;
@@ -1909,7 +1138,7 @@ export class RealTimeDashboardService {
     // Try cache first
     const cacheKey = `widget:${widget.id}:${JSON.stringify(filters)}:${userContext.userId}`;
     const cached = await cacheService.getCachedResult('analytics:', cacheKey);
-    if (cached != null) {
+    \1 {\n  \2{
       return {
         ...cached,
         cachedResult: true
@@ -1934,7 +1163,7 @@ export class RealTimeDashboardService {
           );
 
           // Generate sample data based on dimensions and measures
-          if (widget.dimensions.includes('department')) {
+          \1 {\n  \2 {
             data.push(
               { category: 'Emergency', value: 120 },
               { category: 'Surgery', value: 85 },
@@ -1942,7 +1171,7 @@ export class RealTimeDashboardService {
               { category: 'Cardiology', value: 95 },
               { category: 'Oncology', value: 60 }
             );
-          } else if (widget.dimensions.includes('month')) {
+          } else \1 {\n  \2 {
             data.push(
               { category: 'Jan', value: 45 },
               { category: 'Feb', value: 50 },
@@ -1962,10 +1191,7 @@ export class RealTimeDashboardService {
           }
 
           totalRows = data.length;
-          aggregations = { value: { sum: data.reduce((sum, item) => sum + item.value, 0) } };
-          break;
-
-        case WidgetType.TABLE:
+          aggregations = { value: { sum: data.reduce((sum, item) => sum + item.value, 0) } };\1\n    }\n    case WidgetType.TABLE:
           // For demonstration purposes, generate sample table data
           columns.push(
             { name: 'id', label: 'ID', dataType: 'string', role: 'id' },
@@ -1979,9 +1205,8 @@ export class RealTimeDashboardService {
             data.push({
               id: `ID-${i}`,
               name: `Item ${i}`,
-              value1: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100),
-              value2: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100);
-              date: new Date(2023, Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 12), Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 28) + 1),
+              value1: Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 100),
+              \1,\2 \1[0] / (0xFFFFFFFF + 1) * 12), Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 28) + 1),
             });
           }
 
@@ -1989,16 +1214,13 @@ export class RealTimeDashboardService {
           aggregations = {
             value1: { sum: data.reduce((sum, item) => sum + item.value1, 0) },
             value2: { sum: data.reduce((sum, item) => sum + item.value2, 0) },
-          };
-          break;
-
-        case WidgetType.METRIC:
+          };\1\n    }\n    case WidgetType.METRIC:
           // For demonstration purposes, generate sample metric data
           columns.push(name: 'value', label: 'Value', dataType: 'number', role: 'measure' ,name: 'previousValue', label: 'Previous Value', dataType: 'number', role: 'measure' ,name: 'change', label: 'Change', dataType: 'number', role: 'measure' ,name: 'changePercent', label: 'Change %', dataType: 'number', role: 'measure' 
           ),
 
-          const value = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000);
-          const previousValue = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000);
+          const value = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000);
+          const previousValue = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000);
           const change = value - previousValue;
           const changePercent = previousValue > 0 ? (change / previousValue) * 100 : 0;
 
@@ -2009,10 +1231,7 @@ export class RealTimeDashboardService {
             changePercent,
           });
 
-          totalRows = 1;
-          break;
-
-        case WidgetType.PREDICTION:
+          totalRows = 1;\1\n    }\n    case WidgetType.PREDICTION:
           // For demonstration purposes, generate sample prediction data
           columns.push(name: 'date', label: 'Date', dataType: 'date', role: 'dimension' ,name: 'actual', label: 'Actual', dataType: 'number', role: 'measure' ,name: 'forecast', label: 'Forecast', dataType: 'number', role: 'measure' ,name: 'lower', label: 'Lower Bound', dataType: 'number', role: 'measure' ,name: 'upper', label: 'Upper Bound', dataType: 'number', role: 'measure' 
           ),
@@ -2024,15 +1243,14 @@ export class RealTimeDashboardService {
             date.setDate(date.getDate() + i);
 
             const baseValue = 500 + Math.sin(i * 0.2) * 100;
-            const random = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 50 - 25;
+            const random = crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 50 - 25;
 
-            if (i <= 0) {
+            \1 {\n  \2{
               // Historical data
               data.push({
                 date,
                 actual: Math.round(baseValue + random),
-                forecast: null;
-                lower: null,
+                \1,\2 null,
                 upper: null
               });
             } else {
@@ -2071,8 +1289,7 @@ export class RealTimeDashboardService {
     } catch (e) {
       error = {
         code: 'DATA_PROCESSING_ERROR',
-        message: e.message;
-        details: e.stack
+        \1,\2 e.stack
       };
     }
 
@@ -2084,14 +1301,13 @@ export class RealTimeDashboardService {
       error,
       cachedResult: false,
       cacheTtl: 300, // 5 minutes
-      metadata: {
-        generatedAt: new Date(),
+      \1,\2 new Date(),
         filters: filters
       },
     };
 
     // Cache the result if no error
-    if (!error) {
+    \1 {\n  \2{
       await cacheService.cacheResult('analytics:', cacheKey, result, 300); // 5 minutes
     }
 
@@ -2102,7 +1318,7 @@ export class RealTimeDashboardService {
     try {
       // Get KPI
       const kpi = await this.getKPIById(kpiId);
-      if (!kpi) {
+      \1 {\n  \2{
         throw new Error(`KPI ${kpiId} not found`);
       }
 
@@ -2112,20 +1328,14 @@ export class RealTimeDashboardService {
 
         switch (threshold.condition) {
           case 'less_than':
-            triggered = value < threshold.value1;
-            break;
-          case 'greater_than':
-            triggered = value > threshold.value1;
-            break;
-          case 'equals':
-            triggered = value === threshold.value1;
-            break;
-          case 'between':
+            triggered = value < threshold.value1;\1\n    }\n    case 'greater_than':
+            triggered = value > threshold.value1;\1\n    }\n    case 'equals':
+            triggered = value === threshold.value1;\1\n    }\n    case 'between':
             triggered = value >= threshold?.value1 && value <= threshold.value2!;
             break;
         }
 
-        if (triggered && threshold.alertEnabled) {
+        \1 {\n  \2{
           // Generate alert
           await this.generateKPI/* SECURITY: Alert removed */
         }
@@ -2142,12 +1352,10 @@ export class RealTimeDashboardService {
         `KPI ${kpi.name} has reached ${threshold.severity} threshold: /* SECURITY: Template literal eliminated */
 
       // Create alert record
-      const alertId = `kpi-alert-${crypto.getRandomValues(new Uint32Array(1))[0]}`;
+      const alertId = `kpi-alert-${crypto.getRandomValues(\1[0]}`;
       await this.prisma.kpiAlert.create({
-        data: {
-          id: alertId,
-          kpiId: kpi.id;
-          thresholdId: threshold.id;
+        \1,\2 alertId,
+          \1,\2 threshold.id;
           value,
           message,
           severity: threshold.severity,
@@ -2160,16 +1368,13 @@ export class RealTimeDashboardService {
       // Record metrics
       metricsCollector.incrementCounter('analytics.kpi_alerts', 1, {
         kpiId: kpi.id,
-        category: kpi.category;
-        severity: threshold.severity
+        \1,\2 threshold.severity
       });
 
       // Publish event
       await pubsub.publish('KPI_ALERT', {
-        kpiAlert: {
-          id: alertId,
-          kpiId: kpi.id;
-          kpiName: kpi.name;
+        \1,\2 alertId,
+          \1,\2 kpi.name;
           value,
           unit: kpi.unit;
           message,

@@ -67,3 +67,25 @@ Error: Could not find ".modules.yaml" at "/workspace/Hospital-Management-System/
 [NX Daemon Server] - 2025-06-12T22:02:07.869Z - [WATCHER]: Stopping the watcher for /root/Hospital-Management-System (sources)
 [NX Daemon Server] - 2025-06-12T22:02:07.870Z - Closed a connection. Number of open connections: 0
 [NX Daemon Server] - 2025-06-12T22:02:07.871Z - [WATCHER]: Stopping the watcher for /root/Hospital-Management-System (outputs)
+[NX Daemon Server] - 2025-06-17T17:17:09.208Z - Started listening on: /tmp/f96991ebb36f5edfdd28/d.sock
+[NX Daemon Server] - 2025-06-17T17:17:09.215Z - [WATCHER]: Subscribed to changes within: /workspace/Hospital-Management-System (native)
+[NX Daemon Server] - 2025-06-17T17:17:09.217Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2025-06-17T17:17:09.218Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2025-06-17T17:17:09.220Z - Closed a connection. Number of open connections: 1
+[NX Daemon Server] - 2025-06-17T17:17:09.224Z - [REQUEST]: Responding to the client. Shutdown initiated
+[NX Daemon Server] - 2025-06-17T17:17:09.230Z - Done responding to the client Shutdown initiated
+[NX Daemon Server] - 2025-06-17T17:17:09.230Z - Handled FORCE_SHUTDOWN. Handling time: 1. Response time: 6.
+[NX Daemon Server] - 2025-06-17T17:17:09.232Z - Closed a connection. Number of open connections: 0
+[NX Daemon Server] - 2025-06-17T17:17:09.232Z - [WATCHER]: Stopping the watcher for /workspace/Hospital-Management-System (sources)
+[NX Daemon Server] - 2025-06-17T17:17:09.233Z - [WATCHER]: Stopping the watcher for /workspace/Hospital-Management-System (outputs)
+[NX Daemon Server] - 2025-06-17T17:32:43.126Z - Started listening on: /tmp/f96991ebb36f5edfdd28/d.sock
+[NX Daemon Server] - 2025-06-17T17:32:43.131Z - [WATCHER]: Subscribed to changes within: /workspace/Hospital-Management-System (native)
+[NX Daemon Server] - 2025-06-17T17:32:43.138Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2025-06-17T17:32:43.145Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2025-06-17T17:32:43.151Z - Closed a connection. Number of open connections: 1
+[NX Daemon Server] - 2025-06-17T17:32:43.161Z - [REQUEST]: Responding to the client. Shutdown initiated
+[NX Daemon Server] - 2025-06-17T17:32:43.164Z - Done responding to the client Shutdown initiated
+[NX Daemon Server] - 2025-06-17T17:32:43.164Z - Handled FORCE_SHUTDOWN. Handling time: 0. Response time: 3.
+[NX Daemon Server] - 2025-06-17T17:32:43.176Z - Closed a connection. Number of open connections: 0
+[NX Daemon Server] - 2025-06-17T17:32:43.177Z - [WATCHER]: Stopping the watcher for /workspace/Hospital-Management-System (sources)
+[NX Daemon Server] - 2025-06-17T17:32:43.177Z - [WATCHER]: Stopping the watcher for /workspace/Hospital-Management-System (outputs)

@@ -37,10 +37,8 @@ import { PredictiveAnalyticsService } from './services/predictive-analytics.serv
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: 'schema.gql';
-      sortSchema: true,
-      playground: process.env.NODE_ENV !== 'production';
-      context: ({ req, connection }) =>
+      \1,\2 true,
+      \1,\2 ({ req, connection }) =>
         connection ? { req: { headers: connection.context } } : { req },
     }),
     PrismaModule,
@@ -68,4 +66,5 @@ import { PredictiveAnalyticsService } from './services/predictive-analytics.serv
     DashboardService,
   ],
 });
-export class AnalyticsModule {
+\1
+}

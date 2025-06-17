@@ -13,16 +13,12 @@ export async function POST(request: NextRequest): unknown {
 
 		// Check if patient already exists
 		const existingPatient = await prisma.patient.findFirst({
-			where: {
-				OR: [{ phone: validatedData.phone }, { email: validatedData.email }],
+			\1,\2 [{ phone: validatedData.phone }, { email: validatedData.email }],
 			},
 		});
 
-		if (existingPatient != null) {
-			return ApiResponseBuilder.error(
-				"Patient already exists with this phone or email",
-				409,
-			);
+		\1 {\n  \2{
+			return ApiResponseBuilder.error("Patient already exists with this phone or email", 409);
 		}
 
 		// Generate unique MRN
@@ -31,9 +27,7 @@ export async function POST(request: NextRequest): unknown {
 			select: { mrn: true },
 		});
 
-		const nextMrnNumber = lastPatient
-			? Number.parseInt(lastPatient.mrn.substring(3)) + 1
-			: 1001;
+		const nextMrnNumber = lastPatient ? Number.parseInt(lastPatient.mrn.substring(3)) + 1 : 1001;
 		const mrn = `MRN${nextMrnNumber.toString().padStart(6, "0")}`;
 
 		// Create patient
@@ -54,13 +48,10 @@ export async function POST(request: NextRequest): unknown {
 			"CREATE",
 			"PATIENT",
 			patient.id,
-			"Patient registered successfully",
+			"Patient registered successfully"
 		);
 
-		return ApiResponseBuilder.success(
-			patient,
-			"Patient registered successfully",
-		);
+		return ApiResponseBuilder.success(patient, "Patient registered successfully");
 	} catch (error) {
 		return ApiResponseBuilder.internalError(error.message);
 	}
@@ -101,11 +92,7 @@ export async function GET(request: NextRequest): unknown {
 
 		const meta = PaginationBuilder.buildMeta(total, page, limit);
 
-		return ApiResponseBuilder.success(
-			patients,
-			"Patients retrieved successfully",
-			meta,
-		);
+		return ApiResponseBuilder.success(patients, "Patients retrieved successfully", meta);
 	} catch (error) {
 		return ApiResponseBuilder.internalError(error.message);
 	}

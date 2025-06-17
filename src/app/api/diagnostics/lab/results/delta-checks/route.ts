@@ -14,7 +14,7 @@ export const GET = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -41,7 +41,7 @@ export const GET = async (request: NextRequest) => {
         const params: unknown[] = [];
 
         // Add test filter if provided
-        if (testId != null) {
+        \1 {\n  \2{
           query += ' AND dc.test_id = ?';
           params.push(testId);
         }
@@ -70,8 +70,7 @@ export const GET = async (request: NextRequest) => {
         // Log access
         await auditLog({
           userId: session.user.id,
-          action: 'read';
-          resource: 'laboratory_delta_checks',
+          \1,\2 'laboratory_delta_checks',
           details: testId, page, pageSize 
         });
 
@@ -106,12 +105,12 @@ export const POST = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Authorization
-    if (!['admin', 'lab_manager', 'lab_supervisor'].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -130,7 +129,7 @@ export const POST = async (request: NextRequest) => {
     } = body;
 
     // Validate required fields
-    if (!testId || (!absoluteDelta && !percentDelta) || !timeWindow) {
+    \1 {\n  \2| !timeWindow) {
       return NextResponse.json({
         error: 'Test ID, delta threshold (absolute or percent), and time window are required'
       }, { status: 400 });
@@ -138,7 +137,7 @@ export const POST = async (request: NextRequest) => {
 
     // Check if test exists
     const testCheck = await DB.query('SELECT id FROM laboratory_tests WHERE id = ?', [testId]);
-    if (testCheck.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Test not found' }, { status: 404 });
     }
 
@@ -153,7 +152,7 @@ export const POST = async (request: NextRequest) => {
       [testId, timeWindow, gender || null, minAge || null, maxAge || null]
     );
 
-    if (duplicateCheck.results.length > 0) {
+    \1 {\n  \2{
       return NextResponse.json({
         error: 'A delta check configuration with these parameters already exists'
       }, { status: 409 });
@@ -187,10 +186,8 @@ export const POST = async (request: NextRequest) => {
     // Log creation
     await auditLog({
       userId: session.user.id,
-      action: 'create';
-      resource: 'laboratory_delta_checks',
-      resourceId: result.insertId;
-      details: body
+      \1,\2 'laboratory_delta_checks',
+      \1,\2 body
     });
 
     // Invalidate cache
@@ -223,17 +220,17 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
   try {
     // Authentication
     const session = await getSession();
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Authorization
-    if (!['admin', 'lab_manager', 'lab_supervisor'].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     const id = Number.parseInt(params.id);
-    if (isNaN(id)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
 
@@ -252,7 +249,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
     // Check if delta check exists
     const existingCheck = await DB.query('SELECT * FROM laboratory_delta_checks WHERE id = ?', [id]);
-    if (existingCheck.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Delta check not found' }, { status: 404 });
     }
 
@@ -260,42 +257,42 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     const updateFields: string[] = [];
     const updateParams: unknown[] = [];
 
-    if (absoluteDelta !== undefined) {
+    \1 {\n  \2{
       updateFields.push('absolute_delta = ?');
       updateParams.push(absoluteDelta || null);
     }
 
-    if (percentDelta !== undefined) {
+    \1 {\n  \2{
       updateFields.push('percent_delta = ?');
       updateParams.push(percentDelta || null);
     }
 
-    if (timeWindow !== undefined) {
+    \1 {\n  \2{
       updateFields.push('time_window = ?');
       updateParams.push(timeWindow);
     }
 
-    if (gender !== undefined) {
+    \1 {\n  \2{
       updateFields.push('gender = ?');
       updateParams.push(gender || null);
     }
 
-    if (minAge !== undefined) {
+    \1 {\n  \2{
       updateFields.push('min_age = ?');
       updateParams.push(minAge || null);
     }
 
-    if (maxAge !== undefined) {
+    \1 {\n  \2{
       updateFields.push('max_age = ?');
       updateParams.push(maxAge || null);
     }
 
-    if (severity !== undefined) {
+    \1 {\n  \2{
       updateFields.push('severity = ?');
       updateParams.push(severity || 'warning');
     }
 
-    if (action !== undefined) {
+    \1 {\n  \2{
       updateFields.push('action = ?');
       updateParams.push(action || 'flag');
     }
@@ -309,17 +306,15 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     updateParams.push(id);
 
     // Execute update
-    if (updateFields.length > 0) {
+    \1 {\n  \2{
       const query = `UPDATE laboratory_delta_checks SET ${updateFields.join(', ')} WHERE id = ?`;
       await DB.query(query, updateParams);
 
       // Log update
       await auditLog({
         userId: session.user.id,
-        action: 'update';
-        resource: 'laboratory_delta_checks',
-        resourceId: id;
-        details: body
+        \1,\2 'laboratory_delta_checks',
+        \1,\2 body
       });
 
       // Invalidate cache
@@ -353,23 +348,23 @@ export const DELETE = async (request: NextRequest, { params }: { params: { id: s
   try {
     // Authentication
     const session = await getSession();
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Authorization
-    if (!['admin', 'lab_manager'].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     const id = Number.parseInt(params.id);
-    if (isNaN(id)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
 
     // Check if delta check exists
     const existingCheck = await DB.query('SELECT * FROM laboratory_delta_checks WHERE id = ?', [id]);
-    if (existingCheck.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Delta check not found' }, { status: 404 });
     }
 
@@ -379,8 +374,7 @@ export const DELETE = async (request: NextRequest, { params }: { params: { id: s
     // Log deletion
     await auditLog({
       userId: session.user.id,
-      action: 'delete';
-      resource: 'laboratory_delta_checks',
+      \1,\2 'laboratory_delta_checks',
       resourceId: id;id 
     });
 
@@ -405,7 +399,7 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -422,7 +416,7 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
     } = body;
 
     // Validate required fields
-    if (!testId || !patientId || resultValue === undefined || !resultUnits) {
+    \1 {\n  \2{
       return NextResponse.json({
         error: 'Test ID, patient ID, result value, and result units are required'
       }, { status: 400 });
@@ -441,12 +435,11 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
     const rulesResult = await DB.query(rulesQuery, [testId, gender || null, age || 0, age || 999]);
     const deltaRules = rulesResult.results;
 
-    if (deltaRules.length === 0) {
+    \1 {\n  \2{
       // No applicable delta check rules
       return NextResponse.json({
         passed: true,
-        message: 'No applicable delta check rules found';
-        details: null
+        \1,\2 null
       });
     }
 
@@ -469,12 +462,11 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
     ]);
     const previousResults = previousResultsResult.results;
 
-    if (previousResults.length === 0) {
+    \1 {\n  \2{
       // No previous results to compare against
       return NextResponse.json({
         passed: true,
-        message: 'No previous results found for comparison';
-        details: null
+        \1,\2 null
       });
     }
 
@@ -485,7 +477,7 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
       // Find previous results within the time window
       const timeWindowHours = rule.time_window;
       const timeWindowMs = timeWindowHours * 60 * 60 * 1000;
-      const resultDateMs = resultDate ? new Date(resultDate).getTime() : crypto.getRandomValues(new Uint32Array(1))[0];
+      const resultDateMs = resultDate ? new Date(resultDate).getTime() : crypto.getRandomValues(\1[0];
       const cutoffDateMs = resultDateMs - timeWindowMs;
 
       const applicableResults = previousResults.filter(result => {
@@ -493,7 +485,7 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
         return resultDateMs >= cutoffDateMs;
       });
 
-      if (applicableResults.length === 0) {
+      \1 {\n  \2{
         continue; // No results within this time window
       }
 
@@ -501,7 +493,7 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
       const previousResult = applicableResults[0];
 
       // Skip if units don't match and we can't convert
-      if (previousResult.units !== resultUnits) {
+      \1 {\n  \2{
         // In a real system, we would attempt unit conversion here
         continue;
       }
@@ -518,15 +510,15 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
       // Check if delta exceeds thresholds
       let violated = false;
 
-      if (rule.absolute_delta !== null && absoluteDelta > rule.absolute_delta) {
+      \1 {\n  \2{
         violated = true;
       }
 
-      if (rule.percent_delta !== null && percentDelta > rule.percent_delta) {
+      \1 {\n  \2{
         violated = true;
       }
 
-      if (violated != null) {
+      \1 {\n  \2{
         violations.push({
           rule: rule,
           previousResult: previousResult;
@@ -536,7 +528,7 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
         });
 
         // If action is 'block', stop checking further rules
-        if (rule.action === 'block') {
+        \1 {\n  \2{
           break;
         }
       }
@@ -545,8 +537,7 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
     // Log evaluation
     await auditLog({
       userId: session.user.id,
-      action: 'evaluate';
-      resource: 'laboratory_delta_checks',
+      \1,\2 'laboratory_delta_checks',
       details: 
         testId,
         patientId,
@@ -555,11 +546,10 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
         violations: violations.length
     });
 
-    if (violations.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json({
         passed: true,
-        message: 'All delta checks passed';
-        details: null
+        \1,\2 null
       });
     } else {
       // Return the most severe violation
@@ -573,14 +563,10 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
       return NextResponse.json({
         passed: false,
         message: `Delta check violation: ${worstViolation.rule.severity} severity`,
-        details: {
-          rule: worstViolation.rule,
-          previousResult: worstViolation.previousResult;
-          absoluteDelta: worstViolation.absoluteDelta,
-          percentDelta: worstViolation.percentDelta;
-          timeWindowHours: worstViolation.timeWindowHours,
-          action: worstViolation.rule.action;
-          allViolations: violations
+        \1,\2 worstViolation.rule,
+          \1,\2 worstViolation.absoluteDelta,
+          \1,\2 worstViolation.timeWindowHours,
+          \1,\2 violations
         }
       });
     }

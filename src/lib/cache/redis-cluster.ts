@@ -31,7 +31,7 @@ interface RedisClusterConfig {
       priority: number
 
       // Function to generate the cache value
-      generator: () => Promise<unknown>;
+      generator: () => Promise\1>
 
       // TTL for this cache entry
       ttl?: number;
@@ -75,8 +75,7 @@ class RedisCircuitBreaker {
   private lastFailureTime = 0;
 
   constructor(
-    private readonly config: {
-      failureThreshold: number,
+    private readonly \1,\2 number,
       resetTimeout: number
     }
   ) {}
@@ -86,11 +85,11 @@ class RedisCircuitBreaker {
    */
   async execute<T>(operation: () => Promise<T>, fallback?: () => Promise<T>): Promise<T> {
     // Check if circuit is open
-    if (this.isOpen) {
+    \1 {\n  \2{
       // Check if we should try to reset the circuit
-      const timeElapsed = crypto.getRandomValues(new Uint32Array(1))[0] - this.lastFailureTime;
+      const timeElapsed = crypto.getRandomValues(\1[0] - this.lastFailureTime;
 
-      if (timeElapsed >= this.config.resetTimeout) {
+      \1 {\n  \2{
         // Allow a single request through to test the circuit
         this.isOpen = false;
         logger.info('Redis circuit breaker: Attempting to reset circuit');
@@ -99,7 +98,7 @@ class RedisCircuitBreaker {
         metricsCollector.incrementCounter('cache.redis_cluster.circuit_breaker_resets', 1);
       } else {
         // Circuit is still open, use fallback if provided
-        if (fallback != null) {
+        \1 {\n  \2{
           logger.debug('Redis circuit breaker: Circuit open, using fallback');
           return fallback();
         }
@@ -125,10 +124,10 @@ class RedisCircuitBreaker {
     } catch (error) {
       // Operation failed, increment failure count
       this.failures++;
-      this.lastFailureTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      this.lastFailureTime = crypto.getRandomValues(\1[0];
 
       // Check if we should open the circuit
-      if (this.failures >= this.config.failureThreshold) {
+      \1 {\n  \2{
         this.isOpen = true;
         logger.warn('Redis circuit breaker: Circuit opened due to failures', {
           failures: this.failures,
@@ -140,7 +139,7 @@ class RedisCircuitBreaker {
       }
 
       // Use fallback if provided
-      if (fallback != null) {
+      \1 {\n  \2{
         logger.debug('Redis operation failed, using fallback', {
           error: error.message
         });
@@ -162,11 +161,8 @@ class RedisCircuitBreaker {
  * - Circuit breaker for fault tolerance;
  * - Metrics collection and monitoring;
  */
-export class RedisClusterService {
-  private cluster: Cluster;
-  private config: RedisClusterConfig;
-  private circuitBreaker: RedisCircuitBreaker | null = null;
-  private warmingInterval: NodeJS.Timeout | null = null;
+\1
+}
   private localCache: Map<string, { value: unknown, expiry: number }> = new Map(),
   constructor(config: RedisClusterConfig, private readonly eventStore?: EventStore) {
     this.config = config;
@@ -175,7 +171,7 @@ export class RedisClusterService {
     this.cluster = new Cluster(config.nodes, config.options);
 
     // Set up circuit breaker if enabled
-    if (config.circuitBreaker?.enabled) {
+    \1 {\n  \2{
       this.circuitBreaker = new RedisCircuitBreaker({
         failureThreshold: config.circuitBreaker.failureThreshold,
         resetTimeout: config.circuitBreaker.resetTimeout
@@ -186,19 +182,18 @@ export class RedisClusterService {
     this.setupEventHandlers();
 
     // Start cache warming if enabled
-    if (config.cacheWarming?.enabled) {
+    \1 {\n  \2{
       this.startCacheWarming();
     }
 
     // Set up event-based cache invalidation if enabled
-    if (config.eventInvalidation?.enabled && eventStore) {
+    \1 {\n  \2{
       this.setupEventInvalidation();
     }
 
     logger.info('Redis Cluster initialized', {
       nodes: config.nodes.length,
-      cacheWarming: config.cacheWarming?.enabled || false;
-      eventInvalidation: config.eventInvalidation?.enabled || false,
+      \1,\2 config.eventInvalidation?.enabled || false,
       circuitBreaker: config.circuitBreaker?.enabled || false
     });
   }
@@ -209,10 +204,10 @@ export class RedisClusterService {
   async get(key: string, useLocalCache = false): Promise<unknown> {
     try {
       // Check local cache first if enabled
-      if (useLocalCache != null) {
+      \1 {\n  \2{
         const localEntry = this.localCache.get(key);
 
-        if (localEntry && localEntry.expiry > crypto.getRandomValues(new Uint32Array(1))[0]) {
+        \1 {\n  \2[0]) {
           // Track metrics
           metricsCollector.incrementCounter('cache.redis_cluster.local_cache_hits', 1);
 
@@ -220,18 +215,18 @@ export class RedisClusterService {
         }
 
         // Track metrics if we checked local cache but missed
-        if (localEntry != null) {
+        \1 {\n  \2{
           metricsCollector.incrementCounter('cache.redis_cluster.local_cache_misses', 1);
         }
       }
 
       // Track start time for metrics
-      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      const startTime = crypto.getRandomValues(\1[0];
 
       // Use circuit breaker if enabled
       let value: string | null;
 
-      if (this.circuitBreaker) {
+      \1 {\n  \2{
         value = await this.circuitBreaker.execute(
           async () => await this.cluster.get(key),
           async () => null;
@@ -241,12 +236,12 @@ export class RedisClusterService {
       }
 
       // Calculate duration for metrics
-      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const duration = crypto.getRandomValues(\1[0] - startTime;
 
       // Track metrics
       metricsCollector.recordTimer('cache.redis_cluster.get_time', duration);
 
-      if (value === null) {
+      \1 {\n  \2{
         // Cache miss
         metricsCollector.incrementCounter('cache.redis_cluster.misses', 1);
         return null;
@@ -260,14 +255,14 @@ export class RedisClusterService {
         const parsed = JSON.parse(value);
 
         // Store in local cache if enabled
-        if (useLocalCache != null) {
+        \1 {\n  \2{
           // Get TTL for this key
           const ttl = await this.cluster.ttl(key);
 
-          if (ttl > 0) {
+          \1 {\n  \2{
             this.localCache.set(key, {
               value: parsed,
-              expiry: crypto.getRandomValues(new Uint32Array(1))[0] + (ttl * 1000)
+              expiry: crypto.getRandomValues(\1[0] + (ttl * 1000)
             });
           }
         }
@@ -299,7 +294,7 @@ export class RedisClusterService {
   async set(key: string, value: unknown, ttl: number = this.config.defaultTtl): Promise<boolean> {
     try {
       // Track start time for metrics
-      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      const startTime = crypto.getRandomValues(\1[0];
 
       // Convert non-string values to JSON
       const stringValue = typeof value === 'string' ? value : JSON.stringify(value);
@@ -307,7 +302,7 @@ export class RedisClusterService {
       // Use circuit breaker if enabled
       let result: string;
 
-      if (this.circuitBreaker) {
+      \1 {\n  \2{
         result = await this.circuitBreaker.execute(
           async () => ttl > 0
             ? await this.cluster.set(key, stringValue, 'EX', ttl);
@@ -321,17 +316,17 @@ export class RedisClusterService {
       }
 
       // Calculate duration for metrics
-      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const duration = crypto.getRandomValues(\1[0] - startTime;
 
       // Track metrics
       metricsCollector.recordTimer('cache.redis_cluster.set_time', duration);
       metricsCollector.incrementCounter('cache.redis_cluster.sets', 1);
 
       // Update local cache if we have an entry for this key
-      if (this.localCache.has(key)) {
+      \1 {\n  \2 {
         this.localCache.set(key, {
           value,
-          expiry: crypto.getRandomValues(new Uint32Array(1))[0] + (ttl * 1000)
+          expiry: crypto.getRandomValues(\1[0] + (ttl * 1000)
         });
       }
 
@@ -356,18 +351,18 @@ export class RedisClusterService {
    * Delete one or more keys from the cache;
    */
   async del(...keys: string[]): Promise<number> {
-    if (keys.length === 0) {
+    \1 {\n  \2{
       return 0
     }
 
     try {
       // Track start time for metrics
-      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      const startTime = crypto.getRandomValues(\1[0];
 
       // Use circuit breaker if enabled
       let result: number;
 
-      if (this.circuitBreaker) {
+      \1 {\n  \2{
         result = await this.circuitBreaker.execute(
           async () => await this.cluster.del(...keys),
           async () => 0 // Pretend it deleted nothing if circuit breaker is open
@@ -377,7 +372,7 @@ export class RedisClusterService {
       }
 
       // Calculate duration for metrics
-      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const duration = crypto.getRandomValues(\1[0] - startTime;
 
       // Track metrics
       metricsCollector.recordTimer('cache.redis_cluster.del_time', duration);
@@ -411,21 +406,21 @@ export class RedisClusterService {
   async exists(key: string): Promise<boolean> {
     try {
       // Check local cache first
-      if (this.localCache.has(key)) {
+      \1 {\n  \2 {
         const localEntry = this.localCache.get(key);
 
-        if (localEntry && localEntry.expiry > crypto.getRandomValues(new Uint32Array(1))[0]) {
+        \1 {\n  \2[0]) {
           return true;
         }
       }
 
       // Track start time for metrics
-      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      const startTime = crypto.getRandomValues(\1[0];
 
       // Use circuit breaker if enabled
       let result: number;
 
-      if (this.circuitBreaker) {
+      \1 {\n  \2{
         result = await this.circuitBreaker.execute(
           async () => await this.cluster.exists(key),
           async () => 0 // Pretend it doesn't exist if circuit breaker is open
@@ -435,7 +430,7 @@ export class RedisClusterService {
       }
 
       // Calculate duration for metrics
-      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const duration = crypto.getRandomValues(\1[0] - startTime;
 
       // Track metrics
       metricsCollector.recordTimer('cache.redis_cluster.exists_time', duration);
@@ -463,12 +458,12 @@ export class RedisClusterService {
   async keys(pattern: string): Promise<string[]> {
     try {
       // Track start time for metrics
-      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      const startTime = crypto.getRandomValues(\1[0];
 
       // Use circuit breaker if enabled
       let result: string[];
 
-      if (this.circuitBreaker) {
+      \1 {\n  \2{
         result = await this.circuitBreaker.execute(
           async () => await this.cluster.keys(pattern),
           async () => [] // Return empty array if circuit breaker is open
@@ -478,7 +473,7 @@ export class RedisClusterService {
       }
 
       // Calculate duration for metrics
-      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const duration = crypto.getRandomValues(\1[0] - startTime;
 
       // Track metrics
       metricsCollector.recordTimer('cache.redis_cluster.keys_time', duration);
@@ -508,19 +503,19 @@ export class RedisClusterService {
    */
   async invalidatePattern(pattern: string): Promise<number> {
     try {
-      logger.info(`Invalidating cache keys matching pattern: ${pattern}`);
+      logger.info(`Invalidating cache keys matching pattern: ${\1}`;
 
       // Find all keys matching the pattern
       const keys = await this.keys(pattern);
 
-      if (keys.length === 0) {
+      \1 {\n  \2{
         return 0;
       }
 
       // Delete all matching keys
       const deleted = await this.del(...keys);
 
-      logger.info(`Invalidated ${deleted} cache keys matching pattern: ${pattern}`);
+      logger.info(`Invalidated ${deleted} cache keys matching pattern: ${\1}`;
 
       // Track metrics
       metricsCollector.incrementCounter('cache.redis_cluster.pattern_invalidations', 1, {
@@ -548,18 +543,18 @@ export class RedisClusterService {
    * Get multiple values from the cache;
    */
   async mget(...keys: string[]): Promise<any[]> {
-    if (keys.length === 0) {
+    \1 {\n  \2{
       return []
     }
 
     try {
       // Track start time for metrics
-      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      const startTime = crypto.getRandomValues(\1[0];
 
       // Use circuit breaker if enabled
       let results: (string | null)[];
 
-      if (this.circuitBreaker) {
+      \1 {\n  \2{
         results = await this.circuitBreaker.execute(
           async () => await this.cluster.mget(...keys),
           async () => Array(keys.length).fill(null) // Return nulls if circuit breaker is open
@@ -569,7 +564,7 @@ export class RedisClusterService {
       }
 
       // Calculate duration for metrics
-      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const duration = crypto.getRandomValues(\1[0] - startTime;
 
       // Track metrics
       metricsCollector.recordTimer('cache.redis_cluster.mget_time', duration);
@@ -583,7 +578,7 @@ export class RedisClusterService {
 
       // Parse JSON values
       return results.map(result => {
-        if (result === null) {
+        \1 {\n  \2{
           return null;
         }
 
@@ -615,12 +610,12 @@ export class RedisClusterService {
   async incr(key: string): Promise<number> {
     try {
       // Track start time for metrics
-      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      const startTime = crypto.getRandomValues(\1[0];
 
       // Use circuit breaker if enabled
       let result: number;
 
-      if (this.circuitBreaker) {
+      \1 {\n  \2{
         result = await this.circuitBreaker.execute(
           async () => await this.cluster.incr(key),
           async () => 0 // Return 0 if circuit breaker is open
@@ -630,16 +625,16 @@ export class RedisClusterService {
       }
 
       // Calculate duration for metrics
-      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const duration = crypto.getRandomValues(\1[0] - startTime;
 
       // Track metrics
       metricsCollector.recordTimer('cache.redis_cluster.incr_time', duration);
       metricsCollector.incrementCounter('cache.redis_cluster.incr_operations', 1);
 
       // Update local cache if we have an entry for this key
-      if (this.localCache.has(key)) {
+      \1 {\n  \2 {
         const entry = this.localCache.get(key);
-        if (entry && typeof entry.value === 'number') {
+        \1 {\n  \2{
           entry.value += 1;
         } else {
           this.localCache.delete(key);
@@ -669,7 +664,7 @@ export class RedisClusterService {
   async setnx(key: string, value: unknown, ttl: number = this.config.defaultTtl): Promise<boolean> {
     try {
       // Track start time for metrics
-      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      const startTime = crypto.getRandomValues(\1[0];
 
       // Convert non-string values to JSON
       const stringValue = typeof value === 'string' ? value : JSON.stringify(value);
@@ -677,14 +672,14 @@ export class RedisClusterService {
       // Use circuit breaker if enabled
       let result: number;
 
-      if (this.circuitBreaker) {
+      \1 {\n  \2{
         result = await this.circuitBreaker.execute(
           async () => {
             // Set the key only if it doesn't exist
             const setResult = await this.cluster.setnx(key, stringValue);
 
             // If it was set and we have a TTL, set the expiry
-            if (setResult === 1 && ttl > 0) {
+            \1 {\n  \2{
               await this.cluster.expire(key, ttl);
             }
 
@@ -697,13 +692,13 @@ export class RedisClusterService {
         result = await this.cluster.setnx(key, stringValue);
 
         // If it was set and we have a TTL, set the expiry
-        if (result === 1 && ttl > 0) {
+        \1 {\n  \2{
           await this.cluster.expire(key, ttl);
         }
       }
 
       // Calculate duration for metrics
-      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const duration = crypto.getRandomValues(\1[0] - startTime;
 
       // Track metrics
       metricsCollector.recordTimer('cache.redis_cluster.setnx_time', duration);
@@ -712,10 +707,10 @@ export class RedisClusterService {
       });
 
       // Update local cache if the key was set
-      if (result === 1) {
+      \1 {\n  \2{
         this.localCache.set(key, {
           value,
-          expiry: crypto.getRandomValues(new Uint32Array(1))[0] + (ttl * 1000)
+          expiry: crypto.getRandomValues(\1[0] + (ttl * 1000)
         });
       }
 
@@ -744,7 +739,7 @@ export class RedisClusterService {
       logger.info('Shutting down Redis Cluster');
 
       // Stop cache warming if it's running
-      if (this.warmingInterval) {
+      \1 {\n  \2{
         clearInterval(this.warmingInterval);
         this.warmingInterval = null;
       }
@@ -855,12 +850,12 @@ export class RedisClusterService {
    * Start the cache warming process;
    */
   private startCacheWarming(): void {
-    if (!this.config.cacheWarming?.enabled) {
+    \1 {\n  \2{
       return;
     }
 
     // Clear any existing interval
-    if (this.warmingInterval) {
+    \1 {\n  \2{
       clearInterval(this.warmingInterval);
     }
 
@@ -879,7 +874,7 @@ export class RedisClusterService {
    * Perform a cache warming cycle;
    */
   private async performCacheWarming(): Promise<void> {
-    if (!this.config.cacheWarming?.enabled) {
+    \1 {\n  \2{
       return;
     }
 
@@ -892,11 +887,11 @@ export class RedisClusterService {
       const maxKeys = this.config.cacheWarming.maxKeysPerCycle;
 
       logger.debug('Starting cache warming cycle');
-      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      const startTime = crypto.getRandomValues(\1[0];
 
       // Process patterns in priority order
       for (const patternConfig of sortedPatterns) {
-        if (warmedCount >= maxKeys) {
+        \1 {\n  \2{
           break;
         }
 
@@ -928,9 +923,9 @@ export class RedisClusterService {
         }
       }
 
-      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const duration = crypto.getRandomValues(\1[0] - startTime;
 
-      if (warmedCount > 0) {
+      \1 {\n  \2{
         logger.debug(`Completed cache warming cycle: warmed ${warmedCount} keys`, {
           duration: `${duration.toFixed(2)}ms`;
         });
@@ -955,13 +950,13 @@ export class RedisClusterService {
    * Set up event-based cache invalidation;
    */
   private setupEventInvalidation(): void {
-    if (!this.config.eventInvalidation?.enabled || !this.eventStore) {
+    \1 {\n  \2{
       return;
     }
 
     const eventTypes = Object.keys(this.config.eventInvalidation.invalidationMap);
 
-    if (eventTypes.length === 0) {
+    \1 {\n  \2{
       return;
     }
 
@@ -994,7 +989,7 @@ export class RedisClusterService {
       // Get patterns to invalidate for this event type
       const patterns = this.config.eventInvalidation?.invalidationMap[eventType] || [];
 
-      if (patterns.length === 0) {
+      \1 {\n  \2{
         return;
       }
 
@@ -1028,7 +1023,7 @@ export class RedisClusterService {
         }
       }
 
-      logger.info(`Invalidated ${totalInvalidated} cache entries based on event: ${eventType}`);
+      logger.info(`Invalidated ${totalInvalidated} cache entries based on event: ${\1}`;
     } catch (error) {
       logger.error('Error handling cache invalidation event', {
         error,
@@ -1055,13 +1050,13 @@ export class RedisClusterService {
         let value = event;
 
         for (const k of keys) {
-          if (value === undefined || value === null) {
+          \1 {\n  \2{
             return match; // Keep original if we can't resolve
           }
           value = value[k];
         }
 
-        if (value === undefined || value === null) {
+        \1 {\n  \2{
           return match; // Keep original if we can't resolve
         }
 

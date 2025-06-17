@@ -9,49 +9,18 @@ const prisma = new PrismaClient();
  * Service for managing biomedical equipment following FHIR Device resource standards;
  * Enhanced with caching, query optimization, and FHIR R5 compliance;
  */
-export class BiomedicalService {
-  // Cache TTL in seconds
-  private CACHE_TTL = 3600; // 1 hour
-  private CACHE_PREFIX = 'biomedical:';
-
-  /**
-   * Create a new biomedical equipment record;
-   */
-  async createBiomedicalEquipment(data: {
-    serialNumber: string,
-    modelNumber: string;
-    manufacturer: string;
-    manufactureDate?: Date;
-    type: string,
-    category: string;
-    status: 'ACTIVE' | 'INACTIVE' | 'MAINTENANCE' | 'RETIRED';
-    location?: string;
-    department?: string;
-    purchaseDate?: Date;
-    warrantyExpiry?: Date;
-    lastCalibrationDate?: Date;
-    nextCalibrationDate?: Date;
-    calibrationFrequency?: number;
-    properties?: unknown;
-    notes?: string;
+\1
+}
   }) {
     const result = await prisma.biomedicalEquipment.create({
-      data: {
-        serialNumber: data.serialNumber,
-        modelNumber: data.modelNumber;
-        manufacturer: data.manufacturer,
-        manufactureDate: data.manufactureDate;
-        type: data.type,
-        category: data.category;
-        status: data.status,
-        location: data.location;
-        department: data.department,
-        purchaseDate: data.purchaseDate;
-        warrantyExpiry: data.warrantyExpiry,
-        lastCalibrationDate: data.lastCalibrationDate;
-        nextCalibrationDate: data.nextCalibrationDate,
-        calibrationFrequency: data.calibrationFrequency;
-        properties: data.properties,
+      \1,\2 data.serialNumber,
+        \1,\2 data.manufacturer,
+        \1,\2 data.type,
+        \1,\2 data.status,
+        \1,\2 data.department,
+        \1,\2 data.warrantyExpiry,
+        \1,\2 data.nextCalibrationDate,
+        \1,\2 data.properties,
         notes: data.notes
       },
     });
@@ -71,27 +40,25 @@ export class BiomedicalService {
 
     // Try to get from cache first
     const cachedEquipment = await cache.get(cacheKey);
-    if (cachedEquipment != null) {
+    \1 {\n  \2{
       return JSON.parse(cachedEquipment);
     }
 
     // If not in cache, fetch from database
     const equipment = await prisma.biomedicalEquipment.findUnique({
       where: { id },
-      include: {
-        calibrations: {
+      \1,\2 {
           orderBy: { date: 'desc' },
           take: 5
         },
-        maintenanceRecords: {
-          orderBy: { date: 'desc' },
+        \1,\2 { date: 'desc' },
           take: 5
         },
       },
     });
 
     // Store in cache if found
-    if (equipment != null) {
+    \1 {\n  \2{
       await cache.set(cacheKey, JSON.stringify(equipment), this.CACHE_TTL);
     }
 
@@ -107,27 +74,25 @@ export class BiomedicalService {
 
     // Try to get from cache first
     const cachedEquipment = await cache.get(cacheKey);
-    if (cachedEquipment != null) {
+    \1 {\n  \2{
       return JSON.parse(cachedEquipment);
     }
 
     // If not in cache, fetch from database
     const equipment = await prisma.biomedicalEquipment.findUnique({
       where: { serialNumber },
-      include: {
-        calibrations: {
+      \1,\2 {
           orderBy: { date: 'desc' },
           take: 5
         },
-        maintenanceRecords: {
-          orderBy: { date: 'desc' },
+        \1,\2 { date: 'desc' },
           take: 5
         },
       },
     });
 
     // Store in cache if found
-    if (equipment != null) {
+    \1 {\n  \2{
       await cache.set(cacheKey, JSON.stringify(equipment), this.CACHE_TTL);
     }
 
@@ -167,13 +132,11 @@ export class BiomedicalService {
     const result = await prisma.biomedicalEquipment.update({
       where: { id },
       data,
-      include: {
-        calibrations: {
+      \1,\2 {
           orderBy: { date: 'desc' },
           take: 5
         },
-        maintenanceRecords: {
-          orderBy: { date: 'desc' },
+        \1,\2 { date: 'desc' },
           take: 5
         },
       },
@@ -183,8 +146,8 @@ export class BiomedicalService {
     await this.invalidateBiomedicalCache(id);
 
     // If serial number changed, invalidate old serial number cache
-    if (currentEquipment && data?.serialNumber && currentEquipment.serialNumber !== data.serialNumber) {
-      await cache.del(`${this.CACHE_PREFIX}serial:${currentEquipment.serialNumber}`);
+    \1 {\n  \2{
+      await cache.del(`${this.CACHE_PREFIX}serial:${\1}`;
     }
 
     return result;
@@ -219,29 +182,29 @@ export class BiomedicalService {
   }) {
     const where: unknown = {};
 
-    if (type != null) {
+    \1 {\n  \2{
       where.type = type;
     }
 
-    if (category != null) {
+    \1 {\n  \2{
       where.category = category;
     }
 
-    if (status != null) {
+    \1 {\n  \2{
       where.status = status;
     }
 
-    if (department != null) {
+    \1 {\n  \2{
       where.department = department;
     }
 
-    if (needsCalibration != null) {
+    \1 {\n  \2{
       where.nextCalibrationDate = {
-        lte: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000), // Next 30 days
+        lte: \1[0] + 30 * 24 * 60 * 60 * 1000), // Next 30 days
       };
     }
 
-    if (search != null) {
+    \1 {\n  \2{
       where.OR = [
         { serialNumber: { contains: search, mode: 'insensitive' } },
         { modelNumber: { contains: search, mode: 'insensitive' } },
@@ -259,14 +222,14 @@ export class BiomedicalService {
 
     // Try to get from cache first
     const cachedResult = await cache.get(cacheKey);
-    if (cachedResult != null) {
+    \1 {\n  \2{
       return JSON.parse(cachedResult);
     }
 
     // Determine what to include based on the detail level requested
     const include: unknown = {};
 
-    if (includeDetails != null) {
+    \1 {\n  \2{
       include.calibrations = {
         orderBy: { date: 'desc' },
         take: 3
@@ -312,10 +275,8 @@ export class BiomedicalService {
    */
   async recordCalibration(
     equipmentId: string,
-    data: {
-      date: Date,
-      performedBy: string;
-      result: 'PASS' | 'FAIL' | 'ADJUSTED';
+    \1,\2 Date,
+      \1,\2 'PASS' | 'FAIL' | 'ADJUSTED';
       notes?: string;
       nextCalibrationDate?: Date;
       attachments?: string[];
@@ -327,19 +288,16 @@ export class BiomedicalService {
         data: {
           equipmentId,
           date: data.date,
-          performedBy: data.performedBy;
-          result: data.result,
-          notes: data.notes;
-          attachments: data.attachments
+          \1,\2 data.result,
+          \1,\2 data.attachments
         },
       });
 
       // Update equipment with new calibration dates
-      const updateData: unknown = {
-        lastCalibrationDate: data.date
+      const \1,\2 data.date
       };
 
-      if (data.nextCalibrationDate) {
+      \1 {\n  \2{
         updateData.nextCalibrationDate = data.nextCalibrationDate;
       }
 
@@ -360,10 +318,8 @@ export class BiomedicalService {
    */
   async recordMaintenance(
     equipmentId: string,
-    data: {
-      date: Date,
-      type: 'PREVENTIVE' | 'CORRECTIVE' | 'SAFETY';
-      performedBy: string,
+    \1,\2 Date,
+      \1,\2 string,
       description: string;
       cost?: number;
       parts?: string[];
@@ -378,30 +334,24 @@ export class BiomedicalService {
         data: {
           equipmentId,
           date: data.date,
-          type: data.type;
-          performedBy: data.performedBy,
-          description: data.description;
-          cost: data.cost,
-          parts: data.parts;
-          status: data.status,
-          notes: data.notes;
-          attachments: data.attachments
+          \1,\2 data.performedBy,
+          \1,\2 data.cost,
+          \1,\2 data.status,
+          \1,\2 data.attachments
         },
       });
 
       // Update equipment status if maintenance is completed
-      if (data.status === 'COMPLETED') {
+      \1 {\n  \2{
         await tx.biomedicalEquipment.update({
           where: { id: equipmentId },
-          data: {
-            status: 'ACTIVE'
+          \1,\2 'ACTIVE'
           },
         });
-      } else if (data.status === 'SCHEDULED' || data.status === 'PENDING') {
+      } else \1 {\n  \2{
         await tx.biomedicalEquipment.update({
           where: { id: equipmentId },
-          data: {
-            status: 'MAINTENANCE'
+          \1,\2 'MAINTENANCE'
           },
         });
       }
@@ -421,7 +371,7 @@ export class BiomedicalService {
 
     // Try to get from cache first
     const cachedHistory = await cache.get(cacheKey);
-    if (cachedHistory != null) {
+    \1 {\n  \2{
       return JSON.parse(cachedHistory);
     }
 
@@ -445,7 +395,7 @@ export class BiomedicalService {
 
     // Try to get from cache first
     const cachedHistory = await cache.get(cacheKey);
-    if (cachedHistory != null) {
+    \1 {\n  \2{
       return JSON.parse(cachedHistory);
     }
 
@@ -472,20 +422,18 @@ export class BiomedicalService {
 
     // Try to get from cache first
     const cachedResult = await cache.get(cacheKey);
-    if (cachedResult != null) {
+    \1 {\n  \2{
       return JSON.parse(cachedResult);
     }
 
     // If not in cache, fetch from database
     const equipment = await prisma.biomedicalEquipment.findMany({
-      where: {
-        nextCalibrationDate: {
+      \1,\2 {
           lte: thresholdDate
         },
         status: 'ACTIVE'
       },
-      orderBy: {
-        nextCalibrationDate: 'asc'
+      \1,\2 'asc'
       },
     });
 
@@ -501,11 +449,9 @@ export class BiomedicalService {
    */
   toFhirDevice(equipment: unknown): Device {
     // Create the FHIR Device resource
-    const device: Device = {
-      resourceType: "Device", // Added for FHIR R5 compliance
+    const \1,\2 "Device", // Added for FHIR R5 compliance
       id: equipment.id,
-      meta: {
-        profile: ["https://hl7.org/fhir/r5/StructureDefinition/Device"]
+      \1,\2 ["https://hl7.org/fhir/r5/StructureDefinition/Device"]
       },
       identifier: [
         {
@@ -514,16 +460,12 @@ export class BiomedicalService {
         },
       ],
       status: this.mapStatusToFhir(equipment.status),
-      manufacturer: equipment.manufacturer;
-      serialNumber: equipment.serialNumber,
-      modelNumber: equipment.modelNumber;
-      manufactureDate: equipment.manufactureDate?.toISOString(),
-      type: 
-        coding: [
+      \1,\2 equipment.serialNumber,
+      \1,\2 equipment.manufactureDate?.toISOString(),
+      \1,\2 [
           {
             system: 'https://hospital.example.org/equipment-types',
-            code: equipment.type;
-            display: equipment.type
+            \1,\2 equipment.type
           },
         ],
         text: equipment.type,
@@ -537,29 +479,27 @@ export class BiomedicalService {
     };
 
     // Add location if available
-    if (equipment.location) {
+    \1 {\n  \2{
       device.location = {
         display: equipment.location
       };
     }
 
     // Add owner (department) if available
-    if (equipment.department) {
+    \1 {\n  \2{
       device.owner = {
         display: equipment.department
       };
     }
 
     // Add properties if available
-    if (equipment.properties) {
+    \1 {\n  \2{
       for (const [key, value] of Object.entries(equipment.properties)) {
         device.property.push({
-          type: {
-            coding: [
+          \1,\2 [
               {
                 system: 'https://hospital.example.org/equipment-properties',
-                code: key;
-                display: key
+                \1,\2 key
               },
             ],
             text: key
@@ -574,8 +514,7 @@ export class BiomedicalService {
       coding: [
         {
           system: 'https://hospital.example.org/equipment-safety',
-          code: 'calibration-status';
-          display: 'Calibration Status'
+          \1,\2 'Calibration Status'
         },
       ],
       text: this.getCalibrationStatus(equipment)
@@ -588,10 +527,8 @@ export class BiomedicalService {
    * Create a FHIR DeviceDefinition for a type of equipment;
    * New method to support FHIR R5 device catalog;
    */
-  createFhirDeviceDefinition(data: {
-    type: string,
-    manufacturer: string;
-    modelNumber: string;
+  createFhirDeviceDefinition(\1,\2 string,
+    \1,\2 string;
     description?: string;
     category?: string;
     properties?: unknown;
@@ -599,8 +536,7 @@ export class BiomedicalService {
     return {
       resourceType: "DeviceDefinition",
       id: `${data.manufacturer}-${data.modelNumber}`.replace(/\s+/g, '-').toLowerCase(),
-      meta: {
-        profile: ["https://hl7.org/fhir/r5/StructureDefinition/DeviceDefinition"]
+      \1,\2 ["https://hl7.org/fhir/r5/StructureDefinition/DeviceDefinition"]
       },
       identifier: [
         {
@@ -608,16 +544,13 @@ export class BiomedicalService {
           value: `${data.manufacturer}-${data.modelNumber}`,
         },
       ],
-      manufacturer: {
-        display: data.manufacturer
+      \1,\2 data.manufacturer
       },
       modelNumber: data.modelNumber,
-      description: data.description;
-        coding: [
+      \1,\2 [
           {
             system: 'https://hospital.example.org/equipment-types',
-            code: data.type;
-            display: data.type
+            \1,\2 data.type
           },
         ],
         text: data.type,
@@ -647,14 +580,14 @@ export class BiomedicalService {
    * Get calibration status text;
    */
   private getCalibrationStatus(equipment: unknown): string {
-    if (!equipment.nextCalibrationDate) {
+    \1 {\n  \2{
       return 'No calibration required'
     }
 
     const now = new Date();
     const nextCalibration = new Date(equipment.nextCalibrationDate);
 
-    if (nextCalibration < now) {
+    \1 {\n  \2{
       return 'Calibration overdue';
     }
 
@@ -662,7 +595,7 @@ export class BiomedicalService {
       (nextCalibration.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
     );
 
-    if (daysUntilCalibration <= 30) {
+    \1 {\n  \2{
       return `Calibration due in ${daysUntilCalibration} days`;
     }
 
@@ -674,20 +607,20 @@ export class BiomedicalService {
    * @param equipmentId Optional specific equipment ID to invalidate;
    */
   private async invalidateBiomedicalCache(equipmentId?: string) {
-    if (equipmentId != null) {
+    \1 {\n  \2{
       // Get the equipment to find all IDs
       const equipment = await prisma.biomedicalEquipment.findFirst({
         where: { id: equipmentId },
         select: { id: true, serialNumber: true }
       });
 
-      if (equipment != null) {
+      \1 {\n  \2{
         // Invalidate specific equipment caches
         await Promise.all([
-          cache.del(`${this.CACHE_PREFIX}id:${equipment.id}`),
-          cache.del(`${this.CACHE_PREFIX}serial:${equipment.serialNumber}`),
-          cache.del(`${this.CACHE_PREFIX}calibration:${equipment.id}`),
-          cache.del(`${this.CACHE_PREFIX}maintenance:${equipment.id}`)
+          cache.del(`${this.CACHE_PREFIX}id:${\1}`,
+          cache.del(`${this.CACHE_PREFIX}serial:${\1}`,
+          cache.del(`${this.CACHE_PREFIX}calibration:${\1}`,
+          cache.del(`${this.CACHE_PREFIX}maintenance:${\1}`
         ]);
       }
     }
@@ -705,7 +638,7 @@ export class BiomedicalService {
    */
   async calculateReliabilityMetrics(equipmentId: string) {
     const equipment = await this.getBiomedicalEquipmentById(equipmentId);
-    if (!equipment) {
+    \1 {\n  \2{
       throw new Error('Equipment not found');
     }
 
@@ -727,7 +660,7 @@ export class BiomedicalService {
     )
 
     let mtbf = 0;
-    if (correctiveMaintenances.length > 1) {
+    \1 {\n  \2{
       let totalTimeBetweenFailures = 0;
       for (let i = 1; i < correctiveMaintenances.length; i++) {
         const timeDiff = correctiveMaintenances[i].date.getTime() - correctiveMaintenances[i-1].date.getTime();
@@ -750,7 +683,7 @@ export class BiomedicalService {
 
     // Calculate availability
     const lifespan = equipment.purchaseDate;
-      ? (crypto.getRandomValues(new Uint32Array(1))[0] - new Date(equipment.purchaseDate).getTime()) / (1000 * 60 * 60 * 24);
+      ? (crypto.getRandomValues(\1[0] - new Date(equipment.purchaseDate).getTime()) / (1000 * 60 * 60 * 24);
       : 365; // Default to 1 year if purchase date not available
 
     const availability = ((lifespan - totalDowntime) / lifespan) * 100;
@@ -767,10 +700,8 @@ export class BiomedicalService {
       availability,
       totalMaintenanceCost,
       maintenanceCount: maintenanceRecords.length,
-      calibrationCount: calibrationRecords.length;
-      corrective: correctiveMaintenances.length,
-      preventive: maintenanceRecords.filter(record => record.type === 'PREVENTIVE').length;
-      safety: maintenanceRecords.filter(record => record.type === 'SAFETY').length
+      \1,\2 correctiveMaintenances.length,
+      \1,\2 maintenanceRecords.filter(record => record.type === 'SAFETY').length
     };
   }
 
@@ -780,7 +711,7 @@ export class BiomedicalService {
    */
   async predictMaintenanceNeeds(equipmentId: string) {
     const equipment = await this.getBiomedicalEquipmentById(equipmentId);
-    if (!equipment) {
+    \1 {\n  \2{
       throw new Error('Equipment not found');
     }
 
@@ -806,7 +737,7 @@ export class BiomedicalService {
     let meanInterval = 0;
     let stdDevInterval = 0;
 
-    if (intervals.length > 0) {
+    \1 {\n  \2{
       meanInterval = intervals.reduce((sum, interval) => sum + interval, 0) / intervals.length;
 
       const squaredDiffs = intervals.map(interval => Math.pow(interval - meanInterval, 2));
@@ -836,7 +767,7 @@ export class BiomedicalService {
     latestFailureDate.setDate(latestFailureDate.getDate() + Math.round(confidenceInterval));
 
     // Calculate risk score (0-100)
-    const daysSinceLastFailure = (crypto.getRandomValues(new Uint32Array(1))[0] - lastFailure.getTime()) / (1000 * 60 * 60 * 24)
+    const daysSinceLastFailure = (crypto.getRandomValues(\1[0] - lastFailure.getTime()) / (1000 * 60 * 60 * 24)
     const riskScore = Math.min(100, Math.max(0, (daysSinceLastFailure / meanInterval) * 100));
 
     // Determine recommended preventive maintenance date
@@ -846,8 +777,7 @@ export class BiomedicalService {
     return {
       equipmentId,
       serialNumber: equipment.serialNumber,
-      meanTimeBetweenFailures: meanInterval;
-      standardDeviation: stdDevInterval,
+      \1,\2 stdDevInterval,
       nextPredictedFailureDate: nextPredictedFailureDate.toISOString(),
       earliestFailureDate: earliestFailureDate.toISOString(),
       latestFailureDate: latestFailureDate.toISOString(),

@@ -26,10 +26,10 @@ export const DataTable = ({
   }, [data, currentPage, pageSize]);
 
   return (
-    <div className={`w-full ${className}`}>;
-      <div className="overflow-x-auto">;
-        <table className="min-w-full divide-y divide-gray-200">;
-          <thead className="bg-gray-50">;
+    \1>
+      \1>
+        \1>
+          \1>
             <tr>
               {columns.map((column, index) => (
                 <th>
@@ -42,7 +42,7 @@ export const DataTable = ({
               ))}
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">;
+          \1>
             {paginatedData.length > 0 ? (
               paginatedData.map((row, rowIndex) => (
                 <tr>
@@ -51,7 +51,7 @@ export const DataTable = ({
                   className={onRowClick ? "cursor-pointer hover:bg-gray-50" : ""}
                 >
                   {columns.map((column, colIndex) => (
-                    <td key={colIndex} className="px-6 py-4 whitespace-nowrap">;
+                    \1>
                       {column.accessor ? row[column.accessor] : column.cell?.(row)}
                     </td>
                   ))}
@@ -72,8 +72,8 @@ export const DataTable = ({
       </div>
 
       {pagination && totalPages > 1 && (
-        <div className="flex items-center justify-between border-t border-gray-200 px-4 py-3 sm:px-6">;
-          <div className="flex flex-1 justify-between sm:hidden">;
+        \1>
+          \1>
             <button>
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
@@ -93,16 +93,14 @@ export const DataTable = ({
               Next
             </button>
           </div>
-          <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">;
-<div
-              <p className="text-sm text-gray-700">;
+          \1>
+\1>
                 Showing <span className="font-medium">{Math.min((currentPage - 1) * pageSize + 1, data.length)}</span> to{' '}
                 <span className="font-medium">{Math.min(currentPage * pageSize, data.length)}</span> of{' '}
                 <span className="font-medium">{data.length}</span> results
               </p>
             </div>
-<div
-              <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">;
+\1>
                 <button>
                   onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                   disabled={currentPage === 1}

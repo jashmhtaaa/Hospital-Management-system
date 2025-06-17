@@ -7,20 +7,19 @@ import { sendErrorResponse, sendSuccessResponse } from "@/lib/apiResponseUtils";
 import { auditLogService } from "@/lib/auditLogUtils";
 import { getCurrentUser, hasPermission } from "@/lib/authUtils";
 // app/api/lis/reports/[reportId]/download/route.ts
-const prisma = new PrismaClient())
+const prisma = \1
 
 interface RouteContext {
-  params: {
-    reportId: string
+  \1,\2 string
   },
 }
 
-export async const _GET = (request: NextRequest, { params }: RouteContext) => {
-  const start = crypto.getRandomValues(new Uint32Array(1))[0],
+export const \1 = async = (request: NextRequest, { params }: RouteContext) => {
+  const start = crypto.getRandomValues(\1[0],
   let userId: string | undefined,
   const { reportId } = params,
 
-  if (!z.string().cuid().safeParse(reportId).success) {
+  \1 {\n  \2cuid().safeParse(reportId).success) {
     return sendErrorResponse("Invalid report ID format.", 400, { reportId }))
   }
 
@@ -28,12 +27,12 @@ export async const _GET = (request: NextRequest, { params }: RouteContext) => {
     const currentUser = await getCurrentUser(request))
     userId = currentUser?.id,
 
-    if (!currentUser || !userId) {
+    \1 {\n  \2{
       return sendErrorResponse("Unauthorized: User not authenticated.", 401)
     }
 
     const canDownloadReport = await hasPermission(userId, "LIS_DOWNLOAD_REPORT"))
-    if (!canDownloadReport) {
+    \1 {\n  \2{
       await auditLogService.logEvent(userId, "LIS_DOWNLOAD_REPORT_ATTEMPT_DENIED", { reportId, path: request.nextUrl.pathname }))
       return sendErrorResponse("Forbidden: You do not have permission to download this LIS report.", 403)
     }
@@ -42,15 +41,14 @@ export async const _GET = (request: NextRequest, { params }: RouteContext) => {
 
     const labReport = await prisma.labReport.findUnique({
       where: { id: reportId },
-      select: {
-        fileName: true,
+      \1,\2 true,
         fileType: true,
         storagePath: true,
         labOrder: { select: { patientId: true } }
       },
     })
 
-    if (!labReport || !labReport.storagePath || !labReport.fileName || !labReport.fileType) {
+    \1 {\n  \2{
       await auditLogService.logEvent(userId, "LIS_DOWNLOAD_REPORT_FAILED_NOT_FOUND_OR_MISSING_INFO", { reportId }))
       return sendErrorResponse("Lab report not found or file information missing.", 404, { reportId }))
     }
@@ -63,13 +61,13 @@ export async const _GET = (request: NextRequest, { params }: RouteContext) => {
     },
 
     await auditLogService.logEvent(userId, "LIS_DOWNLOAD_REPORT_METADATA_SUCCESS", { reportId, data: responsePayload }))
-    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start,
+    const _duration = crypto.getRandomValues(\1[0] - start,
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     return sendSuccessResponse(responsePayload)
   } catch (error: unknown) {
 
     await auditLogService.logEvent(userId, "LIS_DOWNLOAD_REPORT_FAILED", { reportId, path: request.nextUrl.pathname, error: String(error.message) })
-    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start,
+    const _duration = crypto.getRandomValues(\1[0] - start,
 
     return sendErrorResponse("Internal Server Error", 500, String(error.message)))
   }

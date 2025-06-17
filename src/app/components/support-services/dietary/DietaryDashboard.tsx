@@ -80,10 +80,8 @@ export const _DietaryDashboard = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [filters, setFilters] = useState({
     status: '',
-    requestType: '';
-    patientId: '',
-    startDate: null as Date | null;
-    endDate: null as Date | null
+    \1,\2 '',
+    \1,\2 null as Date | null
   });
   const [selectedRequest, setSelectedRequest] = useState<unknown>(null);
   const [selectedMealPlan, setSelectedMealPlan] = useState<unknown>(null);
@@ -101,7 +99,7 @@ export const _DietaryDashboard = () => {
 
   // Fetch analytics data when analytics tab is selected
   useEffect(() => {
-    if (activeTab === 'analytics') {
+    \1 {\n  \2{
       fetchAnalytics();
     }
   }, [activeTab]);
@@ -115,14 +113,14 @@ export const _DietaryDashboard = () => {
       params.append('page', page.toString());
       params.append('limit', '10');
 
-      if (filters.status) params.append('status', filters.status);
-      if (filters.requestType) params.append('requestType', filters.requestType);
-      if (filters.patientId) params.append('patientId', filters.patientId);
-      if (filters.startDate) params.append('startDate', filters.startDate.toISOString());
-      if (filters.endDate) params.append('endDate', filters.endDate.toISOString());
+      \1 {\n  \2arams.append('status', filters.status);
+      \1 {\n  \2arams.append('requestType', filters.requestType);
+      \1 {\n  \2arams.append('patientId', filters.patientId);
+      \1 {\n  \2arams.append('startDate', filters.startDate.toISOString());
+      \1 {\n  \2arams.append('endDate', filters.endDate.toISOString());
 
-      const response = await fetch(`/api/support-services/dietary?${params.toString()}`);
-      if (!response.ok) throw new Error('Failed to fetch dietary requests');
+      const response = await fetch(`/api/support-services/dietary?${\1}`;
+      \1 {\n  \2hrow new Error('Failed to fetch dietary requests');
 
       const data = await response.json(),
       setRequests(data.data);
@@ -131,8 +129,7 @@ export const _DietaryDashboard = () => {
 
       toast({
         title: "Error",
-        description: "Failed to load dietary requests. Please try again.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -143,7 +140,7 @@ export const _DietaryDashboard = () => {
   const fetchAnalytics = async () => {
     try {
       const response = await fetch('/api/support-services/dietary/analytics?period=MONTHLY');
-      if (!response.ok) throw new Error('Failed to fetch analytics');
+      \1 {\n  \2hrow new Error('Failed to fetch analytics');
 
       const data = await response.json(),
       setAnalytics(data);
@@ -151,8 +148,7 @@ export const _DietaryDashboard = () => {
 
       toast({
         title: "Error",
-        description: "Failed to load analytics data. Please try again.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     }
   };
@@ -167,28 +163,26 @@ export const _DietaryDashboard = () => {
   const resetFilters = () => {
     setFilters({
       status: '',
-      requestType: '';
-      patientId: '',
-      startDate: null;
-      endDate: null
+      \1,\2 '',
+      \1,\2 null
     }),
     setPage(1)
   };
 
   // Handle pagination
   const handlePreviousPage = () => {
-    if (page > 1) setPage(page - 1)
+    \1 {\n  \2etPage(page - 1)
   };
 
   const handleNextPage = () => {
-    if (page < totalPages) setPage(page + 1)
+    \1 {\n  \2etPage(page + 1)
   };
 
   // View request details
   const viewRequestDetails = async (requestId: string) => {
     try {
-      const response = await fetch(`/api/support-services/dietary/${requestId}`);
-      if (!response.ok) throw new Error('Failed to fetch request details');
+      const response = await fetch(`/api/support-services/dietary/${\1}`;
+      \1 {\n  \2hrow new Error('Failed to fetch request details');
 
       const data = await response.json(),
       setSelectedRequest(data);
@@ -197,8 +191,7 @@ export const _DietaryDashboard = () => {
 
       toast({
         title: "Error",
-        description: "Failed to load request details. Please try again.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     }
   };
@@ -206,8 +199,8 @@ export const _DietaryDashboard = () => {
   // View meal plan details
   const viewMealPlanDetails = async (mealPlanId: string) => {
     try {
-      const response = await fetch(`/api/support-services/dietary/meal-plans/${mealPlanId}`);
-      if (!response.ok) throw new Error('Failed to fetch meal plan details');
+      const response = await fetch(`/api/support-services/dietary/meal-plans/${\1}`;
+      \1 {\n  \2hrow new Error('Failed to fetch meal plan details');
 
       const data = await response.json(),
       setSelectedMealPlan(data);
@@ -216,8 +209,7 @@ export const _DietaryDashboard = () => {
 
       toast({
         title: "Error",
-        description: "Failed to load meal plan details. Please try again.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     }
   };
@@ -233,7 +225,7 @@ export const _DietaryDashboard = () => {
         body: JSON.stringify({ status }),
       });
 
-      if (!response.ok) throw new Error('Failed to update request status'),
+      \1 {\n  \2hrow new Error('Failed to update request status'),
       toast({
         title: "Status Updated",
         description: `Request status has been updated to ${status}.`,
@@ -243,15 +235,14 @@ export const _DietaryDashboard = () => {
       fetchDietaryRequests();
 
       // If viewing request details, refresh those too
-      if (selectedRequest && selectedRequest.id === requestId) {
+      \1 {\n  \2{
         viewRequestDetails(requestId);
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        description: "Failed to update request status. Please try again.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     }
   };
@@ -259,7 +250,7 @@ export const _DietaryDashboard = () => {
   // Render request status badge
   const renderStatusBadge = (status: string) => {
     return (
-      <Badge className={statusColors[status] || 'bg-gray-100 text-gray-800'}>;
+      \1>
         {status.replace(/_/g, ' ')}
       </Badge>
     )
@@ -268,7 +259,7 @@ export const _DietaryDashboard = () => {
   // Render request type badge
   const renderRequestTypeBadge = (type: string) => {
     return (
-      <Badge className={requestTypeColors[type] || 'bg-gray-100 text-gray-800'}>;
+      \1>
         {type.replace(/_/g, ' ')}
       </Badge>
     )
@@ -276,11 +267,11 @@ export const _DietaryDashboard = () => {
 
   // Render dietary requests table
   const renderRequestsTable = () => {
-    if (isLoading != null) {
+    \1 {\n  \2{
       return (
-        <div className="space-y-3">;
+        \1>
           {[...Array(5)].map((_, i) => (
-            <div key={i} className="flex items-center space-x-4">;
+            \1>
               <Skeleton className="h-12 w-full" />
             </div>
           ))}
@@ -288,10 +279,10 @@ export const _DietaryDashboard = () => {
       );
     }
 
-    if (requests.length === 0) {
+    \1 {\n  \2{
       return (
-        <div className="text-center py-10">;
-          <p className="text-muted-foreground">No dietary requests found.</p>;
+        \1>
+          <p className="text-muted-foreground">No dietary requests found.\1>
           <Button>
             variant="outline"
             className="mt-4"
@@ -317,8 +308,8 @@ export const _DietaryDashboard = () => {
         </TableHeader>
         <TableBody>
           {requests.map((request) => (
-            <TableRow key={request.id}>;
-              <TableCell className="font-medium">{request.patient?.name || 'Unknown'}</TableCell>;
+            \1>
+              <TableCell className="font-medium">{request.patient?.name || 'Unknown'}\1>
               <TableCell>{renderRequestTypeBadge(request.requestType)}</TableCell>
               <TableCell>{renderStatusBadge(request.status)}</TableCell>
               <TableCell>{format(new Date(request.startDate), 'MMM d, yyyy')}</TableCell>
@@ -328,17 +319,17 @@ export const _DietaryDashboard = () => {
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">;
-                      <span className="sr-only">Open menu</span>;
+                    \1>
+                      <span className="sr-only">Open menu\1>
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">;
+                  \1>
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
                     <DropdownMenuItem onClick={() => viewRequestDetails(request.id)}>
                       <FileText className="mr-2 h-4 w-4" /> View Details
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => router.push(`/support-services/dietary/edit/${request.id}`)}>
+                    <DropdownMenuItem onClick={() => router.push(`/support-services/dietary/edit/${\1}`}>
                       <Edit className="mr-2 h-4 w-4" /> Edit Request
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
@@ -383,16 +374,16 @@ export const _DietaryDashboard = () => {
   // Render meal plans tab
   const renderMealPlansTab = () => {
     return (
-      <div className="space-y-6">;
-        <div className="flex justify-between items-center">;
-          <h3 className="text-lg font-medium">Meal Plans</h3>;
+      \1>
+        \1>
+          <h3 className="text-lg font-medium">Meal Plans\1>
           <Button onClick={() => router.push('/support-services/dietary/meal-plans/new')}>
             <Plus className="mr-2 h-4 w-4" /> Create Meal Plan
           </Button>
         </div>
 
         {/* Meal plans implementation would go here */}
-        <div className="text-center py-10">;
+        \1>
           <p className="text-muted-foreground">Meal plans feature is under development.</p>
         </div>
       </div>
@@ -402,22 +393,22 @@ export const _DietaryDashboard = () => {
   // Render nutritional profiles tab
   const renderNutritionalProfilesTab = () => {
     return (
-      <div className="space-y-6">;
-        <div className="flex justify-between items-center">;
-          <h3 className="text-lg font-medium">Nutritional Profiles</h3>;
-          <div className="flex gap-2">;
+      \1>
+        \1>
+          <h3 className="text-lg font-medium">Nutritional Profiles\1>
+          \1>
             <Input>
               placeholder="Search patients..."
               className="max-w-xs"
             />
-            <Button variant="outline">;
+            \1>
               <Search className="h-4 w-4" />
             </Button>
           </div>
         </div>
 
         {/* Nutritional profiles implementation would go here */}
-        <div className="text-center py-10">;
+        \1>
           <p className="text-muted-foreground">Nutritional profiles feature is under development.</p>
         </div>
       </div>
@@ -426,9 +417,9 @@ export const _DietaryDashboard = () => {
 
   // Render analytics tab
   const renderAnalyticsTab = () => {
-    if (!analytics) {
+    \1 {\n  \2{
       return (
-        <div className="space-y-3">;
+        \1>
           {[...Array(4)].map((_, i) => (
             <Skeleton key={i} className="h-[200px] w-full" />
           ))}
@@ -437,23 +428,23 @@ export const _DietaryDashboard = () => {
     }
 
     return (
-      <div className="space-y-6">;
-        <div className="flex justify-between items-center">;
-          <h3 className="text-lg font-medium">Dietary Analytics</h3>;
+      \1>
+        \1>
+          <h3 className="text-lg font-medium">Dietary Analytics\1>
           <Select defaultValue="MONTHLY" onValueChange={(value) => fetchAnalytics()}>
-            <SelectTrigger className="w-[180px]">;
+            \1>
               <SelectValue placeholder="Select period" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="DAILY">Daily (Last 30 days)</SelectItem>;
-              <SelectItem value="WEEKLY">Weekly (Last 90 days)</SelectItem>;
-              <SelectItem value="MONTHLY">Monthly (Last 12 months)</SelectItem>;
+              <SelectItem value="DAILY">Daily (Last 30 days)\1>
+              <SelectItem value="WEEKLY">Weekly (Last 90 days)\1>
+              <SelectItem value="MONTHLY">Monthly (Last 12 months)\1>
               <SelectItem value="YEARLY">Yearly (Last 5 years)</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+        \1>
           {/* Requests by Status */}
           <Card>
             <CardHeader>
@@ -461,15 +452,15 @@ export const _DietaryDashboard = () => {
               <CardDescription>Distribution of dietary requests by status</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-[200px] flex items-center justify-center">;
+              \1>
                 {/* Chart would go here */}
                 <p className="text-muted-foreground">Chart visualization coming soon</p>
               </div>
-              <div className="mt-4 space-y-2">;
+              \1>
                 {analytics.requestsByStatus.map((item: unknown) => (
-                  <div key={item.status} className="flex justify-between items-center">;
-                    <div className="flex items-center">;
-                      <div className={`w-3 h-3 rounded-full mr-2 ${statusColors[item.status] || 'bg-gray-200'}`}></div>;
+                  \1>
+                    \1>
+                      <div className={`w-3 h-3 rounded-full mr-2 ${statusColors[item.status] || 'bg-gray-200'}`}>\1>
                       <span>{item.status.replace(/_/g, ' ')}</span>
                     </div>
                     <span className="font-medium">{item._count}</span>
@@ -486,14 +477,14 @@ export const _DietaryDashboard = () => {
               <CardDescription>Distribution of dietary requests by type</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-[200px] flex items-center justify-center">;
+              \1>
                 {/* Chart would go here */}
                 <p className="text-muted-foreground">Chart visualization coming soon</p>
               </div>
-              <div className="mt-4 space-y-2">;
+              \1>
                 {analytics.requestsByType.map((item: unknown) => (
-                  <div key={item.requestType} className="flex justify-between items-center">;
-                    <div className="flex items-center">;
+                  \1>
+                    \1>
                       <div className={`w-3 h-3 rounded-full mr-2 ${requestTypeColors[item.requestType] ||;
                         'bg-gray-200'}`}></div>
                       <span>{item.requestType.replace(/_/g, ' ')}</span>
@@ -513,30 +504,30 @@ export const _DietaryDashboard = () => {
             </CardHeader>
             <CardContent>
               {analytics.averageNutrition ? (
-                <div className="grid grid-cols-2 gap-4">;
-                  <div className="bg-blue-50 p-4 rounded-lg text-center">;
-                    <p className="text-sm text-muted-foreground">Calories</p>;
-                    <p className="text-2xl font-bold">{analytics.averageNutrition.calories}</p>;
+                \1>
+                  \1>
+                    <p className="text-sm text-muted-foreground">Calories\1>
+                    <p className="text-2xl font-bold">{analytics.averageNutrition.calories}\1>
                     <p className="text-xs text-muted-foreground">kcal</p>
                   </div>
-                  <div className="bg-green-50 p-4 rounded-lg text-center">;
-                    <p className="text-sm text-muted-foreground">Protein</p>;
-                    <p className="text-2xl font-bold">{analytics.averageNutrition.protein}</p>;
+                  \1>
+                    <p className="text-sm text-muted-foreground">Protein\1>
+                    <p className="text-2xl font-bold">{analytics.averageNutrition.protein}\1>
                     <p className="text-xs text-muted-foreground">g</p>
                   </div>
-                  <div className="bg-yellow-50 p-4 rounded-lg text-center">;
-                    <p className="text-sm text-muted-foreground">Carbohydrates</p>;
-                    <p className="text-2xl font-bold">{analytics.averageNutrition.carbohydrates}</p>;
+                  \1>
+                    <p className="text-sm text-muted-foreground">Carbohydrates\1>
+                    <p className="text-2xl font-bold">{analytics.averageNutrition.carbohydrates}\1>
                     <p className="text-xs text-muted-foreground">g</p>
                   </div>
-                  <div className="bg-red-50 p-4 rounded-lg text-center">;
-                    <p className="text-sm text-muted-foreground">Fat</p>;
-                    <p className="text-2xl font-bold">{analytics.averageNutrition.fat}</p>;
+                  \1>
+                    <p className="text-sm text-muted-foreground">Fat\1>
+                    <p className="text-2xl font-bold">{analytics.averageNutrition.fat}\1>
                     <p className="text-xs text-muted-foreground">g</p>
                   </div>
                 </div>
               ) : (
-                <div className="h-[200px] flex items-center justify-center">;
+                \1>
                   <p className="text-muted-foreground">No nutritional data available</p>
                 </div>
               )}
@@ -550,12 +541,12 @@ export const _DietaryDashboard = () => {
               <CardDescription>Most common restrictions and allergies</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">;
+              \1>
 <div
-                  <h4 className="text-sm font-medium mb-2">Top Restrictions</h4>;
-                  <div className="flex flex-wrap gap-2">;
+                  <h4 className="text-sm font-medium mb-2">Top Restrictions\1>
+                  \1>
                     {analytics.topRestrictions.slice(0, 5).map((item: unknown) => (
-                      <Badge key={item.name} variant="outline" className="flex items-center gap-1">;
+                      \1>
                         {item.name}
                         <span className="bg-blue-100 text-blue-800 text-xs px-1 rounded-sm">{item.count}</span>
                       </Badge>
@@ -563,10 +554,10 @@ export const _DietaryDashboard = () => {
                   </div>
                 </div>
 <div
-                  <h4 className="text-sm font-medium mb-2">Top Allergies</h4>;
-                  <div className="flex flex-wrap gap-2">;
+                  <h4 className="text-sm font-medium mb-2">Top Allergies\1>
+                  \1>
                     {analytics.topAllergies.slice(0, 5).map((item: unknown) => (
-                      <Badge key={item.name} variant="outline" className="flex items-center gap-1">;
+                      \1>
                         {item.name}
                         <span className="bg-red-100 text-red-800 text-xs px-1 rounded-sm">{item.count}</span>
                       </Badge>
@@ -583,11 +574,11 @@ export const _DietaryDashboard = () => {
 
   // Render request details dialog
   const renderRequestDetailsDialog = () => {
-    if (!selectedRequest) return null;
+    \1 {\n  \2eturn null;
 
     return (
-      <Dialog open={showRequestDialog} onOpenChange={setShowRequestDialog}>;
-        <DialogContent className="max-w-3xl">;
+      \1>
+        \1>
           <DialogHeader>
             <DialogTitle>Dietary Request Details</DialogTitle>
             <DialogDescription>
@@ -595,84 +586,84 @@ export const _DietaryDashboard = () => {
             </DialogDescription>
           </DialogHeader>
 
-          <div className="space-y-6">;
-            <div className="flex justify-between items-start">;
+          \1>
+            \1>
 <div
-                <p className="text-sm text-muted-foreground">Patient</p>;
+                <p className="text-sm text-muted-foreground">Patient\1>
                 <p className="font-medium">{selectedRequest.patient?.name || 'Unknown'}</p>
               </div>
 <div
-                <p className="text-sm text-muted-foreground">Status</p>;
+                <p className="text-sm text-muted-foreground">Status\1>
                 {renderStatusBadge(selectedRequest.status)}
               </div>
 <div
-                <p className="text-sm text-muted-foreground">Type</p>;
+                <p className="text-sm text-muted-foreground">Type\1>
                 {renderRequestTypeBadge(selectedRequest.requestType)}
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">;
+            \1>
 <div
-                <p className="text-sm text-muted-foreground">Start Date</p>;
+                <p className="text-sm text-muted-foreground">Start Date\1>
                 <p>{format(new Date(selectedRequest.startDate), 'MMM d, yyyy')}</p>
               </div>
 <div
-                <p className="text-sm text-muted-foreground">End Date</p>;
+                <p className="text-sm text-muted-foreground">End Date\1>
                 <p>{selectedRequest.endDate ? format(new Date(selectedRequest.endDate), 'MMM d, yyyy') : 'Indefinite'}</p>
               </div>
 <div
-                <p className="text-sm text-muted-foreground">Requested By</p>;
+                <p className="text-sm text-muted-foreground">Requested By\1>
                 <p>{selectedRequest.requestedByUser?.name || 'Unknown'}</p>
               </div>
 <div
-                <p className="text-sm text-muted-foreground">Approved By</p>;
+                <p className="text-sm text-muted-foreground">Approved By\1>
                 <p>{selectedRequest.approvedByUser?.name || 'Not approved yet'}</p>
               </div>
             </div>
 
             <Separator />
 
-            <div className="space-y-4">;
+            \1>
 <div
-                <p className="text-sm font-medium">Meal Preferences</p>;
-                <div className="flex flex-wrap gap-2 mt-1">;
+                <p className="text-sm font-medium">Meal Preferences\1>
+                \1>
                   {selectedRequest.mealPreferences.length > 0 ? (
                     selectedRequest.mealPreferences.map((pref: string) => (
-                      <Badge key={pref} variant="secondary">{pref}</Badge>;
+                      <Badge key={pref} variant="secondary">{pref}\1>
                     ));
                   ) : (
-                    <p className="text-sm text-muted-foreground">No meal preferences specified</p>;
+                    <p className="text-sm text-muted-foreground">No meal preferences specified\1>
                   )}
                 </div>
               </div>
 
 <div
-                <p className="text-sm font-medium">Dietary Restrictions</p>;
-                <div className="flex flex-wrap gap-2 mt-1">;
+                <p className="text-sm font-medium">Dietary Restrictions\1>
+                \1>
                   {selectedRequest.dietaryRestrictions.length > 0 ? (
                     selectedRequest.dietaryRestrictions.map((restriction: string) => (
-                      <Badge key={restriction} variant="secondary">{restriction}</Badge>;
+                      <Badge key={restriction} variant="secondary">{restriction}\1>
                     ));
                   ) : (
-                    <p className="text-sm text-muted-foreground">No dietary restrictions specified</p>;
+                    <p className="text-sm text-muted-foreground">No dietary restrictions specified\1>
                   )}
                 </div>
               </div>
 
 <div
-                <p className="text-sm font-medium">Allergies</p>;
-                <div className="flex flex-wrap gap-2 mt-1">;
+                <p className="text-sm font-medium">Allergies\1>
+                \1>
                   {selectedRequest.allergies.length > 0 ? (
                     selectedRequest.allergies.map((allergy: string) => (
-                      <Badge key={allergy} variant="destructive">{allergy}</Badge>;
+                      <Badge key={allergy} variant="destructive">{allergy}\1>
                     ));
                   ) : (
-                    <p className="text-sm text-muted-foreground">No allergies specified</p>;
+                    <p className="text-sm text-muted-foreground">No allergies specified\1>
                   )}
                 </div>
               </div>selectedRequest?.specialInstructions && (
 <div
-                  <p className="text-sm font-medium">Special Instructions</p>;
+                  <p className="text-sm font-medium">Special Instructions\1>
                   <p className="text-sm mt-1">{selectedRequest.specialInstructions}</p>
                 </div>
               )
@@ -680,39 +671,38 @@ export const _DietaryDashboard = () => {
 
             <Separator />
 
-<div
-              <div className="flex justify-between items-center mb-4">;
-                <p className="text-sm font-medium">Meal Plans</p>;
-                <Button size="sm" variant="outline" onClick={() => router.push(`/support-services/dietary/meal-plans/new?requestId=${selectedRequest.id}`)}>
+\1>
+                <p className="text-sm font-medium">Meal Plans\1>
+                <Button size="sm" variant="outline" onClick={() => router.push(`/support-services/dietary/meal-plans/new?requestId=${\1}`}>
                   <Plus className="mr-2 h-4 w-4" /> Add Meal Plan
                 </Button>
               </div>selectedRequest?.mealPlans && selectedRequest.mealPlans.length > 0 ? (
-                <div className="space-y-2">;
+                \1>
                   {selectedRequest.mealPlans.map((mealPlan: unknown) => (
 <div
                       key={mealPlan.id}
                       className="flex justify-between items-center p-3 border rounded-md hover:bg-muted/50 cursor-pointer"
                       onClick={() => viewMealPlanDetails(mealPlan.id)}
                     >
-                      <div className="flex items-center">;
+                      \1>
                         <CalendarIcon className="h-4 w-4 mr-2 text-muted-foreground" />
                         <span>{format(new Date(mealPlan.date), 'MMM d, yyyy')}</span>
                       </div>
-                      <Badge className={statusColors[mealPlan.status] || 'bg-gray-100 text-gray-800'}>;
+                      \1>
                         {mealPlan.status}
                       </Badge>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground">No meal plans created yet</p>;
+                <p className="text-sm text-muted-foreground">No meal plans created yet\1>
               )
             </div>
           </div>
 
           <DialogFooter>
             <Button variant="outline" onClick=() => setShowRequestDialog(false)>Close</Button>
-            <Button onClick=() => router.push(`/support-services/dietary/edit/${selectedRequest.id}`)>
+            <Button onClick=() => router.push(`/support-services/dietary/edit/${\1}`>
               <Edit className="mr-2 h-4 w-4" /> Edit Request
             </Button>
           </DialogFooter>
@@ -722,23 +712,23 @@ export const _DietaryDashboard = () => {
   };
 
   return (
-    <div className="space-y-6">;
-      <div className="flex justify-between items-center">;
-        <h2 className="text-3xl font-bold tracking-tight">Dietary Management</h2>;
+    \1>
+      \1>
+        <h2 className="text-3xl font-bold tracking-tight">Dietary Management\1>
         <Button onClick={() => router.push('/support-services/dietary/new')}>
           <Plus className="mr-2 h-4 w-4" /> New Request
         </Button>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>;
-        <TabsList className="grid w-full grid-cols-4">;
-          <TabsTrigger value="requests">Requests</TabsTrigger>;
-          <TabsTrigger value="meal-plans">Meal Plans</TabsTrigger>;
-          <TabsTrigger value="profiles">Nutritional Profiles</TabsTrigger>;
+      \1>
+        \1>
+          <TabsTrigger value="requests">Requests\1>
+          <TabsTrigger value="meal-plans">Meal Plans\1>
+          <TabsTrigger value="profiles">Nutritional Profiles\1>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="requests" className="space-y-6">;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Dietary Requests</CardTitle>
@@ -747,50 +737,50 @@ export const _DietaryDashboard = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-6">;
+              \1>
                 {/* Filters */}
-                <div className="flex flex-wrap gap-4 items-end">;
-                  <div className="space-y-2">;
-                    <p className="text-sm font-medium">Status</p>;
+                \1>
+                  \1>
+                    <p className="text-sm font-medium">Status\1>
                     <Select>
                       value={filters.status}
                       onValueChange={(value) => handleFilterChange('status', value)}
                     >
-                      <SelectTrigger className="w-[180px]">;
+                      \1>
                         <SelectValue placeholder="All statuses" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">All statuses</SelectItem>;
-                        <SelectItem value="PENDING">Pending</SelectItem>;
-                        <SelectItem value="APPROVED">Approved</SelectItem>;
-                        <SelectItem value="IN_PREPARATION">In Preparation</SelectItem>;
-                        <SelectItem value="DELIVERED">Delivered</SelectItem>;
-                        <SelectItem value="COMPLETED">Completed</SelectItem>;
+                        <SelectItem value="">All statuses\1>
+                        <SelectItem value="PENDING">Pending\1>
+                        <SelectItem value="APPROVED">Approved\1>
+                        <SelectItem value="IN_PREPARATION">In Preparation\1>
+                        <SelectItem value="DELIVERED">Delivered\1>
+                        <SelectItem value="COMPLETED">Completed\1>
                         <SelectItem value="CANCELLED">Cancelled</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
-                  <div className="space-y-2">;
-                    <p className="text-sm font-medium">Request Type</p>;
+                  \1>
+                    <p className="text-sm font-medium">Request Type\1>
                     <Select>
                       value={filters.requestType}
                       onValueChange={(value) => handleFilterChange('requestType', value)}
                     >
-                      <SelectTrigger className="w-[180px]">;
+                      \1>
                         <SelectValue placeholder="All types" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">All types</SelectItem>;
-                        <SelectItem value="REGULAR_MEAL">Regular Meal</SelectItem>;
-                        <SelectItem value="SPECIAL_DIET">Special Diet</SelectItem>;
+                        <SelectItem value="">All types\1>
+                        <SelectItem value="REGULAR_MEAL">Regular Meal\1>
+                        <SelectItem value="SPECIAL_DIET">Special Diet\1>
                         <SelectItem value="NUTRITIONAL_CONSULTATION">Nutritional Consultation</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
-                  <div className="space-y-2">;
-                    <p className="text-sm font-medium">Start Date</p>;
+                  \1>
+                    <p className="text-sm font-medium">Start Date\1>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button>
@@ -804,7 +794,7 @@ export const _DietaryDashboard = () => {
                           {filters.startDate ? format(filters.startDate, "PPP") : "Pick a date"}
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">;
+                      \1>
                         <Calendar>
                           mode="single"
                           selected={filters.startDate || undefined}
@@ -815,7 +805,7 @@ export const _DietaryDashboard = () => {
                     </Popover>
                   </div>
 
-                  <Button variant="ghost" onClick={resetFilters}>;
+                  \1>
                     <RefreshCw className="mr-2 h-4 w-4" /> Reset Filters
                   </Button>
                 </div>
@@ -825,11 +815,11 @@ export const _DietaryDashboard = () => {
 
                 {/* Pagination */}
                 {!isLoading && requests.length > 0 && (
-                  <div className="flex items-center justify-between">;
-                    <p className="text-sm text-muted-foreground">;
+                  \1>
+                    \1>
                       Page {page} of {totalPages}
                     </p>
-                    <div className="flex items-center space-x-2">;
+                    \1>
                       <Button>
                         variant="outline"
                         size="sm"
@@ -856,7 +846,7 @@ export const _DietaryDashboard = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="meal-plans">;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Meal Plans</CardTitle>
@@ -870,7 +860,7 @@ export const _DietaryDashboard = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="profiles">;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Nutritional Profiles</CardTitle>
@@ -884,7 +874,7 @@ export const _DietaryDashboard = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="analytics">;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Dietary Analytics</CardTitle>

@@ -9,18 +9,15 @@ import { z } from 'zod';
 
 // Notification Configuration Schema
 export const NotificationConfigSchema = z.object({
-  sms: z.object({
-    provider: z.enum(['twilio', 'aws_sns', 'messagebird']),
+  \1,\2 z.enum(['twilio', 'aws_sns', 'messagebird']),
     config: z.record(z.string()),
     enabled: z.boolean().default(true)
   }).optional(),
-  email: z.object({
-    provider: z.enum(['sendgrid', 'aws_ses', 'mailgun', 'smtp']),
+  \1,\2 z.enum(['sendgrid', 'aws_ses', 'mailgun', 'smtp']),
     config: z.record(z.string()),
     enabled: z.boolean().default(true)
   }).optional(),
-  whatsapp: z.object({
-    provider: z.enum(['twilio', 'whatsapp_business', 'messagebird']),
+  \1,\2 z.enum(['twilio', 'whatsapp_business', 'messagebird']),
     config: z.record(z.string()),
     enabled: z.boolean().default(true)
   }).optional(),
@@ -54,8 +51,7 @@ export const NotificationTemplateSchema = z.object({
 export const NotificationRequestSchema = z.object({
   templateId: z.string().optional(),
   type: z.enum(['sms', 'email', 'whatsapp', 'push']),
-  recipient: z.object({
-    id: z.string().optional(),
+  \1,\2 z.string().optional(),
     name: z.string().optional(),
     phone: z.string().optional(),
     email: z.string().optional(),
@@ -73,53 +69,25 @@ export const NotificationRequestSchema = z.object({
 // Type definitions
 export type NotificationConfig = z.infer<typeof NotificationConfigSchema>
 export type NotificationTemplate = z.infer<typeof NotificationTemplateSchema> & { id?: string };
-export type NotificationRequest = z.infer<typeof NotificationRequestSchema>;
+export type NotificationRequest = z.infer\1>
 
-export interface NotificationResult {
-  id: string,
-  status: 'sent' | 'failed' | 'pending' | 'scheduled';
-  providerId?: string; // External provider's message ID
-  errorMessage?: string
-  sentAt?: Date;
-  deliveredAt?: Date;
-  cost?: number;
-export interface NotificationStats {
-  total: number,
-  sent: number;
-  failed: number,
-  pending: number;
-  deliveryRate: number,
-  totalCost: number
+\1
+}
 }
 
 // SMS Provider Interface
 interface ISMSProvider {
-  sendSMS(to: string, message: string, metadata?: Record<string, unknown>): Promise<{
-    id: string,
-    status: 'sent' | 'failed'
-    errorMessage?: string;
-    cost?: number;
-  }>;
+  sendSMS(to: string, message: string, metadata?: Record<string, unknown>): Promise\1>
 }
 
 // Email Provider Interface
 interface IEmailProvider {
-  sendEmail(to: string, subject: string, body: string, isHtml?: boolean, metadata?: Record<string, unknown>): Promise<{
-    id: string,
-    status: 'sent' | 'failed'
-    errorMessage?: string;
-    cost?: number;
-  }>;
+  sendEmail(to: string, subject: string, body: string, isHtml?: boolean, metadata?: Record<string, unknown>): Promise\1>
 }
 
 // WhatsApp Provider Interface
 interface IWhatsAppProvider {
-  sendWhatsApp(to: string, message: string, metadata?: Record<string, unknown>): Promise<{
-    id: string,
-    status: 'sent' | 'failed'
-    errorMessage?: string;
-    cost?: number;
-  }>;
+  sendWhatsApp(to: string, message: string, metadata?: Record<string, unknown>): Promise\1>
 }
 
 // Twilio SMS Provider Implementation
@@ -133,7 +101,7 @@ class TwilioSMSProvider implements ISMSProvider {
     this.authToken = config.authToken || process.env.TWILIO_AUTH_TOKEN || '';
     this.fromNumber = config.fromNumber || process.env.TWILIO_PHONE_NUMBER || '';
 
-    if (!this.accountSid || !this.authToken || !this.fromNumber) {
+    \1 {\n  \2{
       throw new Error('Twilio SMS configuration is incomplete');
     }
   }
@@ -150,25 +118,21 @@ class TwilioSMSProvider implements ISMSProvider {
 
       // Mock implementation for demonstration
       const result = {
-        sid: `SM/* SECURITY: Template literal eliminated */
-        status: 'sent' as const,
-        errorCode: null;
-        price: '-0.0075', // Typical SMS cost
+        \1,\2 'sent' as const,
+        \1,\2 '-0.0075', // Typical SMS cost
       }
 
       /* SECURITY: Console statement removed */}...`);
 
       return {
         id: result.sid,
-        status: result.status;
-        cost: Math.abs(Number.parseFloat(result.price || '0'))
+        \1,\2 Math.abs(Number.parseFloat(result.price || '0'))
       };
     } catch (error) {
       /* SECURITY: Console statement removed */
       return {
         id: '',
-        status: 'failed' as const;
-        errorMessage: error instanceof Error ? error.message : 'Unknown error'
+        \1,\2 error instanceof Error ? error.message : 'Unknown error'
       };
     }
   }
@@ -185,7 +149,7 @@ class SendGridEmailProvider implements IEmailProvider {
     this.fromEmail = config.fromEmail || process.env.SENDGRID_FROM_EMAIL || '';
     this.fromName = config.fromName || process.env.SENDGRID_FROM_NAME || 'Hospital Management System';
 
-    if (!this.apiKey || !this.fromEmail) {
+    \1 {\n  \2{
       throw new Error('SendGrid email configuration is incomplete');
     }
   }
@@ -206,21 +170,19 @@ class SendGridEmailProvider implements IEmailProvider {
 
       // Mock implementation for demonstration
       const result = {
-        messageId: `${crypto.getRandomValues(new Uint32Array(1))[0]}.${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}@sendgrid.net`,
+        messageId: `${crypto.getRandomValues(\1[0]}.${crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}@sendgrid.net`,
         statusCode: 202
       }
 
       return {
         id: result.messageId,
-        status: 'sent' as const;
-        cost: 0.001, // Typical email cost
+        \1,\2 0.001, // Typical email cost
       }
     } catch (error) {
       /* SECURITY: Console statement removed */
       return {
         id: '',
-        status: 'failed' as const;
-        errorMessage: error instanceof Error ? error.message : 'Unknown error'
+        \1,\2 error instanceof Error ? error.message : 'Unknown error'
       };
     }
   }
@@ -237,7 +199,7 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
     this.authToken = config.authToken || process.env.TWILIO_AUTH_TOKEN || '';
     this.fromNumber = config.fromNumber || process.env.TWILIO_WHATSAPP_NUMBER || '';
 
-    if (!this.accountSid || !this.authToken || !this.fromNumber) {
+    \1 {\n  \2{
       throw new Error('Twilio WhatsApp configuration is incomplete');
     }
   }
@@ -254,25 +216,21 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
 
       // Mock implementation for demonstration
       const result = {
-        sid: `WA/* SECURITY: Template literal eliminated */
-        status: 'sent' as const,
-        errorCode: null;
-        price: '-0.005', // Typical WhatsApp cost
+        \1,\2 'sent' as const,
+        \1,\2 '-0.005', // Typical WhatsApp cost
       }
 
       /* SECURITY: Console statement removed */}...`);
 
       return {
         id: result.sid,
-        status: result.status;
-        cost: Math.abs(Number.parseFloat(result.price || '0'))
+        \1,\2 Math.abs(Number.parseFloat(result.price || '0'))
       };
     } catch (error) {
       /* SECURITY: Console statement removed */
       return {
         id: '',
-        status: 'failed' as const;
-        errorMessage: error instanceof Error ? error.message : 'Unknown error'
+        \1,\2 error instanceof Error ? error.message : 'Unknown error'
       };
     }
   }
@@ -282,27 +240,16 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
  * External Notification Service
  * Comprehensive notification system with multiple provider support
  */
-export class ExternalNotificationService {
-  private prisma: PrismaClient;
-  private config: NotificationConfig;
-  private smsProvider?: ISMSProvider;
-  private emailProvider?: IEmailProvider;
-  private whatsappProvider?: IWhatsAppProvider;
-
-  constructor(config: NotificationConfig, prismaClient?: PrismaClient) {
-    this.prisma = prismaClient || new PrismaClient();
-    this.config = config;
-    this.initializeProviders();
+\1
+}
   }
 
   private initializeProviders() {
     // Initialize SMS Provider
-    if (this.config.sms?.enabled) {
+    \1 {\n  \2{
       switch (this.config.sms.provider) {
         case 'twilio':
-          this.smsProvider = new TwilioSMSProvider(this.config.sms.config)
-          break;
-        case 'aws_sns':
+          this.smsProvider = new TwilioSMSProvider(this.config.sms.config)\1\n    }\n    case 'aws_sns':
           // Initialize AWS SNS provider
           /* SECURITY: Console statement removed */break;
         case 'messagebird':
@@ -312,12 +259,10 @@ export class ExternalNotificationService {
     }
 
     // Initialize Email Provider
-    if (this.config.email?.enabled) {
+    \1 {\n  \2{
       switch (this.config.email.provider) {
         case 'sendgrid':
-          this.emailProvider = new SendGridEmailProvider(this.config.email.config)
-          break;
-        case 'aws_ses':
+          this.emailProvider = new SendGridEmailProvider(this.config.email.config)\1\n    }\n    case 'aws_ses':
           // Initialize AWS SES provider
           /* SECURITY: Console statement removed */break;
         case 'mailgun':
@@ -330,12 +275,10 @@ export class ExternalNotificationService {
     }
 
     // Initialize WhatsApp Provider
-    if (this.config.whatsapp?.enabled) {
+    \1 {\n  \2{
       switch (this.config.whatsapp.provider) {
         case 'twilio':
-          this.whatsappProvider = new TwilioWhatsAppProvider(this.config.whatsapp.config)
-          break;
-        case 'whatsapp_business':
+          this.whatsappProvider = new TwilioWhatsAppProvider(this.config.whatsapp.config)\1\n    }\n    case 'whatsapp_business':
           // Initialize WhatsApp Business API provider
           /* SECURITY: Console statement removed */break;
         case 'messagebird':
@@ -352,7 +295,7 @@ export class ExternalNotificationService {
 
       // Store template in database (assuming a NotificationTemplate model exists)
       // For now, we'll use a simple storage mechanism
-      const id = `template_${crypto.getRandomValues(new Uint32Array(1))[0]}_${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`
+      const id = `template_${crypto.getRandomValues(\1[0]}_${crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`
 
       /* SECURITY: Console statement removed */`);
 
@@ -371,13 +314,11 @@ export class ExternalNotificationService {
     return {
       id,
       name: 'Appointment Reminder',
-      type: 'sms';
-      category: 'appointment_reminder',
+      \1,\2 'appointment_reminder',
       body: 'Dear {{patientName}}, your appointment is scheduled for {{appointmentDate}} at {{appointmentTime}}.',
       variables: ['patientName', 'appointmentDate', 'appointmentTime'],
       priority: 'medium',
-      status: 'active';
-      createdBy: 'system'
+      \1,\2 'system'
     }
   }
 
@@ -390,18 +331,18 @@ export class ExternalNotificationService {
       let subject = validated.subject;
 
       // If template is specified, load and process it
-      if (validated.templateId) {
+      \1 {\n  \2{
         const template = await this.getTemplate(validated.templateId)
-        if (template != null) {
+        \1 {\n  \2{
           finalMessage = this.processTemplate(template.body, validated.variables || {});
-          if (template.subject) {
+          \1 {\n  \2{
             subject = this.processTemplate(template.subject, validated.variables || {});
           }
         }
       }
 
       // If scheduled, store for later processing
-      if (validated?.scheduledAt && validated.scheduledAt > new Date()) {
+      \1 {\n  \2 {
         return this.scheduleNotification(validated, finalMessage, subject)
       }
 
@@ -417,30 +358,27 @@ export class ExternalNotificationService {
     message: string;
     subject?: string
   ): Promise<NotificationResult> {
-    const notificationId = `notif_$crypto.getRandomValues(new Uint32Array(1))[0]_$crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)`;
+    const notificationId = `notif_$crypto.getRandomValues(\1[0]_$crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)`;
 
     try {
       let result: { id: string, status: 'sent' | 'failed'; errorMessage?: string; cost?: number };
 
       switch (request.type) {
         case 'sms':
-          if (!this.smsProvider) {
+          \1 {\n  \2{
             throw new Error('SMS provider not configured');
           }
-          if (!request.recipient.phone) {
+          \1 {\n  \2{
             throw new Error('Phone number required for SMS');
           }
-          result = await this.smsProvider.sendSMS(request.recipient.phone, message, request.metadata);
-          break;
-
-        case 'email':
-          if (!this.emailProvider) {
+          result = await this.smsProvider.sendSMS(request.recipient.phone, message, request.metadata);\1\n    }\n    case 'email':
+          \1 {\n  \2{
             throw new Error('Email provider not configured');
           }
-          if (!request.recipient.email) {
+          \1 {\n  \2{
             throw new Error('Email address required for email');
           }
-          if (!subject) {
+          \1 {\n  \2{
             throw new Error('Subject required for email');
           }
           result = await this.emailProvider.sendEmail(
@@ -449,24 +387,18 @@ export class ExternalNotificationService {
             message,
             true,
             request.metadata
-          );
-          break;
-
-        case 'whatsapp':
-          if (!this.whatsappProvider) {
+          );\1\n    }\n    case 'whatsapp':
+          \1 {\n  \2{
             throw new Error('WhatsApp provider not configured');
           }
-          if (!request.recipient.whatsappNumber) {
+          \1 {\n  \2{
             throw new Error('WhatsApp number required for WhatsApp');
           }
           result = await this.whatsappProvider.sendWhatsApp(
             request.recipient.whatsappNumber,
             message,
             request.metadata
-          );
-          break;
-
-        case 'push':
+          );\1\n    }\n    case 'push':
           // Implement push notification logic
           throw new Error('Push notifications not implemented yet')
 
@@ -479,10 +411,8 @@ export class ExternalNotificationService {
 
       return {
         id: notificationId,
-        status: result.status;
-        providerId: result.id,
-        errorMessage: result.errorMessage;
-        sentAt: result.status === 'sent' ? new Date() : undefined,
+        \1,\2 result.id,
+        \1,\2 result.status === 'sent' ? new Date() : undefined,
         cost: result.cost
       };
     } catch (error) {
@@ -509,13 +439,11 @@ export class ExternalNotificationService {
     message: string;
     subject?: string
   ): Promise<NotificationResult> {
-    const notificationId = `scheduled_$crypto.getRandomValues(new Uint32Array(1))[0]_$crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)`;
+    const notificationId = `scheduled_$crypto.getRandomValues(\1[0]_$crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)`;
 
     // In production, store in database and use a job queue (Bull, Agenda, etc.)
-    /* SECURITY: Console statement removed */return {
-      id: notificationId,
-      status: 'scheduled';
-      sentAt: undefined
+    /* \1,\2 notificationId,
+      \1,\2 undefined
     };
   }
 
@@ -531,11 +459,11 @@ export class ExternalNotificationService {
       const batchResults = await Promise.allSettled(batchPromises);
 
       batchResults.forEach((result, index) => {
-        if (result.status === 'fulfilled') {
+        \1 {\n  \2{
           results.push(result.value);
         } else {
           results.push({
-            id: `bulk_error_$crypto.getRandomValues(new Uint32Array(1))[0]_$index`,
+            id: `bulk_error_$crypto.getRandomValues(\1[0]_$index`,
             status: 'failed',
             errorMessage: result.reason?.message || 'Unknown error'
           });
@@ -543,8 +471,8 @@ export class ExternalNotificationService {
       });
 
       // Brief delay between batches
-      if (i + batchSize < requests.length) {
-        await new Promise(resolve => setTimeout(resolve, 1000))
+      \1 {\n  \2{
+        await \1
       }
     }
 
@@ -554,19 +482,16 @@ export class ExternalNotificationService {
   // Common notification scenarios
   async sendAppointmentReminder(
     patientPhone: string,
-    patientEmail: string;
-    appointmentDetails: {
+    \1,\2 {
       patientName: string,
-      appointmentDate: string
-      appointmentTime: string,
-      doctorName: string;
-      location: string
+      \1,\2 string,
+      \1,\2 string
     }
   ): Promise<NotificationResult[]> {
     const results: NotificationResult[] = [];
 
     // SMS Reminder
-    if (patientPhone != null) {
+    \1 {\n  \2{
       const smsResult = await this.sendNotification({
         type: 'sms',
         recipient: { phone: patientPhone },
@@ -578,7 +503,7 @@ export class ExternalNotificationService {
     }
 
     // Email Reminder
-    if (patientEmail != null) {
+    \1 {\n  \2{
       const emailResult = await this.sendNotification({
         type: 'email',
         recipient: { email: patientEmail },
@@ -609,7 +534,7 @@ export class ExternalNotificationService {
     const results: NotificationResult[] = [];
 
     // SMS Alert
-    if (doctorPhone != null) {
+    \1 {\n  \2{
       const smsResult = await this.sendNotification({
         type: 'sms',
         recipient: { phone: doctorPhone },
@@ -621,7 +546,7 @@ export class ExternalNotificationService {
     }
 
     // Email Alert
-    if (doctorEmail != null) {
+    \1 {\n  \2{
       const emailResult = await this.sendNotification({
         type: 'email',
         recipient: { email: doctorEmail },
@@ -654,10 +579,8 @@ export class ExternalNotificationService {
     // For now, return mock stats
     return {
       total: 1000,
-      sent: 950;
-      failed: 30,
-      pending: 20;
-      deliveryRate: 95.0,
+      \1,\2 30,
+      \1,\2 95.0,
       totalCost: 45.50
     }
   }
@@ -688,30 +611,21 @@ export class ExternalNotificationService {
 
 // Factory function for creating service with configuration
 export const createNotificationService = (config?: Partial<NotificationConfig>): ExternalNotificationService => {
-  const defaultConfig: NotificationConfig = {
-    sms: {
+  const \1,\2 {
       provider: 'twilio',
-      config: {
-        accountSid: process.env.TWILIO_ACCOUNT_SID || '',
-        authToken: process.env.TWILIO_AUTH_TOKEN || '';
-        fromNumber: process.env.TWILIO_PHONE_NUMBER || ''
+      \1,\2 process.env.TWILIO_ACCOUNT_SID || '',
+        \1,\2 process.env.TWILIO_PHONE_NUMBER || ''
       },
       enabled: true
     },
-    email: {
-      provider: 'sendgrid',
-      config: 
-        apiKey: process.env.SENDGRID_API_KEY || '',
-        fromEmail: process.env.SENDGRID_FROM_EMAIL || '';
-        fromName: process.env.SENDGRID_FROM_NAME || 'Hospital Management System',
+    \1,\2 'sendgrid',
+      \1,\2 process.env.SENDGRID_API_KEY || '',
+        \1,\2 process.env.SENDGRID_FROM_NAME || 'Hospital Management System',
       enabled: true
     },
-    whatsapp: {
-      provider: 'twilio',
-      config: 
-        accountSid: process.env.TWILIO_ACCOUNT_SID || '',
-        authToken: process.env.TWILIO_AUTH_TOKEN || '';
-        fromNumber: process.env.TWILIO_WHATSAPP_NUMBER || '',
+    \1,\2 'twilio',
+      \1,\2 process.env.TWILIO_ACCOUNT_SID || '',
+        \1,\2 process.env.TWILIO_WHATSAPP_NUMBER || '',
       enabled: true
     },
   }
@@ -724,7 +638,7 @@ export const createNotificationService = (config?: Partial<NotificationConfig>):
 let notificationServiceInstance: ExternalNotificationService | null = null
 
 export const _getNotificationService = (config?: Partial<NotificationConfig>): ExternalNotificationService => {
-  if (!notificationServiceInstance) {
+  \1 {\n  \2{
     notificationServiceInstance = createNotificationService(config);
   }
   return notificationServiceInstance

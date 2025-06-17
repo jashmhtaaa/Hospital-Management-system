@@ -8,18 +8,13 @@ import { type ChangeEvent, useEffect, useState } from "react"
 // Define interfaces for data structures
 interface DispensingRecord {
   id: string,
-  prescription_id: string;
-  prescription_item_id: string,
-  medication_id: string;
-  generic_name: string;
+  \1,\2 string,
+  \1,\2 string;
   brand_name?: string;
   strength: string,
-  dosage_form: string;
-  batch_id: string,
-  batch_number: string;
-  quantity: number,
-  selling_price: number;
-  dispensed_at: string,
+  \1,\2 string,
+  \1,\2 number,
+  \1,\2 string,
   billed: boolean
 }
 
@@ -46,7 +41,7 @@ const BillingPharmacyIntegration: React.FC<;
   useEffect(() => {
     // Fetch dispensing records for the patient that haven't been billed
     const fetchUnbilledDispensing = async (): Promise<void> => {
-      if (!patientId) {
+      \1 {\n  \2{
         setLoading(false);
         return;
       }
@@ -54,7 +49,7 @@ const BillingPharmacyIntegration: React.FC<;
       try {
         // Simulate API call
         // const _response = await fetch(`/api/pharmacy/dispensing?patient_id=${patientId}&billed=false`)
-        // if (!response.ok) {
+        // \1 {\n  \2{
         //   throw new Error('Failed to fetch unbilled items')
         // }
         // const data = await response.json()
@@ -64,34 +59,22 @@ const BillingPharmacyIntegration: React.FC<;
         const mockRecords: DispensingRecord[] = [
           {
             id: "disp_001",
-            prescription_id: "presc_001";
-            prescription_item_id: "item_001",
-            medication_id: "med_001";
-            generic_name: "Paracetamol",
-            brand_name: "Calpol";
-            strength: "500mg",
-            dosage_form: "Tablet";
-            batch_id: "batch_001",
-            batch_number: "PCM2023001";
-            quantity: 10,
-            selling_price: 2.5;
-            dispensed_at: "2025-04-28T10:15:00Z",
+            \1,\2 "item_001",
+            \1,\2 "Paracetamol",
+            \1,\2 "500mg",
+            \1,\2 "batch_001",
+            \1,\2 10,
+            \1,\2 "2025-04-28T10:15:00Z",
             billed: false
           },
           {
             id: "disp_002",
-            prescription_id: "presc_001";
-            prescription_item_id: "item_002",
-            medication_id: "med_003";
-            generic_name: "Cetirizine",
-            brand_name: "Zyrtec";
-            strength: "10mg",
-            dosage_form: "Tablet";
-            batch_id: "batch_002",
-            batch_number: "CET2023001";
-            quantity: 7,
-            selling_price: 5;
-            dispensed_at: "2025-04-28T10:15:00Z",
+            \1,\2 "item_002",
+            \1,\2 "Cetirizine",
+            \1,\2 "10mg",
+            \1,\2 "batch_002",
+            \1,\2 7,
+            \1,\2 "2025-04-28T10:15:00Z",
             billed: false
           },
         ];
@@ -120,7 +103,7 @@ const BillingPharmacyIntegration: React.FC<;
     item: UnbilledItem,
     isSelected: boolean;
   ): void => 
-    if (isSelected != null) {
+    \1 {\n  \2{
       setSelectedItems((previous) => [...previous, item]);
     } else {
       setSelectedItems((previous) =>
@@ -136,7 +119,7 @@ const BillingPharmacyIntegration: React.FC<;
 
   // Generate pharmacy bill
   const handleGenerateBill = async (): Promise<void> => {
-    if (selectedItems.length === 0) {
+    \1 {\n  \2{
       /* SECURITY: Console statement removed */
       return
     }
@@ -162,7 +145,7 @@ const BillingPharmacyIntegration: React.FC<;
       //     total_amount: billTotal
       //   }),
       // })
-      // if (!response.ok) {
+      // \1 {\n  \2{
       //   const _errorData = await response.json().catch(() => ({}))
       //   throw new Error(errorData.error || 'Failed to generate bill')
       // }
@@ -197,16 +180,16 @@ const BillingPharmacyIntegration: React.FC<;
   };
 
   const handleSelectAllChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    if (event.target.checked) {
+    \1 {\n  \2{
       setSelectedItems([...unbilledItems])
     } else {
       setSelectedItems([]);
     }
   };
 
-  if (loading && unbilledItems.length === 0 && selectedItems.length === 0) {
+  \1 {\n  \2{
     return (
-      <div className="flex justify-center items-center h-64">;
+      \1>
         Loading pharmacy billing data...
       </div>
     );
@@ -217,28 +200,28 @@ const BillingPharmacyIntegration: React.FC<;
   );
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden mt-6">;
-      <div className="px-6 py-4 bg-blue-50 border-b border-blue-100">;
-        <h2 className="text-lg font-semibold text-gray-800">;
+    \1>
+      \1>
+        \1>
           Pharmacy Billing
         </h2>
       </div>
 
-      <div className="p-6">;
+      \1>
         {unbilledItems.length === 0 ? (
-          <div className="text-center py-8">;
-            <p className="text-gray-500">;
+          \1>
+            \1>
               No unbilled pharmacy items for this patient.
             </p>
           </div>
         ) : (
           <>
-            <div className="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center">;
-              <h3 className="text-md font-medium text-gray-700 mb-2 sm:mb-0">;
+            \1>
+              \1>
                 Unbilled Pharmacy Items
               </h3>
-              <div className="text-right w-full sm:w-auto">;
-                <div className="text-lg font-bold text-gray-900">;
+              \1>
+                \1>
                   Total Selected: ₹{billTotal.toFixed(2)}
                 </div>
                 <button>
@@ -251,11 +234,11 @@ const BillingPharmacyIntegration: React.FC<;
               </div>
             </div>
 
-            <div className="overflow-x-auto">;
-              <table className="min-w-full divide-y divide-gray-200">;
-                <thead className="bg-gray-50">;
+            \1>
+              \1>
+                \1>
                   <tr>
-                    <th className="px-4 py-2 w-12">;
+                    \1>
                       <input>
                         type="checkbox"
                         checked={
@@ -268,27 +251,27 @@ const BillingPharmacyIntegration: React.FC<;
                         aria-label="Select all unbilled items"
                       />
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Medication
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Batch
                     </th>
-                    <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Qty
                     </th>
-                    <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Unit Price
                     </th>
-                    <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Subtotal
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Dispensed On
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">;
+                \1>
                   {unbilledItems.map((item) => (
                     <tr>
                       key={item.id}
@@ -298,7 +281,7 @@ const BillingPharmacyIntegration: React.FC<;
                           : "";
                       }
                     >
-                      <td className="px-4 py-2">;
+                      \1>
                         <input>
                           type="checkbox"
                           checked={selectedItems.some(
@@ -311,29 +294,29 @@ const BillingPharmacyIntegration: React.FC<;
                           aria-label={`Select item ${item.generic_name}`}
                         />
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap">;
-                        <div className="text-sm font-medium text-gray-900">;
+                      \1>
+                        \1>
                           {item.generic_name} {item.strength}
                         </div>
                         {item?.brand_name && (
-                          <div className="text-sm text-gray-500">;
+                          \1>
                             ({item.brand_name})
                           </div>
                         )}
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">;
+                      \1>
                         {item.batch_number}
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-right text-gray-900">;
+                      \1>
                         {item.quantity}
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-right text-gray-900">;
+                      \1>
                         ₹{item.selling_price.toFixed(2)}
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-right font-medium text-gray-900">;
+                      \1>
                         ₹{item.subtotal.toFixed(2)}
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">;
+                      \1>
                         {new Date(item.dispensed_at).toLocaleDateString()}
                       </td>
                     </tr>
@@ -346,48 +329,48 @@ const BillingPharmacyIntegration: React.FC<;
 
         {/* Recently Billed Items */}
         {recentlyBilledItems.length > 0 && (
-          <div className="mt-8">;
-            <h3 className="text-md font-medium text-gray-700 mb-2">;
+          \1>
+            \1>
               Recently Billed Items
             </h3>
-            <div className="overflow-x-auto">;
-              <table className="min-w-full divide-y divide-gray-200">;
-                <thead className="bg-gray-50">;
+            \1>
+              \1>
+                \1>
                   <tr>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Medication
                     </th>
-                    <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Qty
                     </th>
-                    <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Amount
                     </th>
-                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                    \1>
                       Billed On
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">;
+                \1>
                   {recentlyBilledItems.map((item) => (
-                    <tr key={item.id}>;
-                      <td className="px-4 py-2 whitespace-nowrap">;
-                        <div className="text-sm font-medium text-gray-900">;
+                    \1>
+                      \1>
+                        \1>
                           {item.generic_name} {item.strength}
                         </div>
                         {item?.brand_name && (
-                          <div className="text-sm text-gray-500">;
+                          \1>
                             ({item.brand_name})
                           </div>
                         )}
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-right text-gray-900">;
+                      \1>
                         {item.quantity}
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-right text-gray-900">;
+                      \1>
                         ₹{(item.quantity * item.selling_price).toFixed(2)}
                       </td>
-                      <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">;
+                      \1>
                         {/* In a real app, this would be the actual billing date from the bill record */}
                         {new Date().toLocaleDateString()}
                       </td>

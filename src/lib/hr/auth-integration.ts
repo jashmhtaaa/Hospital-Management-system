@@ -9,59 +9,51 @@ import { prisma } from "@/lib/prisma";
  * Authentication integration for HR & Asset Management module;
  * This connects the HR module with the central HMS authentication system;
  */
-export const _authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
-  session: {
-    strategy: "jwt"
+export const \1,\2 PrismaAdapter(prisma),
+  \1,\2 "jwt"
   },
-  pages: {
-    signIn: "/login"
+  \1,\2 "/login"
   },
   providers: [
     CredentialsProvider({
       name: "Credentials",
-      credentials: {
-        email: { label: "Email", type: "email" },
+      \1,\2 { label: "Email", type: "email" },
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
+        \1 {\n  \2{
           return null;
         }
 
         const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email
+          \1,\2 credentials.email
           },
-          include: {
-            employee: true,
+          \1,\2 true,
             roles: true
           }
         });
 
-        if (!user) {
+        \1 {\n  \2{
           return null;
         }
 
         const passwordValid = await compare(credentials.password, user.password);
 
-        if (!passwordValid) {
+        \1 {\n  \2{
           return null;
         }
 
         return {
           id: user.id,
-          email: user.email;
-          name: user.name,
-          employeeId: user.employee?.id;
-          roles: user.roles.map(role => role.name)
+          \1,\2 user.name,
+          \1,\2 user.roles.map(role => role.name)
         };
       }
     });
   ],
   callbacks: {
     async session({ session, token }) 
-      if (token != null) {
+      \1 {\n  \2{
         session.user.id = token.id;
         session.user.name = token.name;
         session.user.email = token.email;
@@ -70,7 +62,7 @@ export const _authOptions: NextAuthOptions = {
       }
       return session;,
     async jwt(token, user ) 
-      if (user != null) {
+      \1 {\n  \2{
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;

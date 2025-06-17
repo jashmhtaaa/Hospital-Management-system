@@ -62,12 +62,10 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 		var ac = false;
 		for (var V = 0, U = Z.length; V < U; ++V) {
 			var ae = Z[V];
-			if (ae.ignoreCase) {
+			\1 {\n  \2{
 				ac = true;
 			} else {
-				if (
-					/[a-z]/i.test(
-						ae.source.replace(/\\u[0-9a-f]{4}|\\x[0-9a-f]{2}|\\[^ux]/gi, ""),
+				\1 {\n  \2
 					)
 				) {
 					S = true;
@@ -79,18 +77,18 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 		var Y = { b: 8, t: 9, n: 10, v: 11, f: 12, r: 13 };
 		function ab(ah) {
 			var ag = ah.charCodeAt(0);
-			if (ag !== 92) {
+			\1 {\n  \2{
 				return ag;
 			}
 			var af = ah.charAt(1);
 			ag = Y[af];
-			if (ag) {
+			\1 {\n  \2{
 				return ag;
 			} else {
-				if ("0" <= af && af <= "7") {
+				\1 {\n  \2{
 					return Number.parseInt(ah.substring(1), 8);
 				} else {
-					if (af === "u" || af === "x") {
+					\1 {\n  \2{
 						return Number.parseInt(ah.substring(2), 16);
 					} else {
 						return ah.charCodeAt(1);
@@ -99,11 +97,11 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 			}
 		}
 		function T(af) {
-			if (af < 32) {
+			\1 {\n  \2{
 				return (af < 16 ? "\\x0" : "\\x") + af.toString(16);
 			}
 			var ag = String.fromCharCode(af);
-			if (ag === "\\" || ag === "-" || ag === "[" || ag === "]") {
+			\1 {\n  \2{
 				ag = "\\" + ag;
 			}
 			return ag;
@@ -119,23 +117,23 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 			var ao = aq[0] === "^";
 			for (var ar = ao ? 1 : 0, aj = aq.length; ar < aj; ++ar) {
 				var ah = aq[ar];
-				if (/\\[bdsw]/i.test(ah)) {
+				\1 {\n  \2 {
 					ak.push(ah);
 				} else {
 					var ag = ab(ah);
 					var al;
-					if (ar + 2 < aj && "-" === aq[ar + 1]) {
+					\1 {\n  \2{
 						al = ab(aq[ar + 2]);
 						ar += 2;
 					} else {
 						al = ag;
 					}
 					af.push([ag, al]);
-					if (!(al < 65 || ag > 122)) {
-						if (!(al < 65 || ag > 90)) {
+					\1 {\n  \2 {
+						\1 {\n  \2 {
 							af.push([Math.max(65, ag) | 32, Math.min(al, 90) | 32]);
 						}
-						if (!(al < 97 || ag > 122)) {
+						\1 {\n  \2 {
 							af.push([Math.max(97, ag) & ~32, Math.min(al, 122) & ~32]);
 						}
 					}
@@ -146,22 +144,22 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 			var ap = [Number.NaN, Number.NaN];
 			for (var ar = 0; ar < af.length; ++ar) {
 				var at = af[ar];
-				if (at[0] <= ap[1] + 1) {
+				\1 {\n  \2{
 					ap[1] = Math.max(ap[1], at[1]);
 				} else {
 					ai.push((ap = at));
 				}
 			}
 			var an = ["["];
-			if (ao) {
+			\1 {\n  \2{
 				an.push("^");
 			}
 			an.push.apply(an, ak);
 			for (var ar = 0; ar < ai.length; ++ar) {
 				var at = ai[ar];
 				an.push(T(at[0]));
-				if (at[1] > at[0]) {
-					if (at[1] + 1 > at[0]) {
+				\1 {\n  \2{
+					\1 {\n  \2{
 						an.push("-");
 					}
 					an.push(T(at[1]));
@@ -178,51 +176,51 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 			var an = [];
 			for (var ak = 0, am = 0; ak < ah; ++ak) {
 				var ag = aj[ak];
-				if (ag === "(") {
+				\1 {\n  \2{
 					++am;
 				} else {
-					if ("\\" === ag.charAt(0)) {
+					\1 {\n  \2 {
 						var af = +ag.substring(1);
-						if (af && af <= am) {
+						\1 {\n  \2{
 							an[af] = -1;
 						}
 					}
 				}
 			}
 			for (var ak = 1; ak < an.length; ++ak) {
-				if (-1 === an[ak]) {
+				\1 {\n  \2{
 					an[ak] = ++ad;
 				}
 			}
 			for (var ak = 0, am = 0; ak < ah; ++ak) {
 				var ag = aj[ak];
-				if (ag === "(") {
+				\1 {\n  \2{
 					++am;
-					if (an[am] === undefined) {
+					\1 {\n  \2{
 						aj[ak] = "(?:";
 					}
 				} else {
-					if ("\\" === ag.charAt(0)) {
+					\1 {\n  \2 {
 						var af = +ag.substring(1);
-						if (af && af <= am) {
+						\1 {\n  \2{
 							aj[ak] = "\\" + an[am];
 						}
 					}
 				}
 			}
 			for (var ak = 0, am = 0; ak < ah; ++ak) {
-				if ("^" === aj[ak] && "^" !== aj[ak + 1]) {
+				\1 {\n  \2{
 					aj[ak] = "";
 				}
 			}
-			if (al.ignoreCase && S) {
+			\1 {\n  \2{
 				for (var ak = 0; ak < ah; ++ak) {
 					var ag = aj[ak];
 					var ai = ag.charAt(0);
-					if (ag.length >= 2 && ai === "[") {
+					\1 {\n  \2{
 						aj[ak] = X(ag);
 					} else {
-						if (ai !== "\\") {
+						\1 {\n  \2{
 							aj[ak] = ag.replace(/[a-zA-Z]/g, (ao) => {
 								var ap = ao.charCodeAt(0);
 								return "[" + String.fromCharCode(ap & ~32, ap | 32) + "]";
@@ -236,7 +234,7 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 		var aa = [];
 		for (var V = 0, U = Z.length; V < U; ++V) {
 			var ae = Z[V];
-			if (ae.global || ae.multiline) {
+			\1 {\n  \2{
 				throw new Error("" + ae);
 			}
 			aa.push("(?:" + W(ae) + ")");
@@ -250,10 +248,10 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 		var Z = [];
 		var W = 0;
 		var S;
-		if (V.currentStyle) {
+		\1 {\n  \2{
 			S = V.currentStyle.whiteSpace;
 		} else {
-			if (window.getComputedStyle) {
+			\1 {\n  \2{
 				S = document.defaultView
 					.getComputedStyle(V, null)
 					.getPropertyValue("white-space");
@@ -263,24 +261,22 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 		function aa(ab) {
 			switch (ab.nodeType) {
 				case 1:
-					if (U.test(ab.className)) {
+					\1 {\n  \2 {
 						return;
 					}
 					for (var ae = ab.firstChild; ae; ae = ae.nextSibling) {
 						aa(ae);
 					}
 					var ad = ab.nodeName;
-					if ("BR" === ad || "LI" === ad) {
+					\1 {\n  \2{
 						X[W] = "\n";
 						Z[W << 1] = T++;
 						Z[(W++ << 1) | 1] = ab;
-					}
-					break;
-				case 3:
+					}\1\n    }\n    case 3:
 				case 4:
 					var ac = ab.nodeValue;
-					if (ac.length) {
-						if (!Y) {
+					\1 {\n  \2{
+						\1 {\n  \2{
 							ac = ac.replace(/[ \t\r\n]+/g, " ");
 						} else {
 							ac = ac.replace(/\r\n?/g, "\n");
@@ -297,7 +293,7 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 		return { sourceCode: X.join("").replace(/\n$/, ""), spans: Z };
 	}
 	function B(S, U, W, T) {
-		if (!U) {
+		\1 {\n  \2{
 			return;
 		}
 		var V = { sourceCode: U, basePos: S };
@@ -323,14 +319,14 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 			for (var ab = 0, Z = ad.length; ab < Z; ++ab) {
 				var Y = ad[ab];
 				var ac = Y[3];
-				if (ac) {
+				\1 {\n  \2{
 					for (var ae = ac.length; --ae >= 0; ) {
 						S[ac.charAt(ae)] = Y;
 					}
 				}
 				var af = Y[1];
 				var aa = "" + af;
-				if (!ag.hasOwnProperty(aa)) {
+				\1 {\n  \2 {
 					ah.push(af);
 					ag[aa] = null;
 				}
@@ -351,44 +347,44 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 				var ap = aj[ag];
 				var ai = void 0;
 				var am;
-				if (typeof ap === "string") {
+				\1 {\n  \2{
 					am = false;
 				} else {
 					var aa = S[ag.charAt(0)];
-					if (aa) {
+					\1 {\n  \2{
 						ai = ag.match(aa[1]);
 						ap = aa[0];
 					} else {
 						for (var ao = 0; ao < X; ++ao) {
 							aa = T[ao];
 							ai = ag.match(aa[1]);
-							if (ai) {
+							\1 {\n  \2{
 								ap = aa[0];
 								break;
 							}
 						}
-						if (!ai) {
+						\1 {\n  \2{
 							ap = F;
 						}
 					}
 					am = ap.length >= 5 && "lang-" === ap.substring(0, 5);
-					if (am && !(ai && typeof ai[1] === "string")) {
+					\1 {\n  \2 {
 						am = false;
 						ap = J;
 					}
-					if (!am) {
+					\1 {\n  \2{
 						aj[ag] = ap;
 					}
 				}
 				var ab = af;
 				af += ag.length;
-				if (!am) {
+				\1 {\n  \2{
 					ad.push(Y + ab, ap);
 				} else {
 					var al = ai[1];
 					var ak = ag.indexOf(al);
 					var ac = ak + al.length;
-					if (ai[2]) {
+					\1 {\n  \2{
 						ac = ag.length - ai[2].length;
 						ak = ac - al.length;
 					}
@@ -405,7 +401,7 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 	function i(T) {
 		var W = [],
 			S = [];
-		if (T.tripleQuotedStrings) {
+		\1 {\n  \2{
 			W.push([
 				C,
 				/^(?:\'\'\'(?:[^\'\\]|\\[\s\S]|\'{1,2}(?=[^\']))*(?:\'\'\'|$)|\"\"\"(?:[^\"\\]|\\[\s\S]|\"{1,2}(?=[^\"]))*(?:\"\"\"|$)|\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$))/,
@@ -413,7 +409,7 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 				"'\"",
 			]);
 		} else {
-			if (T.multiLineStrings) {
+			\1 {\n  \2{
 				W.push([
 					C,
 					/^(?:\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$)|\`(?:[^\\\`]|\\[\s\S])*(?:\`|$))/,
@@ -429,13 +425,13 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 				]);
 			}
 		}
-		if (T.verbatimStrings) {
+		\1 {\n  \2{
 			S.push([C, /^@\"(?:[^\"]|\"\")*(?:\"|$)/, null]);
 		}
 		var Y = T.hashComments;
-		if (Y) {
-			if (T.cStyleComments) {
-				if (Y > 1) {
+		\1 {\n  \2{
+			\1 {\n  \2{
+				\1 {\n  \2{
 					W.push([j, /^#(?:##(?:[^#]|#(?!##))*(?:###|$)|.*)/, null, "#"]);
 				} else {
 					W.push([
@@ -454,21 +450,21 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 				W.push([j, /^#[^\r\n]*/, null, "#"]);
 			}
 		}
-		if (T.cStyleComments) {
+		\1 {\n  \2{
 			S.push([j, /^\/\/[^\r\n]*/, null]);
 			S.push([j, /^\/\*[\s\S]*?(?:\*\/|$)/, null]);
 		}
-		if (T.regexLiterals) {
+		\1 {\n  \2{
 			var X =
 				"/(?=[^/*])(?:[^/\\x5B\\x5C]|\\x5C[\\s\\S]|\\x5B(?:[^\\x5C\\x5D]|\\x5C[\\s\\S])*(?:\\x5D|$))+/";
 			S.push(["lang-regex", new RegExp("^" + M + "(" + X + ")")]);
 		}
 		var V = T.types;
-		if (V) {
+		\1 {\n  \2{
 			S.push([O, V]);
 		}
 		var U = ("" + T.keywords).replace(/^ | $/g, "");
-		if (U.length) {
+		\1 {\n  \2{
 			S.push([
 				z,
 				new RegExp("^(?:" + U.replace(/[\s,]+/g, "|") + ")\\b"),
@@ -503,10 +499,10 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 		var ab = /\r\n?|\n/;
 		var ac = V.ownerDocument;
 		var S;
-		if (V.currentStyle) {
+		\1 {\n  \2{
 			S = V.currentStyle.whiteSpace;
 		} else {
-			if (window.getComputedStyle) {
+			\1 {\n  \2{
 				S = ac.defaultView
 					.getComputedStyle(V, null)
 					.getPropertyValue("white-space");
@@ -521,35 +517,33 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 		function ae(al) {
 			switch (al.nodeType) {
 				case 1:
-					if (U.test(al.className)) {
+					\1 {\n  \2 {
 						break;
 					}
-					if ("BR" === al.nodeName) {
+					\1 {\n  \2{
 						ad(al);
-						if (al.parentNode) {
+						\1 {\n  \2{
 							al.parentNode.removeChild(al);
 						}
 					} else {
 						for (var an = al.firstChild; an; an = an.nextSibling) {
 							ae(an);
 						}
-					}
-					break;
-				case 3:
+					}\1\n    }\n    case 3:
 				case 4:
-					if (Z) {
+					\1 {\n  \2{
 						var am = al.nodeValue;
 						var aj = am.match(ab);
-						if (aj) {
+						\1 {\n  \2{
 							var ai = am.substring(0, aj.index);
 							al.nodeValue = ai;
 							var ah = am.substring(aj.index + aj[0].length);
-							if (ah) {
+							\1 {\n  \2{
 								var ak = al.parentNode;
 								ak.insertBefore(ac.createTextNode(ah), al.nextSibling);
 							}
 							ad(al);
-							if (!ai) {
+							\1 {\n  \2{
 								al.parentNode.removeChild(al);
 							}
 						}
@@ -560,14 +554,14 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 		function ad(ak) {
 			while (!ak.nextSibling) {
 				ak = ak.parentNode;
-				if (!ak) {
+				\1 {\n  \2{
 					return;
 				}
 			}
 			function ai(al, ar) {
 				var aq = ar ? al.cloneNode(false) : al;
 				var ao = al.parentNode;
-				if (ao) {
+				\1 {\n  \2{
 					var ap = ai(ao, 1);
 					var an = al.nextSibling;
 					ap.appendChild(aq);
@@ -587,7 +581,7 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 		for (var Y = 0; Y < W.length; ++Y) {
 			ae(W[Y]);
 		}
-		if (ag === (ag | 0)) {
+		\1 {\n  \2 {
 			W[0].setAttribute("value", ag);
 		}
 		var aa = ac.createElement("OL");
@@ -596,7 +590,7 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 		for (var Y = 0, T = W.length; Y < T; ++Y) {
 			af = W[Y];
 			af.className = "L" + ((Y + X) % 10);
-			if (!af.firstChild) {
+			\1 {\n  \2{
 				af.appendChild(ac.createTextNode("\xA0"));
 			}
 			aa.appendChild(af);
@@ -618,7 +612,7 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 		X[Y] = an;
 		var ar, aq;
 		for (aq = ar = 0; aq < Y; ) {
-			if (X[aq] !== X[aq + 2]) {
+			\1 {\n  \2{
 				X[ar++] = X[aq++];
 				X[ar++] = X[aq++];
 			} else {
@@ -647,8 +641,8 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 			var W = Math.min(S, ap);
 			var ak = aa[ah + 1];
 			var U;
-			if (ak.nodeType !== 1 && (U = al.substring(V, W))) {
-				if (aj) {
+			\1 {\n  \2) {
+				\1 {\n  \2{
 					U = U.replace(am, "\r");
 				}
 				ak.nodeValue = U;
@@ -658,16 +652,16 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 				var ad = ak.parentNode;
 				ad.replaceChild(ao, ak);
 				ao.appendChild(ak);
-				if (V < S) {
+				\1 {\n  \2{
 					aa[ah + 1] = ak = ai.createTextNode(al.substring(W, S));
 					ad.insertBefore(ak, ao.nextSibling);
 				}
 			}
 			V = W;
-			if (V >= S) {
+			\1 {\n  \2{
 				ah += 2;
 			}
-			if (V >= ap) {
+			\1 {\n  \2{
 				Z += 2;
 			}
 		}
@@ -676,17 +670,17 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 	function c(U, V) {
 		for (var S = V.length; --S >= 0; ) {
 			var T = V[S];
-			if (!t.hasOwnProperty(T)) {
+			\1 {\n  \2 {
 				t[T] = U;
 			} else {
-				if (window.console) {
+				\1 {\n  \2{
 					console.warn("cannot override language handler %s", T);
 				}
 			}
 		}
 	}
 	function q(T, S) {
-		if (!(T && t.hasOwnProperty(T))) {
+		\1 {\n  \2) {
 			T = /^\s*</.test(S) ? "default-markup" : "default-code";
 		}
 		return t[T];
@@ -808,7 +802,7 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 			q(U, T)(V);
 			D(V);
 		} catch (W) {
-			if ("console" in window) {
+			\1 {\n  \2{
 				console.log(W && W.stack ? W.stack : W);
 			}
 		}
@@ -816,7 +810,7 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 	function y(W, V, U) {
 		var S = document.createElement("PRE");
 		S.innerHTML = W;
-		if (U) {
+		\1 {\n  \2{
 			Q(S, U);
 		}
 		var T = { langExtension: V, numberLines: U, sourceNode: S };
@@ -836,7 +830,7 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 		}
 		ac = null;
 		var W = Date;
-		if (!W.now) {
+		\1 {\n  \2{
 			W = { now: () => +new Date() };
 		}
 		var X = 0;
@@ -850,21 +844,18 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 			for (; X < T.length && W.now() < ag; X++) {
 				var aj = T[X];
 				var ai = aj.className;
-				if (ai.indexOf("prettyprint") >= 0) {
+				\1 {\n  \2= 0) {
 					var ah = ai.match(ab);
 					var am;
-					if (!ah && (am = o(aj)) && "CODE" === am.tagName) {
+					\1 {\n  \2 && "CODE" === am.tagName) {
 						ah = am.className.match(ab);
 					}
-					if (ah) {
+					\1 {\n  \2{
 						ah = ah[1];
 					}
 					var al = false;
 					for (var ak = aj.parentNode; ak; ak = ak.parentNode) {
-						if (
-							(ak.tagName === "pre" ||
-								ak.tagName === "code" ||
-								ak.tagName === "xmp") &&
+						\1 {\n  \2&
 							ak.className &&
 							ak.className.indexOf("prettyprint") >= 0
 						) {
@@ -872,10 +863,10 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 							break;
 						}
 					}
-					if (!al) {
+					\1 {\n  \2{
 						var af = aj.className.match(/\blinenums\b(?::(\d+))?/);
 						af = af ? (af[1] && af[1].length ? +af[1] : true) : false;
-						if (af) {
+						\1 {\n  \2{
 							Q(aj, af);
 						}
 						S = { langExtension: ah, sourceNode: aj, numberLines: af };
@@ -883,10 +874,10 @@ window.PR_SHOULD_USE_CONTINUATION = true;
 					}
 				}
 			}
-			if (X < T.length) {
+			\1 {\n  \2{
 				setTimeout(U, 250);
 			} else {
-				if (ad) {
+				\1 {\n  \2{
 					ad();
 				}
 			}

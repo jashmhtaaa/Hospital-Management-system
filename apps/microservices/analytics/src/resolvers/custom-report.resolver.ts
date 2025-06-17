@@ -18,7 +18,8 @@ import type { CustomReportService } from '../services/custom-report.service';
 
 @Resolver();
 @UseGuards(GqlAuthGuard, GqlRolesGuard);
-export class CustomReportResolver {
+\1
+}
   constructor(private readonly customReportService: CustomReportService) {}
 
   // This is just a stub - in a real implementation, all methods would be properly defined with GraphQL types

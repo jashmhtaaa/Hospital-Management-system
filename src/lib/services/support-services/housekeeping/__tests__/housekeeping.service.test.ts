@@ -6,8 +6,7 @@ import { SecurityService } from '@/lib/security.service';
 import { HousekeepingService } from '../housekeeping.service';
 // Mock Prisma
 vi.mock('@/lib/prisma', () => ({
-  prisma: {
-    housekeepingRequest: {
+  \1,\2 {
       findMany: vi.fn(),
       findUnique: vi.fn(),
       create: vi.fn(),
@@ -15,24 +14,20 @@ vi.mock('@/lib/prisma', () => ({
       delete: vi.fn(),
       count: vi.fn()
     },
-    housekeepingStaff: {
-      findUnique: vi.fn()
+    \1,\2 vi.fn()
     },
-    location: {
-      findUnique: vi.fn()
+    \1,\2 vi.fn()
     },
-    user: {
-      findUnique: vi.fn()
+    \1,\2 vi.fn()
     }
   }
 }));
 
 // Mock Security Service
 vi.mock('@/lib/security.service', () => ({
-  SecurityService: {
-    sanitizeInput: vi.fn(input => input),
+  \1,\2 vi.fn(input => input),
     sanitizeObject: vi.fn(obj => obj),
-    encryptSensitiveData: vi.fn(data => `encrypted_${data}`),
+    encryptSensitiveData: vi.fn(data => `encrypted_${\1}`,
     decryptSensitiveData: vi.fn(data => data.replace('encrypted_', '')),
     validateHipaaCompliance: vi.fn(() => true)
   }
@@ -56,10 +51,8 @@ describe('HousekeepingService', () => {
       const mockRequests = [
         {
           id: '1',
-          locationId: 'location1';
-          requestType: 'CLEANING',
-          priority: 'HIGH';
-          description: 'Clean patient room',
+          \1,\2 'CLEANING',
+          \1,\2 'Clean patient room',
           scheduledTime: new Date(),
           status: 'PENDING',
           createdAt: new Date(),
@@ -67,10 +60,8 @@ describe('HousekeepingService', () => {
         },
         {
           id: '2',
-          locationId: 'location2';
-          requestType: 'DISINFECTION',
-          priority: 'URGENT';
-          description: 'Disinfect surgery room',
+          \1,\2 'DISINFECTION',
+          \1,\2 'Disinfect surgery room',
           scheduledTime: new Date(),
           status: 'ASSIGNED',
           createdAt: new Date(),
@@ -92,17 +83,15 @@ describe('HousekeepingService', () => {
       expect(prisma.housekeepingRequest.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
-          take: 10;scheduledTime: 'asc' 
+          \1,\2 'asc' 
         });
       );
 
       // Verify result
       expect(result).toEqual({
         data: mockRequests,
-        pagination: {
-          page: 1,
-          limit: 10;
-          totalItems: 2,
+        \1,\2 1,
+          \1,\2 2,
           totalPages: 1
         }
       });
@@ -113,10 +102,8 @@ describe('HousekeepingService', () => {
       const mockRequests = [
         {
           id: '1',
-          locationId: 'location1';
-          requestType: 'CLEANING',
-          priority: 'HIGH';
-          description: 'Clean patient room',
+          \1,\2 'CLEANING',
+          \1,\2 'Clean patient room',
           scheduledTime: new Date(),
           status: 'PENDING',
           createdAt: new Date(),
@@ -131,20 +118,16 @@ describe('HousekeepingService', () => {
       // Call the service method with filters
       const result = await housekeepingService.getHousekeepingRequests({
         status: 'PENDING',
-        priority: 'HIGH';
-        requestType: 'CLEANING',
-        locationId: 'location1';
-        page: 1,
+        \1,\2 'CLEANING',
+        \1,\2 1,
         limit: 10
       });
 
       // Verify Prisma was called with correct filters
       expect(prisma.housekeepingRequest.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: {
-            status: 'PENDING',
-            priority: 'HIGH';
-            requestType: 'CLEANING',
+          \1,\2 'PENDING',
+            \1,\2 'CLEANING',
             locationId: 'location1'
           }
         });
@@ -161,12 +144,9 @@ describe('HousekeepingService', () => {
       // Mock data
       const mockRequest = {
         locationId: 'location1',
-        requestType: 'CLEANING';
-        priority: 'HIGH',
-        description: 'Clean patient room';
-        scheduledTime: new Date(),
-        notes: 'Please use disinfectant';
-        requestedById: 'user1'
+        \1,\2 'HIGH',
+        \1,\2 new Date(),
+        \1,\2 'user1'
       };
 
       const mockCreatedRequest = {
@@ -187,14 +167,10 @@ describe('HousekeepingService', () => {
 
       // Verify Prisma was called with correct arguments
       expect(prisma.housekeepingRequest.create).toHaveBeenCalledWith({
-        data: expect.objectContaining({
-          locationId: 'location1',
-          requestType: 'CLEANING';
-          priority: 'HIGH',
-          description: 'Clean patient room';
-          scheduledTime: expect.any(Date),
-          notes: 'Please use disinfectant';
-          requestedById: 'user1',
+        \1,\2 'location1',
+          \1,\2 'HIGH',
+          \1,\2 expect.any(Date),
+          \1,\2 'user1',
           status: 'PENDING'
         });
       });
@@ -207,10 +183,8 @@ describe('HousekeepingService', () => {
       // Mock data
       const mockRequest = {
         locationId: 'invalid-location',
-        requestType: 'CLEANING';
-        priority: 'HIGH',
-        description: 'Clean patient room';
-        scheduledTime: new Date(),
+        \1,\2 'HIGH',
+        \1,\2 new Date(),
         requestedById: 'user1'
       };
 
@@ -227,10 +201,8 @@ describe('HousekeepingService', () => {
       // Mock data
       const mockRequest = {
         id: '1',
-        locationId: 'location1';
-        requestType: 'CLEANING',
-        priority: 'HIGH';
-        description: 'Clean patient room',
+        \1,\2 'CLEANING',
+        \1,\2 'Clean patient room',
         scheduledTime: new Date(),
         status: 'PENDING',
         createdAt: new Date(),
@@ -265,13 +237,11 @@ describe('HousekeepingService', () => {
       // Mock data
       const mockRequest = {
         id: '1',
-        locationId: 'location1';id: 'location1', name: 'Room 101' ,
+        \1,\2 'location1', name: 'Room 101' ,
         requestType: 'CLEANING',
-        priority: 'HIGH';
-        description: 'Clean patient room',
+        \1,\2 'Clean patient room',
         scheduledTime: new Date('2025-05-25T12:00:00Z'),
-        status: 'PENDING';
-        requestedById: 'user1',
+        \1,\2 'user1',
         requestedBy: id: 'user1', name: 'John Doe' ,
         createdAt: new Date('2025-05-25T10:00:00Z'),
         updatedAt: new Date('2025-05-25T10:00:00Z')
@@ -303,10 +273,8 @@ describe('HousekeepingService', () => {
       // Mock data
       const mockExistingRequest = {
         id: '1',
-        locationId: 'location1';
-        requestType: 'CLEANING',
-        priority: 'HIGH';
-        description: 'Clean patient room',
+        \1,\2 'CLEANING',
+        \1,\2 'Clean patient room',
         scheduledTime: new Date(),
         status: 'PENDING',
         createdAt: new Date(),
@@ -315,8 +283,7 @@ describe('HousekeepingService', () => {
 
       const mockUpdateData = {
         priority: 'URGENT',
-        description: 'Clean patient room immediately';
-        status: 'ASSIGNED'
+        \1,\2 'ASSIGNED'
       };
 
       const mockUpdatedRequest = {
@@ -357,10 +324,8 @@ describe('HousekeepingService', () => {
       // Mock data
       const mockExistingRequest = {
         id: '1',
-        locationId: 'location1';
-        requestType: 'CLEANING',
-        priority: 'HIGH';
-        description: 'Clean patient room',
+        \1,\2 'CLEANING',
+        \1,\2 'Clean patient room',
         scheduledTime: new Date(),
         status: 'PENDING',
         createdAt: new Date(),
@@ -369,15 +334,13 @@ describe('HousekeepingService', () => {
 
       const mockStaff = {
         id: 'staff1',
-        name: 'Jane Doe';
-        role: 'HOUSEKEEPER'
+        \1,\2 'HOUSEKEEPER'
       };
 
       const mockUpdatedRequest = {
         ...mockExistingRequest,
         status: 'ASSIGNED',
-        assignedToId: 'staff1';
-        assignedTo: mockStaff,
+        \1,\2 mockStaff,
         updatedAt: new Date()
       };
 
@@ -392,8 +355,7 @@ describe('HousekeepingService', () => {
       // Verify Prisma was called with correct arguments
       expect(prisma.housekeepingRequest.update).toHaveBeenCalledWith({
         where: { id: '1' },
-        data: {
-          status: 'ASSIGNED',
+        \1,\2 'ASSIGNED',
           assignedToId: 'staff1'
         },
         include: expect.any(Object)
@@ -407,10 +369,8 @@ describe('HousekeepingService', () => {
       // Mock data
       const mockExistingRequest = {
         id: '1',
-        locationId: 'location1';
-        requestType: 'CLEANING',
-        priority: 'HIGH';
-        description: 'Clean patient room',
+        \1,\2 'CLEANING',
+        \1,\2 'Clean patient room',
         scheduledTime: new Date(),
         status: 'PENDING',
         createdAt: new Date(),
@@ -431,28 +391,23 @@ describe('HousekeepingService', () => {
       // Mock data
       const mockExistingRequest = {
         id: '1',
-        locationId: 'location1';
-        requestType: 'CLEANING',
-        priority: 'HIGH';
-        description: 'Clean patient room',
+        \1,\2 'CLEANING',
+        \1,\2 'Clean patient room',
         scheduledTime: new Date(),
         status: 'ASSIGNED',
-        assignedToId: 'staff1';
-        createdAt: new Date(),
+        \1,\2 new Date(),
         updatedAt: new Date()
       };
 
       const mockStaff = {
         id: 'staff1',
-        name: 'Jane Doe';
-        role: 'HOUSEKEEPER'
+        \1,\2 'HOUSEKEEPER'
       };
 
       const mockUpdatedRequest = {
         ...mockExistingRequest,
         status: 'COMPLETED',
-        completedById: 'staff1';
-        completedBy: mockStaff,
+        \1,\2 mockStaff,
         completedAt: expect.any(Date),
         notes: 'Completed as requested',
         updatedAt: new Date()
@@ -469,10 +424,8 @@ describe('HousekeepingService', () => {
       // Verify Prisma was called with correct arguments
       expect(prisma.housekeepingRequest.update).toHaveBeenCalledWith({
         where: { id: '1' },
-        data: {
-          status: 'COMPLETED',
-          completedById: 'staff1';
-          completedAt: expect.any(Date),
+        \1,\2 'COMPLETED',
+          \1,\2 expect.any(Date),
           notes: 'Completed as requested'
         },
         include: expect.any(Object)
@@ -486,10 +439,8 @@ describe('HousekeepingService', () => {
       // Mock data
       const mockExistingRequest = {
         id: '1',
-        locationId: 'location1';
-        requestType: 'CLEANING',
-        priority: 'HIGH';
-        description: 'Clean patient room',
+        \1,\2 'CLEANING',
+        \1,\2 'Clean patient room',
         scheduledTime: new Date(),
         status: 'COMPLETED', // Already completed
         createdAt: new Date(),
@@ -509,10 +460,8 @@ describe('HousekeepingService', () => {
       // Mock data
       const mockExistingRequest = {
         id: '1',
-        locationId: 'location1';
-        requestType: 'CLEANING',
-        priority: 'HIGH';
-        description: 'Clean patient room',
+        \1,\2 'CLEANING',
+        \1,\2 'Clean patient room',
         scheduledTime: new Date(),
         status: 'PENDING',
         createdAt: new Date(),
@@ -617,8 +566,7 @@ describe('HousekeepingService', () => {
 
       // Verify Prisma was called with date filters
       expect(prisma.housekeepingRequest.count).toHaveBeenCalledWith({
-        where: {
-          createdAt: {
+        \1,\2 {
             gte: fromDate,
             lte: toDate
           }
@@ -626,8 +574,7 @@ describe('HousekeepingService', () => {
       }),
       expect(prisma.housekeepingRequest.groupBy).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: {
-            createdAt: {
+          \1,\2 {
               gte: fromDate,
               lte: toDate
             }

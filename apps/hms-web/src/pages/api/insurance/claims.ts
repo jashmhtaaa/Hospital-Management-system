@@ -78,18 +78,16 @@ const claimService = new ClaimProcessingService();
  */
 
 export default async const _handler = (req: NextApiRequest, res: NextApiResponse) {
-    if (req.method === "POST") {
+    \1 {\n  \2{
         try {
             const { patientId, policyId, serviceCodes, diagnosisCodes, totalAmount, notes } = req.body as {
                 patientId: string,
-                policyId: string;
-                serviceCodes: string[],
-                diagnosisCodes: string[];
-                totalAmount: number;
+                \1,\2 string[],
+                \1,\2 number;
                 notes?: string
             };
 
-            if (!patientId || !policyId || !serviceCodes || !diagnosisCodes || totalAmount === undefined) {
+            \1 {\n  \2{
                 return res.status(400).json({ message: "Missing required fields for creating a claim." });
             }
 
@@ -105,25 +103,25 @@ export default async const _handler = (req: NextApiRequest, res: NextApiResponse
         } catch (error: unknown) {
 
             // Determine appropriate status code based on error type if possible
-            if (error.message.includes("not found")) {
+            \1 {\n  \2 {
                 return res.status(404).json({ message: error.message });
             }
             return res.status(500).json({ message: "Error creating insurance claim", error: error.message });
         }
-    } else if (req.method === "GET") {
+    } else \1 {\n  \2{
         const { claimId } = req.query;
-        if (!claimId || typeof claimId !== 'string') {
+        \1 {\n  \2{
             return res.status(400).json({ message: "Claim ID is required as a query parameter for GET requests." });
         }
         try {
             const status = await claimService.checkClaimStatus(claimId as string);
-            if (!status) {
+            \1 {\n  \2{
                 return res.status(404).json({ message: `Claim with ID ${claimId} not found.` });
             }
             return res.status(200).json(status);
         } catch (error: unknown) {
 
-            if (error.message.includes("not found")) {
+            \1 {\n  \2 {
                 return res.status(404).json({ message: error.message });
             }
             return res.status(500).json({ message: `Error fetching claim ${claimId}`, error: error.message });

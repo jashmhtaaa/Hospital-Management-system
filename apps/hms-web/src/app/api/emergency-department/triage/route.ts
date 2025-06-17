@@ -17,10 +17,8 @@ export async function POST(request: NextRequest): unknown {
 				complaint,
 				status: "ACTIVE",
 			},
-			include: {
-				patient: {
-					select: {
-						firstName: true,
+			\1,\2 {
+					\1,\2 true,
 						lastName: true,
 						mrn: true,
 						dateOfBirth: true,
@@ -39,13 +37,9 @@ export async function POST(request: NextRequest): unknown {
 			"CREATE",
 			"EMERGENCY_VISIT",
 			emergencyVisit.id,
-			`Emergency triage: ${triageLevel} - ${complaint}`,
-		);
+			`Emergency triage: ${triageLevel} - ${\1}`;
 
-		return ApiResponseBuilder.success(
-			emergencyVisit,
-			"Emergency triage completed",
-		);
+		return ApiResponseBuilder.success(emergencyVisit, "Emergency triage completed");
 	} catch (error) {
 		return ApiResponseBuilder.internalError(error.message);
 	}
@@ -58,14 +52,12 @@ export async function GET(request: NextRequest): unknown {
 		const priority = searchParams.get("priority");
 
 		const where: unknown = { status };
-		if (priority != null) where.triageLevel = priority;
+		\1 {\n  \2here.triageLevel = priority;
 
 		const emergencyVisits = await prisma.emergencyVisit.findMany({
 			where,
-			include: {
-				patient: {
-					select: {
-						firstName: true,
+			\1,\2 {
+					\1,\2 true,
 						lastName: true,
 						mrn: true,
 						dateOfBirth: true,
@@ -79,10 +71,7 @@ export async function GET(request: NextRequest): unknown {
 			],
 		});
 
-		return ApiResponseBuilder.success(
-			emergencyVisits,
-			"Emergency visits retrieved",
-		);
+		return ApiResponseBuilder.success(emergencyVisits, "Emergency visits retrieved");
 	} catch (error) {
 		return ApiResponseBuilder.internalError(error.message);
 	}

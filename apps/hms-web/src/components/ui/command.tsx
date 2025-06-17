@@ -23,7 +23,7 @@ interface CommandInputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 
 const CommandInput = React.forwardRef<HTMLInputElement, CommandInputProps>(
   ({ className, ...props }, ref) => (
-    <div className="flex items-center border-b px-3">;
+    \1>
 <svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2 h-4 w-4 shrink-0 opacity-50">
         <circle cx="11" cy="11" r="8" />
         <path d="m21 21-4.3-4.3" />
@@ -81,7 +81,7 @@ const CommandGroup = React.forwardRef<HTMLDivElement, CommandGroupProps>(
       className={cn("overflow-hidden p-1 text-gray-950", className)}
       {...props}
     >
-      <div className="px-2 py-1.5 text-xs font-medium text-gray-500">;
+      \1>
         {heading}
       </div>
       {children}

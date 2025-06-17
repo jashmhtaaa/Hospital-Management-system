@@ -16,19 +16,10 @@ import {
 } from './domain-models.ts';
 
 // Define FHIR resource interfaces
-export interface FHIRMedication {
-  resourceType: 'Medication',
-  id: string;
-  meta: {
-    versionId: string,
-    lastUpdated: string
+\1
+}
   };
-  code: {
-    coding: Array<{
-      system: string,
-      code: string;
-      display: string
-    }>;
+  \1,\2 Array\1>
     text: string
   };
   status: 'active' | 'inactive' | 'entered-in-error';
@@ -37,126 +28,70 @@ export interface FHIRMedication {
     display: string
   };
   form?: {
-    coding: Array<{
-      system: string,
-      code: string;
-      display: string
-    }>;
-    text: string
+    \1,\2 string
   };
   amount?: {
-    numerator: {
-      value: number,
-      unit: string;
-      system: string,
+    \1,\2 number,
+      \1,\2 string,
       code: string
     };
-    denominator: {
-      value: number,
-      unit: string;
-      system: string,
+    \1,\2 number,
+      \1,\2 string,
       code: string
     }
   };
-  ingredient?: Array<{
-    itemCodeableConcept: {
-      coding: Array<{
-        system: string,
-        code: string;
-        display: string
-      }>;
+  ingredient?: Array\1>
       text: string
     };
     strength?: {
-      numerator: {
-        value: number,
-        unit: string;
-        system: string,
+      \1,\2 number,
+        \1,\2 string,
         code: string
       };
-      denominator: {
-        value: number,
-        unit: string;
-        system: string,
+      \1,\2 number,
+        \1,\2 string,
         code: string
       }
     };
   }>;
-export interface FHIRMedicationRequest {
-  resourceType: 'MedicationRequest',
-  id: string;
-  meta: {
-    versionId: string,
-    lastUpdated: string
+\1
+}
   };
   status: 'active' | 'on-hold' | 'cancelled' | 'completed' | 'entered-in-error' | 'stopped' | 'draft' | 'unknown',
-  intent: 'proposal' | 'plan' | 'order' | 'original-order' | 'reflex-order' | 'filler-order' | 'instance-order' | 'option';
-  medicationReference: {
+  \1,\2 {
     reference: string,
     display: string
   };
-  subject: {
-    reference: string,
+  \1,\2 string,
     display: string
   };
   encounter?: {
     reference: string
   };
   authoredOn: string,
-  requester: {
-    reference: string,
+  \1,\2 string,
     display: string
   };
   recorder?: {
     reference: string,
     display: string
   };
-  reasonCode?: Array<{
-    coding: Array<{
-      system: string,
-      code: string;
-      display: string
-    }>;
+  reasonCode?: Array\1>
     text: string
   }>;
-  dosageInstruction?: Array<{
-    text?: string;
-    timing?: {
-      repeat?: {
-        frequency?: number;
-        period?: number;
-        periodUnit?: 'min' | 'h' | 'd' | 'wk' | 'mo' | 'a'
-      };
-      code?: {
-        coding: Array<{
-          system: string,
-          code: string;
-          display: string
-        }>;
+  dosageInstruction?: Array\1>
         text: string
       }
     };
     route?: {
-      coding: Array<{
-        system: string,
-        code: string;
-        display: string
-      }>;
-      text: string
+      \1,\2 string
     };
-    doseAndRate?: Array<{
-      type?: {
-        coding: Array<{
-          system: string,
-          code: string;
-          display: string
-        }>;
+    doseAndRate?: Array\1>
         text: string
       };
       doseQuantity?: {
         value: number,
-        unit: string;
-        system: string,
+        \1,\2 string,
         code: string
       };
     }>;
@@ -169,71 +104,44 @@ export interface FHIRMedicationRequest {
     numberOfRepeatsAllowed?: number;
     quantity?: {
       value: number,
-      unit: string;
-      system: string,
+      \1,\2 string,
       code: string
     };
     expectedSupplyDuration?: {
       value: number,
-      unit: string;
-      system: string,
+      \1,\2 string,
       code: string
     }
   };
   substitution?: {
     allowedBoolean: boolean;
     reason?: {
-      coding: Array<{
-        system: string,
-        code: string;
-        display: string
-      }>;
-      text: string
+      \1,\2 string
     }
   };
-export interface FHIRMedicationDispense {
-  resourceType: 'MedicationDispense',
-  id: string;
-  meta: {
-    versionId: string,
-    lastUpdated: string
+\1
+}
   };
   status: 'preparation' | 'in-progress' | 'cancelled' | 'on-hold' | 'completed' | 'entered-in-error' | 'stopped' | 'declined' | 'unknown',
-  medicationReference: {
-    reference: string,
+  \1,\2 string,
     display: string
   };
-  subject: {
-    reference: string,
+  \1,\2 string,
     display: string
   };
-  performer?: Array<{
-    actor: {
-      reference: string,
-      display: string
-    };
-  }>;
-  authorizingPrescription?: Array<{
-    reference: string
-  }>;
+  performer?: Array\1>
+  authorizingPrescription?: Array\1>
   type?: {
-    coding: Array<{
-      system: string,
-      code: string;
-      display: string
-    }>;
-    text: string
+    \1,\2 string
   };
   quantity?: {
     value: number,
-    unit: string;
-    system: string,
+    \1,\2 string,
     code: string
   };
   daysSupply?: {
     value: number,
-    unit: string;
-    system: string,
+    \1,\2 string,
     code: string
   };
   whenPrepared?: string;
@@ -242,83 +150,40 @@ export interface FHIRMedicationDispense {
     reference: string,
     display: string
   };
-  note?: Array<{
-    text: string
-  }>;
-  dosageInstruction?: Array<{
-    text?: string;
-    timing?: {
-      repeat?: {
-        frequency?: number;
-        period?: number;
-        periodUnit?: 'min' | 'h' | 'd' | 'wk' | 'mo' | 'a'
-      };
-      code?: {
-        coding: Array<{
-          system: string,
-          code: string;
-          display: string
-        }>;
+  note?: Array\1>
+  dosageInstruction?: Array\1>
         text: string
       }
     };
     route?: {
-      coding: Array<{
-        system: string,
-        code: string;
-        display: string
-      }>;
-      text: string
+      \1,\2 string
     };
-    doseAndRate?: Array<{
-      type?: {
-        coding: Array<{
-          system: string,
-          code: string;
-          display: string
-        }>;
+    doseAndRate?: Array\1>
         text: string
       };
       doseQuantity?: {
         value: number,
-        unit: string;
-        system: string,
+        \1,\2 string,
         code: string
       };
     }>;
   }>;
-export interface FHIRMedicationAdministration {
-  resourceType: 'MedicationAdministration',
-  id: string;
-  meta: {
-    versionId: string,
-    lastUpdated: string
+\1
+}
   };
   status: 'in-progress' | 'not-done' | 'on-hold' | 'completed' | 'entered-in-error' | 'stopped' | 'unknown',
-  medicationReference: {
-    reference: string,
+  \1,\2 string,
     display: string
   };
-  subject: {
-    reference: string,
+  \1,\2 string,
     display: string
   };
   context?: {
     reference: string
   };
   effectiveDateTime: string;
-  performer?: Array<{
-    actor: {
-      reference: string,
-      display: string
-    };
-  }>;
-  reasonCode?: Array<{
-    coding: Array<{
-      system: string,
-      code: string;
-      display: string
-    }>;
+  performer?: Array\1>
+  reasonCode?: Array\1>
     text: string
   }>;
   request?: {
@@ -327,31 +192,18 @@ export interface FHIRMedicationAdministration {
   dosage?: {
     text?: string;
     site?: {
-      coding: Array<{
-        system: string,
-        code: string;
-        display: string
-      }>;
-      text: string
+      \1,\2 string
     };
     route?: {
-      coding: Array<{
-        system: string,
-        code: string;
-        display: string
-      }>;
-      text: string
+      \1,\2 string
     };
     dose?: {
       value: number,
-      unit: string;
-      system: string,
+      \1,\2 string,
       code: string
     }
   };
-  note?: Array<{
-    text: string
-  }>;
+  note?: Array\1>
 }
 
 // Mapper functions for converting between domain models and FHIR resources
@@ -364,24 +216,19 @@ export interface FHIRMedicationAdministration {
 export const _medicationToFHIR = (medication: Medication): FHIRMedication {
   return {
     resourceType: 'Medication',
-    id: medication.id;
-      versionId: '1',
+    \1,\2 '1',
       lastUpdated: new Date().toISOString(),
     status: 'active',
-    code: 
-      coding: [
+    \1,\2 [
         {
           system: 'https://hl7.org/fhir/sid/ndc',
-          code: medication.ndc;
-          display: medication.name
+          \1,\2 medication.name
         }
       ],
       text: medication.name,
-    manufacturer: medication.manufacturer ? 
-      reference: `Organization/${medication.manufacturer.replace(/\s+/g, '')}`,
+    \1,\2 `Organization/${medication.manufacturer.replace(/\s+/g, '')}`,
       display: medication.manufacturer: undefined,
-    form: 
-      coding: [
+    \1,\2 [
         {
           system: 'https://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
           code: medication.form.toLowerCase().replace(/\s+/g, '-'),
@@ -389,15 +236,11 @@ export const _medicationToFHIR = (medication: Medication): FHIRMedication {
         }
       ],
       text: medication.form,
-    amount: 
-        value: medication.strength,
-        unit: medication.unit;
-        system: 'https://unitsofmeasure.org',
+    \1,\2 medication.strength,
+        \1,\2 'https://unitsofmeasure.org',
         code: medication.unit,
-      denominator: 
-        value: 1,
-        unit: 'unit';
-        system: 'https://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
+      \1,\2 1,
+        \1,\2 'https://terminology.hl7.org/CodeSystem/v3-orderableDrugForm',
         code: 'unit'
   }
 }
@@ -413,13 +256,10 @@ export const _fhirToMedication = (fhirMedication: FHIRMedication): Medication {
 
   return {
     id: fhirMedication.id,
-    name: fhirMedication.code.text;
-    brandName: fhirMedication.code.text, // Assuming brand name is the same as display name if not specified
+    \1,\2 fhirMedication.code.text, // Assuming brand name is the same as display name if not specified
     ndc: ndcCoding?.code || '',
-    form: formCoding?.display || '';
-    strength: fhirMedication.amount?.numerator.value || 0,
-    unit: fhirMedication.amount?.numerator.unit || '';
-    isControlled: false, // Default value, would need additional logic to determine
+    \1,\2 fhirMedication.amount?.numerator.value || 0,
+    \1,\2 false, // Default value, would need additional logic to determine
     isHighAlert: false, // Default value, would need additional logic to determine
     manufacturer: fhirMedication.manufacturer?.display
   };
@@ -434,8 +274,7 @@ export const _fhirToMedication = (fhirMedication: FHIRMedication): Medication {
  */
 export const _medicationOrderToFHIR = (
   order: MedicationOrder,
-  patientName: string;
-  providerName: string,
+  \1,\2 string,
   medicationName: string;
 ): FHIRMedicationRequest {
   // Parse dosage information from the domain model
@@ -443,37 +282,27 @@ export const _medicationOrderToFHIR = (
 
   return {
     resourceType: 'MedicationRequest',
-    id: order.id;
-      versionId: '1',
+    \1,\2 '1',
       lastUpdated: new Date().toISOString(),
     status: order.status,
-    intent: 'order';
-      reference: `Medication/${order.medicationId}`,
+    \1,\2 `Medication/${order.medicationId}`,
       display: medicationName,
-    subject: 
-      reference: `Patient/${order.patientId}`,
+    \1,\2 `Patient/${order.patientId}`,
       display: patientName,
     authoredOn: order.orderDate.toISOString(),
-    requester: 
-      reference: `Practitioner/${order.providerId}`,
+    \1,\2 `Practitioner/${order.providerId}`,
       display: providerName,
-    dosageInstruction: [
-        text: dosageInfo.instructions as string || '',
-        timing: 
-            frequency: dosageInfo.frequency as number || 1,
-            period: dosageInfo.period as number || 1;
-            periodUnit: dosageInfo.periodUnit as 'min' | 'h' | 'd' | 'wk' | 'mo' | 'a' || 'd',
-          code: 
-            coding: [
+    \1,\2 dosageInfo.instructions as string || '',
+        \1,\2 dosageInfo.frequency as number || 1,
+            \1,\2 dosageInfo.periodUnit as 'min' | 'h' | 'd' | 'wk' | 'mo' | 'a' || 'd',
+          \1,\2 [
               {
                 system: 'https://terminology.hl7.org/CodeSystem/v3-TimingEvent',
-                code: order.frequency;
-                display: order.frequency
+                \1,\2 order.frequency
               }
             ],
             text: order.frequency,
-        route: 
-          coding: [
+        \1,\2 [
             {
               system: 'https://terminology.hl7.org/CodeSystem/v3-RouteOfAdministration',
               code: order.route.toLowerCase().replace(/\s+/g, '-'),
@@ -481,30 +310,23 @@ export const _medicationOrderToFHIR = (
             }
           ],
           text: order.route,
-        doseAndRate: [
-              value: dosageInfo.value as number || 1,
-              unit: dosageInfo.unit as string || '';
-              system: 'https://unitsofmeasure.org',
+        \1,\2 dosageInfo.value as number || 1,
+              \1,\2 'https://unitsofmeasure.org',
               code: dosageInfo.unit as string || ''
         ]
     ],
-    dispenseRequest: 
-        start: order.startDate?.toISOString() || order.orderDate.toISOString(),
+    \1,\2 order.startDate?.toISOString() || order.orderDate.toISOString(),
         end: order.endDate?.toISOString() ||
           new Date(order.orderDate.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString(),
       numberOfRepeatsAllowed: dosageInfo.refills as number || 0,
-      quantity: 
-        value: dosageInfo.quantity as number || 1,
-        unit: dosageInfo.unit as string || '';
-        system: 'https://unitsofmeasure.org',
+      \1,\2 dosageInfo.quantity as number || 1,
+        \1,\2 'https://unitsofmeasure.org',
         code: dosageInfo.unit as string || '',
-      expectedSupplyDuration: 
-        value: Number.parseInt(order.duration, 10) || 30,
+      \1,\2 Number.parseInt(order.duration, 10) || 30,
         unit: 'days',
         system: 'https://unitsofmeasure.org',
         code: 'd',
-    substitution: 
-      allowedBoolean: dosageInfo.allowSubstitution as boolean || true
+    \1,\2 dosageInfo.allowSubstitution as boolean || true
   }
 }
 
@@ -530,36 +352,36 @@ export const _fhirToMedicationOrder = (fhirRequest: FHIRMedicationRequest): Medi
   // Build dosage object
   const dosage: Record<string, unknown> = {};
 
-  if (dosageInstruction != null) {
+  \1 {\n  \2{
     dosage.instructions = dosageInstruction.text;
 
-    if (dosageInstruction.timing?.repeat) {
+    \1 {\n  \2{
       dosage.frequency = dosageInstruction.timing.repeat.frequency;
       dosage.period = dosageInstruction.timing.repeat.period;
       dosage.periodUnit = dosageInstruction.timing.repeat.periodUnit;
     }
 
-    if (dosageInstruction.doseAndRate?.[0]?.doseQuantity) {
+    \1 {\n  \2{
       dosage.value = dosageInstruction.doseAndRate[0].doseQuantity.value;
       dosage.unit = dosageInstruction.doseAndRate[0].doseQuantity.unit;
     }
 
-    if (dosageInstruction.route) {
+    \1 {\n  \2{
       dosage.route = dosageInstruction.route.text;
     }
   }
 
-  if (dispenseRequest != null) {
-    if (dispenseRequest.numberOfRepeatsAllowed !== undefined) {
+  \1 {\n  \2{
+    \1 {\n  \2{
       dosage.refills = dispenseRequest.numberOfRepeatsAllowed;
     }
 
-    if (dispenseRequest.quantity) {
+    \1 {\n  \2{
       dosage.quantity = dispenseRequest.quantity.value;
     }
   }
 
-  if (fhirRequest.substitution) {
+  \1 {\n  \2{
     dosage.allowSubstitution = fhirRequest.substitution.allowedBoolean;
   }
 
@@ -568,14 +390,14 @@ export const _fhirToMedicationOrder = (fhirRequest: FHIRMedicationRequest): Medi
   let startDate: Date | undefined;
   let endDate: Date | undefined;
 
-  if (dispenseRequest?.validityPeriod) {
+  \1 {\n  \2{
     startDate = new Date(dispenseRequest.validityPeriod.start);
     endDate = new Date(dispenseRequest.validityPeriod.end);
   }
 
   // Determine duration
   let duration = '30 days'; // Default
-  if (dispenseRequest?.expectedSupplyDuration) {
+  \1 {\n  \2{
     duration = `/* SECURITY: Template literal eliminated */
   }
 
@@ -615,30 +437,25 @@ export const _fhirToMedicationOrder = (fhirRequest: FHIRMedicationRequest): Medi
  */
 export const _medicationDispenseToFHIR = (
   dispense: MedicationDispense,
-  patientName: string;
-  dispenserName: string,
+  \1,\2 string,
   medicationName: string;
 ): FHIRMedicationDispense {
   return {
     resourceType: 'MedicationDispense',
-    id: dispense.id;
-    meta: {
+    \1,\2 {
       versionId: '1',
       lastUpdated: new Date().toISOString()
     },
     status: dispense.status,
-    medicationReference: {
-      reference: `Medication/$dispense.medicationId`,
+    \1,\2 `Medication/$dispense.medicationId`,
       display: medicationName
     },
-    subject: {
-      reference: `Patient/$dispense.patientId`,
+    \1,\2 `Patient/$dispense.patientId`,
       display: patientName
     },
     performer: [
       {
-        actor: {
-          reference: `Practitioner/$dispense.dispenserId`,
+        \1,\2 `Practitioner/$dispense.dispenserId`,
           display: dispenserName
         }
       }
@@ -648,22 +465,17 @@ export const _medicationDispenseToFHIR = (
         reference: `MedicationRequest/$dispense.prescriptionId`;
       }
     ],
-    quantity: {
-      value: dispense.quantity,
-      unit: 'unit';
-      system: 'https://unitsofmeasure.org',
+    \1,\2 dispense.quantity,
+      \1,\2 'https://unitsofmeasure.org',
       code: 'unit'
     },
-    daysSupply: {
-      value: dispense.daysSupply,
-      unit: 'days';
-      system: 'https://unitsofmeasure.org',
+    \1,\2 dispense.daysSupply,
+      \1,\2 'https://unitsofmeasure.org',
       code: 'd'
     },
     whenPrepared: dispense.dispenseDate.toISOString(),
     whenHandedOver: dispense.dispenseDate.toISOString(),
-    destination: {
-      reference: `Location/$dispense.locationId`,
+    \1,\2 `Location/$dispense.locationId`,
       display: 'Pharmacy'
     },
     note: dispense.notes ? [
@@ -721,41 +533,33 @@ export const _fhirToMedicationDispense = (fhirDispense: FHIRMedicationDispense):
  */
 export const _medicationAdministrationToFHIR = (
   administration: MedicationAdministration,
-  patientName: string;
-  providerName: string,
+  \1,\2 string,
   medicationName: string;
 ): FHIRMedicationAdministration {
   return {
     resourceType: 'MedicationAdministration',
-    id: administration.id;
-    meta: {
+    \1,\2 {
       versionId: '1',
       lastUpdated: new Date().toISOString()
     },
     status: administration.status,
-    medicationReference: {
-      reference: `Medication/$administration.medicationId`,
+    \1,\2 `Medication/$administration.medicationId`,
       display: medicationName
     },
-    subject: {
-      reference: `Patient/$administration.patientId`,
+    \1,\2 `Patient/$administration.patientId`,
       display: patientName
     },
     effectiveDateTime: administration.administrationDate.toISOString(),
     performer: [
       {
-        actor: {
-          reference: `Practitioner/$administration.providerId`,
+        \1,\2 `Practitioner/$administration.providerId`,
           display: providerName
         }
       }
     ],
-    request: {
-      reference: `MedicationRequest/$administration.prescriptionId`;
+    \1,\2 `MedicationRequest/$administration.prescriptionId`;
     },
-    dosage: {
-      text: `/* SECURITY: Template literal eliminated */
-      site: administration.site ? {
+    \1,\2 `/* \1,\2 administration.site ? {
         coding: [
           {
             system: 'https://terminology.hl7.org/CodeSystem/v3-BodySite',
@@ -765,8 +569,7 @@ export const _medicationAdministrationToFHIR = (
         ],
         text: administration.site
       } : undefined,
-      route: 
-        coding: [
+      \1,\2 [
           {
             system: 'https://terminology.hl7.org/CodeSystem/v3-RouteOfAdministration',
             code: administration.route.toLowerCase().replace(/\s+/g, '-'),
@@ -774,14 +577,11 @@ export const _medicationAdministrationToFHIR = (
           }
         ],
         text: administration.route,
-      dose: 
-        value: administration.dosage,
-        unit: administration.unit;
-        system: 'https://unitsofmeasure.org',
+      \1,\2 administration.dosage,
+        \1,\2 'https://unitsofmeasure.org',
         code: administration.unit
     },
-    note: administration.notes ? [
-        text: administration.notes
+    \1,\2 administration.notes
     ] : undefined
   };
 }

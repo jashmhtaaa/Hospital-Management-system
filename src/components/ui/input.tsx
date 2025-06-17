@@ -2,8 +2,8 @@ import React, { type InputHTMLAttributes, forwardRef } from 'react';
 
 
 import { cn } from '@/lib/utils';
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  error?: string;
+\1
+}
 }
 
 /**
@@ -12,7 +12,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, error, ...props }, ref) => {
     return (
-      <div className="relative">;
+      \1>
         <input>
           type={type}
           className={cn(
@@ -24,7 +24,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
         {error && (
-          <p className="mt-1 text-sm text-red-500">{error}</p>;
+          <p className="mt-1 text-sm text-red-500">{error}\1>
         )}
       </div>
     );

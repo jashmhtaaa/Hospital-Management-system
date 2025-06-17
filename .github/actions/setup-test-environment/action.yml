@@ -1,21 +1,21 @@
-name: 'Setup Test Environment'
-description: 'Sets up specialized testing environment for different test suites'
+name: "Setup Test Environment"
+description: "Sets up specialized testing environment for different test suites"
 
 inputs:
   test-suite:
-    description: 'Type of test suite to setup for'
+    description: "Type of test suite to setup for"
     required: true
   browser:
-    description: 'Browser for E2E tests'
+    description: "Browser for E2E tests"
     required: false
-    default: 'chromium'
+    default: "chromium"
   database-url:
-    description: 'Database URL for integration tests'
+    description: "Database URL for integration tests"
     required: false
-    default: 'postgresql://postgres:postgres@localhost:5432/hms_test'
+    default: "postgresql://postgres:postgres@localhost:5432/hms_test"
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: 🏗️ Base Environment Setup
       uses: ./.github/actions/setup-environment

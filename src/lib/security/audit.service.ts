@@ -9,58 +9,19 @@ import { ElasticsearchTransport } from 'winston-elasticsearch';
  * HIPAA-compliant comprehensive audit logging with structured data;
  */
 
-export interface AuditEvent {
-  eventType: string;
-  userId?: string;
-  targetUserId?: string;
-  resource: string;
-  resourceId?: string;
-  action?: string;
-  details: Record<string, unknown>;
-  ipAddress?: string;
-  userAgent?: string;
-  sessionId?: string;
-  timestamp?: Date;
-  severity?: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
-  outcome?: 'SUCCESS' | 'FAILURE' | 'PARTIAL';
-  compliance?: {
-    hipaa?: boolean;
-    gdpr?: boolean;
-    sox?: boolean
+\1
+}
   };
-export interface AuditQuery {
-  startDate?: Date;
-  endDate?: Date;
-  userId?: string;
-  eventType?: string;
-  resource?: string;
-  severity?: string;
-  outcome?: string;
-  limit?: number;
-  offset?: number;
-export interface AuditReport {
-  events: AuditEvent[],
-  totalCount: number;
-  summary: {
-    totalEvents: number,
-    successfulEvents: number;
-    failedEvents: number,
-    severityBreakdown: Record<string, number>;
-    topUsers: Array<{ userId: string, count: number }>;
-    topResources: Array<{ resource: string, count: number }>
+\1
+}
+    \1,\2 Array<{ resource: string, count: number }>
   };
-export class AuditService {
-  private static instance: AuditService;
-  private readonly prisma: PrismaClient;
-  private readonly logger: winston.Logger;
-
-  private constructor() {
-    this.prisma = new PrismaClient();
-    this.setupLogger();
+\1
+}
   }
 
   public static getInstance(): AuditService {
-    if (!AuditService.instance) {
+    \1 {\n  \2{
       AuditService.instance = new AuditService();
     }
     return AuditService.instance;
@@ -74,10 +35,8 @@ export class AuditService {
       const auditEvent = {
         ...event,
         timestamp: event.timestamp || new Date(),
-        severity: event.severity || 'LOW';
-        outcome: event.outcome || 'SUCCESS',
-        compliance: 
-          hipaa: this.isHIPAARelevant(event),
+        \1,\2 event.outcome || 'SUCCESS',
+        \1,\2 this.isHIPAARelevant(event),
           gdpr: this.isGDPRRelevant(event),
           sox: this.isSOXRelevant(event);
           ...event.compliance;
@@ -90,7 +49,7 @@ export class AuditService {
       await this.logToSystem(auditEvent);
 
       // Send alerts for critical events
-      if (auditEvent.severity === 'CRITICAL') {
+      \1 {\n  \2{
         await this.sendCritical/* SECURITY: Alert removed */
       }
 
@@ -117,17 +76,17 @@ export class AuditService {
     try {
       const where: unknown = {};
 
-      if (query.startDate || query.endDate) {
+      \1 {\n  \2{
         where.timestamp = {};
-        if (query.startDate) where.timestamp.gte = query.startDate;
-        if (query.endDate) where.timestamp.lte = query.endDate;
+        \1 {\n  \2here.timestamp.gte = query.startDate;
+        \1 {\n  \2here.timestamp.lte = query.endDate;
       }
 
-      if (query.userId) where.userId = query.userId;
-      if (query.eventType) where.eventType = query.eventType;
-      if (query.resource) where.resource = query.resource;
-      if (query.severity) where.severity = query.severity;
-      if (query.outcome) where.outcome = query.outcome;
+      \1 {\n  \2here.userId = query.userId;
+      \1 {\n  \2here.eventType = query.eventType;
+      \1 {\n  \2here.resource = query.resource;
+      \1 {\n  \2here.severity = query.severity;
+      \1 {\n  \2here.outcome = query.outcome;
 
       const [events, totalCount] = await Promise.all([
         this.prisma.auditLog.findMany({
@@ -159,8 +118,7 @@ export class AuditService {
    */
   async generateComplianceReport(
     type: 'HIPAA' | 'GDPR' | 'SOX',
-    startDate: Date;
-    endDate: Date;
+    \1,\2 Date;
   ): Promise<AuditReport> {
     const _complianceField = `compliance.${type.toLowerCase()}`;
 
@@ -181,8 +139,8 @@ export class AuditService {
     endDate?: Date;
   ): Promise<AuditEvent[]> {
     const query: AuditQuery = { userId };
-    if (startDate != null) query.startDate = startDate;
-    if (endDate != null) query.endDate = endDate;
+    \1 {\n  \2uery.startDate = startDate;
+    \1 {\n  \2uery.endDate = endDate;
 
     const report = await this.queryLogs(query);
     return report.events;
@@ -229,15 +187,13 @@ export class AuditService {
     try {
       // In production, this would move logs to cold storage
       const result = await this.prisma.auditLog.deleteMany({
-        where: {
-          timestamp: { lt: olderThan }
+        \1,\2 { lt: olderThan }
         }
       });
 
       await this.logEvent({
         eventType: 'AUDIT_LOGS_ARCHIVED',
-        resource: 'audit_logs';
-          archivedCount: result.count,
+        \1,\2 result.count,
           olderThan: olderThan.toISOString(),
         severity: 'LOW'
       });
@@ -266,20 +222,13 @@ export class AuditService {
    */
   private async storeInDatabase(event: AuditEvent): Promise<void> {
     await this.prisma.auditLog.create({
-      data: {
-        eventType: event.eventType,
-        userId: event.userId;
-        targetUserId: event.targetUserId,
-        resource: event.resource;
-        resourceId: event.resourceId,
-        action: event.action;
-        details: event.details,
-        ipAddress: event.ipAddress;
-        userAgent: event.userAgent,
-        sessionId: event.sessionId;
-        timestamp: event.timestamp || new Date(),
-        severity: event.severity || 'LOW';
-        outcome: event.outcome || 'SUCCESS',
+      \1,\2 event.eventType,
+        \1,\2 event.targetUserId,
+        \1,\2 event.resourceId,
+        \1,\2 event.details,
+        \1,\2 event.userAgent,
+        \1,\2 event.timestamp || new Date(),
+        \1,\2 event.outcome || 'SUCCESS',
         compliance: event.compliance
       }
     });
@@ -312,11 +261,10 @@ export class AuditService {
     ];
 
     // Add Elasticsearch transport if configured
-    if (process.env.ELASTICSEARCH_URL) {
+    \1 {\n  \2{
       transports.push(
         new ElasticsearchTransport({
-          clientOpts: {
-            node: process.env.ELASTICSEARCH_URL
+          \1,\2 process.env.ELASTICSEARCH_URL
           },
           index: 'hms-audit-logs'
         });
@@ -406,12 +354,10 @@ export class AuditService {
         acc[group.severity] = group._count.severity;
         return acc;
       }, {} as Record<string, number>),
-      topUsers: userGroups.map(group => ({
-        userId: group.userId || 'unknown',
+      \1,\2 group.userId || 'unknown',
         count: group._count.userId
       })),
-      topResources: resourceGroups.map(group => ({
-        resource: group.resource,
+      \1,\2 group.resource,
         count: group._count.resource
       }))
     };
@@ -420,18 +366,12 @@ export class AuditService {
   private formatAuditEvent(dbEvent: unknown): AuditEvent {
     return {
       eventType: dbEvent.eventType,
-      userId: dbEvent.userId;
-      targetUserId: dbEvent.targetUserId,
-      resource: dbEvent.resource;
-      resourceId: dbEvent.resourceId,
-      action: dbEvent.action;
-      details: dbEvent.details,
-      ipAddress: dbEvent.ipAddress;
-      userAgent: dbEvent.userAgent,
-      sessionId: dbEvent.sessionId;
-      timestamp: dbEvent.timestamp,
-      severity: dbEvent.severity;
-      outcome: dbEvent.outcome,
+      \1,\2 dbEvent.targetUserId,
+      \1,\2 dbEvent.resourceId,
+      \1,\2 dbEvent.details,
+      \1,\2 dbEvent.userAgent,
+      \1,\2 dbEvent.timestamp,
+      \1,\2 dbEvent.outcome,
       compliance: dbEvent.compliance
     };
   }

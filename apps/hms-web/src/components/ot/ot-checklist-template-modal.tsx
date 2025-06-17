@@ -10,8 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 }
 interface OTChecklistTemplateModalProps {
   isOpen: boolean,
-  onClose: () => void;
-  onSubmit: (data: unknown) => void
+  \1,\2 (data: unknown) => void
 }
 
 /**
@@ -26,19 +25,19 @@ export const _OTChecklistTemplateModal = ({ isOpen, onClose, onSubmit }: OTCheck
 
   return (
     <Dialog>
-      <DialogContent className="sm:max-w-[500px]">;
+      \1>
         <DialogHeader>
           <DialogTitle>Add/Edit Checklist Template</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>;
-          <div className="grid gap-4 py-4">;
-            <div className="space-y-2">;
-              <Label htmlFor="name">Checklist Name</Label>;
+        \1>
+          \1>
+            \1>
+              <Label htmlFor="name">Checklist Name\1>
               <Input id="name" placeholder="e.g., Pre-operative Checklist" />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="surgeryType">Surgery Type</Label>;
+            \1>
+              <Label htmlFor="surgeryType">Surgery Type\1>
               <Select>
                 id="surgeryType"
                 options={[
@@ -47,13 +46,13 @@ export const _OTChecklistTemplateModal = ({ isOpen, onClose, onSubmit }: OTCheck
               />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="items">Checklist Items</Label>;
+            \1>
+              <Label htmlFor="items">Checklist Items\1>
               <Textarea id="items" placeholder="Enter each item on a new line" rows={6} />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="status">Status</Label>;
+            \1>
+              <Label htmlFor="status">Status\1>
               <Select>
                 id="status"
                 options={[
@@ -64,13 +63,13 @@ export const _OTChecklistTemplateModal = ({ isOpen, onClose, onSubmit }: OTCheck
               />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="notes">Notes</Label>;
+            \1>
+              <Label htmlFor="notes">Notes\1>
               <Textarea id="notes" placeholder="Additional information" />
             </div>
           </div>
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose}>;
+            \1>
               Cancel
             </Button>
             <Button type="submit">Save</Button>

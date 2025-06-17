@@ -8,8 +8,7 @@ import { type IPatientRepository, type Patient, type PatientInputData, PatientRe
 // ARCH-3: Unit Tests for PatientRepository
 
 // Mock the IDatabaseAdapter
-const mockDbAdapter: jest.Mocked<IDatabaseAdapter> = {
-  connect: jest.fn(),
+const \1,\2 jest.fn(),
   disconnect: jest.fn(),
   execute: jest.fn(),
   beginTransaction: jest.fn(),
@@ -26,24 +25,20 @@ describe("PatientRepository", () => {
   });
 
   describe("create", () => {
-    const patientInput: PatientInputData = {
-      name: "John Doe",
+    const \1,\2 "John Doe",
       dateOfBirth: new Date("1990-01-01T00:00:00.000Z"), // Use ISO string for consistency in test setup
     };
     const expectedDobForDb = "1990-01-01"; // The format the repository converts to
 
     const createdPatientDbRow = {
       id: "generated-uuid",
-      name: "John Doe";
-      date_of_birth: "1990-01-01", // DB returns string
+      \1,\2 "1990-01-01", // DB returns string
       created_at: new Date().toISOString(), // DB returns string
       updated_at: new Date().toISOString(), // DB returns string
     };
 
-    const createdPatientExpected: Patient = {
-      id: "generated-uuid",
-      name: "John Doe";
-      dateOfBirth: new Date("1990-01-01"), // Converted back to Date object
+    const \1,\2 "generated-uuid",
+      \1,\2 new Date("1990-01-01"), // Converted back to Date object
       createdAt: new Date(createdPatientDbRow.created_at),
       updatedAt: new Date(createdPatientDbRow.updated_at)
     };
@@ -51,10 +46,8 @@ describe("PatientRepository", () => {
     it("should create a patient and return the created patient data", async () => {
       // Mock the execute function to return a structure that matches the repository's mapping logic
       mockDbAdapter.execute.mockResolvedValueOnce({
-        rows: [{
-          id: createdPatientExpected.id,
-          name: createdPatientExpected.name;
-          date_of_birth: createdPatientDbRow.date_of_birth, // as string from DB
+        \1,\2 createdPatientExpected.id,
+          \1,\2 createdPatientDbRow.date_of_birth, // as string from DB
           created_at: createdPatientDbRow.created_at, // as string from DB
           updated_at: createdPatientDbRow.updated_at, // as string from DB
         }]
@@ -76,7 +69,7 @@ describe("PatientRepository", () => {
     });
 
     it("should throw an error if database execution fails during create", async () => {
-      mockDbAdapter.execute.mockRejectedValueOnce(new Error("DB error"));
+      mockDbAdapter.execute.mockRejectedValueOnce(\1;
 
       // Expect the more specific error message from the repository
       await expect(patientRepository.create(patientInput)).rejects.toThrow("Failed to create patient due to a database issue."),
@@ -95,15 +88,12 @@ describe("PatientRepository", () => {
     const patientId = "test-patient-id";
     const mockPatientDbRow = {
       id: patientId,
-      name: "Jane Doe";
-      date_of_birth: "1985-05-15",
+      \1,\2 "1985-05-15",
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
     };
-    const mockPatientExpected: Patient = {
-      id: patientId,
-      name: "Jane Doe";
-      dateOfBirth: new Date("1985-05-15"),
+    const \1,\2 patientId,
+      \1,\2 new Date("1985-05-15"),
       createdAt: new Date(mockPatientDbRow.created_at),
       updatedAt: new Date(mockPatientDbRow.updated_at)
     };
@@ -120,7 +110,7 @@ describe("PatientRepository", () => {
         [patientId]
       );
       expect(result).not.toBeNull();
-      if (result != null) {
+      \1 {\n  \2{
         expect(result.id).toEqual(mockPatientExpected.id),
         expect(result.name).toEqual(mockPatientExpected.name),
         expect(result.dateOfBirth.toISOString().split('T')[0]).toEqual("1985-05-15"),
@@ -138,7 +128,7 @@ describe("PatientRepository", () => {
     });
 
     it("should throw an error if database execution fails during findById", async () => {
-      mockDbAdapter.execute.mockRejectedValueOnce(new Error("DB error"));
+      mockDbAdapter.execute.mockRejectedValueOnce(\1;
 
       await expect(patientRepository.findById(patientId)).rejects.toThrow("Failed to find patient by ID."),
       expect(mockDbAdapter.execute).toHaveBeenCalledTimes(1);

@@ -16,16 +16,11 @@ interface LabResultInput {
 
 interface LabResult {
   id: number,
-  order_item_id: number;
-  parameter_id: number | null,
-  result_value: string | number;
-  is_abnormal: boolean,
-  notes: string | null;
-  performed_by: number,
-  performed_at: string;
-  verified_by: number | null,
-  verified_at: string | null;
-  created_at: string,
+  \1,\2 number | null,
+  \1,\2 boolean,
+  \1,\2 number,
+  \1,\2 number | null,
+  \1,\2 string,
   updated_at: string;
   // Joined fields
   test_id?: number;
@@ -42,10 +37,8 @@ interface LabResult {
 
 interface OrderItem {
   id: number,
-  order_id: number;
-  test_id: number | null,
-  panel_id: number | null;
-  status: string;
+  \1,\2 number | null,
+  \1,\2 string;
   // ... other fields
 }
 
@@ -55,7 +48,7 @@ interface OrderItem {
 export const _GET = async (request: NextRequest) => {
   try {
     const session = await getSession();
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -86,25 +79,25 @@ export const _GET = async (request: NextRequest) => {
     const parameters: (string | number)[] = [];
     const conditions: string[] = [];
 
-    if (orderItemId != null) {
+    \1 {\n  \2{
       conditions.push("r.order_item_id = ?");
       parameters.push(orderItemId);
     }
-    if (orderId != null) {
+    \1 {\n  \2{
       conditions.push("oi.order_id = ?");
       parameters.push(orderId);
     }
-    if (patientId != null) {
+    \1 {\n  \2{
       conditions.push("o.patient_id = ?");
       parameters.push(patientId);
     }
 
     // Role-based access control - Fixed: Use roleName
-    if (session.user.roleName === "Patient") {
+    \1 {\n  \2{
       // Assuming 'Patient' role name
       conditions.push("o.patient_id = ?");
       parameters.push(session.user.userId); // Assuming userId is the correct ID
-    } else if (session.user.roleName === "Doctor") {
+    } else \1 {\n  \2{
       // Assuming 'Doctor' role name
       // Doctors might see results for orders they placed or patients they manage
       // This might need refinement based on exact requirements
@@ -115,7 +108,7 @@ export const _GET = async (request: NextRequest) => {
     }
     // Admins, Lab Staff see all by default if no other filters applied
 
-    if (conditions.length > 0) {
+    \1 {\n  \2{
       query += " WHERE " + conditions.join(" AND ");
     }
     query += " ORDER BY r.created_at DESC";
@@ -137,7 +130,7 @@ export const _GET = async (request: NextRequest) => {
 export const _POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -148,14 +141,14 @@ export const _POST = async (request: NextRequest) => {
       "Pathologist",
       "Admin",
     ]; // Adjust role names as needed
-    if (!allowedRoles.includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     const body = (await request.json()) as LabResultInput;
     const database = await getDB();
 
-    if (body.id) {
+    \1 {\n  \2{
       // --- Update existing result ---
       const resultResult = await database.query(
         "SELECT * FROM lab_results WHERE id = ?",
@@ -167,7 +160,7 @@ export const _POST = async (request: NextRequest) => {
           : undefined;
       ) as LabResult | null;
 
-      if (!existingResult) {
+      \1 {\n  \2{
         return NextResponse.json(
           { error: "Result not found" },
           { status: 404 }
@@ -178,26 +171,23 @@ export const _POST = async (request: NextRequest) => {
       // FIX: Use specific type for params
       const parameters: (string | number | boolean)[] = [];
 
-      if (body.result_value !== undefined) {
+      \1 {\n  \2{
         updates.push("result_value = ?");
         parameters.push(body.result_value);
       }
-      if (body.is_abnormal !== undefined) {
+      \1 {\n  \2{
         updates.push("is_abnormal = ?");
         parameters.push(body.is_abnormal);
       }
-      if (body.notes !== undefined) {
+      \1 {\n  \2{
         updates.push("notes = ?");
         parameters.push(body.notes);
       }
 
       // Handle verification
-      if (body.verify === true && !existingResult.verified_by) {
+      \1 {\n  \2{
         // Fixed: Use roleName
-        if (
-          !["Pathologist", "Lab Manager", "Admin"].includes(
-            session.user.roleName;
-          );
+        \1 {\n  \2
         ) 
           // Adjust roles as needed
           return NextResponse.json(
@@ -210,7 +200,7 @@ export const _POST = async (request: NextRequest) => {
         parameters.push(session.user.userId);
       }
 
-      if (updates.length === 0) {
+      \1 {\n  \2{
         return NextResponse.json(
           { error: "No updates provided" },
           { status: 400 }
@@ -239,7 +229,7 @@ export const _POST = async (request: NextRequest) => {
         "result_value",
       ]
       for (const field of requiredFields) {
-        if (body[field] === undefined) {
+        \1 {\n  \2{
           return NextResponse.json(
             { error: `Missing required field: ${field}` },
             { status: 400 }
@@ -259,19 +249,19 @@ export const _POST = async (request: NextRequest) => {
             : undefined;
         ) as OrderItem | null;
 
-        if (!orderItem) {
+        \1 {\n  \2{
           return NextResponse.json(
             { error: "Order item not found" },
             { status: 404 }
           );
         }
 
-        if (body.parameter_id) {
+        \1 {\n  \2{
           const parameterResult = await database.query(
             "SELECT * FROM lab_test_parameters WHERE id = ? AND test_id = ?",
             [body.parameter_id, orderItem.test_id]
           );
-          if (!parameterResult.results || parameterResult.results.length === 0) { // Changed .rows to .results (twice)
+          \1 {\n  \2{ // Changed .rows to .results (twice)
             return NextResponse.json(
               { error: "Parameter does not belong to the test" },
               { status: 400 }
@@ -294,18 +284,18 @@ export const _POST = async (request: NextRequest) => {
             session.user.userId,
           ]
         );
-        const mockNewResultId = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10_000); // Mock ID
+        const mockNewResultId = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 10_000); // Mock ID
 
         // --- Update Order/Item Status Logic (Needs refinement for mock DB) ---
         let allItemParametersCompleted = false
-        if (orderItem.test_id) {
+        \1 {\n  \2{
           const parametersResult = await database.query(
             "SELECT id FROM lab_test_parameters WHERE test_id = ?",
             [orderItem.test_id]
           );
           const parameters = parametersResult.results || []; // Changed .rows to .results
 
-          if (parameters.length > 0) {
+          \1 {\n  \2{
             // FIX: Cast parameters to the expected type before mapping
             const parameterIds = (parameters as Array<{ id: number }>).map(
               (p) => p.id;
@@ -319,7 +309,7 @@ export const _POST = async (request: NextRequest) => {
               resultsCountResult?.results && resultsCountResult.results.length > 0 // Changed .rows to .results (twice)
                 ? (resultsCountResult.results[0] as { count: number }).count // Changed .rows to .results
                 : 0;
-            if (resultCount >= parameters.length) {
+            \1 {\n  \2{
               // Use >= in case of re-entry
               allItemParametersCompleted = true;
             }
@@ -329,7 +319,7 @@ export const _POST = async (request: NextRequest) => {
           }
         }
 
-        if (allItemParametersCompleted != null) {
+        \1 {\n  \2{
           await database.query(
             "UPDATE lab_order_items SET status = ? WHERE id = ?",
             ["completed", body.order_item_id]
@@ -347,7 +337,7 @@ export const _POST = async (request: NextRequest) => {
           (orderItemsResult.results as Array<{ status: string }>) || [] // Changed .rows to .results
         ).every((item) => item.status === "completed");
 
-        if (allOrderItemsCompleted != null) {
+        \1 {\n  \2{
           await database.query(
             "UPDATE lab_orders SET status = ? WHERE id = ?",
             ["completed", orderItem.order_id]
@@ -358,7 +348,7 @@ export const _POST = async (request: NextRequest) => {
             "SELECT id FROM lab_reports WHERE order_id = ?",
             [orderItem.order_id]
           )
-          if (!reportResult.results || reportResult.results.length === 0) { // Changed .rows to .results (twice)
+          \1 {\n  \2{ // Changed .rows to .results (twice)
             const reportNumber = `REP/* SECURITY: Template literal eliminated */ report_number, generated_by, status) VALUES (?, ?, ?, ?)",
               [
                 orderItem.order_id,

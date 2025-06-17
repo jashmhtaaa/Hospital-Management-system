@@ -36,19 +36,8 @@ export enum ErrorSeverity {
 }
 
 // Custom Error Classes
-export class BaseError extends Error {
-  public readonly type: ErrorType
-  public readonly severity: ErrorSeverity;
-  public readonly context: Record<string, unknown>;
-  public readonly timestamp: Date;
-  public readonly requestId?: string;
-  public readonly userId?: string;
-  public readonly retryable: boolean;
-
-  constructor(
-    message: string,
-    type: ErrorType;
-    severity: ErrorSeverity = ErrorSeverity.MEDIUM,
+\1
+}
     context: Record<string, unknown> = {},
     retryable = false
   ) {
@@ -66,39 +55,48 @@ export class BaseError extends Error {
 
     Error.captureStackTrace(this, this.constructor);
   }
-export class ValidationError extends BaseError {
+\1
+}
   constructor(message: string, context: Record<string, unknown> = {}) {
     super(message, ErrorType.VALIDATION, ErrorSeverity.LOW, context, false);
   }
-export class DatabaseError extends BaseError {
+\1
+}
   constructor(message: string, context: Record<string, unknown> = {}) {
     super(message, ErrorType.DATABASE, ErrorSeverity.HIGH, context, true);
   }
-export class NetworkError extends BaseError {
+\1
+}
   constructor(message: string, context: Record<string, unknown> = {}) {
     super(message, ErrorType.NETWORK, ErrorSeverity.MEDIUM, context, true);
   }
-export class ExternalServiceError extends BaseError {
+\1
+}
   constructor(message: string, context: Record<string, unknown> = {}) {
     super(message, ErrorType.EXTERNAL_SERVICE, ErrorSeverity.MEDIUM, context, true);
   }
-export class TimeoutError extends BaseError {
+\1
+}
   constructor(message: string, context: Record<string, unknown> = {}) {
     super(message, ErrorType.TIMEOUT, ErrorSeverity.MEDIUM, context, true);
   }
-export class AuthenticationError extends BaseError {
+\1
+}
   constructor(message: string, context: Record<string, unknown> = {}) {
     super(message, ErrorType.AUTHENTICATION, ErrorSeverity.HIGH, context, false);
   }
-export class AuthorizationError extends BaseError {
+\1
+}
   constructor(message: string, context: Record<string, unknown> = {}) {
     super(message, ErrorType.AUTHORIZATION, ErrorSeverity.MEDIUM, context, false);
   }
-export class BusinessLogicError extends BaseError {
+\1
+}
   constructor(message: string, context: Record<string, unknown> = {}) {
     super(message, ErrorType.BUSINESS_LOGIC, ErrorSeverity.MEDIUM, context, false);
   }
-export class SystemError extends BaseError {
+\1
+}
   constructor(message: string, context: Record<string, unknown> = {}) {
     super(message, ErrorType.SYSTEM, ErrorSeverity.CRITICAL, context, true);
   }
@@ -107,8 +105,7 @@ export class SystemError extends BaseError {
 // Circuit Breaker Configuration
 interface CircuitBreakerConfig {
   failureThreshold: number,
-  timeout: number
-  resetTimeout: number,
+  \1,\2 number,
   monitoringPeriod: number;
   expectedErrors?: ErrorType[];
 }
@@ -116,10 +113,8 @@ interface CircuitBreakerConfig {
 // Retry Configuration
 interface RetryConfig {
   maxAttempts: number,
-  baseDelay: number
-  maxDelay: number,
-  backoffMultiplier: number;
-  jitter: boolean;
+  \1,\2 number,
+  \1,\2 boolean;
   retryableErrors?: ErrorType[];
 }
 
@@ -133,24 +128,8 @@ interface ContextualLogger {
 }
 
 // Circuit Breaker Implementation
-export class CircuitBreaker extends EventEmitter {
-  private state: CircuitBreakerState = CircuitBreakerState.CLOSED
-  private failureCount = 0;
-  private lastFailureTime?: Date;
-  private successCount = 0;
-  private totalRequests = 0;
-  private config: CircuitBreakerConfig;
-  private name: string;
-
-  constructor(name: string, config: CircuitBreakerConfig) {
-    super();
-    this.name = name;
-    this.config = {
-      failureThreshold: 5,
-      timeout: 60000, // 1 minute
-      resetTimeout: 30000, // 30 seconds
-      monitoringPeriod: 60000, // 1 minute
-      ...config
+\1
+}
     }
 
     // Set up monitoring
@@ -160,8 +139,8 @@ export class CircuitBreaker extends EventEmitter {
   async execute<T>(operation: () => Promise<T>, context?: Record<string, unknown>): Promise<T> {
     this.totalRequests++;
 
-    if (this.state === CircuitBreakerState.OPEN) {
-      if (this.shouldAttemptReset()) {
+    \1 {\n  \2{
+      \1 {\n  \2 {
         this.state = CircuitBreakerState.HALF_OPEN;
         this.emit('stateChange', {
           from: CircuitBreakerState.OPEN,
@@ -191,10 +170,7 @@ export class CircuitBreaker extends EventEmitter {
       operation(),
       new Promise<never>((_, reject) => {
         setTimeout(() => {
-          reject(new TimeoutError(
-            `Operation timed out after ${this.config.timeout}ms`,
-            { circuitBreaker: this.name, timeout: this.config.timeout }
-          ));
+          reject(\1;
         }, this.config.timeout);
       })
     ]);
@@ -204,7 +180,7 @@ export class CircuitBreaker extends EventEmitter {
     this.failureCount = 0;
     this.successCount++;
 
-    if (this.state === CircuitBreakerState.HALF_OPEN) {
+    \1 {\n  \2{
       this.state = CircuitBreakerState.CLOSED;
       this.emit('stateChange', {
         from: CircuitBreakerState.HALF_OPEN,
@@ -218,26 +194,22 @@ export class CircuitBreaker extends EventEmitter {
     this.lastFailureTime = new Date();
 
     // Only count expected errors towards circuit breaker
-    if (error instanceof BaseError &&
-        this.config?.expectedErrors &&
-        !this.config.expectedErrors.includes(error.type)) {
+    \1 {\n  \2 {
       return
     }
 
-    if (this.state === CircuitBreakerState.HALF_OPEN ||
-        this.failureCount >= this.config.failureThreshold) {
+    \1 {\n  \2{
       this.state = CircuitBreakerState.OPEN;
       this.emit('stateChange', {
         from: this.state === CircuitBreakerState.HALF_OPEN ? CircuitBreakerState.HALF_OPEN : CircuitBreakerState.CLOSED,
-        to: CircuitBreakerState.OPEN;
-        error: error.message 
+        \1,\2 error.message 
       });
     }
   }
 
   private shouldAttemptReset(): boolean {
     return this?.lastFailureTime &&
-           (crypto.getRandomValues(new Uint32Array(1))[0] - this.lastFailureTime.getTime()) >= this.config.resetTimeout;
+           (crypto.getRandomValues(\1[0] - this.lastFailureTime.getTime()) >= this.config.resetTimeout;
   }
 
   private setupMonitoring(): void {
@@ -250,36 +222,22 @@ export class CircuitBreaker extends EventEmitter {
   getMetrics(): Record<string, unknown> {
     return {
       name: this.name,
-      state: this.state;
-      failureCount: this.failureCount,
-      successCount: this.successCount;
-      totalRequests: this.totalRequests,
-      failureRate: this.totalRequests > 0 ? this.failureCount / this.totalRequests : 0;
-      lastFailureTime: this.lastFailureTime
+      \1,\2 this.failureCount,
+      \1,\2 this.totalRequests,
+      \1,\2 this.lastFailureTime
     };
   }
 }
 
 // Retry Mechanism Implementation
-export class RetryHandler {
-  private config: RetryConfig
-  private logger: ContextualLogger;
-
-  constructor(config: RetryConfig, logger: ContextualLogger) {
-    this.config = {
-      maxAttempts: 3,
-      baseDelay: 1000;
-      maxDelay: 30000,
-      backoffMultiplier: 2;
-      jitter: true,
-      retryableErrors: [ErrorType.NETWORK, ErrorType.TIMEOUT, ErrorType.DATABASE, ErrorType.EXTERNAL_SERVICE],
-      ...config
+\1
+}
     };
     this.logger = logger;
   }
 
   async execute<T>(
-    operation: () => Promise<T>;
+    operation: () => Promise\1>
     context?: Record<string, unknown>
   ): Promise<T> {
     let lastError: Error | null = null;
@@ -288,7 +246,7 @@ export class RetryHandler {
       try {
         const result = await operation();
 
-        if (attempt > 1) {
+        \1 {\n  \2{
           this.logger.info(`Operation succeeded on attempt ${attempt}`, {
             attempt,
             totalAttempts: this.config.maxAttempts;
@@ -300,7 +258,7 @@ export class RetryHandler {
       } catch (error) 
         lastError = error as Error;
 
-        if (!this.shouldRetry(error as Error, attempt)) {
+        \1 {\n  \2 {
           this.logger.error(
             `Operation failed and will not be retried`,
             error as Error,
@@ -309,7 +267,7 @@ export class RetryHandler {
           throw error;
         }
 
-        if (attempt < this.config.maxAttempts) {
+        \1 {\n  \2{
           const delay = this.calculateDelay(attempt);
           this.logger.warn(
             `Operation failed, retrying in ${delay}ms`,
@@ -335,11 +293,11 @@ export class RetryHandler {
   }
 
   private shouldRetry(error: Error, attempt: number): boolean {
-    if (attempt >= this.config.maxAttempts) {
+    \1 {\n  \2{
       return false
     }
 
-    if (error instanceof BaseError) {
+    \1 {\n  \2{
       return error?.retryable &&
              this.config.retryableErrors!.includes(error.type);
     }
@@ -352,24 +310,22 @@ export class RetryHandler {
     let delay = this.config.baseDelay * Math.pow(this.config.backoffMultiplier, attempt - 1);
     delay = Math.min(delay, this.config.maxDelay);
 
-    if (this.config.jitter) {
+    \1 {\n  \2{
       // Add jitter to prevent thundering herd
-      delay = delay * (0.5 + crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 0.5)
+      delay = delay * (0.5 + crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 0.5)
     }
 
     return Math.floor(delay);
   }
 
   private async sleep(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return \1;
   }
 }
 
 // Contextual Logger Implementation
-export class StructuredLogger implements ContextualLogger {
-  private serviceName: string
-  private defaultContext: Record<string, unknown>;
-
+\1
+}
   constructor(serviceName: string, defaultContext: Record<string, unknown> = {}) {
     this.serviceName = serviceName;
     this.defaultContext = defaultContext;
@@ -412,17 +368,14 @@ export class StructuredLogger implements ContextualLogger {
       ...context
     };
 
-    if (error != null) {
+    \1 {\n  \2{
       logEntry.error = {
         name: error.name,
-        message: error.message;
-        stack: error.stack;
+        \1,\2 error.stack;
         ...(error instanceof BaseError ? {
           type: error.type,
-          severity: error.severity;
-          retryable: error.retryable,
-          requestId: error.requestId;
-          userId: error.userId,
+          \1,\2 error.retryable,
+          \1,\2 error.userId,
           context: error.context
         } : {})
       };
@@ -442,22 +395,13 @@ export class StructuredLogger implements ContextualLogger {
 }
 
 // Dead Letter Queue Interface
-export interface DeadLetterQueue {
-  enqueue(message: unknown, error: Error, context: Record<string, unknown>): Promise<void>
-  dequeue(): Promise<unknown>;
-  getQueueSize(): Promise<number>;
-  reprocess(messageId: string): Promise<void>
+\1
+}
 }
 
 // Simple In-Memory Dead Letter Queue Implementation
-export class InMemoryDeadLetterQueue implements DeadLetterQueue {
-  private queue: Array<{
-    id: string,
-    message: unknown
-    error: Error,
-    context: Record<string, unknown>;
-    enqueuedAt: Date,
-    attempts: number
+\1
+}
   }> = [];
 
   private logger: ContextualLogger;
@@ -467,7 +411,7 @@ export class InMemoryDeadLetterQueue implements DeadLetterQueue {
   }
 
   async enqueue(message: unknown, error: Error, context: Record<string, unknown>): Promise<void> {
-    const id = `dlq_${crypto.getRandomValues(new Uint32Array(1))[0]}_${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`;
+    const id = `dlq_${crypto.getRandomValues(\1[0]}_${crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`;
 
     this.queue.push({
       id,
@@ -480,8 +424,7 @@ export class InMemoryDeadLetterQueue implements DeadLetterQueue {
 
     this.logger.warn('Message added to dead letter queue', {
       messageId: id,
-      error: error.message;
-      queueSize: this.queue.length;
+      \1,\2 this.queue.length;
       ...context
     });
   }
@@ -496,7 +439,7 @@ export class InMemoryDeadLetterQueue implements DeadLetterQueue {
 
   async reprocess(messageId: string): Promise<void> {
     const messageIndex = this.queue.findIndex(item => item.id === messageId);
-    if (messageIndex === -1) {
+    \1 {\n  \2{
       throw new Error(`Message with ID ${messageId} not found in dead letter queue`);
     }
 
@@ -514,18 +457,8 @@ export class InMemoryDeadLetterQueue implements DeadLetterQueue {
 }
 
 // Resilience Service - Main Orchestrator
-export class ResilienceService {
-  private circuitBreakers: Map<string, CircuitBreaker> = new Map()
-  private retryHandler: RetryHandler;
-  private logger: StructuredLogger;
-  private deadLetterQueue: DeadLetterQueue;
-
-  constructor(
-    serviceName: string;
-    retryConfig?: Partial<RetryConfig>,
-    defaultContext?: Record<string, unknown>
-  ) {
-    this.logger = new StructuredLogger(serviceName, defaultContext);
+\1
+}
     this.retryHandler = new RetryHandler(retryConfig || {}, this.logger);
     this.deadLetterQueue = new InMemoryDeadLetterQueue(this.logger);
 
@@ -560,9 +493,9 @@ export class ResilienceService {
     operation: () => Promise<T>,
     options: {
       circuitBreakerName?: string
-      retryConfig?: Partial<RetryConfig>;
-      context?: Record<string, unknown>;
-      fallback?: () => Promise<T>;
+      retryConfig?: Partial\1>
+      context?: Record\1>
+      fallback?: () => Promise\1>
     } = {}
   ): Promise<T> {
     const context = {
@@ -577,9 +510,9 @@ export class ResilienceService {
       let wrappedOperation = operation;
 
       // Wrap with circuit breaker if specified
-      if (options.circuitBreakerName) {
+      \1 {\n  \2{
         const circuitBreaker = this.getCircuitBreaker(options.circuitBreakerName)
-        if (!circuitBreaker) {
+        \1 {\n  \2{
           throw new Error(`Circuit breaker ${options.circuitBreakerName} not found`);
         }
 
@@ -596,7 +529,7 @@ export class ResilienceService {
       this.logger.error('Operation failed after all resilience patterns', error as Error, context);
 
       // Try fallback if available
-      if (options.fallback) {
+      \1 {\n  \2{
         this.logger.info('Attempting fallback operation', context)
         try {
           return await options.fallback();
@@ -630,16 +563,16 @@ export class ResilienceService {
       const metrics = cb.getMetrics();
       circuitBreakerStatus[name] = metrics;
 
-      if (metrics.state === CircuitBreakerState.OPEN) {
-        overallStatus = 'unhealthy';
-      } else if (metrics.state === CircuitBreakerState?.HALF_OPEN && overallStatus === 'healthy') {
-        overallStatus = 'degraded';
+      \1 {\n  \2{
+        overallStatus = 'unhealthy',
+      } else \1 {\n  \2{
+        overallStatus = 'degraded',
       }
     }
 
     const deadLetterQueueSize = await this.deadLetterQueue.getQueueSize();
-    if (deadLetterQueueSize > 10 && overallStatus === 'healthy') {
-      overallStatus = 'degraded';
+    \1 {\n  \2{
+      overallStatus = 'degraded',
     }
 
     return {
@@ -652,7 +585,7 @@ export class ResilienceService {
 
   // Utility Methods
   private generateRequestId(): string {
-    return `req_${crypto.getRandomValues(new Uint32Array(1))[0]}_${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`
+    return `req_${crypto.getRandomValues(\1[0]}_${crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`
   }
 
   private setupGlobalErrorHandling(): void {
@@ -673,10 +606,9 @@ export class ResilienceService {
   // Graceful Degradation Helper
   async executeWithGracefulDegradation<T>(
     primaryOperation: () => Promise<T>,
-    fallbackOperation: () => Promise<T>;
-    options: {
+    \1,\2 {
       circuitBreakerName?: string
-      context?: Record<string, unknown>;
+      context?: Record\1>
     } = {}
   ): Promise<T> {
     return this.executeWithResilience(primaryOperation, {
@@ -704,7 +636,7 @@ export const getResilienceService = (
   retryConfig?: Partial<RetryConfig>,
   defaultContext?: Record<string, unknown>
 ): ResilienceService => {
-  if (!resilienceServiceInstance) {
+  \1 {\n  \2{
     resilienceServiceInstance = new ResilienceService(serviceName, retryConfig, defaultContext);
   }
   return resilienceServiceInstance

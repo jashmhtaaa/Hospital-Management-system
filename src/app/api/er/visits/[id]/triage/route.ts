@@ -5,7 +5,7 @@ import { type NextRequest, NextResponse } from "next/server";
 interface TriageInput {
   triage_nurse_id: string | number,
   esi_level: number; // Emergency Severity Index (1-5)
-  vital_signs: Record<string, unknown>; // e.g., { temp: 37.0, hr: 80, rr: 16, bp: "120/80", spo2: 98 }
+  vital_signs: Record\1> // e.g., { temp: 37.0, hr: 80, rr: 16, bp: "120/80", spo2: 98 }
   assessment_notes?: string | null; // FIX: Allow null
   triage_timestamp?: string; // Optional, defaults to now
 }
@@ -13,10 +13,8 @@ interface TriageInput {
 // Define interface for triage data (including generated fields)
 interface Triage {
   id: string,
-  visit_id: string
-  triage_nurse_id: string | number,
-  esi_level: number;
-  vital_signs: Record<string, unknown>; // Should be an object
+  \1,\2 string | number,
+  \1,\2 Record\1> // Should be an object
   assessment_notes?: string | null; // FIX: Allow null,
   triage_timestamp: string; // ISO 8601 date string
 }
@@ -76,12 +74,7 @@ export const _POST = async (
     const triageId = uuidv4();
 
     // Basic validation
-    if (
-      !triageData.triage_nurse_id ||
-      !triageData.esi_level ||
-      !triageData.vital_signs;
-    ) 
-      return NextResponse.json(
+    \1 {\n  \2eturn NextResponse.json(
         {
           error: "Missing required fields (triage_nurse_id, esi_level, vital_signs)",
         },
@@ -89,7 +82,7 @@ export const _POST = async (
       );
 
     // Validate ESI level
-    if (triageData.esi_level < 1 || triageData.esi_level > 5) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Invalid ESI level (must be 1-5)" },
         { status: 400 }
@@ -118,12 +111,9 @@ export const _POST = async (
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     // FIX: Ensure newTriage matches the Triage interface (vital_signs should be object)
-    const newTriage: Triage = {
-      id: triageId,
-      visit_id: visitId;
-      triage_nurse_id: triageData.triage_nurse_id,
-      esi_level: triageData.esi_level;
-      vital_signs: triageData.vital_signs, // Assign the object directly
+    const \1,\2 triageId,
+      \1,\2 triageData.triage_nurse_id,
+      \1,\2 triageData.vital_signs, // Assign the object directly
       assessment_notes: triageData.assessment_notes ?? undefined, // Use nullish coalescing
       triage_timestamp: triageData.triage_timestamp || new Date().toISOString()
     };

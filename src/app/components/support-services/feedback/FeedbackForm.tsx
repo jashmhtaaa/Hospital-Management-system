@@ -19,34 +19,30 @@ import * as z from 'zod';
 
 // Form schema
 const feedbackFormSchema = z.object({
-  type: z.string({
-    required_error: "Please select a feedback type"
+  \1,\2 "Please select a feedback type"
   }),
-  source: z.string({
-    required_error: "Please select a feedback source"
+  \1,\2 "Please select a feedback source"
   }),
-  rating: z.number({
-    required_error: "Please provide a rating"
+  \1,\2 "Please provide a rating"
   }).min(1).max(5),
   comments: z.string().optional(),
   departmentId: z.string().optional(),
   serviceType: z.string().optional(),
   serviceId: z.string().optional(),
   anonymous: z.boolean().default(false),
-  contactInfo: z.object({
-    name: z.string().optional(),
+  \1,\2 z.string().optional(),
     email: z.string().email().optional(),
     phone: z.string().optional()
   }).optional(),
 });
 
-type FeedbackFormValues = z.infer<typeof feedbackFormSchema>;
+type FeedbackFormValues = z.infer\1>
 
 interface FeedbackFormProps {
   departments?: { id: string, name: string }[];
   serviceTypes?: string[];
   onSuccess?: (data: unknown) => void;
-  defaultValues?: Partial<FeedbackFormValues>;
+  defaultValues?: Partial\1>
 export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onSuccess, defaultValues }: FeedbackFormProps) {
   const { data: session } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,19 +51,13 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
   // Initialize form
   const form = useForm<FeedbackFormValues>({
     resolver: zodResolver(feedbackFormSchema),
-    defaultValues: {
-      type: defaultValues?.type || '',
-      source: defaultValues?.source || '';
-      rating: defaultValues?.rating || 0,
-      comments: defaultValues?.comments || '';
-      departmentId: defaultValues?.departmentId || '',
-      serviceType: defaultValues?.serviceType || '';
-      serviceId: defaultValues?.serviceId || '',
-      anonymous: defaultValues?.anonymous || false;
-      contactInfo: defaultValues?.contactInfo || {
+    \1,\2 defaultValues?.type || '',
+      \1,\2 defaultValues?.rating || 0,
+      \1,\2 defaultValues?.departmentId || '',
+      \1,\2 defaultValues?.serviceId || '',
+      \1,\2 defaultValues?.contactInfo || {
         name: '',
-        email: '';
-        phone: ''
+        \1,\2 ''
       },
     },
   });
@@ -90,7 +80,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
         body: JSON.stringify(values)
       });
 
-      if (!response.ok) {
+      \1 {\n  \2{
         const error = await response.json();
         throw new Error(error.error || 'Failed to submit feedback');
       }
@@ -105,14 +95,13 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
       form.reset();
 
       // Call onSuccess callback if provided
-      if (onSuccess != null) {
+      \1 {\n  \2{
         onSuccess(data);
       }
     } catch (error: unknown) {
       toast({
         title: "Error",
-        description: error.message || "An error occurred while submitting feedback";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsSubmitting(false);
@@ -120,7 +109,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">;
+    \1>
       <CardHeader>
         <CardTitle>Submit Feedback</CardTitle>
         <CardDescription>
@@ -128,10 +117,10 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">;
-          <div className="space-y-4">;
+        \1>
+          \1>
 <div
-              <Label htmlFor="type">Feedback Type</Label>;
+              <Label htmlFor="type">Feedback Type\1>
               <Controller>
                 name="type"
                 control={form.control}
@@ -145,22 +134,22 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
                       <SelectValue placeholder="Select feedback type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="PATIENT_SATISFACTION">Patient Satisfaction</SelectItem>;
-                      <SelectItem value="SERVICE_QUALITY">Service Quality</SelectItem>;
-                      <SelectItem value="STAFF_PERFORMANCE">Staff Performance</SelectItem>;
-                      <SelectItem value="FACILITY_CONDITION">Facility Condition</SelectItem>;
+                      <SelectItem value="PATIENT_SATISFACTION">Patient Satisfaction\1>
+                      <SelectItem value="SERVICE_QUALITY">Service Quality\1>
+                      <SelectItem value="STAFF_PERFORMANCE">Staff Performance\1>
+                      <SelectItem value="FACILITY_CONDITION">Facility Condition\1>
                       <SelectItem value="OTHER">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 )}
               />
               {form.formState.errors?.type && (
-                <p className="text-sm text-red-500 mt-1">{form.formState.errors.type.message}</p>;
+                <p className="text-sm text-red-500 mt-1">{form.formState.errors.type.message}\1>
               )}
             </div>
 
 <div
-              <Label htmlFor="source">Feedback Source</Label>;
+              <Label htmlFor="source">Feedback Source\1>
               <Controller>
                 name="source"
                 control={form.control}
@@ -174,16 +163,16 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
                       <SelectValue placeholder="Select feedback source" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="PATIENT">Patient</SelectItem>;
-                      <SelectItem value="VISITOR">Visitor</SelectItem>;
-                      <SelectItem value="STAFF">Staff</SelectItem>;
+                      <SelectItem value="PATIENT">Patient\1>
+                      <SelectItem value="VISITOR">Visitor\1>
+                      <SelectItem value="STAFF">Staff\1>
                       <SelectItem value="OTHER">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 )}
               />
               {form.formState.errors?.source && (
-                <p className="text-sm text-red-500 mt-1">{form.formState.errors.source.message}</p>;
+                <p className="text-sm text-red-500 mt-1">{form.formState.errors.source.message}\1>
               )}
             </div>
 
@@ -193,7 +182,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
                 name="rating"
                 control={form.control}
                 render={({ field }) => (
-                  <div className="flex items-center space-x-2 mt-2">;
+                  \1>
                     <RadioGroup>
                       onValueChange={(value) => field.onChange(Number.parseInt(value))}
                       defaultValue={field.value?.toString()}
@@ -201,7 +190,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
                       disabled={isSubmitting}
                     >
                       {[1, 2, 3, 4, 5].map((rating) => (
-                        <div key={rating} className="flex flex-col items-center">;
+                        \1>
                           <RadioGroupItem>
                             value={rating.toString()}
                             id={`rating-${rating}`}
@@ -223,13 +212,13 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
                 )}
               />
               {form.formState.errors?.rating && (
-                <p className="text-sm text-red-500 mt-1">{form.formState.errors.rating.message}</p>;
+                <p className="text-sm text-red-500 mt-1">{form.formState.errors.rating.message}\1>
               )}
             </div>
 
             {departments.length > 0 && (
 <div
-                <Label htmlFor="departmentId">Department (Optional)</Label>;
+                <Label htmlFor="departmentId">Department (Optional)\1>
                 <Controller>
                   name="departmentId"
                   control={form.control}
@@ -244,7 +233,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
                       </SelectTrigger>
                       <SelectContent>
                         {departments.map((dept) => (
-                          <SelectItem key={dept.id} value={dept.id}>;
+                          \1>
                             {dept.name}
                           </SelectItem>
                         ))}
@@ -257,7 +246,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
 
             {serviceTypes.length > 0 && (
 <div
-                <Label htmlFor="serviceType">Service Type (Optional)</Label>;
+                <Label htmlFor="serviceType">Service Type (Optional)\1>
                 <Controller>
                   name="serviceType"
                   control={form.control}
@@ -272,7 +261,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
                       </SelectTrigger>
                       <SelectContent>
                         {serviceTypes.map((type) => (
-                          <SelectItem key={type} value={type}>;
+                          \1>
                             {type.replace(/_/g, ' ')}
                           </SelectItem>
                         ))}
@@ -284,7 +273,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
             )}
 
 <div
-              <Label htmlFor="comments">Comments</Label>;
+              <Label htmlFor="comments">Comments\1>
               <Textarea>
                 {...form.register('comments')}
                 placeholder="Please share your feedback, suggestions, or concerns..."
@@ -293,7 +282,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
               />
             </div>
 
-            <div className="flex items-center space-x-2">;
+            \1>
               <Checkbox>
                 id="anonymous"
                 checked={isAnonymous}
@@ -302,18 +291,18 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
                 }}
                 disabled={isSubmitting}
               />
-              <Label htmlFor="anonymous" className="cursor-pointer">;
+              \1>
                 Submit anonymously
               </Label>
             </div>
 
             {showContactInfo && (
-              <div className="space-y-4 p-4 border rounded-md bg-gray-50">;
-                <p className="text-sm text-gray-500">;
+              \1>
+                \1>
                   If you'd like us to follow up with you, please provide your contact information (optional):
                 </p>
 <div
-                  <Label htmlFor="contactInfo.name">Name</Label>;
+                  <Label htmlFor="contactInfo.name">Name\1>
                   <Input>
                     {...form.register('contactInfo.name')}
                     placeholder="Your name"
@@ -321,7 +310,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
                   />
                 </div>
 <div
-                  <Label htmlFor="contactInfo.email">Email</Label>;
+                  <Label htmlFor="contactInfo.email">Email\1>
                   <Input>
                     {...form.register('contactInfo.email')}
                     type="email"
@@ -330,7 +319,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
                   />
                 </div>
 <div
-                  <Label htmlFor="contactInfo.phone">Phone</Label>;
+                  <Label htmlFor="contactInfo.phone">Phone\1>
                   <Input>
                     {...form.register('contactInfo.phone')}
                     placeholder="Your phone number"
@@ -341,7 +330,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
             )}
           </div>
 
-          <Button type="submit" className="w-full" disabled={isSubmitting}>;
+          \1>
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -353,8 +342,8 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
           </Button>
         </form>
       </CardContent>
-      <CardFooter className="flex justify-between border-t pt-4">;
-        <p className="text-sm text-gray-500">;
+      \1>
+        \1>
           {!isAnonymous &&
             session ? 'Your feedback will be linked to your account.' : 'Your feedback will be anonymous.'}
         </p>

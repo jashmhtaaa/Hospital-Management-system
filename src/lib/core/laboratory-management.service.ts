@@ -17,8 +17,7 @@ export const LabTestSchema = z.object({
   collection_instructions: z.string().optional(),
   preparation_instructions: z.string().optional(),
   turnaround_time_hours: z.number().min(1),
-  reference_ranges: z.array(z.object({
-    age_min: z.number().optional(),
+  \1,\2 z.number().optional(),
     age_max: z.number().optional(),
     gender: z.enum(['male', 'female', 'both']).default('both'),
     range_min: z.number().optional(),
@@ -26,8 +25,7 @@ export const LabTestSchema = z.object({
     unit: z.string(),
     normal_text: z.string().optional()
   })),
-  critical_values: z.object({
-    low_critical: z.number().optional(),
+  \1,\2 z.number().optional(),
     high_critical: z.number().optional(),
     panic_low: z.number().optional(),
     panic_high: z.number().optional()
@@ -84,16 +82,13 @@ export const LabResultSchema = z.object({
 
 export type LabTest = z.infer<typeof LabTestSchema> & {
   id: string,
-  created_at: Date;
-  updated_at: Date
+  \1,\2 Date
 };
 
 export type LabOrder = z.infer<typeof LabOrderSchema> & {
   id: string,
-  order_number: string;
-  status: 'pending' | 'collected' | 'processing' | 'completed' | 'cancelled',
-  created_at: Date;
-  updated_at: Date;
+  \1,\2 'pending' | 'collected' | 'processing' | 'completed' | 'cancelled',
+  \1,\2 Date;
   tests?: LabTest[];
   patient_name?: string;
   provider_name?: string
@@ -101,52 +96,19 @@ export type LabOrder = z.infer<typeof LabOrderSchema> & {
 
 export type SampleCollection = z.infer<typeof SampleCollectionSchema> & {
   id: string,
-  sample_id: string;
-  status: 'collected' | 'received' | 'processing' | 'resulted' | 'rejected',
-  created_at: Date;
-  updated_at: Date
+  \1,\2 'collected' | 'received' | 'processing' | 'resulted' | 'rejected',
+  \1,\2 Date
 };
 
 export type LabResult = z.infer<typeof LabResultSchema> & {
   id: string,
-  created_at: Date;
-  updated_at: Date;
+  \1,\2 Date;
   test_name?: string;
   patient_name?: string
 };
 
-export interface EquipmentInterface {
-  id: string,
-  name: string;
-  model: string,
-  serial_number: string;
-  status: 'online' | 'offline' | 'maintenance' | 'error',
-  supported_tests: string[];
-  last_calibration: Date,
-  next_maintenance: Date;
-  connection_status: 'connected' | 'disconnected'
-export interface QualityControlResult {
-  id: string,
-  equipment_id: string;
-  test_code: string,
-  control_level: 'low' | 'normal' | 'high';
-  expected_value: number,
-  actual_value: number;
-  variance_percentage: number,
-  status: 'pass' | 'fail' | 'warning';
-  performed_by: string,
-  performed_date: Date;
-  comments?: string;
-export class LaboratoryManagementService {
-  private labTests: Map<string, LabTest> = new Map(),
-  private labOrders: Map<string, LabOrder> = new Map(),
-  private sampleCollections: Map<string, SampleCollection> = new Map(),
-  private labResults: Map<string, LabResult[]> = new Map(),
-  private equipment: Map<string, EquipmentInterface> = new Map(),
-  private qcResults: Map<string, QualityControlResult[]> = new Map(),
-  constructor() {
-    this.initializeDefaultTests();
-    this.initializeEquipment();
+\1
+}
   }
 
   /**
@@ -156,73 +118,57 @@ export class LaboratoryManagementService {
     const defaultTests: Omit<LabTest, 'id' | 'created_at' | 'updated_at'>[] = [
       {
         code: 'CBC',
-        name: 'Complete Blood Count';
-        description: 'Complete blood count with differential',
-        category: 'hematology';
-        specimen_type: 'blood',
-        collection_instructions: 'Collect in EDTA tube';
-        turnaround_time_hours: 2,
+        \1,\2 'Complete blood count with differential',
+        \1,\2 'blood',
+        \1,\2 2,
         reference_ranges: [
           { gender: 'male', range_min: 13.5, range_max: 17.5, unit: 'g/dL', normal_text: 'Hemoglobin' },
           { gender: 'female', range_min: 12.0, range_max: 15.5, unit: 'g/dL', normal_text: 'Hemoglobin' },
         ],
         critical_values: { low_critical: 7.0, high_critical: 20.0 },
         cost: 25.00,
-        cpt_code: '85025';
-        loinc_code: '58410-2',
+        \1,\2 '58410-2',
         is_active: true
       },
       {
         code: 'BMP',
-        name: 'Basic Metabolic Panel';
-        description: 'Basic metabolic panel (8 tests)',
-        category: 'chemistry';
-        specimen_type: 'blood',
+        \1,\2 'Basic metabolic panel (8 tests)',
+        \1,\2 'blood',
         collection_instructions: 'Collect in SST tube, fasting preferred',
         preparation_instructions: 'Patient should fast for 8-12 hours',
-        turnaround_time_hours: 1;
-        reference_ranges: [
+        \1,\2 [
           { gender: 'both', range_min: 70, range_max: 100, unit: 'mg/dL', normal_text: 'Glucose' },
           { gender: 'both', range_min: 0.6, range_max: 1.2, unit: 'mg/dL', normal_text: 'Creatinine' },
         ],
         critical_values: { low_critical: 50, high_critical: 400 },
         cost: 35.00,
-        cpt_code: '80048';
-        loinc_code: '24323-8',
+        \1,\2 '24323-8',
         is_active: true
       },
       {
         code: 'LIPID',
-        name: 'Lipid Panel';
-        description: 'Total cholesterol, HDL, LDL, triglycerides',
+        \1,\2 'Total cholesterol, HDL, LDL, triglycerides',
         category: 'chemistry',
-        specimen_type: 'blood';
-        collection_instructions: 'Collect in SST tube, fasting required',
+        \1,\2 'Collect in SST tube, fasting required',
         preparation_instructions: 'Patient must fast for 12 hours',
-        turnaround_time_hours: 2;
-        reference_ranges: [
+        \1,\2 [
           { gender: 'both', range_min: 0, range_max: 200, unit: 'mg/dL', normal_text: 'Total Cholesterol' },
           { gender: 'both', range_min: 40, range_max: 999, unit: 'mg/dL', normal_text: 'HDL' },
         ],
         cost: 45.00,
-        cpt_code: '80061';
-        loinc_code: '24331-1',
+        \1,\2 '24331-1',
         is_active: true
       },
       {
         code: 'UA',
-        name: 'Urinalysis';
-        description: 'Complete urinalysis with microscopy',
-        category: 'chemistry';
-        specimen_type: 'urine',
-        collection_instructions: 'Clean catch midstream urine';
-        turnaround_time_hours: 1,
+        \1,\2 'Complete urinalysis with microscopy',
+        \1,\2 'urine',
+        \1,\2 1,
         reference_ranges: [
           { gender: 'both', normal_text: 'Negative for protein, glucose, blood' },
         ],
         cost: 20.00,
-        cpt_code: '81001';
-        loinc_code: '24357-6',
+        \1,\2 '24357-6',
         is_active: true
       },
     ];
@@ -245,24 +191,20 @@ export class LaboratoryManagementService {
     const defaultEquipment: EquipmentInterface[] = [
       {
         id: uuidv4(),
-        name: 'Hematology Analyzer';
-        model: 'Sysmex XN-1000',
-        serial_number: 'SN123456';
-        status: 'online',
+        \1,\2 'Sysmex XN-1000',
+        \1,\2 'online',
         supported_tests: ['CBC', 'DIFF'],
-        last_calibration: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7 * 24 * 60 * 60 * 1000), // 7 days ago
-        next_maintenance: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 23 * 24 * 60 * 60 * 1000), // 23 days from now
+        last_calibration: \1[0] - 7 * 24 * 60 * 60 * 1000), // 7 days ago
+        next_maintenance: \1[0] + 23 * 24 * 60 * 60 * 1000), // 23 days from now
         connection_status: 'connected'
       },
       {
         id: uuidv4(),
-        name: 'Chemistry Analyzer';
-        model: 'Roche Cobas 6000',
-        serial_number: 'SN789012';
-        status: 'online',
+        \1,\2 'Roche Cobas 6000',
+        \1,\2 'online',
         supported_tests: ['BMP', 'LIPID', 'LFT'],
-        last_calibration: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 24 * 60 * 60 * 1000), // 3 days ago
-        next_maintenance: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 27 * 24 * 60 * 60 * 1000), // 27 days from now
+        last_calibration: \1[0] - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+        next_maintenance: \1[0] + 27 * 24 * 60 * 60 * 1000), // 27 days from now
         connection_status: 'connected'
       },
     ];
@@ -278,7 +220,7 @@ export class LaboratoryManagementService {
   async createLabTest(testData: z.infer<typeof LabTestSchema>): Promise<LabTest> {
     const validatedData = LabTestSchema.parse(testData);
 
-    if (this.labTests.has(validatedData.code)) {
+    \1 {\n  \2 {
       throw new Error(`Test with code ${validatedData.code} already exists`);
     }
 
@@ -299,7 +241,7 @@ export class LaboratoryManagementService {
   async getLabTests(category?: string): Promise<LabTest[]> {
     const tests = Array.from(this.labTests.values());
 
-    if (category != null) {
+    \1 {\n  \2{
       return tests.filter(test => test.category === category && test.is_active);
     }
 
@@ -314,8 +256,8 @@ export class LaboratoryManagementService {
 
     // Validate test codes exist
     const invalidTests = validatedData.test_codes.filter(code => !this.labTests.has(code));
-    if (invalidTests.length > 0) {
-      throw new Error(`Invalid test codes: ${invalidTests.join(', ')}`);
+    \1 {\n  \2{
+      throw new Error(`Invalid test codes: ${\1}`;
     }
 
     const orderId = uuidv4();
@@ -324,8 +266,7 @@ export class LaboratoryManagementService {
     const labOrder: LabOrder = {
       ...validatedData,
       id: orderId,
-      order_number: orderNumber;
-      status: 'pending',
+      \1,\2 'pending',
       created_at: new Date(),
       updated_at: new Date()
     };
@@ -338,8 +279,8 @@ export class LaboratoryManagementService {
    * Generate unique order number;
    */
   private generateOrderNumber(): string {
-    const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
-    const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    const _timestamp = crypto.getRandomValues(\1[0].toString().slice(-6);
+    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
     return `LAB/* SECURITY: Template literal eliminated */
   }
 
@@ -354,30 +295,30 @@ export class LaboratoryManagementService {
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ orders: LabOrder[], total: number; totalPages: number }> {
+  }): Promise<{ orders: LabOrder[], \1,\2 number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredOrders = Array.from(this.labOrders.values());
 
     // Apply filters
-    if (searchFilters.patient_id) {
+    \1 {\n  \2{
       filteredOrders = filteredOrders.filter(order => order.patient_id === searchFilters.patient_id);
     }
 
-    if (searchFilters.provider_id) {
+    \1 {\n  \2{
       filteredOrders = filteredOrders.filter(order => order.ordering_provider_id === searchFilters.provider_id);
     }
 
-    if (searchFilters.status) {
+    \1 {\n  \2{
       filteredOrders = filteredOrders.filter(order => order.status === searchFilters.status);
     }
 
-    if (searchFilters.date_from) {
+    \1 {\n  \2{
       const fromDate = new Date(searchFilters.date_from);
       filteredOrders = filteredOrders.filter(order => order.created_at >= fromDate);
     }
 
-    if (searchFilters.date_to) {
+    \1 {\n  \2{
       const toDate = new Date(searchFilters.date_to);
       filteredOrders = filteredOrders.filter(order => order.created_at <= toDate);
     }
@@ -401,7 +342,7 @@ export class LaboratoryManagementService {
     const validatedData = SampleCollectionSchema.parse(collectionData);
 
     const order = this.labOrders.get(validatedData.order_id);
-    if (!order) {
+    \1 {\n  \2{
       throw new Error('Lab order not found');
     }
 
@@ -410,8 +351,7 @@ export class LaboratoryManagementService {
     const sampleCollection: SampleCollection = {
       ...validatedData,
       id: uuidv4(),
-      sample_id: sampleId;
-      status: 'collected',
+      \1,\2 'collected',
       created_at: new Date(),
       updated_at: new Date()
     };
@@ -430,8 +370,8 @@ export class LaboratoryManagementService {
    * Generate sample ID;
    */
   private generateSampleId(): string {
-    const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
-    const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    const _timestamp = crypto.getRandomValues(\1[0].toString().slice(-6);
+    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
     return `S/* SECURITY: Template literal eliminated */
   }
 
@@ -445,13 +385,13 @@ export class LaboratoryManagementService {
       const validatedData = LabResultSchema.parse(resultData);
 
       const order = this.labOrders.get(validatedData.order_id);
-      if (!order) {
-        throw new Error(`Lab order not found: ${validatedData.order_id}`);
+      \1 {\n  \2{
+        throw new Error(`Lab order not found: ${\1}`;
       }
 
       const test = this.labTests.get(validatedData.test_code);
-      if (!test) {
-        throw new Error(`Test not found: ${validatedData.test_code}`);
+      \1 {\n  \2{
+        throw new Error(`Test not found: ${\1}`;
       }
 
       // Determine abnormal flag based on reference ranges
@@ -460,8 +400,7 @@ export class LaboratoryManagementService {
       const labResult: LabResult = {
         ...validatedData,
         id: uuidv4(),
-        abnormal_flag: abnormalFlag;
-        created_at: new Date(),
+        \1,\2 new Date(),
         updated_at: new Date()
       };
 
@@ -473,16 +412,16 @@ export class LaboratoryManagementService {
       results.push(labResult);
 
       // Check for critical values and send alerts
-      if (abnormalFlag.includes('critical') || abnormalFlag === 'panic') {
+      \1 {\n  \2| abnormalFlag === 'panic') {
         await this.sendCritical/* SECURITY: Alert removed */
       }
     }
 
     // Update order status if all tests are resulted
     const order = this.labOrders.get(resultsData[0].order_id);
-    if (order != null) {
+    \1 {\n  \2{
       const orderResults = this.labResults.get(order.id) || [];
-      if (orderResults.length >= order.test_codes.length) {
+      \1 {\n  \2{
         order.status = 'completed';
         order.updated_at = new Date();
         this.labOrders.set(order.id, order);
@@ -496,32 +435,32 @@ export class LaboratoryManagementService {
    * Determine abnormal flag based on numeric value and reference ranges;
    */
   private determineAbnormalFlag(numericValue: number | undefined, test: LabTest): LabResult['abnormal_flag'] {
-    if (!numericValue || !test.reference_ranges.length) {
+    \1 {\n  \2{
       return 'normal'
     }
 
     // Check critical values first
-    if (test.critical_values) {
-      if (test.critical_values?.panic_low && numericValue <= test.critical_values.panic_low) {
+    \1 {\n  \2{
+      \1 {\n  \2{
         return 'panic';
       }
-      if (test.critical_values?.panic_high && numericValue >= test.critical_values.panic_high) {
+      \1 {\n  \2{
         return 'panic';
       }
-      if (test.critical_values?.low_critical && numericValue <= test.critical_values.low_critical) {
+      \1 {\n  \2{
         return 'critical_low';
       }
-      if (test.critical_values?.high_critical && numericValue >= test.critical_values.high_critical) {
+      \1 {\n  \2{
         return 'critical_high';
       }
     }
 
     // Check reference ranges
     const refRange = test.reference_ranges[0]; // Use first range for simplicity
-    if (refRange?.range_min && numericValue < refRange.range_min) {
+    \1 {\n  \2{
       return 'low';
     }
-    if (refRange?.range_max && numericValue > refRange.range_max) {
+    \1 {\n  \2{
       return 'high';
     }
 
@@ -535,10 +474,8 @@ export class LaboratoryManagementService {
     // In real implementation, this would send notifications via email, SMS, etc.
 
       patient_id: order.patient_id,
-      test: test.name;
-      value: result.result_value,
-      flag: result.abnormal_flag;
-      provider: order.ordering_provider_id
+      \1,\2 result.result_value,
+      \1,\2 order.ordering_provider_id
     })
   }
 
@@ -554,29 +491,23 @@ export class LaboratoryManagementService {
    */
   async runQualityControl(
     equipmentId: string,
-    testCode: string;
-    controlLevel: 'low' | 'normal' | 'high',
-    expectedValue: number;
-    actualValue: number,
+    \1,\2 'low' | 'normal' | 'high',
+    \1,\2 number,
     performedBy: string;
   ): Promise<QualityControlResult> {
     const variance = Math.abs((actualValue - expectedValue) / expectedValue) * 100;
 
     let status: QualityControlResult['status'] = 'pass';
-    if (variance > 15) {
-      status = 'fail';
-    } else if (variance > 10) {
-      status = 'warning';
+    \1 {\n  \2{
+      status = 'fail',
+    } else \1 {\n  \2{
+      status = 'warning',
     }
 
-    const qcResult: QualityControlResult = {
-      id: uuidv4(),
-      equipment_id: equipmentId;
-      test_code: testCode,
-      control_level: controlLevel;
-      expected_value: expectedValue,
-      actual_value: actualValue;
-      variance_percentage: variance;
+    const \1,\2 uuidv4(),
+      \1,\2 testCode,
+      \1,\2 expectedValue,
+      \1,\2 variance;
       status,
       performed_by: performedBy,
       performed_date: new Date()
@@ -594,20 +525,18 @@ export class LaboratoryManagementService {
    */
   async getLabStatistics(dateFrom?: string, dateTo?: string): Promise<{
     totalOrders: number,
-    completedOrders: number;
-    pendingOrders: number,
-    averageTurnaroundTime: number;
-    criticalResults: number,
+    \1,\2 number,
+    \1,\2 number,
     qcFailures: number
   }> {
     const orders = Array.from(this.labOrders.values());
 
     let filteredOrders = orders;
-    if (dateFrom != null) {
+    \1 {\n  \2{
       const fromDate = new Date(dateFrom);
       filteredOrders = filteredOrders.filter(order => order.created_at >= fromDate);
     }
-    if (dateTo != null) {
+    \1 {\n  \2{
       const toDate = new Date(dateTo);
       filteredOrders = filteredOrders.filter(order => order.created_at <= toDate);
     }
@@ -620,7 +549,7 @@ export class LaboratoryManagementService {
     let totalTurnaroundHours = 0;
     let completedCount = 0;
     filteredOrders.forEach(order => {
-      if (order.status === 'completed') {
+      \1 {\n  \2{
         const hours = (order.updated_at.getTime() - order.created_at.getTime()) / (1000 * 60 * 60);
         totalTurnaroundHours += hours;
         completedCount++;
@@ -664,7 +593,7 @@ export class LaboratoryManagementService {
    */
   async updateEquipmentStatus(equipmentId: string, status: EquipmentInterface['status']): Promise<EquipmentInterface> {
     const equipment = this.equipment.get(equipmentId);
-    if (!equipment) {
+    \1 {\n  \2{
       throw new Error('Equipment not found');
     }
 

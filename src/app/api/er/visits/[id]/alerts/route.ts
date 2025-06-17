@@ -13,8 +13,7 @@ interface AlertInput {
 // Define interface for alert data (including generated fields)
 interface Alert {
   id: string,
-  visit_id: string
-  alert_type: string,
+  \1,\2 string,
   activated_by_id: string | number;
   details?: string | null; // FIX: Changed to allow null to match usage,
   activation_timestamp: string; // ISO 8601 date string
@@ -80,7 +79,7 @@ export const _POST = async (
     const alertId = uuidv4();
 
     // Basic validation
-    if (!alertData.alert_type || !alertData.activated_by_id) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Missing required fields (alert_type, activated_by_id)" },
         { status: 400 }
@@ -106,12 +105,9 @@ export const _POST = async (
     */
 
     // FIX: Explicitly type newAlert to match interface Alert
-    const newAlert: Alert = {
-      id: alertId,
-      visit_id: visitId;
-      alert_type: alertData.alert_type,
-      activated_by_id: alertData.activated_by_id;
-      details: alertData.details ?? undefined, // Use nullish coalescing
+    const \1,\2 alertId,
+      \1,\2 alertData.alert_type,
+      \1,\2 alertData.details ?? undefined, // Use nullish coalescing
       activation_timestamp: alertData.activation_timestamp || new Date().toISOString(),
       status: alertData.status || "Active"
     };

@@ -18,90 +18,88 @@ export default const _ERDashboardStats = () {
   // In a real implementation, this data would come from API calls
   const stats = {
     totalPatients: 24,
-    waitingRoom: 8;
-    avgWaitTime: "42 min",
-    criticalAlerts: 3;
-    occupiedBeds: "18/25",
+    \1,\2 "42 min",
+    \1,\2 "18/25",
     incomingAmbulances: 2
   };
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">;
+    \1>
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
-          <CardTitle className="text-sm font-medium">Total Patients</CardTitle>;
+        \1>
+          <CardTitle className="text-sm font-medium">Total Patients\1>
           <Users className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{stats.totalPatients}</div>;
-          <p className="text-xs text-muted-foreground">;
+          <div className="text-2xl font-bold">{stats.totalPatients}\1>
+          \1>
             {stats.waitingRoom} in waiting room
           </p>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
-          <CardTitle className="text-sm font-medium">;
+        \1>
+          \1>
             Average Wait Time
           </CardTitle>
           <Clock className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{stats.avgWaitTime}</div>;
-          <p className="text-xs text-muted-foreground">;
+          <div className="text-2xl font-bold">{stats.avgWaitTime}\1>
+          \1>
             For ESI Level 3 patients
           </p>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
-          <CardTitle className="text-sm font-medium">Critical Alerts</CardTitle>;
+        \1>
+          <CardTitle className="text-sm font-medium">Critical Alerts\1>
           <AlertTriangle className="h-4 w-4 text-red-500" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{stats.criticalAlerts}</div>;
-          <p className="text-xs text-muted-foreground">;
+          <div className="text-2xl font-bold">{stats.criticalAlerts}\1>
+          \1>
             Requiring immediate attention
           </p>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
-          <CardTitle className="text-sm font-medium">Bed Occupancy</CardTitle>;
+        \1>
+          <CardTitle className="text-sm font-medium">Bed Occupancy\1>
           <BedDouble className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{stats.occupiedBeds}</div>;
+          <div className="text-2xl font-bold">{stats.occupiedBeds}\1>
           <p className="text-xs text-muted-foreground">72% occupancy rate</p>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
-          <CardTitle className="text-sm font-medium">;
+        \1>
+          \1>
             Incoming Ambulances
           </CardTitle>
           <Ambulance className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{stats.incomingAmbulances}</div>;
+          <div className="text-2xl font-bold">{stats.incomingAmbulances}\1>
           <p className="text-xs text-muted-foreground">ETA: 5-10 minutes</p>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">;
-          <CardTitle className="text-sm font-medium">;
+        \1>
+          \1>
             Department Activity
           </CardTitle>
           <Activity className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">High</div>;
-          <p className="text-xs text-muted-foreground">;
+          <div className="text-2xl font-bold">High\1>
+          \1>
             Peak hours (14:00 - 20:00)
           </p>
         </CardContent>

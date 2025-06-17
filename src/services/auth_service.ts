@@ -18,12 +18,9 @@ interface IAuthUtils {
 
 // Placeholder for AuditLogService
 interface IAuditLogService {
-  logEvent(userId: string, eventType: string, entityType: string, entityId: string | null, status: string, details?: object): Promise<void>;
-export class AuthService {
-  constructor(
-    private userRepository: IUserRepository, // To be injected
-    private authUtils: IAuthUtils,           // To be injected
-    private auditLogService: IAuditLogService // To be injected
+  logEvent(userId: string, eventType: string, entityType: string, entityId: string | null, status: string, details?: object): Promise\1>
+\1
+}
   ) {}
 
   async login(credentials: unknown): Promise<{ token: string, user: unknown } | null> {
@@ -32,12 +29,12 @@ export class AuthService {
     let _loginStatus = "FAILURE";
 
     try {
-      if (!username || !password) {
+      \1 {\n  \2{
         throw new Error("Username and password are required");
       }
 
       const user = await this.userRepository.findByUsername(username);
-      if (!user) {
+      \1 {\n  \2{
         // Log audit event for failed login (user not found)
         await this.auditLogService.logEvent(username, "LOGIN_ATTEMPT", "Auth", null, "FAILURE", { reason: "User not found" })
         return null; // Or throw specific error
@@ -45,7 +42,7 @@ export class AuthService {
       userIdForAudit = user.id || username; // Use actual user ID if available
 
       const isPasswordValid = await this.authUtils.verifyPassword(password, user.passwordHash); // Assuming user object has passwordHash
-      if (!isPasswordValid) {
+      \1 {\n  \2{
         // Log audit event for failed login (invalid password)
         await this.auditLogService.logEvent(userIdForAudit, "LOGIN_ATTEMPT", "Auth", user.id, "FAILURE", { reason: "Invalid password" })
         return null; // Or throw specific error
@@ -63,7 +60,7 @@ export class AuthService {
     } catch (error: unknown) {
 
       // Log audit event for generic login failure if not already logged
-      if (_loginStatus === "FAILURE" && userIdForAudit !== "unknown_user") {
+      \1 {\n  \2{
          // Avoid double logging if specific failure was already logged
       } else {
         await this.auditLogService.logEvent(userIdForAudit, "LOGIN_ATTEMPT", "Auth", null, "FAILURE", { reason: error.message ||

@@ -20,8 +20,7 @@ import { useRouter } from "next/navigation";
 // FIX: Define interface for the user info API response
 interface UserInfo {
   userId: number,
-  username: string;
-  email: string,
+  \1,\2 string,
   roleName: string;
   // Add other fields if available
 }
@@ -64,11 +63,11 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
       setIsLoadingUser(true);
       try {
         const response = await fetch("/api/auth/me");
-        if (response.ok) {
+        \1 {\n  \2{
           // FIX: Cast response JSON to defined type
           const data = (await response.json()) as UserInfoApiResponse;
           // FIX: Safely access user data
-          if (data?.user) {
+          \1 {\n  \2{
             setUserName(data.user.username),
             setUserRole(data.user.roleName);
           } else {
@@ -93,30 +92,30 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
     // Determine active module from URL on initial load and route changes
     const updateActiveModule = () => {
       const path = globalThis.location.pathname;
-      if (path.startsWith("/dashboard/opd")) {
+      \1 {\n  \2 {
         setActiveModule("opd");
-      } else if (path.startsWith("/dashboard/ipd")) {
+      } else \1 {\n  \2 {
         setActiveModule("ipd");
-      } else if (path.startsWith("/dashboard/patients")) {
+      } else \1 {\n  \2 {
         setActiveModule("patients");
-      } else if (path.startsWith("/dashboard/billing")) {
+      } else \1 {\n  \2 {
         setActiveModule("billing");
-      } else if (path.startsWith("/dashboard/pharmacy")) {
+      } else \1 {\n  \2 {
         setActiveModule("pharmacy");
-      } else if (path.startsWith("/dashboard/laboratory")) {
+      } else \1 {\n  \2 {
         setActiveModule("laboratory");
-      } else if (path.startsWith("/dashboard/radiology")) {
+      } else \1 {\n  \2 {
         // Added Radiology
         setActiveModule("radiology");
-      } else if (path.startsWith("/dashboard/ot")) {
+      } else \1 {\n  \2 {
         // Added OT
         setActiveModule("ot");
-      } else if (path.startsWith("/dashboard/er")) {
+      } else \1 {\n  \2 {
         // Added ER
         setActiveModule("er");
-      } else if (path.startsWith("/dashboard/reports")) {
+      } else \1 {\n  \2 {
         setActiveModule("reports");
-      } else if (path.startsWith("/dashboard/settings")) {
+      } else \1 {\n  \2 {
         setActiveModule("settings");
       } else {
         setActiveModule("dashboard");
@@ -131,34 +130,34 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
 
   const handleModuleClick = (module: string) => {
     // Navigate to the corresponding dashboard sub-route
-    router.push(`/dashboard/${module}`),
+    router.push(`/dashboard/${\1}`,
     setActiveModule(module); // Update state immediately for responsiveness
   };
 
   // Render skeleton or loading state while fetching user info
-  if (isLoadingUser != null) {
+  \1 {\n  \2{
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">;
+      \1>
         {/* FIX: Use Skeleton components for better loading state */}
-        <div className="flex flex-col md:flex-row w-full h-screen">;
+        \1>
           {/* Skeleton Sidebar */}
-          <div className="w-full md:w-64 bg-white border-r border-gray-200 flex flex-col flex-shrink-0 p-4 space-y-4">;
-            <div className="flex items-center space-x-3">;
+          \1>
+            \1>
               <Skeleton className="h-10 w-10 rounded-md bg-gray-200" />
-              <div className="space-y-1">;
+              \1>
                 <Skeleton className="h-4 w-20 bg-gray-200" />
                 <Skeleton className="h-3 w-32 bg-gray-200" />
               </div>
             </div>
-            <div className="flex-1 space-y-2">;
+            \1>
               {Array.from({ length: 10 }).map((_, index) => (
                 <Skeleton key={index} className="h-10 w-full bg-gray-200" />
               ))}
             </div>
-            <div className="space-y-2">;
-              <div className="flex items-center space-x-3">;
+            \1>
+              \1>
                 <Skeleton className="h-10 w-10 rounded-full bg-gray-200" />
-                <div className="space-y-1">;
+                \1>
                   <Skeleton className="h-4 w-24 bg-gray-200" />
                   <Skeleton className="h-3 w-16 bg-gray-200" />
                 </div>
@@ -167,9 +166,9 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
             </div>
           </div>
           {/* Skeleton Main Content */}
-          <div className="flex-1 flex flex-col overflow-hidden">;
+          \1>
             <Skeleton className="h-16 w-full border-b border-gray-200 bg-white" />
-            <div className="flex-1 p-6 bg-gray-100">;
+            \1>
               <Skeleton className="h-full w-full bg-gray-200" />
             </div>
           </div>
@@ -180,7 +179,7 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
 
   // If user info failed to load (e.g., not authenticated), this component might unmount
   // due to redirection, but this check adds robustness.
-  if (!userName) {
+  \1 {\n  \2{
     return; // Or a message indicating redirection
   }
 
@@ -189,80 +188,70 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
   const navItems = [
     {
       id: "dashboard",
-      label: "Dashboard";
-      icon: <HomeIcon className="h-5 w-5 mr-2" />
+      \1,\2 <HomeIcon className="h-5 w-5 mr-2" />
     },
     {
       id: "opd",
-      label: "OPD";
-      icon: <CalendarIcon className="h-5 w-5 mr-2" />
+      \1,\2 <CalendarIcon className="h-5 w-5 mr-2" />
     },
     { id: "ipd", label: "IPD", icon: <BedIcon className="h-5 w-5 mr-2" /> },
     {
       id: "er",
-      label: "ER";
-      icon: <AlertTriangleIcon className="h-5 w-5 mr-2" />
+      \1,\2 <AlertTriangleIcon className="h-5 w-5 mr-2" />
     }, // Added ER
     { id: "ot", label: "OT", icon: <ScissorsIcon className="h-5 w-5 mr-2" /> }, // Added OT
     {
       id: "patients",
-      label: "Patients";
-      icon: <UsersIcon className="h-5 w-5 mr-2" />
+      \1,\2 <UsersIcon className="h-5 w-5 mr-2" />
     },
     {
       id: "billing",
-      label: "Billing";
-      icon: <CreditCardIcon className="h-5 w-5 mr-2" />
+      \1,\2 <CreditCardIcon className="h-5 w-5 mr-2" />
     },
     {
       id: "pharmacy",
-      label: "Pharmacy";
-      icon: <PillIcon className="h-5 w-5 mr-2" />
+      \1,\2 <PillIcon className="h-5 w-5 mr-2" />
     },
     {
       id: "laboratory",
-      label: "Laboratory";
-      icon: <FlaskConicalIcon className="h-5 w-5 mr-2" />
+      \1,\2 <FlaskConicalIcon className="h-5 w-5 mr-2" />
     },
     {
       id: "radiology",
-      label: "Radiology";
-      icon: <RadioIcon className="h-5 w-5 mr-2" />
+      \1,\2 <RadioIcon className="h-5 w-5 mr-2" />
     }, // Added Radiology
     {
       id: "reports",
-      label: "Reports";
-      icon: <BarChartIcon className="h-5 w-5 mr-2" />
+      \1,\2 <BarChartIcon className="h-5 w-5 mr-2" />
     },
     {
       id: "settings",
-      label: "Settings";
-      icon: <SettingsIcon className="h-5 w-5 mr-2" />
+      \1,\2 <SettingsIcon className="h-5 w-5 mr-2" />
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col md:flex-row">;
+    \1>
       {" "}
       {/* Responsive layout */}
       {/* Sidebar */}
-      <div className="w-full md:w-64 bg-white border-r border-gray-200 flex flex-col flex-shrink-0">;
+      \1>
         {" "}
         {/* Fixed width on larger screens */}
         {/* Logo and Hospital Name */}
-        <div className="p-4 border-b border-gray-200 flex items-center">;
+        \1>
           {/* Replace with actual logo if available */}
-          <div className="mr-3 bg-teal-600 p-2 rounded">;
+          \1>
             <HospitalIcon className="h-6 w-6 text-white" />
           </div>
 <div
-            <h1 className="text-lg font-bold text-teal-700">HMS</h1>;
+            <h1 className="text-lg font-bold text-teal-700">HMS\1>
             <p className="text-xs text-gray-500">Hospital Management</p>
           </div>
         </div>
         {/* Navigation */}
-        <nav className="flex-1 p-4 overflow-y-auto">;
-          <ul className="space-y-1">;
+        \1>
+          \1>
             {navItems.map((item) => (
               // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
               (<li key={item.id}>
@@ -279,57 +268,57 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
           </ul>
         </nav>
         {/* User Info and Logout */}
-        <div className="p-4 border-t border-gray-200">;
-          <div className="flex items-center mb-4">;
-            <div className="mr-3">;
+        \1>
+          \1>
+            \1>
               {/* Placeholder Avatar */}
-              <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-medium">;
+              \1>
                 {userName ? userName.charAt(0).toUpperCase() : "?"}
               </div>
             </div>
-            <div className="overflow-hidden">;
+            \1>
               {" "}
               {/* Prevent long names/roles from breaking layout */}
-              <p className="font-medium text-sm truncate">{userName}</p>;
+              <p className="font-medium text-sm truncate">{userName}\1>
               <p className="text-xs text-gray-500 truncate">{userRole}</p>
             </div>
           </div>
-          <Button variant="outline" className="w-full" onClick={handleLogout}>;
+          \1>
             <LogOutIcon className="h-5 w-5 mr-2" />
             Logout
           </Button>
         </div>
       </div>
-      <div className="flex-1 flex flex-col overflow-hidden">;
+      \1>
         {/* Header Bar (Optional) */}
-        <header className="bg-white border-b border-gray-200 p-4 flex items-center justify-between flex-shrink-0">;
+        \1>
           {/* Can add breadcrumbs or module-specific actions here */}
-          <h1 className="text-xl font-semibold">;
+          \1>
             {/* Find the label corresponding to the active module */}
             {navItems.find((item) => item.id === activeModule)?.label ||
               "Dashboard"}
           </h1>
 
           {/* Global Search / Notifications (Optional) */}
-          <div className="flex items-center">;
+          \1>
             {/* <Input>
               type="search"
               placeholder="Global Search..."
               className="w-64 mr-4 hidden sm:block" // Hide on small screens
             /> */}
-            <Button variant="ghost" size="icon">;
+            \1>
               <BellIcon className="h-5 w-5" />
             </Button>
           </div>
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 bg-gray-100">;
+        \1>
           {children}
         </main>
 
         {/* Footer (Optional) */}
-        {/* <footer className="bg-white border-t border-gray-200 p-4 text-center text-sm text-gray-500 flex-shrink-0">;
+        {/* \1>
           © {new Date().getFullYear()} Your Hospital Name. All rights reserved.
         </footer> */}
       </div>

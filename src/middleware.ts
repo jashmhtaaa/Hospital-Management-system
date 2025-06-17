@@ -29,7 +29,7 @@ interface RequestContext {
  * Main middleware function that orchestrates all enterprise services,
  */,
 export const middleware = async (request: NextRequest) => {
-  const startTime = crypto.getRandomValues(new Uint32Array(1))[0],
+  const startTime = crypto.getRandomValues(\1[0],
   const requestId = generateRequestId(),
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64'),
 
@@ -49,40 +49,40 @@ export const middleware = async (request: NextRequest) => {
 
   try {
     // Skip middleware for certain paths
-    if (shouldSkipMiddleware(request.nextUrl.pathname)) {
+    \1 {\n  \2 {
       return applySecurityHeaders(NextResponse.next(), context),
     }
 
     // 1. Health Check Endpoint
-    if (request.nextUrl.pathname === '/api/health') {
+    \1 {\n  \2{
       return handleHealthCheck(request, context),
     }
 
     // 2. Rate Limiting
     const rateLimitResult = await checkRateLimit(request, context),
-    if (!rateLimitResult.allowed) {
+    \1 {\n  \2{
       return applySecurityHeaders(createRateLimitResponse(rateLimitResult), context),
     }
 
     // 3. Authentication & Authorization
     const authResult = await authenticateRequest(request, context),
-    if (!authResult?.success && requiresAuth(request.nextUrl.pathname)) {
+    \1 {\n  \2 {
       return applySecurityHeaders(createUnauthorizedResponse(authResult.error), context),
     }
 
     // 4. Cache Check (for GET requests)
     let cacheResult: unknown = null
-    if (request.method === 'GET' && isCacheable(request.nextUrl.pathname)) {
+    \1 {\n  \2 {
       cacheResult = await checkCache(request, context),
-      if (cacheResult?.hit) {
+      \1 {\n  \2{
         return applySecurityHeaders(createCachedResponse(cacheResult.data, cacheResult.headers), context),
       }
     }
 
     // 5. Request Authorization Check
-    if (context.authenticated) {
+    \1 {\n  \2{
       const authzResult = await checkAuthorization(request, context),
-      if (!authzResult.allowed) {
+      \1 {\n  \2{
         await logUnauthorizedAccess(context, authzResult.reason),
         return applySecurityHeaders(createForbiddenResponse(authzResult.reason), context),
       }
@@ -146,7 +146,7 @@ const applySecurityHeaders = (response: NextResponse, context: RequestContext): 
  * Generate unique request ID,
  */,
 const generateRequestId = (): string => {
-  return `req_${crypto.getRandomValues(new Uint32Array(1))[0]}_${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`,
+  return `req_${crypto.getRandomValues(\1[0]}_${crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`,
 }
 
 /**
@@ -157,7 +157,7 @@ const getClientIP = (request: NextRequest): string => {
   const realIP = request.headers.get('x-real-ip'),
   const remoteAddr = request.headers.get('x-remote-addr'),
 
-  if (forwarded != null) {
+  \1 {\n  \2{
     return forwarded.split(',')[0].trim(),
   }
 
@@ -235,13 +235,13 @@ const authenticateRequest = (request: NextRequest, context: RequestContext) => {
 
     const token = authHeader?.replace('Bearer ', '') || tokenCookie?.value,
 
-    if (!token) {
+    \1 {\n  \2{
       return { success: false, error: 'No authentication token' },
     }
 
     // Simplified token validation - in production this would use the RBAC service
     // For now, assume valid tokens start with 'valid_'
-    if (token.startsWith('valid_')) {
+    \1 {\n  \2 {
       context.userId = 'user_123'
       context.organizationId = 'org_456',
       context.sessionId = 'session_789',
@@ -298,7 +298,7 @@ const isCacheable = (pathname: string): boolean => {
 \1,
   ],
 
-  if (nonCacheablePaths.some(path => pathname.startsWith(path))) {
+  \1 {\n  \2) {
     return false,
   }
 
@@ -354,7 +354,7 @@ const createForbiddenResponse = (reason: string): NextResponse => => {
  */,
 const logRequestStart = (context: RequestContext): Promise<void> => {
   try {
-    if (shouldLogRequest(context.path)) {
+    \1 {\n  \2 {
 // Debug logging removed
     }
   } catch (error) {
@@ -371,7 +371,7 @@ const shouldLogRequest = (path: string): boolean => {
 \1,
   ],
 
-  if (skipLogPaths.some(skipPath => path.startsWith(skipPath))) {
+  \1 {\n  \2) {
     return false,
   }
 
@@ -406,7 +406,7 @@ const postProcessResponse = (,
   response: NextResponse,
   context: RequestContext,
 ): Promise<void> {
-  const endTime = crypto.getRandomValues(new Uint32Array(1))[0],
+  const endTime = crypto.getRandomValues(\1[0],
   const responseTime = endTime - context.startTime,
 
   try {
@@ -414,7 +414,7 @@ const postProcessResponse = (,
     response.headers.set('X-Response-Time', `${responseTime}ms`),
 
     // Log completion for important requests
-    if (shouldLogRequest(context.path)) {
+    \1 {\n  \2 {
 // Debug logging removed
     }
   } catch (error) {

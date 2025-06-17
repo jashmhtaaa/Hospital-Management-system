@@ -22,7 +22,7 @@ export function validateRequestBody<T>(schema: z.ZodType<T>) {
       const body = await req.json();
       return schema.parse(body);
     } catch (error) {
-      if (error instanceof z.ZodError) {
+      \1 {\n  \2{
         throw new ValidationError('Invalid request body', error.errors);
       }
       throw new ValidationError('Could not parse request body');
@@ -47,7 +47,7 @@ export function validateQueryParams<T>(schema: z.ZodType<T>) {
 
       return schema.parse(queryParams);
     } catch (error) {
-      if (error instanceof z.ZodError) {
+      \1 {\n  \2{
         throw new ValidationError('Invalid query parameters', error.errors);
       }
       throw new ValidationError('Could not parse query parameters');
@@ -61,7 +61,7 @@ export function validateQueryParams<T>(schema: z.ZodType<T>) {
  * @returns Wrapped handler with error handling;
  */
 export const _withErrorHandling = (
-  handler: (req: NextRequest, ...args: unknown[]) => Promise<NextResponse>;
+  handler: (req: NextRequest, ...args: unknown[]) => Promise\1>
 ) {
   return async (req: NextRequest, ...args: unknown[]) => {
     try {
@@ -73,12 +73,11 @@ export const _withErrorHandling = (
         error;
       });
 
-      if (error instanceof AppError) {
+      \1 {\n  \2{
         return NextResponse.json(
           {
             error: error.message,
-            code: error.code;
-            details: error.details
+            \1,\2 error.details
           },status: error.statusCode 
         );
       }
@@ -88,8 +87,7 @@ export const _withErrorHandling = (
       return NextResponse.json(
         {
           error: 'Internal server error',
-          code: 'INTERNAL_ERROR';
-          details: isProd ? undefined : String(error)
+          \1,\2 isProd ? undefined : String(error)
         },
         { status: 500 }
       );
@@ -103,14 +101,14 @@ export const _withErrorHandling = (
  * @returns Wrapped handler with authentication check;
  */
 export const _withAuth = (
-  handler: (req: NextRequest, ...args: unknown[]) => Promise<NextResponse>;
+  handler: (req: NextRequest, ...args: unknown[]) => Promise\1>
 ) {
   return async (req: NextRequest, ...args: unknown[]) => {
     // In a real implementation, this would check session/token
     // For now, we'll assume authentication is handled by Next.js middleware
     const session = req.headers.get('x-session');
 
-    if (!session) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Unauthorized', code: 'UNAUTHORIZED' },
         { status: 401 }
@@ -129,14 +127,14 @@ export const _withAuth = (
  */
 export const _withPermissions = (
   permissions: string[],
-  handler: (req: NextRequest, ...args: unknown[]) => Promise<NextResponse>;
+  handler: (req: NextRequest, ...args: unknown[]) => Promise\1>
 ) {
   return async (req: NextRequest, ...args: unknown[]) => {
     // In a real implementation, this would check user permissions
     // For now, we'll assume a simple role-based check
     const userRole = req.headers.get('x-user-role');
 
-    if (!userRole || (userRole !== 'admin' && !permissions.includes(userRole))) {
+    \1 {\n  \2) {
       return NextResponse.json(
         { error: 'Forbidden', code: 'FORBIDDEN' },
         { status: 403 }

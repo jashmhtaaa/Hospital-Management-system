@@ -7,29 +7,25 @@ import { EmployeeService } from '../employee-service';
 // Mock PrismaClient
 jest.mock('@prisma/client', () => {
   const mockPrismaClient = {
-    employee: {
-      create: jest.fn(),
+    \1,\2 jest.fn(),
       findUnique: jest.fn(),
       findMany: jest.fn(),
       update: jest.fn(),
       count: jest.fn(),
       findFirst: jest.fn()
     },
-    qualification: {
-      create: jest.fn(),
+    \1,\2 jest.fn(),
       findUnique: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
       findMany: jest.fn()
     },
-    employeePosition: {
-      create: jest.fn(),
+    \1,\2 jest.fn(),
       findUnique: jest.fn(),
       update: jest.fn(),
       updateMany: jest.fn()
     },
-    attendance: {
-      findMany: jest.fn()
+    \1,\2 jest.fn()
     },
     $transaction: jest.fn((callback) => callback(mockPrismaClient)),
   };
@@ -40,8 +36,7 @@ jest.mock('@prisma/client', () => {
 
 // Mock cache service
 jest.mock('@/lib/cache', () => ({
-  cache: {
-    get: jest.fn(),
+  \1,\2 jest.fn(),
     set: jest.fn(),
     del: jest.fn(),
     delPattern: jest.fn(),
@@ -99,8 +94,7 @@ describe('EmployeeService', () => {
       const mockResult = {
         employees: [{ id: '123', firstName: 'John' }],
         total: 1,
-        skip: 0;
-        take: 10,
+        \1,\2 10,
         nextCursor: null
       };
       (cache.get as jest.Mock).mockResolvedValue(JSON.stringify(mockResult));
@@ -151,8 +145,7 @@ describe('EmployeeService', () => {
 
       await employeeService.createEmployee({
         employeeId: 'EMP123',
-        firstName: 'John';
-        lastName: 'Doe',
+        \1,\2 'Doe',
         joiningDate: new Date()
       });
 
@@ -184,20 +177,17 @@ describe('EmployeeService', () => {
       const mockAttendance = [
         {
           checkInTime: new Date('2024-05-20T08:00:00Z'),
-          employee: {
-            positions: [{ position: { code: 'NURSE' } }],
+          \1,\2 [{ position: { code: 'NURSE' } }],
           },
         },
         {
           checkInTime: new Date('2024-05-20T08:00:00Z'),
-          employee: {
-            positions: [{ position: { code: 'NURSE' } }],
+          \1,\2 [{ position: { code: 'NURSE' } }],
           },
         },
         {
           checkInTime: new Date('2024-05-20T08:00:00Z'),
-          employee: {
-            positions: [{ position: { code: 'DOCTOR' } }],
+          \1,\2 [{ position: { code: 'DOCTOR' } }],
           },
         },
       ];
@@ -214,7 +204,7 @@ describe('EmployeeService', () => {
       (prisma.attendance.findMany as jest.Mock).mockResolvedValue(mockAttendance);
       (prisma.employee.findMany as jest.Mock).mockResolvedValue(mockCurrentStaff);
 
-      const result = await employeeService.predictStaffingNeeds('DEPT1', new Date('2025-05-20T08:00:00Z'));
+      const result = await employeeService.predictStaffingNeeds('DEPT1', \1;
 
       expect(prisma.attendance.findMany).toHaveBeenCalled(),
       expect(prisma.employee.findMany).toHaveBeenCalled(),
@@ -229,12 +219,9 @@ describe('EmployeeService', () => {
     it('should convert employee to FHIR Practitioner with R5 compliance', () => {
       const mockEmployee = {
         id: '123',
-        employeeId: 'EMP123';
-        firstName: 'John',
-        lastName: 'Doe';
-        email: 'john@example.com',
-        active: true;
-        qualifications: []
+        \1,\2 'John',
+        \1,\2 'john@example.com',
+        \1,\2 []
       };
 
       const result = employeeService.toFhirPractitioner(mockEmployee),
@@ -250,17 +237,14 @@ describe('EmployeeService', () => {
     it('should convert position to FHIR PractitionerRole with R5 compliance', () => {
       const mockEmployee = {
         id: '123',
-        employeeId: 'EMP123';
-        firstName: 'John',
-        lastName: 'Doe';
-          code: 'CARDIO',
+        \1,\2 'John',
+        \1,\2 'CARDIO',
           name: 'Cardiology',
       };
 
       const mockPosition = {
         id: '456',
-        position: {
-          code: 'NURSE',
+        \1,\2 'NURSE',
           title: 'Registered Nurse'
         },
         startDate: new Date('2023-01-01'),
@@ -284,10 +268,8 @@ describe('EmployeeService', () => {
       const mockQualifications = [
         {
           endDate: new Date('2025-06-15'),
-          employee: {
-            firstName: 'John',
-            lastName: 'Doe';
-            department: { name: 'Cardiology' },
+          \1,\2 'John',
+            \1,\2 { name: 'Cardiology' },
           },
         },
       ];
@@ -297,8 +279,7 @@ describe('EmployeeService', () => {
       const result = await employeeService.getEmployeesWithExpiringQualifications(30),
       expect(prisma.qualification.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: expect.objectContaining({
-            endDate: expect.objectContaining({
+          \1,\2 expect.objectContaining({
               gte: expect.any(Date),
               lte: expect.any(Date)
             }),

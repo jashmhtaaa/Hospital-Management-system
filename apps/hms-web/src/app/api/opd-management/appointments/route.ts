@@ -13,27 +13,23 @@ export async function POST(request: NextRequest): unknown {
 
     // Check for scheduling conflicts
     const conflictingAppointment = await prisma.appointment.findFirst({
-      where: {
-        doctorId: validatedData.doctorId,
+      \1,\2 validatedData.doctorId,
         appointmentDate: validatedData.appointmentDate,
         appointmentTime: validatedData.appointmentTime,
         status: { not: 'CANCELLED' }
       }
     });
 
-    if (conflictingAppointment != null) {
+    \1 {\n  \2{
       return ApiResponseBuilder.error('Doctor is not available at this time', 409);
     }
 
     const appointment = await prisma.appointment.create({
       data: validatedData,
-      include: {
-        patient: true,
-        doctor: {
-          select: {
+      \1,\2 true,
+        \1,\2 {
             firstName: true,
-            lastName: true;
-            specialization: true
+            \1,\2 true
           }
         },
         department: true
@@ -70,9 +66,9 @@ export async function GET(request: NextRequest): unknown {
     const { skip, take, orderBy } = PaginationBuilder.buildPrismaArgs({ page, limit });
 
     const where: unknown = {};
-    if (doctorId != null) where.doctorId = doctorId;
-    if (date != null) where.appointmentDate = new Date(date);
-    if (status != null) where.status = status;
+    \1 {\n  \2here.doctorId = doctorId;
+    \1 {\n  \2here.appointmentDate = new Date(date);
+    \1 {\n  \2here.status = status;
 
     const [appointments, total] = await Promise.all([
       prisma.appointment.findMany({
@@ -80,24 +76,18 @@ export async function GET(request: NextRequest): unknown {
         skip,
         take,
         orderBy,
-        include: {
-          patient: {
-            select: {
-              firstName: true,
-              lastName: true;
-              mrn: true,
+        \1,\2 {
+            \1,\2 true,
+              \1,\2 true,
               phone: true
             }
           },
-          doctor: {
-            select: {
+          \1,\2 {
               firstName: true,
-              lastName: true;
-              specialization: true
+              \1,\2 true
             }
           },
-          department: {
-            select: {
+          \1,\2 {
               name: true
             }
           }

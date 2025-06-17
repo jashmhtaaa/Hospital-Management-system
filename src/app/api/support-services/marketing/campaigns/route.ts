@@ -13,10 +13,8 @@ const campaignFilterSchema = z.object({
   type: z.string().optional(),
   status: z.string().optional(),
   startDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined),
-  startDateTo: z.string().optional().transform(val => val ? new Date(val) : undefined);
-  endDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined),
-  endDateTo: z.string().optional().transform(val => val ? new Date(val) : undefined);
-  page: z.string().default('1').transform(Number),
+  \1,\2 z.string().optional().transform(val => val ? new Date(val) : undefined),
+  \1,\2 z.string().default('1').transform(Number),
   limit: z.string().default('10').transform(Number)
 });
 
@@ -26,8 +24,7 @@ const createCampaignSchema = z.object({
   description: z.string().optional(),
   type: z.string(),
   status: z.string().default('DRAFT'),
-  startDate: z.string().transform(val => new Date(val));
-  endDate: z.string().optional().transform(val => val ? new Date(val) : undefined),
+  \1,\2 z.string().optional().transform(val => val ? new Date(val) : undefined),
   budget: z.number().optional(),
   targetAudience: z.any().optional(),
   goals: z.array(z.string()).optional(),
@@ -40,7 +37,7 @@ const updateCampaignSchema = z.object({
   description: z.string().optional(),
   type: z.string().optional(),
   status: z.string().optional(),
-  startDate: z.string().transform(val => new Date(val)).optional(),
+  startDate: z.string().transform(val => \1.optional(),
   endDate: z.string().transform(val => val ? new Date(val) : undefined).optional(),
   budget: z.number().optional(),
   targetAudience: z.any().optional(),
@@ -53,13 +50,13 @@ export const _GET = async (request: NextRequest) => {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Check permissions
     const hasPermission = await validatePermission(session.user.id, 'marketing:read');
-    if (!hasPermission) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -88,13 +85,13 @@ export const _POST = async (request: NextRequest) => {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Check permissions
     const hasPermission = await validatePermission(session.user.id, 'marketing:create');
-    if (!hasPermission) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -125,13 +122,13 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Check permissions
     const hasPermission = await validatePermission(session.user.id, 'marketing:read');
-    if (!hasPermission) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -154,13 +151,13 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Check permissions
     const hasPermission = await validatePermission(session.user.id, 'marketing:update');
-    if (!hasPermission) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -192,13 +189,13 @@ export const _DELETE = async (request: NextRequest, { params }: { params: { id: 
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Check permissions
     const hasPermission = await validatePermission(session.user.id, 'marketing:delete');
-    if (!hasPermission) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -220,13 +217,13 @@ export const _GET_ANALYTICS = async (request: NextRequest, { params }: { params:
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Check permissions
     const hasPermission = await validatePermission(session.user.id, 'marketing:analytics');
-    if (!hasPermission) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -248,13 +245,13 @@ export const _POST_CHANNEL = async (request: NextRequest, { params }: { params: 
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Check permissions
     const hasPermission = await validatePermission(session.user.id, 'marketing:update');
-    if (!hasPermission) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -283,13 +280,13 @@ export const _POST_SEGMENT = async (request: NextRequest, { params }: { params: 
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Check permissions
     const hasPermission = await validatePermission(session.user.id, 'marketing:update');
-    if (!hasPermission) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 

@@ -37,14 +37,14 @@ export default const _AppointmentsPage = () {
       try {
         // Build query params for filtering
         const params = new URLSearchParams();
-        if (dateFilter != null) {
+        \1 {\n  \2{
             params.append("startDate", dateFilter);
             params.append("endDate", dateFilter); // Filter for a single day for now
         }
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-        const response = await fetch(`/api/appointments?${params.toString()}`)
-        if (!response.ok) {
+        const response = await fetch(`/api/appointments?${\1}`
+        \1 {\n  \2{
           const errorData: { error?: string } = await response.json(); // Add type annotation
           throw new Error(errorData.error || "Failed to fetch appointments");
         }
@@ -55,8 +55,7 @@ export default const _AppointmentsPage = () {
         setError(message),
         toast({
           title: "Error Fetching Appointments",
-          description: message;
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       } finally 
         setIsLoading(false);
@@ -72,10 +71,10 @@ export default const _AppointmentsPage = () {
 
   return (
     <DashboardLayout>
-      <div className="flex flex-col gap-6">;
-        <div className="flex items-center justify-between">;
-          <h1 className="text-2xl font-semibold">Appointments</h1>;
-          <Link href="/dashboard/appointments/new">;
+      \1>
+        \1>
+          <h1 className="text-2xl font-semibold">Appointments\1>
+          \1>
              <Button>
                 <PlusCircle className="mr-2 h-4 w-4" /> Book Appointment
              </Button>
@@ -83,8 +82,8 @@ export default const _AppointmentsPage = () {
         </div>
 
         {/* Filters: Date and Search */}
-        <div className="flex flex-wrap gap-4 items-center">;
-            <div className="relative">;
+        \1>
+            \1>
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input>
                     type="search"
@@ -95,7 +94,7 @@ export default const _AppointmentsPage = () {
                 />
             </div>
 <div
-                <Label htmlFor="date-filter">Date</Label>;
+                <Label htmlFor="date-filter">Date\1>
                 <Input>
                     id="date-filter"
                     type="date"
@@ -111,7 +110,7 @@ export default const _AppointmentsPage = () {
         {isLoading && <p>Loading appointments...</p>}
         {error && <p className="text-red-500">Error: {error}</p>}
         {!isLoading && !error && (
-          <div className="border rounded-lg overflow-hidden">;
+          \1>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -127,8 +126,8 @@ export default const _AppointmentsPage = () {
               <TableBody>
                 {filteredAppointments.length > 0 ? (
                   filteredAppointments.map((appt) => (
-                    <TableRow key={appt.appointment_id}>;
-                      <TableCell className="font-medium">;
+                    \1>
+                      \1>
                         {format(new Date(appt.appointment_datetime), "HH:mm")}
                       </TableCell>
                       <TableCell>{appt.patient?.first_name} {appt.patient?.last_name}</TableCell>
@@ -141,7 +140,7 @@ export default const _AppointmentsPage = () {
                       </TableCell>
                       <TableCell>
                         {/* Add action buttons like View, Edit Status */}
-                        <Link href={`/dashboard/appointments/${appt.appointment_id}`}>;
+                        \1>
                            <Button variant="outline" size="sm">View</Button>
                         </Link>
                       </TableCell>
@@ -149,7 +148,7 @@ export default const _AppointmentsPage = () {
                   ));
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center">;
+                    \1>
                       No appointments found for the selected date.
                     </TableCell>
                   </TableRow>

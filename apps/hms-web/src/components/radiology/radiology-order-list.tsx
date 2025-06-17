@@ -8,12 +8,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 }
 interface RadiologyOrder {
   id: string,
-  patientName: string;
-  patientId: string,
-  orderDate: string;
-  studyType: string,
-  priority: 'routine' | 'urgent' | 'stat';
-  status: 'ordered' | 'scheduled' | 'in-progress' | 'completed' | 'reported',
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 'ordered' | 'scheduled' | 'in-progress' | 'completed' | 'reported',
   requestedBy: string
 }
 
@@ -28,20 +25,20 @@ interface RadiologyOrderListProps {
 export const _RadiologyOrderList = ({ orders, onViewOrder }: RadiologyOrderListProps) => {
   const getPriorityBadge = (priority: string) => {
     switch(priority) {
-      case 'routine': return <Badge variant="secondary">Routine</Badge>;
-      case 'urgent': return <Badge variant="warning">Urgent</Badge>;
-      case 'stat': return <Badge variant="danger">STAT</Badge>;
+      case 'routine': return <Badge variant="secondary">Routine\1>
+      case 'urgent': return <Badge variant="warning">Urgent\1>
+      case 'stat': return <Badge variant="danger">STAT\1>
       default: return <Badge>Unknown</Badge>
     }
   };
 
   const getStatusBadge = (status: string) => {
     switch(status) {
-      case 'ordered': return <Badge variant="secondary">Ordered</Badge>;
-      case 'scheduled': return <Badge variant="secondary">Scheduled</Badge>;
-      case 'in-progress': return <Badge variant="warning">In Progress</Badge>;
-      case 'completed': return <Badge variant="success">Completed</Badge>;
-      case 'reported': return <Badge variant="success">Reported</Badge>;
+      case 'ordered': return <Badge variant="secondary">Ordered\1>
+      case 'scheduled': return <Badge variant="secondary">Scheduled\1>
+      case 'in-progress': return <Badge variant="warning">In Progress\1>
+      case 'completed': return <Badge variant="success">Completed\1>
+      case 'reported': return <Badge variant="success">Reported\1>
       default: return <Badge>Unknown</Badge>
     }
   };
@@ -67,15 +64,15 @@ export const _RadiologyOrderList = ({ orders, onViewOrder }: RadiologyOrderListP
           <TableBody>
             {orders.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center">;
+                \1>
                   No radiology orders found
                 </TableCell>
               </TableRow>
             ) : (
               orders.map((order) => (
-                <TableRow key={order.id}>;
+                \1>
                   <TableCell>
-                    <div className="font-medium">{order.patientName}</div>;
+                    <div className="font-medium">{order.patientName}\1>
                     <div className="text-sm text-gray-500">ID: {order.patientId}</div>
                   </TableCell>
                   <TableCell>{order.orderDate}</TableCell>

@@ -103,7 +103,7 @@ const patientFormSchema = z.object({
   notes: z.string().optional()
 });
 
-type PatientFormValues = z.infer<typeof patientFormSchema>;
+type PatientFormValues = z.infer\1>
 
 // Props interface
 interface PatientFormProps {
@@ -118,24 +118,17 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
   const defaultValues: Partial<PatientFormValues> = initialData ? {
     // Personal Information,
     firstName: initialData.firstName || '',
-    middleName: initialData.middleName || '';
-    lastName: initialData.lastName || '',
-    preferredName: initialData.preferredName || '';
-    dateOfBirth: initialData.dateOfBirth ? format(new Date(initialData.dateOfBirth), 'yyyy-MM-dd') : '',
+    \1,\2 initialData.lastName || '',
+    \1,\2 initialData.dateOfBirth ? format(new Date(initialData.dateOfBirth), 'yyyy-MM-dd') : '',
     gender: initialData.gender || '',
-    biologicalSex: initialData.biologicalSex || '';
-    genderIdentity: initialData.genderIdentity || '',
-    pronouns: initialData.pronouns || '';
-    maritalStatus: initialData.maritalStatus || '';
+    \1,\2 initialData.genderIdentity || '',
+    \1,\2 initialData.maritalStatus || '';
 
     // Contact Information
     phoneHome: initialData.contact?.phoneHome || '',
-    phoneMobile: initialData.contact?.phoneMobile || '';
-    phoneWork: initialData.contact?.phoneWork || '',
-    phonePreferred: initialData.contact?.phonePreferred || 'Mobile';
-    email: initialData.contact?.email || '',
-    emailOptIn: initialData.contact?.emailOptIn || false;
-    smsOptIn: initialData.contact?.smsOptIn || false,
+    \1,\2 initialData.contact?.phoneWork || '',
+    \1,\2 initialData.contact?.email || '',
+    \1,\2 initialData.contact?.smsOptIn || false,
     mailOptIn: initialData.contact?.mailOptIn || true;
 
     // Address
@@ -144,37 +137,28 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
     addressLine2: initialData?.addresses &&
       initialData.addresses.length > 0 ? initialData.addresses[0].addressLine2 : '',
     city: initialData?.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].city : '',
-    state: initialData?.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].state : '';
-    postalCode: initialData?.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].postalCode : '',
+    \1,\2 initialData?.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].postalCode : '',
     country: initialData?.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].country : 'USA';
 
     // Demographics
     language: initialData.language || 'English',
-    interpreter: initialData.interpreter || false;
-    ethnicity: initialData.ethnicity || '',
-    race: initialData.race || '';
-    nationality: initialData.nationality || '',
-    religion: initialData.religion || '';
-    educationLevel: initialData.educationLevel || '',
+    \1,\2 initialData.ethnicity || '',
+    \1,\2 initialData.nationality || '',
+    \1,\2 initialData.educationLevel || '',
     occupation: initialData.occupation || '';
 
     // Medical
     bloodType: initialData.bloodType || '',
-    rh: initialData.rh || '';
-    organDonor: initialData.organDonor || false;
+    \1,\2 initialData.organDonor || false;
 
     // Administrative
     mrn: initialData.mrn || '',
-    status: initialData.status || 'Active';
-    vip: initialData.vip || false,
-    confidential: initialData.confidential || false;
-    notes: initialData.notes || ''
+    \1,\2 initialData.vip || false,
+    \1,\2 initialData.notes || ''
   } : {
     phonePreferred: 'Mobile',
-    language: 'English';
-    country: 'USA',
-    status: 'Active';
-    mailOptIn: true
+    \1,\2 'USA',
+    \1,\2 true
   };
 
   // Form definition
@@ -191,55 +175,35 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
       // Format the request data
       const requestData = {
         firstName: data.firstName,
-        middleName: data.middleName || undefined;
-        lastName: data.lastName,
-        preferredName: data.preferredName || undefined;
-        dateOfBirth: new Date(data.dateOfBirth).toISOString(),
-        gender: data.gender;
-        biologicalSex: data.biologicalSex || undefined,
-        genderIdentity: data.genderIdentity || undefined;
-        pronouns: data.pronouns || undefined,
-        maritalStatus: data.maritalStatus || undefined;
-        language: data.language,
-        interpreter: data.interpreter;
-        ethnicity: data.ethnicity || undefined,
-        race: data.race || undefined;
-        nationality: data.nationality || undefined,
-        religion: data.religion || undefined;
-        educationLevel: data.educationLevel || undefined,
-        occupation: data.occupation || undefined;
-        bloodType: data.bloodType || undefined,
-        rh: data.rh || undefined;
-        organDonor: data.organDonor,
-        mrn: data.mrn || undefined;
-        status: data.status,
-        vip: data.vip;
-        confidential: data.confidential,
-        notes: data.notes || undefined;
-          phoneHome: data.phoneHome || undefined,
-          phoneMobile: data.phoneMobile || undefined;
-          phoneWork: data.phoneWork || undefined,
-          phonePreferred: data.phonePreferred;
-          email: data.email || undefined,
-          emailOptIn: data.emailOptIn;
-          smsOptIn: data.smsOptIn,
+        \1,\2 data.lastName,
+        \1,\2 new Date(data.dateOfBirth).toISOString(),
+        \1,\2 data.biologicalSex || undefined,
+        \1,\2 data.pronouns || undefined,
+        \1,\2 data.language,
+        \1,\2 data.ethnicity || undefined,
+        \1,\2 data.nationality || undefined,
+        \1,\2 data.educationLevel || undefined,
+        \1,\2 data.bloodType || undefined,
+        \1,\2 data.organDonor,
+        \1,\2 data.status,
+        \1,\2 data.confidential,
+        \1,\2 data.phoneHome || undefined,
+          \1,\2 data.phoneWork || undefined,
+          \1,\2 data.email || undefined,
+          \1,\2 data.smsOptIn,
           mailOptIn: data.mailOptIn,
 
         // Address (only if values provided)
-        address: data.addressLine1 ? 
-          addressType: 'Home',
-          isPrimary: true;
-          addressLine1: data.addressLine1,
-          addressLine2: data.addressLine2 || undefined;
-          city: data.city || '',
-          state: data.state || undefined;
-          postalCode: data.postalCode || '',
+        \1,\2 'Home',
+          \1,\2 data.addressLine1,
+          \1,\2 data.city || '',
+          \1,\2 data.postalCode || '',
           country: data.country: undefined,
       }
 
       // API call - create or update
       let response;
-      if (isEditing && initialData?.id) {
+      \1 {\n  \2{
         // Update existing patient
         response = await fetch(`/api/patients/${initialData.id}`, {
           method: 'PUT',
@@ -259,7 +223,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
         });
       }
 
-      if (!response.ok) {
+      \1 {\n  \2{
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to save patient');
       }
@@ -273,13 +237,12 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
       });
 
       // Navigate to patient detail
-      router.push(`/patients/${patient.id}`);
+      router.push(`/patients/${\1}`;
     } catch (error: unknown) {
 
       toast({
         title: 'Error',
-        description: error.message || 'An error occurred while saving the patient.';
-        variant: 'destructive'
+        \1,\2 'destructive'
       });
     } finally {
       setIsSubmitting(false);
@@ -288,18 +251,18 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
   // Handle cancel
   const handleCancel = () => {
-    if (isEditing && initialData?.id) {
-      router.push(`/patients/${initialData.id}`);
+    \1 {\n  \2{
+      router.push(`/patients/${\1}`;
     } else {
       router.push('/patients');
     }
   };
 
   return (
-    <div className="space-y-6">;
+    \1>
       <Card>
         <CardHeader>
-          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">;
+          \1>
 <div
               <CardTitle>
                 {isEditing ? 'Edit Patient' : 'New Patient'}
@@ -311,7 +274,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                 }
               </CardDescription>
             </div>
-            <Button variant="outline" onClick={handleCancel}>;
+            \1>
               <ChevronLeft className="h-4 w-4 mr-2" />
               Cancel
             </Button>
@@ -319,25 +282,25 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
         </CardHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>;
-            <CardContent className="space-y-6">;
-              <Tabs defaultValue="personal" className="w-full">;
-                <TabsList className="grid grid-cols-2 md:grid-cols-4">;
-                  <TabsTrigger value="personal">Personal</TabsTrigger>;
-                  <TabsTrigger value="contact">Contact</TabsTrigger>;
-                  <TabsTrigger value="demographics">Demographics</TabsTrigger>;
+          \1>
+            \1>
+              \1>
+                \1>
+                  <TabsTrigger value="personal">Personal\1>
+                  <TabsTrigger value="contact">Contact\1>
+                  <TabsTrigger value="demographics">Demographics\1>
                   <TabsTrigger value="administrative">Administrative</TabsTrigger>
                 </TabsList>
 
                 {/* Personal Information */}
-                <TabsContent value="personal" className="space-y-6">;
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+                \1>
+                  \1>
                     <FormField>
                       control={form.control}
                       name="firstName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>First Name <span className="text-destructive">*</span></FormLabel>;
+                          <FormLabel>First Name <span className="text-destructive">*</span>\1>
                           <FormControl>
                             <Input placeholder="First Name" {...field} />
                           </FormControl>
@@ -351,7 +314,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                       name="lastName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Last Name <span className="text-destructive">*</span></FormLabel>;
+                          <FormLabel>Last Name <span className="text-destructive">*</span>\1>
                           <FormControl>
                             <Input placeholder="Last Name" {...field} />
                           </FormControl>
@@ -389,13 +352,13 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+                  \1>
                     <FormField>
                       control={form.control}
                       name="dateOfBirth"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Date of Birth <span className="text-destructive">*</span></FormLabel>;
+                          <FormLabel>Date of Birth <span className="text-destructive">*</span>\1>
                           <FormControl>
                             <Input type="date" {...field} />
                           </FormControl>
@@ -409,7 +372,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                       name="gender"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Gender <span className="text-destructive">*</span></FormLabel>;
+                          <FormLabel>Gender <span className="text-destructive">*</span>\1>
                           <Select>
                             value={field.value}
                             onValueChange={field.onChange}
@@ -420,10 +383,10 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="Male">Male</SelectItem>;
-                              <SelectItem value="Female">Female</SelectItem>;
-                              <SelectItem value="Non-binary">Non-binary</SelectItem>;
-                              <SelectItem value="Other">Other</SelectItem>;
+                              <SelectItem value="Male">Male\1>
+                              <SelectItem value="Female">Female\1>
+                              <SelectItem value="Non-binary">Non-binary\1>
+                              <SelectItem value="Other">Other\1>
                               <SelectItem value="Unknown">Unknown</SelectItem>
                             </SelectContent>
                           </Select>
@@ -433,11 +396,11 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                     />
                   </div>
 
-                  <Accordion type="single" collapsible className="w-full">;
-                    <AccordionItem value="item-1">;
+                  \1>
+                    \1>
                       <AccordionTrigger>Additional Personal Information</AccordionTrigger>
                       <AccordionContent>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">;
+                        \1>
                           <FormField>
                             control={form.control}
                             name="biologicalSex"
@@ -454,10 +417,10 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                                     </SelectTrigger>
                                   </FormControl>
                                   <SelectContent>
-                                    <SelectItem value="">Not Specified</SelectItem>;
-                                    <SelectItem value="Male">Male</SelectItem>;
-                                    <SelectItem value="Female">Female</SelectItem>;
-                                    <SelectItem value="Intersex">Intersex</SelectItem>;
+                                    <SelectItem value="">Not Specified\1>
+                                    <SelectItem value="Male">Male\1>
+                                    <SelectItem value="Female">Female\1>
+                                    <SelectItem value="Intersex">Intersex\1>
                                     <SelectItem value="Unknown">Unknown</SelectItem>
                                   </SelectContent>
                                 </Select>
@@ -496,10 +459,10 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                                     </SelectTrigger>
                                   </FormControl>
                                   <SelectContent>
-                                    <SelectItem value="">Not Specified</SelectItem>;
-                                    <SelectItem value="He/Him">He/Him</SelectItem>;
-                                    <SelectItem value="She/Her">She/Her</SelectItem>;
-                                    <SelectItem value="They/Them">They/Them</SelectItem>;
+                                    <SelectItem value="">Not Specified\1>
+                                    <SelectItem value="He/Him">He/Him\1>
+                                    <SelectItem value="She/Her">She/Her\1>
+                                    <SelectItem value="They/Them">They/Them\1>
                                     <SelectItem value="Other">Other</SelectItem>
                                   </SelectContent>
                                 </Select>
@@ -524,12 +487,12 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                                     </SelectTrigger>
                                   </FormControl>
                                   <SelectContent>
-                                    <SelectItem value="">Not Specified</SelectItem>;
-                                    <SelectItem value="Single">Single</SelectItem>;
-                                    <SelectItem value="Married">Married</SelectItem>;
-                                    <SelectItem value="Divorced">Divorced</SelectItem>;
-                                    <SelectItem value="Widowed">Widowed</SelectItem>;
-                                    <SelectItem value="Separated">Separated</SelectItem>;
+                                    <SelectItem value="">Not Specified\1>
+                                    <SelectItem value="Single">Single\1>
+                                    <SelectItem value="Married">Married\1>
+                                    <SelectItem value="Divorced">Divorced\1>
+                                    <SelectItem value="Widowed">Widowed\1>
+                                    <SelectItem value="Separated">Separated\1>
                                     <SelectItem value="Domestic Partner">Domestic Partner</SelectItem>
                                   </SelectContent>
                                 </Select>
@@ -554,10 +517,10 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                                     </SelectTrigger>
                                   </FormControl>
                                   <SelectContent>
-                                    <SelectItem value="">Unknown</SelectItem>;
-                                    <SelectItem value="A">A</SelectItem>;
-                                    <SelectItem value="B">B</SelectItem>;
-                                    <SelectItem value="AB">AB</SelectItem>;
+                                    <SelectItem value="">Unknown\1>
+                                    <SelectItem value="A">A\1>
+                                    <SelectItem value="B">B\1>
+                                    <SelectItem value="AB">AB\1>
                                     <SelectItem value="O">O</SelectItem>
                                   </SelectContent>
                                 </Select>
@@ -582,8 +545,8 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                                     </SelectTrigger>
                                   </FormControl>
                                   <SelectContent>
-                                    <SelectItem value="">Unknown</SelectItem>;
-                                    <SelectItem value="Positive">Positive (+)</SelectItem>;
+                                    <SelectItem value="">Unknown\1>
+                                    <SelectItem value="Positive">Positive (+)\1>
                                     <SelectItem value="Negative">Negative (-)</SelectItem>
                                   </SelectContent>
                                 </Select>
@@ -596,14 +559,14 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                             control={form.control}
                             name="organDonor"
                             render={({ field }) => (
-                              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">;
+                              \1>
                                 <FormControl>
                                   <Checkbox>
                                     checked={field.value}
                                     onCheckedChange={field.onChange}
                                   />
                                 </FormControl>
-                                <div className="space-y-1 leading-none">;
+                                \1>
                                   <FormLabel>Organ Donor</FormLabel>
                                   <FormDescription>
                                     Patient has registered as an organ donor
@@ -619,8 +582,8 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                 </TabsContent>
 
                 {/* Contact Information */}
-                <TabsContent value="contact" className="space-y-6">;
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+                \1>
+                  \1>
                     <FormField>
                       control={form.control}
                       name="phoneMobile"
@@ -668,7 +631,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                       name="phonePreferred"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Preferred Phone <span className="text-destructive">*</span></FormLabel>;
+                          <FormLabel>Preferred Phone <span className="text-destructive">*</span>\1>
                           <Select>
                             value={field.value}
                             onValueChange={field.onChange}
@@ -679,8 +642,8 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="Mobile">Mobile</SelectItem>;
-                              <SelectItem value="Home">Home</SelectItem>;
+                              <SelectItem value="Mobile">Mobile\1>
+                              <SelectItem value="Home">Home\1>
                               <SelectItem value="Work">Work</SelectItem>
                             </SelectContent>
                           </Select>
@@ -704,19 +667,19 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">;
+                  \1>
                     <FormField>
                       control={form.control}
                       name="emailOptIn"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">;
+                        \1>
                           <FormControl>
                             <Checkbox>
                               checked={field.value}
                               onCheckedChange={field.onChange}
                             />
                           </FormControl>
-                          <div className="space-y-1 leading-none">;
+                          \1>
                             <FormLabel>Email Communication</FormLabel>
                             <FormDescription>
                               Patient consents to email communications
@@ -730,14 +693,14 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                       control={form.control}
                       name="smsOptIn"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">;
+                        \1>
                           <FormControl>
                             <Checkbox>
                               checked={field.value}
                               onCheckedChange={field.onChange}
                             />
                           </FormControl>
-                          <div className="space-y-1 leading-none">;
+                          \1>
                             <FormLabel>SMS Communication</FormLabel>
                             <FormDescription>
                               Patient consents to text message communications
@@ -751,14 +714,14 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                       control={form.control}
                       name="mailOptIn"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">;
+                        \1>
                           <FormControl>
                             <Checkbox>
                               checked={field.value}
                               onCheckedChange={field.onChange}
                             />
                           </FormControl>
-                          <div className="space-y-1 leading-none">;
+                          \1>
                             <FormLabel>Mail Communication</FormLabel>
                             <FormDescription>
                               Patient consents to postal mail communications
@@ -769,9 +732,9 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                     />
                   </div>
 
-                  <div className="border-t pt-6">;
-                    <h3 className="font-medium text-lg mb-4">Address Information</h3>;
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+                  \1>
+                    <h3 className="font-medium text-lg mb-4">Address Information\1>
+                    \1>
                       <FormField>
                         control={form.control}
                         name="addressLine1"
@@ -814,7 +777,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                         )}
                       />
 
-                      <div className="grid grid-cols-2 gap-4">;
+                      \1>
                         <FormField>
                           control={form.control}
                           name="state"
@@ -862,8 +825,8 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                 </TabsContent>
 
                 {/* Demographics */}
-                <TabsContent value="demographics" className="space-y-6">;
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+                \1>
+                  \1>
                     <FormField>
                       control={form.control}
                       name="language"
@@ -880,16 +843,16 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="English">English</SelectItem>;
-                              <SelectItem value="Spanish">Spanish</SelectItem>;
-                              <SelectItem value="French">French</SelectItem>;
-                              <SelectItem value="Mandarin">Mandarin</SelectItem>;
-                              <SelectItem value="Arabic">Arabic</SelectItem>;
-                              <SelectItem value="Russian">Russian</SelectItem>;
-                              <SelectItem value="Hindi">Hindi</SelectItem>;
-                              <SelectItem value="Portuguese">Portuguese</SelectItem>;
-                              <SelectItem value="Bengali">Bengali</SelectItem>;
-                              <SelectItem value="Japanese">Japanese</SelectItem>;
+                              <SelectItem value="English">English\1>
+                              <SelectItem value="Spanish">Spanish\1>
+                              <SelectItem value="French">French\1>
+                              <SelectItem value="Mandarin">Mandarin\1>
+                              <SelectItem value="Arabic">Arabic\1>
+                              <SelectItem value="Russian">Russian\1>
+                              <SelectItem value="Hindi">Hindi\1>
+                              <SelectItem value="Portuguese">Portuguese\1>
+                              <SelectItem value="Bengali">Bengali\1>
+                              <SelectItem value="Japanese">Japanese\1>
                               <SelectItem value="Other">Other</SelectItem>
                             </SelectContent>
                           </Select>
@@ -902,14 +865,14 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                       control={form.control}
                       name="interpreter"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">;
+                        \1>
                           <FormControl>
                             <Checkbox>
                               checked={field.value}
                               onCheckedChange={field.onChange}
                             />
                           </FormControl>
-                          <div className="space-y-1 leading-none">;
+                          \1>
                             <FormLabel>Needs Interpreter</FormLabel>
                             <FormDescription>
                               Patient requires language interpretation services
@@ -935,9 +898,9 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="">Not Specified</SelectItem>;
-                              <SelectItem value="Hispanic or Latino">Hispanic or Latino</SelectItem>;
-                              <SelectItem value="Not Hispanic or Latino">Not Hispanic or Latino</SelectItem>;
+                              <SelectItem value="">Not Specified\1>
+                              <SelectItem value="Hispanic or Latino">Hispanic or Latino\1>
+                              <SelectItem value="Not Hispanic or Latino">Not Hispanic or Latino\1>
                               <SelectItem value="Declined">Declined to Specify</SelectItem>
                             </SelectContent>
                           </Select>
@@ -962,13 +925,13 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="">Not Specified</SelectItem>;
-                              <SelectItem value="American Indian or Alaska Native">American Indian or Alaska Native</SelectItem>;
-                              <SelectItem value="Asian">Asian</SelectItem>;
-                              <SelectItem value="Black or African American">Black or African American</SelectItem>;
-                              <SelectItem value="Native Hawaiian or Other Pacific Islander">Native Hawaiian or Other Pacific Islander</SelectItem>;
-                              <SelectItem value="White">White</SelectItem>;
-                              <SelectItem value="More than one race">More than one race</SelectItem>;
+                              <SelectItem value="">Not Specified\1>
+                              <SelectItem value="American Indian or Alaska Native">American Indian or Alaska Native\1>
+                              <SelectItem value="Asian">Asian\1>
+                              <SelectItem value="Black or African American">Black or African American\1>
+                              <SelectItem value="Native Hawaiian or Other Pacific Islander">Native Hawaiian or Other Pacific Islander\1>
+                              <SelectItem value="White">White\1>
+                              <SelectItem value="More than one race">More than one race\1>
                               <SelectItem value="Declined">Declined to Specify</SelectItem>
                             </SelectContent>
                           </Select>
@@ -1021,14 +984,14 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="">Not Specified</SelectItem>;
-                              <SelectItem value="Less than high school">Less than high school</SelectItem>;
-                              <SelectItem value="High school graduate">High school graduate</SelectItem>;
-                              <SelectItem value="Some college">Some college</SelectItem>;
-                              <SelectItem value="Associate degree">Associate degree</SelectItem>;
-                              <SelectItem value="Bachelor's degree">Bachelor's degree</SelectItem>;
-                              <SelectItem value="Master's degree">Master's degree</SelectItem>;
-                              <SelectItem value="Professional degree">Professional degree</SelectItem>;
+                              <SelectItem value="">Not Specified\1>
+                              <SelectItem value="Less than high school">Less than high school\1>
+                              <SelectItem value="High school graduate">High school graduate\1>
+                              <SelectItem value="Some college">Some college\1>
+                              <SelectItem value="Associate degree">Associate degree\1>
+                              <SelectItem value="Bachelor's degree">Bachelor's degree\1>
+                              <SelectItem value="Master's degree">Master's degree\1>
+                              <SelectItem value="Professional degree">Professional degree\1>
                               <SelectItem value="Doctoral degree">Doctoral degree</SelectItem>
                             </SelectContent>
                           </Select>
@@ -1054,8 +1017,8 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                 </TabsContent>
 
                 {/* Administrative */}
-                <TabsContent value="administrative" className="space-y-6">;
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+                \1>
+                  \1>
                     <FormField>
                       control={form.control}
                       name="mrn"
@@ -1092,9 +1055,9 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="Active">Active</SelectItem>;
-                              <SelectItem value="Inactive">Inactive</SelectItem>;
-                              <SelectItem value="Deceased">Deceased</SelectItem>;
+                              <SelectItem value="Active">Active\1>
+                              <SelectItem value="Inactive">Inactive\1>
+                              <SelectItem value="Deceased">Deceased\1>
                               <SelectItem value="On Hold">On Hold</SelectItem>
                             </SelectContent>
                           </Select>
@@ -1104,19 +1067,19 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+                  \1>
                     <FormField>
                       control={form.control}
                       name="vip"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">;
+                        \1>
                           <FormControl>
                             <Checkbox>
                               checked={field.value}
                               onCheckedChange={field.onChange}
                             />
                           </FormControl>
-                          <div className="space-y-1 leading-none">;
+                          \1>
                             <FormLabel>VIP Status</FormLabel>
                             <FormDescription>
                               Patient has VIP status (special handling required)
@@ -1130,14 +1093,14 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                       control={form.control}
                       name="confidential"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">;
+                        \1>
                           <FormControl>
                             <Checkbox>
                               checked={field.value}
                               onCheckedChange={field.onChange}
                             />
                           </FormControl>
-                          <div className="space-y-1 leading-none">;
+                          \1>
                             <FormLabel>Confidential Record</FormLabel>
                             <FormDescription>
                               Patient record has heightened confidentiality requirements
@@ -1169,7 +1132,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
               </Tabs>
             </CardContent>
 
-            <CardFooter className="flex justify-between border-t pt-6">;
+            \1>
               <Button>
                 type="button"
                 variant="outline"

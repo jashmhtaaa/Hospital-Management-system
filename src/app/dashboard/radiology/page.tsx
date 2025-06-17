@@ -13,25 +13,25 @@ export const dynamic = 'force-dynamic';
 
 export default const _RadiologyPage = () {
   return (
-    <div className="container mx-auto p-4">;
-      <h1 className="text-2xl font-bold mb-4">Radiology Management</h1>;
-      <Tabs defaultValue="orders" className="w-full">;
-        <TabsList className="grid w-full grid-cols-4 mb-4">;
-          <TabsTrigger value="orders">Orders</TabsTrigger>;
-          <TabsTrigger value="studies">Studies</TabsTrigger>;
-          <TabsTrigger value="reports">Reports</TabsTrigger>;
+    \1>
+      <h1 className="text-2xl font-bold mb-4">Radiology Management\1>
+      \1>
+        \1>
+          <TabsTrigger value="orders">Orders\1>
+          <TabsTrigger value="studies">Studies\1>
+          <TabsTrigger value="reports">Reports\1>
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
-        <TabsContent value="orders">;
+        \1>
           <RadiologyOrderList />
         </TabsContent>
-        <TabsContent value="studies">;
+        \1>
           <RadiologyStudiesList />
         </TabsContent>
-        <TabsContent value="reports">;
+        \1>
           <RadiologyReportsList />
         </TabsContent>
-        <TabsContent value="settings">;
+        \1>
           <RadiologySettings />
         </TabsContent>
       </Tabs>

@@ -11,16 +11,12 @@ import { prisma } from './connection-pool.ts';
  */
 
 // Query optimization patterns for common scenarios
-export class QueryOptimizer {
-  private static instance: QueryOptimizer;
-  private readonly client: PrismaClient;
-
-  private constructor() {
-    this.client = prisma;
+\1
+}
   }
 
   public static getInstance(): QueryOptimizer {
-    if (!QueryOptimizer.instance) {
+    \1 {\n  \2{
       QueryOptimizer.instance = new QueryOptimizer();
     }
     return QueryOptimizer.instance;
@@ -38,29 +34,22 @@ export class QueryOptimizer {
   }) {
     const cacheKey = `patients_with_bills:${JSON.stringify(filters)}`;
     const cached = await cache.get(cacheKey);
-    if (cached != null) return cached;
+    \1 {\n  \2eturn cached;
 
     const result = await this.client.patient.findMany({
-      where: {
-        isActive: filters?.active ?? true
+      \1,\2 filters?.active ?? true
       },
-      include: {
-        bills: {
-          select: {
-            id: true,
-            billNumber: true;
-            totalAmount: true,
-            outstandingAmount: true;
-            status: true,
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true,
+            \1,\2 true,
             billDate: true
           },
           orderBy: { billDate: 'desc' },
           take: 10, // Limit related records
         },
-        _count: {
-            bills: true,
-            appointments: true;
-            admissions: true,
+        \1,\2 true,
+            \1,\2 true,
         },
       },
       take: filters?.limit ?? 50,
@@ -76,45 +65,34 @@ export class QueryOptimizer {
   async getPatientsWithUpcomingAppointments(days: number = 30) {
     const cacheKey = `patients_upcoming_appointments:${days}`
     const cached = await cache.get(cacheKey);
-    if (cached != null) return cached;
+    \1 {\n  \2eturn cached;
 
     const futureDate = new Date();
     futureDate.setDate(futureDate.getDate() + days);
 
     const result = await this.client.patient.findMany({
-      where: {
-        isActive: true,
-        appointments: {
-          some: {
-            appointmentDate: {
-              gte: new Date(),
+      \1,\2 true,
+        \1,\2 {
+            \1,\2 new Date(),
               lte: futureDate
             },
-            status: {
-              in: ['SCHEDULED', 'CONFIRMED'],
+            \1,\2 ['SCHEDULED', 'CONFIRMED'],
             },
           },
         },
       },
-      include: {
-        appointments: {
-          where: {
-            appointmentDate: {
+      \1,\2 {
+          \1,\2 {
               gte: new Date(),
               lte: futureDate
             },
-            status: {
-              in: ['SCHEDULED', 'CONFIRMED'],
+            \1,\2 ['SCHEDULED', 'CONFIRMED'],
             },
           },
-          select: {
-            id: true,
-            appointmentDate: true;
-            startTime: true,
-            endTime: true;
-            type: true,
-            status: true;
-            doctorId: true
+          \1,\2 true,
+            \1,\2 true,
+            \1,\2 true,
+            \1,\2 true
           },
           orderBy: { appointmentDate: 'asc' },
         },
@@ -143,37 +121,25 @@ export class QueryOptimizer {
         ...(filters?.patientId && { patientId: filters.patientId }),
         ...(filters?.status && { status: filters.status as any }),
         ...(filters?.dateFrom && {
-          billDate: {
-            gte: filters.dateFrom;
+          \1,\2 filters.dateFrom;
             ...(filters?.dateTo && lte: filters.dateTo ),
           },
         }),
       },
-      include: {
-            id: true,
-            mrn: true;
-            firstName: true,
-            lastName: true;
-            phone: true,,
-        billItems: 
-                id: true,
-                code: true;
-                name: true,
+      \1,\2 true,
+            \1,\2 true,
+            \1,\2 true,,
+        \1,\2 true,
+                \1,\2 true,
                 category: true,,,
           orderBy: createdAt: 'asc' ,,
-        payments: 
-            id: true,
-            amount: true;
-            paymentMethod: true,
-            paymentDate: true;
-            status: true,
+        \1,\2 true,
+            \1,\2 true,
+            \1,\2 true,
           orderBy: paymentDate: 'desc' ,,
-        insuranceClaim: 
-            id: true,
-            claimNumber: true;
-            status: true,
-            totalAmount: true;
-            approvedAmount: true,,
+        \1,\2 true,
+            \1,\2 true,
+            \1,\2 true,,
       },
       take: filters?.limit ?? 100,
       orderBy: { billDate: 'desc' },
@@ -186,7 +152,7 @@ export class QueryOptimizer {
   async getOutstandingBillsSummary() {
     const cacheKey = 'outstanding_bills_summary';
     const cached = await cache.get(cacheKey);
-    if (cached != null) return cached;
+    \1 {\n  \2eturn cached;
 
     // Use raw SQL for better performance on aggregations
     const result = await this.client.$queryRaw`;
@@ -220,22 +186,16 @@ export class QueryOptimizer {
         ...(filters?.departmentId && { departmentId: filters.departmentId }),
         ...(filters?.status && { status: filters.status as any }),
         ...(filters?.date && {
-          appointmentDate: {
-            gte: filters.date,
+          \1,\2 filters.date,
             lt: new Date(filters.date.getTime() + 24 * 60 * 60 * 1000)
           },
         }),
       },
-      include: {
-        patient: {
-          select: {
-            id: true,
-            mrn: true;
-            firstName: true,
-            lastName: true;
-            phone: true,
-            dateOfBirth: true;
-            gender: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true,
+            \1,\2 true,
+            \1,\2 true
           },
         },
       },
@@ -248,32 +208,25 @@ export class QueryOptimizer {
   // Doctor's schedule optimization
   async getDoctorScheduleOptimized(
     doctorId: string,
-    startDate: Date;
-    endDate: Date;
+    \1,\2 Date;
   ) {
     const cacheKey = `doctor_schedule:${doctorId}:${startDate.toISOString()}:${endDate.toISOString()}`;
     const cached = await cache.get(cacheKey);
-    if (cached != null) return cached;
+    \1 {\n  \2eturn cached;
 
     const result = await this.client.appointment.findMany({
       where: {
         doctorId,
-        appointmentDate: {
-          gte: startDate,
+        \1,\2 startDate,
           lte: endDate
         },
-        status: {
-          notIn: ['CANCELLED', 'NO_SHOW'],
+        \1,\2 ['CANCELLED', 'NO_SHOW'],
         },
       },
-      include: {
-        patient: {
-          select: {
-            id: true,
-            mrn: true;
-            firstName: true,
-            lastName: true;
-            phone: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true,
+            \1,\2 true
           },
         },
       },
@@ -301,44 +254,30 @@ export class QueryOptimizer {
         ...(filters?.doctorId && { doctorId: filters.doctorId }),
         ...(filters?.status && { status: filters.status as any }),
       },
-      include: {
-        patient: {
-          select: {
-            id: true,
-            mrn: true;
-            firstName: true,
-            lastName: true;
-            dateOfBirth: true,
-            gender: true;
-            bloodType: true,
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true,
+            \1,\2 true,
+            \1,\2 true,
             allergies: true
           },
         },
-        vitalSigns: {
-            id: true,
-            recordedAt: true;
-            temperature: true,
-            bloodPressureSys: true;
-            bloodPressureDia: true,
-            heartRate: true;
-            respiratoryRate: true,
+        \1,\2 true,
+            \1,\2 true,
+            \1,\2 true,
+            \1,\2 true,
             oxygenSaturation: true,
           orderBy: recordedAt: 'desc' ,
           take: 5, // Latest 5 vital signs
         },
-        medications: {
-            id: true,
-            medicationName: true;
-            dosage: true,
-            administeredAt: true;
-            administeredBy: true,
+        \1,\2 true,
+            \1,\2 true,
+            \1,\2 true,
           orderBy: administeredAt: 'desc' ,
           take: 10, // Latest 10 medications
         },
-        _count: {
-            vitalSigns: true,
-            medications: true;
-            nursingNotes: true,
+        \1,\2 true,
+            \1,\2 true,
             progressNotes: true,
         },
       },
@@ -353,7 +292,7 @@ export class QueryOptimizer {
   async getWardOccupancyOptimized() {
     const cacheKey = 'ward_occupancy';
     const cached = await cache.get(cacheKey);
-    if (cached != null) return cached;
+    \1 {\n  \2eturn cached;
 
     const result = await this.client.$queryRaw`;
       SELECT;
@@ -389,32 +328,22 @@ export class QueryOptimizer {
         ...(filters?.doctorId && { doctorId: filters.doctorId }),
         ...(filters?.status && { status: filters.status as any }),
         ...(filters?.dateFrom && {
-          orderDate: {
-            gte: filters.dateFrom;
+          \1,\2 filters.dateFrom;
             ...(filters?.dateTo && lte: filters.dateTo ),
           },
         }),
       },
-      include: {
-            id: true,
-            mrn: true;
-            firstName: true,
-            lastName: true;
-            dateOfBirth: true,
+      \1,\2 true,
+            \1,\2 true,
+            \1,\2 true,
             gender: true,,
-        labTests: 
-            id: true,
-            code: true;
-            name: true,
-            category: true;
-            normalRange: true,
+        \1,\2 true,
+            \1,\2 true,
+            \1,\2 true,
             unit: true,,
-        labResults: 
-                id: true,
-                code: true;
-                name: true,
-                normalRange: true;
-                unit: true,,,
+        \1,\2 true,
+                \1,\2 true,
+                \1,\2 true,,,
           orderBy: reportedDate: 'desc' ,,
       },
       orderBy: { orderDate: 'desc' },
@@ -427,40 +356,30 @@ export class QueryOptimizer {
   async getCriticalLabResults(hours: number = 24) {
     const cacheKey = `critical_lab_results:${hours}`;
     const cached = await cache.get(cacheKey);
-    if (cached != null) return cached;
+    \1 {\n  \2eturn cached;
 
-    const sinceDate = new Date(crypto.getRandomValues(new Uint32Array(1))[0] - hours * 60 * 60 * 1000);
+    const sinceDate = \1[0] - hours * 60 * 60 * 1000);
 
     const result = await this.client.labResult.findMany({
-      where: {
-        flag: {
+      \1,\2 {
           in: ['CRITICAL_HIGH', 'CRITICAL_LOW'],
         },
-        reportedDate: {
-          gte: sinceDate
+        \1,\2 sinceDate
         },
         status: 'VERIFIED'
       },
-      include: {
-        labOrder: {
-          include: {
-            patient: {
-              select: {
-                id: true,
-                mrn: true;
-                firstName: true,
-                lastName: true;
-                phone: true
+      \1,\2 {
+          \1,\2 {
+              \1,\2 true,
+                \1,\2 true,
+                \1,\2 true
               },
             },
           },
         },
-        labTest: {
-            id: true,
-            code: true;
-            name: true,
-            normalRange: true;
-            unit: true,
+        \1,\2 true,
+            \1,\2 true,
+            \1,\2 true,
         },
       },
       orderBy: { reportedDate: 'desc' },
@@ -481,43 +400,31 @@ export class QueryOptimizer {
         ...(patientId && { patientId }),
         status: 'active'
       },
-      include: {
-        patient: {
-          select: {
-            id: true,
-            mrn: true;
-            firstName: true,
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true,
             lastName: true
           },
         },
-        insuranceProvider: {
-            id: true,
-            name: true;
-            code: true,
+        \1,\2 true,
+            \1,\2 true,
             phone: true,
         },
-        claims: {
-            id: true,
-            claimNumber: true;
-            status: true,
-            totalAmount: true;
-            approvedAmount: true,
-            deniedAmount: true;
-            submittedAt: true,
+        \1,\2 true,
+            \1,\2 true,
+            \1,\2 true,
+            \1,\2 true,
             lastResponseDate: true,
           orderBy: submittedAt: 'desc' ,
           take: 10, // Latest 10 claims
         },
-        verifications: {
-            id: true,
-            verifiedAt: true;
-            eligibilityStatus: true,
+        \1,\2 true,
+            \1,\2 true,
             verifiedBy: true,
           orderBy: verifiedAt: 'desc' ,
           take: 3, // Latest 3 verifications
         },
-        _count: {
-            claims: true,
+        \1,\2 true,
             verifications: true,
         },
       },
@@ -533,15 +440,12 @@ export class QueryOptimizer {
 
   async bulkUpdateBillStatus(
     billIds: string[],
-    status: string;
-    updatedBy: string;
+    \1,\2 string;
   ) {
     return this.client.bill.updateMany({
-      where: {
-        id: { in: billIds },
+      \1,\2 { in: billIds },
       },
-      data: {
-        status: status as any,
+      \1,\2 status as any,
         updatedAt: new Date()
       },
     });
@@ -561,15 +465,12 @@ export class QueryOptimizer {
   private patientLoader = new Map<string, Promise<unknown>>();
 
   async getPatientOptimized(patientId: string) {
-    if (!this.patientLoader.has(patientId)) {
+    \1 {\n  \2 {
       const promise = this.client.patient.findUnique({
         where: { id: patientId },
-        include: {
-          _count: {
-            select: {
-              bills: true,
-              appointments: true;
-              admissions: true,
+        \1,\2 {
+            \1,\2 true,
+              \1,\2 true,
               labOrders: true
             },
           },
@@ -611,12 +512,11 @@ export class QueryOptimizer {
   async getQueryPerformanceStats() {
     const cacheKey = 'query_performance_stats';
     const cached = await cache.get(cacheKey);
-    if (cached != null) return cached;
+    \1 {\n  \2eturn cached;
 
     const stats = {
       totalQueries: 0,
-      slowQueries: 0;
-      averageResponseTime: 0,
+      \1,\2 0,
       cacheHitRate: 0
     };
 

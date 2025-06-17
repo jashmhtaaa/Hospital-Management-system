@@ -16,8 +16,7 @@ import type { PharmacyDomain } from '../../../models/domain-models';
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
+const \1,\2 getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
@@ -55,7 +54,7 @@ export const POST = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validateDispensingVerificationRequest(data);
-    if (!validationResult.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Validation failed', details: validationResult.errors },
         { status: 400 }
@@ -64,7 +63,7 @@ export const POST = async (req: NextRequest) => {
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -73,34 +72,32 @@ export const POST = async (req: NextRequest) => {
 
     // Verify prescription exists
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
-    if (!prescription) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Prescription not found' }, { status: 404 });
     }
 
     // Verify medication exists
     const medication = await medicationRepository.findById(prescription.medicationId);
-    if (!medication) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Medication not found' }, { status: 404 });
     }
 
     // Verify medication barcode matches prescription
-    if (data.medicationBarcode !== medication.barcode) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           error: 'Medication barcode does not match prescription',
-          expected: medication.barcode;
-          received: data.medicationBarcode
+          \1,\2 data.medicationBarcode
         },status: 400 
       );
     }
 
     // Verify patient barcode matches prescription
-    if (data?.patientBarcode && data.patientBarcode !== prescription.patientId) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           error: 'Patient barcode does not match prescription',
-          expected: prescription.patientId;
-          received: data.patientBarcode
+          \1,\2 data.patientBarcode
         },status: 400 
       );
     }
@@ -108,10 +105,8 @@ export const POST = async (req: NextRequest) => {
     // Create verification record
     const verification = {
       id: crypto.randomUUID(),
-      prescriptionId: data.prescriptionId;
-      medicationBarcode: data.medicationBarcode,
-      patientBarcode: data.patientBarcode;
-      verifiedBy: userId,
+      \1,\2 data.medicationBarcode,
+      \1,\2 userId,
       verifiedAt: new Date(),
       status: 'verified',
       notes: data.notes || ''
@@ -121,9 +116,9 @@ export const POST = async (req: NextRequest) => {
     // const _verificationId = await verificationRepository.save(verification)
 
     // Update dispensing status if dispensingId is provided
-    if (data.dispensingId) {
+    \1 {\n  \2{
       const dispensing = await dispensingRepository.findById(data.dispensingId);
-      if (dispensing != null) {
+      \1 {\n  \2{
         dispensing.status = 'verified';
         dispensing.verifiedBy = userId;
         dispensing.verifiedAt = new Date();
@@ -134,13 +129,11 @@ export const POST = async (req: NextRequest) => {
     // Audit logging
     await auditLog('DISPENSING', {
       action: 'VERIFY',
-      resourceType: 'MedicationDispense';
-      userId: userId,
+      \1,\2 userId,
       patientId: prescription.patientId;
       {
         medicationId: prescription.medicationId,
-        prescriptionId: data.prescriptionId;
-        dispensingId: data.dispensingId
+        \1,\2 data.dispensingId
       }
     });
 

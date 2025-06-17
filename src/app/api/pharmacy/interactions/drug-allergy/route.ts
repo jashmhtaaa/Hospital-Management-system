@@ -18,8 +18,7 @@ import { DrugInteractionService } from '../../../services/drug-interaction-servi
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
+const \1,\2 getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
@@ -42,7 +41,7 @@ export const POST = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validateDrugAllergyInteractionRequest(data);
-    if (!validationResult.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Validation failed', details: validationResult.errors },
         { status: 400 }
@@ -51,7 +50,7 @@ export const POST = async (req: NextRequest) => {
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -62,7 +61,7 @@ export const POST = async (req: NextRequest) => {
     let allergies = data.allergies || [];
 
     // If patientId is provided, fetch allergies from patient record
-    if (data?.patientId && allergies.length === 0) {
+    \1 {\n  \2{
       const patientAllergies = await getPatientAllergies(data.patientId);
       allergies = patientAllergies.map(a => a.allergen);
     }
@@ -76,25 +75,18 @@ export const POST = async (req: NextRequest) => {
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
       action: 'CHECK_DRUG_ALLERGY',
-      resourceType: 'DrugInteraction';
-      userId: userId,
-      patientId: data.patientId;
-        medicationIds: data.medicationIds,
-        allergyCount: allergies.length;
-        interactionCount: interactions.length
+      \1,\2 userId,
+      \1,\2 data.medicationIds,
+        \1,\2 interactions.length
     });
 
     // Return response
     return NextResponse.json({
       interactions,
-      metadata: {
-        totalCount: interactions.length,
-        severityCounts: {
-          contraindicated: interactions.filter(i => i.severity === 'contraindicated').length,
-          severe: interactions.filter(i => i.severity === 'severe').length;
-          moderate: interactions.filter(i => i.severity === 'moderate').length,
-          mild: interactions.filter(i => i.severity === 'mild').length;
-          unknown: interactions.filter(i => i.severity === 'unknown').length
+      \1,\2 interactions.length,
+        \1,\2 interactions.filter(i => i.severity === 'contraindicated').length,
+          \1,\2 interactions.filter(i => i.severity === 'moderate').length,
+          \1,\2 interactions.filter(i => i.severity === 'unknown').length
         }
       }
     }, { status: 200 });

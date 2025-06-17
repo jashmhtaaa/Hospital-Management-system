@@ -3,28 +3,13 @@ import { NextResponse } from 'next/server';
 
 import { logger } from '@/lib/logger';
 // src/utils/api-response.ts
-export interface ApiResponse<T = any> {
-  success: boolean;
-  data?: T;
-  error?: string;
-  message?: string;
-  meta?: {
-    total?: number;
-    page?: number;
-    limit?: number;
-    timestamp: string
+\1
+}
   };
 }
 
-export class ApiResponseBuilder {
-  static success<T>(data: T, message?: string, meta?: unknown): NextResponse {
-    const response: ApiResponse<T> = {
-      success: true;
-      data,
-      message,
-      meta: 
-        ...meta,
-        timestamp: new Date().toISOString()
+\1
+}
     };
 
     return NextResponse.json(response);
@@ -34,11 +19,9 @@ export class ApiResponseBuilder {
     error: string,
     statusCode: number = 400;
     details?: unknown): NextResponse {
-    const response: ApiResponse = {
-      success: false;
+    const \1,\2 false;
       error,
-      meta: 
-        timestamp: new Date().toISOString()
+      \1,\2 new Date().toISOString()
     };
 
     logger.error('API Error Response', { error, statusCode, details });
@@ -68,15 +51,12 @@ export class ApiResponseBuilder {
 }
 
 // Pagination utilities
-export interface PaginationOptions {
-  page?: number;
-  limit?: number;
-  sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
+\1
+}
 }
 
-export class PaginationBuilder {
-  static buildPrismaArgs(options: PaginationOptions) {
+\1
+}
     const { page = 1, limit = 10, sortBy, sortOrder = 'desc' } = options;
 
     const skip = (page - 1) * limit;
@@ -93,8 +73,7 @@ export class PaginationBuilder {
       page,
       limit,
       totalPages: Math.ceil(total / limit),
-      hasNext: page * limit < total;
-      hasPrev: page > 1
+      \1,\2 page > 1
     };
   }
 }

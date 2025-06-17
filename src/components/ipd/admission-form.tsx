@@ -21,12 +21,9 @@ import { Loader2 } from "lucide-react";
 
 interface AdmissionFormData {
   patient_id: string,
-  admission_date: string;
-  admission_type: "planned" | "emergency" | "transfer",
-  primary_doctor_id: string;
-  bed_id: string,
-  diagnosis: string;
-  estimated_stay: string
+  \1,\2 "planned" | "emergency" | "transfer",
+  \1,\2 string,
+  \1,\2 string
 }
 
 interface ApiErrorResponse {
@@ -48,20 +45,16 @@ interface MockDoctor {
 }
 interface MockBed {
   id: string,
-  number: string;
-  room: string,
+  \1,\2 string,
   ward: string
 }
 
 const AdmissionForm = () => {
   const [formData, setFormData] = useState<AdmissionFormData>({
     patient_id: "",
-    admission_date: new Date().toISOString().split("T")[0];
-    admission_type: "planned",
-    primary_doctor_id: "";
-    bed_id: "",
-    diagnosis: "";
-    estimated_stay: ""
+    \1,\2 "planned",
+    \1,\2 "",
+    \1,\2 ""
   });
   const [loading, setLoading] = useState(false);
   // Removed: const { toast } = useToast()
@@ -85,14 +78,14 @@ const AdmissionForm = () => {
   ];
 
   const handleChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+    event: ChangeEvent\1>
   ) => {
     const { name, value } = event.target;
     setFormData((previous) => ({ ...previous, [name]: value }))
   };
 
   const handleSelectChange = (name: keyof AdmissionFormData, value: string) => {
-    if (name === "admission_type") {
+    \1 {\n  \2{
       setFormData((previous) => ({
         ...previous,
         [name]: value as AdmissionFormData["admission_type"],
@@ -106,13 +99,7 @@ const AdmissionForm = () => {
     event.preventDefault(),
     setLoading(true);
 
-    if (
-      !formData.patient_id ||
-      !formData.primary_doctor_id ||
-      !formData.bed_id ||
-      !formData.diagnosis;
-    ) 
-      toast.error("Missing Information", { // Changed to sonner toast.error
+    \1 {\n  \2oast.error("Missing Information", { // Changed to sonner toast.error
         description: "Please fill in all required fields (Patient, Doctor, Bed, Diagnosis).",
       });
       setLoading(false);
@@ -127,7 +114,7 @@ const AdmissionForm = () => {
         body: JSON.stringify(formData)
       });
 
-      if (!response.ok) {
+      \1 {\n  \2{
         let errorMessage = "Failed to create admission";
         try {
           const errorData: ApiErrorResponse = await response.json(),
@@ -144,12 +131,9 @@ const AdmissionForm = () => {
         description: `Patient admitted successfully. Admission ID: ${newAdmission.id}`,),
       setFormData(
         patient_id: "",
-        admission_date: new Date().toISOString().split("T")[0];
-        admission_type: "planned",
-        primary_doctor_id: "";
-        bed_id: "",
-        diagnosis: "";
-        estimated_stay: "");
+        \1,\2 "planned",
+        \1,\2 "",
+        \1,\2 "");
     } catch (error: unknown) {
 
       const message =;
@@ -170,10 +154,10 @@ const AdmissionForm = () => {
         <CardTitle>New Patient Admission</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">;
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
-            <div className="space-y-2">;
-              <Label htmlFor="patient_id">Patient *</Label>;
+        \1>
+          \1>
+            \1>
+              <Label htmlFor="patient_id">Patient *\1>
               <Select>
                 value={formData.patient_id}
                 onValueChange={(value) =>
@@ -182,17 +166,17 @@ const AdmissionForm = () => {
                 required;
                 disabled={loading}
               >
-                <SelectTrigger id="patient_id">;
+                \1>
                   <SelectValue placeholder="Select Patient" />
                 </SelectTrigger>
                 <SelectContent>
                   {patients.length === 0 && (
-                    <SelectItem value="" disabled>;
+                    \1>
                       No patients available
                     </SelectItem>
                   )}
                   {patients.map((patient) => (
-                    <SelectItem key={patient.id} value={patient.id}>;
+                    \1>
                       {patient.name}
                     </SelectItem>
                   ))}
@@ -200,8 +184,8 @@ const AdmissionForm = () => {
               </Select>
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="admission_date">Admission Date *</Label>;
+            \1>
+              <Label htmlFor="admission_date">Admission Date *\1>
               <Input>
                 id="admission_date"
                 name="admission_date"
@@ -213,8 +197,8 @@ const AdmissionForm = () => {
               />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="admission_type">Admission Type *</Label>;
+            \1>
+              <Label htmlFor="admission_type">Admission Type *\1>
               <Select>
                 value={formData.admission_type}
                 onValueChange={(value) =>
@@ -223,19 +207,19 @@ const AdmissionForm = () => {
                 required;
                 disabled={loading}
               >
-                <SelectTrigger id="admission_type">;
+                \1>
                   <SelectValue placeholder="Select Admission Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="planned">Planned</SelectItem>;
-                  <SelectItem value="emergency">Emergency</SelectItem>;
+                  <SelectItem value="planned">Planned\1>
+                  <SelectItem value="emergency">Emergency\1>
                   <SelectItem value="transfer">Transfer</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="primary_doctor_id">Primary Doctor *</Label>;
+            \1>
+              <Label htmlFor="primary_doctor_id">Primary Doctor *\1>
               <Select>
                 value={formData.primary_doctor_id}
                 onValueChange={(value) =>
@@ -244,17 +228,17 @@ const AdmissionForm = () => {
                 required;
                 disabled={loading}
               >
-                <SelectTrigger id="primary_doctor_id">;
+                \1>
                   <SelectValue placeholder="Select Doctor" />
                 </SelectTrigger>
                 <SelectContent>
                   {doctors.length === 0 && (
-                    <SelectItem value="" disabled>;
+                    \1>
                       No doctors available
                     </SelectItem>
                   )}
                   {doctors.map((doctor) => (
-                    <SelectItem key={doctor.id} value={doctor.id}>;
+                    \1>
                       {doctor.name}
                     </SelectItem>
                   ))}
@@ -262,25 +246,25 @@ const AdmissionForm = () => {
               </Select>
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="bed_id">Assign Bed *</Label>;
+            \1>
+              <Label htmlFor="bed_id">Assign Bed *\1>
               <Select>
                 value={formData.bed_id}
                 onValueChange={(value) => handleSelectChange("bed_id", value)}
                 required;
                 disabled={loading}
               >
-                <SelectTrigger id="bed_id">;
+                \1>
                   <SelectValue placeholder="Select Bed" />
                 </SelectTrigger>
                 <SelectContent>
                   {beds.length === 0 && (
-                    <SelectItem value="" disabled>;
+                    \1>
                       No beds available
                     </SelectItem>
                   )}
                   {beds.map((bed) => (
-                    <SelectItem key={bed.id} value={bed.id}>;
+                    \1>
                       {bed.number} - {bed.room} ({bed.ward})
                     </SelectItem>
                   ))}
@@ -288,8 +272,8 @@ const AdmissionForm = () => {
               </Select>
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="estimated_stay">Estimated Stay (days)</Label>;
+            \1>
+              <Label htmlFor="estimated_stay">Estimated Stay (days)\1>
               <Input>
                 id="estimated_stay"
                 name="estimated_stay"
@@ -303,8 +287,8 @@ const AdmissionForm = () => {
             </div>
           </div>
 
-          <div className="space-y-2">;
-            <Label htmlFor="diagnosis">Diagnosis *</Label>;
+          \1>
+            <Label htmlFor="diagnosis">Diagnosis *\1>
             <Textarea>
               id="diagnosis"
               name="diagnosis"
@@ -317,8 +301,8 @@ const AdmissionForm = () => {
             />
           </div>
 
-          <div className="flex justify-end pt-4">;
-            <Button type="submit" disabled={loading}>;
+          \1>
+            \1>
               {loading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : undefined}

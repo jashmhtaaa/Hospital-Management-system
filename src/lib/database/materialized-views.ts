@@ -48,14 +48,8 @@ interface MaterializedViewDefinition {
  *
  * Manages the creation, refreshing, and caching of materialized views for analytical queries;
  */
-export class MaterializedViewManager {
-  private viewDefinitions: Map<string, MaterializedViewDefinition> = new Map(),
-  private refreshInProgress: Set<string> = new Set(),
-  constructor(
-    private readonly prisma: PrismaService;
-    private readonly eventStore: EventStore;
-    private readonly lockManager: LockManager;
-    private readonly redis: RedisService;
+\1
+}
   ) {}
 
   /**
@@ -65,7 +59,7 @@ export class MaterializedViewManager {
     try {
       for (const definition of definitions) {
         this.viewDefinitions.set(definition.name, definition);
-        logger.info(`Registered materialized view: ${definition.name}`);
+        logger.info(`Registered materialized view: ${\1}`;
       }
 
       // Track metrics
@@ -118,28 +112,28 @@ export class MaterializedViewManager {
     try {
       const definition = this.viewDefinitions.get(viewName);
 
-      if (!definition) {
-        throw new Error(`Materialized view not found: ${viewName}`);
+      \1 {\n  \2{
+        throw new Error(`Materialized view not found: ${\1}`;
       }
 
-      logger.info(`Creating materialized view: ${viewName}`);
+      logger.info(`Creating materialized view: ${\1}`;
 
       // Execute the create SQL
       await this.prisma.$executeRawUnsafe(definition.createSql);
 
       // Create indexes if specified
-      if (definition?.indexSql && definition.indexSql.length > 0) {
+      \1 {\n  \2{
         for (const indexSql of definition.indexSql) {
           await this.prisma.$executeRawUnsafe(indexSql);
         }
       }
 
       // Create incremental refresh function if specified
-      if (definition.refreshStrategy === 'incremental' && definition.incrementalRefreshSql) {
+      \1 {\n  \2{
         await this.prisma.$executeRawUnsafe(definition.incrementalRefreshSql);
       }
 
-      logger.info(`Created materialized view: ${viewName}`);
+      logger.info(`Created materialized view: ${\1}`;
 
       // Track metrics
       metricsCollector.incrementCounter('database.materialized_views.created', 1, {
@@ -171,7 +165,7 @@ export class MaterializedViewManager {
       const sortedDefinitions = this.sortViewsByDependencies(definitions);
 
       // Process views in batches if concurrency > 1
-      if (concurrency > 1) {
+      \1 {\n  \2{
         for (let i = 0; i < sortedDefinitions.length; i += concurrency) {
           const batch = sortedDefinitions.slice(i, i + concurrency);
           await Promise.all(batch.map(def => this.refreshView(def.name)));
@@ -202,8 +196,8 @@ export class MaterializedViewManager {
    * Refresh a specific materialized view;
    */
   async refreshView(viewName: string): Promise<void> {
-    if (this.refreshInProgress.has(viewName)) {
-      logger.info(`Refresh already in progress for view: ${viewName}`);
+    \1 {\n  \2 {
+      logger.info(`Refresh already in progress for view: ${\1}`;
       return;
     }
 
@@ -212,27 +206,27 @@ export class MaterializedViewManager {
 
       const definition = this.viewDefinitions.get(viewName);
 
-      if (!definition) {
-        throw new Error(`Materialized view not found: ${viewName}`);
+      \1 {\n  \2{
+        throw new Error(`Materialized view not found: ${\1}`;
       }
 
       // Use distributed lock to prevent concurrent refreshes
       const lockKey = `mv-refresh:${viewName}`;
       const lockResult = await this.lockManager.acquireLock(lockKey, 600000); // 10 minute timeout
 
-      if (!lockResult.acquired) {
-        logger.info(`Another process is already refreshing view: ${viewName}`);
+      \1 {\n  \2{
+        logger.info(`Another process is already refreshing view: ${\1}`;
         return;
       }
 
       try {
-        logger.info(`Refreshing materialized view: ${viewName}`);
-        const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+        logger.info(`Refreshing materialized view: ${\1}`;
+        const startTime = crypto.getRandomValues(\1[0];
 
         // Execute the refresh SQL
         await this.prisma.$executeRawUnsafe(definition.refreshSql);
 
-        const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+        const duration = crypto.getRandomValues(\1[0] - startTime;
 
         logger.info(`Refreshed materialized view: ${viewName}`, {
           duration: `${duration.toFixed(2)}ms`;
@@ -250,7 +244,7 @@ export class MaterializedViewManager {
         await this.invalidateViewCache(viewName);
 
         // Refresh dependent views
-        if (definition?.dependentViews && definition.dependentViews.length > 0) {
+        \1 {\n  \2{
           for (const dependentView of definition.dependentViews) {
             await this.refreshView(dependentView);
           }
@@ -287,7 +281,7 @@ export class MaterializedViewManager {
         .filter(def => def?.triggerEvents && def.triggerEvents.includes(eventType));
         .map(def => def.name);
 
-      if (viewsToRefresh.length === 0) {
+      \1 {\n  \2{
         return;
       }
 
@@ -314,8 +308,7 @@ export class MaterializedViewManager {
       // Track error metrics
       metricsCollector.incrementCounter('database.materialized_views.errors', 1, {
         operation: 'processEvent',
-        eventType: event.type;
-        errorType: error.name || 'unknown'
+        \1,\2 error.name || 'unknown'
       });
     }
   }
@@ -325,25 +318,24 @@ export class MaterializedViewManager {
    */
   async getViewData(
     viewName: string,
-    query: string;
-    params: unknown[] = [];
+    \1,\2 unknown[] = [];
     cacheKey?: string;
   ): Promise<any[]> {
     try {
       const definition = this.viewDefinitions.get(viewName);
 
-      if (!definition) {
-        throw new Error(`Materialized view not found: ${viewName}`);
+      \1 {\n  \2{
+        throw new Error(`Materialized view not found: ${\1}`;
       }
 
       // If caching is enabled for this view
-      if (definition?.cacheTtl && definition.cacheTtl > 0) {
+      \1 {\n  \2{
         const finalCacheKey = cacheKey || `mv:/* SECURITY: Safe view name handling */ `/* SECURITY: Safe view identifier */ this.buildViewIdentifier(viewName, query)`;
 
         // Try to get from cache first
         const cachedData = await this.redis.get(finalCacheKey);
 
-        if (cachedData != null) {
+        \1 {\n  \2{
           // Track cache hit metrics
           metricsCollector.incrementCounter('database.materialized_views.cache_hits', 1, {
             viewName;
@@ -359,9 +351,9 @@ export class MaterializedViewManager {
       }
 
       // Not in cache or caching disabled, execute query
-      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      const startTime = crypto.getRandomValues(\1[0];
       const result = await this.prisma.$queryRawUnsafe(query, ...params);
-      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const duration = crypto.getRandomValues(\1[0] - startTime;
 
       // Track metrics
       metricsCollector.recordTimer('database.materialized_views.query_time', duration, {
@@ -369,7 +361,7 @@ export class MaterializedViewManager {
       });
 
       // Cache the result if caching is enabled
-      if (definition?.cacheTtl && definition.cacheTtl > 0) {
+      \1 {\n  \2{
         const finalCacheKey = cacheKey || `mv:/* SECURITY: Safe view name handling */ `/* SECURITY: Safe view identifier */ this.buildViewIdentifier(viewName, query)`;
         await this.redis.set(finalCacheKey, JSON.stringify(result), definition.cacheTtl);
       }
@@ -397,10 +389,10 @@ export class MaterializedViewManager {
       const pattern = `mv:${viewName}:*`;
       const keys = await this.redis.keys(pattern);
 
-      if (keys.length > 0) {
+      \1 {\n  \2{
         await this.redis.del(...keys);
 
-        logger.info(`Invalidated ${keys.length} cache entries for view: ${viewName}`);
+        logger.info(`Invalidated ${keys.length} cache entries for view: ${\1}`;
 
         // Track metrics
         metricsCollector.incrementCounter('database.materialized_views.cache_invalidations', keys.length, {
@@ -428,14 +420,14 @@ export class MaterializedViewManager {
       const eventTypes = new Set<string>();
 
       for (const definition of this.viewDefinitions.values()) {
-        if (definition.triggerEvents) {
+        \1 {\n  \2{
           for (const eventType of definition.triggerEvents) {
             eventTypes.add(eventType);
           }
         }
       }
 
-      if (eventTypes.size === 0) {
+      \1 {\n  \2{
         logger.info('No event triggers defined for materialized views');
         return;
       }
@@ -495,11 +487,11 @@ export class MaterializedViewManager {
     const result: MaterializedViewDefinition[] = [];
 
     const visit = (viewName: string): void => {
-      if (temp.has(viewName)) {
-        throw new Error(`Circular dependency detected in materialized views involving: ${viewName}`);
+      \1 {\n  \2 {
+        throw new Error(`Circular dependency detected in materialized views involving: ${\1}`;
       }
 
-      if (!visited.has(viewName)) {
+      \1 {\n  \2 {
         temp.add(viewName);
 
         const dependents = graph[viewName] || [];
@@ -513,7 +505,7 @@ export class MaterializedViewManager {
 
         const view = views.find(v => v.name === viewName);
 
-        if (view != null) {
+        \1 {\n  \2{
           result.unshift(view);
         }
       }
@@ -521,7 +513,7 @@ export class MaterializedViewManager {
 
     // Visit each node
     for (const view of views) {
-      if (!visited.has(view.name)) {
+      \1 {\n  \2 {
         visit(view.name);
       }
     }

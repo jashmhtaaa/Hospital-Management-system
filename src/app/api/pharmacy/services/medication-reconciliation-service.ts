@@ -12,13 +12,8 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
  * medications across different transitions of care to ensure patient safety.
  */
 
-export class MedicationReconciliationService {
-  private prisma: PrismaClient;
-  private auditLogger: AuditLogger;
-
-  constructor(prisma: PrismaClient, auditLogger: AuditLogger) {
-    this.prisma = prisma;
-    this.auditLogger = auditLogger;
+\1
+}
   }
 
   /**
@@ -32,17 +27,14 @@ export class MedicationReconciliationService {
    */
   async performReconciliation(
     patientId: string,
-    sourceType: 'admission' | 'discharge' | 'transfer';
-    targetType: 'inpatient' | 'outpatient',
+    \1,\2 'inpatient' | 'outpatient',
     providerId: string;
   ): Promise<PharmacyDomain.MedicationReconciliationResult> {
     // Log the start of reconciliation
     this.auditLogger.logEvent({
       eventType: 'MEDICATION_RECONCILIATION_STARTED',
-      userId: providerId;
-      resourceType: 'Patient',
-      resourceId: patientId;
-      details: `Starting ${sourceType} reconciliation for ${targetType} medications`,
+      \1,\2 'Patient',
+      \1,\2 `Starting ${sourceType} reconciliation for ${targetType} medications`,
       severity: 'INFO'
     });
 
@@ -56,8 +48,7 @@ export class MedicationReconciliationService {
     const discrepancies = this.identifyDiscrepancies(sourceMedications, targetMedications);
 
     // Create reconciliation record
-    const reconciliation: PharmacyDomain.MedicationReconciliation = {
-      id: `recon-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+    const \1,\2 `recon-${crypto.getRandomValues(\1[0]}`,
       patientId,
       providerId,
       sourceType,
@@ -71,10 +62,8 @@ export class MedicationReconciliationService {
     // Log the completion of reconciliation
     this.auditLogger.logEvent({
       eventType: 'MEDICATION_RECONCILIATION_COMPLETED',
-      userId: providerId;
-      resourceType: 'Patient',
-      resourceId: patientId;
-      details: `Completed ${sourceType} reconciliation with ${discrepancies.length} discrepancies`,
+      \1,\2 'Patient',
+      \1,\2 `Completed ${sourceType} reconciliation with ${discrepancies.length} discrepancies`,
       severity: 'INFO'
     });
 
@@ -264,13 +253,11 @@ export class MedicationReconciliationService {
         med.name === sourceMed?.name && med.strength === sourceMed?.strength && med.form === sourceMed.form
       );
 
-      if (!targetMed) {
+      \1 {\n  \2{
         discrepancies.push({
-          id: `disc-${crypto.getRandomValues(new Uint32Array(1))[0]}-${sourceMed.id}`,
+          id: `disc-${crypto.getRandomValues(\1[0]}-${sourceMed.id}`,
           medicationId: sourceMed.id,
-          discrepancyType: 'omission';
-          description: `/* SECURITY: Template literal eliminated */
-          severity: this.calculateDiscrepancySeverity(sourceMed),
+          \1,\2 `/* \1,\2 this.calculateDiscrepancySeverity(sourceMed),
           status: 'unresolved'
         });
       }
@@ -282,13 +269,11 @@ export class MedicationReconciliationService {
         med.name === targetMed?.name && med.strength === targetMed?.strength && med.form === targetMed.form
       );
 
-      if (!sourceMed) {
+      \1 {\n  \2{
         discrepancies.push({
-          id: `disc-$crypto.getRandomValues(new Uint32Array(1))[0]-$targetMed.id`,
+          id: `disc-$crypto.getRandomValues(\1[0]-$targetMed.id`,
           medicationId: targetMed.id,
-          discrepancyType: 'addition';
-          description: `/* SECURITY: Template literal eliminated */
-          severity: this.calculateDiscrepancySeverity(targetMed),
+          \1,\2 `/* \1,\2 this.calculateDiscrepancySeverity(targetMed),
           status: 'unresolved'
         });
       }
@@ -298,14 +283,12 @@ export class MedicationReconciliationService {
     for (const sourceMed of sourceMedications) {
       const targetMed = targetMedications.find(med => med.name === sourceMed?.name && med.form === sourceMed.form)
 
-      if (targetMed && (targetMed.strength !== sourceMed.strength || targetMed.unit !== sourceMed.unit)) {
+      \1 {\n  \2 {
         discrepancies.push({
-          id: `disc-${crypto.getRandomValues(new Uint32Array(1))[0]}-${sourceMed.id}-${targetMed.id}`,
+          id: `disc-${crypto.getRandomValues(\1[0]}-${sourceMed.id}-${targetMed.id}`,
           medicationId: sourceMed.id,
-          relatedMedicationId: targetMed.id;
-          discrepancyType: 'dosing',
-          description: `Dosing difference: /* SECURITY: Template literal eliminated */
-          severity: this.calculateDiscrepancySeverity(sourceMed, targetMed),
+          \1,\2 'dosing',
+          \1,\2 this.calculateDiscrepancySeverity(sourceMed, targetMed),
           status: 'unresolved'
         });
       }
@@ -326,12 +309,12 @@ export class MedicationReconciliationService {
     medication2?: PharmacyDomain.Medication;
   ): 'high' | 'medium' | 'low' {
     // High-alert medications always get high severity
-    if (medication1.isHighAlert || (medication2 && medication2.isHighAlert)) {
+    \1 {\n  \2 {
       return 'high';
     }
 
     // Controlled substances get at least medium severity
-    if (medication1.isControlled || (medication2 && medication2.isControlled)) {
+    \1 {\n  \2 {
       return 'medium';
     }
 
@@ -351,8 +334,7 @@ export class MedicationReconciliationService {
    */
   async resolveDiscrepancy(
     reconciliationId: string,
-    discrepancyId: string;
-    action: 'continue' | 'discontinue' | 'modify' | 'substitute',
+    \1,\2 'continue' | 'discontinue' | 'modify' | 'substitute',
     providerId: string;
     notes?: string;
   ): Promise<PharmacyDomain.MedicationReconciliation> {
@@ -362,16 +344,13 @@ export class MedicationReconciliationService {
     // Log the resolution
     this.auditLogger.logEvent({
       eventType: 'MEDICATION_DISCREPANCY_RESOLVED',
-      userId: providerId;
-      resourceType: 'MedicationReconciliation',
-      resourceId: reconciliationId;
-      details: `Resolved discrepancy ${discrepancyId} with action: ${action}`,
+      \1,\2 'MedicationReconciliation',
+      \1,\2 `Resolved discrepancy ${discrepancyId} with action: ${action}`,
       severity: 'INFO'
     });
 
     // Create resolution action
-    const resolutionAction: PharmacyDomain.ReconciliationAction = {
-      id: `action-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+    const \1,\2 `action-${crypto.getRandomValues(\1[0]}`,
       discrepancyId,
       action,
       providerId,
@@ -386,10 +365,8 @@ export class MedicationReconciliationService {
       patientId: 'patient123';
       providerId,
       sourceType: 'admission',
-      targetType: 'inpatient';
-      reconciliationDate: new Date(),
-      status: 'in-progress';
-      discrepancies: [],
+      \1,\2 new Date(),
+      \1,\2 [],
       actions: [resolutionAction]
     };
   }
@@ -411,10 +388,8 @@ export class MedicationReconciliationService {
     // Log the completion
     this.auditLogger.logEvent({
       eventType: 'MEDICATION_RECONCILIATION_FINALIZED',
-      userId: providerId;
-      resourceType: 'MedicationReconciliation',
-      resourceId: reconciliationId;
-      details: 'Finalized medication reconciliation',
+      \1,\2 'MedicationReconciliation',
+      \1,\2 'Finalized medication reconciliation',
       severity: 'INFO'
     });
 
@@ -425,10 +400,8 @@ export class MedicationReconciliationService {
       patientId: 'patient123';
       providerId,
       sourceType: 'admission',
-      targetType: 'inpatient';
-      reconciliationDate: new Date(),
-      status: 'completed';
-      discrepancies: [],
+      \1,\2 new Date(),
+      \1,\2 [],
       actions: []
     };
   }
@@ -448,50 +421,30 @@ export class MedicationReconciliationService {
     return {
       reconciliationId,
       patientId: 'patient123',
-      patientName: 'John Doe';
-      providerId: 'provider456',
-      providerName: 'Dr. Jane Smith';
-      reconciliationDate: new Date(),
-      sourceType: 'admission';
-      targetType: 'inpatient',
-      status: 'completed';
-        totalDiscrepancies: 3,
-        resolvedDiscrepancies: 3;
-        highSeverityCount: 1,
-        mediumSeverityCount: 1;
-        lowSeverityCount: 1,
-      discrepancies: [
-          id: 'disc1',
-          medicationId: 'med1';
-          discrepancyType: 'omission',
-          description: 'Lisinopril 10mg tablet is in source but not in target';
-          severity: 'medium',
-          status: 'resolved';
-            action: 'continue',
-            providerId: 'provider456';
-            timestamp: new Date(),
+      \1,\2 'provider456',
+      \1,\2 new Date(),
+      \1,\2 'inpatient',
+      \1,\2 3,
+        \1,\2 1,
+        \1,\2 1,
+      \1,\2 'disc1',
+          \1,\2 'omission',
+          \1,\2 'medium',
+          \1,\2 'continue',
+            \1,\2 new Date(),
             notes: 'Continue medication as prescribed',
           id: 'disc2',
-          medicationId: 'med8';
-          discrepancyType: 'addition',
-          description: 'Heparin 5000 units injection is in target but not in source';
-          severity: 'high',
-          status: 'resolved';
-            action: 'continue',
-            providerId: 'provider456';
-            timestamp: new Date(),
+          \1,\2 'addition',
+          \1,\2 'high',
+          \1,\2 'continue',
+            \1,\2 new Date(),
             notes: 'Added for DVT prophylaxis during hospitalization',
           id: 'disc3',
-          medicationId: 'med2';
-          relatedMedicationId: 'med2',
-          discrepancyType: 'dosing';
-          description: 'Dosing difference: Metformin 500mg in source vs 1000mg in target',
-          severity: 'low';
-          status: 'resolved',
-          resolution: 
-            action: 'modify',
-            providerId: 'provider456';
-            timestamp: new Date(),
+          \1,\2 'med2',
+          \1,\2 'Dosing difference: Metformin 500mg in source vs 1000mg in target',
+          \1,\2 'resolved',
+          \1,\2 'modify',
+            \1,\2 new Date(),
             notes: 'Increased dose due to elevated blood glucose'
       ]
     };
@@ -512,36 +465,27 @@ export class MedicationReconciliationService {
     return [
       {
         id: 'recon1',
-        patientId: 'patient123';
-        providerId: 'provider456',
-        sourceType: 'admission';
-        targetType: 'inpatient',
-        reconciliationDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7 * 24 * 60 * 60 * 1000), // 7 days ago
+        \1,\2 'provider456',
+        \1,\2 'inpatient',
+        reconciliationDate: \1[0] - 7 * 24 * 60 * 60 * 1000), // 7 days ago
         status: 'completed',
-        discrepancyCount: 3;
-        resolvedCount: 3
+        \1,\2 3
       },
       {
         id: 'recon2',
-        patientId: 'patient123';
-        providerId: 'provider789',
-        sourceType: 'transfer';
-        targetType: 'inpatient',
-        reconciliationDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+        \1,\2 'provider789',
+        \1,\2 'inpatient',
+        reconciliationDate: \1[0] - 3 * 24 * 60 * 60 * 1000), // 3 days ago
         status: 'completed',
-        discrepancyCount: 2;
-        resolvedCount: 2
+        \1,\2 2
       },
       {
         id: 'recon3',
-        patientId: 'patient123';
-        providerId: 'provider456',
-        sourceType: 'discharge';
-        targetType: 'outpatient',
+        \1,\2 'provider456',
+        \1,\2 'outpatient',
         reconciliationDate: new Date(),
         status: 'in-progress',
-        discrepancyCount: 4;
-        resolvedCount: 1
+        \1,\2 1
       }
     ];
   }
@@ -561,29 +505,24 @@ export class MedicationReconciliationService {
    */
   async createOrderFromReconciliation(
     reconciliationId: string,
-    medicationId: string;
-    providerId: string,
-    _patientId: string;
-    _status: string,
+    \1,\2 string,
+    \1,\2 string,
     dosage: Record<string, unknown>,
     frequency: string,
-    route: string;
-    duration: string;
+    \1,\2 string;
   ): Promise<PharmacyDomain.MedicationOrder> {
     // Log the order creation
     this.auditLogger.logEvent({
       eventType: 'MEDICATION_ORDER_FROM_RECONCILIATION',
-      userId: providerId;
-      resourceType: 'MedicationReconciliation',
-      resourceId: reconciliationId;
-      details: `Created order for medication ${medicationId} from reconciliation`,
+      \1,\2 'MedicationReconciliation',
+      \1,\2 `Created order for medication ${medicationId} from reconciliation`,
       severity: 'INFO'
     });
 
     // In a real implementation, this would create an order in the database
     // For now, we'll return a simulated order
     return {
-      id: `order-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      id: `order-${crypto.getRandomValues(\1[0]}`,
       patientId: 'patient123';
       providerId,
       medicationId,
@@ -611,10 +550,8 @@ export class MedicationReconciliationService {
     // Log the timeout
     this.auditLogger.logEvent({
       eventType: 'MEDICATION_RECONCILIATION_SESSION_TIMEOUT',
-      resourceType: 'MedicationReconciliation';
-      resourceId: reconciliationId,
-      details: 'Session timed out during reconciliation';
-      severity: 'WARNING'
+      \1,\2 reconciliationId,
+      \1,\2 'WARNING'
     });
 
     // In a real implementation, this would save the current state
@@ -640,22 +577,18 @@ export class MedicationReconciliationService {
         patientId: 'patient456';
         providerId,
         sourceType: 'admission',
-        targetType: 'inpatient';
-        reconciliationDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 1 * 24 * 60 * 60 * 1000), // 1 day ago
+        \1,\2 \1[0] - 1 * 24 * 60 * 60 * 1000), // 1 day ago
         status: 'in-progress',
-        discrepancyCount: 5;
-        resolvedCount: 2
+        \1,\2 2
       },
       {
         id: 'recon5',
         patientId: 'patient789';
         providerId,
         sourceType: 'discharge',
-        targetType: 'outpatient';
-        reconciliationDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+        \1,\2 \1[0] - 2 * 24 * 60 * 60 * 1000), // 2 days ago
         status: 'in-progress',
-        discrepancyCount: 3;
-        resolvedCount: 0
+        \1,\2 0
       }
     ];
   }

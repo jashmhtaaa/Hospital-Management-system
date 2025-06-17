@@ -15,8 +15,7 @@ import { PharmacyDomain } from '../../../models/domain-models';
  */
 
 // Initialize repositories (in production, use dependency injection)
-const _medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
+const \1,\2 getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
@@ -24,8 +23,7 @@ const _medicationRepository: PharmacyDomain.MedicationRepository = {
   delete: () => Promise.resolve(true)
 }
 
-const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
-  findById: getPrescriptionById,
+const \1,\2 getPrescriptionById,
   findByPatientId: () => Promise.resolve([]),
   findByPrescriberId: () => Promise.resolve([]),
   findByMedicationId: () => Promise.resolve([]),
@@ -35,8 +33,7 @@ const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
   delete: () => Promise.resolve(true)
 };
 
-const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
-  findById: () => Promise.resolve(null),
+const \1,\2 () => Promise.resolve(null),
   findByPatientId: () => Promise.resolve([]),
   findByPrescriptionId: () => Promise.resolve([]),
   findByMedicationId: () => Promise.resolve([]),
@@ -54,7 +51,7 @@ export const POST = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();
-    if (!data.patientId || !data.prescriptionId || !data.medicationId || !data.reason) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -63,7 +60,7 @@ export const POST = async (req: NextRequest) => {
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -72,7 +69,7 @@ export const POST = async (req: NextRequest) => {
 
     // Verify prescription exists
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
-    if (!prescription) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Prescription not found' }, { status: 404 });
     }
 
@@ -96,10 +93,10 @@ export const POST = async (req: NextRequest) => {
     const administrationId = await administrationRepository.save(administration);
 
     // For certain reason codes, create alerts or notifications
-    if (data.reasonCode === 'medication-unavailable') {
+    \1 {\n  \2{
       // In a real implementation, notify pharmacy about stock issue
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    } else if (data.reasonCode === 'adverse-reaction') {
+    } else \1 {\n  \2{
       // In a real implementation, create alert for clinical staff
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     }
@@ -107,14 +104,10 @@ export const POST = async (req: NextRequest) => {
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
       action: 'MISSED_DOSE',
-      resourceType: 'MedicationAdministration';
-      resourceId: administrationId,
-      userId: userId;
-      patientId: data.patientId,
-      details: 
-        medicationId: data.medicationId,
-        prescriptionId: data.prescriptionId;
-        reasonCode: data.reasonCode,
+      \1,\2 administrationId,
+      \1,\2 data.patientId,
+      \1,\2 data.medicationId,
+        \1,\2 data.reasonCode,
         reason: data.reason
     });
 

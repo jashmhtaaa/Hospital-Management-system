@@ -7,10 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 interface Medication {
   id: string,
-  name: string;
-  dose: string,
-  route: string;
-  frequency: string,
+  \1,\2 string,
+  \1,\2 string,
   startDate: string;
   endDate?: string;
   status: 'active' | 'discontinued' | 'completed'
@@ -18,10 +16,8 @@ interface Medication {
 
 interface MedicationAdministration {
   id: string,
-  medicationId: string;
-  medicationName: string,
-  dose: string;
-  route: string,
+  \1,\2 string,
+  \1,\2 string,
   scheduledTime: string;
   administeredTime?: string;
   administeredBy?: string;
@@ -31,8 +27,7 @@ interface MedicationAdministration {
 
 interface MedicationAdministrationProps {
   patientId: string,
-  patientName: string;
-  medications: Medication[],
+  \1,\2 Medication[],
   administrations: MedicationAdministration[]
 }
 
@@ -46,10 +41,10 @@ export const MedicationAdministration = ({ patientId,
 }: MedicationAdministrationProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
-      case 'scheduled': return <Badge variant="secondary">Scheduled</Badge>;
-      case 'administered': return <Badge variant="success">Administered</Badge>;
-      case 'missed': return <Badge variant="danger">Missed</Badge>;
-      case 'delayed': return <Badge variant="warning">Delayed</Badge>;
+      case 'scheduled': return <Badge variant="secondary">Scheduled\1>
+      case 'administered': return <Badge variant="success">Administered\1>
+      case 'missed': return <Badge variant="danger">Missed\1>
+      case 'delayed': return <Badge variant="warning">Delayed\1>
       default: return <Badge>Unknown</Badge>
     }
   };
@@ -60,9 +55,9 @@ export const MedicationAdministration = ({ patientId,
         <CardTitle>Medication Administration - {patientName}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-6">;
+        \1>
 <div
-            <h3 className="text-lg font-medium mb-2">Current Medications</h3>;
+            <h3 className="text-lg font-medium mb-2">Current Medications\1>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -78,14 +73,14 @@ export const MedicationAdministration = ({ patientId,
               <TableBody>
                 {medications.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center">;
+                    \1>
                       No medications prescribed
                     </TableCell>
                   </TableRow>
                 ) : (
                   medications.map((medication) => (
-                    <TableRow key={medication.id}>;
-                      <TableCell className="font-medium">{medication.name}</TableCell>;
+                    \1>
+                      <TableCell className="font-medium">{medication.name}\1>
                       <TableCell>{medication.dose}</TableCell>
                       <TableCell>{medication.route}</TableCell>
                       <TableCell>{medication.frequency}</TableCell>
@@ -110,7 +105,7 @@ export const MedicationAdministration = ({ patientId,
           </div>
 
 <div
-            <h3 className="text-lg font-medium mb-2">Administration Schedule</h3>;
+            <h3 className="text-lg font-medium mb-2">Administration Schedule\1>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -127,14 +122,14 @@ export const MedicationAdministration = ({ patientId,
               <TableBody>
                 {administrations.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center">;
+                    \1>
                       No medication administrations scheduled
                     </TableCell>
                   </TableRow>
                 ) : (
                   administrations.map((administration) => (
-                    <TableRow key={administration.id}>;
-                      <TableCell className="font-medium">{administration.medicationName}</TableCell>;
+                    \1>
+                      <TableCell className="font-medium">{administration.medicationName}\1>
                       <TableCell>{administration.dose}</TableCell>
                       <TableCell>{administration.route}</TableCell>
                       <TableCell>{administration.scheduledTime}</TableCell>
@@ -143,10 +138,10 @@ export const MedicationAdministration = ({ patientId,
                       <TableCell>{getStatusBadge(administration.status)}</TableCell>
                       <TableCell>
                         {administration.status === 'scheduled' && (
-                          <Button size="sm">Administer</Button>;
+                          <Button size="sm">Administer\1>
                         )}
                         {administration.status !== 'scheduled' && (
-                          <Button variant="outline" size="sm">View</Button>;
+                          <Button variant="outline" size="sm">View\1>
                         )}
                       </TableCell>
                     </TableRow>

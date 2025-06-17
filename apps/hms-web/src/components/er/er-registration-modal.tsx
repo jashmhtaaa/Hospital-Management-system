@@ -13,19 +13,14 @@ import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 interface ERRegistrationModalProps {
-	isOpen: boolean;
-	onClose: () => void;
+	\1,\2 () => void;
 	onSubmit: (data: unknown) => void;
 }
 
 /**
  * Emergency Room patient registration modal component;
  */
-export const _ERRegistrationModal = ({
-	isOpen,
-	onClose,
-	onSubmit,
-}: ERRegistrationModalProps) => {
+export const _ERRegistrationModal = ({ isOpen, onClose, onSubmit }: ERRegistrationModalProps) => {
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		// In a real implementation, we would collect form data here
@@ -34,34 +29,25 @@ export const _ERRegistrationModal = ({
 
 	return (
 		<Dialog>
-			<DialogContent className="sm:max-w-[500px]">
-				;
+			\1>
 				<DialogHeader>
 					<DialogTitle>Emergency Patient Registration</DialogTitle>
 				</DialogHeader>
-				<form onSubmit={handleSubmit}>
-					;
-					<div className="grid gap-4 py-4">
-						;
-						<div className="grid grid-cols-2 gap-4">
-							;
-							<div className="space-y-2">
-								;<Label htmlFor="firstName">First Name</Label>;
+				\1>
+					\1>
+						\1>
+							\1><Label htmlFor="firstName">First Name\1>
 								<Input id="firstName" placeholder="First name" required />
 							</div>
-							<div className="space-y-2">
-								;<Label htmlFor="lastName">Last Name</Label>;
+							\1><Label htmlFor="lastName">Last Name\1>
 								<Input id="lastName" placeholder="Last name" required />
 							</div>
 						</div>
-						<div className="grid grid-cols-2 gap-4">
-							;
-							<div className="space-y-2">
-								;<Label htmlFor="dob">Date of Birth</Label>;
+						\1>
+							\1><Label htmlFor="dob">Date of Birth\1>
 								<Input id="dob" type="date" required />
 							</div>
-							<div className="space-y-2">
-								;<Label htmlFor="gender">Gender</Label>;
+							\1><Label htmlFor="gender">Gender\1>
 								<Select>
 									id="gender" options=
 									{[
@@ -72,33 +58,23 @@ export const _ERRegistrationModal = ({
 								</Select>
 							</div>
 						</div>
-						<div className="space-y-2">
-							;<Label htmlFor="chiefComplaint">Chief Complaint</Label>;
-							<Textarea
-								id="chiefComplaint"
-								placeholder="Reason for emergency visit"
-								required
-							/>
+						\1><Label htmlFor="chiefComplaint">Chief Complaint\1>
+							<Textarea id="chiefComplaint" placeholder="Reason for emergency visit" required />
 						</div>
-						<div className="grid grid-cols-2 gap-4">
-							;
-							<div className="space-y-2">
-								;<Label htmlFor="contactPhone">Contact Phone</Label>;
+						\1>
+							\1><Label htmlFor="contactPhone">Contact Phone\1>
 								<Input id="contactPhone" placeholder="Phone number" />
 							</div>
-							<div className="space-y-2">
-								;<Label htmlFor="emergencyContact">Emergency Contact</Label>;
+							\1><Label htmlFor="emergencyContact">Emergency Contact\1>
 								<Input id="emergencyContact" placeholder="Emergency contact" />
 							</div>
 						</div>
-						<div className="space-y-2">
-							;<Label htmlFor="allergies">Allergies</Label>;
+						\1><Label htmlFor="allergies">Allergies\1>
 							<Input id="allergies" placeholder="Known allergies" />
 						</div>
 					</div>
 					<DialogFooter>
-						<Button type="button" variant="outline" onClick={onClose}>
-							; Cancel
+						\1> Cancel
 						</Button>
 						<Button type="submit">Register Patient</Button>
 					</DialogFooter>

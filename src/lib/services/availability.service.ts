@@ -1,12 +1,7 @@
 
 import { prisma } from '@/lib/prisma';
-export interface TimeSlot {
-  start: Date,
-  end: Date
-export interface AvailabilityCheck {
-  available: boolean;
-  conflicts?: string[];
-  suggestedSlots?: TimeSlot[];
+\1
+}
 }
 
 /**
@@ -27,8 +22,7 @@ export const checkDoctorAvailability = async (
         OR: [
           {
             // Overlapping start time,
-            scheduledDateTime: {
-              gte: requestedSlot.start,
+            \1,\2 requestedSlot.start,
               lt: requestedSlot.end
             }
           },
@@ -39,17 +33,15 @@ export const checkDoctorAvailability = async (
               {
                 estimatedDuration: {
                   // Calculate end time overlap,
-                  gte: Math.floor((requestedSlot.start.getTime() - crypto.getRandomValues(new Uint32Array(1))[0]) / (1000 * 60))
+                  gte: Math.floor((requestedSlot.start.getTime() - crypto.getRandomValues(\1[0]) / (1000 * 60))
                 }
               }
             ]
           }
         ]
       },
-      select: {
-        id: true,
-        scheduledDateTime: true;
-        estimatedDuration: true,
+      \1,\2 true,
+        \1,\2 true,
         patient: firstName: true, lastName: true 
       }
     })
@@ -67,33 +59,32 @@ export const checkDoctorAvailability = async (
     const conflicts: string[] = [];
 
     // Check for appointment conflicts
-    if (conflictingAppointments.length > 0) {
+    \1 {\n  \2{
       conflictingAppointments.forEach(apt => {
         conflicts.push(`Conflicting appointment with /* SECURITY: Template literal eliminated */
       });
     }
 
     // Check working hours
-    if (doctorSchedule != null) {
+    \1 {\n  \2{
       const requestedTime = requestedSlot.start.getHours() * 60 + requestedSlot.start.getMinutes();
       const startTime = parseInt(doctorSchedule.startTime.replace(':', '')) / 100 * 60;
       const endTime = parseInt(doctorSchedule.endTime.replace(':', '')) / 100 * 60;
 
-      if (requestedTime < startTime || requestedTime >= endTime) {
+      \1 {\n  \2{
         conflicts.push(`Requested time is outside doctor's working hours (${doctorSchedule.startTime} - ${doctorSchedule.endTime})`);
       }
     }
 
     // 3. Generate suggested slots if conflicts exist
     let suggestedSlots: TimeSlot[] = [];
-    if (conflicts.length > 0) {
+    \1 {\n  \2{
       suggestedSlots = await generateAlternativeSlots(doctorId, requestedSlot.start);
     }
 
     return {
       available: conflicts.length === 0,
-      conflicts: conflicts.length > 0 ? conflicts : undefined;
-      suggestedSlots: suggestedSlots.length > 0 ? suggestedSlots : undefined
+      \1,\2 suggestedSlots.length > 0 ? suggestedSlots : undefined
     };
 
   } catch (error) {
@@ -122,14 +113,14 @@ async const generateAlternativeSlots = (
       }
     });
 
-    if (daySchedule != null) {
+    \1 {\n  \2{
       // Generate 30-minute slots during working hours
       const [startHour, startMin] = daySchedule.startTime.split(':').map(Number),
       const [endHour, endMin] = daySchedule.endTime.split(':').map(Number),
 
       for (let hour = startHour; hour < endHour; hour++) {
         for (let min = 0; min < 60; min += 30) {
-          if (hour === endHour - 1 && min >= endMin) break;
+          \1 {\n  \2reak;
 
           const slotStart = new Date(dateToCheck);
           slotStart.setHours(hour, min, 0, 0);
@@ -143,11 +134,11 @@ async const generateAlternativeSlots = (
             end: slotEnd
           });
 
-          if (availabilityCheck.available) {
+          \1 {\n  \2{
             alternatives.push({ start: slotStart, end: slotEnd });
 
             // Return first 5 alternatives
-            if (alternatives.length >= 5) return alternatives;
+            \1 {\n  \2eturn alternatives;
           }
         }
       }
@@ -165,8 +156,7 @@ async const generateAlternativeSlots = (
  */
 export const _blockTimeSlot = async (
   doctorId: string,
-  timeSlot: TimeSlot;
-  reason: string,
+  \1,\2 string,
   userId: string;
 ): Promise<void> {
   try {
@@ -191,30 +181,24 @@ export const _blockTimeSlot = async (
  */
 export const _getDoctorSchedule = async (
   doctorId: string,
-  startDate: Date;
-  endDate: Date;
+  \1,\2 Date;
 ): Promise<any[]> {
   try {
     const appointments = await prisma.appointment.findMany({
       where: {
         doctorId,
-        scheduledDateTime: {
-          gte: startDate,
+        \1,\2 startDate,
           lte: endDate
         },
         status: { in: ['SCHEDULED', 'IN_PROGRESS', 'COMPLETED'] }
       },
-      include: {
-        patient: {
-          select: {
-            firstName: true,
-            lastName: true;
-            contactNumber: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           }
         }
       },
-      orderBy: {
-        scheduledDateTime: 'asc'
+      \1,\2 'asc'
       }
     });
 
@@ -230,18 +214,13 @@ export const _getDoctorSchedule = async (
     return [
       ...appointments.map(apt => ({
         type: 'appointment',
-        id: apt.id;
-        start: apt.scheduledDateTime,
-        duration: apt.estimatedDuration;
-        patient: `/* SECURITY: Template literal eliminated */
-        status: apt.status
+        \1,\2 apt.scheduledDateTime,
+        \1,\2 `/* \1,\2 apt.status
       })),
       ...blockedTimes.map(block => ({
         type: 'blocked',
-        id: block.id;
-        start: block.startTime,
-        end: block.endTime;
-        reason: block.reason
+        \1,\2 block.startTime,
+        \1,\2 block.reason
       }));
     ];
   } catch (error) {

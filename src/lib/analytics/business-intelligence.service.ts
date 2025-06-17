@@ -9,360 +9,27 @@ import { PrismaClient } from '@prisma/client';
  * Provides executive dashboards, clinical insights, and operational intelligence;
  */
 
-export interface AnalyticsReport {
-  id: string,
-  name: string;
-  description: string,
-  category: ReportCategory;
-  type: ReportType,
-  dataSource: DataSource[];
-  parameters: ReportParameter[],
-  visualization: VisualizationConfig;
-  schedule?: ScheduleConfig;
-  recipients: string[];
-  lastGenerated?: Date;
-  nextGeneration?: Date;
-  status: 'active' | 'inactive' | 'error',
-  createdBy: string;
-  createdAt: Date,
-  updatedAt: Date;
-  accessControl: AccessControl
-export type ReportCategory =
-  | 'executive';
-  | 'financial';
-  | 'clinical';
-  | 'operational';
-  | 'quality';
-  | 'compliance';
-  | 'research';
-  | 'custom';
-
-export type ReportType =
-  | 'dashboard';
-  | 'table';
-  | 'chart';
-  | 'kpi';
-  | 'trend';
-  | 'comparative';
-  | 'drill_down';
-  | 'real_time';
-  | 'predictive';
-
-export interface DataSource {
-  id: string,
-  name: string;
-  type: 'database' | 'api' | 'file' | 'external',
-  connection: DatabaseConnection | ApiConnection | FileConnection;
-  query: string,
-  refreshInterval: number; // in minutes
-  cacheTtl: number; // in minutes
-export interface DatabaseConnection {
-  host: string,
-  port: number;
-  database: string;
-  schema?: string;
-  username: string,
-  password: string;
-  ssl?: boolean;
-export interface ApiConnection {
-  baseUrl: string,
-  endpoint: string;
-  method: 'GET' | 'POST';
-  headers?: Record<string, string>;
-  authentication?: {
-    type: 'basic' | 'bearer' | 'api_key',
-    credentials: unknown
+\1
+}
   };
-export interface FileConnection {
-  path: string,
-  format: 'csv' | 'xlsx' | 'json' | 'xml';
-  delimiter?: string;
-  encoding?: string;
-export interface ReportParameter {
-  name: string,
-  type: 'string' | 'number' | 'date' | 'boolean' | 'select' | 'multi_select';
-  label: string;
-  description?: string;
-  required: boolean;
-  defaultValue?: unknown;
-  options?: ParameterOption[];
-  validation?: ParameterValidation;
-export interface ParameterOption {
-  value: unknown,
-  label: string;
-  description?: string;
-export interface ParameterValidation {
-  min?: number;
-  max?: number;
-  pattern?: string;
-  message?: string;
-export interface VisualizationConfig {
-  type: ChartType,
-  layout: LayoutConfig;
-  styling: StylingConfig,
-  interactions: InteractionConfig;
-  drillDown?: DrillDownConfig;
-export type ChartType =
-  | 'line';
-  | 'bar';
-  | 'column';
-  | 'pie';
-  | 'donut';
-  | 'area';
-  | 'scatter';
-  | 'bubble';
-  | 'heatmap';
-  | 'gauge';
-  | 'metric';
-  | 'table';
-  | 'treemap';
-  | 'sankey';
-  | 'funnel';
-  | 'waterfall';
-
-export interface LayoutConfig {
-  width?: number;
-  height?: number;
-  margin?: {
-    top: number,
-    right: number;
-    bottom: number,
-    left: number
+\1
+}
   };
   responsive: boolean;
   title?: string;
   subtitle?: string;
   legend?: LegendConfig;
   axes?: AxesConfig;
-export interface LegendConfig {
-  show: boolean,
-  position: 'top' | 'right' | 'bottom' | 'left';
-  align: 'start' | 'center' | 'end'
-export interface AxesConfig {
-  x?: AxisConfig;
-  y?: AxisConfig;
-export interface AxisConfig {
-  title?: string;
-  type?: 'linear' | 'logarithmic' | 'datetime' | 'category';
-  min?: number;
-  max?: number;
-  format?: string;
-  tickInterval?: number;
-export interface StylingConfig {
-  theme: 'light' | 'dark' | 'custom',
-  colors: string[];
-  fonts?: FontConfig;
-  gridLines?: boolean;
-  dataLabels?: boolean;
-export interface FontConfig {
-  family: string,
-  size: number;
-  weight: string
-export interface InteractionConfig {
-  zoom: boolean,
-  pan: boolean;
-  crossfilter: boolean,
-  tooltip: TooltipConfig;
-  click?: ClickAction;
-export interface TooltipConfig {
-  enabled: boolean;
-  format?: string;
-  fields?: string[];
-export interface ClickAction {
-  type: 'drill_down' | 'filter' | 'navigate' | 'custom';
-  target?: string;
-  parameters?: Record<string, string>;
-export interface DrillDownConfig {
-  enabled: boolean,
-  levels: DrillDownLevel[]
-export interface DrillDownLevel {
-  name: string,
-  field: string;
-  chart?: ChartType;
-  filters?: FilterConfig[];
-export interface FilterConfig {
-  field: string,
-  operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'contains' | 'in' | 'between';
-  value: unknown
-export interface ScheduleConfig {
-  enabled: boolean,
-  frequency: 'hourly' | 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly';
-  interval: number;
-  time?: string; // HH:MM format
-  dayOfWeek?: number; // 0-6, Sunday = 0
-  dayOfMonth?: number; // 1-31
-  timezone: string,
-  format: 'pdf' | 'xlsx' | 'csv' | 'png' | 'email'
-export interface AccessControl {
-  owner: string,
-  visibility: 'private' | 'organization' | 'department' | 'public';
-  permissions: Permission[],
-  shares: Share[]
-export interface Permission {
-  userId: string,
-  role: 'viewer' | 'editor' | 'admin';
-  grantedBy: string,
-  grantedAt: Date
-export interface Share {
-  id: string,
-  url: string;
-  expiresAt?: Date;
-  password?: string;
-  downloadEnabled: boolean,
-  createdAt: Date
-export interface AnalyticsDataset {
-  id: string,
-  name: string;
-  description: string,
-  source: DataSource;
-  schema: DataSchema,
-  refreshedAt: Date;
-  recordCount: number,
-  sizeBytes: number;
-  status: 'ready' | 'loading' | 'error';
-  error?: string;
-export interface DataSchema {
-  fields: DataField[];
-  primaryKey?: string;
-  indexes?: string[];
-export interface DataField {
-  name: string,
-  type: 'string' | 'number' | 'date' | 'boolean' | 'object';
-  nullable: boolean;
-  description?: string;
-  format?: string;
-  enum?: unknown[];
-export interface ReportExecution {
-  id: string,
-  reportId: string;
-  parameters: Record<string, unknown>,
-  status: 'running' | 'completed' | 'failed';
-  startTime: Date;
-  endTime?: Date;
-  duration?: number;
-  resultUrl?: string;
-  error?: string;
-  triggeredBy: string,
-  triggerType: 'manual' | 'scheduled' | 'api'
-export interface AnalyticsInsight {
-  id: string,
-  type: 'anomaly' | 'trend' | 'correlation' | 'prediction' | 'threshold';
-  title: string,
-  description: string;
-  severity: 'low' | 'medium' | 'high' | 'critical',
-  confidence: number; // 0-100
-  dataPoints: unknown[],
-  recommendations: string[];
-  category: string,
-  detectedAt: Date;
-  validUntil?: Date;
-  dismissed: boolean;
-  dismissedBy?: string;
-  dismissedAt?: Date;
-export interface KPIDefinition {
-  id: string,
-  name: string;
-  description: string,
-  category: string;
-  formula: string,
-  unit: string;
-  target?: number;
-  threshold: {
+\1
+}
     green: { min?: number; max?: number };
     yellow: { min?: number; max?: number };
     red: { min?: number; max?: number }
   };
   frequency: 'real_time' | 'hourly' | 'daily' | 'weekly' | 'monthly',
-  dataSources: string[];
-  isActive: boolean
-export interface KPIValue {
-  kpiId: string,
-  timestamp: Date;
-  value: number;
-  target?: number;
-  status: 'green' | 'yellow' | 'red',
-  trend: 'up' | 'down' | 'stable';
-  changePercent: number;
-  metadata?: Record<string, unknown>;
-export interface AnalyticsAlert {
-  id: string,
-  name: string;
-  description: string;
-  kpiId?: string;
-  condition: AlertCondition,
-  recipients: AlertRecipient[];
-  channels: AlertChannel[],
-  isActive: boolean;
-  lastTriggered?: Date;
-  triggerCount: number,
-  createdBy: string;
-  createdAt: Date
-export interface AlertCondition {
-  field: string,
-  operator: 'greater_than' | 'less_than' | 'equals' | 'not_equals' | 'change_percent';
-  value: number;
-  duration?: number; // minutes
-  consecutive?: number; // consecutive violations
-export interface AlertRecipient {
-  type: 'user' | 'role' | 'email',
-  identifier: string;
-  priority: 'low' | 'medium' | 'high'
-export interface AlertChannel {
-  type: 'email' | 'sms' | 'slack' | 'webhook' | 'in_app',
-  configuration: unknown;
-  isEnabled: boolean
-export interface DataGovernance {
-  dataClassification: DataClassification[],
-  retentionPolicies: RetentionPolicy[];
-  accessAudit: AccessAuditLog[],
-  dataLineage: DataLineage;
-  qualityRules: DataQualityRule[]
-export interface DataClassification {
-  field: string,
-  classification: 'public' | 'internal' | 'confidential' | 'restricted';
-  reason: string,
-  appliedAt: Date;
-  appliedBy: string
-export interface RetentionPolicy {
-  dataType: string,
-  retentionPeriod: number; // days
-  action: 'archive' | 'delete' | 'anonymize',
-  reason: string;
-  isActive: boolean
-export interface AccessAuditLog {
-  userId: string,
-  reportId: string;
-  action: 'view' | 'edit' | 'delete' | 'share' | 'export',
-  timestamp: Date;
-  ipAddress: string,
-  userAgent: string;
-  success: boolean;
-  details?: unknown;
-export interface DataLineage {
-  sources: LineageNode[],
-  transformations: LineageTransformation[];
-  destinations: LineageNode[]
-export interface LineageNode {
-  id: string,
-  type: 'table' | 'view' | 'api' | 'file' | 'report';
-  name: string;
-  schema?: string;
-  description?: string;
-export interface LineageTransformation {
-  id: string,
-  type: 'join' | 'filter' | 'aggregate' | 'calculate' | 'pivot';
-  description: string,
-  inputs: string[];
-  outputs: string[],
-  logic: string
-export interface DataQualityRule {
-  id: string,
-  name: string;
-  field: string,
-  rule: 'not_null' | 'unique' | 'range' | 'pattern' | 'custom';
-  parameters: unknown,
-  severity: 'warning' | 'error';
-  isActive: boolean
+  \1,\2 boolean
+\1
+}
 }
 
 class BusinessIntelligenceService extends EventEmitter {
@@ -386,7 +53,7 @@ class BusinessIntelligenceService extends EventEmitter {
    * Start the BI service;
    */
   async start(): Promise<void> {
-    if (this.isRunning) return;
+    \1 {\n  \2eturn;
 
     try {
       this.isRunning = true;
@@ -418,7 +85,7 @@ class BusinessIntelligenceService extends EventEmitter {
    * Stop the BI service;
    */
   async stop(): Promise<void> {
-    if (!this.isRunning) return;
+    \1 {\n  \2eturn;
 
     this.isRunning = false;
 
@@ -437,15 +104,14 @@ class BusinessIntelligenceService extends EventEmitter {
     const newReport: AnalyticsReport = {
       ...report,
       id: uuidv4(),
-      status: 'active';
-      createdAt: new Date(),
+      \1,\2 new Date(),
       updatedAt: new Date()
     };
 
     this.reports.set(newReport.id, newReport);
 
     // Start scheduled job if configured
-    if (newReport.schedule?.enabled) {
+    \1 {\n  \2{
       this.startScheduledJob(newReport);
     }
 
@@ -466,12 +132,11 @@ class BusinessIntelligenceService extends EventEmitter {
    */
   async executeReport(reportId: string, parameters: Record<string, unknown> = {}, triggeredBy: string, triggerType: 'manual' | 'scheduled' | 'api' = 'manual'): Promise<string> {
     const report = this.reports.get(reportId);
-    if (!report) {
-      throw new Error(`Report not found: ${reportId}`);
+    \1 {\n  \2{
+      throw new Error(`Report not found: ${\1}`;
     }
 
-    const execution: ReportExecution = {
-      id: uuidv4(),
+    const \1,\2 uuidv4(),
       reportId,
       parameters,
       status: 'running',
@@ -511,8 +176,8 @@ class BusinessIntelligenceService extends EventEmitter {
    */
   async getReportData(reportId: string, parameters: Record<string, unknown> = {}): Promise<unknown> {
     const report = this.reports.get(reportId);
-    if (!report) {
-      throw new Error(`Report not found: ${reportId}`);
+    \1 {\n  \2{
+      throw new Error(`Report not found: ${\1}`;
     }
 
     try {
@@ -533,8 +198,7 @@ class BusinessIntelligenceService extends EventEmitter {
       id: uuidv4(),
       refreshedAt: new Date(),
       recordCount: 0,
-      sizeBytes: 0;
-      status: 'loading'
+      \1,\2 'loading'
     };
 
     this.datasets.set(newDataset.id, newDataset);
@@ -551,7 +215,7 @@ class BusinessIntelligenceService extends EventEmitter {
    */
   async refreshDataset(datasetId: string): Promise<boolean> {
     const dataset = this.datasets.get(datasetId);
-    if (!dataset) return false;
+    \1 {\n  \2eturn false;
 
     try {
       dataset.status = 'loading';
@@ -594,7 +258,7 @@ class BusinessIntelligenceService extends EventEmitter {
     this.kpiValues.set(newKPI.id, []);
 
     // Start monitoring if active
-    if (newKPI.isActive) {
+    \1 {\n  \2{
       this.startKPICollection(newKPI);
     }
 
@@ -608,7 +272,7 @@ class BusinessIntelligenceService extends EventEmitter {
   getKPIValues(kpiId: string, timeRange?: { start: Date, end: Date }): KPIValue[] {
     const values = this.kpiValues.get(kpiId) || [];
 
-    if (!timeRange) return values;
+    \1 {\n  \2eturn values;
 
     return values.filter(v =>
       v.timestamp >= timeRange?.start && v.timestamp <= timeRange.end;
@@ -630,8 +294,7 @@ class BusinessIntelligenceService extends EventEmitter {
     const newAlert: AnalyticsAlert = {
       ...alert,
       id: uuidv4(),
-      triggerCount: 0;
-      createdAt: new Date()
+      \1,\2 new Date()
     };
 
     this.alerts.set(newAlert.id, newAlert);
@@ -645,7 +308,7 @@ class BusinessIntelligenceService extends EventEmitter {
    */
   async generateInsights(datasetId: string): Promise<AnalyticsInsight[]> {
     const dataset = this.datasets.get(datasetId);
-    if (!dataset || dataset.status !== 'ready') {
+    \1 {\n  \2{
       return [];
     }
 
@@ -670,11 +333,11 @@ class BusinessIntelligenceService extends EventEmitter {
   getInsights(category?: string, severity?: string): AnalyticsInsight[] {
     let filtered = this.insights.filter(i => !i.dismissed);
 
-    if (category != null) {
+    \1 {\n  \2{
       filtered = filtered.filter(i => i.category === category);
     }
 
-    if (severity != null) {
+    \1 {\n  \2{
       filtered = filtered.filter(i => i.severity === severity);
     }
 
@@ -686,8 +349,8 @@ class BusinessIntelligenceService extends EventEmitter {
    */
   async exportReport(reportId: string, format: 'pdf' | 'xlsx' | 'csv' | 'png', parameters: Record<string, unknown> = {}): Promise<string> {
     const report = this.reports.get(reportId);
-    if (!report) {
-      throw new Error(`Report not found: ${reportId}`);
+    \1 {\n  \2{
+      throw new Error(`Report not found: ${\1}`;
     }
 
     try {
@@ -706,7 +369,7 @@ class BusinessIntelligenceService extends EventEmitter {
   /**
    * Get analytics statistics;
    */
-  getStatistics(): {total: number, active: number; scheduled: number ;total: number, ready: number; loading: number, error: number ;total: number, success: number; failed: number, running: number ;total: number, critical: number; dismissed: number ;total: number, active: number ;
+  getStatistics(): {total: number, \1,\2 number ;total: number, \1,\2 number, \1,\2 number, \1,\2 number, \1,\2 number, \1,\2 number ;total: number, active: number ;
   } {
     const allReports = Array.from(this.reports.values());
     const allDatasets = Array.from(this.datasets.values());
@@ -714,30 +377,21 @@ class BusinessIntelligenceService extends EventEmitter {
     const allKPIs = Array.from(this.kpis.values());
 
     return {
-      reports: {
-        total: allReports.length,
-        active: allReports.filter(r => r.status === 'active').length;
-        scheduled: allReports.filter(r => r.schedule?.enabled).length
+      \1,\2 allReports.length,
+        \1,\2 allReports.filter(r => r.schedule?.enabled).length
       },
-      datasets: {
-        total: allDatasets.length,
-        ready: allDatasets.filter(d => d.status === 'ready').length;
-        loading: allDatasets.filter(d => d.status === 'loading').length,
+      \1,\2 allDatasets.length,
+        \1,\2 allDatasets.filter(d => d.status === 'loading').length,
         error: allDatasets.filter(d => d.status === 'error').length
       },
-      executions: {
-        total: allExecutions.length,
-        success: allExecutions.filter(e => e.status === 'completed').length;
-        failed: allExecutions.filter(e => e.status === 'failed').length,
+      \1,\2 allExecutions.length,
+        \1,\2 allExecutions.filter(e => e.status === 'failed').length,
         running: allExecutions.filter(e => e.status === 'running').length
       },
-      insights: {
-        total: this.insights.length,
-        critical: this.insights.filter(i => i.severity === 'critical' && !i.dismissed).length;
-        dismissed: this.insights.filter(i => i.dismissed).length
+      \1,\2 this.insights.length,
+        \1,\2 this.insights.filter(i => i.dismissed).length
       },
-      kpis: {
-        total: allKPIs.length,
+      \1,\2 allKPIs.length,
         active: allKPIs.filter(k => k.isActive).length
       }
     };
@@ -771,30 +425,24 @@ class BusinessIntelligenceService extends EventEmitter {
       // Sample KPIs
       await this.defineKPI({
         name: 'Patient Satisfaction',
-        description: 'Overall patient satisfaction score';
-        category: 'Quality',
-        formula: 'AVG(satisfaction_score)';
-        unit: '%',
-        target: 95;min: 90 ,
+        \1,\2 'Quality',
+        \1,\2 '%',
+        \1,\2 90 ,
           yellow: min: 80, max: 89 ,
           red: max: 79 ,
         frequency: 'daily',
-        dataSources: ['patient_surveys'];
-        isActive: true
+        \1,\2 true
       });
 
       await this.defineKPI({
         name: 'Average Length of Stay',
-        description: 'Average patient length of stay';
-        category: 'Efficiency',
-        formula: 'AVG(length_of_stay)';
-        unit: 'days',
-        target: 4.5;max: 4.5 ,
+        \1,\2 'Efficiency',
+        \1,\2 'days',
+        \1,\2 4.5 ,
           yellow: min: 4.6, max: 5.5 ,
           red: min: 5.6 ,
         frequency: 'daily',
-        dataSources: ['admissions'];
-        isActive: true
+        \1,\2 true
       });
 
     } catch (error) {
@@ -813,14 +461,14 @@ class BusinessIntelligenceService extends EventEmitter {
 
   private startScheduledJobs(): void {
     this.reports.forEach(report => {
-      if (report.schedule?.enabled) {
+      \1 {\n  \2{
         this.startScheduledJob(report)
       }
     });
   }
 
   private startScheduledJob(report: AnalyticsReport): void {
-    if (!report.schedule?.enabled) return;
+    \1 {\n  \2eturn;
 
     const intervalMs = this.calculateScheduleInterval(report.schedule);
 
@@ -856,7 +504,7 @@ class BusinessIntelligenceService extends EventEmitter {
 
   private async collectKPIValues(): Promise<void> {
     for (const kpi of this.kpis.values()) {
-      if (!kpi.isActive) continue;
+      \1 {\n  \2ontinue;
 
       try {
         const value = await this.calculateKPIValue(kpi);
@@ -864,7 +512,7 @@ class BusinessIntelligenceService extends EventEmitter {
         values.push(value);
 
         // Keep only last 1000 values
-        if (values.length > 1000) {
+        \1 {\n  \2{
           values.splice(0, values.length - 1000);
         }
 
@@ -881,15 +529,14 @@ class BusinessIntelligenceService extends EventEmitter {
 
   private async calculateKPIValue(kpi: KPIDefinition): Promise<KPIValue> {
     // Mock KPI calculation - in production, this would execute the formula
-    const mockValue = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100;
+    const mockValue = crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 100;
     const target = kpi.target || 0;
     const trend = mockValue > target * 0.95 ? 'up' : mockValue < target * 0.85 ? 'down' : 'stable';
 
     let status: 'green' | 'yellow' | 'red' = 'green';
-    if (kpi.threshold.red?.min && mockValue >= kpi.threshold.red.min) status = 'red';
-    else if (kpi.threshold.red?.max && mockValue <= kpi.threshold.red.max) status = 'red';
-    else if (kpi.threshold.yellow?.min && mockValue >= kpi.threshold.yellow?.min &&
-             kpi.threshold.yellow?.max && mockValue <= kpi.threshold.yellow.max) status = 'yellow';
+    \1 {\n  \2tatus = 'red';
+    else \1 {\n  \2tatus = 'red';
+    else \1 {\n  \2tatus = 'yellow';
 
     return {
       kpiId: kpi.id,
@@ -898,7 +545,7 @@ class BusinessIntelligenceService extends EventEmitter {
       target,
       status,
       trend,
-      changePercent: (crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) - 0.5) * 10, // -5% to +5%
+      changePercent: (crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) - 0.5) * 10, // -5% to +5%
       metadata: 
     };
   }
@@ -909,7 +556,7 @@ class BusinessIntelligenceService extends EventEmitter {
     alerts.forEach(alert => {
       const shouldTrigger = this.evaluateAlertCondition(alert.condition, value);
 
-      if (shouldTrigger != null) {
+      \1 {\n  \2{
         this.trigger/* SECURITY: Alert removed */
       }
     });
@@ -934,7 +581,7 @@ class BusinessIntelligenceService extends EventEmitter {
 
     // Send notifications via configured channels
     alert.channels.forEach(channel => {
-      if (channel.isEnabled) {
+      \1 {\n  \2{
         this.sendAlertNotification(alert, value, channel);
       }
     });
@@ -949,7 +596,7 @@ class BusinessIntelligenceService extends EventEmitter {
 
   private async generateAllInsights(): Promise<void> {
     for (const dataset of this.datasets.values()) {
-      if (dataset.status === 'ready') {
+      \1 {\n  \2{
         await this.generateInsights(dataset.id)
       }
     }
@@ -957,10 +604,10 @@ class BusinessIntelligenceService extends EventEmitter {
 
   private async performReportExecution(report: AnalyticsReport, parameters: Record<string, unknown>): Promise<{ url: string, data: unknown }> {
     // Mock report execution
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await \1;
 
     return {
-      url: `/reports/${report.id}/results/${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      url: `/reports/${report.id}/results/${crypto.getRandomValues(\1[0]}`,
       data: { message: 'Report executed successfully', parameters }
     };
   }
@@ -985,15 +632,13 @@ class BusinessIntelligenceService extends EventEmitter {
     const insights: AnalyticsInsight[] = [];
 
     // Simulate anomaly detection
-    if (crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) > 0.8) {
+    \1 {\n  \2[0] / (0xFFFFFFFF + 1) > 0.8) {
       insights.push({
         id: uuidv4(),
-        type: 'anomaly';
-        title: 'Unusual Data Pattern Detected',
+        \1,\2 'Unusual Data Pattern Detected',
         description: `Anomalous pattern detected in $dataset.name`,
         severity: 'medium',
-        confidence: 85;
-        dataPoints: [],
+        \1,\2 [],
         recommendations: ['Investigate data source', 'Review data quality'],
         category: 'Data Quality',
         detectedAt: new Date(),
@@ -1006,7 +651,7 @@ class BusinessIntelligenceService extends EventEmitter {
 
   private async performReportExport(report: AnalyticsReport, data: unknown, format: string): Promise<string> {
     // Mock export
-    return `/exports/$report.id_$crypto.getRandomValues(new Uint32Array(1))[0].$format`;
+    return `/exports/$report.id_$crypto.getRandomValues(\1[0].$format`;
   }
 
   private calculateScheduleInterval(schedule: ScheduleConfig): number {

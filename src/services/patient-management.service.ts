@@ -69,7 +69,7 @@ const AddressSchema = z.object({
   postalCode: z.string().min(1, "Postal code is required"),
   country: z.string().default("USA"),
   county: z.string().optional(),
-  validFrom: z.date().default(new Date()),
+  validFrom: z.date().default(\1,
   validTo: z.date().optional(),
   isBilling: z.boolean().default(false),
   isShipping: z.boolean().default(false),
@@ -137,19 +137,8 @@ const InsuranceSchema = z.object({
 /**
  * Service class for patient management;
  */
-export class PatientManagementService {
-  private auditService: AuditService;
-  private fhirService: FhirService;
-  private authService: AuthService;
-  private notificationService: NotificationService;
-  private encryptionService: EncryptionService;
-
-  constructor() {
-    this.auditService = new AuditService();
-    this.fhirService = new FhirService();
-    this.authService = new AuthService();
-    this.notificationService = new NotificationService();
-    this.encryptionService = new EncryptionService();
+\1
+}
   }
 
   /**
@@ -166,8 +155,7 @@ export class PatientManagementService {
     today.setHours(0, 0, 0, 0);
 
     const patientCount = await prisma.patient.count({
-      where: {
-        createdAt: {
+      \1,\2 {
           gte: today
         }
       }
@@ -202,7 +190,7 @@ export class PatientManagementService {
       });
 
       // Create contact information if provided
-      if (patientData.contact) {
+      \1 {\n  \2{
         const validatedContact = ContactSchema.parse(patientData.contact);
         await prisma.patientContact.create({
           data: {
@@ -213,7 +201,7 @@ export class PatientManagementService {
       }
 
       // Create address if provided
-      if (patientData.address) {
+      \1 {\n  \2{
         const validatedAddress = AddressSchema.parse(patientData.address);
         await prisma.patientAddress.create({
           data: {
@@ -224,7 +212,7 @@ export class PatientManagementService {
       }
 
       // Create identification if provided
-      if (patientData.identification) {
+      \1 {\n  \2{
         const validatedIdentification = IdentificationSchema.parse(patientData.identification);
         await prisma.patientIdentification.create({
           data: {
@@ -235,7 +223,7 @@ export class PatientManagementService {
       }
 
       // Create emergency contact if provided
-      if (patientData.emergencyContact) {
+      \1 {\n  \2{
         const validatedEmergencyContact = EmergencyContactSchema.parse(patientData.emergencyContact);
         await prisma.emergencyContact.create({
           data: {
@@ -246,7 +234,7 @@ export class PatientManagementService {
       }
 
       // Create insurance if provided
-      if (patientData.insurance) {
+      \1 {\n  \2{
         const validatedInsurance = InsuranceSchema.parse(patientData.insurance);
         await prisma.patientInsurance.create({
           data: {
@@ -263,8 +251,7 @@ export class PatientManagementService {
       await this.auditService.logAction({
         action: 'Create',
         resourceType: 'Patient',        resourceId: patient.id,
-        description: `Created patient record for /* SECURITY: Template literal eliminated */
-        performedBy: userId,
+        \1,\2 userId,
         performerRole: await this.authService.getUserRole(userId)
       });
 
@@ -282,38 +269,33 @@ export class PatientManagementService {
     try {
       // Check if user has permission to view this patient
       const hasPermission = await this.authService.hasPermission(userId, 'view', 'patient', patientId);
-      if (!hasPermission) {
+      \1 {\n  \2{
         throw new Error('Unauthorized to view this patient');
       }
 
       // Get patient with related data
       const patient = await prisma.patient.findUnique({
         where: { id: patientId },
-        include: {
-          contact: true,
+        \1,\2 true,
           addresses: true,          identifications: true,
           contacts: true,          insurances: true,
           allergies: true,          conditions: true,
-          documents: true,          appointments: {
-            take: 5,
+          documents: true,          \1,\2 5,
             orderBy: { startDateTime: 'desc' }
           },
-          visits: {
-            take: 5,
+          \1,\2 5,
             orderBy: { startDate: 'desc' }
           },
-          vitalSigns: {
-            take: 10,
+          \1,\2 10,
             orderBy: { recordedAt: 'desc' }
           },
-          immunizations: {
-            take: 10,
+          \1,\2 10,
             orderBy: { administeredDate: 'desc' }
           }
         }
       });
 
-      if (!patient) {
+      \1 {\n  \2{
         throw new Error('Patient not found');
       }
 
@@ -321,8 +303,7 @@ export class PatientManagementService {
       await this.auditService.logAction({
         action: 'View',
         resourceType: 'Patient',        resourceId: patientId,
-        description: `Viewed patient record for /* SECURITY: Template literal eliminated */
-        performedBy: userId,
+        \1,\2 userId,
         performerRole: await this.authService.getUserRole(userId)
       });
 
@@ -340,7 +321,7 @@ export class PatientManagementService {
     try {
       // Check if user has permission to update this patient
       const hasPermission = await this.authService.hasPermission(userId, 'update', 'patient', patientId);
-      if (!hasPermission) {
+      \1 {\n  \2{
         throw new Error('Unauthorized to update this patient');
       }
 
@@ -349,7 +330,7 @@ export class PatientManagementService {
         where: { id: patientId }
       });
 
-      if (!existingPatient) {
+      \1 {\n  \2{
         throw new Error('Patient not found');
       }
 
@@ -366,7 +347,7 @@ export class PatientManagementService {
       });
 
       // Update contact information if provided
-      if (patientData.contact) {
+      \1 {\n  \2{
         const validatedContact = ContactSchema.parse(patientData.contact);
         await prisma.patientContact.upsert({
           where: { patientId },
@@ -385,8 +366,7 @@ export class PatientManagementService {
       await this.auditService.logAction({
         action: 'Update',
         resourceType: 'Patient',        resourceId: patientId,
-        description: `Updated patient record for /* SECURITY: Template literal eliminated */
-        performedBy: userId,
+        \1,\2 userId,
         performerRole: await this.authService.getUserRole(userId)
       });
 
@@ -404,7 +384,7 @@ export class PatientManagementService {
     try {
       // Check if user has permission
       const hasPermission = await this.authService.hasPermission(userId, 'update', 'patient', patientId);
-      if (!hasPermission) {
+      \1 {\n  \2{
         throw new Error('Unauthorized to update this patient');
       }
 
@@ -412,15 +392,14 @@ export class PatientManagementService {
       const validatedAddress = AddressSchema.parse(addressData);
 
       // If this is a primary address, unset primary flag on other addresses of same type
-      if (validatedAddress.isPrimary) {
+      \1 {\n  \2{
         await prisma.patientAddress.updateMany({
           where: {
             patientId,
             addressType: validatedAddress.addressType,
             isPrimary: true
           },
-          data: {
-            isPrimary: false
+          \1,\2 false
           }
         });
       }
@@ -456,7 +435,7 @@ export class PatientManagementService {
     try {
       // Check if user has permission
       const hasPermission = await this.authService.hasPermission(userId, 'update', 'patient', patientId);
-      if (!hasPermission) {
+      \1 {\n  \2{
         throw new Error('Unauthorized to update this patient');
       }
 
@@ -464,28 +443,26 @@ export class PatientManagementService {
       const validatedIdentification = IdentificationSchema.parse(identificationData);
 
       // If this is a primary ID, unset primary flag on other IDs of same type
-      if (validatedIdentification.isPrimary) {
+      \1 {\n  \2{
         await prisma.patientIdentification.updateMany({
           where: {
             patientId,
             idType: validatedIdentification.idType,
             isPrimary: true
           },
-          data: {
-            isPrimary: false
+          \1,\2 false
           }
         });
       }
 
       // Check for existing ID with same number
       const existingId = await prisma.patientIdentification.findFirst({
-        where: {
-          idType: validatedIdentification.idType,
+        \1,\2 validatedIdentification.idType,
           idNumber: validatedIdentification.idNumber
         }
       });
 
-      if (existingId && existingId.patientId !== patientId) {
+      \1 {\n  \2{
         throw new Error(`This ${validatedIdentification.idType} is already associated with another patient`);
       }
 
@@ -520,7 +497,7 @@ export class PatientManagementService {
     try {
       // Check if user has permission
       const hasPermission = await this.authService.hasPermission(userId, 'update', 'patient', patientId);
-      if (!hasPermission) {
+      \1 {\n  \2{
         throw new Error('Unauthorized to update this patient');
       }
 
@@ -528,14 +505,13 @@ export class PatientManagementService {
       const validatedContact = EmergencyContactSchema.parse(contactData);
 
       // If this is a primary contact, unset primary flag on other contacts
-      if (validatedContact.isPrimary) {
+      \1 {\n  \2{
         await prisma.emergencyContact.updateMany({
           where: {
             patientId,
             isPrimary: true
           },
-          data: {
-            isPrimary: false
+          \1,\2 false
           }
         });
       }
@@ -571,7 +547,7 @@ export class PatientManagementService {
     try {
       // Check if user has permission
       const hasPermission = await this.authService.hasPermission(userId, 'update', 'patient', patientId);
-      if (!hasPermission) {
+      \1 {\n  \2{
         throw new Error('Unauthorized to update this patient');
       }
 
@@ -579,7 +555,7 @@ export class PatientManagementService {
       const validatedInsurance = InsuranceSchema.parse(insuranceData);
 
       // If there's an existing insurance of the same type, update its status based on priority
-      if (validatedInsurance.insuranceType === 'Primary') {
+      \1 {\n  \2{
         // Find existing primary insurance
         const existingPrimary = await prisma.patientInsurance.findFirst({
           where: {
@@ -589,7 +565,7 @@ export class PatientManagementService {
         });
 
         // If found, change it to secondary
-        if (existingPrimary != null) {
+        \1 {\n  \2{
           await prisma.patientInsurance.update({
             where: { id: existingPrimary.id },
             data: { insuranceType: 'Secondary' }
@@ -603,7 +579,7 @@ export class PatientManagementService {
             }
           });
 
-          if (existingSecondary != null) {
+          \1 {\n  \2{
             await prisma.patientInsurance.update({
               where: { id: existingSecondary.id },
               data: { insuranceType: 'Tertiary' }
@@ -643,39 +619,39 @@ export class PatientManagementService {
     try {
       // Check if user has permission to search patients
       const hasPermission = await this.authService.hasPermission(userId, 'search', 'patient');
-      if (!hasPermission) {
+      \1 {\n  \2{
         throw new Error('Unauthorized to search patients');
       }
 
       // Build where clause based on search parameters
       const where: unknown = {};
 
-      if (searchParams.mrn) {
+      \1 {\n  \2{
         where.mrn = {
           contains: searchParams.mrn,
           mode: 'insensitive'
         };
       }
 
-      if (searchParams.firstName) {
+      \1 {\n  \2{
         where.firstName = {
           contains: searchParams.firstName,
           mode: 'insensitive'
         };
       }
 
-      if (searchParams.lastName) {
+      \1 {\n  \2{
         where.lastName = {
           contains: searchParams.lastName,
           mode: 'insensitive'
         };
       }
 
-      if (searchParams.dateOfBirth) {
+      \1 {\n  \2{
         where.dateOfBirth = new Date(searchParams.dateOfBirth);
       }
 
-      if (searchParams.phone) {
+      \1 {\n  \2{
         where.contact = {
           OR: [
             { phoneHome: { contains: searchParams.phone } },
@@ -685,17 +661,16 @@ export class PatientManagementService {
         };
       }
 
-      if (searchParams.email) {
+      \1 {\n  \2{
         where.contact = {
           ...where.contact,
-          email: {
-            contains: searchParams.email,
+          \1,\2 searchParams.email,
             mode: 'insensitive'
           }
         };
       }
 
-      if (searchParams.status) {
+      \1 {\n  \2{
         where.status = searchParams.status;
       }
 
@@ -707,10 +682,8 @@ export class PatientManagementService {
       const [patients, total] = await Promise.all([
         prisma.patient.findMany({
           where,
-          include: {
-            contact: true,
-            addresses: {
-              where: { isPrimary: true }
+          \1,\2 true,
+            \1,\2 { isPrimary: true }
             }
           },
           skip,
@@ -746,15 +719,14 @@ export class PatientManagementService {
     try {
       // Check if user has permission
       const hasPermission = await this.authService.hasPermission(userId, 'update', 'patient', patientId);
-      if (!hasPermission) {
+      \1 {\n  \2{
         throw new Error('Unauthorized to update this patient');
       }
 
       // Update patient record
       const patient = await prisma.patient.update({
         where: { id: patientId },
-        data: {
-          status: 'Deceased',
+        \1,\2 'Deceased',
           deceasedDate: data.deceasedDate,          deceasedReason: data.deceasedReason
         }
       });
@@ -785,7 +757,7 @@ export class PatientManagementService {
     try {
       // Check if user has permission (requires admin or specific merge permission)
       const hasPermission = await this.authService.hasPermission(userId, 'merge', 'patient')
-      if (!hasPermission) {
+      \1 {\n  \2{
         throw new Error('Unauthorized to merge patient records');
       }
 
@@ -795,8 +767,7 @@ export class PatientManagementService {
         const [sourcePatient, targetPatient] = await Promise.all([
           tx.patient.findUnique({
             where: { id: sourcePatientId },
-            include: {
-              contact: true,
+            \1,\2 true,
               addresses: true,              identifications: true,
               contacts: true,              insurances: true,
               allergies: true,              conditions: true,
@@ -810,15 +781,14 @@ export class PatientManagementService {
           })
         ]);
 
-        if (!sourcePatient || !targetPatient) {
+        \1 {\n  \2{
           throw new Error('Source or target patient not found');
         }
 
         // Transfer addresses
         for (const address of sourcePatient.addresses) {
           await tx.patientAddress.create({
-            data: {
-              addressType: address.addressType,
+            \1,\2 address.addressType,
               isPrimary: false, // Don't override target's primary addresses
               addressLine1: address.addressLine1,
               addressLine2: address.addressLine2,              city: address.city,
@@ -836,16 +806,14 @@ export class PatientManagementService {
         for (const id of sourcePatient.identifications) {
           // Check if this ID already exists for target patient
           const existingId = await tx.patientIdentification.findFirst({
-            where: {
-              patientId: targetPatientId,
+            \1,\2 targetPatientId,
               idType: id.idType,              idNumber: id.idNumber
             }
           });
 
-          if (!existingId) {
+          \1 {\n  \2{
             await tx.patientIdentification.create({
-              data: {
-                idType: id.idType,
+              \1,\2 id.idType,
                 idNumber: id.idNumber,                issuingCountry: id.issuingCountry,
                 issuingState: id.issuingState,                issueDate: id.issueDate,
                 expirationDate: id.expirationDate,                isPrimary: false, // Don't override target's primary IDs
@@ -860,8 +828,7 @@ export class PatientManagementService {
         // Transfer emergency contacts
         for (const contact of sourcePatient.contacts) {
           await tx.emergencyContact.create({
-            data: {
-              firstName: contact.firstName,
+            \1,\2 contact.firstName,
               lastName: contact.lastName,              relationship: contact.relationship,
               isPrimary: false, // Don't override target's primary contacts
               phoneHome: contact.phoneHome,
@@ -881,16 +848,14 @@ export class PatientManagementService {
         for (const insurance of sourcePatient.insurances) {
           // Check if this insurance already exists for target patient
           const existingInsurance = await tx.patientInsurance.findFirst({
-            where: {
-              patientId: targetPatientId,
+            \1,\2 targetPatientId,
               payerName: insurance.payerName,              policyNumber: insurance.policyNumber
             }
           });
 
-          if (!existingInsurance) {
+          \1 {\n  \2{
             await tx.patientInsurance.create({
-              data: {
-                insuranceType: 'Secondary', // Don't override primary insurance
+              \1,\2 'Secondary', // Don't override primary insurance
                 payerName: insurance.payerName,
                 planName: insurance.planName,                policyNumber: insurance.policyNumber,
                 groupNumber: insurance.groupNumber,                subscriberId: insurance.subscriberId,
@@ -911,8 +876,7 @@ export class PatientManagementService {
         // Allergies
         for (const allergy of sourcePatient.allergies) {
           await tx.patientAllergy.create({
-            data: {
-              allergyType: allergy.allergyType,
+            \1,\2 allergy.allergyType,
               allergen: allergy.allergen,              reaction: allergy.reaction,
               severity: allergy.severity,              status: allergy.status,
               onsetDate: allergy.onsetDate,              endDate: allergy.endDate,
@@ -925,8 +889,7 @@ export class PatientManagementService {
         // Conditions
         for (const condition of sourcePatient.conditions) {
           await tx.patientCondition.create({
-            data: {
-              conditionName: condition.conditionName,
+            \1,\2 condition.conditionName,
               conditionCode: condition.conditionCode,              category: condition.category,
               status: condition.status,              onsetDate: condition.onsetDate,
               endDate: condition.endDate,              severity: condition.severity,
@@ -965,16 +928,14 @@ export class PatientManagementService {
         // Mark source patient as inactive and add note about merge
         await tx.patient.update({
           where: { id: sourcePatientId },
-          data: {
-            status: 'Inactive',
+          \1,\2 'Inactive',
             notes: `This patient record was merged into patient ${targetPatientId} on ${new Date().toISOString()} by ${userId}`,          }
         });
 
         // Update target patient with note about merge
         const updatedTargetPatient = await tx.patient.update({
           where: { id: targetPatientId },
-          data: {
-            notes: targetPatient.notes,              ? `${targetPatient.notes}\nMerged with patient ${sourcePatientId} on ${new Date().toISOString()} by ${userId}`
+          \1,\2 targetPatient.notes,              ? `${targetPatient.notes}\nMerged with patient ${sourcePatientId} on ${new Date().toISOString()} by ${userId}`
               : `Merged with patient ${sourcePatientId} on ${new Date().toISOString()} by ${userId}`;
           }
         });
@@ -1004,21 +965,20 @@ export class PatientManagementService {
     try {
       // Check if user has permission
       const hasPermission = await this.authService.hasPermission(userId, 'view', 'patient', patientId);
-      if (!hasPermission) {
+      \1 {\n  \2{
         throw new Error('Unauthorized to view this patient');
       }
 
       // Get patient with all related data for MPI
       const patient = await prisma.patient.findUnique({
         where: { id: patientId },
-        include: {
-          contact: true,
+        \1,\2 true,
           addresses: true,          identifications: true,
           contacts: true,          insurances: true
         }
       });
 
-      if (!patient) {
+      \1 {\n  \2{
         throw new Error('Patient not found');
       }
 

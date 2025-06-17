@@ -27,14 +27,10 @@ import { Edit, Eye, Filter, Trash2 } from "lucide-react";
 // Mock data structure - replace with actual API response type
 interface Booking {
   id: string,
-  scheduled_start_time: string;
-  scheduled_end_time: string,
-  status: string;
-  priority: string,
-  patient_name: string;
-  patient_mrn: string,
-  surgery_name: string;
-  theatre_name: string,
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 string,
   surgeon_name: string
 export default const _OTBookingList = () {
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -42,8 +38,7 @@ export default const _OTBookingList = () {
   const [error, setError] = useState<string | null>();
   const [filters, setFilters] = useState({
     status: "",
-    theatreId: "";
-    surgeonId: "",
+    \1,\2 "",
     date: ""
   });
   const [showFilters, setShowFilters] = useState(false),
@@ -55,19 +50,17 @@ export default const _OTBookingList = () {
 
         // Construct query parameters based on filters
         const queryParameters = new URLSearchParams();
-        if (filters.status) queryParameters.append("status", filters.status);
-        if (filters.theatreId)
-          queryParameters.append("theatreId", filters.theatreId);
-        if (filters.surgeonId)
-          queryParameters.append("surgeonId", filters.surgeonId);
-        if (filters.date) {
+        \1 {\n  \2ueryParameters.append("status", filters.status);
+        \1 {\n  \2ueryParameters.append("theatreId", filters.theatreId);
+        \1 {\n  \2ueryParameters.append("surgeonId", filters.surgeonId);
+        \1 {\n  \2{
           queryParameters.append("startDate", filters.date);
           queryParameters.append("endDate", filters.date);
         }
 
         // Replace with actual API call
-        // const _response = await fetch(`/api/ot/bookings?${queryParams.toString()}`)
-        // if (!response.ok) {
+        // const _response = await fetch(`/api/ot/bookings?${\1}`
+        // \1 {\n  \2{
         //   throw new Error("Failed to fetch bookings")
         // }
         // const _data = await response.json()
@@ -80,36 +73,27 @@ export default const _OTBookingList = () {
             id: "booking-1",
             scheduled_start_time: "2025-04-28T08:00:00Z",
             scheduled_end_time: "2025-04-28T10:30:00Z",
-            status: "completed";
-            priority: "routine",
-            patient_name: "John Smith";
-            patient_mrn: "MRN001",
-            surgery_name: "Appendectomy";
-            theatre_name: "OT-1",
+            \1,\2 "routine",
+            \1,\2 "MRN001",
+            \1,\2 "OT-1",
             surgeon_name: "Dr. Alice Brown"
           },
           {
             id: "booking-2",
             scheduled_start_time: "2025-04-28T09:30:00Z",
             scheduled_end_time: "2025-04-28T12:00:00Z",
-            status: "in_progress";
-            priority: "urgent",
-            patient_name: "Sarah Johnson";
-            patient_mrn: "MRN002",
-            surgery_name: "Cholecystectomy";
-            theatre_name: "OT-2",
+            \1,\2 "urgent",
+            \1,\2 "MRN002",
+            \1,\2 "OT-2",
             surgeon_name: "Dr. Bob White"
           },
           {
             id: "booking-3",
             scheduled_start_time: "2025-04-28T14:00:00Z",
             scheduled_end_time: "2025-04-28T16:00:00Z",
-            status: "scheduled";
-            priority: "routine",
-            patient_name: "Emily Davis";
-            patient_mrn: "MRN004",
-            surgery_name: "Thyroidectomy";
-            theatre_name: "OT-1",
+            \1,\2 "routine",
+            \1,\2 "MRN004",
+            \1,\2 "OT-1",
             surgeon_name: "Dr. Alice Brown"
           },
         ];
@@ -126,7 +110,7 @@ export default const _OTBookingList = () {
 
         setLoading(false);
       } catch (error_: unknown) {
-        if (error_ instanceof Error) {
+        \1 {\n  \2{
           setError(error_.message)
         } else {
           setError("An unknown error occurred");
@@ -148,35 +132,35 @@ export default const _OTBookingList = () {
         return <Badge variant="secondary">Scheduled</Badge>
       }
       case "confirmed": {
-        return <Badge className="bg-blue-100 text-blue-800">Confirmed</Badge>;
+        return <Badge className="bg-blue-100 text-blue-800">Confirmed\1>
       }
       case "in_progress": {
         return (
-          <Badge className="bg-yellow-100 text-yellow-800">In Progress</Badge>;
+          <Badge className="bg-yellow-100 text-yellow-800">In Progress\1>
         );
       }
       case "completed": {
-        return <Badge className="bg-green-100 text-green-800">Completed</Badge>;
+        return <Badge className="bg-green-100 text-green-800">Completed\1>
       }
       case "cancelled": {
-        return <Badge variant="destructive">Cancelled</Badge>;
+        return <Badge variant="destructive">Cancelled\1>
       }
       case "postponed": {
         return (
-          <Badge className="bg-purple-100 text-purple-800">Postponed</Badge>;
+          <Badge className="bg-purple-100 text-purple-800">Postponed\1>
         );
       }
       default: {
-        return <Badge>{status}</Badge>;
+        return <Badge>{status}\1>
       }
     }
   };
 
   return (
     <Card>
-      <CardContent className="pt-6">;
-        <div className="flex justify-between items-center mb-4">;
-          <h3 className="text-lg font-medium">Booking List</h3>;
+      \1>
+        \1>
+          <h3 className="text-lg font-medium">Booking List\1>
           <Button>
             variant="outline"
             size="sm"
@@ -187,7 +171,7 @@ export default const _OTBookingList = () {
         </div>
 
         {showFilters && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 p-4 border rounded-md bg-muted/40">;
+          \1>
             <Input>
               type="date"
               value={filters.date}
@@ -201,12 +185,12 @@ export default const _OTBookingList = () {
                 <SelectValue placeholder="Filter by Status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Statuses</SelectItem>;
-                <SelectItem value="scheduled">Scheduled</SelectItem>;
-                <SelectItem value="confirmed">Confirmed</SelectItem>;
-                <SelectItem value="in_progress">In Progress</SelectItem>;
-                <SelectItem value="completed">Completed</SelectItem>;
-                <SelectItem value="cancelled">Cancelled</SelectItem>;
+                <SelectItem value="">All Statuses\1>
+                <SelectItem value="scheduled">Scheduled\1>
+                <SelectItem value="confirmed">Confirmed\1>
+                <SelectItem value="in_progress">In Progress\1>
+                <SelectItem value="completed">Completed\1>
+                <SelectItem value="cancelled">Cancelled\1>
                 <SelectItem value="postponed">Postponed</SelectItem>
               </SelectContent>
             </Select>
@@ -234,13 +218,13 @@ export default const _OTBookingList = () {
             <TableBody>
               {bookings.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center">;
+                  \1>
                     No bookings found.
                   </TableCell>
                 </TableRow>
               ) : (
                 bookings.map((booking) => (
-                  <TableRow key={booking.id}>;
+                  \1>
                     <TableCell>
                       {format(new Date(booking.scheduled_start_time), "HH:mm")}{" "}
                       - {format(new Date(booking.scheduled_end_time), "HH:mm")}
@@ -253,7 +237,7 @@ export default const _OTBookingList = () {
                     <TableCell>{booking.surgeon_name}</TableCell>
                     <TableCell>{getStatusBadge(booking.status)}</TableCell>
                     <TableCell>
-                      <div className="flex space-x-2">;
+                      \1>
                         <Button>
                           variant="outline"
                           size="icon"

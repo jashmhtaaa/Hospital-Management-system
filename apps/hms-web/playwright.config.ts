@@ -7,8 +7,7 @@ export default defineConfig({
 	retries: process.env.CI ? 2 : 0,
 	workers: process.env.CI ? 1 : undefined,
 	reporter: "html",
-	use: {
-		baseURL: "http://localhost:3000", // Assuming local dev server runs on port 3000
+	\1,\2 "http://localhost:3000", // Assuming local dev server runs on port 3000
 		trace: "on-first-retry",
 	},
 	projects: [
@@ -25,8 +24,7 @@ export default defineConfig({
 		//   use: { ...devices["Desktop Safari"] },
 		// },
 	],
-	webServer: {
-		command: "pnpm dev", // Command to start your dev server
+	\1,\2 "pnpm dev", // Command to start your dev server
 		url: "http://localhost:3000",
 		reuseExistingServer: !process.env.CI,
 		timeout: 120 * 1000,

@@ -29,8 +29,7 @@ export const AdmissionSchema = z.object({
   suicide_risk: z.boolean().default(false),
   advance_directive: z.boolean().default(false),
   dnr_status: z.boolean().default(false),
-  emergency_contact: z.object({
-    name: z.string(),
+  \1,\2 z.string(),
     relationship: z.string(),
     phone: z.string(),
     address: z.string().optional()
@@ -70,8 +69,7 @@ export const NursingAssessmentSchema = z.object({
   assessment_type: z.enum(['admission', 'shift', 'focused', 'discharge']),
 
   // Vital signs
-  vital_signs: z.object({
-    temperature: z.number().optional(),
+  \1,\2 z.number().optional(),
     blood_pressure_systolic: z.number().optional(),
     blood_pressure_diastolic: z.number().optional(),
     heart_rate: z.number().optional(),
@@ -83,69 +81,60 @@ export const NursingAssessmentSchema = z.object({
   }),
 
   // Nursing assessments
-  neurological: z.object({
-    level_of_consciousness: z.enum(['alert', 'drowsy', 'lethargic', 'stuporous', 'unconscious']).optional(),
+  \1,\2 z.enum(['alert', 'drowsy', 'lethargic', 'stuporous', 'unconscious']).optional(),
     orientation: z.enum(['oriented_x3', 'oriented_x2', 'oriented_x1', 'disoriented']).optional(),
     pupils: z.string().optional(),
     motor_response: z.string().optional(),
     speech: z.string().optional()
   }).optional(),
 
-  cardiovascular: z.object({
-    heart_rhythm: z.string().optional(),
+  \1,\2 z.string().optional(),
     peripheral_pulses: z.string().optional(),
     capillary_refill: z.string().optional(),
     edema: z.string().optional(),
     chest_pain: z.boolean().optional()
   }).optional(),
 
-  respiratory: z.object({
-    breathing_pattern: z.string().optional(),
+  \1,\2 z.string().optional(),
     lung_sounds: z.string().optional(),
     cough: z.string().optional(),
     sputum: z.string().optional(),
     shortness_of_breath: z.boolean().optional()
   }).optional(),
 
-  gastrointestinal: z.object({
-    appetite: z.enum(['good', 'fair', 'poor', 'none']).optional(),
+  \1,\2 z.enum(['good', 'fair', 'poor', 'none']).optional(),
     nausea_vomiting: z.boolean().optional(),
     bowel_sounds: z.string().optional(),
     last_bowel_movement: z.string().optional(),
     abdominal_distension: z.boolean().optional()
   }).optional(),
 
-  genitourinary: z.object({
-    urination_pattern: z.string().optional(),
+  \1,\2 z.string().optional(),
     urine_characteristics: z.string().optional(),
     catheter_present: z.boolean().optional(),
     catheter_type: z.string().optional()
   }).optional(),
 
-  skin_integrity: z.object({
-    skin_condition: z.string().optional(),
+  \1,\2 z.string().optional(),
     wounds_present: z.boolean().optional(),
     wound_description: z.string().optional(),
     pressure_areas: z.string().optional(),
     braden_score: z.number().min(6).max(23).optional()
   }).optional(),
 
-  mobility: z.object({
-    mobility_level: z.enum(['independent', 'assist_1', 'assist_2', 'total_care']).optional(),
+  \1,\2 z.enum(['independent', 'assist_1', 'assist_2', 'total_care']).optional(),
     gait: z.string().optional(),
     fall_risk_score: z.number().optional(),
     assistive_devices: z.array(z.string()).default([])
   }).optional(),
 
-  psychosocial: z.object({
-    mood: z.string().optional(),
+  \1,\2 z.string().optional(),
     anxiety_level: z.enum(['none', 'mild', 'moderate', 'severe']).optional(),
     support_system: z.string().optional(),
     coping_mechanisms: z.string().optional()
   }).optional(),
 
-  safety_assessment: z.object({
-    fall_risk: z.boolean().default(false),
+  \1,\2 z.boolean().default(false),
     suicide_risk: z.boolean().default(false),
     confusion: z.boolean().default(false),
     restraints_needed: z.boolean().default(false),
@@ -172,16 +161,14 @@ export const DischargePlanningSchema = z.object({
   // Post-discharge needs
   home_health_services: z.array(z.string()).default([]),
   medical_equipment_needed: z.array(z.string()).default([]),
-  follow_up_appointments: z.array(z.object({
-    specialty: z.string(),
+  \1,\2 z.string(),
     timeframe: z.string(),
     provider: z.string().optional(),
     scheduled: z.boolean().default(false)
   })).default([]),
 
   // Medication reconciliation
-  discharge_medications: z.array(z.object({
-    medication: z.string(),
+  \1,\2 z.string(),
     dosage: z.string(),
     frequency: z.string(),
     duration: z.string(),
@@ -189,8 +176,7 @@ export const DischargePlanningSchema = z.object({
   })).default([]),
 
   discontinued_medications: z.array(z.string()).default([]),
-  medication_changes: z.array(z.object({
-    medication: z.string(),
+  \1,\2 z.string(),
     change_type: z.enum(['dose_change', 'frequency_change', 'formulation_change']),
     old_value: z.string(),
     new_value: z.string(),
@@ -243,8 +229,7 @@ export const TransferSchema = z.object({
 
 export type Admission = z.infer<typeof AdmissionSchema> & {
   id: string,
-  admission_number: string;
-  status: 'active' | 'discharged' | 'transferred' | 'deceased' | 'ama';
+  \1,\2 'active' | 'discharged' | 'transferred' | 'deceased' | 'ama';
   current_bed?: string;
   current_room?: string;
   current_unit?: string;
@@ -261,8 +246,7 @@ export type Admission = z.infer<typeof AdmissionSchema> & {
 
 export type BedAssignment = z.infer<typeof BedAssignmentSchema> & {
   id: string,
-  status: 'active' | 'completed';
-  start_time: Date;
+  \1,\2 Date;
   end_time?: Date;
   created_at: Date,
   updated_at: Date
@@ -270,95 +254,36 @@ export type BedAssignment = z.infer<typeof BedAssignmentSchema> & {
 
 export type NursingAssessment = z.infer<typeof NursingAssessmentSchema> & {
   id: string,
-  created_at: Date;
-  updated_at: Date;
+  \1,\2 Date;
   nurse_name?: string
 };
 
 export type DischargePlanning = z.infer<typeof DischargePlanningSchema> & {
   id: string,
-  planning_started_date: Date;
-  discharge_ready: boolean,
-  barriers_resolved: boolean;
-  created_at: Date,
+  \1,\2 boolean,
+  \1,\2 Date,
   updated_at: Date
 };
 
 export type Transfer = z.infer<typeof TransferSchema> & {
   id: string,
-  transfer_number: string;
-  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
+  \1,\2 'pending' | 'in_progress' | 'completed' | 'cancelled';
   actual_transfer_time?: Date;
   completed_by?: string;
   created_at: Date,
   updated_at: Date
 };
 
-export interface BedOccupancy {
-  bed_id: string,
-  room_id: string;
-  unit_id: string,
-  bed_number: string;
-  room_number: string,
-  unit_name: string;
-  bed_type: string,
-  occupancy_status: 'occupied' | 'available' | 'maintenance' | 'isolation' | 'blocked';
-  patient_id?: string;
-  patient_name?: string;
-  admission_date?: Date;
-  length_of_stay?: number;
-  expected_discharge?: Date;
-  isolation_type?: string;
-  fall_risk?: boolean;
-  last_cleaned?: Date;
-  maintenance_due?: Date;
-export interface UnitCapacity {
-  unit_id: string,
-  unit_name: string;
-  total_beds: number,
-  occupied_beds: number;
-  available_beds: number,
-  blocked_beds: number;
-  maintenance_beds: number,
-  occupancy_rate: number;
-  average_length_of_stay: number,
-  admission_pending: number;
-  discharge_pending: number,
-  transfer_requests: number
-export interface CensusSummary {
-  total_admissions: number,
-  total_discharges: number;
-  total_transfers: number,
-  current_census: number;
-  available_beds: number,
-  occupancy_rate: number;
-  average_length_of_stay: number,
-  readmission_rate: number;
-  by_unit: UnitCapacity[],
-  by_admission_type: {
-    elective: number,
-    emergency: number;
-    urgent: number,
-    observation: number
+\1
+}
   };
-  by_discharge_disposition: {
-    home: number,
-    snf: number;
-    rehab: number,
-    hospice: number;
-    expired: number,
+  \1,\2 number,
+    \1,\2 number,
+    \1,\2 number,
     ama: number
   };
-export class InpatientManagementService {
-  private admissions: Map<string, Admission> = new Map(),
-  private bedAssignments: Map<string, BedAssignment[]> = new Map(),
-  private nursingAssessments: Map<string, NursingAssessment[]> = new Map(),
-  private dischargePlans: Map<string, DischargePlanning> = new Map(),
-  private transfers: Map<string, Transfer> = new Map(),
-  private beds: Map<string, BedOccupancy> = new Map(),
-  private units: Map<string, any> = new Map(),
-  constructor() {
-    this.initializeUnitsAndBeds();
+\1
+}
   }
 
   /**
@@ -390,16 +315,11 @@ export class InpatientManagementService {
         const roomNumber = Math.ceil(i / 2).toString().padStart(3, '0');
         const roomId = `${unit.id}-R${roomNumber}`;
 
-        const bed: BedOccupancy = {
-          bed_id: bedId,
-          room_id: roomId;
-          unit_id: unit.id,
-          bed_number: bedNumber;
-          room_number: roomNumber,
-          unit_name: unit.name;
-          bed_type: unit.bed_type,
-          occupancy_status: 'available';
-          last_cleaned: new Date()
+        const \1,\2 bedId,
+          \1,\2 unit.id,
+          \1,\2 roomNumber,
+          \1,\2 unit.bed_type,
+          \1,\2 new Date()
         };
 
         this.beds.set(bedId, bed);
@@ -419,8 +339,7 @@ export class InpatientManagementService {
     const admission: Admission = {
       ...validatedData,
       id: admissionId,
-      admission_number: admissionNumber;
-      status: 'active',
+      \1,\2 'active',
       created_at: new Date(),
       updated_at: new Date()
     };
@@ -429,7 +348,7 @@ export class InpatientManagementService {
 
     // Find and assign bed
     const bed = await this.assignBed(admissionId, validatedData.room_preference, validatedData.bed_preference);
-    if (bed != null) {
+    \1 {\n  \2{
       admission.current_bed = bed.bed_id;
       admission.current_room = bed.room_id;
       admission.current_unit = bed.unit_id;
@@ -443,8 +362,8 @@ export class InpatientManagementService {
    * Generate admission number;
    */
   private generateAdmissionNumber(): string {
-    const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
-    const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    const _timestamp = crypto.getRandomValues(\1[0].toString().slice(-6);
+    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
     return `ADM/* SECURITY: Template literal eliminated */
   }
 
@@ -457,19 +376,19 @@ export class InpatientManagementService {
     bedPreference?: string;
   ): Promise<BedOccupancy | null> {
     // First try preferred bed
-    if (bedPreference != null) {
+    \1 {\n  \2{
       const preferredBed = this.beds.get(bedPreference);
-      if (preferredBed && preferredBed.occupancy_status === 'available') {
+      \1 {\n  \2{
         return await this.occupyBed(admissionId, bedPreference);
       }
     }
 
     // Try any bed in preferred room
-    if (roomPreference != null) {
+    \1 {\n  \2{
       const roomBeds = Array.from(this.beds.values()).filter(bed =>
         bed.room_id === roomPreference && bed.occupancy_status === 'available';
       );
-      if (roomBeds.length > 0) {
+      \1 {\n  \2{
         return await this.occupyBed(admissionId, roomBeds[0].bed_id);
       }
     }
@@ -479,7 +398,7 @@ export class InpatientManagementService {
       bed.occupancy_status === 'available';
     );
 
-    if (availableBed != null) {
+    \1 {\n  \2{
       return await this.occupyBed(admissionId, availableBed.bed_id);
     }
 
@@ -491,12 +410,12 @@ export class InpatientManagementService {
    */
   private async occupyBed(admissionId: string, bedId: string): Promise<BedOccupancy> {
     const bed = this.beds.get(bedId);
-    if (!bed) {
+    \1 {\n  \2{
       throw new Error('Bed not found');
     }
 
     const admission = this.admissions.get(admissionId);
-    if (!admission) {
+    \1 {\n  \2{
       throw new Error('Admission not found');
     }
 
@@ -509,19 +428,13 @@ export class InpatientManagementService {
     this.beds.set(bedId, bed);
 
     // Create bed assignment record
-    const assignment: BedAssignment = {
-      id: uuidv4(),
-      admission_id: admissionId;
-      bed_id: bedId,
-      room_id: bed.room_id;
-      unit_id: bed.unit_id,
-      assignment_date: new Date().toISOString().split('T')[0];
-      assignment_time: new Date().toTimeString().slice(0, 5),
+    const \1,\2 uuidv4(),
+      \1,\2 bedId,
+      \1,\2 bed.unit_id,
+      \1,\2 new Date().toTimeString().slice(0, 5),
       assigned_by: 'system',
-      assignment_reason: 'admission';
-      priority: 'routine',
-      special_requirements: [];
-      status: 'active',
+      \1,\2 'routine',
+      \1,\2 'active',
       start_time: new Date(),
       created_at: new Date(),
       updated_at: new Date()
@@ -546,8 +459,7 @@ export class InpatientManagementService {
     const transfer: Transfer = {
       ...validatedData,
       id: transferId,
-      transfer_number: transferNumber;
-      status: 'pending',
+      \1,\2 'pending',
       created_at: new Date(),
       updated_at: new Date()
     };
@@ -555,7 +467,7 @@ export class InpatientManagementService {
     this.transfers.set(transferId, transfer);
 
     // Execute transfer if bed is specified
-    if (validatedData.to_bed) {
+    \1 {\n  \2{
       await this.executeTransfer(transferId, validatedData.to_bed);
     }
 
@@ -566,8 +478,8 @@ export class InpatientManagementService {
    * Generate transfer number;
    */
   private generateTransferNumber(): string {
-    const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
-    const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100).toString().padStart(2, '0');
+    const _timestamp = crypto.getRandomValues(\1[0].toString().slice(-6);
+    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 100).toString().padStart(2, '0');
     return `TXF/* SECURITY: Template literal eliminated */
   }
 
@@ -576,19 +488,19 @@ export class InpatientManagementService {
    */
   async executeTransfer(transferId: string, toBedId: string): Promise<Transfer> {
     const transfer = this.transfers.get(transferId);
-    if (!transfer) {
+    \1 {\n  \2{
       throw new Error('Transfer not found');
     }
 
     const admission = this.admissions.get(transfer.admission_id);
-    if (!admission) {
+    \1 {\n  \2{
       throw new Error('Admission not found');
     }
 
     // Release current bed
-    if (admission.current_bed) {
+    \1 {\n  \2{
       const currentBed = this.beds.get(admission.current_bed);
-      if (currentBed != null) {
+      \1 {\n  \2{
         currentBed.occupancy_status = 'available';
         currentBed.patient_id = undefined;
         currentBed.patient_name = undefined;
@@ -599,7 +511,7 @@ export class InpatientManagementService {
         // End current bed assignment
         const assignments = this.bedAssignments.get(transfer.admission_id) || [];
         const currentAssignment = assignments.find(a => a.status === 'active');
-        if (currentAssignment != null) {
+        \1 {\n  \2{
           currentAssignment.status = 'completed';
           currentAssignment.end_time = new Date();
           currentAssignment.updated_at = new Date();
@@ -668,8 +580,7 @@ export class InpatientManagementService {
       id: planningId,
       planning_started_date: new Date(),
       discharge_ready: dischargeReady,
-      barriers_resolved: validatedData.barriers_to_discharge.length === 0;
-      created_at: new Date(),
+      \1,\2 new Date(),
       updated_at: new Date()
     };
 
@@ -682,22 +593,18 @@ export class InpatientManagementService {
    */
   async dischargePatient(
     admissionId: string,
-    dischargeData: {
-      discharge_disposition: DischargePlanning['discharge_disposition'],
-      discharge_date: string;
-      discharge_time: string,
-      discharging_physician: string;
-      discharge_instructions: string,
-      follow_up_instructions: string;
-      condition_at_discharge: 'stable' | 'improved' | 'unchanged' | 'worse'
+    \1,\2 DischargePlanning['discharge_disposition'],
+      \1,\2 string,
+      \1,\2 string,
+      \1,\2 'stable' | 'improved' | 'unchanged' | 'worse'
     }
   ): Promise<Admission> {
     const admission = this.admissions.get(admissionId);
-    if (!admission) {
+    \1 {\n  \2{
       throw new Error('Admission not found');
     }
 
-    if (admission.status !== 'active') {
+    \1 {\n  \2{
       throw new Error('Admission is not active');
     }
 
@@ -713,9 +620,9 @@ export class InpatientManagementService {
     admission.updated_at = new Date();
 
     // Release bed
-    if (admission.current_bed) {
+    \1 {\n  \2{
       const bed = this.beds.get(admission.current_bed);
-      if (bed != null) {
+      \1 {\n  \2{
         bed.occupancy_status = 'available';
         bed.patient_id = undefined;
         bed.patient_name = undefined;
@@ -726,7 +633,7 @@ export class InpatientManagementService {
         // End bed assignment
         const assignments = this.bedAssignments.get(admissionId) || [];
         const currentAssignment = assignments.find(a => a.status === 'active');
-        if (currentAssignment != null) {
+        \1 {\n  \2{
           currentAssignment.status = 'completed';
           currentAssignment.end_time = dischargeDateTime;
           currentAssignment.updated_at = new Date();
@@ -785,14 +692,10 @@ export class InpatientManagementService {
 
       unitStats.set(unit.id, {
         unit_id: unit.id,
-        unit_name: unit.name;
-        total_beds: unitBeds.length,
-        occupied_beds: unitOccupied;
-        available_beds: unitAvailable,
-        blocked_beds: unitBlocked;
-        maintenance_beds: unitMaintenance,
-        occupancy_rate: unitBeds.length > 0 ? (unitOccupied / unitBeds.length) * 100 : 0;
-        average_length_of_stay: averageLengthOfStay, // Simplified
+        \1,\2 unitBeds.length,
+        \1,\2 unitAvailable,
+        \1,\2 unitMaintenance,
+        \1,\2 averageLengthOfStay, // Simplified
         admission_pending: 0, // Simplified
         discharge_pending: 0, // Simplified
         transfer_requests: 0, // Simplified
@@ -802,8 +705,7 @@ export class InpatientManagementService {
     // Admission type breakdown
     const byAdmissionType = {
       elective: todaysAdmissions.filter(a => a.admission_type === 'elective').length,
-      emergency: todaysAdmissions.filter(a => a.admission_type === 'emergency').length;
-      urgent: todaysAdmissions.filter(a => a.admission_type === 'urgent').length,
+      \1,\2 todaysAdmissions.filter(a => a.admission_type === 'urgent').length,
       observation: todaysAdmissions.filter(a => a.admission_type === 'observation').length
     };
 
@@ -811,22 +713,16 @@ export class InpatientManagementService {
     const byDischargeDisposition = {
       home: todaysDischarges.filter(a => a.status === 'discharged').length * 0.7, // Simplified
       snf: todaysDischarges.filter(a => a.status === 'discharged').length * 0.1,
-      rehab: todaysDischarges.filter(a => a.status === 'discharged').length * 0.1;
-      hospice: todaysDischarges.filter(a => a.status === 'discharged').length * 0.05,
-      expired: admissions.filter(a => a.status === 'deceased').length;
-      ama: admissions.filter(a => a.status === 'ama').length
+      \1,\2 todaysDischarges.filter(a => a.status === 'discharged').length * 0.05,
+      \1,\2 admissions.filter(a => a.status === 'ama').length
     };
 
     return {
       total_admissions: todaysAdmissions.length,
-      total_discharges: todaysDischarges.length;
-      total_transfers: todaysTransfers.length,
-      current_census: currentCensus;
-      available_beds: availableBeds,
-      occupancy_rate: Math.round(occupancyRate * 100) / 100;
-      average_length_of_stay: Math.round(averageLengthOfStay * 100) / 100,
-      readmission_rate: readmissionRate;
-      by_unit: Array.from(unitStats.values()).map(u => ({
+      \1,\2 todaysTransfers.length,
+      \1,\2 availableBeds,
+      \1,\2 Math.round(averageLengthOfStay * 100) / 100,
+      \1,\2 Array.from(unitStats.values()).map(u => ({
         ...u,
         occupancy_rate: Math.round(u.occupancy_rate * 100) / 100,
         average_length_of_stay: Math.round(u.average_length_of_stay * 100) / 100
@@ -842,20 +738,20 @@ export class InpatientManagementService {
   async getBedOccupancy(unitId?: string): Promise<BedOccupancy[]> {
     let beds = Array.from(this.beds.values());
 
-    if (unitId != null) {
+    \1 {\n  \2{
       beds = beds.filter(bed => bed.unit_id === unitId);
     }
 
     // Update length of stay for occupied beds
     beds.forEach(bed => {
-      if (bed.occupancy_status === 'occupied' && bed.admission_date) {
+      \1 {\n  \2{
         const now = new Date();
         bed.length_of_stay = Math.ceil((now.getTime() - bed.admission_date.getTime()) / (1000 * 60 * 60 * 24));
       }
     });
 
     return beds.sort((a, b) => {
-      if (a.unit_id !== b.unit_id) {
+      \1 {\n  \2{
         return a.unit_id.localeCompare(b.unit_id);
       }
       return a.bed_number.localeCompare(b.bed_number);
@@ -875,22 +771,22 @@ export class InpatientManagementService {
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ admissions: Admission[], total: number; totalPages: number }> {
+  }): Promise<{ admissions: Admission[], \1,\2 number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredAdmissions = Array.from(this.admissions.values());
 
     // Apply filters
     Object.entries(searchFilters).forEach(([key, value]) => {
-      if (value != null) {
+      \1 {\n  \2{
         filteredAdmissions = filteredAdmissions.filter(admission => {
-          if (key === 'physician_id') {
+          \1 {\n  \2{
             return admission.admitting_physician_id === value || admission.attending_physician_id === value;
           }
-          if (key === 'unit_id') {
+          \1 {\n  \2{
             return admission.current_unit === value;
           }
-          if (key.includes('date')) {
+          \1 {\n  \2 {
             return admission.admission_date >= value;
           }
           const _admissionValue = (admission as any)[key];
@@ -942,16 +838,16 @@ export class InpatientManagementService {
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ transfers: Transfer[], total: number; totalPages: number }> {
+  }): Promise<{ transfers: Transfer[], \1,\2 number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredTransfers = Array.from(this.transfers.values());
 
     // Apply filters
     Object.entries(searchFilters).forEach(([key, value]) => {
-      if (value != null) {
+      \1 {\n  \2{
         filteredTransfers = filteredTransfers.filter(transfer => {
-          if (key.includes('date')) {
+          \1 {\n  \2 {
             return transfer.transfer_date >= value;
           }
           const _transferValue = (transfer as any)[key];
@@ -987,15 +883,15 @@ export class InpatientManagementService {
    */
   async updateBedStatus(bedId: string, status: BedOccupancy['occupancy_status'], reason?: string): Promise<BedOccupancy> {
     const bed = this.beds.get(bedId);
-    if (!bed) {
+    \1 {\n  \2{
       throw new Error('Bed not found');
     }
 
     bed.occupancy_status = status;
 
-    if (status === 'maintenance') {
+    \1 {\n  \2{
       bed.maintenance_due = new Date();
-    } else if (status === 'available') {
+    } else \1 {\n  \2{
       bed.last_cleaned = new Date();
       bed.patient_id = undefined;
       bed.patient_name = undefined;

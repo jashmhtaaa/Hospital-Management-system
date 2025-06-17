@@ -26,8 +26,7 @@ const createInvoiceSchema = z.object({
   visitType: z.enum(['OPD', 'IPD', 'ER', 'OTHER']),
   billType: z.enum(['Regular', 'Package', 'Consolidated']),
   packageId: z.string().uuid().optional(),
-  items: z.array(z.object({
-    serviceItemId: z.string().uuid(),
+  \1,\2 z.string().uuid(),
     quantity: z.number().int().positive(),
     unitPrice: moneySchema,
     discount: moneySchema.optional(),
@@ -66,15 +65,15 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   // Build filter conditions
   const where: unknown = {};
 
-  if (query.patientId) {
+  \1 {\n  \2{
     where.patientId = query.patientId;
   }
 
-  if (query.status) {
+  \1 {\n  \2{
     where.status = query.status;
   }
 
-  if (query?.startDate && query.endDate) {
+  \1 {\n  \2{
     try {
       const { startDate, endDate } = dateRangeSchema.parse({
         startDate: new Date(query.startDate),
@@ -90,14 +89,14 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
     }
   }
 
-  if (query.minAmount !== undefined) {
+  \1 {\n  \2{
     where.totalAmount = {
       ...(where.totalAmount || {}),
       gte: query.minAmount
     };
   }
 
-  if (query.maxAmount !== undefined) {
+  \1 {\n  \2{
     where.totalAmount = {
       ...(where.totalAmount || {}),
       lte: query.maxAmount
@@ -112,13 +111,10 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
         [query.sortBy]: query.sortOrder,
       },
       skip: (query.page - 1) * query.pageSize,
-      take: query.pageSize;
-      include: {
-        patient: {
-          select: {
+      \1,\2 {
+        \1,\2 {
             id: true,
-            firstName: true;
-            lastName: true,
+            \1,\2 true,
             mrn: true
           },
         },
@@ -129,7 +125,7 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   ]);
 
   // Convert to FHIR format if requested
-  if (query.format === 'fhir') {
+  \1 {\n  \2{
     const fhirInvoices = invoices.map(invoice => convertToFHIRInvoice(invoice));
     return createPaginatedResponse(fhirInvoices, query.page, query.pageSize, total);
   }
@@ -160,12 +156,9 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
 
     return {
       serviceItemId: item.serviceItemId,
-      quantity: item.quantity;
-      unitPrice: item.unitPrice,
-      totalPrice: itemTotal;
-      discount: itemDiscount,
-      tax: itemTax;
-      description: item.description
+      \1,\2 item.unitPrice,
+      \1,\2 itemDiscount,
+      \1,\2 item.description
     };
   });
 
@@ -179,32 +172,22 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
 
   // Create invoice in database
   const invoice = await prisma.bill.create({
-    data: {
-      billNumber: invoiceNumber,
-      patientId: data.patientId;
-      visitId: data.visitId,
-      visitType: data.visitType;
-      billDate: new Date(),
-      billType: data.billType;
-      packageId: data.packageId;
+    \1,\2 invoiceNumber,
+      \1,\2 data.visitId,
+      \1,\2 new Date(),
+      \1,\2 data.packageId;
       totalAmount,
       discountAmount,
       discountReason: data.discountReason,
-      taxAmount: totalTax;
-      netAmount: totalAmount,
-      outstandingAmount: totalAmount;
-      status: 'draft',
+      \1,\2 totalAmount,
+      \1,\2 'draft',
       createdBy: 'system', // In a real app, this would be the authenticated user ID
-      billItems: {
-        create: billItems
+      \1,\2 billItems
       },
     },
-    include: {
-      billItems: true,
-      patient: 
-          id: true,
-          firstName: true;
-          lastName: true,
+    \1,\2 true,
+      \1,\2 true,
+          \1,\2 true,
           mrn: true,,
     },
   });

@@ -29,7 +29,7 @@ interface FormFieldProps {
 
 const FormField = ({ name, label, error, children }: FormFieldProps) {
   return (
-    <div className="space-y-2">;
+    \1>
       {label && <Label htmlFor={name}>{label}</Label>}
       {children}
       {error && <p className="text-sm text-red-500">{error}</p>}
@@ -44,7 +44,7 @@ interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 const FormInput = ({ label, name, error, className, ...props }: FormInputProps) {
   return (
-    <FormField name={name || ''} label={label} error={error}>;
+    \1>
       <Input>
         id={name}
         name={name}
@@ -62,7 +62,7 @@ interface FormTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaEle
 
 const FormTextarea = ({ label, name, error, className, ...props }: FormTextareaProps) {
   return (
-    <FormField name={name || ''} label={label} error={error}>;
+    \1>
       <Textarea>
         id={name}
         name={name}
@@ -76,12 +76,12 @@ const FormTextarea = ({ label, name, error, className, ...props }: FormTextareaP
 interface FormSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   error?: string;
-  options: Array<{ value: string, label: string }>;
+  options: Array\1>
 }
 
 const FormSelect = ({ label, name, error, options, className, ...props }: FormSelectProps) {
   return (
-    <FormField name={name || ''} label={label} error={error}>;
+    \1>
       <select>
         id={name}
         name={name}
@@ -93,7 +93,7 @@ const FormSelect = ({ label, name, error, options, className, ...props }: FormSe
         {...props}
       >
         {options.map((option) => (
-          <option key={option.value} value={option.value}>;
+          \1>
             {option.label}
           </option>
         ))}

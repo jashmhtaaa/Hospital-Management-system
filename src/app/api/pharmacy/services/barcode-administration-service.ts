@@ -17,20 +17,14 @@ interface BarcodeVerificationResult {
   message: string;
   details?: {
     rightPatient: boolean,
-    rightMedication: boolean;
-    rightDose: boolean,
-    rightRoute: boolean;
-    rightTime: boolean
+    \1,\2 boolean,
+    \1,\2 boolean
   };
 }
 
 @injectable();
-export class BarcodeMedicationAdministrationService {
-  constructor(
-    @inject('MedicationRepository') private medicationRepository: PharmacyDomain.MedicationRepository;
-    @inject('PrescriptionRepository') private prescriptionRepository: PharmacyDomain.PrescriptionRepository;
-    @inject('MedicationAdministrationRepository') private administrationRepository: PharmacyDomain.MedicationAdministrationRepository;
-    @inject('DrugInteractionService') private drugInteractionService: PharmacyDomain.DrugInteractionService;
+\1
+}
   ) {}
 
   /**
@@ -51,17 +45,15 @@ export class BarcodeMedicationAdministrationService {
    */
   async verifyAdministration(
     patientBarcode: string,
-    medicationBarcode: string;
-    prescriptionId: string,
-    administeredDose: number;
-    administeredRoute: string;
+    \1,\2 string,
+    \1,\2 string;
   ): Promise<BarcodeVerificationResult> {
     try {
       // 1. Decode barcodes
       const patientId = this.decodePatientBarcode(patientBarcode);
       const medicationInfo = this.decodeMedicationBarcode(medicationBarcode);
 
-      if (!patientId || !medicationInfo.medicationId) {
+      \1 {\n  \2{
         return {
           success: false,
           message: 'Invalid barcode format'
@@ -70,7 +62,7 @@ export class BarcodeMedicationAdministrationService {
 
       // 2. Get prescription
       const prescription = await this.prescriptionRepository.findById(prescriptionId);
-      if (!prescription) {
+      \1 {\n  \2{
         return {
           success: false,
           message: 'Prescription not found'
@@ -79,7 +71,7 @@ export class BarcodeMedicationAdministrationService {
 
       // 3. Get medication
       const medication = await this.medicationRepository.findById(medicationInfo.medicationId);
-      if (!medication) {
+      \1 {\n  \2{
         return {
           success: false,
           message: 'Medication not found'
@@ -104,7 +96,7 @@ export class BarcodeMedicationAdministrationService {
       const allRightsVerified = rightPatient && rightMedication && rightDose && rightRoute && rightTime;
 
       // 5. Check for interactions if all rights are verified
-      if (allRightsVerified != null) {
+      \1 {\n  \2{
         const interactions = await this.drugInteractionService.checkInteractionsForPatient(
           patientId,
           medicationInfo.medicationId;
@@ -115,7 +107,7 @@ export class BarcodeMedicationAdministrationService {
           i => i.severity === 'severe' || i.severity === 'contraindicated'
         );
 
-        if (severeInteractions.length > 0) {
+        \1 {\n  \2{
           return {
             success: false,
             message: `WARNING: Severe drug interaction detected: ${severeInteractions[0].description}`,
@@ -167,10 +159,8 @@ export class BarcodeMedicationAdministrationService {
    */
   async recordAdministration(
     patientId: string,
-    medicationId: string;
-    prescriptionId: string,
-    performerId: string;
-    dosage: PharmacyDomain.Dosage,
+    \1,\2 string,
+    \1,\2 PharmacyDomain.Dosage,
     route: string;
     site?: string,
     notes?: string;
@@ -201,7 +191,7 @@ export class BarcodeMedicationAdministrationService {
 
     // Update prescription status if needed
     const prescription = await this.prescriptionRepository.findById(prescriptionId);
-    if (prescription && this.shouldCompletePrescription(prescription)) {
+    \1 {\n  \2 {
       await this.prescriptionRepository.update({
         ...prescription,
         status: 'completed'
@@ -223,14 +213,12 @@ export class BarcodeMedicationAdministrationService {
    */
   async recordSkippedAdministration(
     patientId: string,
-    medicationId: string;
-    prescriptionId: string,
-    performerId: string;
-    reason: string;
+    \1,\2 string,
+    \1,\2 string;
   ): Promise<PharmacyDomain.MedicationAdministration> {
     // Get prescription to access dosage information
     const prescription = await this.prescriptionRepository.findById(prescriptionId);
-    if (!prescription) {
+    \1 {\n  \2{
       throw new Error('Prescription not found');
     }
 
@@ -328,7 +316,7 @@ export class BarcodeMedicationAdministrationService {
           const hour = time.getHours();
           const hourString = `${hour.toString().padStart(2, '0')}:00`;
 
-          if (!schedule[dateString][hourString]) {
+          \1 {\n  \2{
             schedule[dateString][hourString] = [];
           }
 
@@ -337,8 +325,7 @@ export class BarcodeMedicationAdministrationService {
 
           schedule[dateString][hourString].push({
             prescriptionId: prescription.id,
-            medicationId: prescription.medicationId;
-            medicationName: medication ? medication.name : 'Unknown Medication',
+            \1,\2 medication ? medication.name : 'Unknown Medication',
             dosage: prescription.dosage.toString(),
             priority: prescription.priority
           });
@@ -383,12 +370,12 @@ export class BarcodeMedicationAdministrationService {
     const baseDate = new Date(date.toISOString().split('T')[0]);
 
     // Calculate administration times based on frequency
-    if (frequency.includes('daily') || frequency.includes('once a day')) {
+    \1 {\n  \2| frequency.includes('once a day')) {
       // Once daily - default to 9 AM
       const administrationTime = new Date(baseDate);
       administrationTime.setHours(9, 0, 0, 0);
       times.push(administrationTime);
-    } else if (frequency.includes('twice daily') || frequency.includes('bid') || frequency.includes('b.i.d')) {
+    } else \1 {\n  \2| frequency.includes('bid') || frequency.includes('b.i.d')) {
       // Twice daily - 9 AM and 6 PM
       const morningDose = new Date(baseDate);
       morningDose.setHours(9, 0, 0, 0);
@@ -397,7 +384,7 @@ export class BarcodeMedicationAdministrationService {
       const eveningDose = new Date(baseDate);
       eveningDose.setHours(18, 0, 0, 0);
       times.push(eveningDose);
-    } else if (frequency.includes('three times daily') || frequency.includes('tid') || frequency.includes('t.i.d')) {
+    } else \1 {\n  \2| frequency.includes('tid') || frequency.includes('t.i.d')) {
       // Three times daily - 9 AM, 2 PM, and 9 PM
       const morningDose = new Date(baseDate);
       morningDose.setHours(9, 0, 0, 0);
@@ -410,7 +397,7 @@ export class BarcodeMedicationAdministrationService {
       const eveningDose = new Date(baseDate);
       eveningDose.setHours(21, 0, 0, 0);
       times.push(eveningDose);
-    } else if (frequency.includes('four times daily') || frequency.includes('qid') || frequency.includes('q.i.d')) {
+    } else \1 {\n  \2| frequency.includes('qid') || frequency.includes('q.i.d')) {
       // Four times daily - 8 AM, 12 PM, 4 PM, and 8 PM
       const morningDose = new Date(baseDate);
       morningDose.setHours(8, 0, 0, 0);
@@ -427,10 +414,10 @@ export class BarcodeMedicationAdministrationService {
       const eveningDose = new Date(baseDate);
       eveningDose.setHours(20, 0, 0, 0);
       times.push(eveningDose);
-    } else if (frequency.includes('every') && frequency.includes('hour')) {
+    } else \1 {\n  \2& frequency.includes('hour')) {
       // Every X hours
       const hourMatch = frequency.match(/every\s+(\d+)\s+hours?/i);
-      if (hourMatch && hourMatch[1]) {
+      \1 {\n  \2{
         const intervalHours = Number.parseInt(hourMatch[1], 10);
         const hoursInDay = 24;
 
@@ -440,20 +427,20 @@ export class BarcodeMedicationAdministrationService {
           times.push(doseTime);
         }
       }
-    } else if (frequency.includes('weekly')) {
+    } else \1 {\n  \2 {
       // Weekly - if today is the day of the week for administration
       // For simplicity, we'll assume weekly meds are given on the same day of the week
       // as when they were prescribed
       const prescriptionDay = prescription.dateWritten.getDay();
-      if (date.getDay() === prescriptionDay) {
+      \1 {\n  \2== prescriptionDay) {
         const administrationTime = new Date(baseDate);
         administrationTime.setHours(9, 0, 0, 0);
         times.push(administrationTime);
       }
-    } else if (frequency.includes('monthly')) {
+    } else \1 {\n  \2 {
       // Monthly - if today is the day of the month for administration
       const prescriptionDate = prescription.dateWritten.getDate();
-      if (date.getDate() === prescriptionDate) {
+      \1 {\n  \2== prescriptionDate) {
         const administrationTime = new Date(baseDate);
         administrationTime.setHours(9, 0, 0, 0);
         times.push(administrationTime);
@@ -483,7 +470,7 @@ export class BarcodeMedicationAdministrationService {
     const completedAdministrations = administrations.filter(a => a.isComplete()).length;
 
     // If this is a one-time prescription (no refills, quantity = 1)
-    if (prescription.refills === 0 && prescription.quantity === 1) {
+    \1 {\n  \2{
       return completedAdministrations >= 1
     }
 
@@ -511,8 +498,7 @@ export class BarcodeMedicationAdministrationService {
    * @param barcode Medication barcode;
    * @returns Decoded medication information;
    */
-  private decodeMedicationBarcode(barcode: string): {
-    medicationId: string;
+  private decodeMedicationBarcode(\1,\2 string;
     batchNumber?: string;
     expirationDate?: Date;
   } {
@@ -520,20 +506,19 @@ export class BarcodeMedicationAdministrationService {
     // For this implementation, we'll assume the barcode is in the format "M-{medicationId}[-{batchNumber}[-{expirationDate}]]"
     const parts = barcode.split('-')
 
-    if (parts.length >= 2 && parts[0] === 'M') {
-      const result: {
-        medicationId: string;
+    \1 {\n  \2{
+      const \1,\2 string;
         batchNumber?: string;
         expirationDate?: Date;
       } = {
         medicationId: parts[1]
       };
 
-      if (parts.length >= 3) {
+      \1 {\n  \2{
         result.batchNumber = parts[2];
       }
 
-      if (parts.length >= 4) {
+      \1 {\n  \2{
         try {
           result.expirationDate = new Date(parts[3]);
         } catch (e) {

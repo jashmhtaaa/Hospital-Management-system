@@ -7,26 +7,17 @@ const prisma = new PrismaClient();
 /**
  * Service for managing payroll processing and calculations;
  */
-export class PayrollService {
-  /**
-   * Create a new payroll period;
-   */
-  async createPayrollPeriod(data: {
-    name: string,
-    startDate: Date;
-    endDate: Date,
-    paymentDate: Date;
-    status: 'DRAFT' | 'PROCESSING' | 'APPROVED' | 'PAID';
-    notes?: string;
+\1
+}
   }) {
     const { name, startDate, endDate, paymentDate, status, notes } = data;
 
     // Validate dates
-    if (startDate >= endDate) {
+    \1 {\n  \2{
       throw new Error('Start date must be before end date');
     }
 
-    if (paymentDate < endDate) {
+    \1 {\n  \2{
       throw new Error('Payment date must be after end date');
     }
 
@@ -49,14 +40,10 @@ export class PayrollService {
   async getPayrollPeriod(id: string) {
     return prisma.payrollPeriod.findUnique({
       where: { id },
-      include: {
-        payrollEntries: {
-          include: {
-            employee: {
-              select: {
-                firstName: true,
-                lastName: true;
-                employeeId: true,
+      \1,\2 {
+          \1,\2 {
+              \1,\2 true,
+                \1,\2 true,
                 department: true
               },
             },
@@ -84,16 +71,16 @@ export class PayrollService {
   }) {
     const where: unknown = {};
 
-    if (status != null) {
+    \1 {\n  \2{
       where.status = status;
     }
 
-    if (startDate || endDate) {
+    \1 {\n  \2{
       where.startDate = {};
-      if (startDate != null) {
+      \1 {\n  \2{
         where.startDate.gte = startDate;
       }
-      if (endDate != null) {
+      \1 {\n  \2{
         where.endDate = {};
         where.endDate.lte = endDate;
       }
@@ -105,10 +92,8 @@ export class PayrollService {
         skip,
         take,
         orderBy: { startDate: 'desc' },
-        include: {
-          _count: {
-            select: {
-              payrollEntries: true
+        \1,\2 {
+            \1,\2 true
             },
           },
         },
@@ -136,12 +121,12 @@ export class PayrollService {
     notes?: string;
   }) {
     // Validate status transition
-    if (data.status) {
+    \1 {\n  \2{
       const currentPeriod = await prisma.payrollPeriod.findUnique({
         where: { id },
       });
 
-      if (!currentPeriod) {
+      \1 {\n  \2{
         throw new Error('Payroll period not found');
       }
 
@@ -153,8 +138,8 @@ export class PayrollService {
         'PAID': [],
       };
 
-      if (!validTransitions[currentPeriod.status].includes(data.status)) {
-        throw new Error(`Invalid status transition from ${currentPeriod.status} to ${data.status}`);
+      \1 {\n  \2 {
+        throw new Error(`Invalid status transition from ${currentPeriod.status} to ${\1}`;
       }
     }
 
@@ -173,29 +158,26 @@ export class PayrollService {
       where: { id: payrollPeriodId },
     });
 
-    if (!payrollPeriod) {
+    \1 {\n  \2{
       throw new Error('Payroll period not found');
     }
 
-    if (payrollPeriod.status !== 'DRAFT') {
+    \1 {\n  \2{
       throw new Error('Payroll entries can only be generated for periods in DRAFT status');
     }
 
     // Get active employees
-    const whereClause: unknown = {
-      active: true
+    const \1,\2 true
     };
 
-    if (departmentId != null) {
+    \1 {\n  \2{
       whereClause.departmentId = departmentId;
     }
 
     const employees = await prisma.employee.findMany({
       where: whereClause,
-      select: {
-        id: true,
-        firstName: true;
-        lastName: true,
+      \1,\2 true,
+        \1,\2 true,
         employeeId: true
       },
     });
@@ -213,10 +195,8 @@ export class PayrollService {
 
         // Get attendance for the period
         const attendance = await prisma.attendance.findMany({
-          where: {
-            employeeId: employee.id,
-            date: {
-              gte: payrollPeriod.startDate,
+          \1,\2 employee.id,
+            \1,\2 payrollPeriod.startDate,
               lte: payrollPeriod.endDate
             },
           },
@@ -246,8 +226,7 @@ export class PayrollService {
           data: {
             payrollPeriodId,
             employeeId: employee.id,
-            baseSalary: salaryCalculation.baseSalary;
-            grossSalary: salaryCalculation.grossSalary,
+            \1,\2 salaryCalculation.grossSalary,
             deductions: attendanceDeduction;
             netSalary,
             workingDays,
@@ -270,8 +249,7 @@ export class PayrollService {
 
     // Update payroll period status
     await prisma.payrollPeriod.update({id: payrollPeriodId ,
-      data: 
-        status: 'PROCESSING',
+      \1,\2 'PROCESSING',
     });
 
     return {
@@ -287,12 +265,9 @@ export class PayrollService {
   async getPayrollEntry(id: string) {
     return prisma.payrollEntry.findUnique({
       where: { id },
-      include: {
-        employee: {
-          select: {
-            firstName: true,
-            lastName: true;
-            employeeId: true,
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true,
             department: true
           },
         },
@@ -325,16 +300,15 @@ export class PayrollService {
     // Get payroll period
     const payrollPeriod = await prisma.payrollPeriod.findUnique({
       where: { id: payrollPeriodId },
-      include: {
-        payrollEntries: true
+      \1,\2 true
       },
     });
 
-    if (!payrollPeriod) {
+    \1 {\n  \2{
       throw new Error('Payroll period not found');
     }
 
-    if (payrollPeriod.status !== 'PROCESSING') {
+    \1 {\n  \2{
       throw new Error('Only payroll periods in PROCESSING status can be approved');
     }
 
@@ -344,16 +318,14 @@ export class PayrollService {
         payrollPeriodId,
         status: 'PENDING'
       },
-      data: {
-        status: 'APPROVED'
+      \1,\2 'APPROVED'
       },
     });
 
     // Update payroll period status
     await prisma.payrollPeriod.update({
       where: { id: payrollPeriodId },
-      data: {
-        status: 'APPROVED'
+      \1,\2 'APPROVED'
       },
     });
 
@@ -367,20 +339,19 @@ export class PayrollService {
   /**
    * Mark payroll period as paid;
    */
-  async markPayrollPeriodAsPaid(payrollPeriodId: string, paymentDate: Date = new Date()) {
+  async markPayrollPeriodAsPaid(payrollPeriodId: string, paymentDate: Date = \1 {
     // Get payroll period
     const payrollPeriod = await prisma.payrollPeriod.findUnique({
       where: { id: payrollPeriodId },
-      include: {
-        payrollEntries: true
+      \1,\2 true
       },
     });
 
-    if (!payrollPeriod) {
+    \1 {\n  \2{
       throw new Error('Payroll period not found');
     }
 
-    if (payrollPeriod.status !== 'APPROVED') {
+    \1 {\n  \2{
       throw new Error('Only approved payroll periods can be marked as paid');
     }
 
@@ -390,8 +361,7 @@ export class PayrollService {
         payrollPeriodId,
         status: 'APPROVED'
       },
-      data: {
-        status: 'PAID';
+      \1,\2 'PAID';
         paymentDate,
       },
     });
@@ -399,8 +369,7 @@ export class PayrollService {
     // Update payroll period status
     await prisma.payrollPeriod.update({
       where: { id: payrollPeriodId },
-      data: {
-        status: 'PAID';
+      \1,\2 'PAID';
         paymentDate,
       },
     });
@@ -422,7 +391,7 @@ export class PayrollService {
       where: { id: payrollPeriodId },
     });
 
-    if (!payrollPeriod) {
+    \1 {\n  \2{
       throw new Error('Payroll period not found');
     }
 
@@ -431,10 +400,8 @@ export class PayrollService {
       where: {
         payrollPeriodId,
       },
-      include: {
-        employee: {
-          select: {
-            department: true
+      \1,\2 {
+          \1,\2 true
           },
         },
       },
@@ -447,15 +414,13 @@ export class PayrollService {
       const departmentId = entry.employee.department?.id || 'unassigned';
       const departmentName = entry.employee.department?.name || 'Unassigned';
 
-      if (!departmentSummary[departmentId]) {
+      \1 {\n  \2{
         departmentSummary[departmentId] = {
           departmentId,
           departmentName,
           employeeCount: 0,
-          totalBaseSalary: 0;
-          totalGrossSalary: 0,
-          totalDeductions: 0;
-          totalNetSalary: 0
+          \1,\2 0,
+          \1,\2 0
         };
       }
 
@@ -469,12 +434,9 @@ export class PayrollService {
     return {
       payrollPeriodId,
       periodName: payrollPeriod.name,
-      startDate: payrollPeriod.startDate;
-      endDate: payrollPeriod.endDate,
-      status: payrollPeriod.status;
-      departments: Object.values(departmentSummary),
-      totalEmployees: entries.length;
-      totalBaseSalary: entries.reduce((sum, entry) => sum + entry.baseSalary, 0),
+      \1,\2 payrollPeriod.endDate,
+      \1,\2 Object.values(departmentSummary),
+      \1,\2 entries.reduce((sum, entry) => sum + entry.baseSalary, 0),
       totalGrossSalary: entries.reduce((sum, entry) => sum + entry.grossSalary, 0),
       totalDeductions: entries.reduce((sum, entry) => sum + entry.deductions, 0),
       totalNetSalary: entries.reduce((sum, entry) => sum + entry.netSalary, 0),
@@ -495,7 +457,7 @@ export class PayrollService {
     while (currentDate <= end) {
       // Check if it's a weekday (Monday-Friday)
       const dayOfWeek = currentDate.getDay()
-      if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+      \1 {\n  \2{
         workingDays++;
       }
 
@@ -512,8 +474,7 @@ export class PayrollService {
    */
   private calculateAttendanceDeduction(
     baseSalary: number,
-    workingDays: number;
-    absentDays: number,
+    \1,\2 number,
     halfDays: number;
   ): number {
     // Calculate daily rate

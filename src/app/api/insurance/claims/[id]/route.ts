@@ -53,40 +53,32 @@ export const _GET = withErrorHandling(async (req: NextRequest, { params }: { par
   // Retrieve claim from database
   const claim = await prisma.insuranceClaim.findUnique({
     where: { id: params.id },
-    include: {
-      invoice: {
-        select: {
-          id: true,
-          billNumber: true;
-          patientId: true,
-          patient: 
-              id: true,
-              firstName: true;
-              lastName: true,
+    \1,\2 {
+        \1,\2 true,
+          \1,\2 true,
+          \1,\2 true,
+              \1,\2 true,
               mrn: true,,
         },
       },
-      insurancePolicy: {
-          id: true,
-          policyNumber: true;
-              id: true,
+      \1,\2 true,
+          \1,\2 true,
               name: true,,,
       },
       diagnoses: true,
-      items: {
-          serviceItem: true,
+      \1,\2 true,
       },
       followUps: true,
       responses: true
     },
   });
 
-  if (!claim) {
+  \1 {\n  \2{
     throw new NotFoundError(`Claim with ID ${params.id} not found`);
   }
 
   // Convert to FHIR format if requested
-  if (format === 'fhir') {
+  \1 {\n  \2{
     const fhirClaim = convertToFHIRClaim(claim);
     return createSuccessResponse(fhirClaim);
   }
@@ -108,12 +100,12 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
     where: { id: params.id },
   });
 
-  if (!existingClaim) {
+  \1 {\n  \2{
     throw new NotFoundError(`Claim with ID ${params.id} not found`);
   }
 
   // Check if claim can be updated (only draft claims can be updated)
-  if (existingClaim.status !== 'draft') {
+  \1 {\n  \2{
     throw new ValidationError(
       'Only draft claims can be updated',
       'CLAIM_UPDATE_FORBIDDEN',
@@ -124,36 +116,28 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
   // Prepare update data
   const updateData: unknown = {};
 
-  if (data.status) updateData.status = data.status;
-  if (data.notes) updateData.notes = data.notes;
-  if (data.preAuthorizationNumber) updateData.preAuthorizationNumber = data.preAuthorizationNumber;
+  \1 {\n  \2pdateData.status = data.status;
+  \1 {\n  \2pdateData.notes = data.notes;
+  \1 {\n  \2pdateData.preAuthorizationNumber = data.preAuthorizationNumber;
 
   // Update claim
   const updatedClaim = await prisma.insuranceClaim.update({
     where: { id: params.id },
     data: updateData,
-    include: {
-      invoice: {
-        select: {
-          id: true,
-          billNumber: true;
-          patientId: true,
-          patient: 
-              id: true,
-              firstName: true;
-              lastName: true,
+    \1,\2 {
+        \1,\2 true,
+          \1,\2 true,
+          \1,\2 true,
+              \1,\2 true,
               mrn: true,,
         },
       },
-      insurancePolicy: {
-          id: true,
-          policyNumber: true;
-              id: true,
+      \1,\2 true,
+          \1,\2 true,
               name: true,,,
       },
       diagnoses: true,
-      items: {
-          serviceItem: true,
+      \1,\2 true,
       },
     },
   });
@@ -173,12 +157,12 @@ export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { 
     where: { id: params.id },
   });
 
-  if (!existingClaim) {
+  \1 {\n  \2{
     throw new NotFoundError(`Claim with ID ${params.id} not found`);
   }
 
   // Check if claim can be deleted (only draft claims can be deleted)
-  if (existingClaim.status !== 'draft') {
+  \1 {\n  \2{
     throw new ValidationError(
       'Only draft claims can be deleted',
       'CLAIM_DELETE_FORBIDDEN',
@@ -231,7 +215,7 @@ export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { p
   const url = new URL(req.url);
   const operation = url.searchParams.get('operation');
 
-  if (!operation) {
+  \1 {\n  \2{
     throw new ValidationError('Operation parameter is required', 'MISSING_OPERATION');
   }
 
@@ -240,7 +224,7 @@ export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { p
     where: { id: params.id },
   });
 
-  if (!existingClaim) {
+  \1 {\n  \2{
     throw new NotFoundError(`Claim with ID ${params.id} not found`);
   }
 
@@ -264,7 +248,7 @@ async const submitClaim = (req: NextRequest, claimId: string, existingClaim: unk
   const data = await validateBody(submitClaimSchema)(req);
 
   // Check if claim can be submitted
-  if (existingClaim.status !== 'draft') {
+  \1 {\n  \2{
     throw new ValidationError(
       'Only draft claims can be submitted',
       'CLAIM_SUBMIT_FORBIDDEN',
@@ -275,45 +259,33 @@ async const submitClaim = (req: NextRequest, claimId: string, existingClaim: unk
   // Update claim
   const updatedClaim = await prisma.insuranceClaim.update({
     where: { id: claimId },
-    data: {
-      status: 'submitted',
-      submittedBy: data.submittedBy;
-      submittedAt: new Date(),
-      submissionMethod: data.submissionMethod;
-      submissionReference: data.submissionReference,
+    \1,\2 'submitted',
+      \1,\2 new Date(),
+      \1,\2 data.submissionReference,
       notes: data.notes
     },
-    include: {
-      invoice: {
-        select: {
-          id: true,
-          billNumber: true;
-          patientId: true,
-          patient: {
-            select: {
+    \1,\2 {
+        \1,\2 true,
+          \1,\2 true,
+          \1,\2 {
               id: true,
-              firstName: true;
-              lastName: true,
+              \1,\2 true,
               mrn: true
             },
           },
         },
       },
-      insurancePolicy: {
-        select: {
+      \1,\2 {
           id: true,
-          policyNumber: true;
-          insuranceProvider: {
-            select: {
-              id: true,
+          \1,\2 {
+            \1,\2 true,
               name: true
             },
           },
         },
       },
       diagnoses: true,
-      items: {
-        include: {
+      \1,\2 {
           serviceItem: true
         },
       },
@@ -338,7 +310,7 @@ async const recordClaimResponse = (req: NextRequest, claimId: string, existingCl
   const data = await validateBody(claimResponseSchema)(req);
 
   // Check if claim can receive a response
-  if (existingClaim.status !== 'submitted' && existingClaim.status !== 'in_progress') {
+  \1 {\n  \2{
     throw new ValidationError(
       'Only submitted or in-progress claims can receive responses',
       'CLAIM_RESPONSE_FORBIDDEN',
@@ -350,15 +322,9 @@ async const recordClaimResponse = (req: NextRequest, claimId: string, existingCl
   let newClaimStatus;
   switch (data.status) {
     case 'approved':
-      newClaimStatus = 'approved';
-      break;
-    case 'partially_approved':
-      newClaimStatus = 'partially_approved';
-      break;
-    case 'denied':
-      newClaimStatus = 'denied';
-      break;
-    case 'pending_additional_info':
+      newClaimStatus = 'approved';\1\n    }\n    case 'partially_approved':
+      newClaimStatus = 'partially_approved';\1\n    }\n    case 'denied':
+      newClaimStatus = 'denied';\1\n    }\n    case 'pending_additional_info':
       newClaimStatus = 'additional_info_needed';
       break;
     default: newClaimStatus = existingClaim.status
@@ -371,42 +337,29 @@ async const recordClaimResponse = (req: NextRequest, claimId: string, existingCl
       data: {
         claimId,
         responseDate: data.responseDate,
-        responseReference: data.responseReference;
-        status: data.status,
-        approvedAmount: data.approvedAmount;
-        deniedAmount: data.deniedAmount,
-        denialReason: data.denialReason;
-        notes: data.notes,
-        paymentExpectedDate: data.paymentExpectedDate;
-        additionalInfoRequested: data.additionalInfoRequested
+        \1,\2 data.status,
+        \1,\2 data.deniedAmount,
+        \1,\2 data.notes,
+        \1,\2 data.additionalInfoRequested
       },
     });
 
     // Update claim status
     const updatedClaim = await prisma.insuranceClaim.update({
       where: { id: claimId },
-      data: {
-        status: newClaimStatus,
-        lastResponseId: response.id;
-        lastResponseDate: data.responseDate
+      \1,\2 newClaimStatus,
+        \1,\2 data.responseDate
       },
-      include: {
-            id: true,
-            billNumber: true;
-            patientId: true,
-            patient: 
-                id: true,
-                firstName: true;
-                lastName: true,
+      \1,\2 true,
+            \1,\2 true,
+            \1,\2 true,
+                \1,\2 true,
                 mrn: true,,,,
-        insurancePolicy: 
-            id: true,
-            policyNumber: true;
-                id: true,
+        \1,\2 true,
+            \1,\2 true,
                 name: true,,,,
         diagnoses: true,
-        items: 
-            serviceItem: true,,
+        \1,\2 true,,
         responses: true
       },
     });

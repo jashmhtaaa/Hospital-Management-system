@@ -7,14 +7,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 }
 interface Booking {
   id: string,
-  patientName: string;
-  patientId: string,
-  surgeryType: string;
-  surgeon: string,
-  theatre: string;
-  scheduledDate: string,
-  scheduledTime: string;
-  duration: string,
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 string,
   status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled'
 }
 
@@ -28,10 +24,10 @@ interface OTBookingListProps {
 export const _OTBookingList = ({ bookings }: OTBookingListProps) => {
   const getStatusBadge = (status: string) => {
     switch(status) {
-      case 'scheduled': return <Badge variant="secondary">Scheduled</Badge>;
-      case 'in-progress': return <Badge variant="warning">In Progress</Badge>;
-      case 'completed': return <Badge variant="success">Completed</Badge>;
-      case 'cancelled': return <Badge variant="danger">Cancelled</Badge>;
+      case 'scheduled': return <Badge variant="secondary">Scheduled\1>
+      case 'in-progress': return <Badge variant="warning">In Progress\1>
+      case 'completed': return <Badge variant="success">Completed\1>
+      case 'cancelled': return <Badge variant="danger">Cancelled\1>
       default: return <Badge>Unknown</Badge>
     }
   };
@@ -57,15 +53,15 @@ export const _OTBookingList = ({ bookings }: OTBookingListProps) => {
           <TableBody>
             {bookings.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center">;
+                \1>
                   No surgeries scheduled
                 </TableCell>
               </TableRow>
             ) : (
               bookings.map((booking) => (
-                <TableRow key={booking.id}>;
+                \1>
                   <TableCell>
-                    <div className="font-medium">{booking.patientName}</div>;
+                    <div className="font-medium">{booking.patientName}\1>
                     <div className="text-sm text-gray-500">ID: {booking.patientId}</div>
                   </TableCell>
                   <TableCell>{booking.surgeryType}</TableCell>

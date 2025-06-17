@@ -33,7 +33,7 @@ export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -50,18 +50,18 @@ export const GET = async (req: NextRequest) => {
 
     // Build filter criteria
     const filter: unknown = { daysThreshold };
-    if (locationId != null) filter.locationId = locationId;
-    if (medicationId != null) filter.medicationId = medicationId;
+    \1 {\n  \2ilter.locationId = locationId;
+    \1 {\n  \2ilter.medicationId = medicationId;
 
     // Get expiring inventory items
     const expiringItems = await inventoryRepository.findExpiring(daysThreshold);
 
     // Apply additional filters
     let filteredItems = expiringItems;
-    if (locationId != null) {
+    \1 {\n  \2{
       filteredItems = filteredItems.filter(item => item.locationId === locationId);
     }
-    if (medicationId != null) {
+    \1 {\n  \2{
       filteredItems = filteredItems.filter(item => item.medicationId === medicationId);
     }
 
@@ -75,7 +75,7 @@ export const GET = async (req: NextRequest) => {
 
     // Group by expiry timeframe for reporting
     const expiryGroups = {
-      expired: filteredItems.filter(item => new Date(item.expiryDate) < new Date()).length,
+      expired: filteredItems.filter(item => new Date(item.expiryDate) < \1.length,
       next30Days: filteredItems.filter(item => {
         const expiryDate = new Date(item.expiryDate),
         const thirtyDaysFromNow = new Date();
@@ -95,8 +95,7 @@ export const GET = async (req: NextRequest) => {
     // Audit logging
     await auditLog('INVENTORY', {
       action: 'LIST_EXPIRING',
-      resourceType: 'Inventory';
-      userId: userId,
+      \1,\2 userId,
       details: 
         daysThreshold,
         filter,

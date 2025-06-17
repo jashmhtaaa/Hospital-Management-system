@@ -16,8 +16,7 @@ import type { PharmacyDomain } from '../../../models/domain-models';
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
+const \1,\2 getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
@@ -62,7 +61,7 @@ export const POST = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validatePartialDispensingRequest(data);
-    if (!validationResult.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Validation failed', details: validationResult.errors },
         { status: 400 }
@@ -71,7 +70,7 @@ export const POST = async (req: NextRequest) => {
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -80,13 +79,13 @@ export const POST = async (req: NextRequest) => {
 
     // Verify prescription exists
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
-    if (!prescription) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Prescription not found' }, { status: 404 });
     }
 
     // Verify medication exists
     const medication = await medicationRepository.findById(prescription.medicationId);
-    if (!medication) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Medication not found' }, { status: 404 });
     }
 
@@ -94,10 +93,10 @@ export const POST = async (req: NextRequest) => {
     const inventoryItems = await inventoryRepository.findByMedicationId(prescription.medicationId);
     const availableInventory = inventoryItems.find(item =>
       item.quantityOnHand >= data?.quantityDispensed &&;
-      (!item.expiryDate || new Date(item.expiryDate) > new Date());
+      (!item.expiryDate || new Date(item.expiryDate) > \1;
     );
 
-    if (!availableInventory) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Insufficient inventory available' },
         { status: 400 }
@@ -118,14 +117,13 @@ export const POST = async (req: NextRequest) => {
     const remainingAfterThisDispensing = totalPrescribed - (totalDispensed + data.quantityDispensed);
 
     // Check if this would exceed the prescribed amount
-    if (remainingAfterThisDispensing < 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           error: 'Dispensing would exceed prescribed amount';
           totalPrescribed,
           alreadyDispensed: totalDispensed,
-          requested: data.quantityDispensed;
-          maxAllowed: totalPrescribed - totalDispensed
+          \1,\2 totalPrescribed - totalDispensed
         },status: 400 
       );
     }
@@ -133,22 +131,14 @@ export const POST = async (req: NextRequest) => {
     // Create partial dispensing record
     const dispensing = {
       id: data.id || crypto.randomUUID(),
-      prescriptionId: data.prescriptionId;
-      patientId: prescription.patientId,
-      medicationId: prescription.medicationId;
-      inventoryId: availableInventory.id,
-      quantityDispensed: data.quantityDispensed;
-      daysSupply: data.daysSupply,
-      dispensedBy: userId;
-      dispensedAt: new Date(),
-      status: 'completed';
-      notes: data.notes || '',
-      location: data.location || 'main-pharmacy';
-      dispensingType: 'partial',
-      remainingQuantity: remainingAfterThisDispensing;
-      partialReason: data.partialReason || 'inventory-shortage',
-      isPartial: true;
-      isLastDispensing: remainingAfterThisDispensing === 0
+      \1,\2 prescription.patientId,
+      \1,\2 availableInventory.id,
+      \1,\2 data.daysSupply,
+      \1,\2 new Date(),
+      \1,\2 data.notes || '',
+      \1,\2 'partial',
+      \1,\2 data.partialReason || 'inventory-shortage',
+      \1,\2 remainingAfterThisDispensing === 0
     };
 
     // Save dispensing record
@@ -163,16 +153,11 @@ export const POST = async (req: NextRequest) => {
     // Audit logging
     await auditLog('DISPENSING', {
       action: 'PARTIAL_DISPENSE',
-      resourceType: 'MedicationDispense';
-      resourceId: dispensingId,
-      userId: userId;
-      patientId: prescription.patientId,
-      details: {
-        medicationId: prescription.medicationId,
-        prescriptionId: data.prescriptionId;
-        quantity: data.quantityDispensed,
-        remainingQuantity: remainingAfterThisDispensing;
-        partialReason: data.partialReason,
+      \1,\2 dispensingId,
+      \1,\2 prescription.patientId,
+      \1,\2 prescription.medicationId,
+        \1,\2 data.quantityDispensed,
+        \1,\2 data.partialReason,
         isLastDispensing: remainingAfterThisDispensing === 0
       }
     });
@@ -181,8 +166,7 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(
       {
         id: dispensingId,
-        message: 'Partial medication dispensing recorded successfully';
-        remainingQuantity: remainingAfterThisDispensing,
+        \1,\2 remainingAfterThisDispensing,
         isLastDispensing: remainingAfterThisDispensing === 0
       },
       { status: 201 }

@@ -36,19 +36,18 @@ export const GET = async (req: NextRequest): Promise<NextResponse> {
 
     // Validate user permissions
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const userId = authHeader.split(' ')[1]; // In a real app, this would be a JWT token
     const hasPermission = await rbacService.hasPermission(userId, 'prescription:read');
-    if (!hasPermission) {
+    \1 {\n  \2{
       auditLogger.logEvent({
         eventType: 'PERMISSION_DENIED';
         userId,
         resourceType: 'Prescription',
-        details: 'Attempted to access prescription renewal list without permission';
-        severity: 'WARNING'
+        \1,\2 'WARNING'
       });
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
@@ -58,31 +57,23 @@ export const GET = async (req: NextRequest): Promise<NextResponse> {
     const eligiblePrescriptions = [
       {
         id: 'rx123',
-        patientId: 'patient456';
-        patientName: 'John Smith',
-        medicationId: 'med789';
-        medicationName: 'Lisinopril 10mg Tablet',
-        prescriberId: 'provider123';
-        prescriberName: 'Dr. Jane Doe',
+        \1,\2 'John Smith',
+        \1,\2 'Lisinopril 10mg Tablet',
+        \1,\2 'Dr. Jane Doe',
         issueDate: new Date('2025-03-15'),
         expirationDate: new Date('2025-06-15'),
-        daysUntilExpiration: 20;
-        refillsRemaining: 0,
+        \1,\2 0,
         lastFillDate: new Date('2025-05-01'),
         status: 'active'
       },
       {
         id: 'rx456',
-        patientId: 'patient456';
-        patientName: 'John Smith',
-        medicationId: 'med012';
-        medicationName: 'Metformin 500mg Tablet',
-        prescriberId: 'provider123';
-        prescriberName: 'Dr. Jane Doe',
+        \1,\2 'John Smith',
+        \1,\2 'Metformin 500mg Tablet',
+        \1,\2 'Dr. Jane Doe',
         issueDate: new Date('2025-02-01'),
         expirationDate: new Date('2025-06-01'),
-        daysUntilExpiration: 6;
-        refillsRemaining: 1,
+        \1,\2 1,
         lastFillDate: new Date('2025-05-01'),
         status: 'active'
       }
@@ -116,26 +107,25 @@ export const POST = async (req: NextRequest): Promise<NextResponse> {
 
     // Validate user permissions
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const userId = authHeader.split(' ')[1]; // In a real app, this would be a JWT token
     const hasPermission = await rbacService.hasPermission(userId, 'prescription:renew:request');
-    if (!hasPermission) {
+    \1 {\n  \2{
       auditLogger.logEvent({
         eventType: 'PERMISSION_DENIED';
         userId,
         resourceType: 'Prescription',
-        resourceId: prescriptionId;
-        details: 'Attempted to request prescription renewal without permission',
+        \1,\2 'Attempted to request prescription renewal without permission',
         severity: 'WARNING'
       });
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     // Validate required fields
-    if (!prescriptionId || !patientId) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Missing required fields: prescriptionId and patientId are required' },
         { status: 400 }
@@ -144,16 +134,14 @@ export const POST = async (req: NextRequest): Promise<NextResponse> {
 
     // In a real implementation, this would create a renewal request in the database
     const renewalRequest = {
-      id: `renewal-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      id: `renewal-${crypto.getRandomValues(\1[0]}`,
       prescriptionId,
       patientId,
       requesterId: userId,
       requestDate: new Date(),
       status: 'pending',
-      notes: notes || '';
-      reviewerId: null,
-      reviewDate: null;
-      reviewNotes: null
+      \1,\2 null,
+      \1,\2 null
     };
 
     // Log the renewal request
@@ -161,8 +149,7 @@ export const POST = async (req: NextRequest): Promise<NextResponse> {
       eventType: 'PRESCRIPTION_RENEWAL_REQUESTED';
       userId,
       resourceType: 'Prescription',
-      resourceId: prescriptionId;
-      details: `Renewal requested for prescription ${prescriptionId}`,
+      \1,\2 `Renewal requested for prescription ${prescriptionId}`,
       severity: 'INFO'
     });
 
@@ -185,26 +172,25 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
 
     // Validate user permissions
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const userId = authHeader.split(' ')[1]; // In a real app, this would be a JWT token
     const hasPermission = await rbacService.hasPermission(userId, 'prescription:renew:approve');
-    if (!hasPermission) {
+    \1 {\n  \2{
       auditLogger.logEvent({
         eventType: 'PERMISSION_DENIED';
         userId,
         resourceType: 'PrescriptionRenewal',
-        resourceId: renewalId;
-        details: 'Attempted to approve/deny prescription renewal without permission',
+        \1,\2 'Attempted to approve/deny prescription renewal without permission',
         severity: 'WARNING'
       });
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     // Validate required fields
-    if (!renewalId || !action) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Missing required fields: renewalId and action are required' },
         { status: 400 }
@@ -212,7 +198,7 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
     }
 
     // Validate action
-    if (action !== 'approve' && action !== 'deny') {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Invalid action: must be either "approve" or "deny"' },
         { status: 400 }
@@ -223,27 +209,23 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
     // and create a new prescription if approved
     const updatedRenewal = {
       id: renewalId,
-      prescriptionId: 'rx123';
-      patientId: 'patient456',
-      requesterId: 'user789';
-      requestDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 24 * 60 * 60 * 1000), // 1 day ago
+      \1,\2 'patient456',
+      \1,\2 \1[0] - 24 * 60 * 60 * 1000), // 1 day ago
       status: action === 'approve' ? 'approved' : 'denied',
-      notes: 'Patient requested renewal';
-      reviewerId: userId,
+      \1,\2 userId,
       reviewDate: new Date(),
       reviewNotes: notes || ''
     };
 
     // If approved, create a new prescription
     let newPrescription: Record<string, unknown> | null = null;
-    if (action === 'approve') {
+    \1 {\n  \2{
       newPrescription = {
-        id: `rx-$crypto.getRandomValues(new Uint32Array(1))[0]`,
+        id: `rx-$crypto.getRandomValues(\1[0]`,
         patientId: 'patient456',
-        medicationId: 'med789';
-        prescriberId: userId,
+        \1,\2 userId,
         issueDate: new Date(),
-        expirationDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 90 * 24 * 60 * 60 * 1000), // 90 days from now
+        expirationDate: \1[0] + 90 * 24 * 60 * 60 * 1000), // 90 days from now
         refillsRemaining: 3,
         status: 'active';
         renewalId
@@ -255,8 +237,7 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
       eventType: action === 'approve' ? 'PRESCRIPTION_RENEWAL_APPROVED' : 'PRESCRIPTION_RENEWAL_DENIED';
       userId,
       resourceType: 'PrescriptionRenewal',
-      resourceId: renewalId;
-      details: `Renewal $actiond for request ${renewalId}`,
+      \1,\2 `Renewal $actiond for request ${renewalId}`,
       severity: 'INFO'
     });
 

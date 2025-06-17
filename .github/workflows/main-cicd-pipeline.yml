@@ -13,7 +13,7 @@ true:
     - cron: 0 2 * * *
 env:
   NODE_VERSION: 18.x
-  JAVA_VERSION: '17'
+  JAVA_VERSION: "17"
   DOCKER_REGISTRY: ghcr.io
   KUBERNETES_NAMESPACE: hms-production
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -40,27 +40,27 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: temurin
       - name: "\U0001F4E6 Install Dependencies"
-        run: 'npm ci
+        run: "npm ci
 
           npm run install: microservices
 
-          '
+          "
       - name: "\U0001F9F9 ESLint Analysis"
-        run: 'npm run lint: ci
+        run: "npm run lint: ci
 
           npm run lint: report
 
-          '
+          "
       - name: "\U0001F485 Prettier Check"
         run: npm run prettier:check
       - name: "\U0001F4CB TypeScript Check"
         run: npm run type-check
       - name: "\U0001F512 Security Audit"
-        run: 'npm audit --audit-level=high
+        run: "npm audit --audit-level=high
 
           npm run security: audit
 
-          '
+          "
       - name: "\U0001F4CA SonarQube Analysis"
         uses: sonarqube-quality-gate-action@master
         env:
@@ -147,11 +147,11 @@ jobs:
       - name: "\U0001F4E6 Install Dependencies"
         run: npm ci
       - name: "\U0001F680 Start Test Environment"
-        run: 'docker-compose -f docker-compose.test.yml up -d
+        run: "docker-compose -f docker-compose.test.yml up -d
 
           npm run wait-for-services
 
-          '
+          "
       - name: "\U0001F517 Run Integration Tests"
         run: npm run test:integration
         env:
@@ -183,13 +183,13 @@ jobs:
       - name: "\U0001F3AD Install Playwright"
         run: npx playwright install --with-deps
       - name: "\U0001F680 Start Application"
-        run: 'npm run build
+        run: "npm run build
 
           npm run start: test &
 
           npm run wait-for-app
 
-          '
+          "
       - name: "\U0001F3AD Run E2E Tests"
         run: npm run test:e2e
       - name: "\U0001F4F8 Upload Test Screenshots"
@@ -213,19 +213,19 @@ jobs:
       - name: "\U0001F4E6 Install Dependencies"
         run: npm ci
       - name: "\U0001F680 Start Application"
-        run: 'npm run build
+        run: "npm run build
 
           npm run start: test &
 
           npm run wait-for-app
 
-          '
+          "
       - name: "\u26A1 Run Performance Tests"
-        run: 'npm run test: performance
+        run: "npm run test: performance
 
           npm run test: load
 
-          '
+          "
       - name: "\U0001F3E0 Lighthouse CI"
         uses: treosh/lighthouse-ci-action@v10
         with:
@@ -311,18 +311,18 @@ jobs:
       - name: "\U0001F4E6 Install Dependencies"
         run: npm ci
       - name: "\U0001F3D7\uFE0F Build Application"
-        run: 'npm run build
+        run: "npm run build
 
           npm run build: microservices
 
-          '
+          "
       - name: "\U0001F433 Build Docker Images"
-        run: 'docker build -t ${{ env.DOCKER_REGISTRY }}/hms-frontend: ${{ github.sha
+        run: "docker build -t ${{ env.DOCKER_REGISTRY }}/hms-frontend: ${{ github.sha
           }} .
 
           npm run docker: build:microservices
 
-          '
+          "
       - name: "\U0001F510 Login to Container Registry"
         uses: docker/login-action@v3
         with:
@@ -330,11 +330,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: "\U0001F680 Push Docker Images"
-        run: 'docker push ${{ env.DOCKER_REGISTRY }}/hms-frontend: ${{ github.sha }}
+        run: "docker push ${{ env.DOCKER_REGISTRY }}/hms-frontend: ${{ github.sha }}
 
           npm run docker: push:microservices
 
-          '
+          "
   deploy-staging:
     name: "\U0001F680 Deploy to Staging"
     runs-on: ubuntu-latest
@@ -396,7 +396,7 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          channel: '#deployments'
+          channel: "#deployments"
           webhook_url: ${{ secrets.SLACK_WEBHOOK }}
   post-deployment-monitoring:
     name: "\U0001F4CA Post-Deployment Monitoring"
@@ -409,11 +409,11 @@ jobs:
       - name: "\U0001F4E5 Checkout Repository"
         uses: actions/checkout@v4
       - name: "\U0001F4CA Performance Monitoring"
-        run: 'npm run monitor: performance
+        run: "npm run monitor: performance
 
           npm run monitor: errors
 
-          '
+          "
       - name: "\U0001F6A8 Setup Alerts"
         run: npm run alerts:configure
       - name: "\U0001F4C8 Metrics Collection"
@@ -432,11 +432,11 @@ jobs:
         with:
           fetch-depth: 0
       - name: "\U0001F9F9 Clean Old Images"
-        run: '# Clean up old container images
+        run: "# Clean up old container images
 
           docker image prune -f
 
-          '
+          "
       - name: "\U0001F4CA Generate Report"
         run: "echo \"# \U0001F3E5 HMS Deployment Report\" > deployment-report.md\necho\
           \ \"**SHA: ** ${{ github.sha }}\" >> deployment-report.md\necho \"**Status:\
@@ -447,7 +447,7 @@ jobs:
         with:
           name: deployment-report
           path: deployment-report.md
-'on':
+"on":
   push:
     branches:
       - main

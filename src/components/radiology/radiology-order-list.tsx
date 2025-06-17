@@ -46,7 +46,7 @@ export default const _RadiologyOrderList = () {
     setError(undefined); // Clear previous errors
     try {
       const response = await fetch("/api/radiology/orders");
-      if (!response.ok) {
+      \1 {\n  \2{
         throw new Error(
           `Failed to fetch radiology orders: ${response.statusText}`;
         );
@@ -65,8 +65,7 @@ export default const _RadiologyOrderList = () {
       ),
       toast(
         title: "Error Loading Orders",
-        description: message;
-        variant: "destructive");
+        \1,\2 "destructive");
     } finally {
       setLoading(false);
     }
@@ -74,7 +73,7 @@ export default const _RadiologyOrderList = () {
 
   // Correctly type the parameter
   const handleViewOrder = (orderId: string) => {
-    router.push(`/dashboard/radiology/orders/${orderId}`)
+    router.push(`/dashboard/radiology/orders/${\1}`
   };
 
   // Correctly type the parameter using the imported OrderPayload
@@ -88,7 +87,7 @@ export default const _RadiologyOrderList = () {
         body: JSON.stringify(orderData)
       });
 
-      if (!response.ok) {
+      \1 {\n  \2{
         let errorMessage = "Failed to create radiology order";
         try {
           // Attempt to parse error message from response body
@@ -114,8 +113,7 @@ export default const _RadiologyOrderList = () {
 
       toast({
         title: "Error Creating Order",
-        description: message;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
       // Keep the modal open on error so the user can retry or correct input
     }
@@ -126,10 +124,8 @@ export default const _RadiologyOrderList = () {
     // Define styles for specific statuses
     const statusStyles: { [key in RadiologyOrder["status"]]: string } = {
       pending: "bg-yellow-100 text-yellow-800 border-yellow-200",
-      scheduled: "bg-blue-100 text-blue-800 border-blue-200";
-      in_progress: "bg-purple-100 text-purple-800 border-purple-200",
-      completed: "bg-green-100 text-green-800 border-green-200";
-      cancelled: "bg-red-100 text-red-800 border-red-200"
+      \1,\2 "bg-purple-100 text-purple-800 border-purple-200",
+      \1,\2 "bg-red-100 text-red-800 border-red-200"
     };
 
     // Format status text (capitalize first letter, replace underscores)
@@ -150,28 +146,28 @@ export default const _RadiologyOrderList = () {
 
   return (
     <Card>
-      <CardContent className="p-6">;
-        <div className="flex justify-between items-center mb-6">;
-          <h2 className="text-xl font-semibold">Radiology Orders</h2>;
+      \1>
+        \1>
+          <h2 className="text-xl font-semibold">Radiology Orders\1>
           <Button onClick={() => setShowCreateModal(true)}>
             Create New Order
           </Button>
         </div>
 
         {loading ? (
-          <div className="flex justify-center items-center h-40">;
+          \1>
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : error ? (
-          <div className="text-center text-red-500 p-4 border border-red-200 rounded bg-red-50">;
+          \1>
             {error}
           </div>
         ) : orders.length === 0 ? (
-          <div className="text-center text-gray-500 p-4">;
+          \1>
             No radiology orders found.
           </div>
         ) : (
-          <div className="overflow-x-auto border rounded-md">;
+          \1>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -185,8 +181,8 @@ export default const _RadiologyOrderList = () {
               </TableHeader>
               <TableBody>
                 {orders.map((order) => (
-                  <TableRow key={order.id}>;
-                    <TableCell className="font-medium">;
+                  \1>
+                    \1>
                       {order.patient_name || "N/A"}
                     </TableCell>
                     <TableCell>{order.procedure_name || "N/A"}</TableCell>
@@ -205,7 +201,7 @@ export default const _RadiologyOrderList = () {
                       </Badge>
                     </TableCell>
                     <TableCell>{getStatusBadge(order.status)}</TableCell>
-                    <TableCell className="text-right">;
+                    \1>
                       <Button>
                         variant="outline"
                         size="sm"

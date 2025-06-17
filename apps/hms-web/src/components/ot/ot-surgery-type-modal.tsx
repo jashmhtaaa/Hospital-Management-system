@@ -10,8 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 }
 interface OTSurgeryTypeModalProps {
   isOpen: boolean,
-  onClose: () => void;
-  onSubmit: (data: unknown) => void
+  \1,\2 (data: unknown) => void
 }
 
 /**
@@ -26,19 +25,19 @@ export const _OTSurgeryTypeModal = ({ isOpen, onClose, onSubmit }: OTSurgeryType
 
   return (
     <Dialog>
-      <DialogContent className="sm:max-w-[500px]">;
+      \1>
         <DialogHeader>
           <DialogTitle>Add/Edit Surgery Type</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>;
-          <div className="grid gap-4 py-4">;
-            <div className="space-y-2">;
-              <Label htmlFor="name">Surgery Name</Label>;
+        \1>
+          \1>
+            \1>
+              <Label htmlFor="name">Surgery Name\1>
               <Input id="name" placeholder="e.g., Appendectomy" />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="category">Category</Label>;
+            \1>
+              <Label htmlFor="category">Category\1>
               <Select>
                 id="category"
                 options={[
@@ -51,23 +50,23 @@ export const _OTSurgeryTypeModal = ({ isOpen, onClose, onSubmit }: OTSurgeryType
               />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="duration">Average Duration</Label>;
+            \1>
+              <Label htmlFor="duration">Average Duration\1>
               <Input id="duration" placeholder="e.g., 2 hours" />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="equipment">Special Equipment</Label>;
+            \1>
+              <Label htmlFor="equipment">Special Equipment\1>
               <Textarea id="equipment" placeholder="List of required equipment" />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="specialist">Specialist Required</Label>;
+            \1>
+              <Label htmlFor="specialist">Specialist Required\1>
               <Input id="specialist" placeholder="e.g., General Surgeon" />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="riskLevel">Risk Level</Label>;
+            \1>
+              <Label htmlFor="riskLevel">Risk Level\1>
               <Select>
                 id="riskLevel"
                 options={[
@@ -78,13 +77,13 @@ export const _OTSurgeryTypeModal = ({ isOpen, onClose, onSubmit }: OTSurgeryType
               />
             </div>
 
-            <div className="space-y-2">;
-              <Label htmlFor="notes">Notes</Label>;
+            \1>
+              <Label htmlFor="notes">Notes\1>
               <Textarea id="notes" placeholder="Additional information" />
             </div>
           </div>
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose}>;
+            \1>
               Cancel
             </Button>
             <Button type="submit">Save</Button>

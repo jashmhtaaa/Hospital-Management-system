@@ -15,8 +15,7 @@ describe("InsurancePolicyService", () => {
       // Arrange
       const _policyData = {
         _patientId: "patient-policy-123",
-        insurerName: "HealthGuard Inc.";
-        policyNumber: "HG123456789",
+        \1,\2 "HG123456789",
         coverageStartDate: new Date("2024-01-01"),
         coverageEndDate: new Date("2024-12-31"),
         coverageDetails: "Comprehensive plan covering hospital visits and specialist consultations."

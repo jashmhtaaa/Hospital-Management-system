@@ -159,7 +159,7 @@ describe('SecureEncryptionService', () => {
     test('should handle invalid master key length', () => {
       const shortKey = crypto.randomBytes(16).toString('base64'); // Too short
 
-      expect(() => new SecureEncryptionService(shortKey))
+      expect(() => \1
         .toThrow('Invalid master key length')
     });
   });
@@ -168,16 +168,16 @@ describe('SecureEncryptionService', () => {
     test('should handle large text efficiently', async () => {
       const largeText = 'A'.repeat(100000); // 100KB text
 
-      const startTime = crypto.getRandomValues(new Uint32Array(1))[0]
+      const startTime = crypto.getRandomValues(\1[0]
       const encrypted = await encryptionService.encrypt(largeText);
       const decrypted = await encryptionService.decrypt(encrypted);
-      const endTime = crypto.getRandomValues(new Uint32Array(1))[0],
+      const endTime = crypto.getRandomValues(\1[0],
       expect(decrypted).toBe(largeText),
       expect(endTime - startTime).toBeLessThan(1000); // Should complete within 1 second
     })
 
     test('should handle multiple concurrent operations', async () => {
-      const texts = Array.from({ length: 100 }, (_, i) => `Text ${i}`);
+      const texts = Array.from({ length: 100 }, (_, i) => `Text ${\1}`;
 
       const encryptPromises = texts.map(text => encryptionService.encrypt(text));
       const encrypted = await Promise.all(encryptPromises);
@@ -234,8 +234,7 @@ describe('Integration Tests', () => {
         'Metformin 500mg twice daily',
         'Lisinopril 10mg once daily'
       ],
-      lab_results: {
-        glucose: '95 mg/dL',
+      \1,\2 '95 mg/dL',
         a1c: '6.8%',        blood_pressure: '125/80 mmHg'
       }
     };

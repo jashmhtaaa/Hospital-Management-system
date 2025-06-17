@@ -36,7 +36,7 @@ export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -59,7 +59,7 @@ export const GET = async (req: NextRequest) => {
     const includeMetrics = url.searchParams.get('includeMetrics') === 'true';
 
     // Validate date range
-    if (!startDate || !endDate) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Start date and end date are required' },
         { status: 400 }
@@ -74,18 +74,18 @@ export const GET = async (req: NextRequest) => {
       groupBy
     };
 
-    if (locationId != null) criteria.locationId = locationId;
-    if (unitId != null) criteria.unitId = unitId;
-    if (patientId != null) criteria.patientId = patientId;
-    if (medicationId != null) criteria.medicationId = medicationId;
-    if (administeredBy != null) criteria.administeredBy = administeredBy;
-    if (status != null) criteria.status = status;
+    \1 {\n  \2riteria.locationId = locationId;
+    \1 {\n  \2riteria.unitId = unitId;
+    \1 {\n  \2riteria.patientId = patientId;
+    \1 {\n  \2riteria.medicationId = medicationId;
+    \1 {\n  \2riteria.administeredBy = administeredBy;
+    \1 {\n  \2riteria.status = status;
 
     // Generate report
     const report = await administrationRepository.generateReport(criteria);
 
     // Add metrics if requested
-    if (includeMetrics != null) {
+    \1 {\n  \2{
       // Calculate metrics based on report data
       const metrics = calculateMetrics(report.data, criteria);
       report.metrics = metrics;
@@ -93,14 +93,13 @@ export const GET = async (req: NextRequest) => {
 
     // Format report based on requested format
     let formattedReport;
-    if (format === 'csv') {
+    \1 {\n  \2{
       formattedReport = convertToCSV(report.data);
 
       // Audit logging
       await auditLog('MEDICATION_ADMINISTRATION', {
         action: 'EXPORT_REPORT',
-        resourceType: 'MedicationAdministration';
-        userId: userId,
+        \1,\2 userId,
         details: 
           reportType,
           format,
@@ -122,8 +121,7 @@ export const GET = async (req: NextRequest) => {
       // Audit logging
       await auditLog('MEDICATION_ADMINISTRATION', {
         action: 'GENERATE_REPORT',
-        resourceType: 'MedicationAdministration';
-        userId: userId,
+        \1,\2 userId,
         details: 
           reportType,
           format,
@@ -146,49 +144,44 @@ const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
   // Calculate various metrics based on the report data
   const metrics = {
     totalAdministrations: data.length,
-    onTimeAdministrations: 0;
-    lateAdministrations: 0,
-    missedAdministrations: 0;
-    documentedAdministrations: 0,
-    highAlertMedications: 0;
-    controlledSubstances: 0,
-    administrationsByShift: 
-      morning: 0,
-      afternoon: 0;
-      night: 0,
+    \1,\2 0,
+    \1,\2 0,
+    \1,\2 0,
+    \1,\2 0,
+      \1,\2 0,
     administrationsByRoute: 
   };
 
   // Calculate metrics
   data.forEach(item => {
     // Count on-time, late, and missed administrations
-    if (item.status === 'completed') {
+    \1 {\n  \2{
       metrics.documentedAdministrations++;
 
-      if (item.timeliness === 'on-time') {
+      \1 {\n  \2{
         metrics.onTimeAdministrations++;
-      } else if (item.timeliness === 'late') {
+      } else \1 {\n  \2{
         metrics.lateAdministrations++;
       }
-    } else if (item.status === 'missed') {
+    } else \1 {\n  \2{
       metrics.missedAdministrations++;
     }
 
     // Count high-alert medications
-    if (item.isHighAlert) {
+    \1 {\n  \2{
       metrics.highAlertMedications++;
     }
 
     // Count controlled substances
-    if (item.isControlled) {
+    \1 {\n  \2{
       metrics.controlledSubstances++;
     }
 
     // Count by shift
     const adminHour = new Date(item.administeredAt).getHours();
-    if (adminHour >= 7 && adminHour < 15) {
+    \1 {\n  \2{
       metrics.administrationsByShift.morning++;
-    } else if (adminHour >= 15 && adminHour < 23) {
+    } else \1 {\n  \2{
       metrics.administrationsByShift.afternoon++;
     } else {
       metrics.administrationsByShift.night++;
@@ -200,7 +193,7 @@ const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
   });
 
   // Calculate percentages
-  if (metrics.totalAdministrations > 0) {
+  \1 {\n  \2{
     metrics.onTimePercentage = (metrics.onTimeAdministrations / metrics.totalAdministrations) * 100;
     metrics.latePercentage = (metrics.lateAdministrations / metrics.totalAdministrations) * 100;
     metrics.missedPercentage = (metrics.missedAdministrations / metrics.totalAdministrations) * 100;
@@ -214,7 +207,7 @@ const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
  * Helper function to convert report data to CSV format;
  */
 const convertToCSV = (data: unknown[]): string {
-  if (data.length === 0) {
+  \1 {\n  \2{
     return ''
   }
 
@@ -230,14 +223,14 @@ const convertToCSV = (data: unknown[]): string {
       const value = item[header];
 
       // Handle different value types
-      if (value === null || value === undefined) {
+      \1 {\n  \2{
         return '';
-      } else if (typeof value === 'string') {
+      } else \1 {\n  \2{
         // Escape quotes and wrap in quotes
         return `"${value.replace(/"/g, '""')}"`;
-      } else if (value instanceof Date) {
+      } else \1 {\n  \2{
         return `"${value.toISOString()}"`;
-      } else if (typeof value === 'object') {
+      } else \1 {\n  \2{
         // Convert objects to JSON string
         return `"${JSON.stringify(value).replace(/"/g, '""')}"`;
       } else {

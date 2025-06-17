@@ -37,7 +37,7 @@ export const _POST = async (request: NextRequest) => {
 
     // Validate request data
     const validationResult = assetSchema.safeParse(body);
-    if (!validationResult.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
@@ -83,10 +83,10 @@ export const _GET = async (request: NextRequest) => {
     const assignedToId = searchParams.get('assignedToId') || undefined;
     const location = searchParams.get('location') || undefined;
     const purchaseDateStart = searchParams.get('purchaseDateStart');
-      ? new Date(searchParams.get('purchaseDateStart'));
+      ? \1;
       : undefined;
     const purchaseDateEnd = searchParams.get('purchaseDateEnd');
-      ? new Date(searchParams.get('purchaseDateEnd'));
+      ? \1;
       : undefined;
 
     // Get assets

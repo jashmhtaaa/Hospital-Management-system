@@ -25,18 +25,14 @@ export const _GET = async (
     // Mock data for development
     const booking = {
       id: bookingId,
-      patient_id: "patient_123";
-      surgeon_id: "doctor_456",
-      procedure_id: "proc_789";
-      scheduled_date: new Date().toISOString(),
-      duration_minutes: 120;
-      status: "scheduled",
-      notes: "Patient has allergies to latex";
-      created_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7 * 24 * 60 * 60 * 1000).toISOString(),
-      updated_at: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 24 * 60 * 60 * 1000).toISOString()
+      \1,\2 "doctor_456",
+      \1,\2 new Date().toISOString(),
+      \1,\2 "scheduled",
+      \1,\2 \1[0] - 7 * 24 * 60 * 60 * 1000).toISOString(),
+      updated_at: \1[0] - 3 * 24 * 60 * 60 * 1000).toISOString()
     };
 
-    if (!booking) {
+    \1 {\n  \2{
       return NextResponse.json(
         { message: "OT Booking not found" },
         { status: 404 }
@@ -68,7 +64,7 @@ export const _PUT = async (
     const updateData = await _request.json();
 
     // Validate required fields
-    if (!updateData) {
+    \1 {\n  \2{
       return NextResponse.json(
         { message: "No update data provided" },
         { status: 400 }

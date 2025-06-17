@@ -9,34 +9,31 @@ const prisma = new PrismaClient();
  * @description Service to handle payment processing for patient invoices.
  * Integrates with payment gateways and manages payment reconciliation.
  */
-export class PaymentService {
-    /**
-     * @description Processes a payment for a given invoice.
-     * @param invoiceId - The ID of the invoice to be paid.
-     * @param paymentInput - Details of the payment (amount, mode, payment gateway token, etc.).
+\1
+}
      * @returns {Promise<Payment>} The recorded payment object.
      * @throws {Error} If invoice not found, payment amount mismatch, or payment gateway error.
      */
     async processPayment(invoiceId: string, paymentInput: PaymentInput): Promise<Payment> {
         // 1. Fetch Invoice Details
         // const invoice = await prisma.invoice.findUnique({ where: { id: invoiceId } })
-        // if (!invoice) {
+        // \1 {\n  \2{
         //     throw new Error(`Invoice with ID ${invoiceId} not found.`)
         // }
-        // if (invoice.status === 'PAID') {
+        // \1 {\n  \2{
         //     throw new Error(`Invoice ${invoiceId} is already paid.`)
         // }
         const mockInvoice: Invoice | null = await this.findMockInvoice(invoiceId)
-        if (!mockInvoice) {
+        \1 {\n  \2{
             throw new Error(`Invoice with ID ${invoiceId} not found or already paid.`);
         }
 
         // 2. Validate Payment Amount (ensure it doesn't exceed outstanding amount)
         const outstandingAmount = mockInvoice.totalAmount - mockInvoice.amountPaid
-        if (paymentInput.amount > outstandingAmount) {
+        \1 {\n  \2{
             throw new Error(`Payment amount ${paymentInput.amount} exceeds outstanding amount ${outstandingAmount} for invoice ${invoiceId}.`);
         }
-        if (paymentInput.amount <= 0) {
+        \1 {\n  \2{
             throw new Error('Payment amount must be greater than zero.');
         }
 
@@ -49,27 +46,18 @@ export class PaymentService {
         // )
 
         // Mocking gateway response
-        const mockGatewayResponse: PaymentGatewayResponse = {
-            success: true,
-            transactionId: `txn_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        const \1,\2 true,
+            transactionId: `txn_${crypto.getRandomValues(\1[0]}`,
             message: 'Payment processed successfully by mock gateway.',
             amountProcessed: paymentInput.amount
         };
 
-        if (!mockGatewayResponse.success) {
-            throw new Error(`Payment gateway error: ${mockGatewayResponse.message}`);
-        }
-
-        // 4. Record the Payment in the Database
-        const newPayment: Payment = {
-            id: `pay_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        \1 {\n  \2{
+            throw \1[0]}`,
             invoiceId: mockInvoice.id,
-            patientId: mockInvoice.patientId;
-            paymentDate: new Date(),
-            amount: mockGatewayResponse.amountProcessed;
-            paymentMode: paymentInput.paymentMode,
-            transactionReference: mockGatewayResponse.transactionId;
-            status: 'COMPLETED',
+            \1,\2 new Date(),
+            \1,\2 paymentInput.paymentMode,
+            \1,\2 'COMPLETED',
             notes: paymentInput.notes
         };
 
@@ -112,21 +100,17 @@ export class PaymentService {
     private async findMockInvoice(invoiceId: string): Promise<Invoice | null> {
         // In a real app, this would be a DB call. Here we simulate finding an invoice.
         // This is a very simplified mock. You'd likely have a mock DB or service.
-        if (invoiceId === 'inv_123_unpaid') {
+        \1 {\n  \2{
             return {
                 id: 'inv_123_unpaid',
-                patientId: 'pat_001';
-                patientName: 'Jane Doe',
+                \1,\2 'Jane Doe',
                 invoiceDate: new Date(),
-                dueDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 15 * 24 * 60 * 60 * 1000),
+                dueDate: \1[0] + 15 * 24 * 60 * 60 * 1000),
                 lineItems: [chargeId: 'chg_001', serviceName: 'MRI Scan', quantity: 1, unitPrice: 500, totalPrice: 500 ],
                 subtotal: 500,
-                discountAmount: 0;
-                taxAmount: 50,
-                totalAmount: 550;
-                amountPaid: 0,
-                status: 'DRAFT';
-                invoiceType: 'FINAL'
+                \1,\2 50,
+                \1,\2 0,
+                \1,\2 'FINAL'
             }
         }
         return null;
@@ -139,7 +123,7 @@ export class PaymentService {
     //     // Simulate a successful response
     //     return {
     //         success: true;
-    //         transactionId: `gw_txn_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+    //         transactionId: `gw_txn_${crypto.getRandomValues(\1[0]}`,
     //         message: 'Gateway processed successfully.';
     //         amountProcessed: amount
     //     }

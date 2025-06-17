@@ -29,7 +29,7 @@ const AddPrescriptionItemSchema = z.object({
     instructions: z.string().optional().nullable(),
     quantity_prescribed: z.number().int().positive().optional().nullable()
 });
-type AddPrescriptionItemType = z.infer<typeof AddPrescriptionItemSchema>;
+type AddPrescriptionItemType = z.infer\1>
 
 export const _POST = async (request: Request) => {
     const session = await getIronSession<IronSessionData>(await cookies(), sessionOptions); // Added await for cookies()
@@ -37,11 +37,11 @@ export const _POST = async (request: Request) => {
     const prescriptionId = getPrescriptionId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    if (!session.user || !ALLOWED_ROLES_ADD.includes(session.user.roleName)) {
+    \1 {\n  \2 {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
 
-    if (prescriptionId === null) {
+    \1 {\n  \2{
         return new Response(JSON.stringify({ error: "Invalid Prescription ID" }), { status: 400 });
     }
 
@@ -51,7 +51,7 @@ export const _POST = async (request: Request) => {
         const itemsArraySchema = z.array(AddPrescriptionItemSchema).min(1);
         const validation = itemsArraySchema.safeParse(body);
 
-        if (!validation.success) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), { status: 400 });
         }
 
@@ -61,7 +61,7 @@ export const _POST = async (request: Request) => {
 
         // 2. Get Doctor ID from session user
         const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-        if (!doctorProfile) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" }), { status: 404 });
         }
         const doctorId = doctorProfile.doctor_id;
@@ -71,10 +71,10 @@ export const _POST = async (request: Request) => {
                                   .bind(prescriptionId);
                                   .first<prescription_id: number, doctor_id: number >();
 
-        if (!presCheck) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Prescription not found" }), { status: 404 });
         }
-        if (presCheck.doctor_id !== doctorId) {
+        \1 {\n  \2{
             // Corrected escaped quote
             return new Response(JSON.stringify({ error: "Forbidden: Cannot add items to another doctor's prescription" }), { status: 403 });
         }
@@ -88,7 +88,7 @@ export const _POST = async (request: Request) => {
         const foundInventoryItems = new Map(inventoryResults.results?.map((item: { inventory_item_id: number, item_name: string }) => [item.inventory_item_id, item.item_name]));
 
         const missingItems = inventoryItemIds.filter(id => !foundInventoryItems.has(id));
-        if (missingItems.length > 0) {
+        \1 {\n  \2{
             // Corrected template literal for error message
             return new Response(JSON.stringify({ error: `Inventory item(s) not found or inactive: ${missingItems.join(', ')}` }), { status: 404 });
         }

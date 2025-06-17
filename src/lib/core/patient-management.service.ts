@@ -26,8 +26,7 @@ export const PatientCreateSchema = z.object({
   // Contact Information
   phone: z.string().min(10, 'Valid phone number required'),
   email: z.string().email('Valid email required').optional(),
-  address: z.object({
-    street: z.string().min(1, 'Street address required'),
+  \1,\2 z.string().min(1, 'Street address required'),
     city: z.string().min(1, 'City required'),
     state: z.string().min(2, 'State required'),
     zipCode: z.string().min(5, 'ZIP code required'),
@@ -35,15 +34,13 @@ export const PatientCreateSchema = z.object({
   }),
 
   // Emergency Contact
-  emergencyContact: z.object({
-    name: z.string().min(1, 'Emergency contact name required'),
+  \1,\2 z.string().min(1, 'Emergency contact name required'),
     relationship: z.string().min(1, 'Relationship required'),
     phone: z.string().min(10, 'Emergency contact phone required'),
   }),
 
   // Insurance Information
-  insurance: z.object({
-    primary: z.object({
+  \1,\2 z.object({
       planName: z.string(),
       policyNumber: z.string(),
       groupNumber: z.string().optional(),
@@ -51,8 +48,7 @@ export const PatientCreateSchema = z.object({
       subscriberName: z.string(),
       relationshipToSubscriber: z.enum(['self', 'spouse', 'child', 'other']),
     }),
-    secondary: z.object(
-      planName: z.string(),
+    \1,\2 z.string(),
       policyNumber: z.string(),
       groupNumber: z.string().optional(),
       subscriberId: z.string(),
@@ -61,20 +57,17 @@ export const PatientCreateSchema = z.object({
     }).optional(),),
 
   // Medical Information
-  allergies: z.array(z.object(
-    allergen: z.string(),
+  \1,\2 z.string(),
     reaction: z.string(),
     severity: z.enum(['mild', 'moderate', 'severe']),
   })).default([]),
 
-  medications: z.array(z.object(
-    name: z.string(),
+  \1,\2 z.string(),
     dosage: z.string(),
     frequency: z.string(),
     prescribedBy: z.string())).default([]),
 
-  medicalHistory: z.array(z.object(
-    condition: z.string(),
+  \1,\2 z.string(),
     diagnosedDate: z.string(),
     status: z.enum(['active', 'resolved', 'chronic']),
   })).default([]),
@@ -82,67 +75,18 @@ export const PatientCreateSchema = z.object({
   // Preferences
   preferredLanguage: z.string().default('en'),
   preferredProvider: z.string().optional(),
-  communicationPreferences: z.object(
-    phone: z.boolean().default(true),
+  \1,\2 z.boolean().default(true),
     email: z.boolean().default(true),
     sms: z.boolean().default(false),
     portal: z.boolean().default(true)).default(),);
 
 export const PatientUpdateSchema = PatientCreateSchema.partial();
 
-export type PatientCreate = z.infer<typeof PatientCreateSchema>;
-export type PatientUpdate = z.infer<typeof PatientUpdateSchema>;
+export type PatientCreate = z.infer\1>
+export type PatientUpdate = z.infer\1>
 
-export interface Patient extends PatientCreate {
-  id: string,
-  mrn: string;
-  createdAt: Date,
-  updatedAt: Date;
-  status: 'active' | 'inactive' | 'deceased';
-  lastVisit?: Date;
-  totalVisits: number
-export interface PatientSearchCriteria {
-  firstName?: string;
-  lastName?: string;
-  dateOfBirth?: string;
-  ssn?: string;
-  mrn?: string;
-  phone?: string;
-  email?: string;
-  status?: Patient['status'];
-  page?: number;
-  limit?: number;
-export interface PatientSearchResult {
-  patients: Patient[],
-  total: number;
-  page: number,
-  totalPages: number
-export interface MedicalRecord {
-  id: string,
-  patientId: string;
-  type: 'visit' | 'lab' | 'imaging' | 'procedure' | 'note',
-  title: string;
-  description: string,
-  providerId: string;
-  providerName: string,
-  date: Date;
-  status: 'draft' | 'signed' | 'amended';
-  attachments?: string[];
-export class PatientManagementService {
-  private prisma: PrismaClient;
-  private fhirEnabled: boolean;
-
-  constructor(fhirEnabled = true) {
-    this.prisma = new PrismaClient();
-    this.fhirEnabled = fhirEnabled;
-
-  /**
-   * Generate unique Medical Record Number (MRN)
-   */
-  private generateMRN(): string {
-    const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
-    const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
-    return `MRN/* SECURITY: Template literal eliminated */
+\1
+}
   }
 
   /**
@@ -162,7 +106,7 @@ export class PatientManagementService {
         where: { mrn }
       });
 
-      if (existingPatient != null) {
+      \1 {\n  \2{
         throw new Error('Patient with this MRN already exists');
       }
 
@@ -177,29 +121,24 @@ export class PatientManagementService {
         totalVisits: 0
       };
 
-      if (this.fhirEnabled) {
+      \1 {\n  \2{
         // Use FHIR integration for creation
         const result = await FHIRPatientIntegration.upsertPatient(hmsPatientData);
 
         // Log audit trail
         await this.logAuditEvent('patient_created', id, {
           mrn,
-          name: `/* SECURITY: Template literal eliminated */
-          fhirCompliant: true
+          \1,\2 true
         });
 
         return result.hmsPatient;
       } else {
         // Legacy HMS-only creation
         const patient = await this.prisma.patient.create({
-          data: {
-            id: hmsPatientData.id,
-            mrn: hmsPatientData.mrn;
-            firstName: hmsPatientData.firstName,
-            lastName: hmsPatientData.lastName;
-            dateOfBirth: new Date(hmsPatientData.dateOfBirth),
-            gender: hmsPatientData.gender;
-            phone: hmsPatientData.phone,
+          \1,\2 hmsPatientData.id,
+            \1,\2 hmsPatientData.firstName,
+            \1,\2 new Date(hmsPatientData.dateOfBirth),
+            \1,\2 hmsPatientData.phone,
             email: hmsPatientData.email || ''
           }
         });
@@ -207,8 +146,7 @@ export class PatientManagementService {
         // Log audit trail
         await this.logAuditEvent('patient_created', id, {
           mrn,
-          name: `/* SECURITY: Template literal eliminated */
-          fhirCompliant: false
+          \1,\2 false
         });
 
         return this.convertPrismaPatientToHMS(patient, hmsPatientData);
@@ -227,9 +165,9 @@ export class PatientManagementService {
       // Get existing patient
       let existingPatient: unknown;
 
-      if (this.fhirEnabled) {
+      \1 {\n  \2{
         const fhirResult = await FHIRPatientIntegration.getPatient(patientId);
-        if (!fhirResult) {
+        \1 {\n  \2{
           throw new Error('Patient not found');
         }
         existingPatient = fhirResult.hmsPatient;
@@ -237,7 +175,7 @@ export class PatientManagementService {
         existingPatient = await this.prisma.patient.findUnique({
           where: { id: patientId }
         });
-        if (!existingPatient) {
+        \1 {\n  \2{
           throw new Error('Patient not found');
         }
       }
@@ -252,7 +190,7 @@ export class PatientManagementService {
         updatedAt: new Date()
       };
 
-      if (this.fhirEnabled) {
+      \1 {\n  \2{
         // Use FHIR integration for update
         const result = await FHIRPatientIntegration.upsertPatient(updatedPatientData);
 
@@ -299,7 +237,7 @@ export class PatientManagementService {
     try {
       const { page = 1, limit = 10, ...searchCriteria } = criteria;
 
-      if (this.fhirEnabled) {
+      \1 {\n  \2{
         // Use FHIR integration for search
         const { FHIRIntegrationUtils } = await import('@/lib/fhir/fhir-integration');
         const fhirSearchParams = FHIRIntegrationUtils.convertHMSSearchToFHIR({
@@ -322,27 +260,27 @@ export class PatientManagementService {
         // Legacy HMS-only search
         const where: unknown = {};
 
-        if (searchCriteria.firstName) {
+        \1 {\n  \2{
           where.firstName = { contains: searchCriteria.firstName, mode: 'insensitive' };
         }
 
-        if (searchCriteria.lastName) {
+        \1 {\n  \2{
           where.lastName = { contains: searchCriteria.lastName, mode: 'insensitive' };
         }
 
-        if (searchCriteria.mrn) {
+        \1 {\n  \2{
           where.mrn = { contains: searchCriteria.mrn };
         }
 
-        if (searchCriteria.phone) {
+        \1 {\n  \2{
           where.phone = { contains: searchCriteria.phone };
         }
 
-        if (searchCriteria.email) {
+        \1 {\n  \2{
           where.email = { contains: searchCriteria.email };
         }
 
-        if (searchCriteria.dateOfBirth) {
+        \1 {\n  \2{
           where.dateOfBirth = new Date(searchCriteria.dateOfBirth);
         }
 
@@ -350,8 +288,7 @@ export class PatientManagementService {
           this.prisma.patient.findMany({
             where,
             skip: (page - 1) * limit,
-            take: limit;
-            orderBy: { lastName: 'asc' }
+            \1,\2 { lastName: 'asc' }
           }),
           this.prisma.patient.count({ where })
         ]);
@@ -376,7 +313,7 @@ export class PatientManagementService {
    */
   async getPatientById(patientId: string): Promise<Patient | null> {
     try {
-      if (this.fhirEnabled) {
+      \1 {\n  \2{
         const result = await FHIRPatientIntegration.getPatient(patientId);
         return result?.hmsPatient || null;
       } else {
@@ -396,7 +333,7 @@ export class PatientManagementService {
    */
   async findPatientByMRN(mrn: string): Promise<Patient | null> {
     try {
-      if (this.fhirEnabled) {
+      \1 {\n  \2{
         const result = await FHIRPatientIntegration.searchPatients({ identifier: mrn });
         return result.hmsPatients.length > 0 ? result.hmsPatients[0] : null;
       } else {
@@ -417,48 +354,32 @@ export class PatientManagementService {
   private convertPrismaPatientToHMS(prismaPatient: unknown, additionalData?: unknown): Patient {
     return {
       id: prismaPatient.id,
-      mrn: prismaPatient.mrn;
-      firstName: prismaPatient.firstName,
-      lastName: prismaPatient.lastName;
-      middleName: additionalData?.middleName || '',
-      dateOfBirth: prismaPatient.dateOfBirth.toISOString().split('T')[0];
-      gender: prismaPatient.gender,
-      phone: prismaPatient.phone;
-      email: prismaPatient.email || '',
+      \1,\2 prismaPatient.firstName,
+      \1,\2 additionalData?.middleName || '',
+      \1,\2 prismaPatient.gender,
+      \1,\2 prismaPatient.email || '',
       createdAt: prismaPatient.createdAt || new Date(),
       updatedAt: prismaPatient.updatedAt || new Date(),
-      status: 'active';
-      totalVisits: 0;
+      \1,\2 0;
 
       // Default values for complex fields
-      address: additionalData?.address || {
-        street: '',
-        city: '';
-        state: '',
-        zipCode: '';
-        country: 'US'
+      \1,\2 '',
+        \1,\2 '',
+        \1,\2 'US'
       },
-      emergencyContact: additionalData?.emergencyContact || {
-        name: '',
-        relationship: '';
-        phone: ''
+      \1,\2 '',
+        \1,\2 ''
       },
-      insurance: additionalData?.insurance || {
-        primary: {
+      \1,\2 {
           planName: '',
-          policyNumber: '';
-          subscriberId: '',
-          subscriberName: '';
-          relationshipToSubscriber: 'self' as const
+          \1,\2 '',
+          \1,\2 'self' as const
         }
       },
       allergies: additionalData?.allergies || [],
-      medicalHistory: additionalData?.medicalHistory || [];
-      preferredLanguage: additionalData?.preferredLanguage || 'en',
-      communicationPreferences: additionalData?.communicationPreferences || {
-        phone: true,
-        email: true;
-        sms: false,
+      \1,\2 additionalData?.preferredLanguage || 'en',
+      \1,\2 true,
+        \1,\2 false,
         portal: true
       }
     };
@@ -468,7 +389,7 @@ export class PatientManagementService {
    * Get FHIR representation of patient;
    */
   async getPatientFHIR(patientId: string): Promise<FHIRPatient | null> {
-    if (!this.fhirEnabled) {
+    \1 {\n  \2{
       throw new Error('FHIR integration is disabled')
     }
 
@@ -485,7 +406,7 @@ export class PatientManagementService {
    * Initialize FHIR integration;
    */
   async initializeFHIR(): Promise<void> {
-    if (this.fhirEnabled) {
+    \1 {\n  \2{
       const { FHIRIntegrationUtils } = await import('@/lib/fhir/fhir-integration');
       await FHIRIntegrationUtils.initializeFHIRIntegration();
     }
@@ -503,7 +424,7 @@ export class PatientManagementService {
    */
   async addMedicalRecord(patientId: string, record: Omit<MedicalRecord, 'id' | 'patientId'>): Promise<MedicalRecord> {
     const patient = this.patients.get(patientId);
-    if (!patient) {
+    \1 {\n  \2{
       throw new Error('Patient not found');
     }
 
@@ -518,12 +439,11 @@ export class PatientManagementService {
     this.medicalRecords.set(patientId, records);
 
     // Update last visit date if it's a visit record
-    if (record.type === 'visit') {
+    \1 {\n  \2{
       const updatedPatient = {
         ...patient,
         lastVisit: record.date,
-        totalVisits: patient.totalVisits + 1;
-        updatedAt: new Date()
+        \1,\2 new Date()
       };
       this.patients.set(patientId, updatedPatient);
     }
@@ -543,28 +463,25 @@ export class PatientManagementService {
   /**
    * Verify insurance eligibility;
    */
-  async verifyInsurance(patientId: string): Promise<{
-    primary: { status: 'active' | 'inactive' | 'pending', coverage: string[] };
+  async verifyInsurance(\1,\2 { status: 'active' | 'inactive' | 'pending', coverage: string[] };
     secondary?: { status: 'active' | 'inactive' | 'pending', coverage: string[] };
   }> {
     const patient = this.patients.get(patientId);
-    if (!patient) {
+    \1 {\n  \2{
       throw new Error('Patient not found');
     }
 
     // Simulate insurance verification
-    const primaryStatus = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) > 0.1 ? 'active' : 'inactive';
+    const primaryStatus = crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) > 0.1 ? 'active' : 'inactive';
     const secondaryStatus = patient.insurance.secondary ?;
-      (crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) > 0.2 ? 'active' : 'inactive') : undefined;
+      (crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) > 0.2 ? 'active' : 'inactive') : undefined;
 
     const result = {
-      primary: {
-        status: primaryStatus as 'active' | 'inactive',
+      \1,\2 primaryStatus as 'active' | 'inactive',
         coverage: ['medical', 'prescription', 'emergency'],
       },
       ...(secondaryStatus && {
-        secondary: {
-          status: secondaryStatus as 'active' | 'inactive',
+        \1,\2 secondaryStatus as 'active' | 'inactive',
           coverage: ['medical', 'prescription'],
         },
       }),
@@ -578,15 +495,13 @@ export class PatientManagementService {
   /**
    * Check patient eligibility for services;
    */
-  async checkEligibility(patientId: string, serviceType: string): Promise<{
-    eligible: boolean,
-    coverage: number;
-    copay: number,
+  async checkEligibility(patientId: string, \1,\2 boolean,
+    \1,\2 number,
     deductible: number;
     reasons?: string[];
   }> {
     const patient = this.patients.get(patientId);
-    if (!patient) {
+    \1 {\n  \2{
       throw new Error('Patient not found');
     }
 
@@ -594,9 +509,9 @@ export class PatientManagementService {
 
     // Simulate eligibility check
     const eligible = insurance.primary.status === 'active';
-    const coverage = eligible ? Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 40) + 60 : 0; // 60-100% coverage
-    const copay = eligible ? Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 50) + 10 : 0; // $10-60 copay
-    const deductible = eligible ? Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) : 0; // $0-1000 deductible
+    const coverage = eligible ? Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 40) + 60 : 0; // 60-100% coverage
+    const copay = eligible ? Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 50) + 10 : 0; // $10-60 copay
+    const deductible = eligible ? Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000) : 0; // $0-1000 deductible
 
     return {
       eligible,
@@ -612,10 +527,8 @@ export class PatientManagementService {
    */
   async getPatientStats(): Promise<{
     total: number,
-    active: number;
-    inactive: number,
-    newThisMonth: number;
-    averageAge: number
+    \1,\2 number,
+    \1,\2 number
   }> {
     const patients = Array.from(this.patients.values());
     const now = new Date();
@@ -623,10 +536,8 @@ export class PatientManagementService {
 
     const stats = {
       total: patients.length,
-      active: patients.filter(p => p.status === 'active').length;
-      inactive: patients.filter(p => p.status === 'inactive').length,
-      newThisMonth: patients.filter(p => p.createdAt > oneMonthAgo).length;
-      averageAge: patients.reduce((sum, p) => {
+      \1,\2 patients.filter(p => p.status === 'inactive').length,
+      \1,\2 patients.reduce((sum, p) => {
         const age = new Date().getFullYear() - new Date(p.dateOfBirth).getFullYear();
         return sum + age;
       }, 0) / patients.length || 0,
@@ -655,13 +566,11 @@ export class PatientManagementService {
   /**
    * Export patient data (for patient portal or data requests)
    */
-  async exportPatientData(patientId: string): Promise<{
-    demographics: Patient,
-    medicalRecords: MedicalRecord[]
-    exportDate: Date
+  async exportPatientData(\1,\2 Patient,
+    \1,\2 Date
   }> {
     const patient = this.patients.get(patientId);
-    if (!patient) {
+    \1 {\n  \2{
       throw new Error('Patient not found');
     }
 
@@ -683,7 +592,7 @@ export class PatientManagementService {
     const primaryPatient = this.patients.get(primaryPatientId);
     const secondaryPatient = this.patients.get(secondaryPatientId);
 
-    if (!primaryPatient || !secondaryPatient) {
+    \1 {\n  \2{
       throw new Error('One or both patients not found');
     }
 

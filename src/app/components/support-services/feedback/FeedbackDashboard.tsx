@@ -18,8 +18,7 @@ import { Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart, ResponsiveCo
 // Define types for feedback and complaint data
 interface Feedback {
   id: string,
-  type: string;
-  source: string,
+  \1,\2 string,
   rating: number;
   comments?: string;
   status: string,
@@ -32,15 +31,13 @@ interface Feedback {
   reviewedById?: string;
   reviewedByUser?: { name: string };
   reviewedAt?: string;
-  _count?: { responses: number, attachments: number; followUpActions: number };
+  _count?: { responses: number, \1,\2 number };
 }
 
 interface Complaint {
   id: string,
-  title: string;
-  category: string,
-  severity: string;
-  status: string,
+  \1,\2 string,
+  \1,\2 string,
   createdAt: string;
   departmentId?: string;
   department?: { name: string };
@@ -49,7 +46,7 @@ interface Complaint {
   assignedToId?: string;
   assignedToUser?: { name: string };
   dueDate?: string;
-  _count?: { activities: number, attachments: number; followUpActions: number };
+  _count?: { activities: number, \1,\2 number };
 }
 
 interface AnalyticsData {
@@ -59,40 +56,35 @@ interface AnalyticsData {
   feedbackByServiceType: { serviceType: string, _count: number }[];
   feedbackByDepartment: { department: string, count: number }[];
   overallRating: number,
-  ratingsByServiceType: Record<string, { count: number, sum: number; avg: number }>;
-  ratingsByDepartment: Record<string, { count: number, sum: number; avg: number }>;
+  \1,\2 Record\1>
   complaintsByCategory: { category: string, _count: number }[];
   complaintsBySeverity: { severity: string, _count: number }[];
   complaintsByStatus: { status: string, _count: number }[];
-  resolutionTimes: Record<string, { count: number, totalDays: number; avgDays: number }>;
-  period: string
+  \1,\2 string
 }
 
 // Define columns for feedback table
 const feedbackColumns: ColumnDef<Feedback>[] = [
   {
     accessorKey: 'id',
-    header: 'ID';
-    cell: ({ row }) => <div className="font-mono text-xs">{row.getValue('id').substring(0, 8)}...</div>,
+    \1,\2 ({ row }) => <div className="font-mono text-xs">{row.getValue('id').substring(0, 8)}...</div>,
   },
   {
     accessorKey: 'type',
-    header: 'Type';
-    cell: ({ row }) => (
-      <Badge variant="outline" className="capitalize">;
+    \1,\2 ({ row }) => (
+      \1>
         {row.getValue('type').replace(/_/g, ' ').toLowerCase()}
       </Badge>
     ),
   },
   {
     accessorKey: 'rating',
-    header: 'Rating';
-    cell: ({ row }) => {
+    \1,\2 ({ row }) => {
       const rating = row.getValue('rating') as number;
       return (
-        <div className="flex">;
+        \1>
           {[...Array(5)].map((_, i) => (
-            <span key={i} className={`text-sm ${i < rating ? 'text-yellow-500' : 'text-gray-300'}`}>;
+            \1>
               ★
             </span>
           ))}
@@ -102,45 +94,36 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
   },
   {
     accessorKey: 'source',
-    header: 'Source';
-    cell: ({ row }) => (
-      <Badge variant="secondary" className="capitalize">;
+    \1,\2 ({ row }) => (
+      \1>
         {row.getValue('source').toLowerCase()}
       </Badge>
     ),
   },
   {
     accessorKey: 'department',
-    header: 'Department';
-    cell: ({ row }) => {
+    \1,\2 ({ row }) => {
       const department = row.original.department;
       return department ? department.name : '-';
     },
   },
   {
     accessorKey: 'status',
-    header: 'Status';
-    cell: ({ row }) => {
+    \1,\2 ({ row }) => {
       const status = row.getValue('status') as string;
       let variant: 'default' | 'secondary' | 'destructive' | 'outline' = 'outline';
 
       switch (status) {
         case 'NEW':
-          variant = 'default';
-          break;
-        case 'REVIEWED':
-          variant = 'secondary';
-          break;
-        case 'ADDRESSED':
-          variant = 'outline';
-          break;
-        case 'CLOSED':
+          variant = 'default';\1\n    }\n    case 'REVIEWED':
+          variant = 'secondary';\1\n    }\n    case 'ADDRESSED':
+          variant = 'outline';\1\n    }\n    case 'CLOSED':
           variant = 'outline';
           break;
       }
 
       return (
-        <Badge variant={variant} className="capitalize">;
+        \1>
           {status.toLowerCase()}
         </Badge>
       );
@@ -148,8 +131,7 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
   },
   {
     accessorKey: 'createdAt',
-    header: 'Date';
-    cell: ({ row }) => format(new Date(row.getValue('createdAt')), 'MMM d, yyyy'),
+    \1,\2 ({ row }) => format(\1, 'MMM d, yyyy'),
   },
   {
     id: 'actions',
@@ -165,47 +147,37 @@ const feedbackColumns: ColumnDef<Feedback>[] = [
 const complaintColumns: ColumnDef<Complaint>[] = [
   {
     accessorKey: 'id',
-    header: 'ID';
-    cell: ({ row }) => <div className="font-mono text-xs">{row.getValue('id').substring(0, 8)}...</div>,
+    \1,\2 ({ row }) => <div className="font-mono text-xs">{row.getValue('id').substring(0, 8)}...</div>,
   },
   {
     accessorKey: 'title',
-    header: 'Title';
-    cell: ({ row }) => <div className="max-w-[200px] truncate">{row.getValue('title')}</div>,
+    \1,\2 ({ row }) => <div className="max-w-[200px] truncate">{row.getValue('title')}</div>,
   },
   {
     accessorKey: 'category',
-    header: 'Category';
-    cell: ({ row }) => (
-      <Badge variant="outline" className="capitalize">;
+    \1,\2 ({ row }) => (
+      \1>
         {row.getValue('category').toLowerCase()}
       </Badge>
     ),
   },
   {
     accessorKey: 'severity',
-    header: 'Severity';
-    cell: ({ row }) => {
+    \1,\2 ({ row }) => {
       const severity = row.getValue('severity') as string;
       let variant: 'default' | 'secondary' | 'destructive' | 'outline' = 'outline';
 
       switch (severity) {
         case 'LOW':
-          variant = 'outline';
-          break;
-        case 'MEDIUM':
-          variant = 'secondary';
-          break;
-        case 'HIGH':
-          variant = 'default';
-          break;
-        case 'CRITICAL':
+          variant = 'outline';\1\n    }\n    case 'MEDIUM':
+          variant = 'secondary';\1\n    }\n    case 'HIGH':
+          variant = 'default';\1\n    }\n    case 'CRITICAL':
           variant = 'destructive';
           break;
       }
 
       return (
-        <Badge variant={variant} className="capitalize">;
+        \1>
           {severity.toLowerCase()}
         </Badge>
       );
@@ -213,31 +185,22 @@ const complaintColumns: ColumnDef<Complaint>[] = [
   },
   {
     accessorKey: 'status',
-    header: 'Status';
-    cell: ({ row }) => {
+    \1,\2 ({ row }) => {
       const status = row.getValue('status') as string;
       let variant: 'default' | 'secondary' | 'destructive' | 'outline' = 'outline';
 
       switch (status) {
         case 'SUBMITTED':
-          variant = 'default';
-          break;
-        case 'UNDER_INVESTIGATION':
-          variant = 'secondary';
-          break;
-        case 'RESOLVED':
-          variant = 'outline';
-          break;
-        case 'CLOSED':
-          variant = 'outline';
-          break;
-        case 'ESCALATED':
+          variant = 'default';\1\n    }\n    case 'UNDER_INVESTIGATION':
+          variant = 'secondary';\1\n    }\n    case 'RESOLVED':
+          variant = 'outline';\1\n    }\n    case 'CLOSED':
+          variant = 'outline';\1\n    }\n    case 'ESCALATED':
           variant = 'destructive';
           break;
       }
 
       return (
-        <Badge variant={variant} className="capitalize">;
+        \1>
           {status.toLowerCase().replace(/_/g, ' ')}
         </Badge>
       );
@@ -245,24 +208,21 @@ const complaintColumns: ColumnDef<Complaint>[] = [
   },
   {
     accessorKey: 'department',
-    header: 'Department';
-    cell: ({ row }) => {
+    \1,\2 ({ row }) => {
       const department = row.original.department;
       return department ? department.name : '-';
     },
   },
   {
     accessorKey: 'assignedToUser',
-    header: 'Assigned To';
-    cell: ({ row }) => {
+    \1,\2 ({ row }) => {
       const assignedTo = row.original.assignedToUser;
       return assignedTo ? assignedTo.name : '-';
     },
   },
   {
     accessorKey: 'createdAt',
-    header: 'Date';
-    cell: ({ row }) => format(new Date(row.getValue('createdAt')), 'MMM d, yyyy'),
+    \1,\2 ({ row }) => format(\1, 'MMM d, yyyy'),
   },
   {
     id: 'actions',
@@ -288,22 +248,16 @@ export default const _FeedbackDashboard = () {
   // Filters
   const [feedbackFilters, setFeedbackFilters] = useState({
     type: '',
-    source: '';
-    status: '',
-    departmentId: '';
-    serviceType: '',
-    page: 1;
-    limit: 10
+    \1,\2 '',
+    \1,\2 '',
+    \1,\2 10
   });
 
   const [complaintFilters, setComplaintFilters] = useState({
     category: '',
-    severity: '';
-    status: '',
-    departmentId: '';
-    assignedToId: '',
-    page: 1;
-    limit: 10
+    \1,\2 '',
+    \1,\2 '',
+    \1,\2 10
   });
 
   // Pagination
@@ -336,11 +290,11 @@ export default const _FeedbackDashboard = () {
     try {
       const queryParams = new URLSearchParams();
       Object.entries(feedbackFilters).forEach(([key, value]) => {
-        if (value != null) queryParams.append(key, value.toString());
+        \1 {\n  \2ueryParams.append(key, value.toString());
       });
 
-      const response = await fetch(`/api/support-services/feedback?${queryParams.toString()}`);
-      if (!response.ok) {
+      const response = await fetch(`/api/support-services/feedback?${\1}`;
+      \1 {\n  \2{
         throw new Error('Failed to load feedback data');
       }
 
@@ -354,8 +308,7 @@ export default const _FeedbackDashboard = () {
 
       toast({
         title: 'Error',
-        description: 'Failed to load feedback data';
-        variant: 'destructive'
+        \1,\2 'destructive'
       });
     } finally {
       setIsLoading(false);
@@ -368,11 +321,11 @@ export default const _FeedbackDashboard = () {
     try {
       const queryParams = new URLSearchParams();
       Object.entries(complaintFilters).forEach(([key, value]) => {
-        if (value != null) queryParams.append(key, value.toString());
+        \1 {\n  \2ueryParams.append(key, value.toString());
       });
 
-      const response = await fetch(`/api/support-services/feedback/complaint?${queryParams.toString()}`);
-      if (!response.ok) {
+      const response = await fetch(`/api/support-services/feedback/complaint?${\1}`;
+      \1 {\n  \2{
         throw new Error('Failed to load complaint data');
       }
 
@@ -386,8 +339,7 @@ export default const _FeedbackDashboard = () {
 
       toast({
         title: 'Error',
-        description: 'Failed to load complaint data';
-        variant: 'destructive'
+        \1,\2 'destructive'
       });
     } finally {
       setIsLoading(false);
@@ -397,8 +349,8 @@ export default const _FeedbackDashboard = () {
   // Load analytics data
   const loadAnalyticsData = async () => {
     try {
-      const response = await fetch(`/api/support-services/feedback/analytics?period=${analyticsPeriod}`);
-      if (!response.ok) {
+      const response = await fetch(`/api/support-services/feedback/analytics?period=${\1}`;
+      \1 {\n  \2{
         throw new Error('Failed to load analytics data');
       }
 
@@ -408,8 +360,7 @@ export default const _FeedbackDashboard = () {
 
       toast({
         title: 'Error',
-        description: 'Failed to load analytics data';
-        variant: 'destructive'
+        \1,\2 'destructive'
       });
     }
   };
@@ -440,7 +391,7 @@ export default const _FeedbackDashboard = () {
       ...data.map(row =>
         headers.map(header => {
           const value = row[header];
-          if (typeof value === 'object' && value !== null) {
+          \1 {\n  \2{
             return `"${JSON.stringify(value).replace(/"/g, '""')}"`;
           }
           return typeof value === 'string' ? `"${value.replace(/"/g, '""')}"` : value;
@@ -468,10 +419,10 @@ export default const _FeedbackDashboard = () {
   };
 
   return (
-    <div className="container mx-auto py-6 space-y-6">;
-      <div className="flex justify-between items-center">;
-        <h1 className="text-3xl font-bold">Feedback & Complaint Dashboard</h1>;
-        <div className="flex space-x-2">;
+    \1>
+      \1>
+        <h1 className="text-3xl font-bold">Feedback & Complaint Dashboard\1>
+        \1>
           <Button variant="outline" onClick={() => window.location.href = '/feedback/new'}>
             New Feedback
           </Button>
@@ -481,85 +432,85 @@ export default const _FeedbackDashboard = () {
         </div>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">;
-        <TabsList className="grid grid-cols-3 w-[400px]">;
-          <TabsTrigger value="feedback">Feedback</TabsTrigger>;
-          <TabsTrigger value="complaints">Complaints</TabsTrigger>;
+      \1>
+        \1>
+          <TabsTrigger value="feedback">Feedback\1>
+          <TabsTrigger value="complaints">Complaints\1>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
         </TabsList>
 
         {/* Feedback Tab */}
-        <TabsContent value="feedback" className="space-y-4">;
+        \1>
           <Card>
-            <CardHeader className="pb-3">;
+            \1>
               <CardTitle>Feedback Management</CardTitle>
               <CardDescription>
                 View and manage feedback from patients, visitors, and staff.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-wrap gap-4 mb-4">;
-                <div className="w-full md:w-auto">;
-                  <Label htmlFor="feedback-type">Type</Label>;
+              \1>
+                \1>
+                  <Label htmlFor="feedback-type">Type\1>
                   <Select>
                     value={feedbackFilters.type}
                     onValueChange={(value) => handleFeedbackFilterChange('type', value)}
                   >
-                    <SelectTrigger id="feedback-type" className="w-[180px]">;
+                    \1>
                       <SelectValue placeholder="All Types" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Types</SelectItem>;
-                      <SelectItem value="PATIENT_SATISFACTION">Patient Satisfaction</SelectItem>;
-                      <SelectItem value="SERVICE_QUALITY">Service Quality</SelectItem>;
-                      <SelectItem value="STAFF_PERFORMANCE">Staff Performance</SelectItem>;
-                      <SelectItem value="FACILITY_CONDITION">Facility Condition</SelectItem>;
+                      <SelectItem value="">All Types\1>
+                      <SelectItem value="PATIENT_SATISFACTION">Patient Satisfaction\1>
+                      <SelectItem value="SERVICE_QUALITY">Service Quality\1>
+                      <SelectItem value="STAFF_PERFORMANCE">Staff Performance\1>
+                      <SelectItem value="FACILITY_CONDITION">Facility Condition\1>
                       <SelectItem value="OTHER">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="w-full md:w-auto">;
-                  <Label htmlFor="feedback-source">Source</Label>;
+                \1>
+                  <Label htmlFor="feedback-source">Source\1>
                   <Select>
                     value={feedbackFilters.source}
                     onValueChange={(value) => handleFeedbackFilterChange('source', value)}
                   >
-                    <SelectTrigger id="feedback-source" className="w-[180px]">;
+                    \1>
                       <SelectValue placeholder="All Sources" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Sources</SelectItem>;
-                      <SelectItem value="PATIENT">Patient</SelectItem>;
-                      <SelectItem value="VISITOR">Visitor</SelectItem>;
-                      <SelectItem value="STAFF">Staff</SelectItem>;
+                      <SelectItem value="">All Sources\1>
+                      <SelectItem value="PATIENT">Patient\1>
+                      <SelectItem value="VISITOR">Visitor\1>
+                      <SelectItem value="STAFF">Staff\1>
                       <SelectItem value="OTHER">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="w-full md:w-auto">;
-                  <Label htmlFor="feedback-status">Status</Label>;
+                \1>
+                  <Label htmlFor="feedback-status">Status\1>
                   <Select>
                     value={feedbackFilters.status}
                     onValueChange={(value) => handleFeedbackFilterChange('status', value)}
                   >
-                    <SelectTrigger id="feedback-status" className="w-[180px]">;
+                    \1>
                       <SelectValue placeholder="All Statuses" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Statuses</SelectItem>;
-                      <SelectItem value="NEW">New</SelectItem>;
-                      <SelectItem value="REVIEWED">Reviewed</SelectItem>;
-                      <SelectItem value="ADDRESSED">Addressed</SelectItem>;
+                      <SelectItem value="">All Statuses\1>
+                      <SelectItem value="NEW">New\1>
+                      <SelectItem value="REVIEWED">Reviewed\1>
+                      <SelectItem value="ADDRESSED">Addressed\1>
                       <SelectItem value="CLOSED">Closed</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="flex-grow"></div>;
+                <div className="flex-grow">\1>
 
-                <div className="flex items-end space-x-2">;
+                \1>
                   <Button variant="outline" onClick={() => loadFeedbackData()}>
                     <RefreshCw className="h-4 w-4 mr-2" />
                     Refresh
@@ -581,8 +532,7 @@ export default const _FeedbackDashboard = () {
                 isLoading={isLoading}
                 pagination={{
                   pageIndex: feedbackFilters.page - 1,
-                  pageSize: feedbackFilters.limit;
-                  pageCount: feedbackPagination.totalPages,
+                  \1,\2 feedbackPagination.totalPages,
                   onPageChange: (pageIndex) => handleFeedbackFilterChange('page', pageIndex + 1),
                 }}
               />
@@ -591,79 +541,79 @@ export default const _FeedbackDashboard = () {
         </TabsContent>
 
         {/* Complaints Tab */}
-        <TabsContent value="complaints" className="space-y-4">;
+        \1>
           <Card>
-            <CardHeader className="pb-3">;
+            \1>
               <CardTitle>Complaint Management</CardTitle>
               <CardDescription>
                 View and manage complaints from patients, visitors, and staff.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-wrap gap-4 mb-4">;
-                <div className="w-full md:w-auto">;
-                  <Label htmlFor="complaint-category">Category</Label>;
+              \1>
+                \1>
+                  <Label htmlFor="complaint-category">Category\1>
                   <Select>
                     value={complaintFilters.category}
                     onValueChange={(value) => handleComplaintFilterChange('category', value)}
                   >
-                    <SelectTrigger id="complaint-category" className="w-[180px]">;
+                    \1>
                       <SelectValue placeholder="All Categories" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Categories</SelectItem>;
-                      <SelectItem value="CLINICAL">Clinical Care</SelectItem>;
-                      <SelectItem value="ADMINISTRATIVE">Administrative</SelectItem>;
-                      <SelectItem value="FACILITY">Facility</SelectItem>;
-                      <SelectItem value="STAFF">Staff Behavior</SelectItem>;
-                      <SelectItem value="BILLING">Billing</SelectItem>;
+                      <SelectItem value="">All Categories\1>
+                      <SelectItem value="CLINICAL">Clinical Care\1>
+                      <SelectItem value="ADMINISTRATIVE">Administrative\1>
+                      <SelectItem value="FACILITY">Facility\1>
+                      <SelectItem value="STAFF">Staff Behavior\1>
+                      <SelectItem value="BILLING">Billing\1>
                       <SelectItem value="OTHER">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="w-full md:w-auto">;
-                  <Label htmlFor="complaint-severity">Severity</Label>;
+                \1>
+                  <Label htmlFor="complaint-severity">Severity\1>
                   <Select>
                     value={complaintFilters.severity}
                     onValueChange={(value) => handleComplaintFilterChange('severity', value)}
                   >
-                    <SelectTrigger id="complaint-severity" className="w-[180px]">;
+                    \1>
                       <SelectValue placeholder="All Severities" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Severities</SelectItem>;
-                      <SelectItem value="LOW">Low</SelectItem>;
-                      <SelectItem value="MEDIUM">Medium</SelectItem>;
-                      <SelectItem value="HIGH">High</SelectItem>;
+                      <SelectItem value="">All Severities\1>
+                      <SelectItem value="LOW">Low\1>
+                      <SelectItem value="MEDIUM">Medium\1>
+                      <SelectItem value="HIGH">High\1>
                       <SelectItem value="CRITICAL">Critical</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="w-full md:w-auto">;
-                  <Label htmlFor="complaint-status">Status</Label>;
+                \1>
+                  <Label htmlFor="complaint-status">Status\1>
                   <Select>
                     value={complaintFilters.status}
                     onValueChange={(value) => handleComplaintFilterChange('status', value)}
                   >
-                    <SelectTrigger id="complaint-status" className="w-[180px]">;
+                    \1>
                       <SelectValue placeholder="All Statuses" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Statuses</SelectItem>;
-                      <SelectItem value="SUBMITTED">Submitted</SelectItem>;
-                      <SelectItem value="UNDER_INVESTIGATION">Under Investigation</SelectItem>;
-                      <SelectItem value="RESOLVED">Resolved</SelectItem>;
-                      <SelectItem value="CLOSED">Closed</SelectItem>;
+                      <SelectItem value="">All Statuses\1>
+                      <SelectItem value="SUBMITTED">Submitted\1>
+                      <SelectItem value="UNDER_INVESTIGATION">Under Investigation\1>
+                      <SelectItem value="RESOLVED">Resolved\1>
+                      <SelectItem value="CLOSED">Closed\1>
                       <SelectItem value="ESCALATED">Escalated</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="flex-grow"></div>;
+                <div className="flex-grow">\1>
 
-                <div className="flex items-end space-x-2">;
+                \1>
                   <Button variant="outline" onClick={() => loadComplaintData()}>
                     <RefreshCw className="h-4 w-4 mr-2" />
                     Refresh
@@ -685,8 +635,7 @@ export default const _FeedbackDashboard = () {
                 isLoading={isLoading}
                 pagination={{
                   pageIndex: complaintFilters.page - 1,
-                  pageSize: complaintFilters.limit;
-                  pageCount: complaintPagination.totalPages,
+                  \1,\2 complaintPagination.totalPages,
                   onPageChange: (pageIndex) => handleComplaintFilterChange('page', pageIndex + 1),
                 }}
               />
@@ -695,29 +644,29 @@ export default const _FeedbackDashboard = () {
         </TabsContent>
 
         {/* Analytics Tab */}
-        <TabsContent value="analytics" className="space-y-4">;
+        \1>
           <Card>
-            <CardHeader className="pb-3">;
-              <div className="flex justify-between items-center">;
+            \1>
+              \1>
 <div
                   <CardTitle>Feedback & Complaint Analytics</CardTitle>
                   <CardDescription>
                     Analyze trends and patterns in feedback and complaints.
                   </CardDescription>
                 </div>
-                <div className="flex items-center space-x-2">;
-                  <Label htmlFor="analytics-period">Time Period:</Label>;
+                \1>
+                  <Label htmlFor="analytics-period">Time Period:\1>
                   <Select>
                     value={analyticsPeriod}
                     onValueChange={setAnalyticsPeriod}
                   >
-                    <SelectTrigger id="analytics-period" className="w-[150px]">;
+                    \1>
                       <SelectValue placeholder="Select Period" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="DAILY">Last 30 Days</SelectItem>;
-                      <SelectItem value="WEEKLY">Last 90 Days</SelectItem>;
-                      <SelectItem value="MONTHLY">Last 12 Months</SelectItem>;
+                      <SelectItem value="DAILY">Last 30 Days\1>
+                      <SelectItem value="WEEKLY">Last 90 Days\1>
+                      <SelectItem value="MONTHLY">Last 12 Months\1>
                       <SelectItem value="YEARLY">Last 5 Years</SelectItem>
                     </SelectContent>
                   </Select>
@@ -726,23 +675,23 @@ export default const _FeedbackDashboard = () {
             </CardHeader>
             <CardContent>
               {!analyticsData ? (
-                <div className="flex justify-center items-center h-64">;
+                \1>
                   <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 </div>
               ) : (
-                <div className="space-y-8">;
+                \1>
                   {/* Feedback Overview */}
 <div
-                    <h3 className="text-lg font-medium mb-4">Feedback Overview</h3>;
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+                    <h3 className="text-lg font-medium mb-4">Feedback Overview\1>
+                    \1>
                       {/* Feedback by Type */}
                       <Card>
-                        <CardHeader className="pb-2">;
+                        \1>
                           <CardTitle className="text-base">Feedback by Type</CardTitle>
                         </CardHeader>
                         <CardContent>
-                          <div className="h-64">;
-                            <ResponsiveContainer width="100%" height="100%">;
+                          \1>
+                            \1>
                               <PieChart>
                                 <Pie>
                                   data={prepareChartData(analyticsData.feedbackByType)}
@@ -767,12 +716,12 @@ export default const _FeedbackDashboard = () {
 
                       {/* Average Ratings */}
                       <Card>
-                        <CardHeader className="pb-2">;
+                        \1>
                           <CardTitle className="text-base">Average Ratings</CardTitle>
                         </CardHeader>
                         <CardContent>
-                          <div className="h-64">;
-                            <ResponsiveContainer width="100%" height="100%">;
+                          \1>
+                            \1>
                               <BarChart>
                                 data={[
                                   { name: 'Overall', rating: analyticsData.overallRating },
@@ -798,16 +747,16 @@ export default const _FeedbackDashboard = () {
 
                   {/* Complaint Overview */}
 <div
-                    <h3 className="text-lg font-medium mb-4">Complaint Overview</h3>;
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+                    <h3 className="text-lg font-medium mb-4">Complaint Overview\1>
+                    \1>
                       {/* Complaints by Category */}
                       <Card>
-                        <CardHeader className="pb-2">;
+                        \1>
                           <CardTitle className="text-base">Complaints by Category</CardTitle>
                         </CardHeader>
                         <CardContent>
-                          <div className="h-64">;
-                            <ResponsiveContainer width="100%" height="100%">;
+                          \1>
+                            \1>
                               <PieChart>
                                 <Pie>
                                   data={prepareChartData(analyticsData.complaintsByCategory)}
@@ -832,12 +781,12 @@ export default const _FeedbackDashboard = () {
 
                       {/* Complaints by Severity */}
                       <Card>
-                        <CardHeader className="pb-2">;
+                        \1>
                           <CardTitle className="text-base">Complaints by Severity</CardTitle>
                         </CardHeader>
                         <CardContent>
-                          <div className="h-64">;
-                            <ResponsiveContainer width="100%" height="100%">;
+                          \1>
+                            \1>
                               <BarChart>
                                 data={analyticsData.complaintsBySeverity}
                                 margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
@@ -846,20 +795,14 @@ export default const _FeedbackDashboard = () {
                                 <XAxis dataKey="severity" />
                                 <YAxis />
                                 <Tooltip formatter={(value, name, props) => [value, props.payload.severity]} />
-                                <Bar dataKey="_count" name="Count">;
+                                \1>
                                   {analyticsData.complaintsBySeverity.map((entry, index) => {
                                     let color = '#8884d8';
                                     switch (entry.severity) {
                                       case 'LOW':
-                                        color = '#82ca9d';
-                                        break;
-                                      case 'MEDIUM':
-                                        color = '#8884d8';
-                                        break;
-                                      case 'HIGH':
-                                        color = '#ffc658';
-                                        break;
-                                      case 'CRITICAL':
+                                        color = '#82ca9d';\1\n    }\n    case 'MEDIUM':
+                                        color = '#8884d8';\1\n    }\n    case 'HIGH':
+                                        color = '#ffc658';\1\n    }\n    case 'CRITICAL':
                                         color = '#ff8042';
                                         break;
                                     }
@@ -876,12 +819,12 @@ export default const _FeedbackDashboard = () {
 
                   {/* Resolution Times */}
                   <Card>
-                    <CardHeader className="pb-2">;
+                    \1>
                       <CardTitle className="text-base">Average Resolution Time (Days)</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="h-64">;
-                        <ResponsiveContainer width="100%" height="100%">;
+                      \1>
+                        \1>
                           <BarChart>
                             data={[
                               { name: 'Overall', days: analyticsData.resolutionTimes.overall.avgDays },
@@ -896,7 +839,7 @@ export default const _FeedbackDashboard = () {
                             <XAxis dataKey="name" />
                             <YAxis />
                             <Tooltip formatter={(value) => [Number(value).toFixed(1), 'Days']} />
-                            <Bar dataKey="days" fill="#8884d8">;
+                            \1>
                               <Cell fill="#82ca9d" />
                               <Cell fill="#82ca9d" />
                               <Cell fill="#8884d8" />

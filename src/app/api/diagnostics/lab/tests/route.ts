@@ -7,45 +7,30 @@ import { getSession } from "@/lib/session";
 // FHIR-compliant DiagnosticReport resource structure
 interface FHIRDiagnosticReport {
   resourceType: "DiagnosticReport",
-  id: string;
-  meta: {
+  \1,\2 {
     versionId: string,
     lastUpdated: string;
     security?: Array<{
       system: string,
-      code: string;
-      display: string
+      \1,\2 string
     }>
   };
   status: "registered" | "partial" | "preliminary" | "final" | "amended" | "corrected" | "appended" | "cancelled" | "entered-in-error" | "unknown",
-  category: {
-    coding: Array<{
+  \1,\2 Array<{
       system: string,
-      code: string;
-      display: string
+      \1,\2 string
     }>
   };
-  code: {
-    coding: Array<{
-      system: string,
-      code: string;
-      display: string
-    }>;
+  \1,\2 Array\1>
     text: string
   };
-  subject: {
-    reference: string;
+  \1,\2 string;
     display?: string
   };
   effectiveDateTime?: string;
   issued?: string;
-  performer?: Array<{
-    reference: string;
-    display?: string;
-  }>;
-  result?: Array<{
-    reference: string
-  }>;
+  performer?: Array\1>
+  result?: Array\1>
   conclusion?: string;
 }
 
@@ -61,11 +46,7 @@ interface LabTestCreateBody {
   loinc_display?: string;
 
   // Additional coding systems (optional)
-  additional_codes?: Array<{
-    system: string,
-    code: string
-    display?: string
-  }>;
+  additional_codes?: Array\1>
 
   // Specimen requirements
   sample_type: string;
@@ -79,30 +60,13 @@ interface LabTestCreateBody {
 
   // Test configuration
   is_panel: boolean;
-  panel_items?: Array<{
-    test_id: number;
-    sequence?: number;
-  }>;
+  panel_items?: Array\1>
 
   // Reference ranges
-  reference_ranges?: Array<{
-    gender?: "male" | "female" | "other" | "unknown";
-    age_low?: number;
-    age_high?: number;
-    value_low?: number;
-    value_high?: number;
-    text_value?: string;
-    unit?: string;
-    interpretation?: string;
-  }>;
+  reference_ranges?: Array\1>
 
   // Reflex testing rules
-  reflex_rules?: Array<{
-    condition_test_id: number,
-    condition_operator: "eq" | "ne" | "lt" | "gt" | "le" | "ge";
-    condition_value: string,
-    action_test_id: number
-  }>;
+  reflex_rules?: Array\1>
 
   // Business information
   price: number;
@@ -116,7 +80,7 @@ interface LabTestCreateBody {
   patient_preparation?: string;
 
   // Priority options
-  available_priorities?: Array<"routine" | "urgent" | "stat">;
+  available_priorities?: Array\1>
 }
 
 // GET /api/diagnostics/lab/tests - Get all laboratory tests with enhanced filtering
@@ -125,7 +89,7 @@ export const _GET = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -160,37 +124,37 @@ export const _GET = async (request: NextRequest) => {
     const parameters: (string | number | boolean)[] = [];
     const conditions: string[] = [];
 
-    if (categoryId != null) {
+    \1 {\n  \2{
       conditions.push("t.category_id = ?");
       parameters.push(categoryId);
     }
 
-    if (isActive !== null && isActive !== undefined) {
+    \1 {\n  \2{
       conditions.push("t.is_active = ?");
       parameters.push(isActive === "true" ? 1 : 0);
     }
 
-    if (loincCode != null) {
+    \1 {\n  \2{
       conditions.push("t.loinc_code = ?");
       parameters.push(loincCode);
     }
 
-    if (isPanel !== null && isPanel !== undefined) {
+    \1 {\n  \2{
       conditions.push("t.is_panel = ?");
       parameters.push(isPanel === "true" ? 1 : 0);
     }
 
-    if (sampleType != null) {
+    \1 {\n  \2{
       conditions.push("t.sample_type = ?");
       parameters.push(sampleType);
     }
 
-    if (name != null) {
+    \1 {\n  \2{
       conditions.push("t.name LIKE ?");
       parameters.push(`%${name}%`);
     }
 
-    if (conditions.length > 0) {
+    \1 {\n  \2{
       query += " WHERE " + conditions.join(" AND ");
     }
 
@@ -207,7 +171,7 @@ export const _GET = async (request: NextRequest) => {
 
     // Get total count for pagination
     let countQuery = "SELECT COUNT(*) as total FROM lab_tests t";
-    if (conditions.length > 0) {
+    \1 {\n  \2{
       countQuery += " WHERE " + conditions.join(" AND ");
     }
 
@@ -215,43 +179,35 @@ export const _GET = async (request: NextRequest) => {
     const totalCount = countResult.results?.[0]?.total || 0;
 
     // Format response based on requested format
-    if (format === 'fhir') {
+    \1 {\n  \2{
       // Transform to FHIR DiagnosticReport resources
       const fhirResources = tests.map(test => {
-        const resource: FHIRDiagnosticReport = {
-          resourceType: "DiagnosticReport",
+        const \1,\2 "DiagnosticReport",
           id: test.id.toString(),
-          meta: {
-            versionId: "1",
+          \1,\2 "1",
             lastUpdated: new Date().toISOString()
           },
           status: "registered",
-          category: {
-            coding: [{
+          \1,\2 [{
               system: "https://terminology.hl7.org/CodeSystem/v2-0074",
-              code: "LAB";
-              display: "Laboratory"
+              \1,\2 "Laboratory"
             }]
           },
-          code: {
-            coding: [{
+          \1,\2 [{
               system: "https://loinc.org",
-              code: test.loinc_code || "unknown";
-              display: test.loinc_display || test.name
+              \1,\2 test.loinc_display || test.name
             }],
             text: test.name
           },
-          subject: {
-            reference: "Patient/example"
+          \1,\2 "Patient/example"
           }
         }
 
         // Add security tag for sensitive tests if needed
-        if (test.is_sensitive) {
+        \1 {\n  \2{
           resource.meta.security = [{
             system: "https://terminology.hl7.org/CodeSystem/v3-Confidentiality",
-            code: "R";
-            display: "Restricted"
+            \1,\2 "Restricted"
           }]
         }
 
@@ -260,10 +216,8 @@ export const _GET = async (request: NextRequest) => {
 
       return NextResponse.json({
         resourceType: "Bundle",
-        type: "searchset";
-        total: totalCount,
-        link: [
-            relation: "self",
+        \1,\2 totalCount,
+        \1,\2 "self",
             url: request.url
         ],
         entry: fhirResources.map(resource => (
@@ -296,12 +250,12 @@ export const _POST = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication and authorization
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Only lab managers and admins can create tests
-    if (!["admin", "lab_manager"].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -319,7 +273,7 @@ export const _POST = async (request: NextRequest) => {
     ];
 
     for (const field of requiredFields) {
-      if (!(field in body) || body[field] === undefined || body[field] === "") {
+      \1 {\n  \2| body[field] === undefined || body[field] === "") {
         return NextResponse.json(
           { error: `Missing or invalid required field: ${field}` },
           { status: 400 }
@@ -329,7 +283,7 @@ export const _POST = async (request: NextRequest) => {
 
     // Validate LOINC code format (typically #####-#)
     const loincRegex = /^\d+-\d+$/
-    if (!loincRegex.test(body.loinc_code)) {
+    \1 {\n  \2 {
       return NextResponse.json(
         { error: "Invalid LOINC code format. Expected format: #####-#" },
         { status: 400 }
@@ -337,7 +291,7 @@ export const _POST = async (request: NextRequest) => {
     }
 
     // Validate panel items if this is a panel
-    if (body?.is_panel && (!body.panel_items || body.panel_items.length === 0)) {
+    \1 {\n  \2 {
       return NextResponse.json(
         { error: "Panel tests must include at least one panel item" },
         { status: 400 }
@@ -388,7 +342,7 @@ export const _POST = async (request: NextRequest) => {
       const testId = result.insertId;
 
       // Insert additional codes if provided
-      if (body?.additional_codes && body.additional_codes.length > 0) {
+      \1 {\n  \2{
         for (const code of body.additional_codes) {
           await DB.query(
             "INSERT INTO lab_test_codes (test_id, system, code, display) VALUES (?, ?, ?, ?)",
@@ -398,7 +352,7 @@ export const _POST = async (request: NextRequest) => {
       }
 
       // Insert panel items if this is a panel
-      if (body?.is_panel && body?.panel_items && body.panel_items.length > 0) {
+      \1 {\n  \2{
         for (const item of body.panel_items) {
           await DB.query(
             "INSERT INTO lab_test_panel_items (panel_id, test_id, sequence) VALUES (?, ?, ?)",
@@ -408,7 +362,7 @@ export const _POST = async (request: NextRequest) => {
       }
 
       // Insert reference ranges if provided
-      if (body?.reference_ranges && body.reference_ranges.length > 0) {
+      \1 {\n  \2{
         for (const range of body.reference_ranges) {
           await DB.query(
             `INSERT INTO lab_test_reference_ranges (
@@ -431,7 +385,7 @@ export const _POST = async (request: NextRequest) => {
       }
 
       // Insert reflex rules if provided
-      if (body?.reflex_rules && body.reflex_rules.length > 0) {
+      \1 {\n  \2{
         for (const rule of body.reflex_rules) {
           await DB.query(
             `INSERT INTO lab_test_reflex_rules (
@@ -466,7 +420,7 @@ export const _POST = async (request: NextRequest) => {
       const testResult = await DB.query(fetchTestQuery, [testId]);
       const test = testResult.results?.[0];
 
-      if (!test) {
+      \1 {\n  \2{
         throw new Error("Failed to retrieve created test");
       }
 
@@ -479,7 +433,7 @@ export const _POST = async (request: NextRequest) => {
 
       // Fetch panel items if this is a panel
       let panelItems = [];
-      if (body.is_panel) {
+      \1 {\n  \2{
         const panelItemsResult = await DB.query(
           `SELECT;
             i.test_id, i.sequence, t.name as test_name, t.loinc_code;
@@ -525,10 +479,8 @@ export const _POST = async (request: NextRequest) => {
       const completeTest = {
         ...test,
         additional_codes: additionalCodes,
-        panel_items: panelItems;
-        reference_ranges: referenceRanges,
-        reflex_rules: reflexRules;
-        available_priorities: JSON.parse(test.available_priorities || '["routine"]')
+        \1,\2 referenceRanges,
+        \1,\2 JSON.parse(test.available_priorities || '["routine"]')
       };
 
       // Return the created test
@@ -557,12 +509,12 @@ export const _PUT = async (
     const session = await getSession();
 
     // Check authentication and authorization
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Only lab managers and admins can update tests
-    if (!["admin", "lab_manager"].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -574,7 +526,7 @@ export const _PUT = async (
       [testId]
     );
 
-    if (!checkResult.results || checkResult.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Laboratory test not found" },
         { status: 404 }
@@ -582,7 +534,7 @@ export const _PUT = async (
     }
 
     // Parse request body
-    const body = await request.json() as Partial<LabTestCreateBody>;
+    const body = await request.json() as Partial\1>
 
     // Start transaction
     await DB.query("BEGIN TRANSACTION", []);
@@ -594,87 +546,87 @@ export const _PUT = async (
       const updateParameters: unknown[] = [];
 
       // Build dynamic update query based on provided fields
-      if (body.name !== undefined) {
+      \1 {\n  \2{
         updateFields.push("name = ?");
         updateParameters.push(body.name);
       }
 
-      if (body.description !== undefined) {
+      \1 {\n  \2{
         updateFields.push("description = ?");
         updateParameters.push(body.description);
       }
 
-      if (body.category_id !== undefined) {
+      \1 {\n  \2{
         updateFields.push("category_id = ?");
         updateParameters.push(body.category_id);
       }
 
-      if (body.loinc_code !== undefined) {
+      \1 {\n  \2{
         // Validate LOINC code format
         const loincRegex = /^\d+-\d+$/;
-        if (!loincRegex.test(body.loinc_code)) {
+        \1 {\n  \2 {
           throw new Error("Invalid LOINC code format. Expected format: #####-#")
         }
         updateFields.push("loinc_code = ?");
         updateParameters.push(body.loinc_code);
       }
 
-      if (body.loinc_display !== undefined) {
+      \1 {\n  \2{
         updateFields.push("loinc_display = ?");
         updateParameters.push(body.loinc_display);
       }
 
-      if (body.sample_type !== undefined) {
+      \1 {\n  \2{
         updateFields.push("sample_type = ?");
         updateParameters.push(body.sample_type);
       }
 
-      if (body.sample_container !== undefined) {
+      \1 {\n  \2{
         updateFields.push("sample_container = ?");
         updateParameters.push(body.sample_container);
       }
 
-      if (body.sample_volume !== undefined) {
+      \1 {\n  \2{
         updateFields.push("sample_volume = ?");
         updateParameters.push(body.sample_volume);
       }
 
-      if (body.sample_handling_instructions !== undefined) {
+      \1 {\n  \2{
         updateFields.push("sample_handling_instructions = ?");
         updateParameters.push(body.sample_handling_instructions);
       }
 
-      if (body.processing_time !== undefined) {
+      \1 {\n  \2{
         updateFields.push("processing_time = ?");
         updateParameters.push(body.processing_time);
       }
 
-      if (body.turnaround_time !== undefined) {
+      \1 {\n  \2{
         updateFields.push("turnaround_time = ?");
         updateParameters.push(body.turnaround_time);
       }
 
-      if (body.price !== undefined) {
+      \1 {\n  \2{
         updateFields.push("price = ?");
         updateParameters.push(body.price);
       }
 
-      if (body.cost_center_id !== undefined) {
+      \1 {\n  \2{
         updateFields.push("cost_center_id = ?");
         updateParameters.push(body.cost_center_id);
       }
 
-      if (body.billing_code !== undefined) {
+      \1 {\n  \2{
         updateFields.push("billing_code = ?");
         updateParameters.push(body.billing_code);
       }
 
-      if (body.is_active !== undefined) {
+      \1 {\n  \2{
         updateFields.push("is_active = ?");
         updateParameters.push(body.is_active ? 1 : 0);
       }
 
-      if (body.patient_preparation !== undefined) {
+      \1 {\n  \2{
         // Encrypt sensitive data
         const encryptedData = await encryptSensitiveData({
           patientPreparation: body.patient_preparation
@@ -683,13 +635,13 @@ export const _PUT = async (
         updateParameters.push(encryptedData.patientPreparation);
       }
 
-      if (body.available_priorities !== undefined) {
+      \1 {\n  \2{
         updateFields.push("available_priorities = ?");
         updateParameters.push(JSON.stringify(body.available_priorities));
       }
 
       // Only proceed if there are fields to update
-      if (updateFields.length > 0) {
+      \1 {\n  \2{
         updateQuery += updateFields.join(", ") + " WHERE id = ?";
         updateParameters.push(testId);
 
@@ -697,7 +649,7 @@ export const _PUT = async (
       }
 
       // Update additional codes if provided
-      if (body.additional_codes !== undefined) {
+      \1 {\n  \2{
         // Delete existing codes
         await DB.query(
           "DELETE FROM lab_test_codes WHERE test_id = ?",
@@ -705,7 +657,7 @@ export const _PUT = async (
         );
 
         // Insert new codes
-        if (body.additional_codes.length > 0) {
+        \1 {\n  \2{
           for (const code of body.additional_codes) {
             await DB.query(
               "INSERT INTO lab_test_codes (test_id, system, code, display) VALUES (?, ?, ?, ?)",
@@ -716,7 +668,7 @@ export const _PUT = async (
       }
 
       // Update panel items if provided and this is a panel
-      if (body.is_panel !== undefined && body.panel_items !== undefined) {
+      \1 {\n  \2{
         // Update is_panel flag
         await DB.query(
           "UPDATE lab_tests SET is_panel = ? WHERE id = ?",
@@ -730,7 +682,7 @@ export const _PUT = async (
         );
 
         // Insert new panel items if this is a panel
-        if (body?.is_panel && body.panel_items.length > 0) {
+        \1 {\n  \2{
           for (const item of body.panel_items) {
             await DB.query(
               "INSERT INTO lab_test_panel_items (panel_id, test_id, sequence) VALUES (?, ?, ?)",
@@ -741,7 +693,7 @@ export const _PUT = async (
       }
 
       // Update reference ranges if provided
-      if (body.reference_ranges !== undefined) {
+      \1 {\n  \2{
         // Delete existing ranges
         await DB.query(
           "DELETE FROM lab_test_reference_ranges WHERE test_id = ?",
@@ -749,7 +701,7 @@ export const _PUT = async (
         );
 
         // Insert new ranges
-        if (body.reference_ranges.length > 0) {
+        \1 {\n  \2{
           for (const range of body.reference_ranges) {
             await DB.query(
               `INSERT INTO lab_test_reference_ranges (
@@ -773,7 +725,7 @@ export const _PUT = async (
       }
 
       // Update reflex rules if provided
-      if (body.reflex_rules !== undefined) {
+      \1 {\n  \2{
         // Delete existing rules
         await DB.query(
           "DELETE FROM lab_test_reflex_rules WHERE condition_test_id = ?",
@@ -781,7 +733,7 @@ export const _PUT = async (
         );
 
         // Insert new rules
-        if (body.reflex_rules.length > 0) {
+        \1 {\n  \2{
           for (const rule of body.reflex_rules) {
             await DB.query(
               `INSERT INTO lab_test_reflex_rules (
@@ -817,7 +769,7 @@ export const _PUT = async (
       const testResult = await DB.query(fetchTestQuery, [testId]);
       const test = testResult.results?.[0];
 
-      if (!test) {
+      \1 {\n  \2{
         throw new Error("Failed to retrieve updated test");
       }
 
@@ -830,7 +782,7 @@ export const _PUT = async (
 
       // Fetch panel items if this is a panel
       let panelItems = [];
-      if (test.is_panel) {
+      \1 {\n  \2{
         const panelItemsResult = await DB.query(
           `SELECT;
             i.test_id, i.sequence, t.name as test_name, t.loinc_code;
@@ -876,10 +828,8 @@ export const _PUT = async (
       const completeTest = {
         ...test,
         additional_codes: additionalCodes,
-        panel_items: panelItems;
-        reference_ranges: referenceRanges,
-        reflex_rules: reflexRules;
-        available_priorities: JSON.parse(test.available_priorities || '["routine"]')
+        \1,\2 referenceRanges,
+        \1,\2 JSON.parse(test.available_priorities || '["routine"]')
       };
 
       // Return the updated test
@@ -908,12 +858,12 @@ export const DELETE = async (
     const session = await getSession();
 
     // Check authentication and authorization
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Only lab managers and admins can delete tests
-    if (!["admin", "lab_manager"].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -925,7 +875,7 @@ export const DELETE = async (
       [testId]
     );
 
-    if (!checkResult.results || checkResult.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Laboratory test not found" },
         { status: 404 }
@@ -938,7 +888,7 @@ export const DELETE = async (
       [testId]
     );
 
-    if (orderCheckResult?.results && orderCheckResult.results.length > 0) {
+    \1 {\n  \2{
       // Instead of deleting, mark as inactive
       await DB.query(
         "UPDATE lab_tests SET is_active = 0 WHERE id = ?",

@@ -13,24 +13,8 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
  * workflow coordination.
  */
 
-export class HMSIntegrationService {
-  /**
-   * Retrieves patient information from the HMS Patient Management system;
-   * @param patientId The patient ID;
-   * @param userId The requesting user's ID;
-   * @param userRoles The requesting user's roles;
-   * @returns Patient information;
-   */
-  public static async getPatientInfo(
-    patientId: string,
-    userId: string;
-    userRoles: string[]
-  ): Promise<unknown> {
-    // Enforce RBAC
-    RBACService.enforcePermission(
-      userRoles,
-      Resource.USER,
-      Action.READ,
+\1
+}
       { patientData: true },
       userId,
       patientId;
@@ -50,25 +34,20 @@ export class HMSIntegrationService {
       // For this example, we'll simulate the API call with a database query
       const patient = await prisma.patient.findUnique({
         where: { id: patientId },
-        select: {
-          id: true,
-          mrn: true;
-          firstName: true,
-          lastName: true;
-          dateOfBirth: true,
-          gender: true;
-          contactInformation: true;
+        \1,\2 true,
+          \1,\2 true,
+          \1,\2 true,
+          \1,\2 true;
           // Exclude sensitive medical information based on roles
           ...(RBACService.hasPermission(userRoles, Resource.USER, Action.READ, fullMedicalData: true );
             ? 
                 allergies: true,
-                diagnoses: true;
-                medications: true
+                \1,\2 true
             : );
         }
       });
 
-      if (!patient) {
+      \1 {\n  \2{
         throw new NotFoundError(`Patient with ID ${patientId} not found`);
       }
 
@@ -83,7 +62,7 @@ export class HMSIntegrationService {
       return patient;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      if (error instanceof NotFoundError || error instanceof AuthorizationError) {
+      \1 {\n  \2{
         throw error;
       }
 
@@ -100,8 +79,7 @@ export class HMSIntegrationService {
    */
   public static async getLocationInfo(
     locationId: string,
-    userId: string;
-    userRoles: string[]
+    \1,\2 string[]
   ): Promise<unknown> {
     // Enforce RBAC
     RBACService.enforcePermission(
@@ -127,19 +105,15 @@ export class HMSIntegrationService {
       // For this example, we'll simulate the API call with a database query
       const location = await prisma.location.findUnique({
         where: { id: locationId },
-        select: {
-          id: true,
-          name: true;
-          type: true,
-          floor: true;
-          building: true,
-          status: true;
-          capacity: true,
+        \1,\2 true,
+          \1,\2 true,
+          \1,\2 true,
+          \1,\2 true,
           currentOccupancy: true
         }
       });
 
-      if (!location) {
+      \1 {\n  \2{
         throw new NotFoundError(`Location with ID ${locationId} not found`);
       }
 
@@ -154,7 +128,7 @@ export class HMSIntegrationService {
       return location;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      if (error instanceof NotFoundError || error instanceof AuthorizationError) {
+      \1 {\n  \2{
         throw error;
       }
 
@@ -175,10 +149,8 @@ export class HMSIntegrationService {
    */
   public static async sendNotification(
     recipientId: string,
-    notificationType: 'EMAIL' | 'SMS' | 'PUSH' | 'IN_APP';
-    title: string,
-    message: string;
-    metadata: Record<string, unknown>,
+    \1,\2 string,
+    \1,\2 Record<string, unknown>,
     userId: string,
     userRoles: string[]
   ): Promise<unknown> {
@@ -234,7 +206,7 @@ export class HMSIntegrationService {
       return notification;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      if (error instanceof AuthorizationError) {
+      \1 {\n  \2{
         throw error;
       }
 
@@ -251,8 +223,7 @@ export class HMSIntegrationService {
    */
   public static async getUserInfo(
     targetUserId: string,
-    userId: string;
-    userRoles: string[]
+    \1,\2 string[]
   ): Promise<unknown> {
     // Enforce RBAC
     RBACService.enforcePermission(
@@ -278,27 +249,21 @@ export class HMSIntegrationService {
       // For this example, we'll simulate the API call with a database query
       const user = await prisma.user.findUnique({
         where: { id: targetUserId },
-        select: {
-          id: true,
-          username: true;
-          email: true,
-          firstName: true;
-          lastName: true,
-          roles: true;
-          department: true,
-          position: true;
-          status: true;
+        \1,\2 true,
+          \1,\2 true,
+          \1,\2 true,
+          \1,\2 true,
+          \1,\2 true;
           // Only include sensitive fields for self or admin
           ...(targetUserId === userId || userRoles.includes('admin');
             ? 
                 lastLogin: true,
-                createdAt: true;
-                updatedAt: true
+                \1,\2 true
             : );
         }
       });
 
-      if (!user) {
+      \1 {\n  \2{
         throw new NotFoundError(`User with ID ${targetUserId} not found`);
       }
 
@@ -313,7 +278,7 @@ export class HMSIntegrationService {
       return user;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      if (error instanceof NotFoundError || error instanceof AuthorizationError) {
+      \1 {\n  \2{
         throw error;
       }
 
@@ -357,10 +322,8 @@ export class HMSIntegrationService {
       // In a real implementation, this would call the HMS Reporting System API
       // For this example, we'll simulate the API call with a database insert
       const report = await prisma.report.create({
-        data: {
-          type: reportType,
-          data: reportData;
-          status: 'SUBMITTED',
+        \1,\2 reportType,
+          \1,\2 'SUBMITTED',
           submittedById: userId
         }
       });
@@ -379,7 +342,7 @@ export class HMSIntegrationService {
       return report;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      if (error instanceof AuthorizationError) {
+      \1 {\n  \2{
         throw error;
       }
 
@@ -398,10 +361,8 @@ export class HMSIntegrationService {
    */
   public static async linkRequestToPatient(
     serviceType: 'HOUSEKEEPING' | 'MAINTENANCE' | 'DIETARY' | 'AMBULANCE' | 'FEEDBACK',
-    requestId: string;
-    patientId: string,
-    userId: string;
-    userRoles: string[]
+    \1,\2 string,
+    \1,\2 string[]
   ): Promise<unknown> {
     // Map service type to resource
     const resourceMap = {
@@ -467,7 +428,7 @@ export class HMSIntegrationService {
       return request;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      if (error instanceof NotFoundError || error instanceof AuthorizationError) {
+      \1 {\n  \2{
         throw error;
       }
 
@@ -486,10 +447,8 @@ export class HMSIntegrationService {
    */
   public static async linkRequestToLocation(
     serviceType: 'HOUSEKEEPING' | 'MAINTENANCE' | 'DIETARY' | 'AMBULANCE',
-    requestId: string;
-    locationId: string,
-    userId: string;
-    userRoles: string[]
+    \1,\2 string,
+    \1,\2 string[]
   ): Promise<unknown> {
     // Map service type to resource
     const resourceMap = {
@@ -554,7 +513,7 @@ export class HMSIntegrationService {
       return request;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      if (error instanceof NotFoundError || error instanceof AuthorizationError) {
+      \1 {\n  \2{
         throw error;
       }
 

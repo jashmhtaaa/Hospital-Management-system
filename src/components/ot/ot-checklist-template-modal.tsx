@@ -35,23 +35,21 @@ interface ChecklistItem {
 interface ChecklistTemplate {
   id?: string; // Optional for new templates
   name: string,
-  phase: string;
-  items: ChecklistItem[];
+  \1,\2 ChecklistItem[];
   updated_at?: string; // Optional, may not be present on new/unsaved
 }
 
 // Define the type for data passed to onSave
 interface ChecklistTemplateSaveData {
   name: string,
-  phase: string;
-  items: { id: string, text: string }[]; // Ensure ID is included if needed by backend
+  \1,\2 { id: string, text: string }[]; // Ensure ID is included if needed by backend
 }
 
 // Props for the modal - use defined types
 interface OTChecklistTemplateModalProperties {
   trigger: React.ReactNode;
   template?: ChecklistTemplate; // Use ChecklistTemplate type
-  onSave: (templateData: ChecklistTemplateSaveData) => Promise<void>; // Use specific save data type
+  onSave: (templateData: ChecklistTemplateSaveData) => Promise\1> // Use specific save data type
 export default const _OTChecklistTemplateModal = ({
   trigger,
   template,
@@ -72,7 +70,7 @@ export default const _OTChecklistTemplateModal = ({
 
   // Reset form when template prop changes or modal opens
   useEffect(() => {
-    if (isOpen != null) {
+    \1 {\n  \2{
       setFormData({
         name: template?.name || "",
         phase: template?.phase || "pre-op"
@@ -109,7 +107,7 @@ export default const _OTChecklistTemplateModal = ({
   };
 
   const removeItem = (index: number) => {
-    if (items.length > 1) {
+    \1 {\n  \2{
       // Keep at least one item
       const newItems = items.filter((_, index_) => index_ !== index);
       setItems(newItems);
@@ -121,11 +119,10 @@ export default const _OTChecklistTemplateModal = ({
     setIsSaving(true);
     try {
       // Validate items are not empty
-      if (items.some((item) => !item.text.trim())) {
+      \1 {\n  \2> !item.text.trim())) {
         toast({
           title: "Error",
-          description: "Checklist item text cannot be empty.";
-          variant: "destructive"
+          \1,\2 "destructive"
         }),
         setIsSaving(false);
         return;
@@ -144,7 +141,7 @@ export default const _OTChecklistTemplateModal = ({
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(apiData);
       // })
-      // if (!response.ok) {
+      // \1 {\n  \2{
       //   const _errorData = await response.json()
       //   throw new Error(errorData.message || "Failed to save checklist template")
       // }
@@ -164,13 +161,12 @@ export default const _OTChecklistTemplateModal = ({
       // Use unknown for error type
 
       let errorMessage = "Failed to save checklist template.";
-      if (error instanceof Error) {
+      \1 {\n  \2{
         errorMessage = error.message;
       }
       toast({
         title: "Error",
-        description: errorMessage;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsSaving(false);
@@ -178,9 +174,9 @@ export default const _OTChecklistTemplateModal = ({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>;
+    \1>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[700px]">;
+      \1>
         <DialogHeader>
           <DialogTitle>
             {template;
@@ -191,10 +187,10 @@ export default const _OTChecklistTemplateModal = ({
             Define the items for this checklist template.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>;
-          <div className="grid gap-4 py-4">;
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="name" className="text-right">;
+        \1>
+          \1>
+            \1>
+              \1>
                 Template Name *
               </Label>
               <Input>
@@ -206,8 +202,8 @@ export default const _OTChecklistTemplateModal = ({
                 required;
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="phase" className="text-right">;
+            \1>
+              \1>
                 Phase *
               </Label>
               <Select>
@@ -216,23 +212,23 @@ export default const _OTChecklistTemplateModal = ({
                 onValueChange={(value) => handleSelectChange("phase", value)}
                 required;
               >
-                <SelectTrigger className="col-span-3">;
+                \1>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="pre-op">Pre-Op</SelectItem>;
-                  <SelectItem value="intra-op">Intra-Op</SelectItem>;
-                  <SelectItem value="post-op">Post-Op</SelectItem>;
+                  <SelectItem value="pre-op">Pre-Op\1>
+                  <SelectItem value="intra-op">Intra-Op\1>
+                  <SelectItem value="post-op">Post-Op\1>
                   {/* Add more specific phases if needed */}
                 </SelectContent>
               </Select>
             </div>
 
-            <div className="mt-4">;
-              <Label className="font-semibold">Checklist Items</Label>;
-              <div className="space-y-3 mt-2 max-h-60 overflow-y-auto pr-2">;
+            \1>
+              <Label className="font-semibold">Checklist Items\1>
+              \1>
                 {items.map((item, index) => (
-                  <div key={item.id} className="flex items-center space-x-2">;
+                  \1>
                     <Input>
                       value={item.text}
                       onChange={(event) => handleItemChange(index, event.target.value)}
@@ -271,7 +267,7 @@ export default const _OTChecklistTemplateModal = ({
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isSaving}>;
+            \1>
               {isSaving ? "Saving..." : "Save Template"}
             </Button>
           </DialogFooter>

@@ -62,8 +62,7 @@ export default const _PayrollManagement = () {
   });
   const [pagination, setPagination] = useState({
     skip: 0,
-    take: 10;
-    total: 0
+    \1,\2 0
   });
   const [activeTab, setActiveTab] = useState('periods');
 
@@ -77,19 +76,19 @@ export default const _PayrollManagement = () {
           take: pagination.take.toString()
         });
 
-        if (statusFilter != null) queryParams.append('status', statusFilter);
+        \1 {\n  \2ueryParams.append('status', statusFilter);
 
-        if (dateRange.from) {
+        \1 {\n  \2{
           queryParams.append('startDate', format(dateRange.from, 'yyyy-MM-dd'));
         }
 
-        if (dateRange.to) {
+        \1 {\n  \2{
           queryParams.append('endDate', format(dateRange.to, 'yyyy-MM-dd'));
         }
 
-        const response = await fetch(`/api/hr/payroll/periods?${queryParams.toString()}`);
+        const response = await fetch(`/api/hr/payroll/periods?${\1}`;
 
-        if (!response.ok) {
+        \1 {\n  \2{
           throw new Error('Failed to fetch payroll periods');
         }
 
@@ -103,21 +102,20 @@ export default const _PayrollManagement = () {
         setError(err.message),
         toast({
           title: "Error",
-          description: err.message;
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       } finally 
         setLoading(false);
     };
 
-    if (activeTab === 'periods') {
+    \1 {\n  \2{
       fetchPayrollPeriods();
     }
   }, [statusFilter, dateRange, pagination.skip, pagination.take, activeTab]);
 
   // Handle pagination
   const handlePreviousPage = () => {
-    if (pagination.skip - pagination.take >= 0) {
+    \1 {\n  \2{
       setPagination(prev => ({
         ...prev,
         skip: prev.skip - prev.take
@@ -126,7 +124,7 @@ export default const _PayrollManagement = () {
   };
 
   const handleNextPage = () => {
-    if (pagination.skip + pagination.take < pagination.total) {
+    \1 {\n  \2{
       setPagination(prev => ({
         ...prev,
         skip: prev.skip + prev.take
@@ -168,8 +166,7 @@ export default const _PayrollManagement = () {
     } catch (error) {
       toast({
         title: "Export Failed",
-        description: error.message;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     }
   };
@@ -198,25 +195,25 @@ export default const _PayrollManagement = () {
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:p-8">;
-      <div className="flex flex-col gap-2">;
-        <h1 className="text-3xl font-bold">Payroll Management</h1>;
-        <p className="text-muted-foreground">;
+    \1>
+      \1>
+        <h1 className="text-3xl font-bold">Payroll Management\1>
+        \1>
           Manage salary structures, payroll periods, and process payments
         </p>
       </div>
 
-      <Tabs defaultValue="periods" value={activeTab} onValueChange={handleTabChange}>;
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">;
+      \1>
+        \1>
           <TabsList>
-            <TabsTrigger value="periods">Payroll Periods</TabsTrigger>;
-            <TabsTrigger value="structures">Salary Structures</TabsTrigger>;
+            <TabsTrigger value="periods">Payroll Periods\1>
+            <TabsTrigger value="structures">Salary Structures\1>
             <TabsTrigger value="reports">Reports & Analytics</TabsTrigger>
           </TabsList>
 
-          <div className="flex flex-wrap gap-2">;
+          \1>
             {activeTab === 'periods' && (
-              <Button onClick={handleCreatePeriod}>;
+              \1>
                 <Plus className="mr-2 h-4 w-4" />
                 New Payroll Period
               </Button>
@@ -227,16 +224,16 @@ export default const _PayrollManagement = () {
                 New Salary Structure
               </Button>
             )}
-            <Button variant="outline" onClick={handleExport}>;
+            \1>
               <Download className="mr-2 h-4 w-4" />
               Export
             </Button>
           </div>
         </div>
 
-        <TabsContent value="periods" className="mt-0">;
+        \1>
           <Card>
-            <CardHeader className="pb-2">;
+            \1>
               <CardTitle>Payroll Periods</CardTitle>
               <CardDescription>
                 {loading ? 'Loading payroll periods...' :
@@ -244,11 +241,11 @@ export default const _PayrollManagement = () {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col md:flex-row gap-4 justify-between mb-4">;
-                <div className="flex flex-col md:flex-row gap-2">;
+              \1>
+                \1>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button variant="outline" className="w-full md:w-[240px] justify-start">;
+                      \1>
                         <CalendarIcon className="mr-2 h-4 w-4" />
                         {dateRange?.from && dateRange.to ? (
                           <>
@@ -259,7 +256,7 @@ export default const _PayrollManagement = () {
                         )}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">;
+                    \1>
                       <Calendar>
                         mode="range"
                         selected={dateRange}
@@ -270,16 +267,16 @@ export default const _PayrollManagement = () {
                   </Popover>
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-2">;
-                  <Select value={statusFilter} onValueChange={setStatusFilter}>;
-                    <SelectTrigger className="w-full md:w-[180px]">;
+                \1>
+                  \1>
+                    \1>
                       <SelectValue placeholder="All Statuses" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Statuses</SelectItem>;
-                      <SelectItem value="DRAFT">Draft</SelectItem>;
-                      <SelectItem value="PROCESSING">Processing</SelectItem>;
-                      <SelectItem value="APPROVED">Approved</SelectItem>;
+                      <SelectItem value="">All Statuses\1>
+                      <SelectItem value="DRAFT">Draft\1>
+                      <SelectItem value="PROCESSING">Processing\1>
+                      <SelectItem value="APPROVED">Approved\1>
                       <SelectItem value="PAID">Paid</SelectItem>
                     </SelectContent>
                   </Select>
@@ -287,19 +284,19 @@ export default const _PayrollManagement = () {
               </div>
 
               {error ? (
-                <div className="text-center py-4 text-red-500">;
+                \1>
                   Error: {error}
                 </div>
               ) : loading ? (
-                <div className="text-center py-4">;
+                \1>
                   Loading...
                 </div>
               ) : payrollPeriods.length === 0 ? (
-                <div className="text-center py-4">;
+                \1>
                   No payroll periods found. Try adjusting your filters or create a new period.
                 </div>
               ) : (
-                <div className="overflow-x-auto">;
+                \1>
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -313,8 +310,8 @@ export default const _PayrollManagement = () {
                     </TableHeader>
                     <TableBody>
                       {payrollPeriods.map((period) => (
-                        <TableRow key={period.id}>;
-                          <TableCell className="font-medium">;
+                        \1>
+                          \1>
                             {period.name}
                           </TableCell>
                           <TableCell>
@@ -324,7 +321,7 @@ export default const _PayrollManagement = () {
                             {format(new Date(period.paymentDate), 'PP')}
                           </TableCell>
                           <TableCell>
-                            <Badge variant={getStatusBadgeVariant(period.status)}>;
+                            \1>
                               {period.status}
                             </Badge>
                           </TableCell>
@@ -335,7 +332,7 @@ export default const _PayrollManagement = () {
                             <Button>
                               variant="ghost"
                               size="sm"
-                              onClick={() => router.push(`/dashboard/hr/payroll/periods/${period.id}`)}
+                              onClick={() => router.push(`/dashboard/hr/payroll/periods/${\1}`}
                             >
                               View
                             </Button>
@@ -357,7 +354,7 @@ export default const _PayrollManagement = () {
                     />
                   </PaginationItem>
                   <PaginationItem>
-                    <span className="text-sm">;
+                    \1>
                       Page {Math.floor(pagination.skip / pagination.take) + 1} of {Math.ceil(pagination.total / pagination.take) ||
                         1}
                     </span>
@@ -374,9 +371,9 @@ export default const _PayrollManagement = () {
           </Card>
         </TabsContent>
 
-        <TabsContent value="structures" className="mt-0">;
+        \1>
           <Card>
-            <CardHeader className="pb-2">;
+            \1>
               <CardTitle>Salary Structures</CardTitle>
               <CardDescription>
                 Manage salary components and structures for different employee types
@@ -384,16 +381,16 @@ export default const _PayrollManagement = () {
             </CardHeader>
             <CardContent>
               {/* Salary structures content would go here */}
-              <div className="text-center py-4">;
+              \1>
                 Loading salary structures...
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="reports" className="mt-0">;
+        \1>
           <Card>
-            <CardHeader className="pb-2">;
+            \1>
               <CardTitle>Payroll Reports & Analytics</CardTitle>
               <CardDescription>
                 View payroll summaries, trends, and department-wise breakdowns
@@ -401,7 +398,7 @@ export default const _PayrollManagement = () {
             </CardHeader>
             <CardContent>
               {/* Reports content would go here */}
-              <div className="text-center py-4">;
+              \1>
                 Loading payroll reports...
               </div>
             </CardContent>
@@ -409,15 +406,15 @@ export default const _PayrollManagement = () {
         </TabsContent>
       </Tabs>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
+      \1>
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">Draft Periods</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">;
+            \1>
               <FileText className="h-5 w-5 text-blue-500 mr-2" />
-              <span className="text-2xl font-bold">;
+              \1>
                 {payrollPeriods.filter(p => p.status === 'DRAFT').length}
               </span>
             </div>
@@ -425,13 +422,13 @@ export default const _PayrollManagement = () {
         </Card>
 
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">Processing</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">;
+            \1>
               <Clock className="h-5 w-5 text-yellow-500 mr-2" />
-              <span className="text-2xl font-bold">;
+              \1>
                 {payrollPeriods.filter(p => p.status === 'PROCESSING').length}
               </span>
             </div>
@@ -439,13 +436,13 @@ export default const _PayrollManagement = () {
         </Card>
 
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">Approved</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">;
+            \1>
               <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-              <span className="text-2xl font-bold">;
+              \1>
                 {payrollPeriods.filter(p => p.status === 'APPROVED').length}
               </span>
             </div>
@@ -453,13 +450,13 @@ export default const _PayrollManagement = () {
         </Card>
 
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">Paid</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">;
+            \1>
               <DollarSign className="h-5 w-5 text-green-700 mr-2" />
-              <span className="text-2xl font-bold">;
+              \1>
                 {payrollPeriods.filter(p => p.status === 'PAID').length}
               </span>
             </div>

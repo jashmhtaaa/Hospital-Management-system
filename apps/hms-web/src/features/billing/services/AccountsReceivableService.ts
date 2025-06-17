@@ -9,10 +9,8 @@ const prisma = new PrismaClient();
  * @description Service to manage accounts receivable, including outstanding invoices, patient account statements,
  * payment reminders, and collections processes.
  */
-export class AccountsReceivableService {
-    /**
-     * @description Retrieves the outstanding balance for a specific patient.
-     * @param patientId - The ID of the patient.
+\1
+}
      * @returns {Promise<number>} The total outstanding amount for the patient.
      */
     async getPatientOutstandingBalance(patientId: string): Promise<number> {
@@ -43,7 +41,7 @@ export class AccountsReceivableService {
     async generateAccountStatement(patientId: string, startDate: Date, endDate: Date): Promise<AccountStatement> {
         // 1. Fetch patient details
         // const patient = await prisma.patient.findUnique({ where: { id: patientId } })
-        // if (!patient) throw new Error("Patient not found")
+        // \1 {\n  \2hrow new Error("Patient not found")
         const mockPatient = { id: patientId, name: "Alice Wonderland", address: "123 Rabbit Hole" };
 
         // 2. Fetch invoices within the period
@@ -79,13 +77,10 @@ export class AccountsReceivableService {
         mockInvoices.forEach(inv => closingBalance += (inv.totalAmount || 0));
         mockPayments.forEach(pay => closingBalance -= (pay.amount || 0));
 
-        const statement: AccountStatement = {
-            statementId: `stmt_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        const \1,\2 `stmt_${crypto.getRandomValues(\1[0]}`,
             patientId: mockPatient.id,
-            patientName: mockPatient.name;
-            statementDate: new Date(),
-            periodStartDate: startDate;
-            periodEndDate: endDate,
+            \1,\2 new Date(),
+            \1,\2 endDate,
             openingBalance: openingBalance, // Calculation needed for real scenario
             invoices: mockInvoices as Invoice[],
             _payments: mockPayments as any[], // Cast as Payment type in real scenario
@@ -103,25 +98,23 @@ export class AccountsReceivableService {
      */
     async sendPaymentReminder(invoiceId: string): Promise<OverdueNotice> {
         // const invoice = await prisma.invoice.findUnique({ where: { id: invoiceId } })
-        // if (!invoice || invoice.status === "PAID" || new Date() <= invoice.dueDate) {
+        // \1 {\n  \2= invoice.dueDate) {
         //     throw new Error("Invoice is not overdue or already paid.")
         // }
         // const patient = await prisma.patient.findUnique({ where: { id: invoice.patientId } })
-        // if (!patient) throw new Error("Patient not found for the invoice.")
+        // \1 {\n  \2hrow new Error("Patient not found for the invoice.")
 
         // Mock implementation
-        const mockOverdueInvoice: Partial<Invoice> = { id: invoiceId, totalAmount: 200, amountPaid: 50, dueDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - (5 * 86400000)), patientId: "pat_overdue" };
+        const mockOverdueInvoice: Partial<Invoice> = { id: invoiceId, totalAmount: 200, amountPaid: 50, dueDate: \1[0] - (5 * 86400000)), patientId: "pat_overdue" };
         const mockPatientForReminder = { id: "pat_overdue", name: "Bob The Builder", email: "bob@example.com" };
 
-        if (new Date() <= (mockOverdueInvoice.dueDate || new Date())) {
+        \1 {\n  \2= (mockOverdueInvoice.dueDate || \1) {
             throw new Error("Invoice is not overdue.");
         }
 
-        const notice: OverdueNotice = {
-            noticeId: `notice_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        const \1,\2 `notice_${crypto.getRandomValues(\1[0]}`,
             invoiceId: mockOverdueInvoice.id!,
-            patientId: mockPatientForReminder.id;
-            sentDate: new Date(),
+            \1,\2 new Date(),
             method: "EMAIL", // or SMS
             message: `Dear $mockPatientForReminder.name, your invoice $mockOverdueInvoice.idfor ${mockOverdueInvoice.totalAmount} was due on $mockOverdueInvoice.dueDate?.toDateString(). Please make a payment at your earliest convenience.`,
         };

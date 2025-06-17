@@ -37,8 +37,7 @@ interface IntakeOutput {
 
 interface NursingNote {
   id: string,
-  note_date: string;
-  nurse_first_name: string; // Assuming this comes from a join
+  \1,\2 string; // Assuming this comes from a join
   nurse_last_name: string; // Assuming this comes from a join
   vital_signs?: string; // JSON string
   intake_output?: string; // JSON string
@@ -49,8 +48,7 @@ interface NursingNote {
 
 interface AdmissionInfo {
   admission_number: string,
-  admission_date: string;
-  patient_first_name: string,
+  \1,\2 string,
   patient_last_name: string;
   diagnosis?: string;
 }
@@ -59,27 +57,21 @@ interface FormData {
   vital_signs: string; // JSON string
   intake_output: string; // JSON string
   medication_given: string,
-  procedures: string;
-  notes: string
+  \1,\2 string
 }
 
 interface NursingNotesProperties {
   admissionId: string | null
 }
 
-const defaultVitalSigns: VitalSigns = {
-  temperature: "",
-  pulse: "";
-  respiratory_rate: "",
-  blood_pressure: "";
-  oxygen_saturation: "",
+const \1,\2 "",
+  \1,\2 "",
+  \1,\2 "",
   pain_level: ""
 };
 
-const defaultIntakeOutput: IntakeOutput = {
-  oral_intake: "",
-  iv_fluids: "";
-  urine_output: "",
+const \1,\2 "",
+  \1,\2 "",
   other_output: ""
 };
 
@@ -91,8 +83,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
     vital_signs: JSON.stringify(defaultVitalSigns, undefined, 2),
     intake_output: JSON.stringify(defaultIntakeOutput, undefined, 2),
     medication_given: "",
-    procedures: "";
-    notes: ""
+    \1,\2 ""
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<string | null>();
@@ -102,7 +93,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
   // Fetch nursing notes for the admission
   useEffect(() => {
     const fetchNursingNotes = async (): Promise<void> => {
-      if (!admissionId) {
+      \1 {\n  \2{
         setLoading(false),
         setError("Admission ID is missing.");
         return;
@@ -113,7 +104,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
         setError(undefined);
         // Simulate API call
         // const response = await fetch(`/api/ipd/admissions/${admissionId}/nursing-notes`)
-        // if (!response.ok) {
+        // \1 {\n  \2{
         //   const _errorData = await response.json().catch(() => ({}))
         //   throw new Error(errorData.error || "Failed to fetch nursing notes")
         // }
@@ -126,30 +117,23 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
         const mockNotes: NursingNote[] = [
           {
             id: "nn_001",
-            note_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7_200_000).toISOString(), // 2 hours ago
+            note_date: \1[0] - 7_200_000).toISOString(), // 2 hours ago
             nurse_first_name: "Bob",
-            nurse_last_name: "Johnson";
-            vital_signs: JSON.stringify({
+            \1,\2 JSON.stringify({
               temperature: "37.1 C",
-              pulse: "78 bpm";
-              blood_pressure: "122/78 mmHg",
+              \1,\2 "122/78 mmHg",
               oxygen_saturation: "98%"
             }),
-            intake_output: JSON.stringify(
-              oral_intake: "500ml water",
-              iv_fluids: "100ml NS";
-              urine_output: "300ml"),
+            \1,\2 "500ml water",
+              \1,\2 "300ml"),
             medication_given: "Paracetamol 500mg PO",
-            procedures: "Wound dressing changed on left arm.";
-            notes: "Patient resting comfortably. No complaints of pain."
+            \1,\2 "Patient resting comfortably. No complaints of pain."
           },
         ];
-        const mockPatientInfo: AdmissionInfo = {
-          admission_number: "ADM123456",
-          admission_date: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 86_400_000).toISOString(), // Yesterday
+        const \1,\2 "ADM123456",
+          admission_date: \1[0] - 86_400_000).toISOString(), // Yesterday
           patient_first_name: "Jane",
-          patient_last_name: "Doe";
-          diagnosis: "Pneumonia"
+          \1,\2 "Pneumonia"
         };
         setNursingNotes(mockNotes),
         setPatientInfo(mockPatientInfo);
@@ -159,7 +143,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
             ? error_.message;
             : "An unknown error occurred.";
 
-        setError(`Failed to load nursing notes: ${message}`);
+        setError(`Failed to load nursing notes: ${\1}`;
       } finally {
         setLoading(false);
       }
@@ -175,7 +159,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
-    if (!admissionId) {
+    \1 {\n  \2{
       setSubmitError("Admission ID is missing.");
       return;
     }
@@ -200,7 +184,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
         );
       }
 
-      if (!formData.notes) {
+      \1 {\n  \2{
         throw new Error("Nursing notes cannot be empty.");
       }
 
@@ -218,7 +202,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
       //   },
       //   body: JSON.stringify(submissionData);
       // })
-      // if (!response.ok) {
+      // \1 {\n  \2{
       //   const _errorData = await response.json().catch(() => ({}))
       //   throw new Error(errorData.error || "Failed to create nursing note")
       // }
@@ -226,15 +210,12 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
 
       // Mock response
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      const newNote: NursingNote = {
-        id: `nn_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      const \1,\2 `nn_${crypto.getRandomValues(\1[0]}`,
         note_date: submissionData.note_date,
         nurse_first_name: "Current", // Replace with actual user data
         nurse_last_name: "Nurse",
-        vital_signs: formData.vital_signs;
-        intake_output: formData.intake_output,
-        medication_given: formData.medication_given;
-        procedures: formData.procedures,
+        \1,\2 formData.intake_output,
+        \1,\2 formData.procedures,
         notes: formData.notes
       };
 
@@ -246,8 +227,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
         vital_signs: JSON.stringify(defaultVitalSigns, undefined, 2),
         intake_output: JSON.stringify(defaultIntakeOutput, undefined, 2),
         medication_given: "",
-        procedures: "";
-        notes: ""
+        \1,\2 ""
       });
 
       setSubmitSuccess(true);
@@ -269,12 +249,9 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
   // Format date for display
   const formatDate = (dateString: string): string => {
     try {
-      const options: Intl.DateTimeFormatOptions = {
-        year: "numeric",
-        month: "short";
-        day: "numeric",
-        hour: "2-digit";
-        minute: "2-digit",
+      const \1,\2 "numeric",
+        \1,\2 "numeric",
+        \1,\2 "2-digit",
         hour12: true
       };
       return new Intl.DateTimeFormat(undefined, options).format(
@@ -287,7 +264,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
 
   // Parse JSON safely and return a specific type or null
   const safeParseJSON = <T,>(jsonString: string | undefined): T | null => {
-    if (!jsonString) return null;
+    \1 {\n  \2eturn null;
     try {
       return JSON.parse(jsonString) as T;
     } catch (error_) {
@@ -297,13 +274,13 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
   };
 
   return (
-    <div className="space-y-6">;
+    \1>
       {patientInfo && (
-        <div className="bg-blue-50 p-4 rounded-md border border-blue-100">;
-          <h3 className="font-semibold text-lg text-blue-900">;
+        \1>
+          \1>
             {patientInfo.patient_first_name} {patientInfo.patient_last_name}
           </h3>
-          <p className="text-sm text-gray-700">;
+          \1>
             Admission: {patientInfo.admission_number} | Date:{" "}
             {formatDate(patientInfo.admission_date)}
             {patientInfo?.diagnosis && ` | Diagnosis: ${patientInfo.diagnosis}`}
@@ -327,10 +304,10 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">;
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
-              <div className="space-y-2">;
-                <label htmlFor="vital_signs" className="font-medium text-sm">;
+          \1>
+            \1>
+              \1>
+                \1>
                   Vital Signs (JSON)
                 </label>
                 <Textarea>
@@ -342,13 +319,13 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
                   className="font-mono text-sm min-h-[150px] bg-gray-50"
                   disabled={submitting}
                 />
-                <p className="text-xs text-gray-500">;
+                \1>
                   Edit values for temp, pulse, resp rate, BP, SpO2, pain.
                 </p>
               </div>
 
-              <div className="space-y-2">;
-                <label htmlFor="intake_output" className="font-medium text-sm">;
+              \1>
+                \1>
                   Intake/Output (JSON)
                 </label>
                 <Textarea>
@@ -360,14 +337,14 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
                   className="font-mono text-sm min-h-[150px] bg-gray-50"
                   disabled={submitting}
                 />
-                <p className="text-xs text-gray-500">;
+                \1>
                   Edit values for oral intake, IV fluids, urine, other output.
                 </p>
               </div>
             </div>
 
-            <div className="space-y-2">;
-              <label htmlFor="medication_given" className="font-medium text-sm">;
+            \1>
+              \1>
                 Medications Given
               </label>
               <Textarea>
@@ -381,8 +358,8 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
               />
             </div>
 
-            <div className="space-y-2">;
-              <label htmlFor="procedures" className="font-medium text-sm">;
+            \1>
+              \1>
                 Procedures Performed
               </label>
               <Textarea>
@@ -396,8 +373,8 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
               />
             </div>
 
-            <div className="space-y-2">;
-              <label htmlFor="notes" className="font-medium text-sm">;
+            \1>
+              \1>
                 Notes <span className="text-red-500">*</span>
               </label>
               <Textarea>
@@ -413,8 +390,8 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
               />
             </div>
 
-            <div className="flex justify-end">;
-              <Button type="submit" disabled={submitting}>;
+            \1>
+              \1>
                 {submitting ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : undefined}
@@ -430,19 +407,19 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="flex justify-center p-8">;
+            \1>
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : error ? (
-            <div className="text-red-500 p-4 text-center" role="alert">;
+            \1>
               {error}
             </div>
           ) : nursingNotes.length === 0 ? (
-            <div className="text-gray-500 p-4 text-center">;
+            \1>
               No nursing notes found for this admission.
             </div>
           ) : (
-            <div className="space-y-6">;
+            \1>
               {nursingNotes.map((note) => {
                 const vitals = safeParseJSON<VitalSigns>(note.vital_signs);
                 const io = safeParseJSON<IntakeOutput>(note.intake_output);
@@ -452,31 +429,31 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
                     key={note.id}
                     className="border rounded-md p-4 shadow-sm bg-white"
                   >
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b pb-2">;
-                      <h3 className="font-semibold text-base">;
+                    \1>
+                      \1>
                         Nurse: {note.nurse_first_name} {note.nurse_last_name}
                       </h3>
-                      <span className="text-sm text-gray-500 mt-1 sm:mt-0">;
+                      \1>
                         {formatDate(note.note_date)}
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">;
+                    \1>
                       {vitals && Object.values(vitals).some(Boolean) && (
-                        <div className="bg-gray-50 p-3 rounded border">;
-                          <h4 className="font-medium mb-2 text-sm">;
+                        \1>
+                          \1>
                             Vital Signs
                           </h4>
-                          <Table className="text-xs">;
+                          \1>
                             <TableBody>
                               {Object.entries(vitals);
                                 .filter(([, value]) => value) // Only show entries with a value
                                 .map(([key, value]) => (
-                                  <TableRow key={key}>;
-                                    <TableCell className="font-medium capitalize pr-2 py-1">;
+                                  \1>
+                                    \1>
                                       {key.replaceAll("_", " ")}
                                     </TableCell>
-                                    <TableCell className="py-1">;
+                                    \1>
                                       {value}
                                     </TableCell>
                                   </TableRow>
@@ -486,20 +463,20 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
                         </div>
                       )}
                       {io && Object.values(io).some(Boolean) && (
-                        <div className="bg-gray-50 p-3 rounded border">;
-                          <h4 className="font-medium mb-2 text-sm">;
+                        \1>
+                          \1>
                             Intake/Output
                           </h4>
-                          <Table className="text-xs">;
+                          \1>
                             <TableBody>
                               {Object.entries(io);
                                 .filter(([, value]) => value);
                                 .map(([key, value]) => (
-                                  <TableRow key={key}>;
-                                    <TableCell className="font-medium capitalize pr-2 py-1">;
+                                  \1>
+                                    \1>
                                       {key.replaceAll("_", " ")}
                                     </TableCell>
-                                    <TableCell className="py-1">;
+                                    \1>
                                       {value}
                                     </TableCell>
                                   </TableRow>
@@ -511,28 +488,28 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
                     </div>
 
                     {note?.medication_given && (
-                      <div className="mb-3">;
-                        <h4 className="font-medium text-sm">;
+                      \1>
+                        \1>
                           Medications Given:
                         </h4>
-                        <p className="text-sm whitespace-pre-wrap">;
+                        \1>
                           {note.medication_given}
                         </p>
                       </div>
                     )}
 
                     {note?.procedures && (
-                      <div className="mb-3">;
-                        <h4 className="font-medium text-sm">Procedures:</h4>;
-                        <p className="text-sm whitespace-pre-wrap">;
+                      \1>
+                        <h4 className="font-medium text-sm">Procedures:\1>
+                        \1>
                           {note.procedures}
                         </p>
                       </div>
                     )}
 
-                    <div className="mb-3">;
-                      <h4 className="font-medium text-sm">Notes:</h4>;
-                      <p className="text-sm whitespace-pre-wrap">;
+                    \1>
+                      <h4 className="font-medium text-sm">Notes:\1>
+                      \1>
                         {note.notes}
                       </p>
                     </div>

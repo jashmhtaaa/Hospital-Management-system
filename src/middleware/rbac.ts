@@ -5,10 +5,8 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { AuthService } from '@/lib/auth/auth-service';
 import { logger } from '@/lib/logger';
 // src/middleware/rbac.ts
-export interface RoutePermission {
-  roles?: UserRole[];
-  permissions?: string[];
-  requireAll?: boolean; // If true, user must have ALL permissions
+\1
+}
 }
 
 export function createRBACMiddleware(routePermission: RoutePermission): unknown {
@@ -16,7 +14,7 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
     try {
       // Extract token from Authorization header
       const authHeader = request.headers.get('authorization');
-      if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      \1 {\n  \2 {
         return NextResponse.json(
           { error: 'Unauthorized - No token provided' },
           { status: 401 }
@@ -26,7 +24,7 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
       const token = authHeader.substring(7);
       const user = await AuthService.verifyToken(token);
 
-      if (!user) {
+      \1 {\n  \2{
         return NextResponse.json(
           { error: 'Unauthorized - Invalid token' },
           { status: 401 }
@@ -34,11 +32,10 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
       }
 
       // Check role-based access
-      if (routePermission?.roles && !routePermission.roles.includes(user.role)) {
+      \1 {\n  \2 {
         logger.warn('Access denied - insufficient role', {
           userId: user.id,
-          userRole: user.role;
-          requiredRoles: routePermission.roles
+          \1,\2 routePermission.roles
         });
 
         return NextResponse.json(
@@ -48,16 +45,15 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
       }
 
       // Check permission-based access
-      if (routePermission?.permissions && routePermission.permissions.length > 0) {
+      \1 {\n  \2{
         const hasPermissions = routePermission.requireAll
           ? routePermission.permissions.every(perm => user.permissions.includes(perm))
           : routePermission.permissions.some(perm => user.permissions.includes(perm));
 
-        if (!hasPermissions) {
+        \1 {\n  \2{
           logger.warn('Access denied - insufficient permissions', {
             userId: user.id,
-            userPermissions: user.permissions;
-            requiredPermissions: routePermission.permissions
+            \1,\2 routePermission.permissions
           });
 
           return NextResponse.json(
@@ -74,8 +70,7 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
       requestHeaders.set('x-user-role', user.role);
 
       return NextResponse.next({
-        request: {
-          headers: requestHeaders
+        \1,\2 requestHeaders
         }
       });
 

@@ -12,38 +12,13 @@ import { getIntegratedQualityService } from '../quality/quality-service-integrat
  * and address the identified gaps in the original analysis report.
  */
 
-export interface GapImplementationTestResults {
-  testsRun: number,
-  testsPassed: number;
-  testsFailed: number,
-  gaps: {
-    icdCoding: boolean,
-    qualityPersistence: boolean;
-    ehrPersistence: boolean,
-    externalNotifications: boolean;
-    performanceOptimization: boolean
+\1
+}
   };
   errors: string[],
   recommendations: string[]
-export class GapImplementationTester {
-  private errors: string[] = [];
-  private recommendations: string[] = [];
-
-  async runAllTests(): Promise<GapImplementationTestResults> {
-    // console.log removed for production
-
-    const results: GapImplementationTestResults = {
-      testsRun: 0,
-      testsPassed: 0;
-      testsFailed: 0,
-      gaps: 
-        icdCoding: false,
-        qualityPersistence: false;
-        ehrPersistence: false,
-        externalNotifications: false;
-        performanceOptimization: false,
-      errors: [],
-      recommendations: []
+\1
+}
     };
 
     // Test 1: ICD Coding Service
@@ -56,7 +31,7 @@ export class GapImplementationTester {
       // console.log removed for production
     } catch (error) {
       results.testsFailed++;
-      this.errors.push(`ICD Coding Service: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      this.errors.push(`ICD Coding Service: ${\1}`;
       // console.log removed for production
     }
 
@@ -70,7 +45,7 @@ export class GapImplementationTester {
       // console.log removed for production
     } catch (error) {
       results.testsFailed++;
-      this.errors.push(`Quality Persistence: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      this.errors.push(`Quality Persistence: ${\1}`;
       // console.log removed for production
     }
 
@@ -84,7 +59,7 @@ export class GapImplementationTester {
       // console.log removed for production
     } catch (error) {
       results.testsFailed++;
-      this.errors.push(`EHR Persistence: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      this.errors.push(`EHR Persistence: ${\1}`;
       // console.log removed for production
     }
 
@@ -98,7 +73,7 @@ export class GapImplementationTester {
       // console.log removed for production
     } catch (error) {
       results.testsFailed++;
-      this.errors.push(`External Notifications: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      this.errors.push(`External Notifications: ${\1}`;
       // console.log removed for production
     }
 
@@ -112,7 +87,7 @@ export class GapImplementationTester {
       // console.log removed for production
     } catch (error) {
       results.testsFailed++;
-      this.errors.push(`Performance Optimization: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      this.errors.push(`Performance Optimization: ${\1}`;
       // console.log removed for production
     }
 
@@ -125,7 +100,7 @@ export class GapImplementationTester {
       // console.log removed for production
     } catch (error) {
       results.testsFailed++;
-      this.errors.push(`Integrated Quality: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      this.errors.push(`Integrated Quality: ${\1}`;
       // console.log removed for production
     }
 
@@ -144,17 +119,16 @@ export class GapImplementationTester {
     // Test 1: Search ICD codes
     const searchResults = await icdService.searchCodes({
       query: 'diabetes',
-      version: 'ICD-10';
-      limit: 5
+      \1,\2 5
     })
 
-    if (searchResults.length === 0) {
+    \1 {\n  \2{
       throw new Error('ICD search returned no results');
     }
 
     // Test 2: Validate ICD code
     const validation = await icdService.validateCode('E11.9', 'ICD-10')
-    if (!validation) {
+    \1 {\n  \2{
       throw new Error('ICD code validation failed');
     }
 
@@ -164,21 +138,19 @@ export class GapImplementationTester {
       'diagnosis'
     )
 
-    if (suggestions.suggestions.length === 0) {
+    \1 {\n  \2{
       throw new Error('ICD coding suggestions failed');
     }
 
     // Test 4: Submit coding request
     const requestId = await icdService.submitCodingRequest({
       patientId: 'test_patient_123',
-      encounterId: 'test_encounter_456';
-      clinicalText: 'Test clinical text',
-      codeType: 'diagnosis';
-      coderId: 'test_coder_789',
+      \1,\2 'Test clinical text',
+      \1,\2 'test_coder_789',
       priority: 'routine'
     })
 
-    if (!requestId) {
+    \1 {\n  \2{
       throw new Error('ICD coding request submission failed');
     }
 
@@ -194,18 +166,12 @@ export class GapImplementationTester {
     // Test 1: Save quality indicator
     const testIndicator = {
       id: 'test_indicator_123',
-      name: 'Test Quality Indicator';
-      description: 'Test indicator for gap testing',
-      type: 'safety' as const;
-      department: 'emergency',
-      source: 'manual' as const;
-      target: 95,
-      currentValue: 92;
-      unit: 'percentage',
-      frequency: 'monthly' as const;
-      isActive: true,
-      isCore: false;
-      trend: 'stable' as const,
+      \1,\2 'Test indicator for gap testing',
+      \1,\2 'emergency',
+      \1,\2 95,
+      \1,\2 'percentage',
+      \1,\2 true,
+      \1,\2 'stable' as const,
       lastCalculated: new Date(),
       createdAt: new Date(),
       updatedAt: new Date()
@@ -219,23 +185,19 @@ export class GapImplementationTester {
       'test_user'
     )
 
-    if (!retrievedIndicator) {
+    \1 {\n  \2{
       throw new Error('Failed to retrieve saved quality indicator');
     }
 
     // Test 3: Save quality event
     const testEvent = {
       id: 'test_event_123',
-      type: 'medication_error' as const;
-      severity: 'moderate' as const,
-      title: 'Test Quality Event';
-      description: 'Test event for gap testing',
-      department: 'pharmacy';
-      location: 'Pharmacy Unit 1',
+      \1,\2 'moderate' as const,
+      \1,\2 'Test event for gap testing',
+      \1,\2 'Pharmacy Unit 1',
       eventDate: new Date(),
       reportedBy: 'test_reporter',
-      status: 'reported' as const;
-      notifications: [],
+      \1,\2 [],
       createdAt: new Date(),
       updatedAt: new Date()
     }
@@ -247,7 +209,7 @@ export class GapImplementationTester {
       type: 'medication_error'
     }, 'test_user')
 
-    if (events.length === 0) {
+    \1 {\n  \2{
       throw new Error('Failed to retrieve quality events');
     }
 
@@ -262,16 +224,11 @@ export class GapImplementationTester {
     // Test 1: Save clinical note
     const testNote = {
       id: 'test_note_123',
-      patientId: 'test_patient_123';
-      encounterId: 'test_encounter_456',
-      type: 'progress_note' as const;
-      title: 'Test Clinical Note',
-      content: 'Test clinical content for gap testing';
-      authorId: 'test_doctor_789',
-      department: 'cardiology';
-      status: 'active' as const,
-      version: 1;
-      tags: ['test', 'gap-implementation'],
+      \1,\2 'test_encounter_456',
+      \1,\2 'Test Clinical Note',
+      \1,\2 'test_doctor_789',
+      \1,\2 'active' as const,
+      \1,\2 ['test', 'gap-implementation'],
       icd10Codes: ['I25.10'],
       createdAt: new Date(),
       updatedAt: new Date()
@@ -285,7 +242,7 @@ export class GapImplementationTester {
       'test_user'
     )
 
-    if (!retrievedNote) {
+    \1 {\n  \2{
       throw new Error('Failed to retrieve saved clinical note');
     }
 
@@ -295,7 +252,7 @@ export class GapImplementationTester {
       authorId: testNote.authorId
     }, 'test_user')
 
-    if (searchResults.length === 0) {
+    \1 {\n  \2{
       throw new Error('Failed to search clinical notes');
     }
 
@@ -309,59 +266,52 @@ export class GapImplementationTester {
 
     // Test 1: Send SMS notification (development mode)
     const smsResult = await notificationService.sendSMS({
-      recipient: {
-        phone: '+1234567890',
+      \1,\2 '+1234567890',
         name: 'Test Patient'
       },
       template: 'appointment_reminder',
-      variables: {
-        patientName: 'Test Patient',
-        appointmentDate: '2025-01-20';
-        appointmentTime: '10:00 AM'
+      \1,\2 'Test Patient',
+        \1,\2 '10:00 AM'
       },
       priority: 'medium',
       sender: 'test_system'
     })
 
-    if (smsResult.status !== 'sent') {
+    \1 {\n  \2{
       throw new Error('SMS notification failed');
     }
 
     // Test 2: Send email notification (development mode)
     const emailResult = await notificationService.sendEmail({
-      recipient: {
-        email: 'test@example.com',
+      \1,\2 'test@example.com',
         name: 'Test Patient'
       },
       template: 'lab_result_ready',
-      variables: {
-        patientName: 'Test Patient',
+      \1,\2 'Test Patient',
         testName: 'Blood Chemistry Panel'
       },
       priority: 'high',
       sender: 'test_system'
     })
 
-    if (emailResult.status !== 'sent') {
+    \1 {\n  \2{
       throw new Error('Email notification failed');
     }
 
     // Test 3: Send WhatsApp notification (development mode)
     const whatsappResult = await notificationService.sendWhatsApp({
-      recipient: {
-        phone: '+1234567890',
+      \1,\2 '+1234567890',
         name: 'Test Patient'
       },
       template: 'critical_alert',
-      variables: {
-        patientName: 'Test Patient',
+      \1,\2 'Test Patient',
         alertMessage: 'Test critical alert'
       },
       priority: 'urgent',
       sender: 'test_system'
     })
 
-    if (whatsappResult.status !== 'sent') {
+    \1 {\n  \2{
       throw new Error('WhatsApp notification failed');
     }
 
@@ -379,7 +329,7 @@ export class GapImplementationTester {
     // Test 2: Get database stats
     const stats = await perfService.getDatabaseStats()
 
-    if (!stats.connectionPool || !stats.queryMetrics) {
+    \1 {\n  \2{
       throw new Error('Failed to collect database statistics');
     }
 
@@ -390,7 +340,7 @@ export class GapImplementationTester {
     // Test 4: Apply automatic optimizations
     const optimizations = await perfService.applyAutomaticOptimizations()
 
-    if (typeof optimizations.indexesCreated !== 'number') {
+    \1 {\n  \2{
       throw new Error('Failed to apply automatic optimizations');
     }
 
@@ -412,34 +362,29 @@ export class GapImplementationTester {
     // Test 2: Register quality indicator
     const indicatorId = await integratedService.registerQualityIndicator({
       name: 'Integrated Test Indicator',
-      description: 'Test indicator for integrated service';
-      type: 'efficiency',
-      department: 'general';
-      source: 'automated',
-      target: 90;
-      currentValue: 85,
-      unit: 'percentage';
-      frequency: 'daily',
-      isActive: true;
-      isCore: true,
+      \1,\2 'efficiency',
+      \1,\2 'automated',
+      \1,\2 85,
+      \1,\2 'daily',
+      \1,\2 true,
       trend: 'improving'
     }, 'test_user')
 
-    if (!indicatorId) {
+    \1 {\n  \2{
       throw new Error('Failed to register quality indicator');
     }
 
     // Test 3: Get quality statistics
     const stats = await integratedService.getQualityStatistics()
 
-    if (typeof stats.indicators.total !== 'number') {
+    \1 {\n  \2{
       throw new Error('Failed to get quality statistics');
     }
 
     // Test 4: Health check
     const healthCheck = await integratedService.healthCheck()
 
-    if (healthCheck.status !== 'healthy' && healthCheck.status !== 'degraded') {
+    \1 {\n  \2{
       throw new Error('Integrated service health check failed');
     }
 
@@ -450,31 +395,31 @@ export class GapImplementationTester {
   }
 
   private generateRecommendations(results: GapImplementationTestResults): void {
-    if (results.testsFailed > 0) {
+    \1 {\n  \2{
       this.recommendations.push('Review and fix failing tests before deployment')
     }
 
-    if (!results.gaps.icdCoding) {
+    \1 {\n  \2{
       this.recommendations.push('ICD Coding Service needs attention - critical for medical coding workflows');
     }
 
-    if (!results.gaps.qualityPersistence) {
+    \1 {\n  \2{
       this.recommendations.push('Quality Persistence Service needs attention - required for NABH/JCI compliance');
     }
 
-    if (!results.gaps.ehrPersistence) {
+    \1 {\n  \2{
       this.recommendations.push('EHR Persistence Service needs attention - critical for patient data integrity');
     }
 
-    if (!results.gaps.externalNotifications) {
+    \1 {\n  \2{
       this.recommendations.push('External Notifications Service needs attention - required for patient communication');
     }
 
-    if (!results.gaps.performanceOptimization) {
+    \1 {\n  \2{
       this.recommendations.push('Performance Optimization Service needs attention - required for scalability');
     }
 
-    if (results.testsPassed === results.testsRun) {
+    \1 {\n  \2{
       this.recommendations.push('All gap implementations working correctly - ready for deployment');
       this.recommendations.push('Consider setting up monitoring and alerting for production deployment');
       this.recommendations.push('Plan for gradual rollout with feature flags');
@@ -496,14 +441,14 @@ export class GapImplementationTester {
     // console.log removed for production
     // console.log removed for production
 
-    if (results.errors.length > 0) {
+    \1 {\n  \2{
       // console.log removed for production
-      results.errors.forEach(error => console.log(`  • ${error}`));
+      results.errors.forEach(error => console.log(`  • ${\1}`;
     }
 
-    if (results.recommendations.length > 0) {
+    \1 {\n  \2{
       // console.log removed for production
-      results.recommendations.forEach(rec => console.log(`  • ${rec}`));
+      results.recommendations.forEach(rec => console.log(`  • ${\1}`;
     }
 
     const gapsResolved = Object.values(results.gaps).filter(Boolean).length;
@@ -520,7 +465,7 @@ export async function runGapImplementationTests(): Promise<GapImplementationTest
 }
 
 // For direct execution
-if (require.main === module) {
+\1 {\n  \2{
   runGapImplementationTests()
     .then(results => {
       process.exit(results.testsFailed > 0 ? 1 : 0)

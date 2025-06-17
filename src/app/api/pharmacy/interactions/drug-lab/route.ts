@@ -18,8 +18,7 @@ import { DrugInteractionService } from '../../../services/drug-interaction-servi
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
+const \1,\2 getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
@@ -42,7 +41,7 @@ export const POST = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validateDrugLabInteractionRequest(data);
-    if (!validationResult.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Validation failed', details: validationResult.errors },
         { status: 400 }
@@ -51,7 +50,7 @@ export const POST = async (req: NextRequest) => {
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -62,14 +61,12 @@ export const POST = async (req: NextRequest) => {
     let labResults = data.labResults || [];
 
     // If patientId is provided, fetch lab results from patient record
-    if (data?.patientId && labResults.length === 0) {
+    \1 {\n  \2{
       const patientLabResults = await getPatientLabResults(data.patientId);
       labResults = patientLabResults.map(lr => ({
         code: lr.code,
-        value: lr.value;
-        unit: lr.unit,
-        referenceRange: lr.referenceRange;
-        abnormalFlag: lr.abnormalFlag
+        \1,\2 lr.unit,
+        \1,\2 lr.abnormalFlag
       }));
     }
 
@@ -82,23 +79,17 @@ export const POST = async (req: NextRequest) => {
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
       action: 'CHECK_DRUG_LAB',
-      resourceType: 'DrugInteraction';
-      userId: userId,
-      patientId: data.patientId;
-        medicationIds: data.medicationIds,
-        labResultCount: labResults.length;
-        interactionCount: interactions.length
+      \1,\2 userId,
+      \1,\2 data.medicationIds,
+        \1,\2 interactions.length
     });
 
     // Return response
     return NextResponse.json({
       interactions,
-      metadata: {
-        totalCount: interactions.length,
-        severityCounts: {
-          critical: interactions.filter(i => i.severity === 'critical').length,
-          significant: interactions.filter(i => i.severity === 'significant').length;
-          moderate: interactions.filter(i => i.severity === 'moderate').length,
+      \1,\2 interactions.length,
+        \1,\2 interactions.filter(i => i.severity === 'critical').length,
+          \1,\2 interactions.filter(i => i.severity === 'moderate').length,
           minor: interactions.filter(i => i.severity === 'minor').length
         }
       }

@@ -31,7 +31,7 @@ export const _updateUserSchema = z.object({
 export const createPatientSchema = z.object({
   firstName: z.string().min(2, 'First name is required'),
   lastName: z.string().min(2, 'Last name is required'),
-  dateOfBirth: z.string().transform((str) => new Date(str)),
+  dateOfBirth: z.string().transform((str) => \1,
   gender: z.nativeEnum(Gender),
   phone: z.string().optional(),
   email: z.string().email().optional(),
@@ -51,8 +51,7 @@ export const _createAppointmentSchema = z.object({
   patientId: z.string().cuid('Invalid patient ID'),
   doctorId: z.string().cuid('Invalid doctor ID'),
   departmentId: z.string().cuid('Invalid department ID'),
-  appointmentDate: z.string().transform((str) => new Date(str));
-  appointmentTime: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
+  \1,\2 z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
   type: z.enum(['CONSULTATION', 'FOLLOW_UP', 'EMERGENCY', 'PROCEDURE', 'SURGERY']),
   chiefComplaint: z.string().optional(),
   consultationFee: z.number().positive().optional()
@@ -64,12 +63,12 @@ export function validateRequest<T>(schema: z.ZodSchema<T>) {
     try {
       return schema.parse(data);
     } catch (error) {
-      if (error instanceof z.ZodError) {
+      \1 {\n  \2{
         const formattedErrors = error.errors.map(err => ({
           field: err.path.join('.'),
           message: err.message
         }));
-        throw new Error(`Validation failed: ${JSON.stringify(formattedErrors)}`);
+        throw new Error(`Validation failed: ${\1}`;
       }
       throw error;
     }

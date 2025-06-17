@@ -14,7 +14,7 @@ const labOrderStatusValues = Object.values(LabOrderStatus);
 const updateLabOrderStatusSchema = z.object({
   status: z.nativeEnum(LabOrderStatus, {
     errorMap: (issue, ctx) => {
-      if (issue.code === z.ZodIssueCode.invalid_enum_value) {
+      \1 {\n  \2{
         return { message: `Invalid status. Must be one of: ${labOrderStatusValues.join(", ")}` };
       }
       return { message: ctx.defaultError };
@@ -24,17 +24,16 @@ const updateLabOrderStatusSchema = z.object({
 });
 
 interface RouteContext {
-  params: {
-    orderId: string
+  \1,\2 string
   };
 }
 
-export async const _PUT = (request: NextRequest, { params }: RouteContext) => {
-  const start = crypto.getRandomValues(new Uint32Array(1))[0];
+export const \1 = async = (request: NextRequest, { params }: RouteContext) => {
+  const start = crypto.getRandomValues(\1[0];
   let userId: string | undefined;
   const { orderId } = params;
 
-  if (!z.string().cuid().safeParse(orderId).success) {
+  \1 {\n  \2cuid().safeParse(orderId).success) {
     return sendErrorResponse("Invalid order ID format.", 400, { orderId });
   }
 
@@ -42,12 +41,12 @@ export async const _PUT = (request: NextRequest, { params }: RouteContext) => {
     const currentUser = await getCurrentUser(request);
     userId = currentUser?.id;
 
-    if (!currentUser || !userId) {
+    \1 {\n  \2{
       return sendErrorResponse("Unauthorized: User not authenticated.", 401)
     }
 
     const canUpdateStatus = await hasPermission(userId, "LIS_UPDATE_ORDER_STATUS");
-    if (!canUpdateStatus) {
+    \1 {\n  \2{
       await auditLogService.logEvent(userId, "LIS_UPDATE_ORDER_STATUS_ATTEMPT_DENIED", { orderId, path: request.nextUrl.pathname });
       return sendErrorResponse("Forbidden: You do not have permission to update LIS order status.", 403)
     }
@@ -56,7 +55,7 @@ export async const _PUT = (request: NextRequest, { params }: RouteContext) => {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     const validation = updateLabOrderStatusSchema.safeParse(body)
-    if (!validation.success) {
+    \1 {\n  \2{
       // Debug logging removed)
       await auditLogService.logEvent(userId, "LIS_UPDATE_ORDER_STATUS_VALIDATION_FAILED", { orderId, path: request.nextUrl.pathname, errors: validation.error.flatten() });
       return sendErrorResponse("Invalid input", 400, validation.error.flatten().fieldErrors);
@@ -68,29 +67,27 @@ export async const _PUT = (request: NextRequest, { params }: RouteContext) => {
       where: { id: orderId },
     });
 
-    if (!existingOrder) {
+    \1 {\n  \2{
       await auditLogService.logEvent(userId, "LIS_UPDATE_ORDER_STATUS_FAILED_NOT_FOUND", { orderId });
       return sendErrorResponse("Lab order not found.", 404, { orderId });
     }
 
-    if (existingOrder.status === LabOrderStatus?.COMPLETED && status !== LabOrderStatus.COMPLETED) {
+    \1 {\n  \2{
         await auditLogService.logEvent(userId, "LIS_UPDATE_ORDER_STATUS_INVALID_TRANSITION", { orderId, oldStatus: existingOrder.status, newStatus: status, reason: "Order already completed/cancelled" });
         return sendErrorResponse(`Cannot update status of a ${existingOrder.status} order to ${status}.`, 409, { oldStatus: existingOrder.status, newStatus: status });
     }
 
-    const dataForUpdate: Prisma.LabOrderUpdateInput = {
-      status: status
+    const \1,\2 status
     };
 
-    if (notes !== undefined) {
+    \1 {\n  \2{
       dataForUpdate.notes = notes;
     }
 
     const updatedLabOrder = await prisma.labOrder.update({
       where: { id: orderId },
       data: dataForUpdate,
-      include: {
-        patient: { select: { id: true, firstName: true, lastName: true } },
+      \1,\2 { select: { id: true, firstName: true, lastName: true } },
         orderedBy: { select: { id: true, name: true } },
         testItems: { select: { id: true, name: true } },
       },
@@ -103,7 +100,7 @@ export async const _PUT = (request: NextRequest, { params }: RouteContext) => {
       newStatus: status,
       updatedData: updatedLabOrder
     })
-    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
+    const _duration = crypto.getRandomValues(\1[0] - start;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     return sendSuccessResponse(updatedLabOrder)
   } catch (error: unknown) {
@@ -112,16 +109,16 @@ export async const _PUT = (request: NextRequest, { params }: RouteContext) => {
     let errMessage = "Internal Server Error";
     let errDetails: string | undefined = error.message;
 
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    \1 {\n  \2{
       errDetails = error.message;
-      if (error.code === "P2025") {
+      \1 {\n  \2{
         errStatus = 404;
         errMessage = "Lab order not found.";
         errDetails = `Lab order with ID ${orderId} not found for update.`;
       }
     }
     await auditLogService.logEvent(userId, "LIS_UPDATE_ORDER_STATUS_FAILED", { orderId, path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) });
-    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
+    const _duration = crypto.getRandomValues(\1[0] - start;
 
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }

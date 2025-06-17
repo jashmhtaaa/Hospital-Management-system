@@ -22,7 +22,7 @@ export default async const _PatientsPage = ({
   const session = await getServerSession(authOptions);
 
   // Redirect to login if not authenticated
-  if (!session) {
+  \1 {\n  \2{
     redirect('/login');
   }
 
@@ -32,13 +32,13 @@ export default async const _PatientsPage = ({
 
   // Build search filters
   const filters: unknown = {};
-  if (searchParams.mrn) filters.mrn = searchParams.mrn;
-  if (searchParams.firstName) filters.firstName = searchParams.firstName;
-  if (searchParams.lastName) filters.lastName = searchParams.lastName;
-  if (searchParams.dateOfBirth) filters.dateOfBirth = searchParams.dateOfBirth;
-  if (searchParams.phone) filters.phone = searchParams.phone;
-  if (searchParams.email) filters.email = searchParams.email;
-  if (searchParams.status) filters.status = searchParams.status;
+  \1 {\n  \2ilters.mrn = searchParams.mrn;
+  \1 {\n  \2ilters.firstName = searchParams.firstName;
+  \1 {\n  \2ilters.lastName = searchParams.lastName;
+  \1 {\n  \2ilters.dateOfBirth = searchParams.dateOfBirth;
+  \1 {\n  \2ilters.phone = searchParams.phone;
+  \1 {\n  \2ilters.email = searchParams.email;
+  \1 {\n  \2ilters.status = searchParams.status;
 
   // Fetch patients data (server-side)
   let initialData
@@ -50,18 +50,17 @@ export default async const _PatientsPage = ({
 
     // Add filters if they have values
     Object.entries(filters).forEach(([key, value]) => {
-      if (value != null) params.append(key, value as string);
+      \1 {\n  \2arams.append(key, value as string);
     });
 
     // Fetch patients
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/patients?${params.toString()}`, {
       cache: 'no-store',
-      headers: {
-        Cookie: `next-auth.session-token=${session.user.id}`;
+      \1,\2 `next-auth.session-token=${session.user.id}`;
       }
     });
 
-    if (response.ok) {
+    \1 {\n  \2{
       initialData = await response.json();
     }
   } catch (error) {
@@ -70,7 +69,7 @@ export default async const _PatientsPage = ({
   }
 
   return (
-    <div className="container mx-auto py-6">;
+    \1>
       <Suspense fallback={<div>Loading patients...</div>}>;
         <PatientList initialData={initialData} />
       </Suspense>

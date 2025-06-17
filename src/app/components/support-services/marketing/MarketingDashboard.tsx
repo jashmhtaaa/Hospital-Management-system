@@ -15,10 +15,8 @@ import { toast } from '@/components/ui/use-toast';
 // Define column types for campaign table
 type Campaign = {
   id: string,
-  name: string;
-  type: string,
-  status: string;
-  startDate: string;
+  \1,\2 string,
+  \1,\2 string;
   endDate?: string;
   segmentCount: number;
   performance?: {
@@ -31,12 +29,10 @@ type Campaign = {
 // Define column types for contact table
 type Contact = {
   id: string,
-  name: string;
-  email: string;
+  \1,\2 string;
   phone?: string;
   source: string,
-  status: string;
-  createdAt: string;
+  \1,\2 string;
   lastActivity?: string
 };
 
@@ -57,75 +53,61 @@ export default const _MarketingDashboard = () {
   const campaignColumns: ColumnDef<Campaign>[] = [
     {
       accessorKey: 'name',
-      header: 'Campaign Name';
-      cell: ({ row }) => (
+      \1,\2 ({ row }) => (
         <div className="font-medium cursor-pointer hover:text-primary"
-             onClick={() => router.push(`/marketing/campaigns/${row.original.id}`)}>
+             onClick={() => router.push(`/marketing/campaigns/${\1}`}>
           {row.getValue('name')}
         </div>
       ),
     },
     {
       accessorKey: 'type',
-      header: 'Type';
-      cell: ({ row }) => (
-        <Badge variant="outline">{row.getValue('type')}</Badge>;
+      \1,\2 ({ row }) => (
+        <Badge variant="outline">{row.getValue('type')}\1>
       ),
     },
     {
       accessorKey: 'status',
-      header: 'Status';
-      cell: ({ row }) => {
+      \1,\2 ({ row }) => {
         const status = row.getValue('status') as string;
         let variant: 'default' | 'outline' | 'secondary' | 'destructive' = 'outline';
 
         switch (status) {
           case 'ACTIVE':
-            variant = 'default';
-            break;
-          case 'DRAFT':
-            variant = 'secondary';
-            break;
-          case 'PAUSED':
-            variant = 'outline';
-            break;
-          case 'COMPLETED':
-            variant = 'outline';
-            break;
-          case 'CANCELLED':
+            variant = 'default';\1\n    }\n    case 'DRAFT':
+            variant = 'secondary';\1\n    }\n    case 'PAUSED':
+            variant = 'outline';\1\n    }\n    case 'COMPLETED':
+            variant = 'outline';\1\n    }\n    case 'CANCELLED':
             variant = 'destructive';
             break;
         }
 
-        return <Badge variant={variant}>{status}</Badge>;
+        return <Badge variant={variant}>{status}\1>
       },
     },
     {
       accessorKey: 'startDate',
-      header: 'Start Date';
-      cell: ({ row }) => new Date(row.getValue('startDate')).toLocaleDateString(),
+      \1,\2 ({ row }) => \1.toLocaleDateString(),
     },
     {
       accessorKey: 'segmentCount',
-      header: 'Segments';
-      cell: ({ row }) => row.getValue('segmentCount'),
+      \1,\2 ({ row }) => row.getValue('segmentCount'),
     },
     {
       id: 'performance',
-      header: 'Performance';
-      cell: ({ row }) => {
+      \1,\2 ({ row }) => {
         const performance = row.original.performance;
-        if (!performance) return 'No data';
+        \1 {\n  \2eturn 'No data';
 
         return (
-          <div className="flex items-center space-x-2">;
+          \1>
             {performance.opens !== undefined && (
-              <Badge variant="outline" className="bg-blue-50">;
+              \1>
                 {performance.opens} opens
               </Badge>
             )}
             {performance.clicks !== undefined && (
-              <Badge variant="outline" className="bg-green-50">;
+              \1>
                 {performance.clicks} clicks
               </Badge>
             )}
@@ -136,11 +118,11 @@ export default const _MarketingDashboard = () {
     {
       id: 'actions',
       cell: (row ) => (
-        <div className="flex items-center space-x-2">;
+        \1>
           <Button>
             variant="outline"
             size="sm"
-            onClick={() => router.push(`/marketing/campaigns/${row.original.id}`)}
+            onClick={() => router.push(`/marketing/campaigns/${\1}`}
           >
             View
           </Button>
@@ -160,8 +142,7 @@ export default const _MarketingDashboard = () {
   const contactColumns: ColumnDef<Contact>[] = [
     {
       accessorKey: 'name',
-      header: 'Name';
-      cell: ({ row }) => (
+      \1,\2 ({ row }) => (
         <div className="font-medium cursor-pointer hover:text-primary"
              onClick={() => router.push(`/marketing/contacts/$row.original.id`)}>
           {row.getValue('name')}
@@ -178,37 +159,30 @@ export default const _MarketingDashboard = () {
     },
     {
       accessorKey: 'source',
-      header: 'Source';
-      cell: ({ row }) => (
-        <Badge variant="outline">{row.getValue('source')}</Badge>;
+      \1,\2 ({ row }) => (
+        <Badge variant="outline">{row.getValue('source')}\1>
       ),
     },
     {
       accessorKey: 'status',
-      header: 'Status';
-      cell: ({ row }) => {
+      \1,\2 ({ row }) => {
         const status = row.getValue('status') as string;
         let variant: 'default' | 'outline' | 'secondary' | 'destructive' = 'outline';
 
         switch (status) {
           case 'ACTIVE':
-            variant = 'default';
-            break;
-          case 'INACTIVE':
-            variant = 'secondary';
-            break;
-          case 'UNSUBSCRIBED':
+            variant = 'default';\1\n    }\n    case 'INACTIVE':
+            variant = 'secondary';\1\n    }\n    case 'UNSUBSCRIBED':
             variant = 'destructive';
             break;
         }
 
-        return <Badge variant={variant}>{status}</Badge>;
+        return <Badge variant={variant}>{status}\1>
       },
     },
     {
       accessorKey: 'lastActivity',
-      header: 'Last Activity';
-      cell: ({ row }) => {
+      \1,\2 ({ row }) => {
         const lastActivity = row.getValue('lastActivity');
         return lastActivity ? new Date(lastActivity as string).toLocaleDateString() : 'Never';
       },
@@ -216,7 +190,7 @@ export default const _MarketingDashboard = () {
     {
       id: 'actions',
       cell: ({ row }) => (
-        <div className="flex items-center space-x-2">;
+        \1>
           <Button>
             variant="outline"
             size="sm"
@@ -243,33 +217,32 @@ export default const _MarketingDashboard = () {
       try {
         // Fetch campaigns
         const campaignsResponse = await fetch('/api/support-services/marketing/campaigns');
-        if (!campaignsResponse.ok) throw new Error('Failed to fetch campaigns');
+        \1 {\n  \2hrow new Error('Failed to fetch campaigns');
         const campaignsData = await campaignsResponse.json(),
         setCampaigns(campaignsData.data || []);
 
         // Fetch contacts
         const contactsResponse = await fetch('/api/support-services/marketing/contacts');
-        if (!contactsResponse.ok) throw new Error('Failed to fetch contacts');
+        \1 {\n  \2hrow new Error('Failed to fetch contacts');
         const contactsData = await contactsResponse.json(),
         setContacts(contactsData.data || []);
 
         // Fetch segments
         const segmentsResponse = await fetch('/api/support-services/marketing/segments');
-        if (!segmentsResponse.ok) throw new Error('Failed to fetch segments');
+        \1 {\n  \2hrow new Error('Failed to fetch segments');
         const segmentsData = await segmentsResponse.json(),
         setSegments(segmentsData.data || []);
 
         // Fetch templates
         const templatesResponse = await fetch('/api/support-services/marketing/templates');
-        if (!templatesResponse.ok) throw new Error('Failed to fetch templates');
+        \1 {\n  \2hrow new Error('Failed to fetch templates');
         const templatesData = await templatesResponse.json(),
         setTemplates(templatesData.data || []);
       } catch (error) {
 
         toast({
           title: "Error",
-          description: "Failed to load marketing data. Please try again.";
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       } finally 
         setIsLoading(false);
@@ -280,11 +253,11 @@ export default const _MarketingDashboard = () {
 
   // Filter campaigns based on selected filter and search query
   const filteredCampaigns = campaigns.filter(campaign => {
-    if (campaignFilter !== 'all' && campaign.status !== campaignFilter) {
+    \1 {\n  \2{
       return false;
     }
 
-    if (searchQuery && !campaign.name.toLowerCase().includes(searchQuery.toLowerCase())) {
+    \1 {\n  \2includes(searchQuery.toLowerCase())) {
       return false;
     }
 
@@ -293,11 +266,11 @@ export default const _MarketingDashboard = () {
 
   // Filter contacts based on selected filter and search query
   const filteredContacts = contacts.filter(contact => {
-    if (contactFilter !== 'all' && contact.status !== contactFilter) {
+    \1 {\n  \2{
       return false;
     }
 
-    if (searchQuery && !contact.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+    \1 {\n  \2includes(searchQuery.toLowerCase()) &&
         !contact.email.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false;
     }
@@ -358,10 +331,10 @@ export default const _MarketingDashboard = () {
   };
 
   return (
-    <div className="container mx-auto py-6 space-y-6">;
-      <div className="flex justify-between items-center">;
-        <h1 className="text-3xl font-bold">Marketing CRM Dashboard</h1>;
-        <div className="flex space-x-2">;
+    \1>
+      \1>
+        <h1 className="text-3xl font-bold">Marketing CRM Dashboard\1>
+        \1>
           <Button>
             variant="outline"
             onClick={() => router.push('/marketing/campaigns/new')}
@@ -376,80 +349,80 @@ export default const _MarketingDashboard = () {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">;
+      \1>
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">Total Campaigns</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{campaigns.length}</div>;
-            <p className="text-xs text-muted-foreground">;
+            <div className="text-2xl font-bold">{campaigns.length}\1>
+            \1>
               {campaigns.filter(c => c.status === 'ACTIVE').length} active
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">Total Contacts</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{contacts.length}</div>;
-            <p className="text-xs text-muted-foreground">;
+            <div className="text-2xl font-bold">{contacts.length}\1>
+            \1>
               {contacts.filter(c => c.status === 'ACTIVE').length} active
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">Segments</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{segments.length}</div>;
-            <p className="text-xs text-muted-foreground">;
+            <div className="text-2xl font-bold">{segments.length}\1>
+            \1>
               Across {campaigns.length} campaigns
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">Templates</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{templates.length}</div>;
-            <p className="text-xs text-muted-foreground">;
+            <div className="text-2xl font-bold">{templates.length}\1>
+            \1>
               {templates.filter((t: unknown) => t.isActive).length} active
             </p>
           </CardContent>
         </Card>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>;
-        <TabsList className="grid w-full grid-cols-4">;
-          <TabsTrigger value="overview">Overview</TabsTrigger>;
-          <TabsTrigger value="campaigns">Campaigns</TabsTrigger>;
-          <TabsTrigger value="contacts">Contacts</TabsTrigger>;
+      \1>
+        \1>
+          <TabsTrigger value="overview">Overview\1>
+          <TabsTrigger value="campaigns">Campaigns\1>
+          <TabsTrigger value="contacts">Contacts\1>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="overview" className="space-y-4">;
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
+        \1>
+          \1>
             <Card>
               <CardHeader>
                 <CardTitle>Campaign Performance</CardTitle>
                 <CardDescription>
                   Performance metrics across all campaigns
                 </CardDescription>
-                <Select value={timeRange} onValueChange={setTimeRange}>;
-                  <SelectTrigger className="w-[180px]">;
+                \1>
+                  \1>
                     <SelectValue placeholder="Select time range" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="7d">Last 7 days</SelectItem>;
-                    <SelectItem value="30d">Last 30 days</SelectItem>;
-                    <SelectItem value="90d">Last 90 days</SelectItem>;
+                    <SelectItem value="7d">Last 7 days\1>
+                    <SelectItem value="30d">Last 30 days\1>
+                    <SelectItem value="90d">Last 90 days\1>
                     <SelectItem value="1y">Last year</SelectItem>
                   </SelectContent>
                 </Select>
@@ -472,8 +445,8 @@ export default const _MarketingDashboard = () {
             </Card>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">;
-            <Card className="md:col-span-1">;
+          \1>
+            \1>
               <CardHeader>
                 <CardTitle>Contact Sources</CardTitle>
                 <CardDescription>
@@ -485,7 +458,7 @@ export default const _MarketingDashboard = () {
               </CardContent>
             </Card>
 
-            <Card className="md:col-span-2">;
+            \1>
               <CardHeader>
                 <CardTitle>Recent Campaigns</CardTitle>
                 <CardDescription>
@@ -493,23 +466,23 @@ export default const _MarketingDashboard = () {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">;
+                \1>
                   {campaigns.slice(0, 5).map((campaign) => (
-                    <div key={campaign.id} className="flex items-center justify-between p-2 border rounded">;
+                    \1>
 <div
-                        <h4 className="font-medium">{campaign.name}</h4>;
-                        <p className="text-sm text-muted-foreground">;
+                        <h4 className="font-medium">{campaign.name}\1>
+                        \1>
                           {new Date(campaign.startDate).toLocaleDateString()} • {campaign.type}
                         </p>
                       </div>
-                      <Badge variant={campaign.status === 'ACTIVE' ? 'default' : 'outline'}>;
+                      \1>
                         {campaign.status}
                       </Badge>
                     </div>
                   ))}
 
                   {campaigns.length === 0 && (
-                    <p className="text-sm text-muted-foreground">No campaigns yet</p>;
+                    <p className="text-sm text-muted-foreground">No campaigns yet\1>
                   )}
                 </div>
               </CardContent>
@@ -517,30 +490,30 @@ export default const _MarketingDashboard = () {
           </div>
         </TabsContent>
 
-        <TabsContent value="campaigns">;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Marketing Campaigns</CardTitle>
               <CardDescription>
                 Manage your marketing campaigns
               </CardDescription>
-              <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 mt-2">;
+              \1>
                 <Input>
                   placeholder="Search campaigns..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="max-w-sm"
                 />
-                <Select value={campaignFilter} onValueChange={setCampaignFilter}>;
-                  <SelectTrigger className="w-[180px]">;
+                \1>
+                  \1>
                     <SelectValue placeholder="Filter by status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Campaigns</SelectItem>;
-                    <SelectItem value="ACTIVE">Active</SelectItem>;
-                    <SelectItem value="DRAFT">Draft</SelectItem>;
-                    <SelectItem value="SCHEDULED">Scheduled</SelectItem>;
-                    <SelectItem value="PAUSED">Paused</SelectItem>;
+                    <SelectItem value="all">All Campaigns\1>
+                    <SelectItem value="ACTIVE">Active\1>
+                    <SelectItem value="DRAFT">Draft\1>
+                    <SelectItem value="SCHEDULED">Scheduled\1>
+                    <SelectItem value="PAUSED">Paused\1>
                     <SelectItem value="COMPLETED">Completed</SelectItem>
                   </SelectContent>
                 </Select>
@@ -555,7 +528,7 @@ export default const _MarketingDashboard = () {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="flex justify-center items-center h-64">;
+                \1>
                   <p>Loading campaigns...</p>
                 </div>
               ) : (
@@ -569,28 +542,28 @@ export default const _MarketingDashboard = () {
           </Card>
         </TabsContent>
 
-        <TabsContent value="contacts">;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Marketing Contacts</CardTitle>
               <CardDescription>
                 Manage your marketing contacts and leads
               </CardDescription>
-              <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 mt-2">;
+              \1>
                 <Input>
                   placeholder="Search contacts..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="max-w-sm"
                 />
-                <Select value={contactFilter} onValueChange={setContactFilter}>;
-                  <SelectTrigger className="w-[180px]">;
+                \1>
+                  \1>
                     <SelectValue placeholder="Filter by status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Contacts</SelectItem>;
-                    <SelectItem value="ACTIVE">Active</SelectItem>;
-                    <SelectItem value="INACTIVE">Inactive</SelectItem>;
+                    <SelectItem value="all">All Contacts\1>
+                    <SelectItem value="ACTIVE">Active\1>
+                    <SelectItem value="INACTIVE">Inactive\1>
                     <SelectItem value="UNSUBSCRIBED">Unsubscribed</SelectItem>
                   </SelectContent>
                 </Select>
@@ -604,7 +577,7 @@ export default const _MarketingDashboard = () {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="flex justify-center items-center h-64">;
+                \1>
                   <p>Loading contacts...</p>
                 </div>
               ) : (
@@ -618,37 +591,37 @@ export default const _MarketingDashboard = () {
           </Card>
         </TabsContent>
 
-        <TabsContent value="analytics">;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Marketing Analytics</CardTitle>
               <CardDescription>
                 Analyze the performance of your marketing efforts
               </CardDescription>
-              <div className="flex items-center space-x-2 mt-2">;
-                <Select value={timeRange} onValueChange={setTimeRange}>;
-                  <SelectTrigger className="w-[180px]">;
+              \1>
+                \1>
+                  \1>
                     <SelectValue placeholder="Select time range" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="7d">Last 7 days</SelectItem>;
-                    <SelectItem value="30d">Last 30 days</SelectItem>;
-                    <SelectItem value="90d">Last 90 days</SelectItem>;
+                    <SelectItem value="7d">Last 7 days\1>
+                    <SelectItem value="30d">Last 30 days\1>
+                    <SelectItem value="90d">Last 90 days\1>
                     <SelectItem value="1y">Last year</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </CardHeader>
             <CardContent>
-              <Tabs defaultValue="performance">;
-                <TabsList className="grid w-full grid-cols-3">;
-                  <TabsTrigger value="performance">Campaign Performance</TabsTrigger>;
-                  <TabsTrigger value="engagement">Engagement</TabsTrigger>;
+              \1>
+                \1>
+                  <TabsTrigger value="performance">Campaign Performance\1>
+                  <TabsTrigger value="engagement">Engagement\1>
                   <TabsTrigger value="conversion">Conversion</TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="performance" className="space-y-4">;
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
+                \1>
+                  \1>
                     <Card>
                       <CardHeader>
                         <CardTitle>Campaign Comparison</CardTitle>
@@ -669,8 +642,8 @@ export default const _MarketingDashboard = () {
                   </div>
                 </TabsContent>
 
-                <TabsContent value="engagement" className="space-y-4">;
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
+                \1>
+                  \1>
                     <Card>
                       <CardHeader>
                         <CardTitle>Email Engagement</CardTitle>
@@ -691,8 +664,8 @@ export default const _MarketingDashboard = () {
                   </div>
                 </TabsContent>
 
-                <TabsContent value="conversion" className="space-y-4">;
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">;
+                \1>
+                  \1>
                     <Card>
                       <CardHeader>
                         <CardTitle>Conversion Rates</CardTitle>

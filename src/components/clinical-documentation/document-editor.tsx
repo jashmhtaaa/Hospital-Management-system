@@ -54,19 +54,14 @@ const documentFormSchema = z.object({
 // Type for document templates
 interface DocumentTemplate {
   id: string,
-  templateNumber: string;
-  templateName: string,
+  \1,\2 string,
   templateType: string;
   specialtyType?: string;
   content: string,
-  sections: {
-    id: string,
-    sectionTitle: string;
-    sectionType: string,
-    sectionOrder: number;
-    content: string,
-    isRequired: boolean;
-    defaultExpanded: boolean
+  \1,\2 string,
+    \1,\2 string,
+    \1,\2 string,
+    \1,\2 boolean
   }[];
 }
 
@@ -90,14 +85,10 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
   // Form
   const form = useForm<z.infer<typeof documentFormSchema>>({
     resolver: zodResolver(documentFormSchema),
-    defaultValues: {
-      documentTitle: '',
-      documentType: '';
-      content: '',
-      isConfidential: false;
-      sections: [],
-      tags: [];
-      attachmentUrls: []
+    \1,\2 '',
+      \1,\2 '',
+      \1,\2 [],
+      \1,\2 []
     },
   });
 
@@ -108,7 +99,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     try {
       const response = await fetch('/api/clinical-documentation/templates');
 
-      if (!response.ok) {
+      \1 {\n  \2{
         throw new Error('Failed to fetch templates');
       }
 
@@ -118,8 +109,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
       toast({
         title: 'Error',
-        description: 'Failed to fetch document templates. Please try again.';
-        variant: 'destructive'
+        \1,\2 'destructive'
       });
     } finally {
       setLoading(false);
@@ -128,14 +118,14 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
   // Fetch document if editing
   const fetchDocument = async () => {
-    if (!documentId) return;
+    \1 {\n  \2eturn;
 
     setLoading(true);
 
     try {
-      const response = await fetch(`/api/clinical-documentation/${documentId}`);
+      const response = await fetch(`/api/clinical-documentation/${\1}`;
 
-      if (!response.ok) {
+      \1 {\n  \2{
         throw new Error('Failed to fetch document');
       }
 
@@ -144,19 +134,15 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
       // Update form values
       form.reset({
         documentTitle: data.documentTitle,
-        documentType: data.documentType;
-        content: data.content,
-        isConfidential: data.isConfidential;
-        sections: data.sections,
-        tags: data.tags;
-        attachmentUrls: data.attachmentUrls
+        \1,\2 data.content,
+        \1,\2 data.sections,
+        \1,\2 data.attachmentUrls
       });
     } catch (error) {
 
       toast({
         title: 'Error',
-        description: 'Failed to fetch document. Please try again.';
-        variant: 'destructive'
+        \1,\2 'destructive'
       });
     } finally {
       setLoading(false);
@@ -167,7 +153,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
   useEffect(() => {
     fetchTemplates();
 
-    if (documentId != null) {
+    \1 {\n  \2{
       fetchDocument();
     }
   }, [documentId]);
@@ -176,20 +162,19 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
   const handleTemplateChange = (templateId: string) => {
     setSelectedTemplate(templateId);
 
-    if (!templateId) return;
+    \1 {\n  \2eturn;
 
     const template = templates.find(t => t.id === templateId);
 
-    if (template != null) {
+    \1 {\n  \2{
       form.setValue('documentType', template.templateType);
       form.setValue('documentTitle', template.templateName);
       form.setValue('content', template.content);
 
-      if (template?.sections && template.sections.length > 0) {
+      \1 {\n  \2{
         const formattedSections = template.sections.map(section => ({
           sectionTitle: section.sectionTitle,
-          sectionType: section.sectionType;
-          content: section.content,
+          \1,\2 section.content,
           sectionOrder: section.sectionOrder
         }));
 
@@ -212,7 +197,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
       let response;
 
-      if (isEditing != null) {
+      \1 {\n  \2{
         // Update document
         response = await fetch(`/api/clinical-documentation/${documentId}`, {
           method: 'PUT',
@@ -232,7 +217,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
         });
       }
 
-      if (!response.ok) {
+      \1 {\n  \2{
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to save document');
       }
@@ -243,18 +228,17 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
         description: isEditing ? 'Document updated successfully' : 'Document created successfully'
       });
 
-      if (onSuccess != null) {
+      \1 {\n  \2{
         onSuccess();
       } else {
         // Navigate to document view
-        router.push(`/clinical-documentation/${data.id}`);
+        router.push(`/clinical-documentation/${\1}`;
       }
     } catch (error) {
 
       toast({
         title: 'Error',
-        description: error instanceof Error ? error.message : 'Failed to save document. Please try again.';
-        variant: 'destructive'
+        \1,\2 'destructive'
       });
     } finally {
       setSubmitLoading(false);
@@ -269,8 +253,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
       ...currentSections,
       {
         sectionTitle: '',
-        sectionType: '';
-        content: '',
+        \1,\2 '',
         sectionOrder: currentSections.length + 1
       }
     ])
@@ -321,7 +304,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
   ];
 
   return (
-    <Card className="w-full">;
+    \1>
       <CardHeader>
         <CardTitle>{isEditing ? 'Edit Document' : 'Create Document'}</CardTitle>
         <CardDescription>
@@ -333,19 +316,19 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">;
+          \1>
             {/* Template selection (only for new documents) */}
             {!isEditing && (
-              <div className="mb-6">;
+              \1>
                 <FormLabel>Document Template</FormLabel>
-                <Select value={selectedTemplate} onValueChange={handleTemplateChange}>;
+                \1>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a template (optional)" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">No Template</SelectItem>;
+                    <SelectItem value="">No Template\1>
                     {templates.map((template) => (
-                      <SelectItem key={template.id} value={template.id}>;
+                      \1>
                         {template.templateName} ({template.templateType})
                       </SelectItem>
                     ))}
@@ -357,14 +340,14 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
               </div>
             )}
 
-            <Tabs value={activeTab} onValueChange={setActiveTab}>;
-              <TabsList className="mb-4">;
-                <TabsTrigger value="content">Document Content</TabsTrigger>;
-                <TabsTrigger value="sections">Sections</TabsTrigger>;
+            \1>
+              \1>
+                <TabsTrigger value="content">Document Content\1>
+                <TabsTrigger value="sections">Sections\1>
                 <TabsTrigger value="settings">Settings</TabsTrigger>
               </TabsList>
 
-              <TabsContent value="content" className="space-y-4">;
+              \1>
                 {/* Document Title */}
                 <FormField>
                   control={form.control}
@@ -397,7 +380,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
                           </SelectTrigger>
                           <SelectContent>
                             {documentTypeOptions.map((option) => (
-                              <SelectItem key={option.value} value={option.value}>;
+                              \1>
                                 {option.label}
                               </SelectItem>
                             ))}
@@ -429,19 +412,19 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
                 />
               </TabsContent>
 
-              <TabsContent value="sections" className="space-y-4">;
-                <div className="flex justify-end mb-4">;
-                  <Button type="button" onClick={handleAddSection}>;
+              \1>
+                \1>
+                  \1>
                     Add Section
                   </Button>
                 </div>
 
                 {/* Sections */}
                 {form.watch('sections')?.map((section, index) => (
-                  <Card key={index} className="mb-4">;
-                    <CardHeader className="pb-2">;
-                      <div className="flex justify-between">;
-                        <CardTitle className="text-lg">Section {index + 1}</CardTitle>;
+                  \1>
+                    \1>
+                      \1>
+                        <CardTitle className="text-lg">Section {index + 1}\1>
                         <Button>
                           type="button"
                           variant="destructive"
@@ -452,7 +435,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
                         </Button>
                       </div>
                     </CardHeader>
-                    <CardContent className="space-y-4">;
+                    \1>
                       {/* Section Title */}
                       <FormField>
                         control={form.control}
@@ -485,7 +468,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
                                 </SelectTrigger>
                                 <SelectContent>
                                   {sectionTypeOptions.map((option) => (
-                                    <SelectItem key={option.value} value={option.value}>;
+                                    \1>
                                       {option.label}
                                     </SelectItem>
                                   ))}
@@ -520,21 +503,21 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
                 ))}
 
                 {(!form.watch('sections') || form.watch('sections').length === 0) && (
-                  <div className="text-center py-8 text-gray-500">;
+                  \1>
                     No sections added. Click "Add Section" to add document sections.
                   </div>
                 )}
               </TabsContent>
 
-              <TabsContent value="settings" className="space-y-4">;
+              \1>
                 {/* Confidentiality */}
                 <FormField>
                   control={form.control}
                   name="isConfidential"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">;
-                      <div className="space-y-0.5">;
-                        <FormLabel className="text-base">Confidential Document</FormLabel>;
+                    \1>
+                      \1>
+                        <FormLabel className="text-base">Confidential Document\1>
                         <FormDescription>
                           Mark this document as confidential with restricted access
                         </FormDescription>
@@ -550,9 +533,9 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
                 />
 
                 {/* Tags */}
-                <div className="rounded-lg border p-4">;
-                  <div className="space-y-0.5">;
-                    <FormLabel className="text-base">Document Tags</FormLabel>;
+                \1>
+                  \1>
+                    <FormLabel className="text-base">Document Tags\1>
                     <FormDescription>
                       Add tags to categorize and find the document easily (coming soon)
                     </FormDescription>
@@ -560,9 +543,9 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
                 </div>
 
                 {/* Attachments */}
-                <div className="rounded-lg border p-4">;
-                  <div className="space-y-0.5">;
-                    <FormLabel className="text-base">Document Attachments</FormLabel>;
+                \1>
+                  \1>
+                    <FormLabel className="text-base">Document Attachments\1>
                     <FormDescription>
                       Upload files to attach to this document (coming soon)
                     </FormDescription>
@@ -574,7 +557,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
         </Form>
       </CardContent>
 
-      <CardFooter className="flex justify-between">;
+      \1>
         <Button>
           variant="outline"
           onClick={() => router.back()}
@@ -583,11 +566,11 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
           Cancel
         </Button>
 
-        <div className="space-x-2">;
+        \1>
           {isEditing && (
             <Button>
               variant="secondary"
-              onClick={() => router.push(`/clinical-documentation/${documentId}`)}
+              onClick={() => router.push(`/clinical-documentation/${\1}`}
               disabled={submitLoading}
             >
               View Document

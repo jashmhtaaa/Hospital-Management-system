@@ -7,8 +7,7 @@ import { getSession } from "@/lib/session";
 // Interface for the request body when creating a specimen tracking entry
 interface SpecimenTrackingCreateBody {
   specimen_id: number,
-  status: string;
-  location: string;
+  \1,\2 string;
   notes?: string;
   temperature?: number;
   temperature_unit?: string;
@@ -21,7 +20,7 @@ export const _GET = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -37,7 +36,7 @@ export const _GET = async (request: NextRequest) => {
     const pageSize = Number.parseInt(searchParams.get("pageSize") || "20");
 
     // Validate that either specimenId or barcode is provided
-    if (!specimenId && !barcode) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Either specimenId or barcode must be provided" },
         { status: 400 }
@@ -65,37 +64,37 @@ export const _GET = async (request: NextRequest) => {
     const parameters: unknown[] = [];
     const conditions: string[] = [];
 
-    if (specimenId != null) {
+    \1 {\n  \2{
       conditions.push("t.specimen_id = ?");
       parameters.push(specimenId);
     }
 
-    if (barcode != null) {
+    \1 {\n  \2{
       conditions.push("s.barcode = ?");
       parameters.push(barcode);
     }
 
-    if (fromDate != null) {
+    \1 {\n  \2{
       conditions.push("t.performed_at >= ?");
       parameters.push(fromDate);
     }
 
-    if (toDate != null) {
+    \1 {\n  \2{
       conditions.push("t.performed_at <= ?");
       parameters.push(toDate);
     }
 
-    if (location != null) {
+    \1 {\n  \2{
       conditions.push("t.location LIKE ?");
       parameters.push(`%${location}%`);
     }
 
-    if (status != null) {
+    \1 {\n  \2{
       conditions.push("t.status = ?");
       parameters.push(status);
     }
 
-    if (conditions.length > 0) {
+    \1 {\n  \2{
       query += " WHERE " + conditions.join(" AND ");
     }
 
@@ -113,7 +112,7 @@ export const _GET = async (request: NextRequest) => {
     // Get total count for pagination
     let countQuery = "SELECT COUNT(*) as total FROM lab_specimen_tracking t JOIN lab_specimens s ON t.specimen_id = s.id";
 
-    if (conditions.length > 0) {
+    \1 {\n  \2{
       countQuery += " WHERE " + conditions.join(" AND ");
     }
 
@@ -146,7 +145,7 @@ export const _POST = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -161,7 +160,7 @@ export const _POST = async (request: NextRequest) => {
     ];
 
     for (const field of requiredFields) {
-      if (!(field in body) || body[field] === undefined || body[field] === "") {
+      \1 {\n  \2| body[field] === undefined || body[field] === "") {
         return NextResponse.json(
           { error: `Missing or invalid required field: ${field}` },
           { status: 400 }
@@ -175,7 +174,7 @@ export const _POST = async (request: NextRequest) => {
       [body.specimen_id]
     );
 
-    if (!specimenCheckResult.results || specimenCheckResult.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Specimen not found" },
         { status: 404 }
@@ -222,14 +221,14 @@ export const _POST = async (request: NextRequest) => {
       );
 
       // Update specimen collection/reception information if applicable
-      if (body.status === "collected" && specimen.status !== "collected") {
+      \1 {\n  \2{
         await DB.query(
           "UPDATE lab_specimens SET collected_by = ?, collected_at = NOW() WHERE id = ?",
           [session.user.id, body.specimen_id]
         );
       }
 
-      if (body.status === "received" && specimen.status !== "received") {
+      \1 {\n  \2{
         await DB.query(
           "UPDATE lab_specimens SET received_by = ?, received_at = NOW() WHERE id = ?",
           [session.user.id, body.specimen_id]
@@ -258,7 +257,7 @@ export const _POST = async (request: NextRequest) => {
       const trackingResult = await DB.query(fetchQuery, [trackingId]);
       const tracking = trackingResult.results?.[0];
 
-      if (!tracking) {
+      \1 {\n  \2{
         throw new Error("Failed to retrieve created tracking entry");
       }
 
@@ -285,7 +284,7 @@ export const _GET_LOCATIONS = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -318,21 +317,20 @@ export const _POST_SCAN = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Parse request body
     const body = await request.json() as {
       barcode: string,
-      scan_type: "barcode" | "rfid";
-      location: string;
+      \1,\2 string;
       status?: string;
       notes?: string
     };
 
     // Validate required fields
-    if (!body.barcode || !body.scan_type || !body.location) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Barcode, scan type, and location are required" },
         { status: 400 }
@@ -345,7 +343,7 @@ export const _POST_SCAN = async (request: NextRequest) => {
       [body.barcode]
     );
 
-    if (!specimenCheckResult.results || specimenCheckResult.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Specimen not found" },
         { status: 404 }
@@ -356,18 +354,18 @@ export const _POST_SCAN = async (request: NextRequest) => {
 
     // Determine status if not provided
     let status = body.status;
-    if (!status) {
+    \1 {\n  \2{
       // Auto-determine status based on location
-      if (body.location.toLowerCase().includes("collection")) {
-        status = "collected";
-      } else if (body.location.toLowerCase().includes("reception")) {
-        status = "received";
-      } else if (body.location.toLowerCase().includes("processing")) {
-        status = "processing";
-      } else if (body.location.toLowerCase().includes("storage")) {
-        status = "stored";
+      \1 {\n  \2includes("collection")) {
+        status = "collected",
+      } else \1 {\n  \2includes("reception")) {
+        status = "received",
+      } else \1 {\n  \2includes("processing")) {
+        status = "processing",
+      } else \1 {\n  \2includes("storage")) {
+        status = "stored",
       } else {
-        status = "in-transit";
+        status = "in-transit",
       }
     }
 
@@ -406,14 +404,14 @@ export const _POST_SCAN = async (request: NextRequest) => {
       );
 
       // Update specimen collection/reception information if applicable
-      if (status === "collected" && specimen.status !== "collected") {
+      \1 {\n  \2{
         await DB.query(
           "UPDATE lab_specimens SET collected_by = ?, collected_at = NOW() WHERE id = ?",
           [session.user.id, specimen.id]
         );
       }
 
-      if (status === "received" && specimen.status !== "received") {
+      \1 {\n  \2{
         await DB.query(
           "UPDATE lab_specimens SET received_by = ?, received_at = NOW() WHERE id = ?",
           [session.user.id, specimen.id]
@@ -452,23 +450,19 @@ export const _POST_SCAN = async (request: NextRequest) => {
       const trackingResult = await DB.query(fetchQuery, [trackingId]);
       const tracking = trackingResult.results?.[0];
 
-      if (!tracking) {
+      \1 {\n  \2{
         throw new Error("Failed to retrieve created tracking entry");
       }
 
       // Return the created tracking entry with specimen and patient details
       return NextResponse.json({
         tracking,
-        specimen: {
-          id: specimen.id,
-          barcode: specimen.barcode;
-          sample_type: specimen.sample_type;
+        \1,\2 specimen.id,
+          \1,\2 specimen.sample_type;
           status,
           location: body.location,
-          order_id: specimen.order_id;
-          patient_id: tracking.patient_id,
-          patient_name: `/* SECURITY: Template literal eliminated */
-          patient_mrn: tracking.patient_mrn
+          \1,\2 tracking.patient_id,
+          \1,\2 tracking.patient_mrn
         }
       }, status: 201 );
     } catch (error) {
@@ -492,20 +486,19 @@ export const _POST_BATCH = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Parse request body
     const body = await request.json() as {
       barcodes: string[],
-      status: string;
-      location: string;
+      \1,\2 string;
       notes?: string
     };
 
     // Validate required fields
-    if (!body.barcodes || !body.barcodes.length || !body.status || !body.location) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Barcodes, status, and location are required" },
         { status: 400 }
@@ -527,7 +520,7 @@ export const _POST_BATCH = async (request: NextRequest) => {
           [barcode]
         );
 
-        if (!specimenCheckResult.results || specimenCheckResult.results.length === 0) {
+        \1 {\n  \2{
           errors.push({
             barcode,
             error: "Specimen not found"
@@ -568,14 +561,14 @@ export const _POST_BATCH = async (request: NextRequest) => {
         );
 
         // Update specimen collection/reception information if applicable
-        if (body.status === "collected" && specimen.status !== "collected") {
+        \1 {\n  \2{
           await DB.query(
             "UPDATE lab_specimens SET collected_by = ?, collected_at = NOW() WHERE id = ?",
             [session.user.id, specimen.id]
           );
         }
 
-        if (body.status === "received" && specimen.status !== "received") {
+        \1 {\n  \2{
           await DB.query(
             "UPDATE lab_specimens SET received_by = ?, received_at = NOW() WHERE id = ?",
             [session.user.id, specimen.id]
@@ -585,8 +578,7 @@ export const _POST_BATCH = async (request: NextRequest) => {
         results.push({
           barcode,
           specimen_id: specimen.id,
-          tracking_id: trackingId;
-          status: body.status,
+          \1,\2 body.status,
           location: body.location
         });
       }

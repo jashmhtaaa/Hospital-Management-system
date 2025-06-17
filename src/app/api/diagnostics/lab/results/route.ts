@@ -7,34 +7,21 @@ import { getSession } from "@/lib/session";
 // FHIR-compliant Observation resource structure
 interface FHIRObservation {
   resourceType: "Observation",
-  id: string;
-  meta: {
+  \1,\2 {
     versionId: string,
     lastUpdated: string;
     security?: Array<{
       system: string,
-      code: string;
-      display: string
+      \1,\2 string
     }>
   };
   status: "registered" | "preliminary" | "final" | "amended" | "corrected" | "cancelled" | "entered-in-error" | "unknown",
-  category: Array<{
-    coding: Array<{
-      system: string,
-      code: string;
-      display: string
-    }>;
+  category: Array\1>
   }>;
-  code: {
-    coding: Array<{
-      system: string,
-      code: string;
-      display: string
-    }>;
+  \1,\2 Array\1>
     text: string
   };
-  subject: {
-    reference: string;
+  \1,\2 string;
     display?: string
   };
   encounter?: {
@@ -42,71 +29,31 @@ interface FHIRObservation {
   };
   effectiveDateTime: string;
   issued?: string;
-  performer?: Array<{
-    reference: string;
-    display?: string;
-  }>;
+  performer?: Array\1>
   valueQuantity?: {
     value: number,
-    unit: string;
-    system: string,
+    \1,\2 string,
     code: string
   };
   valueString?: string;
   valueBoolean?: boolean;
   valueInteger?: number;
   valueCodeableConcept?: {
-    coding: Array<{
-      system: string,
-      code: string;
-      display: string
-    }>;
-    text: string
+    \1,\2 string
   };
   dataAbsentReason?: {
-    coding: Array<{
-      system: string,
-      code: string;
-      display: string
-    }>;
-    text: string
+    \1,\2 string
   };
-  interpretation?: Array<{
-    coding: Array<{
-      system: string,
-      code: string;
-      display: string
-    }>;
+  interpretation?: Array\1>
     text: string
   }>;
-  note?: Array<{
-    text: string
-  }>;
-  referenceRange?: Array<{
-    low?: {
-      value: number,
-      unit: string;
-      system: string,
-      code: string
-    };
-    high?: {
-      value: number,
-      unit: string;
-      system: string,
-      code: string
-    };
-    text?: string;
-  }>;
+  note?: Array\1>
+  referenceRange?: Array\1>
   specimen?: {
     reference: string
   };
   method?: {
-    coding: Array<{
-      system: string,
-      code: string;
-      display: string
-    }>;
-    text: string
+    \1,\2 string
   };
   device?: {
     reference: string;
@@ -166,7 +113,7 @@ export const _GET = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -231,60 +178,60 @@ export const _GET = async (request: NextRequest) => {
     const parameters: unknown[] = [];
     const conditions: string[] = [];
 
-    if (orderId != null) {
+    \1 {\n  \2{
       conditions.push("oi.order_id = ?");
       parameters.push(orderId);
     }
 
-    if (orderItemId != null) {
+    \1 {\n  \2{
       conditions.push("r.order_item_id = ?");
       parameters.push(orderItemId);
     }
 
-    if (patientId != null) {
+    \1 {\n  \2{
       conditions.push("o.patient_id = ?");
       parameters.push(patientId);
     }
 
-    if (testId != null) {
+    \1 {\n  \2{
       conditions.push("oi.test_id = ?");
       parameters.push(testId);
     }
 
-    if (parameterId != null) {
+    \1 {\n  \2{
       conditions.push("r.parameter_id = ?");
       parameters.push(parameterId);
     }
 
-    if (status != null) {
+    \1 {\n  \2{
       conditions.push("r.status = ?");
       parameters.push(status);
     }
 
-    if (interpretation != null) {
+    \1 {\n  \2{
       conditions.push("r.interpretation = ?");
       parameters.push(interpretation);
     }
 
-    if (fromDate != null) {
+    \1 {\n  \2{
       conditions.push("r.performed_at >= ?");
       parameters.push(fromDate);
     }
 
-    if (toDate != null) {
+    \1 {\n  \2{
       conditions.push("r.performed_at <= ?");
       parameters.push(toDate);
     }
 
-    if (verified !== null && verified !== undefined) {
-      if (verified === "true") {
+    \1 {\n  \2{
+      \1 {\n  \2{
         conditions.push("r.verified_by IS NOT NULL");
       } else {
         conditions.push("r.verified_by IS NULL");
       }
     }
 
-    if (conditions.length > 0) {
+    \1 {\n  \2{
       query += " WHERE " + conditions.join(" AND ");
     }
 
@@ -302,7 +249,7 @@ export const _GET = async (request: NextRequest) => {
     // Get total count for pagination
     let countQuery = "SELECT COUNT(*) as total FROM lab_results r JOIN lab_order_items oi ON r.order_item_id = oi.id JOIN lab_orders o ON oi.order_id = o.id";
 
-    if (conditions.length > 0) {
+    \1 {\n  \2{
       countQuery += " WHERE " + conditions.join(" AND ");
     }
 
@@ -310,12 +257,12 @@ export const _GET = async (request: NextRequest) => {
     const totalCount = countResult.results?.[0]?.total || 0;
 
     // Format response based on requested format
-    if (format === 'fhir') {
+    \1 {\n  \2{
       // Transform to FHIR Observation resources
       const fhirResources = await Promise.all(results.map(async (result) => {
         // Get reference ranges for this test/parameter
         let referenceRanges = [];
-        if (result.parameter_id) {
+        \1 {\n  \2{
           const rangesQuery = `;
             SELECT * FROM lab_test_reference_ranges;
             WHERE test_id = ? AND parameter_id = ?;
@@ -325,11 +272,9 @@ export const _GET = async (request: NextRequest) => {
           referenceRanges = rangesResult.results || [];
         }
 
-        const resource: FHIRObservation = {
-          resourceType: "Observation",
+        const \1,\2 "Observation",
           id: result.id.toString(),
-          meta: {
-            versionId: "1",
+          \1,\2 "1",
             lastUpdated: result.updated_at || result.performed_at || new Date().toISOString()
           },
           status: mapStatusToFHIR(result.status || "preliminary"),
@@ -338,26 +283,21 @@ export const _GET = async (request: NextRequest) => {
               coding: [
                 {
                   system: "https://terminology.hl7.org/CodeSystem/observation-category",
-                  code: "laboratory";
-                  display: "Laboratory"
+                  \1,\2 "Laboratory"
                 }
               ]
             }
           ],
-          code: {
-            coding: [
+          \1,\2 [
               {
                 system: "https://loinc.org",
-                code: result.parameter_loinc_code || result.loinc_code || "unknown";
-                display: result.parameter_name || result.test_name
+                \1,\2 result.parameter_name || result.test_name
               }
             ],
             text: result.parameter_name || result.test_name
           },
-          subject: {
-            reference: `Patient/${result.patient_id}`,
-            display: `/* SECURITY: Template literal eliminated */
-          effectiveDateTime: result.performed_at,
+          \1,\2 `Patient/${result.patient_id}`,
+            \1,\2 result.performed_at,
           performer: [
             {
               reference: `Practitioner/${result.performed_by}`,
@@ -367,9 +307,9 @@ export const _GET = async (request: NextRequest) => {
         };
 
         // Add verification information if verified
-        if (result.verified_by) {
+        \1 {\n  \2{
           resource.issued = result.verified_at;
-          if (!resource.performer) resource.performer = [];
+          \1 {\n  \2esource.performer = [];
           resource.performer.push({
             reference: `Practitioner/${result.verified_by}`,
             display: result.verified_by_username
@@ -377,20 +317,19 @@ export const _GET = async (request: NextRequest) => {
         }
 
         // Add specimen reference if available
-        if (result.specimen_barcode) {
+        \1 {\n  \2{
           resource.specimen = {
             reference: `Specimen/$result.specimen_id || 'unknown'`
           };
         }
 
         // Add method if available
-        if (result.method) {
+        \1 {\n  \2{
           resource.method = {
             coding: [
               {
                 system: result.method_system || "https://terminology.hl7.org/CodeSystem/v2-0936",
-                code: result.method_code || "unknown";
-                display: result.method
+                \1,\2 result.method
               }
             ],
             text: result.method
@@ -398,7 +337,7 @@ export const _GET = async (request: NextRequest) => {
         }
 
         // Add device if available
-        if (result.device_id) {
+        \1 {\n  \2{
           resource.device = {
             reference: `Device/$result.device_id`,
             display: result.device_name
@@ -406,35 +345,32 @@ export const _GET = async (request: NextRequest) => {
         }
 
         // Add result value based on type
-        if (result.result_value_numeric !== null && result.result_value_numeric !== undefined) {
+        \1 {\n  \2{
           resource.valueQuantity = {
             value: result.result_value_numeric,
-            unit: result.unit || "";
-            system: result.unit_system || "https://unitsofmeasure.org",
+            \1,\2 result.unit_system || "https://unitsofmeasure.org",
             code: result.unit_code || result.unit || ""
           }
-        } else if (result.result_value_text) {
+        } else \1 {\n  \2{
           resource.valueString = result.result_value_text;
-        } else if (result.result_value_coded) {
+        } else \1 {\n  \2{
           resource.valueCodeableConcept = {
             coding: [
               {
                 system: "https://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
-                code: result.result_value_coded;
-                display: result.result_value_coded
+                \1,\2 result.result_value_coded
               }
             ],
             text: result.result_value_coded
           }
-        } else if (result.result_value_boolean !== null && result.result_value_boolean !== undefined) {
+        } else \1 {\n  \2{
           resource.valueBoolean = result.result_value_boolean;
-        } else if (result.result_value) {
+        } else \1 {\n  \2{
           // Legacy field - try to determine type
-          if (!isNaN(Number(result.result_value))) {
+          \1 {\n  \2) {
             resource.valueQuantity = {
               value: Number(result.result_value),
-              unit: result.unit || "";
-              system: result.unit_system || "https://unitsofmeasure.org",
+              \1,\2 result.unit_system || "https://unitsofmeasure.org",
               code: result.unit_code || result.unit || ""
             }
           } else {
@@ -446,8 +382,7 @@ export const _GET = async (request: NextRequest) => {
             coding: [
               {
                 system: "https://terminology.hl7.org/CodeSystem/data-absent-reason",
-                code: "unknown";
-                display: "Unknown"
+                \1,\2 "Unknown"
               }
             ],
             text: "Result value not provided"
@@ -455,7 +390,7 @@ export const _GET = async (request: NextRequest) => {
         }
 
         // Add interpretation if available
-        if (result.interpretation) {
+        \1 {\n  \2{
           resource.interpretation = [
             {
               coding: [
@@ -471,22 +406,22 @@ export const _GET = async (request: NextRequest) => {
         }
 
         // Add notes if available
-        if (result.notes || result.delta_check_notes || result.correction_reason) {
+        \1 {\n  \2{
           resource.note = [];
 
-          if (result.notes) {
+          \1 {\n  \2{
             resource.note.push({
               text: result.notes
             });
           }
 
-          if (result.delta_check_notes) {
+          \1 {\n  \2{
             resource.note.push({
               text: `Delta check: $result.delta_check_notes`;
             });
           }
 
-          if (result.correction_reason) {
+          \1 {\n  \2{
             resource.note.push({
               text: `Correction: $result.correction_reason`;
             });
@@ -494,45 +429,39 @@ export const _GET = async (request: NextRequest) => {
         }
 
         // Add reference ranges if available
-        if (referenceRanges.length > 0) {
+        \1 {\n  \2{
           resource.referenceRange = referenceRanges.map(range => {
             const refRange: unknown = {};
 
-            if (range.value_low !== null && range.value_low !== undefined) {
+            \1 {\n  \2{
               refRange.low = {
                 value: range.value_low,
-                unit: range.unit || "";
-                system: "https://unitsofmeasure.org",
+                \1,\2 "https://unitsofmeasure.org",
                 code: range.unit || ""
               }
             }
 
-            if (range.value_high !== null && range.value_high !== undefined) {
+            \1 {\n  \2{
               refRange.high = {
                 value: range.value_high,
-                unit: range.unit || "";
-                system: "https://unitsofmeasure.org",
+                \1,\2 "https://unitsofmeasure.org",
                 code: range.unit || ""
               }
             }
 
-            if (range.text_value) {
+            \1 {\n  \2{
               refRange.text = range.text_value;
-            } else if (range.gender || (range.age_low !== null &&;
-              range.age_low !== undefined) || (range.age_high !== null &&;
+            } else \1 {\n  \2| (range.age_high !== null &&;
               range.age_high !== undefined)) {
               let text = "Reference range";
-              if (range.gender) {
+              \1 {\n  \2{
                 text += ` for ${range.gender}`;
               }
-              if (range.age_low !== null &&
-                range.age_low !== undefined &&;
-                range.age_high !== null &&;
-                range.age_high !== undefined) {
+              \1 {\n  \2{
                 text += ` age $range.age_low-$range.age_high`;
-              } else if (range.age_low !== null && range.age_low !== undefined) {
+              } else \1 {\n  \2{
                 text += ` age >= $range.age_low`;
-              } else if (range.age_high !== null && range.age_high !== undefined) {
+              } else \1 {\n  \2{
                 text += ` age <= $range.age_high`;
               }
               refRange.text = text;
@@ -543,12 +472,11 @@ export const _GET = async (request: NextRequest) => {
         }
 
         // Add security tag for sensitive results if needed
-        if (result.is_sensitive) {
+        \1 {\n  \2{
           resource.meta.security = [
             {
               system: "https://terminology.hl7.org/CodeSystem/v3-Confidentiality",
-              code: "R";
-              display: "Restricted"
+              \1,\2 "Restricted"
             }
           ]
         }
@@ -558,8 +486,7 @@ export const _GET = async (request: NextRequest) => {
 
       return NextResponse.json({
         resourceType: "Bundle",
-        type: "searchset";
-        total: totalCount,
+        \1,\2 totalCount,
         link: [
           {
             relation: "self",
@@ -598,7 +525,7 @@ export const _POST = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -606,7 +533,7 @@ export const _POST = async (request: NextRequest) => {
     const body = await request.json() as LabResultCreateBody;
 
     // Validate required fields
-    if (!body.order_item_id) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Order item ID is required" },
         { status: 400 }
@@ -614,12 +541,7 @@ export const _POST = async (request: NextRequest) => {
     }
 
     // Validate that at least one result value is provided
-    if (
-      body.result_value_numeric === undefined &&;
-      body.result_value_text === undefined &&;
-      body.result_value_coded === undefined &&;
-      body.result_value_boolean === undefined;
-    ) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "At least one result value must be provided" },
         { status: 400 }
@@ -644,7 +566,7 @@ export const _POST = async (request: NextRequest) => {
       [body.order_item_id]
     );
 
-    if (!orderItemCheckResult.results || orderItemCheckResult.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Order item not found" },
         { status: 404 }
@@ -654,13 +576,13 @@ export const _POST = async (request: NextRequest) => {
     const orderItem = orderItemCheckResult.results[0];
 
     // Check if parameter exists if provided
-    if (body.parameter_id) {
+    \1 {\n  \2{
       const parameterCheckResult = await DB.query(
         "SELECT * FROM lab_test_parameters WHERE id = ?",
         [body.parameter_id]
       );
 
-      if (!parameterCheckResult.results || parameterCheckResult.results.length === 0) {
+      \1 {\n  \2{
         return NextResponse.json(
           { error: "Parameter not found" },
           { status: 404 }
@@ -669,13 +591,13 @@ export const _POST = async (request: NextRequest) => {
     }
 
     // Check if device exists if provided
-    if (body.device_id) {
+    \1 {\n  \2{
       const deviceCheckResult = await DB.query(
         "SELECT * FROM lab_devices WHERE id = ?",
         [body.device_id]
       );
 
-      if (!deviceCheckResult.results || deviceCheckResult.results.length === 0) {
+      \1 {\n  \2{
         return NextResponse.json(
           { error: "Device not found" },
           { status: 404 }
@@ -684,20 +606,20 @@ export const _POST = async (request: NextRequest) => {
     }
 
     // Check if previous result exists if this is a correction
-    if (body?.is_corrected && !body.previous_result_id) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Previous result ID is required for corrections" },
         { status: 400 }
       );
     }
 
-    if (body.previous_result_id) {
+    \1 {\n  \2{
       const previousResultCheckResult = await DB.query(
         "SELECT * FROM lab_results WHERE id = ?",
         [body.previous_result_id]
       );
 
-      if (!previousResultCheckResult.results || previousResultCheckResult.results.length === 0) {
+      \1 {\n  \2{
         return NextResponse.json(
           { error: "Previous result not found" },
           { status: 404 }
@@ -707,7 +629,7 @@ export const _POST = async (request: NextRequest) => {
 
     // Perform delta check if requested
     let deltaCheckResult = null;
-    if (body.delta_check_performed) {
+    \1 {\n  \2{
       // Get previous results for this patient, test, and parameter
       const previousResultsQuery = `;
         SELECT;
@@ -733,7 +655,7 @@ export const _POST = async (request: NextRequest) => {
         orderItem.test_id;
       ];
 
-      if (body.parameter_id) {
+      \1 {\n  \2{
         queryParams.push(body.parameter_id);
       }
 
@@ -742,9 +664,7 @@ export const _POST = async (request: NextRequest) => {
       const previousResultsResult = await DB.query(previousResultsQuery, queryParams);
       const previousResult = previousResultsResult.results?.[0];
 
-      if (previousResult &&
-        body.result_value_numeric !== undefined &&;
-        previousResult.result_value_numeric !== undefined) {
+      \1 {\n  \2{
         // Calculate delta
         const currentValue = body.result_value_numeric;
         const previousValue = previousResult.result_value_numeric;
@@ -759,7 +679,7 @@ export const _POST = async (request: NextRequest) => {
         `;
 
         const deltaRulesParams = [orderItem.test_id];
-        if (body.parameter_id) {
+        \1 {\n  \2{
           deltaRulesParams.push(body.parameter_id);
         }
 
@@ -769,18 +689,18 @@ export const _POST = async (request: NextRequest) => {
         let deltaCheckPassed = true;
         let deltaCheckNotes = "";
 
-        if (deltaRule != null) {
+        \1 {\n  \2{
           // Apply delta check rule
-          if (deltaRule.absolute_change_limit !== null && absoluteDelta > deltaRule.absolute_change_limit) {
+          \1 {\n  \2{
             deltaCheckPassed = false;
             deltaCheckNotes = `Absolute change (${absoluteDelta.toFixed(2)}) exceeds limit (${deltaRule.absolute_change_limit})`;
-          } else if (deltaRule.percent_change_limit !== null && percentDelta > deltaRule.percent_change_limit) {
+          } else \1 {\n  \2{
             deltaCheckPassed = false;
             deltaCheckNotes = `Percent change (${percentDelta.toFixed(2)}%) exceeds limit (${deltaRule.percent_change_limit}%)`;
           }
         } else {
           // Default delta check if no rule exists
-          if (percentDelta > 80) {
+          \1 {\n  \2{
             deltaCheckPassed = false;
             deltaCheckNotes = `Large percent change (${percentDelta.toFixed(2)}%) from previous result`;
           }
@@ -788,10 +708,8 @@ export const _POST = async (request: NextRequest) => {
 
         deltaCheckResult = {
           previous_value: previousValue,
-          current_value: currentValue;
-          absolute_delta: absoluteDelta,
-          percent_delta: percentDelta;
-          passed: deltaCheckPassed,
+          \1,\2 absoluteDelta,
+          \1,\2 deltaCheckPassed,
           notes: deltaCheckNotes || `Delta check $deltaCheckPassed ? 'passed' : 'failed'`
         };
       } else {
@@ -804,7 +722,7 @@ export const _POST = async (request: NextRequest) => {
 
     // Determine interpretation if not provided
     let interpretation = body.interpretation;
-    if (!interpretation && body.result_value_numeric !== undefined) {
+    \1 {\n  \2{
       // Get reference ranges for this test/parameter
       const rangesQuery = `;
         SELECT * FROM lab_test_reference_ranges;
@@ -813,27 +731,27 @@ export const _POST = async (request: NextRequest) => {
       `;
 
       const rangesParams = [orderItem.test_id];
-      if (body.parameter_id) {
+      \1 {\n  \2{
         rangesParams.push(body.parameter_id);
       }
 
       const rangesResult = await DB.query(rangesQuery, rangesParams);
       const ranges = rangesResult.results || [];
 
-      if (ranges.length > 0) {
+      \1 {\n  \2{
         // Find applicable reference range
         const applicableRanges = ranges.filter(range => {
           // Check gender if specified
-          if (range?.gender && orderItem?.patient_gender && range.gender !== orderItem.patient_gender) {
+          \1 {\n  \2{
             return false;
           }
 
           // Check age if specified
-          if ((range.age_low !== null || range.age_high !== null) && orderItem.patient_age) {
-            if (range.age_low !== null && orderItem.patient_age < range.age_low) {
+          \1 {\n  \2& orderItem.patient_age) {
+            \1 {\n  \2{
               return false;
             }
-            if (range.age_high !== null && orderItem.patient_age > range.age_high) {
+            \1 {\n  \2{
               return false;
             }
           }
@@ -841,26 +759,26 @@ export const _POST = async (request: NextRequest) => {
           return true;
         });
 
-        if (applicableRanges.length > 0) {
+        \1 {\n  \2{
           const range = applicableRanges[0];
 
           // Check if result is critical
-          if (range.is_critical) {
-            if (range.critical_low !== null && body.result_value_numeric < range.critical_low) {
-              interpretation = "critical-low";
-            } else if (range.critical_high !== null && body.result_value_numeric > range.critical_high) {
-              interpretation = "critical-high";
+          \1 {\n  \2{
+            \1 {\n  \2{
+              interpretation = "critical-low",
+            } else \1 {\n  \2{
+              interpretation = "critical-high",
             }
           }
 
           // If not critical, check if abnormal
-          if (!interpretation) {
-            if (range.value_low !== null && body.result_value_numeric < range.value_low) {
-              interpretation = "low";
-            } else if (range.value_high !== null && body.result_value_numeric > range.value_high) {
-              interpretation = "high";
+          \1 {\n  \2{
+            \1 {\n  \2{
+              interpretation = "low",
+            } else \1 {\n  \2{
+              interpretation = "high",
             } else {
-              interpretation = "normal";
+              interpretation = "normal",
             }
           }
         }
@@ -872,7 +790,7 @@ export const _POST = async (request: NextRequest) => {
 
     try {
       // If this is a correction, update the previous result status
-      if (body?.is_corrected && body.previous_result_id) {
+      \1 {\n  \2{
         await DB.query(
           "UPDATE lab_results SET status = 'corrected', updated_at = NOW() WHERE id = ?",
           [body.previous_result_id]
@@ -882,8 +800,7 @@ export const _POST = async (request: NextRequest) => {
       // Encrypt sensitive data if needed
       const encryptedData = await encryptSensitiveData({
         notes: body.notes,
-        correctionReason: body.correction_reason;
-        deltaCheckNotes: deltaCheckResult?.notes
+        \1,\2 deltaCheckResult?.notes
       });
 
       // Insert result
@@ -941,7 +858,7 @@ export const _POST = async (request: NextRequest) => {
       // Check if all parameters for this order item have results
       let allParametersCompleted = false;
 
-      if (orderItem.test_id) {
+      \1 {\n  \2{
         const parametersQuery = `;
           SELECT id FROM lab_test_parameters WHERE test_id = ?;
         `;
@@ -949,7 +866,7 @@ export const _POST = async (request: NextRequest) => {
         const parametersResult = await DB.query(parametersQuery, [orderItem.test_id]);
         const parameters = parametersResult.results || [];
 
-        if (parameters.length > 0) {
+        \1 {\n  \2{
           // Test has parameters, check if all have results
           const _parameterIds = parameters.map(p => p.id);
 
@@ -977,7 +894,7 @@ export const _POST = async (request: NextRequest) => {
       }
 
       // Update order item status if all parameters are completed
-      if (allParametersCompleted != null) {
+      \1 {\n  \2{
         await DB.query(
           "UPDATE lab_order_items SET status = ? WHERE id = ?",
           ["completed", body.order_item_id]
@@ -994,7 +911,7 @@ export const _POST = async (request: NextRequest) => {
         const allOrderItemsCompleted = orderItems.every(item => item.status === "completed");
 
         // Update order status if all items are completed
-        if (allOrderItemsCompleted != null) {
+        \1 {\n  \2{
           await DB.query(
             "UPDATE lab_orders SET status = ? WHERE id = ?",
             ["completed", orderItem.order_id]
@@ -1007,7 +924,7 @@ export const _POST = async (request: NextRequest) => {
 
           const reportCheckResult = await DB.query(reportCheckQuery, [orderItem.order_id]);
 
-          if (!reportCheckResult.results || reportCheckResult.results.length === 0) {
+          \1 {\n  \2{
             const reportNumber = `REP/* SECURITY: Template literal eliminated */
 
             await DB.query(
@@ -1026,7 +943,7 @@ export const _POST = async (request: NextRequest) => {
       }
 
       // Create critical result alert if interpretation is critical
-      if (interpretation === "critical-high" || interpretation === "critical-low") {
+      \1 {\n  \2{
         await DB.query(
           `INSERT INTO lab_critical_alerts (
             result_id, order_id, patient_id, test_id, parameter_id,
@@ -1090,12 +1007,12 @@ export const _POST = async (request: NextRequest) => {
       const resultFetchResult = await DB.query(fetchQuery, [resultId]);
       const createdResult = resultFetchResult.results?.[0];
 
-      if (!createdResult) {
+      \1 {\n  \2{
         throw new Error("Failed to retrieve created result");
       }
 
       // Include delta check result if performed
-      if (deltaCheckResult != null) {
+      \1 {\n  \2{
         createdResult.delta_check_details = deltaCheckResult;
       }
 
@@ -1124,7 +1041,7 @@ export const _PUT = async (
     const session = await getSession();
 
     // Check authentication
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -1145,7 +1062,7 @@ export const _PUT = async (
       [resultId]
     );
 
-    if (!resultCheckResult.results || resultCheckResult.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Result not found" },
         { status: 404 }
@@ -1155,9 +1072,9 @@ export const _PUT = async (
     const existingResult = resultCheckResult.results[0];
 
     // Check if result is already verified and not being corrected
-    const body = await request.json() as Partial<LabResultCreateBody>;
+    const body = await request.json() as Partial\1>
 
-    if (existingResult?.verified_by && !body.is_corrected) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Cannot update a verified result without creating a correction" },
         { status: 400 }
@@ -1169,28 +1086,18 @@ export const _PUT = async (
 
     try {
       // If this is being converted to a correction, create a new result instead
-      if (body?.is_corrected && !existingResult.is_corrected) {
+      \1 {\n  \2{
         // Create a new result as a correction
-        const correctionBody: LabResultCreateBody = {
-          order_item_id: existingResult.order_item_id,
-          parameter_id: existingResult.parameter_id;
-          result_value_numeric: body.result_value_numeric !== undefined ? body.result_value_numeric : existingResult.result_value_numeric,
-          result_value_text: body.result_value_text !== undefined ? body.result_value_text : existingResult.result_value_text;
-          result_value_coded: body.result_value_coded !== undefined ? body.result_value_coded : existingResult.result_value_coded,
-          result_value_boolean: body.result_value_boolean !== undefined ? body.result_value_boolean : existingResult.result_value_boolean;
-          unit: body.unit !== undefined ? body.unit : existingResult.unit,
-          unit_code: body.unit_code !== undefined ? body.unit_code : existingResult.unit_code;
-          unit_system: body.unit_system !== undefined ? body.unit_system : existingResult.unit_system,
-          interpretation: body.interpretation !== undefined ? body.interpretation : existingResult.interpretation;
-          method: body.method !== undefined ? body.method : existingResult.method,
-          method_code: body.method_code !== undefined ? body.method_code : existingResult.method_code;
-          method_system: body.method_system !== undefined ? body.method_system : existingResult.method_system,
-          device_id: body.device_id !== undefined ? body.device_id : existingResult.device_id;
-          device_name: body.device_name !== undefined ? body.device_name : existingResult.device_name,
-          notes: body.notes !== undefined ? body.notes : existingResult.notes;
-          is_corrected: true,
-          correction_reason: body.correction_reason;
-          previous_result_id: existingResult.id
+        const \1,\2 existingResult.order_item_id,
+          \1,\2 body.result_value_numeric !== undefined ? body.result_value_numeric : existingResult.result_value_numeric,
+          \1,\2 body.result_value_coded !== undefined ? body.result_value_coded : existingResult.result_value_coded,
+          \1,\2 body.unit !== undefined ? body.unit : existingResult.unit,
+          \1,\2 body.unit_system !== undefined ? body.unit_system : existingResult.unit_system,
+          \1,\2 body.method !== undefined ? body.method : existingResult.method,
+          \1,\2 body.method_system !== undefined ? body.method_system : existingResult.method_system,
+          \1,\2 body.device_name !== undefined ? body.device_name : existingResult.device_name,
+          \1,\2 true,
+          \1,\2 existingResult.id
         };
 
         // Mark the existing result as corrected
@@ -1294,7 +1201,7 @@ export const _PUT = async (
         const resultFetchResult = await DB.query(fetchQuery, [newResultId]);
         const createdCorrection = resultFetchResult.results?.[0];
 
-        if (!createdCorrection) {
+        \1 {\n  \2{
           throw new Error("Failed to retrieve created correction");
         }
 
@@ -1315,86 +1222,86 @@ export const _PUT = async (
         const updateFields: string[] = [];
         const updateParameters: unknown[] = [];
 
-        if (body.result_value_numeric !== undefined) {
+        \1 {\n  \2{
           updateFields.push("result_value_numeric = ?");
           updateParameters.push(body.result_value_numeric);
         }
 
-        if (body.result_value_text !== undefined) {
+        \1 {\n  \2{
           updateFields.push("result_value_text = ?");
           updateParameters.push(body.result_value_text);
         }
 
-        if (body.result_value_coded !== undefined) {
+        \1 {\n  \2{
           updateFields.push("result_value_coded = ?");
           updateParameters.push(body.result_value_coded);
         }
 
-        if (body.result_value_boolean !== undefined) {
+        \1 {\n  \2{
           updateFields.push("result_value_boolean = ?");
           updateParameters.push(body.result_value_boolean ? 1 : 0);
         }
 
-        if (body.unit !== undefined) {
+        \1 {\n  \2{
           updateFields.push("unit = ?");
           updateParameters.push(body.unit);
         }
 
-        if (body.unit_code !== undefined) {
+        \1 {\n  \2{
           updateFields.push("unit_code = ?");
           updateParameters.push(body.unit_code);
         }
 
-        if (body.unit_system !== undefined) {
+        \1 {\n  \2{
           updateFields.push("unit_system = ?");
           updateParameters.push(body.unit_system);
         }
 
-        if (body.interpretation !== undefined) {
+        \1 {\n  \2{
           updateFields.push("interpretation = ?");
           updateParameters.push(body.interpretation);
         }
 
-        if (body.method !== undefined) {
+        \1 {\n  \2{
           updateFields.push("method = ?");
           updateParameters.push(body.method);
         }
 
-        if (body.method_code !== undefined) {
+        \1 {\n  \2{
           updateFields.push("method_code = ?");
           updateParameters.push(body.method_code);
         }
 
-        if (body.method_system !== undefined) {
+        \1 {\n  \2{
           updateFields.push("method_system = ?");
           updateParameters.push(body.method_system);
         }
 
-        if (body.device_id !== undefined) {
+        \1 {\n  \2{
           updateFields.push("device_id = ?");
           updateParameters.push(body.device_id);
         }
 
-        if (body.device_name !== undefined) {
+        \1 {\n  \2{
           updateFields.push("device_name = ?");
           updateParameters.push(body.device_name);
         }
 
-        if (body.notes !== undefined) {
+        \1 {\n  \2{
           updateFields.push("notes = ?");
           updateParameters.push(encryptedData.notes);
         }
 
         // Handle verification
-        if (body.verified_by !== undefined) {
+        \1 {\n  \2{
           updateFields.push("verified_by = ?");
           updateParameters.push(body.verified_by);
 
-          if (body.verified_by) {
+          \1 {\n  \2{
             updateFields.push("verified_at = NOW()");
             updateFields.push("status = 'final'");
 
-            if (body.verification_signature !== undefined) {
+            \1 {\n  \2{
               updateFields.push("verification_signature = ?");
               updateParameters.push(body.verification_signature);
             }
@@ -1402,7 +1309,7 @@ export const _PUT = async (
         }
 
         // Only proceed if there are fields to update
-        if (updateFields.length === 0) {
+        \1 {\n  \2{
           return NextResponse.json(
             { error: "No fields to update" },
             { status: 400 }
@@ -1420,7 +1327,7 @@ export const _PUT = async (
         await DB.query(updateQuery, updateParameters);
 
         // Create critical result alert if interpretation is critical
-        if (body.interpretation === "critical-high" || body.interpretation === "critical-low") {
+        \1 {\n  \2{
           // Check if alert already exists
           const alertCheckQuery = `;
             SELECT id FROM lab_critical_alerts WHERE result_id = ?;
@@ -1428,7 +1335,7 @@ export const _PUT = async (
 
           const alertCheckResult = await DB.query(alertCheckQuery, [resultId]);
 
-          if (!alertCheckResult.results || alertCheckResult.results.length === 0) {
+          \1 {\n  \2{
             await DB.query(
               `INSERT INTO lab_critical_alerts (
                 result_id, order_id, patient_id, test_id, parameter_id,
@@ -1493,7 +1400,7 @@ export const _PUT = async (
         const resultFetchResult = await DB.query(fetchQuery, [resultId]);
         const updatedResult = resultFetchResult.results?.[0];
 
-        if (!updatedResult) {
+        \1 {\n  \2{
           throw new Error("Failed to retrieve updated result");
         }
 
@@ -1524,12 +1431,12 @@ export const _POST_VERIFY = async (
     const session = await getSession();
 
     // Check authentication and authorization
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Only lab technicians, lab managers, and pathologists can verify results
-    if (!["lab_technician", "lab_manager", "pathologist"].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -1541,7 +1448,7 @@ export const _POST_VERIFY = async (
       [resultId]
     );
 
-    if (!resultCheckResult.results || resultCheckResult.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Result not found" },
         { status: 404 }
@@ -1551,7 +1458,7 @@ export const _POST_VERIFY = async (
     const existingResult = resultCheckResult.results[0];
 
     // Check if result is already verified
-    if (existingResult.verified_by) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Result is already verified" },
         { status: 400 }
@@ -1636,7 +1543,7 @@ export const _POST_VERIFY = async (
       const resultFetchResult = await DB.query(fetchQuery, [resultId]);
       const verifiedResult = resultFetchResult.results?.[0];
 
-      if (!verifiedResult) {
+      \1 {\n  \2{
         throw new Error("Failed to retrieve verified result");
       }
 
@@ -1666,7 +1573,7 @@ export const _GET_CRITICAL = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -1710,7 +1617,7 @@ export const _GET_CRITICAL = async (request: NextRequest) => {
     // Add filters
     const parameters: unknown[] = [];
 
-    if (status != null) {
+    \1 {\n  \2{
       query += " WHERE a.status = ?";
       parameters.push(status);
     }
@@ -1729,7 +1636,7 @@ export const _GET_CRITICAL = async (request: NextRequest) => {
     // Get total count for pagination
     let countQuery = "SELECT COUNT(*) as total FROM lab_critical_alerts a";
 
-    if (status != null) {
+    \1 {\n  \2{
       countQuery += " WHERE a.status = ?";
     }
 
@@ -1765,7 +1672,7 @@ export const _PUT_CRITICAL = async (
     const session = await getSession();
 
     // Check authentication
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -1777,7 +1684,7 @@ export const _PUT_CRITICAL = async (
       [alertId]
     );
 
-    if (!alertCheckResult.results || alertCheckResult.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Critical alert not found" },
         { status: 404 }
@@ -1794,7 +1701,7 @@ export const _PUT_CRITICAL = async (
     };
 
     // Validate status
-    if (!body.status || !["pending", "acknowledged", "notified", "resolved"].includes(body.status)) {
+    \1 {\n  \2 {
       return NextResponse.json(
         { error: "Invalid status" },
         { status: 400 }
@@ -1877,7 +1784,7 @@ export const _PUT_CRITICAL = async (
     const alertFetchResult = await DB.query(fetchQuery, [alertId]);
     const updatedAlert = alertFetchResult.results?.[0];
 
-    if (!updatedAlert) {
+    \1 {\n  \2{
       throw new Error("Failed to retrieve updated alert");
     }
 

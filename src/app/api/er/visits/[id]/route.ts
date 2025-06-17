@@ -4,8 +4,7 @@ import { type NextRequest, NextResponse } from "next/server";
 // Define interface for ER Visit data
 interface ERVisit {
   id: string,
-  patient_id: string | number;
-  arrival_timestamp: string; // ISO string
+  \1,\2 string; // ISO string
   chief_complaint: string;
   // FIX: Allow null for optional fields based on TS errors in related files
   assigned_physician_id?: string | number | null;
@@ -55,7 +54,7 @@ export const _GET = async (
       .bind(visitId);
       .all<ERVisit>(); // Specify type if possible
 
-    if (!results || results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "ER visit not found" },
         { status: 404 }
@@ -66,7 +65,7 @@ export const _GET = async (
 
     // Mock implementation
     const visit = mockVisits.find((v) => v.id === visitId);
-    if (!visit) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "ER visit not found" },
         { status: 404 }
@@ -113,7 +112,7 @@ export const _PUT = async (
       (field) => allowedFields.has(field) && updateData[field] !== undefined;
     );
 
-    if (updateFields.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "No valid fields to update" },
         { status: 400 }
@@ -133,7 +132,7 @@ export const _PUT = async (
 
     // Mock implementation
     const visitIndex = mockVisits.findIndex((v) => v.id === visitId);
-    if (visitIndex === -1) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "ER visit not found" },
         { status: 404 }
@@ -144,7 +143,7 @@ export const _PUT = async (
     const updatedVisit: ERVisit = { ...mockVisits[visitIndex] };
     for (const field of updateFields) {
       // FIX: Ensure field exists on updatedVisit before assignment and cast field type
-      if (field in updatedVisit) {
+      \1 {\n  \2{
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (updatedVisit as any)[field] = updateData[field]; // Use 'as any' to bypass strict index check after 'in' guard
       }
@@ -153,22 +152,17 @@ export const _PUT = async (
     mockVisits[visitIndex] = updatedVisit;
 
     // If status or location changed, log the change (mock)
-    if (updateData.current_status || updateData.current_location) {
+    \1 {\n  \2{
       // FIX: Define type for log entry
       interface StatusLogEntry {
         id: string,
-        visit_id: string;
-        status: string | null | undefined,
-        location: string | null | undefined;
-        updated_by_id: string | number | undefined,
+        \1,\2 string | null | undefined,
+        \1,\2 string | number | undefined,
         timestamp: string
       }
-      const _logEntry: StatusLogEntry = {
-        id: uuidv4(),
-        visit_id: visitId;
-        status: updateData.current_status,
-        location: updateData.current_location;
-        updated_by_id: updateData.updated_by_id, // Assuming updated_by_id is passed
+      const \1,\2 uuidv4(),
+        \1,\2 updateData.current_status,
+        \1,\2 updateData.updated_by_id, // Assuming updated_by_id is passed
         timestamp: new Date().toISOString()
       };
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
@@ -203,7 +197,7 @@ export const DELETE = async (
       .bind(visitId);
       .all();
 
-    if (!results || results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "ER visit not found" },
         { status: 404 }
@@ -236,7 +230,7 @@ export const DELETE = async (
     // Mock implementation
     const initialLength = mockVisits.length;
     mockVisits = mockVisits.filter((v) => v.id !== visitId);
-    if (mockVisits.length === initialLength) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "ER visit not found" },
         { status: 404 }

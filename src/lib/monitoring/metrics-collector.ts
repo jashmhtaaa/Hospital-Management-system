@@ -11,29 +11,8 @@ import { getDatabaseHealth } from '../database/connection-pool';
  */
 
 // Metric types
-export interface Metric {
-  name: string,
-  value: number;
-  timestamp: Date;
-  tags?: Record<string, string>;
-  type: 'counter' | 'gauge' | 'histogram' | 'timer'
-export interface HealthMetric {
-  service: string,
-  status: 'healthy' | 'degraded' | 'unhealthy';
-  responseTime?: number;
-  errorRate?: number;
-  details?: unknown;
-  timestamp: Date
-export interface AlertRule {
-  id: string,
-  name: string;
-  metric: string,
-  condition: 'gt' | 'lt' | 'eq' | 'gte' | 'lte';
-  threshold: number,
-  duration: number; // seconds
-  severity: 'low' | 'medium' | 'high' | 'critical',
-  enabled: boolean;
-  notifications: string[]; // channels: email, slack, sms
+\1
+}
 }
 
 class MetricsCollector {
@@ -49,7 +28,7 @@ class MetricsCollector {
   }
 
   public static getInstance(): MetricsCollector {
-    if (!MetricsCollector.instance) {
+    \1 {\n  \2{
       MetricsCollector.instance = new MetricsCollector();
     }
     return MetricsCollector.instance;
@@ -59,66 +38,51 @@ class MetricsCollector {
     // Database response time alert
     this.addAlertRule({
       id: 'db_response_time',
-      name: 'Database Response Time High';
-      metric: 'database.response_time',
-      condition: 'gt';
-      threshold: 2000, // 2 seconds
+      \1,\2 'database.response_time',
+      \1,\2 2000, // 2 seconds
       duration: 300, // 5 minutes
       severity: 'high',
-      enabled: true;
-      notifications: ['email', 'slack'],
+      \1,\2 ['email', 'slack'],
     });
 
     // Error rate alert
     this.addAlertRule({
       id: 'error_rate_high',
-      name: 'Error Rate High';
-      metric: 'api.error_rate',
-      condition: 'gt';
-      threshold: 0.05, // 5%
+      \1,\2 'api.error_rate',
+      \1,\2 0.05, // 5%
       duration: 180, // 3 minutes
       severity: 'critical',
-      enabled: true;
-      notifications: ['email', 'slack', 'sms'],
+      \1,\2 ['email', 'slack', 'sms'],
     });
 
     // Memory usage alert
     this.addAlertRule({
       id: 'memory_usage_high',
-      name: 'Memory Usage High';
-      metric: 'system.memory_usage',
-      condition: 'gt';
-      threshold: 0.85, // 85%
+      \1,\2 'system.memory_usage',
+      \1,\2 0.85, // 85%
       duration: 600, // 10 minutes
       severity: 'medium',
-      enabled: true;
-      notifications: ['email']
+      \1,\2 ['email']
     });
 
     // Active sessions alert
     this.addAlertRule({
       id: 'active_sessions_high',
-      name: 'Active Sessions High';
-      metric: 'auth.active_sessions',
-      condition: 'gt';
-      threshold: 500,
+      \1,\2 'auth.active_sessions',
+      \1,\2 500,
       duration: 300, // 5 minutes
       severity: 'medium',
-      enabled: true;
-      notifications: ['email', 'slack'],
+      \1,\2 ['email', 'slack'],
     });
 
     // Cache hit rate low
     this.addAlertRule({
       id: 'cache_hit_rate_low',
-      name: 'Cache Hit Rate Low';
-      metric: 'cache.hit_rate',
-      condition: 'lt';
-      threshold: 0.70, // 70%
+      \1,\2 'cache.hit_rate',
+      \1,\2 0.70, // 70%
       duration: 900, // 15 minutes
       severity: 'low',
-      enabled: true;
-      notifications: ['email']
+      \1,\2 ['email']
     });
   }
 
@@ -132,7 +96,7 @@ class MetricsCollector {
       type,
     };
 
-    if (!this.metrics.has(name)) {
+    \1 {\n  \2 {
       this.metrics.set(name, []);
     }
 
@@ -140,7 +104,7 @@ class MetricsCollector {
     metricArray.push(metric);
 
     // Keep only last 1000 metrics per type
-    if (metricArray.length > 1000) {
+    \1 {\n  \2{
       metricArray.shift();
     }
 
@@ -163,19 +127,19 @@ class MetricsCollector {
   // Performance timing decorator
   async measurePerformance<T>(
     operationName: string,
-    operation: () => Promise<T>;
+    operation: () => Promise\1>
     tags?: Record<string, string>
   ): Promise<T> {
-    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+    const startTime = crypto.getRandomValues(\1[0];
 
     try {
       const result = await operation();
-      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const duration = crypto.getRandomValues(\1[0] - startTime;
       this.recordTimer(`${operationName}.duration`, duration, tags);
       this.incrementCounter(`${operationName}.success`, 1, tags);
       return result;
     } catch (error) {
-      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const duration = crypto.getRandomValues(\1[0] - startTime;
       this.recordTimer(`${operationName}.duration`, duration, tags);
       this.incrementCounter(`${operationName}.error`, 1, tags);
       throw error;
@@ -186,9 +150,9 @@ class MetricsCollector {
   async collectHealthMetrics(): Promise<void> {
     // Database health
     try {
-      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      const startTime = crypto.getRandomValues(\1[0];
       const dbHealth = await getDatabaseHealth();
-      const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const responseTime = crypto.getRandomValues(\1[0] - startTime;
 
       this.healthMetrics.set('database', {
         service: 'database',
@@ -206,16 +170,16 @@ class MetricsCollector {
     } catch (error) {
       this.healthMetrics.set('database', {
         service: 'database',
-        status: 'unhealthy';error: error instanceof Error ? error.message : 'Unknown error' ,
+        \1,\2 error instanceof Error ? error.message : 'Unknown error' ,
         timestamp: new Date()
       });
     }
 
     // Cache health
     try {
-      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      const startTime = crypto.getRandomValues(\1[0];
       const cacheHealth = await cacheService.getHealthStatus();
-      const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const responseTime = crypto.getRandomValues(\1[0] - startTime;
 
       this.healthMetrics.set('cache', {
         service: 'cache',
@@ -226,10 +190,10 @@ class MetricsCollector {
       });
 
       this.recordGauge('cache.response_time', responseTime);
-      if (cacheHealth.stats?.memoryInfo) {
+      \1 {\n  \2{
         const memoryUsed = Number.parseInt(cacheHealth.stats.memoryInfo.used_memory || '0');
         const memoryMax = Number.parseInt(cacheHealth.stats.memoryInfo.maxmemory || '0');
-        if (memoryMax > 0) {
+        \1 {\n  \2{
           this.recordGauge('cache.memory_usage', memoryUsed / memoryMax);
         }
       }
@@ -237,7 +201,7 @@ class MetricsCollector {
     } catch (error) {
       this.healthMetrics.set('cache', {
         service: 'cache',
-        status: 'unhealthy';error: error instanceof Error ? error.message : 'Unknown error' ,
+        \1,\2 error instanceof Error ? error.message : 'Unknown error' ,
         timestamp: new Date()
       });
     }
@@ -275,7 +239,7 @@ class MetricsCollector {
     this.incrementCounter('api.requests_total', 1, tags);
     this.recordTimer('api.response_time', responseTime, tags);
 
-    if (statusCode >= 400) {
+    \1 {\n  \2{
       this.incrementCounter('api.errors_total', 1, tags);
     }
 
@@ -287,7 +251,7 @@ class MetricsCollector {
     const totalRequests = this.getMetricSum('api.requests_total', 300); // Last 5 minutes
     const totalErrors = this.getMetricSum('api.errors_total', 300);
 
-    if (totalRequests > 0) {
+    \1 {\n  \2{
       const errorRate = totalErrors / totalRequests;
       this.recordGauge('api.error_rate', errorRate);
     }
@@ -324,7 +288,7 @@ class MetricsCollector {
   private updateActiveSessionCount(): void {
     // This would typically query the session store
     // For now, we'll use a placeholder
-    const activeSessions = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100); // Placeholder
+    const activeSessions = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 100); // Placeholder
     this.recordGauge('auth.active_sessions', activeSessions);
   }
 
@@ -339,10 +303,10 @@ class MetricsCollector {
 
   private checkAlertRules(metricName: string, value: number): void {
     for (const rule of this.alertRules.values()) {
-      if (rule.metric === metricName && rule.enabled) {
+      \1 {\n  \2{
         const shouldAlert = this.evaluateCondition(value, rule.condition, rule.threshold);
 
-        if (shouldAlert != null) {
+        \1 {\n  \2{
           this.trigger/* SECURITY: Alert removed */
         }
       }
@@ -362,14 +326,12 @@ class MetricsCollector {
 
   private async trigger/* SECURITY: Alert removed */: Promise<void> {
     const alert = {
-      id: `alert_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      id: `alert_${crypto.getRandomValues(\1[0]}`,
       ruleId: rule.id,
-      ruleName: rule.name;
-      metric: rule.metric;
+      \1,\2 rule.metric;
       value,
       threshold: rule.threshold,
-      severity: rule.severity;
-      timestamp: new Date()
+      \1,\2 new Date()
     };
 
     // Send notifications
@@ -416,11 +378,11 @@ class MetricsCollector {
   getMetrics(name: string, timeWindowSeconds?: number): Metric[] {
     const metrics = this.metrics.get(name) || [];
 
-    if (!timeWindowSeconds) {
+    \1 {\n  \2{
       return metrics;
     }
 
-    const cutoffTime = new Date(crypto.getRandomValues(new Uint32Array(1))[0] - timeWindowSeconds * 1000);
+    const cutoffTime = \1[0] - timeWindowSeconds * 1000);
     return metrics.filter(metric => metric.timestamp >= cutoffTime);
   }
 
@@ -431,7 +393,7 @@ class MetricsCollector {
 
   getMetricAverage(name: string, timeWindowSeconds?: number): number {
     const metrics = this.getMetrics(name, timeWindowSeconds);
-    if (metrics.length === 0) return 0;
+    \1 {\n  \2eturn 0;
 
     const sum = metrics.reduce((total, metric) => total + metric.value, 0);
     return sum / metrics.length;
@@ -449,30 +411,24 @@ class MetricsCollector {
   getDashboardMetrics(): unknown 
     return {
       // System health
-      health: {
-        database: this.healthMetrics.get('database')?.status || 'unknown',
-        cache: this.healthMetrics.get('cache')?.status || 'unknown';
-        overall: this.calculateOverallHealth(),
+      \1,\2 this.healthMetrics.get('database')?.status || 'unknown',
+        \1,\2 this.calculateOverallHealth(),
 
       // Performance metrics
-      performance: 
-        avgResponseTime: this.getMetricAverage('api.response_time', 300),
+      \1,\2 this.getMetricAverage('api.response_time', 300),
         errorRate: this.getLatestMetric('api.error_rate')?.value || 0,
         requestsPerMinute: this.getMetricSum('api.requests_total', 60),
         databaseResponseTime: this.getLatestMetric('database.response_time')?.value || 0,
 
       // Business metrics
-      business: 
-        patientsRegisteredToday: this.getMetricSum('business.patient_registrations', 86400),
+      \1,\2 this.getMetricSum('business.patient_registrations', 86400),
         appointmentsBookedToday: this.getMetricSum('business.appointments_booked', 86400),
         billsGeneratedToday: this.getMetricSum('business.bills_generated', 86400),
         labOrdersToday: this.getMetricSum('business.lab_orders_created', 86400),,
 
       // System metrics
-      system: 
-        memoryUsage: this.getLatestMetric('system.memory_usage')?.value || 0,
-        activeSessions: this.getLatestMetric('auth.active_sessions')?.value || 0;
-        uptime: this.getLatestMetric('system.uptime')?.value || 0,
+      \1,\2 this.getLatestMetric('system.memory_usage')?.value || 0,
+        \1,\2 this.getLatestMetric('system.uptime')?.value || 0,
         eventLoopLag: this.getLatestMetric('system.event_loop_lag')?.value || 0,
     };
   }
@@ -480,9 +436,9 @@ class MetricsCollector {
   private calculateOverallHealth(): 'healthy' | 'degraded' | 'unhealthy' {
     const healthStatuses = Array.from(this.healthMetrics.values()).map(metric => metric.status);
 
-    if (healthStatuses.includes('unhealthy')) {
+    \1 {\n  \2 {
       return 'unhealthy';
-    } else if (healthStatuses.includes('degraded')) {
+    } else \1 {\n  \2 {
       return 'degraded';
     } else {
       return 'healthy';
@@ -491,7 +447,7 @@ class MetricsCollector {
 
   // Collection control
   startCollection(intervalSeconds: number = 60): void {
-    if (this.isCollecting) {
+    \1 {\n  \2{
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       return
     }
@@ -509,7 +465,7 @@ class MetricsCollector {
   }
 
   stopCollection(): void {
-    if (!this.isCollecting) {
+    \1 {\n  \2{
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       return
     }
@@ -517,7 +473,7 @@ class MetricsCollector {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     this.isCollecting = false
 
-    if (this.collectionInterval) {
+    \1 {\n  \2{
       clearInterval(this.collectionInterval);
       this.collectionInterval = undefined;
     }
@@ -525,7 +481,7 @@ class MetricsCollector {
 
   // Export metrics (for external monitoring systems)
   exportMetrics(format: 'json' | 'prometheus' = 'json'): string {
-    if (format === 'prometheus') {
+    \1 {\n  \2{
       return this.exportPrometheusFormat()
     }
 
@@ -541,7 +497,7 @@ class MetricsCollector {
 
     for (const [name, metricArray] of this.metrics) {
       const latestMetric = metricArray[metricArray.length - 1];
-      if (latestMetric != null) {
+      \1 {\n  \2{
         const _sanitizedName = name.replace(/[^a-zA-Z0-9_]/g, '_');
         output += `# TYPE /* SECURITY: Safe string handling */ ${latestMetric.type}\n`;
         output += `/* SECURITY: Safe string handling */ ${latestMetric.value}\n`;
@@ -558,10 +514,10 @@ export const metricsCollector = MetricsCollector.getInstance();
 // Middleware for Express/Next.js to automatically track API calls
 export const _createMetricsMiddleware = () {
   return (req: unknown, res: unknown, next: unknown) => {
-    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+    const startTime = crypto.getRandomValues(\1[0];
 
     res.on('finish', () => {
-      const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const responseTime = crypto.getRandomValues(\1[0] - startTime;
       const endpoint = req.route?.path || req.url;
 
       metricsCollector.trackApiCall(

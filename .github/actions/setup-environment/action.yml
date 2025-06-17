@@ -1,46 +1,46 @@
-name: 'Setup Enterprise Environment'
-description: 'Sets up comprehensive development environment for HMS Enterprise'
+name: "Setup Enterprise Environment"
+description: "Sets up comprehensive development environment for HMS Enterprise"
 
 inputs:
   node-version:
-    description: 'Node.js version to use'
+    description: "Node.js version to use"
     required: false
-    default: '20.x'
+    default: "20.x"
   java-version:
-    description: 'Java version to use'
+    description: "Java version to use"
     required: false
-    default: '21'
+    default: "21"
   python-version:
-    description: 'Python version to use'
+    description: "Python version to use"
     required: false
-    default: '3.11'
+    default: "3.11"
   enable-cache:
-    description: 'Enable dependency caching'
+    description: "Enable dependency caching"
     required: false
-    default: 'true'
+    default: "true"
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: 🏗️ Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node-version }}
-        cache: 'npm'
-        registry-url: 'https://registry.npmjs.org'
+        cache: "npm"
+        registry-url: "https://registry.npmjs.org"
 
     - name: ☕ Setup Java
       uses: actions/setup-java@v4
       with:
         java-version: ${{ inputs.java-version }}
-        distribution: 'temurin'
-        cache: 'maven'
+        distribution: "temurin"
+        cache: "maven"
 
     - name: 🐍 Setup Python
       uses: actions/setup-python@v4
       with:
         python-version: ${{ inputs.python-version }}
-        cache: 'pip'
+        cache: "pip"
 
     - name: 🔧 Install System Dependencies
       shell: bash

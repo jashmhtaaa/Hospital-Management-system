@@ -47,41 +47,18 @@ interface DynamicPoolConfig {
 /**
  * Dynamic Connection Pool that scales based on usage;
  */
-export class DynamicConnectionPool {
-  private pool: Pool;
-  private config: DynamicPoolConfig;
-  private currentPoolSize: number;
-  private activeConnections = 0;
-  private waitingClients = 0;
-  private lastScaleDownTime = 0;
-  private monitoringInterval: NodeJS.Timeout | null = null;
-  private healthCheckInterval: NodeJS.Timeout | null = null;
-  private pendingScaleOperation = false;
-
-  constructor(config: DynamicPoolConfig) {
-    this.config = {
-      ...config,
-      idleTimeoutMillis: config.idleTimeoutMillis || 30000,
-      connectionTimeoutMillis: config.connectionTimeoutMillis || 10000;
-      healthCheckIntervalMillis: config.healthCheckIntervalMillis || 60000,
-      healthCheckQuery: config.healthCheckQuery || 'SELECT 1';
-      monitoringIntervalMillis: config.monitoringIntervalMillis || 5000,
-      maxRetries: config.maxRetries || 3;
-      retryIntervalMillis: config.retryIntervalMillis || 500
+\1
+}
     };
 
     this.currentPoolSize = config.minPoolSize;
 
     this.pool = new Pool({
       connectionString: config.connectionString,
-      host: config.host;
-      port: config.port,
-      database: config.database;
-      user: config.user,
-      password: config.password;
-      max: this.currentPoolSize,
-      idleTimeoutMillis: config.idleTimeoutMillis;
-      connectionTimeoutMillis: config.connectionTimeoutMillis
+      \1,\2 config.port,
+      \1,\2 config.user,
+      \1,\2 this.currentPoolSize,
+      \1,\2 config.connectionTimeoutMillis
     });
 
     // Set up event handlers
@@ -95,8 +72,7 @@ export class DynamicConnectionPool {
 
     logger.info('Dynamic connection pool initialized', {
       minPoolSize: config.minPoolSize,
-      maxPoolSize: config.maxPoolSize;
-      host: config.host || config.connectionString?.split('@')[1]?.split('/')[0]
+      \1,\2 config.host || config.connectionString?.split('@')[1]?.split('/')[0]
     });
   }
 
@@ -110,7 +86,7 @@ export class DynamicConnectionPool {
       // Track metrics
       metricsCollector.incrementCounter('database.connection_pool.client_requests', 1);
 
-      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      const startTime = crypto.getRandomValues(\1[0];
 
       // Get a client from the pool
       const client = await this.pool.connect();
@@ -118,7 +94,7 @@ export class DynamicConnectionPool {
       this.waitingClients--;
       this.activeConnections++;
 
-      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const duration = crypto.getRandomValues(\1[0] - startTime;
 
       // Track metrics
       metricsCollector.recordTimer('database.connection_pool.client_acquisition_time', duration);
@@ -165,12 +141,12 @@ export class DynamicConnectionPool {
     while (attempt <= retries) {
       try {
         client = await this.getClient();
-        const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+        const startTime = crypto.getRandomValues(\1[0];
 
         // Execute the query
         const result = await client.query(queryText, params);
 
-        const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+        const duration = crypto.getRandomValues(\1[0] - startTime;
 
         // Track metrics
         metricsCollector.recordTimer('database.connection_pool.query_time', duration, {
@@ -183,7 +159,7 @@ export class DynamicConnectionPool {
         return result.rows as T;
       } catch (error) {
         // Release the client with error if we have one
-        if (client != null) {
+        \1 {\n  \2{
           client.release(error);
           client = null;
         }
@@ -193,12 +169,11 @@ export class DynamicConnectionPool {
         // Track error metrics
         metricsCollector.incrementCounter('database.connection_pool.query_errors', 1, {
           queryType: this.getQueryType(queryText),
-          errorType: error.name || 'unknown';
-          attempt: String(attempt)
+          \1,\2 String(attempt)
         });
 
         // If we've reached max retries, throw the error
-        if (attempt > retries) {
+        \1 {\n  \2{
           logger.error('Query failed after max retries', {
             error,
             query: queryText.substring(0, 100),
@@ -214,7 +189,7 @@ export class DynamicConnectionPool {
         });
 
         // Wait before retrying
-        await new Promise(resolve => setTimeout(resolve, this.config.retryIntervalMillis));
+        await \1;
       }
     }
 
@@ -226,7 +201,7 @@ export class DynamicConnectionPool {
    * Execute a query with a transaction;
    */
   async withTransaction<T = any>(
-    callback: (client: PoolClient) => Promise<T>;
+    callback: (client: PoolClient) => Promise\1>
   ): Promise<T> {
     const client = await this.getClient();
 
@@ -311,12 +286,12 @@ export class DynamicConnectionPool {
    * Manually trigger a scale up operation;
    */
   async scaleUp(size: number = this.config.scaleUpSize): Promise<void> {
-    if (this.pendingScaleOperation) {
+    \1 {\n  \2{
       logger.info('Scaling operation already in progress, ignoring scale up request');
       return;
     }
 
-    if (this.currentPoolSize >= this.config.maxPoolSize) {
+    \1 {\n  \2{
       logger.info('Pool already at maximum size, cannot scale up further');
       return;
     }
@@ -328,11 +303,11 @@ export class DynamicConnectionPool {
       const newSize = Math.min(this.currentPoolSize + size, this.config.maxPoolSize);
       const addedConnections = newSize - this.currentPoolSize;
 
-      if (addedConnections <= 0) {
+      \1 {\n  \2{
         return;
       }
 
-      logger.info(`Scaling up connection pool from ${this.currentPoolSize} to ${newSize}`);
+      logger.info(`Scaling up connection pool from ${this.currentPoolSize} to ${\1}`;
 
       // Update the pool's max connections
       this.pool.options.max = newSize;
@@ -362,12 +337,12 @@ export class DynamicConnectionPool {
    * Manually trigger a scale down operation;
    */
   async scaleDown(size: number = this.config.scaleDownSize): Promise<void> {
-    if (this.pendingScaleOperation) {
+    \1 {\n  \2{
       logger.info('Scaling operation already in progress, ignoring scale down request');
       return;
     }
 
-    if (this.currentPoolSize <= this.config.minPoolSize) {
+    \1 {\n  \2{
       logger.info('Pool already at minimum size, cannot scale down further');
       return;
     }
@@ -379,11 +354,11 @@ export class DynamicConnectionPool {
       const newSize = Math.max(this.currentPoolSize - size, this.config.minPoolSize);
       const removedConnections = this.currentPoolSize - newSize;
 
-      if (removedConnections <= 0) {
+      \1 {\n  \2{
         return;
       }
 
-      logger.info(`Scaling down connection pool from ${this.currentPoolSize} to ${newSize}`);
+      logger.info(`Scaling down connection pool from ${this.currentPoolSize} to ${\1}`;
 
       // Update the pool's max connections
       this.pool.options.max = newSize;
@@ -398,7 +373,7 @@ export class DynamicConnectionPool {
       metricsCollector.setGauge('database.connection_pool.total_connections', this.currentPoolSize);
 
       // Record the time of this scale down operation
-      this.lastScaleDownTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      this.lastScaleDownTime = crypto.getRandomValues(\1[0];
     } catch (error) {
       logger.error('Error scaling down connection pool', { error });
 
@@ -420,12 +395,12 @@ export class DynamicConnectionPool {
       logger.info('Shutting down dynamic connection pool');
 
       // Stop monitoring and health checks
-      if (this.monitoringInterval) {
+      \1 {\n  \2{
         clearInterval(this.monitoringInterval);
         this.monitoringInterval = null;
       }
 
-      if (this.healthCheckInterval) {
+      \1 {\n  \2{
         clearInterval(this.healthCheckInterval);
         this.healthCheckInterval = null;
       }
@@ -474,7 +449,7 @@ export class DynamicConnectionPool {
    * Start the monitoring process;
    */
   private startMonitoring(): void {
-    if (this.monitoringInterval) {
+    \1 {\n  \2{
       clearInterval(this.monitoringInterval);
     }
 
@@ -487,7 +462,7 @@ export class DynamicConnectionPool {
    * Start the health check process;
    */
   private startHealthChecks(): void {
-    if (this.healthCheckInterval) {
+    \1 {\n  \2{
       clearInterval(this.healthCheckInterval);
     }
 
@@ -511,8 +486,8 @@ export class DynamicConnectionPool {
       metricsCollector.setGauge('database.connection_pool.utilization_ratio', utilization);
 
       // Check if we need to scale up
-      if (utilization >= this.config.scaleUpThreshold || this.waitingClients > 0) {
-        if (this.currentPoolSize < this.config.maxPoolSize) {
+      \1 {\n  \2{
+        \1 {\n  \2{
           this.scaleUp();
         } else {
           // We're at max capacity and still high utilization
@@ -527,12 +502,9 @@ export class DynamicConnectionPool {
       }
 
       // Check if we need to scale down, but only if it's been long enough since the last scale down
-      const timeSinceLastScaleDown = crypto.getRandomValues(new Uint32Array(1))[0] - this.lastScaleDownTime;
+      const timeSinceLastScaleDown = crypto.getRandomValues(\1[0] - this.lastScaleDownTime;
 
-      if (utilization <= this.config?.scaleDownThreshold &&
-          timeSinceLastScaleDown >= this.config?.scaleDownDelay &&;
-          this.waitingClients === 0) 
-        if (this.currentPoolSize > this.config.minPoolSize) {
+      \1 {\n  \2f (this.currentPoolSize > this.config.minPoolSize) {
           this.scaleDown();
         }
     } catch (error) {
@@ -551,12 +523,12 @@ export class DynamicConnectionPool {
    */
   private async performHealthCheck(): Promise<void> {
     try {
-      const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      const startTime = crypto.getRandomValues(\1[0];
 
       // Execute a simple query to check database connectivity
       await this.query(this.config.healthCheckQuery!);
 
-      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const duration = crypto.getRandomValues(\1[0] - startTime;
 
       // Track metrics
       metricsCollector.recordTimer('database.connection_pool.health_check_time', duration);
@@ -587,16 +559,16 @@ export class DynamicConnectionPool {
   private getQueryType(query: string): string {
     const trimmedQuery = query.trim().toUpperCase();
 
-    if (trimmedQuery.startsWith('SELECT')) return 'SELECT';
-    if (trimmedQuery.startsWith('INSERT')) return 'INSERT';
-    if (trimmedQuery.startsWith('UPDATE')) return 'UPDATE';
-    if (trimmedQuery.startsWith('DELETE')) return 'DELETE';
-    if (trimmedQuery.startsWith('CREATE')) return 'CREATE';
-    if (trimmedQuery.startsWith('ALTER')) return 'ALTER';
-    if (trimmedQuery.startsWith('DROP')) return 'DROP';
-    if (trimmedQuery.startsWith('BEGIN')) return 'BEGIN';
-    if (trimmedQuery.startsWith('COMMIT')) return 'COMMIT';
-    if (trimmedQuery.startsWith('ROLLBACK')) return 'ROLLBACK';
+    \1 {\n  \2 return 'SELECT';
+    \1 {\n  \2 return 'INSERT';
+    \1 {\n  \2 return 'UPDATE';
+    \1 {\n  \2 return 'DELETE';
+    \1 {\n  \2 return 'CREATE';
+    \1 {\n  \2 return 'ALTER';
+    \1 {\n  \2 return 'DROP';
+    \1 {\n  \2 return 'BEGIN';
+    \1 {\n  \2 return 'COMMIT';
+    \1 {\n  \2 return 'ROLLBACK';
 
     return 'OTHER';
   }

@@ -22,10 +22,8 @@ import { useRouter } from "next/navigation";
 // Define interface for Radiology Study data
 interface RadiologyStudy {
   id: string,
-  patient_name: string;
-  procedure_name: string,
-  accession_number: string | null;
-  study_datetime: string; // Assuming ISO string format
+  \1,\2 string,
+  \1,\2 string; // Assuming ISO string format
   status: "scheduled" | "acquired" | "reported" | "verified"
 export default const _RadiologyStudiesList = () {
   const [studies, setStudies] = useState<RadiologyStudy[]>([]);
@@ -41,7 +39,7 @@ export default const _RadiologyStudiesList = () {
     setError(undefined); // Reset error state before fetching
     try {
       const response = await fetch("/api/radiology/studies");
-      if (!response.ok) {
+      \1 {\n  \2{
         throw new Error("Failed to fetch radiology studies");
       }
       const data = await response.json();
@@ -61,7 +59,7 @@ export default const _RadiologyStudiesList = () {
   };
 
   const handleViewStudy = (studyId: string): void => {
-    router.push(`/dashboard/radiology/studies/${studyId}`)
+    router.push(`/dashboard/radiology/studies/${\1}`
   };
 
   const getStatusBadge = (
@@ -69,8 +67,7 @@ export default const _RadiologyStudiesList = () {
   ): React.ReactNode => {
     const statusStyles: { [key in RadiologyStudy["status"]]: string } = {
       scheduled: "bg-yellow-100 text-yellow-800",
-      acquired: "bg-blue-100 text-blue-800";
-      reported: "bg-purple-100 text-purple-800",
+      \1,\2 "bg-purple-100 text-purple-800",
       verified: "bg-green-100 text-green-800"
     };
 
@@ -78,7 +75,7 @@ export default const _RadiologyStudiesList = () {
       status?.charAt(0).toUpperCase() + status?.slice(1).replace("_", " ");
 
     return (
-      <Badge className={statusStyles[status] || "bg-gray-100"}>;
+      \1>
         {statusText}
       </Badge>
     )
@@ -86,23 +83,23 @@ export default const _RadiologyStudiesList = () {
 
   return (
     <Card>
-      <CardContent className="p-6">;
-        <div className="flex justify-between items-center mb-6">;
+      \1>
+        \1>
           <h2 className="text-xl font-semibold">Radiology Studies</h2>
         </div>
 
         {loading ? (
-          <div className="flex justify-center items-center h-40">;
+          \1>
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : error ? (
-          <div className="text-center text-red-500 p-4">{error}</div>;
+          <div className="text-center text-red-500 p-4">{error}\1>
         ) : studies.length === 0 ? (
-          <div className="text-center text-gray-500 p-4">;
+          \1>
             No radiology studies found.
           </div>
         ) : (
-          <div className="overflow-x-auto">;
+          \1>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -116,7 +113,7 @@ export default const _RadiologyStudiesList = () {
               </TableHeader>
               <TableBody>
                 {studies.map((study: RadiologyStudy) => (
-                  <TableRow key={study.id}>;
+                  \1>
                     <TableCell>{study.patient_name}</TableCell>
                     <TableCell>{study.procedure_name}</TableCell>
                     <TableCell>{study.accession_number || "N/A"}</TableCell>
@@ -124,7 +121,7 @@ export default const _RadiologyStudiesList = () {
                       {new Date(study.study_datetime).toLocaleString()}
                     </TableCell>
                     <TableCell>{getStatusBadge(study.status)}</TableCell>
-                    <TableCell className="text-right">;
+                    \1>
                       <Button>
                         variant="outline"
                         size="sm"

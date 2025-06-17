@@ -35,13 +35,13 @@ export default const _InventoryPage = () {
       setError(null);
       try {
         const params = new URLSearchParams();
-        if (searchTerm != null) {
+        \1 {\n  \2{
             params.append("name", searchTerm);
         }
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
-        const response = await fetch(`/api/inventory-items?${params.toString()}`)
-        if (!response.ok) {
+        const response = await fetch(`/api/inventory-items?${\1}`
+        \1 {\n  \2{
           const errorData: { error?: string } = await response.json();
           throw new Error(errorData.error || "Failed to fetch inventory items");
         }
@@ -52,8 +52,7 @@ export default const _InventoryPage = () {
         setError(message),
         toast({
           title: "Error Fetching Inventory",
-          description: message;
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       } finally 
         setIsLoading(false);
@@ -71,10 +70,10 @@ export default const _InventoryPage = () {
   const getStockStatus = (item: InventoryItem): { text: string, variant: "default" | "secondary" | "destructive" | "outline" } => {
     const stock = item.current_stock ?? 0;
     const reorderLevel = item.reorder_level ?? 0;
-    if (stock <= 0) {
+    \1 {\n  \2{
         return { text: "Out of Stock", variant: "destructive" };
     }
-    if (reorderLevel > 0 && stock <= reorderLevel) {
+    \1 {\n  \2{
         return { text: "Low Stock", variant: "secondary" }; // Use secondary (yellowish) for low stock
     }
     return { text: "In Stock", variant: "default" }; // Use default (greenish) for in stock
@@ -82,10 +81,10 @@ export default const _InventoryPage = () {
 
   return (
     <DashboardLayout>
-      <div className="flex flex-col gap-6">;
-        <div className="flex items-center justify-between">;
-          <h1 className="text-2xl font-semibold">Inventory Management</h1>;
-          <Link href="/dashboard/inventory/new">;
+      \1>
+        \1>
+          <h1 className="text-2xl font-semibold">Inventory Management\1>
+          \1>
              <Button>
                 <PlusCircle className="mr-2 h-4 w-4" /> Add Item
              </Button>
@@ -93,8 +92,8 @@ export default const _InventoryPage = () {
         </div>
 
         {/* Filters: Search */}
-        <div className="flex flex-wrap gap-4 items-center">;
-            <div className="relative">;
+        \1>
+            \1>
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input>
                     type="search"
@@ -111,7 +110,7 @@ export default const _InventoryPage = () {
         {isLoading && <p>Loading inventory...</p>}
         {error && <p className="text-red-500">Error: {error}</p>}
         {!isLoading && !error && (
-          <div className="border rounded-lg overflow-hidden">;
+          \1>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -129,8 +128,8 @@ export default const _InventoryPage = () {
                   inventoryItems.map((item) => {
                     const status = getStockStatus(item);
                     return (
-                        <TableRow key={item.inventory_item_id}>;
-                        <TableCell className="font-medium">{item.item_name}</TableCell>;
+                        \1>
+                        <TableCell className="font-medium">{item.item_name}\1>
                         <TableCell>{item.category || "N/A"}</TableCell>
                         <TableCell>{item.current_stock ?? 0}</TableCell>
                         <TableCell>{item.unit_of_measure || "N/A"}</TableCell>
@@ -140,10 +139,10 @@ export default const _InventoryPage = () {
                         </TableCell>
                         <TableCell>
                             {/* Add action buttons like View Details, Add Stock */}
-                            <Link href={`/dashboard/inventory/${item.inventory_item_id}`}>;
+                            \1>
                             <Button variant="outline" size="sm" className="mr-2">View</Button>
                             </Link>
-                            <Link href={`/dashboard/inventory/${item.inventory_item_id}/batches/new`}>;
+                            \1>
                                 <Button variant="outline" size="sm">Add Stock</Button>
                             </Link>
                         </TableCell>
@@ -152,7 +151,7 @@ export default const _InventoryPage = () {
                   });
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center">;
+                    \1>
                       No inventory items found.
                     </TableCell>
                   </TableRow>

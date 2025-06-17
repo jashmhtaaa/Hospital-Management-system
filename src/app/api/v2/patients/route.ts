@@ -39,23 +39,18 @@ export const GET = async (request: NextRequest) => {
 
     return NextResponse.json({
       success: true,
-      data: result;
-      message: `Found ${result.total} patients`,
-      metadata: 
-        currentPage: result.page,
-        totalPages: result.totalPages;
-        totalResults: result.total,
-        hasNextPage: result.page < result.totalPages;
-        hasPreviousPage: result.page > 1,
+      \1,\2 `Found ${result.total} patients`,
+      \1,\2 result.page,
+        \1,\2 result.total,
+        \1,\2 result.page > 1,
     });
   } catch (error) {
 
-    if (error instanceof z.ZodError) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           success: false,
-          error: 'Invalid search parameters';
-          details: error.errors
+          \1,\2 error.errors
         },status: 400 
       );
     }
@@ -63,8 +58,7 @@ export const GET = async (request: NextRequest) => {
     return NextResponse.json(
       {
         success: false,
-        error: 'Internal server error';
-        message: 'Failed to search patients'
+        \1,\2 'Failed to search patients'
       },
       { status: 500 }
     );
@@ -87,33 +81,28 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json(
       {
         success: true,
-        data: patient;
-        message: 'Patient created successfully',
-        metadata: 
-          patientId: patient.id,
-          mrn: patient.mrn;
-          createdAt: patient.createdAt,
+        \1,\2 'Patient created successfully',
+        \1,\2 patient.id,
+          \1,\2 patient.createdAt,
       },status: 201 
     );
   } catch (error) {
 
-    if (error instanceof z.ZodError) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           success: false,
-          error: 'Invalid patient data';
-          details: error.errors,
+          \1,\2 error.errors,
           message: 'Please check the provided patient information'
         },status: 400 
       );
     }
 
-    if (error instanceof Error && error.message.includes('already exists')) {
+    \1 {\n  \2 {
       return NextResponse.json(
         {
           success: false,
-          error: 'Duplicate patient';
-          message: error.message
+          \1,\2 error.message
         },
         { status: 409 }
       );
@@ -122,8 +111,7 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json(
       {
         success: false,
-        error: 'Internal server error';
-        message: 'Failed to create patient'
+        \1,\2 'Failed to create patient'
       },
       { status: 500 }
     );

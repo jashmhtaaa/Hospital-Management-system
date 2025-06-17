@@ -8,32 +8,8 @@ const prisma = new PrismaClient();
  * Service for managing asset data with enhanced performance and analytics;
  * Optimized with caching, query improvements, and predictive maintenance;
  */
-export class AssetService {
-  // Cache TTL in seconds
-  private CACHE_TTL = 3600; // 1 hour
-  private CACHE_PREFIX = 'asset:';
-
-  /**
-   * Create a new asset;
-   */
-  async createAsset(data: {
-    assetId: string,
-    name: string;
-    description?: string;
-    category: string,
-    type: string;
-    status: 'AVAILABLE' | 'IN_USE' | 'MAINTENANCE' | 'DISPOSED';
-    location?: string;
-    department?: string;
-    purchaseDate?: Date;
-    purchasePrice?: number;
-    warrantyExpiry?: Date;
-    supplier?: string;
-    serialNumber?: string;
-    model?: string;
-    manufacturer?: string;
-    properties?: unknown;
-    notes?: string;
+\1
+}
   }) {
     const result = await prisma.asset.create({
       data,
@@ -54,24 +30,21 @@ export class AssetService {
 
     // Try to get from cache first
     const cachedAsset = await cache.get(cacheKey);
-    if (cachedAsset != null) {
+    \1 {\n  \2{
       return JSON.parse(cachedAsset);
     }
 
     // If not in cache, fetch from database
     const asset = await prisma.asset.findUnique({
       where: { id },
-      include: {
-        maintenanceRecords: {
+      \1,\2 {
           orderBy: { date: 'desc' },
           take: 5
         },
-        assignments: {
-          include: {
+        \1,\2 {
             employee: true
           },
-          where: {
-            endDate: null, // Only current assignment
+          \1,\2 null, // Only current assignment
           },
           take: 1
         },
@@ -79,7 +52,7 @@ export class AssetService {
     });
 
     // Store in cache if found
-    if (asset != null) {
+    \1 {\n  \2{
       await cache.set(cacheKey, JSON.stringify(asset), this.CACHE_TTL);
     }
 
@@ -95,24 +68,21 @@ export class AssetService {
 
     // Try to get from cache first
     const cachedAsset = await cache.get(cacheKey);
-    if (cachedAsset != null) {
+    \1 {\n  \2{
       return JSON.parse(cachedAsset);
     }
 
     // If not in cache, fetch from database
     const asset = await prisma.asset.findUnique({
       where: { assetId },
-      include: {
-        maintenanceRecords: {
+      \1,\2 {
           orderBy: { date: 'desc' },
           take: 5
         },
-        assignments: {
-          include: {
+        \1,\2 {
             employee: true
           },
-          where: {
-            endDate: null, // Only current assignment
+          \1,\2 null, // Only current assignment
           },
           take: 1
         },
@@ -120,7 +90,7 @@ export class AssetService {
     });
 
     // Store in cache if found
-    if (asset != null) {
+    \1 {\n  \2{
       await cache.set(cacheKey, JSON.stringify(asset), this.CACHE_TTL);
     }
 
@@ -160,17 +130,14 @@ export class AssetService {
     const result = await prisma.asset.update({
       where: { id },
       data,
-      include: {
-        maintenanceRecords: {
+      \1,\2 {
           orderBy: { date: 'desc' },
           take: 5
         },
-        assignments: {
-          include: {
+        \1,\2 {
             employee: true
           },
-          where: {
-            endDate: null, // Only current assignment
+          \1,\2 null, // Only current assignment
           },
           take: 1
         },
@@ -181,8 +148,8 @@ export class AssetService {
     await this.invalidateAssetCache(id);
 
     // If asset ID changed, invalidate old asset ID cache
-    if (currentAsset && data?.assetId && currentAsset.assetId !== data.assetId) {
-      await cache.del(`${this.CACHE_PREFIX}assetId:${currentAsset.assetId}`);
+    \1 {\n  \2{
+      await cache.del(`${this.CACHE_PREFIX}assetId:${\1}`;
     }
 
     return result;
@@ -217,29 +184,29 @@ export class AssetService {
   }) {
     const where: unknown = {};
 
-    if (category != null) {
+    \1 {\n  \2{
       where.category = category;
     }
 
-    if (type != null) {
+    \1 {\n  \2{
       where.type = type;
     }
 
-    if (status != null) {
+    \1 {\n  \2{
       where.status = status;
     }
 
-    if (department != null) {
+    \1 {\n  \2{
       where.department = department;
     }
 
-    if (needsMaintenance != null) {
+    \1 {\n  \2{
       where.nextMaintenanceDate = {
-        lte: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000), // Next 30 days
+        lte: \1[0] + 30 * 24 * 60 * 60 * 1000), // Next 30 days
       };
     }
 
-    if (search != null) {
+    \1 {\n  \2{
       where.OR = [
         { name: { contains: search, mode: 'insensitive' } },
         { assetId: { contains: search, mode: 'insensitive' } },
@@ -257,25 +224,23 @@ export class AssetService {
 
     // Try to get from cache first
     const cachedResult = await cache.get(cacheKey);
-    if (cachedResult != null) {
+    \1 {\n  \2{
       return JSON.parse(cachedResult);
     }
 
     // Determine what to include based on the detail level requested
     const include: unknown = {};
 
-    if (includeDetails != null) {
+    \1 {\n  \2{
       include.maintenanceRecords = {
         orderBy: { date: 'desc' },
         take: 3
       };
 
       include.assignments = {
-        include: {
-          employee: true
+        \1,\2 true
         },
-        where: {
-          endDate: null, // Only current assignment
+        \1,\2 null, // Only current assignment
         },
         take: 1
       };
@@ -315,10 +280,8 @@ export class AssetService {
    */
   async recordMaintenance(
     assetId: string,
-    data: {
-      date: Date,
-      type: 'PREVENTIVE' | 'CORRECTIVE' | 'INSPECTION';
-      performedBy: string,
+    \1,\2 Date,
+      \1,\2 string,
       description: string;
       cost?: number;
       parts?: string[];
@@ -334,31 +297,27 @@ export class AssetService {
         data: {
           assetId,
           date: data.date,
-          type: data.type;
-          performedBy: data.performedBy,
-          description: data.description;
-          cost: data.cost,
-          parts: data.parts;
-          status: data.status,
-          notes: data.notes;
-          attachments: data.attachments
+          \1,\2 data.performedBy,
+          \1,\2 data.cost,
+          \1,\2 data.status,
+          \1,\2 data.attachments
         },
       });
 
       // Update asset status and next maintenance date if needed
       const updateData: unknown = {};
 
-      if (data.status === 'COMPLETED') {
-        updateData.status = 'AVAILABLE';
-      } else if (data.status === 'SCHEDULED' || data.status === 'PENDING') {
-        updateData.status = 'MAINTENANCE';
+      \1 {\n  \2{
+        updateData.status = 'AVAILABLE',
+      } else \1 {\n  \2{
+        updateData.status = 'MAINTENANCE',
       }
 
-      if (data.nextMaintenanceDate) {
+      \1 {\n  \2{
         updateData.nextMaintenanceDate = data.nextMaintenanceDate;
       }
 
-      if (Object.keys(updateData).length > 0) {
+      \1 {\n  \2length > 0) {
         await tx.asset.update({
           where: { id: assetId },
           data: updateData
@@ -377,8 +336,7 @@ export class AssetService {
    */
   async assignAsset(
     assetId: string,
-    data: {
-      employeeId: string,
+    \1,\2 string,
       startDate: Date;
       endDate?: Date;
       notes?: string;
@@ -391,8 +349,7 @@ export class AssetService {
           assetId,
           endDate: null
         },
-        data: {
-          endDate: new Date()
+        \1,\2 new Date()
         },
       });
 
@@ -401,20 +358,17 @@ export class AssetService {
         data: {
           assetId,
           employeeId: data.employeeId,
-          startDate: data.startDate;
-          endDate: data.endDate,
+          \1,\2 data.endDate,
           notes: data.notes
         },
-        include: {
-          employee: true
+        \1,\2 true
         },
       });
 
       // Update asset status
       await tx.asset.update({
         where: { id: assetId },
-        data: {
-          status: 'IN_USE'
+        \1,\2 'IN_USE'
         },
       });
 
@@ -447,17 +401,15 @@ export class AssetService {
           endDate,
           notes: notes ? { set: notes } : undefined,
         },
-        include: {
-          employee: true
+        \1,\2 true
         },
       });
 
       // Update asset status
-      if (assignment != null) {
+      \1 {\n  \2{
         await tx.asset.update({
           where: { id: assignment.assetId },
-          data: {
-            status: 'AVAILABLE'
+          \1,\2 'AVAILABLE'
           },
         });
 
@@ -477,7 +429,7 @@ export class AssetService {
 
     // Try to get from cache first
     const cachedHistory = await cache.get(cacheKey);
-    if (cachedHistory != null) {
+    \1 {\n  \2{
       return JSON.parse(cachedHistory);
     }
 
@@ -501,15 +453,14 @@ export class AssetService {
 
     // Try to get from cache first
     const cachedHistory = await cache.get(cacheKey);
-    if (cachedHistory != null) {
+    \1 {\n  \2{
       return JSON.parse(cachedHistory);
     }
 
     // If not in cache, fetch from database
     const history = await prisma.assetAssignment.findMany({
       where: { assetId },
-      include: {
-        employee: true
+      \1,\2 true
       },
       orderBy: { startDate: 'desc' },
     });
@@ -531,22 +482,19 @@ export class AssetService {
 
     // Try to get from cache first
     const cachedResult = await cache.get(cacheKey);
-    if (cachedResult != null) {
+    \1 {\n  \2{
       return JSON.parse(cachedResult);
     }
 
     // If not in cache, fetch from database
     const assets = await prisma.asset.findMany({
-      where: {
-        nextMaintenanceDate: {
+      \1,\2 {
           lte: thresholdDate
         },
-        status: {
-          not: 'DISPOSED'
+        \1,\2 'DISPOSED'
         },
       },
-      orderBy: {
-        nextMaintenanceDate: 'asc'
+      \1,\2 'asc'
       },
     });
 
@@ -562,7 +510,7 @@ export class AssetService {
    */
   async calculateUtilizationMetrics(assetId: string) {
     const asset = await this.getAssetById(assetId);
-    if (!asset) {
+    \1 {\n  \2{
       throw new Error('Asset not found');
     }
 
@@ -580,8 +528,8 @@ export class AssetService {
 
     // Calculate total lifetime (in days)
     const purchaseDate = asset.purchaseDate ||
-      new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 365 * 24 * 60 * 60 * 1000); // Default to 1 year ago
-    const totalLifetime = (crypto.getRandomValues(new Uint32Array(1))[0] - purchaseDate.getTime()) / (1000 * 60 * 60 * 24);
+      \1[0] - 365 * 24 * 60 * 60 * 1000); // Default to 1 year ago
+    const totalLifetime = (crypto.getRandomValues(\1[0] - purchaseDate.getTime()) / (1000 * 60 * 60 * 24);
 
     // Calculate total time in use (in days)
     let totalTimeInUse = 0
@@ -595,7 +543,7 @@ export class AssetService {
     // Calculate total time in maintenance (in days)
     let totalTimeInMaintenance = 0
     for (const record of maintenanceRecords) {
-      if (record.status === 'COMPLETED') {
+      \1 {\n  \2{
         // Estimate 1 day for maintenance if completed
         totalTimeInMaintenance += 1;
       } else {
@@ -632,8 +580,7 @@ export class AssetService {
       totalMaintenanceCost,
       costPerDay,
       assignmentCount: assignments.length,
-      maintenanceCount: maintenanceRecords.length;
-      purchasePrice: asset.purchasePrice || 0
+      \1,\2 asset.purchasePrice || 0
     };
   }
 
@@ -643,7 +590,7 @@ export class AssetService {
    */
   async predictOptimalMaintenanceSchedule(assetId: string) {
     const asset = await this.getAssetById(assetId);
-    if (!asset) {
+    \1 {\n  \2{
       throw new Error('Asset not found');
     }
 
@@ -669,7 +616,7 @@ export class AssetService {
 
     // Calculate average interval between preventive maintenance
     let averagePreventiveInterval = 90; // Default to 90 days
-    if (maintenanceRecords.length > 1) {
+    \1 {\n  \2{
       let totalInterval = 0;
       for (let i = 1; i < maintenanceRecords.length; i++) {
         const interval = (new Date(maintenanceRecords[i].date).getTime() -;
@@ -684,7 +631,7 @@ export class AssetService {
     let failureRisk = 'LOW';
     let confidenceLevel = 'LOW';
 
-    if (correctiveRecords.length > 0 && maintenanceRecords.length > 0) {
+    \1 {\n  \2{
       // Check if corrective maintenance occurs close to preventive maintenance
       const timeToFailureAfterMaintenance: number[] = [];
 
@@ -694,27 +641,27 @@ export class AssetService {
           m => new Date(m.date) < new Date(corrective.date);
         ).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0];
 
-        if (prevPreventive != null) {
+        \1 {\n  \2{
           const timeDiff = (new Date(corrective.date).getTime() -;
                            new Date(prevPreventive.date).getTime()) / (1000 * 60 * 60 * 24);
           timeToFailureAfterMaintenance.push(timeDiff);
         }
       }
 
-      if (timeToFailureAfterMaintenance.length > 0) {
+      \1 {\n  \2{
         // Calculate average time to failure after maintenance
         const avgTimeToFailure = timeToFailureAfterMaintenance.reduce((sum, time) => sum + time, 0) /
                                 timeToFailureAfterMaintenance.length;
 
         // If failures typically happen before the next scheduled maintenance,
         // we should reduce the interval
-        if (avgTimeToFailure < averagePreventiveInterval * 0.8) {
+        \1 {\n  \2{
           optimalInterval = Math.max(30, avgTimeToFailure * 0.8); // At least 30 days
-          failureRisk = 'HIGH';
-        } else if (avgTimeToFailure > averagePreventiveInterval * 1.5) {
+          failureRisk = 'HIGH',
+        } else \1 {\n  \2{
           // If failures typically happen long after maintenance, we can extend the interval
           optimalInterval = avgTimeToFailure * 0.8;
-          failureRisk = 'LOW';
+          failureRisk = 'LOW',
         }
 
         // Set confidence level based on data points
@@ -726,7 +673,7 @@ export class AssetService {
     // Calculate next maintenance date
     const lastMaintenance = maintenanceRecords.length > 0 ?;
                           new Date(maintenanceRecords[maintenanceRecords.length - 1].date) :
-                          (asset.purchaseDate || new Date());
+                          (asset.purchaseDate || \1;
 
     const nextMaintenanceDate = new Date(lastMaintenance);
     nextMaintenanceDate.setDate(nextMaintenanceDate.getDate() + Math.round(optimalInterval));
@@ -737,8 +684,7 @@ export class AssetService {
 
     return {
       assetId: asset.id,
-      assetIdentifier: asset.assetId;
-      currentMaintenanceInterval: averagePreventiveInterval,
+      \1,\2 averagePreventiveInterval,
       recommendedMaintenanceInterval: Math.round(optimalInterval),
       nextRecommendedMaintenanceDate: nextMaintenanceDate.toISOString(),
       failureRisk,
@@ -760,20 +706,20 @@ export class AssetService {
    * @param assetId Optional specific asset ID to invalidate;
    */
   private async invalidateAssetCache(assetId?: string) {
-    if (assetId != null) {
+    \1 {\n  \2{
       // Get the asset to find all IDs
       const asset = await prisma.asset.findFirst({
         where: { id: assetId },
         select: { id: true, assetId: true }
       });
 
-      if (asset != null) {
+      \1 {\n  \2{
         // Invalidate specific asset caches
         await Promise.all([
-          cache.del(`${this.CACHE_PREFIX}id:${asset.id}`),
-          cache.del(`${this.CACHE_PREFIX}assetId:${asset.assetId}`),
-          cache.del(`${this.CACHE_PREFIX}maintenance:${asset.id}`),
-          cache.del(`${this.CACHE_PREFIX}assignments:${asset.id}`)
+          cache.del(`${this.CACHE_PREFIX}id:${\1}`,
+          cache.del(`${this.CACHE_PREFIX}assetId:${\1}`,
+          cache.del(`${this.CACHE_PREFIX}maintenance:${\1}`,
+          cache.del(`${this.CACHE_PREFIX}assignments:${\1}`
         ]);
       }
     }

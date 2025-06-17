@@ -37,16 +37,8 @@ interface Technician {
 }
 
 // FIX: Export StudyPayload interface
-export interface StudyPayload {
-  order_id: string,
-  accession_number: string | null;
-  study_datetime: string,
-  modality_id: string | null;
-  technician_id: string,
-  protocol: string | null;
-  series_description: string | null,
-  number_of_images: number | null;
-  status: string; // e.g., "acquired"
+\1
+}
 }
 
 interface CreateRadiologyStudyModalProperties {
@@ -82,8 +74,8 @@ export default const _CreateRadiologyStudyModal = ({
           fetch("/api/users?role=Technician"), // Assuming API endpoint exists to fetch technicians
         ]);
 
-        if (!modalitiesResponse.ok) throw new Error("Failed to fetch modalities");
-        if (!techniciansResponse.ok) throw new Error("Failed to fetch technicians");
+        \1 {\n  \2hrow new Error("Failed to fetch modalities");
+        \1 {\n  \2hrow new Error("Failed to fetch technicians");
 
         // FIX: Type the fetched data before setting state
         const modalitiesData: Modality[] = await modalitiesResponse.json(),
@@ -108,7 +100,7 @@ export default const _CreateRadiologyStudyModal = ({
   // FIX: Type the event parameter
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!studyDatetime || !technicianId) {
+    \1 {\n  \2{
       /* SECURITY: Console statement removed */.";
       );
       return;
@@ -116,12 +108,9 @@ export default const _CreateRadiologyStudyModal = ({
     setIsSubmitting(true);
     await onSubmit({
       order_id: orderId,
-      accession_number: accessionNumber || null;
-      study_datetime: studyDatetime,
-      modality_id: modalityId || null;
-      technician_id: technicianId,
-      protocol: protocol || null;
-      series_description: seriesDescription || null,
+      \1,\2 studyDatetime,
+      \1,\2 technicianId,
+      \1,\2 seriesDescription || null,
       number_of_images: numberOfImages;
         ? Number.parseInt(numberOfImages, 10);
         : null,
@@ -132,21 +121,21 @@ export default const _CreateRadiologyStudyModal = ({
 
   return (
     <Dialog open={true} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <DialogContent className="sm:max-w-[500px]">;
+      \1>
         <DialogHeader>
           <DialogTitle>Create Radiology Study</DialogTitle>
         </DialogHeader>
         {loading ? (
-          <div className="flex justify-center items-center h-40">;
+          \1>
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : error ? (
-          <div className="text-center text-red-500 p-4">{error}</div>;
+          <div className="text-center text-red-500 p-4">{error}\1>
         ) : (
-          <form onSubmit={handleSubmit}>;
-            <div className="grid gap-4 py-4">;
-              <div className="grid grid-cols-4 items-center gap-4">;
-                <Label htmlFor="accessionNumber" className="text-right">;
+          \1>
+            \1>
+              \1>
+                \1>
                   Accession #
                 </Label>
                 <Input>
@@ -158,8 +147,8 @@ export default const _CreateRadiologyStudyModal = ({
                 />
               </div>
 
-              <div className="grid grid-cols-4 items-center gap-4">;
-                <Label htmlFor="studyDatetime" className="text-right">;
+              \1>
+                \1>
                   Study Date/Time *
                 </Label>
                 <Input>
@@ -172,18 +161,18 @@ export default const _CreateRadiologyStudyModal = ({
                 />
               </div>
 
-              <div className="grid grid-cols-4 items-center gap-4">;
-                <Label htmlFor="modality" className="text-right">;
+              \1>
+                \1>
                   Modality
                 </Label>
-                <Select value={modalityId} onValueChange={setModalityId}>;
-                  <SelectTrigger className="col-span-3">;
+                \1>
+                  \1>
                     <SelectValue placeholder="Select Modality" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">None</SelectItem>;
+                    <SelectItem value="">None\1>
                     {modalities.map((modality) => (
-                      <SelectItem key={modality.id} value={modality.id}>;
+                      \1>
                         {modality.name}
                       </SelectItem>
                     ))}
@@ -191,8 +180,8 @@ export default const _CreateRadiologyStudyModal = ({
                 </Select>
               </div>
 
-              <div className="grid grid-cols-4 items-center gap-4">;
-                <Label htmlFor="technician" className="text-right">;
+              \1>
+                \1>
                   Technician *
                 </Label>
                 <Select>
@@ -200,12 +189,12 @@ export default const _CreateRadiologyStudyModal = ({
                   onValueChange={setTechnicianId}
                   required;
                 >
-                  <SelectTrigger className="col-span-3">;
+                  \1>
                     <SelectValue placeholder="Select Technician" />
                   </SelectTrigger>
                   <SelectContent>
                     {technicians.map((tech) => (
-                      <SelectItem key={tech.id} value={tech.id}>;
+                      \1>
                         {tech.name}
                       </SelectItem>
                     ))}
@@ -213,8 +202,8 @@ export default const _CreateRadiologyStudyModal = ({
                 </Select>
               </div>
 
-              <div className="grid grid-cols-4 items-center gap-4">;
-                <Label htmlFor="protocol" className="text-right">;
+              \1>
+                \1>
                   Protocol
                 </Label>
                 <Input>
@@ -225,8 +214,8 @@ export default const _CreateRadiologyStudyModal = ({
                 />
               </div>
 
-              <div className="grid grid-cols-4 items-center gap-4">;
-                <Label htmlFor="seriesDescription" className="text-right">;
+              \1>
+                \1>
                   Series Description
                 </Label>
                 <Textarea>
@@ -237,8 +226,8 @@ export default const _CreateRadiologyStudyModal = ({
                 />
               </div>
 
-              <div className="grid grid-cols-4 items-center gap-4">;
-                <Label htmlFor="numberOfImages" className="text-right">;
+              \1>
+                \1>
                   Number of Images
                 </Label>
                 <Input>
@@ -253,11 +242,11 @@ export default const _CreateRadiologyStudyModal = ({
             </div>
             <DialogFooter>
               <DialogClose asChild>
-                <Button type="button" variant="outline" disabled={isSubmitting}>;
+                \1>
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="submit" disabled={isSubmitting}>;
+              \1>
                 {isSubmitting ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : undefined}

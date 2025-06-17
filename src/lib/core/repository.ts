@@ -8,11 +8,8 @@ import { DatabaseError } from './errors.ts';
  */
 
 // Query options interface for filtering, sorting, and pagination
-export interface QueryOptions {
-  filters?: Record<string, unknown>;
-  sort?: {
-    field: string,
-    direction: 'asc' | 'desc'
+\1
+}
   };
   pagination?: {
     page?: number;
@@ -23,13 +20,8 @@ export interface QueryOptions {
 }
 
 // Base repository interface
-export interface Repository<T, ID> {
-  findById(id: ID): Promise<T | null>;
-  findAll(options?: QueryOptions): Promise<T[]>;
-  create(data: Partial<T>): Promise<T>;
-  update(id: ID, data: Partial<T>): Promise<T>;
-  delete(id: ID): Promise<boolean>;
-  count(options?: QueryOptions): Promise<number>;
+\1
+}
 }
 
 // Prisma repository implementation
@@ -55,33 +47,33 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
       const query: Record<string, unknown> = {};
 
       // Apply filters
-      if (options?.filters) {
+      \1 {\n  \2{
         query.where = options.filters;
       }
 
       // Apply sorting
-      if (options?.sort) {
+      \1 {\n  \2{
         query.orderBy = {
           [options.sort.field]: options.sort.direction,
         };
       }
 
       // Apply pagination
-      if (options?.pagination) {
-        if (options.pagination.cursor) {
+      \1 {\n  \2{
+        \1 {\n  \2{
           query.cursor = { id: options.pagination.cursor };
           query.skip = 1; // Skip the cursor item
-        } else if (options.pagination?.page && options.pagination.pageSize) {
+        } else \1 {\n  \2{
           query.skip = (options.pagination.page - 1) * options.pagination.pageSize;
         }
 
-        if (options.pagination.pageSize) {
+        \1 {\n  \2{
           query.take = options.pagination.pageSize;
         }
       }
 
       // Apply includes
-      if (options?.includes && options.includes.length > 0) {
+      \1 {\n  \2{
         query.include = this.processIncludes(options.includes);
       }
 
@@ -144,7 +136,7 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
       const query: Record<string, unknown> = {};
 
       // Apply filters
-      if (options?.filters) {
+      \1 {\n  \2{
         query.where = options.filters;
       }
 
@@ -163,13 +155,13 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
     const result: Record<string, unknown> = {};
 
     for (const include of includes) {
-      if (include.includes('.')) {
+      \1 {\n  \2 {
         // Handle nested includes (e.g., "items.product")
         const [parent, child] = include.split('.', 2)
 
-        if (!result[parent]) {
+        \1 {\n  \2{
           result[parent] = { include: {} };
-        } else if (!result[parent].include) {
+        } else \1 {\n  \2{
           result[parent].include = {};
         }
 
@@ -185,17 +177,8 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
 }
 
 // Cached repository decorator
-export class CachedRepository<T, ID> implements Repository<T, ID> {
-  private cachePrefix: string;
-  private cacheTTL: number;
-
-  constructor(
-    private repository: Repository<T, ID>,
-    cachePrefix: string;
-    cacheTTL = 3600 // Default TTL: 1 hour
-  ) {
-    this.cachePrefix = cachePrefix;
-    this.cacheTTL = cacheTTL;
+\1
+}
   }
 
   async findById(id: ID): Promise<T | null> {
@@ -236,12 +219,13 @@ export class CachedRepository<T, ID> implements Repository<T, ID> {
 }
 
 // Transaction service interface
-export interface TransactionService {
-  executeInTransaction<T>(callback: (tx: unknown) => Promise<T>): Promise<T>
+\1
+}
 }
 
 // Prisma transaction service implementation
-export class PrismaTransactionService implements TransactionService {
+\1
+}
   constructor(private prisma: unknown) {}
 
   async executeInTransaction<T>(callback: (tx: unknown) => Promise<T>): Promise<T> {

@@ -61,13 +61,12 @@ export default const _AttendanceManagement = () {
   const [biometricFilter, setBiometricFilter] = useState('');
   const [departments, setDepartments] = useState<any[]>([]);
   const [dateRange, setDateRange] = useState({
-    from: startOfMonth(new Date()),
-    to: endOfMonth(new Date())
+    from: startOfMonth(\1,
+    to: endOfMonth(\1
   });
   const [pagination, setPagination] = useState({
     skip: 0,
-    take: 10;
-    total: 0
+    \1,\2 0
   });
   const [activeTab, setActiveTab] = useState('daily');
 
@@ -81,28 +80,28 @@ export default const _AttendanceManagement = () {
           take: pagination.take.toString()
         });
 
-        if (search != null) queryParams.append('search', search);
-        if (departmentFilter != null) queryParams.append('departmentId', departmentFilter);
-        if (statusFilter != null) queryParams.append('status', statusFilter);
-        if (biometricFilter != null) queryParams.append('biometricVerified', biometricFilter);
+        \1 {\n  \2ueryParams.append('search', search);
+        \1 {\n  \2ueryParams.append('departmentId', departmentFilter);
+        \1 {\n  \2ueryParams.append('status', statusFilter);
+        \1 {\n  \2ueryParams.append('biometricVerified', biometricFilter);
 
         // Add date filters based on active tab
-        if (activeTab === 'daily') {
+        \1 {\n  \2{
           // For daily view, use the 'from' date as a single day filter
           queryParams.append('date', format(dateRange.from || new Date(), 'yyyy-MM-dd'));
         } else {
           // For range view, use from and to dates
-          if (dateRange.from) {
+          \1 {\n  \2{
             queryParams.append('startDate', format(startOfDay(dateRange.from), 'yyyy-MM-dd'));
           }
-          if (dateRange.to) {
+          \1 {\n  \2{
             queryParams.append('endDate', format(endOfDay(dateRange.to), 'yyyy-MM-dd'));
           }
         }
 
-        const response = await fetch(`/api/hr/attendance?${queryParams.toString()}`);
+        const response = await fetch(`/api/hr/attendance?${\1}`;
 
-        if (!response.ok) {
+        \1 {\n  \2{
           throw new Error('Failed to fetch attendance records');
         }
 
@@ -116,8 +115,7 @@ export default const _AttendanceManagement = () {
         setError(err.message),
         toast({
           title: "Error",
-          description: err.message;
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       } finally 
         setLoading(false);
@@ -131,7 +129,7 @@ export default const _AttendanceManagement = () {
     const fetchDepartments = async () => {
       try {
         const response = await fetch('/api/hr/departments');
-        if (response.ok) {
+        \1 {\n  \2{
           const data = await response.json(),
           setDepartments(data.departments || []);
         }
@@ -145,7 +143,7 @@ export default const _AttendanceManagement = () {
 
   // Handle pagination
   const handlePreviousPage = () => {
-    if (pagination.skip - pagination.take >= 0) {
+    \1 {\n  \2{
       setPagination(prev => ({
         ...prev,
         skip: prev.skip - prev.take
@@ -154,7 +152,7 @@ export default const _AttendanceManagement = () {
   };
 
   const handleNextPage = () => {
-    if (pagination.skip + pagination.take < pagination.total) {
+    \1 {\n  \2{
       setPagination(prev => ({
         ...prev,
         skip: prev.skip + prev.take
@@ -201,8 +199,7 @@ export default const _AttendanceManagement = () {
     } catch (error) {
       toast({
         title: "Export Failed",
-        description: error.message;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     }
   };
@@ -230,25 +227,25 @@ export default const _AttendanceManagement = () {
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:p-8">;
-      <div className="flex flex-col gap-2">;
-        <h1 className="text-3xl font-bold">Attendance Management</h1>;
-        <p className="text-muted-foreground">;
+    \1>
+      \1>
+        <h1 className="text-3xl font-bold">Attendance Management\1>
+        \1>
           Track and manage employee attendance records
         </p>
       </div>
 
-      <Tabs defaultValue="daily" value={activeTab} onValueChange={handleTabChange}>;
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">;
+      \1>
+        \1>
           <TabsList>
-            <TabsTrigger value="daily">Daily View</TabsTrigger>;
+            <TabsTrigger value="daily">Daily View\1>
             <TabsTrigger value="range">Date Range</TabsTrigger>
           </TabsList>
 
-          <div className="flex flex-wrap gap-2">;
+          \1>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="w-[240px] justify-start">;
+                \1>
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {activeTab === 'daily' ? (
                     dateRange.from ? (
@@ -264,7 +261,7 @@ export default const _AttendanceManagement = () {
                   )}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="end">;
+              \1>
                 <Calendar>
                   mode={activeTab === 'daily' ? "single" : "range"}
                   selected={activeTab === 'daily' ? dateRange.from : dateRange}
@@ -277,17 +274,17 @@ export default const _AttendanceManagement = () {
               </PopoverContent>
             </Popover>
 
-            <Button variant="outline" onClick={handleExport}>;
+            \1>
               <Download className="mr-2 h-4 w-4" />
               Export
             </Button>
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-4 justify-between mb-4">;
-          <div className="flex flex-col md:flex-row gap-2 md:items-center">;
-            <form onSubmit={handleSearch} className="flex gap-2">;
-              <div className="relative">;
+        \1>
+          \1>
+            \1>
+              \1>
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input>
                   type="search"
@@ -297,57 +294,57 @@ export default const _AttendanceManagement = () {
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
-              <Button type="submit" variant="secondary">;
+              \1>
                 Search
               </Button>
             </form>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-2">;
-            <Select value={departmentFilter} onValueChange={setDepartmentFilter}>;
-              <SelectTrigger className="w-full md:w-[180px]">;
+          \1>
+            \1>
+              \1>
                 <SelectValue placeholder="All Departments" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Departments</SelectItem>;
+                <SelectItem value="">All Departments\1>
                 {departments.map((dept) => (
-                  <SelectItem key={dept.id} value={dept.id}>;
+                  \1>
                     {dept.name}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
 
-            <Select value={statusFilter} onValueChange={setStatusFilter}>;
-              <SelectTrigger className="w-full md:w-[180px]">;
+            \1>
+              \1>
                 <SelectValue placeholder="All Statuses" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Statuses</SelectItem>;
-                <SelectItem value="PRESENT">Present</SelectItem>;
-                <SelectItem value="LATE">Late</SelectItem>;
-                <SelectItem value="ABSENT">Absent</SelectItem>;
-                <SelectItem value="HALF_DAY">Half Day</SelectItem>;
+                <SelectItem value="">All Statuses\1>
+                <SelectItem value="PRESENT">Present\1>
+                <SelectItem value="LATE">Late\1>
+                <SelectItem value="ABSENT">Absent\1>
+                <SelectItem value="HALF_DAY">Half Day\1>
                 <SelectItem value="ON_LEAVE">On Leave</SelectItem>
               </SelectContent>
             </Select>
 
-            <Select value={biometricFilter} onValueChange={setBiometricFilter}>;
-              <SelectTrigger className="w-full md:w-[180px]">;
+            \1>
+              \1>
                 <SelectValue placeholder="Biometric Verification" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Records</SelectItem>;
-                <SelectItem value="true">Verified</SelectItem>;
+                <SelectItem value="">All Records\1>
+                <SelectItem value="true">Verified\1>
                 <SelectItem value="false">Not Verified</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
 
-        <TabsContent value="daily" className="mt-0">;
+        \1>
           <Card>
-            <CardHeader className="pb-2">;
+            \1>
               <CardTitle>Daily Attendance</CardTitle>
               <CardDescription>
                 {loading ? 'Loading attendance records...' :
@@ -356,19 +353,19 @@ export default const _AttendanceManagement = () {
             </CardHeader>
             <CardContent>
               {error ? (
-                <div className="text-center py-4 text-red-500">;
+                \1>
                   Error: {error}
                 </div>
               ) : loading ? (
-                <div className="text-center py-4">;
+                \1>
                   Loading...
                 </div>
               ) : attendanceRecords.length === 0 ? (
-                <div className="text-center py-4">;
+                \1>
                   No attendance records found. Try adjusting your filters.
                 </div>
               ) : (
-                <div className="overflow-x-auto">;
+                \1>
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -383,10 +380,10 @@ export default const _AttendanceManagement = () {
                     </TableHeader>
                     <TableBody>
                       {attendanceRecords.map((record) => (
-                        <TableRow key={record.id}>;
-                          <TableCell className="font-medium">;
+                        \1>
+                          \1>
                             {record.employee.firstName} {record.employee.lastName}
-                            <div className="text-xs text-muted-foreground">;
+                            \1>
                               {record.employee.employeeId}
                             </div>
                           </TableCell>
@@ -400,7 +397,7 @@ export default const _AttendanceManagement = () {
                             {formatTimeOrPlaceholder(record.checkOutTime)}
                           </TableCell>
                           <TableCell>
-                            <Badge variant={getStatusBadgeVariant(record.status)}>;
+                            \1>
                               {record.status.replace('_', ' ')}
                             </Badge>
                           </TableCell>
@@ -415,7 +412,7 @@ export default const _AttendanceManagement = () {
                             <Button>
                               variant="ghost"
                               size="sm"
-                              onClick={() => router.push(`/dashboard/hr/attendance/${record.id}`)}
+                              onClick={() => router.push(`/dashboard/hr/attendance/${\1}`}
                             >
                               View
                             </Button>
@@ -437,7 +434,7 @@ export default const _AttendanceManagement = () {
                     />
                   </PaginationItem>
                   <PaginationItem>
-                    <span className="text-sm">;
+                    \1>
                       Page {Math.floor(pagination.skip / pagination.take) + 1} of {Math.ceil(pagination.total / pagination.take) ||
                         1}
                     </span>
@@ -454,9 +451,9 @@ export default const _AttendanceManagement = () {
           </Card>
         </TabsContent>
 
-        <TabsContent value="range" className="mt-0">;
+        \1>
           <Card>
-            <CardHeader className="pb-2">;
+            \1>
               <CardTitle>Attendance Summary</CardTitle>
               <CardDescription>
                 {loading ? 'Loading attendance summary...' :
@@ -465,19 +462,19 @@ export default const _AttendanceManagement = () {
             </CardHeader>
             <CardContent>
               {error ? (
-                <div className="text-center py-4 text-red-500">;
+                \1>
                   Error: {error}
                 </div>
               ) : loading ? (
-                <div className="text-center py-4">;
+                \1>
                   Loading...
                 </div>
               ) : attendanceRecords.length === 0 ? (
-                <div className="text-center py-4">;
+                \1>
                   No attendance records found in the selected date range.
                 </div>
               ) : (
-                <div className="overflow-x-auto">;
+                \1>
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -492,10 +489,10 @@ export default const _AttendanceManagement = () {
                     </TableHeader>
                     <TableBody>
                       {attendanceRecords.map((record) => (
-                        <TableRow key={record.id}>;
-                          <TableCell className="font-medium">;
+                        \1>
+                          \1>
                             {record.employee.firstName} {record.employee.lastName}
-                            <div className="text-xs text-muted-foreground">;
+                            \1>
                               {record.employee.employeeId}
                             </div>
                           </TableCell>
@@ -506,7 +503,7 @@ export default const _AttendanceManagement = () {
                             {format(new Date(record.date), 'PP')}
                           </TableCell>
                           <TableCell>
-                            <Badge variant={getStatusBadgeVariant(record.status)}>;
+                            \1>
                               {record.status.replace('_', ' ')}
                             </Badge>
                           </TableCell>
@@ -526,7 +523,7 @@ export default const _AttendanceManagement = () {
                             <Button>
                               variant="ghost"
                               size="sm"
-                              onClick={() => router.push(`/dashboard/hr/attendance/${record.id}`)}
+                              onClick={() => router.push(`/dashboard/hr/attendance/${\1}`}
                             >
                               View
                             </Button>
@@ -548,7 +545,7 @@ export default const _AttendanceManagement = () {
                     />
                   </PaginationItem>
                   <PaginationItem>
-                    <span className="text-sm">;
+                    \1>
                       Page {Math.floor(pagination.skip / pagination.take) + 1} of {Math.ceil(pagination.total / pagination.take) ||
                         1}
                     </span>
@@ -566,15 +563,15 @@ export default const _AttendanceManagement = () {
         </TabsContent>
       </Tabs>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
+      \1>
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">Present Today</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">;
+            \1>
               <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-              <span className="text-2xl font-bold">;
+              \1>
                 {attendanceRecords.filter(r => r.status === 'PRESENT').length}
               </span>
             </div>
@@ -582,13 +579,13 @@ export default const _AttendanceManagement = () {
         </Card>
 
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">Late Today</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">;
+            \1>
               <Clock className="h-5 w-5 text-yellow-500 mr-2" />
-              <span className="text-2xl font-bold">;
+              \1>
                 {attendanceRecords.filter(r => r.status === 'LATE').length}
               </span>
             </div>
@@ -596,13 +593,13 @@ export default const _AttendanceManagement = () {
         </Card>
 
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">Absent Today</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">;
+            \1>
               <XCircle className="h-5 w-5 text-red-500 mr-2" />
-              <span className="text-2xl font-bold">;
+              \1>
                 {attendanceRecords.filter(r => r.status === 'ABSENT').length}
               </span>
             </div>
@@ -610,13 +607,13 @@ export default const _AttendanceManagement = () {
         </Card>
 
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">On Leave</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">;
+            \1>
               <FileText className="h-5 w-5 text-blue-500 mr-2" />
-              <span className="text-2xl font-bold">;
+              \1>
                 {attendanceRecords.filter(r => r.status === 'ON_LEAVE').length}
               </span>
             </div>

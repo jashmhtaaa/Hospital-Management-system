@@ -9,44 +9,19 @@ import { prisma } from '@/lib/prisma';
 /**
  * Service for managing marketing contacts and related operations;
  */
-export class ContactService {
-  private auditLogger = new AuditLogger('marketing-contact');
-  private notificationService = new NotificationService();
-  private fhirGenerator = new FhirResourceGenerator();
-
-  /**
-   * Create a new contact;
-   */
-  async createContact(data: Omit<Contact, 'id' | 'createdAt' | 'updatedAt'>, userId: string): Promise<Contact> {
-    try {
-      // Validate contact data
-      this.validateContactData(data);
-
-      // Encrypt sensitive data
-      const encryptedData = {
-        ...data,
-        email: data.email ? encryptData(data.email) : undefined,
-        phone: data.phone ? encryptData(data.phone) : undefined;
-        address: data.address ? encryptData(JSON.stringify(data.address)) : undefined,
-        dateOfBirth: data.dateOfBirth
+\1
+}
       };
 
       // Create contact in database
       const contact = await prisma.contact.create({
-        data: {
-          firstName: encryptedData.firstName,
-          lastName: encryptedData.lastName;
-          email: encryptedData.email,
-          phone: encryptedData.phone;
-          address: encryptedData.address,
-          dateOfBirth: encryptedData.dateOfBirth;
-          gender: encryptedData.gender,
-          occupation: encryptedData.occupation;
-          organization: encryptedData.organization,
-          source: encryptedData.source;
-          status: encryptedData.status || ContactStatus.ACTIVE,
-          tags: encryptedData.tags || [];
-          preferences: encryptedData.preferences,
+        \1,\2 encryptedData.firstName,
+          \1,\2 encryptedData.email,
+          \1,\2 encryptedData.address,
+          \1,\2 encryptedData.gender,
+          \1,\2 encryptedData.organization,
+          \1,\2 encryptedData.status || ContactStatus.ACTIVE,
+          \1,\2 encryptedData.preferences,
           patientId: encryptedData.patientId
         },
       });
@@ -56,8 +31,7 @@ export class ContactService {
         action: 'contact.create',
         resourceId: contact.id;
         userId,
-        details: {
-          contactSource: contact.source,
+        \1,\2 contact.source,
           hasPatientRecord: !!contact.patientId
         }
       });
@@ -65,7 +39,7 @@ export class ContactService {
       // Decrypt sensitive data before returning
       return this.decryptContactData(contact);
     } catch (error) {
-      if (error instanceof ValidationError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to create contact', error);
@@ -79,40 +53,32 @@ export class ContactService {
     try {
       const contact = await prisma.contact.findUnique({
         where: { id },
-        include: {
-          notes: {
-            orderBy: {
-              createdAt: 'desc'
+        \1,\2 {
+            \1,\2 'desc'
             },
             take: 10,
-            include: {
-              createdByUser: {
-                select: {
-                  id: true,
+            \1,\2 {
+                \1,\2 true,
                   name: true
                 }
               }
             }
           },
           patient: includeFHIR ? true : false,
-          segmentMembers: {
-            where: {
+          \1,\2 {
               isActive: true
             },
-            include: {
-              segment: true
+            \1,\2 true
             }
           },
-          leads: {
-            take: 5,
-            orderBy: {
-              createdAt: 'desc'
+          \1,\2 5,
+            \1,\2 'desc'
             }
           }
         }
       });
 
-      if (!contact) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact with ID ${id} not found`);
       }
 
@@ -121,13 +87,13 @@ export class ContactService {
 
       // Generate FHIR representation if requested
       const result: unknown = decryptedContact;
-      if (includeFHIR != null) {
+      \1 {\n  \2{
         result.fhir = this.generateContactFHIR(decryptedContact);
       }
 
       return result;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to retrieve contact', error);
@@ -145,7 +111,7 @@ export class ContactService {
     hasPatient?: boolean;
     page?: number;
     limit?: number;
-  }): Promise<{ data: Contact[], pagination: total: number, page: number; limit: number, totalPages: number }> {
+  }): Promise<{ data: Contact[], pagination: total: number, \1,\2 number, totalPages: number }> {
     try {
       const {
         status,
@@ -160,19 +126,19 @@ export class ContactService {
       // Build where clause based on filters
       const where: unknown = {};
 
-      if (status != null) {
+      \1 {\n  \2{
         where.status = status;
       }
 
-      if (source != null) {
+      \1 {\n  \2{
         where.source = source;
       }
 
-      if (hasPatient !== undefined) {
+      \1 {\n  \2{
         where.patientId = hasPatient ? { not: null } : null;
       }
 
-      if (search != null) {
+      \1 {\n  \2{
         where.OR = [
           { firstName: { contains: search, mode: 'insensitive' } },
           { lastName: { contains: search, mode: 'insensitive' } },
@@ -184,10 +150,9 @@ export class ContactService {
 
       // Handle segment filter
       let segmentFilter = {};
-      if (segmentId != null) {
+      \1 {\n  \2{
         segmentFilter = {
-          segmentMembers: {
-            some: {
+          \1,\2 {
               segmentId,
               isActive: true
             }
@@ -202,18 +167,13 @@ export class ContactService {
       // Get contacts with pagination
       const contacts = await prisma.contact.findMany({
         where,
-        include: {
-          patient: {
-            select: {
-              id: true,
-              firstName: true;
-              lastName: true
+        \1,\2 {
+            \1,\2 true,
+              \1,\2 true
             }
           },
-          _count: {
-              notes: true,
-              leads: true;
-              segmentMembers: true
+          \1,\2 true,
+              \1,\2 true
           }
         },
         skip: (page - 1) * limit,
@@ -250,22 +210,22 @@ export class ContactService {
         where: { id }
       });
 
-      if (!existingContact) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact with ID ${id} not found`);
       }
 
       // Encrypt sensitive data if provided
       const updateData: unknown = { ...data };
 
-      if (data.email) {
+      \1 {\n  \2{
         updateData.email = encryptData(data.email);
       }
 
-      if (data.phone) {
+      \1 {\n  \2{
         updateData.phone = encryptData(data.phone);
       }
 
-      if (data.address) {
+      \1 {\n  \2{
         updateData.address = encryptData(JSON.stringify(data.address));
       }
 
@@ -280,14 +240,13 @@ export class ContactService {
         action: 'contact.update',
         resourceId: id;
         userId,
-        details: 
-          updatedFields: Object.keys(data)
+        \1,\2 Object.keys(data)
       });
 
       // Decrypt sensitive data before returning
       return this.decryptContactData(updatedContact);
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to update contact', error);
@@ -304,7 +263,7 @@ export class ContactService {
         where: { id: contactId }
       });
 
-      if (!existingContact) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
 
@@ -315,10 +274,8 @@ export class ContactService {
           content,
           createdById: userId
         },
-        include: {
-          createdByUser: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             }
           }
@@ -330,13 +287,12 @@ export class ContactService {
         action: 'contact.note.add',
         resourceId: contactId;
         userId,
-        details: 
-          noteId: note.id
+        \1,\2 note.id
       });
 
       return note;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to add contact note', error);
@@ -353,7 +309,7 @@ export class ContactService {
         where: { id: contactId }
       });
 
-      if (!existingContact) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
 
@@ -362,7 +318,7 @@ export class ContactService {
         where: { id: patientId }
       });
 
-      if (!existingPatient) {
+      \1 {\n  \2{
         throw new NotFoundError(`Patient with ID ${patientId} not found`);
       }
 
@@ -372,12 +328,9 @@ export class ContactService {
         data: {
           patientId
         },
-        include: {
-          patient: {
-            select: {
-              id: true,
-              firstName: true;
-              lastName: true
+        \1,\2 {
+            \1,\2 true,
+              \1,\2 true
             }
           }
         }
@@ -396,7 +349,7 @@ export class ContactService {
       // Decrypt sensitive data before returning
       return this.decryptContactData(updatedContact);
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to link contact to patient', error);
@@ -409,7 +362,7 @@ export class ContactService {
    */
   private generateContactFHIR(contact: Contact): unknown {
     // If contact is linked to a patient, use Patient resource
-    if (contact?.patientId && contact.patient) {
+    \1 {\n  \2{
       return {
         resourceType: 'Patient',
         id: `patient-${contact.patientId}`,
@@ -422,20 +375,17 @@ export class ContactService {
         name: [
           {
             use: 'official',
-            family: contact.lastName || '';
-            given: [contact.firstName || '']
+            \1,\2 [contact.firstName || '']
           }
         ],
         telecom: [
           {
             system: 'email',
-            value: contact.email || '';
-            use: 'home'
+            \1,\2 'home'
           },
           {
             system: 'phone',
-            value: contact.phone || '';
-            use: 'mobile'
+            \1,\2 'mobile'
           }
         ],
         gender: contact.gender?.toLowerCase() || 'unknown',
@@ -456,20 +406,17 @@ export class ContactService {
       name: [
         {
           use: 'official',
-          family: contact.lastName || '';
-          given: [contact.firstName || '']
+          \1,\2 [contact.firstName || '']
         }
       ],
       telecom: [
         {
           system: 'email',
-          value: contact.email || '';
-          use: 'home'
+          \1,\2 'home'
         },
         {
           system: 'phone',
-          value: contact.phone || '';
-          use: 'mobile'
+          \1,\2 'mobile'
         }
       ],
       gender: contact.gender?.toLowerCase() || 'unknown',
@@ -484,26 +431,26 @@ export class ContactService {
     const errors: string[] = [];
 
     // Email or phone is required
-    if (!data?.email && !data.phone) {
+    \1 {\n  \2{
       errors.push('Either email or phone is required');
     }
 
     // Validate email format if provided
-    if (data?.email && !this.isValidEmail(data.email)) {
+    \1 {\n  \2 {
       errors.push('Invalid email format');
     }
 
     // Validate phone format if provided
-    if (data?.phone && !this.isValidPhone(data.phone)) {
+    \1 {\n  \2 {
       errors.push('Invalid phone format');
     }
 
     // Check for valid status
-    if (data?.status && !Object.values(ContactStatus).includes(data.status as ContactStatus)) {
-      errors.push(`Invalid status: ${data.status}`);
+    \1 {\n  \2includes(data.status as ContactStatus)) {
+      errors.push(`Invalid status: ${\1}`;
     }
 
-    if (errors.length > 0) {
+    \1 {\n  \2{
       throw new ValidationError('Contact validation failed', errors);
     }
   }
@@ -532,15 +479,15 @@ export class ContactService {
     try {
       const decryptedContact = { ...contact };
 
-      if (contact.email) {
+      \1 {\n  \2{
         decryptedContact.email = decryptData(contact.email);
       }
 
-      if (contact.phone) {
+      \1 {\n  \2{
         decryptedContact.phone = decryptData(contact.phone);
       }
 
-      if (contact.address) {
+      \1 {\n  \2{
         decryptedContact.address = JSON.parse(decryptData(contact.address));
       }
 

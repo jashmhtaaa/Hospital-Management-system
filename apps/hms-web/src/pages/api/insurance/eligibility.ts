@@ -47,11 +47,11 @@ const eligibilityService = new EligibilityCheckService();
  *         description: Server error during eligibility check.
  */
 export default async const _handler = (req: NextApiRequest, res: NextApiResponse) {
-    if (req.method === "POST") {
+    \1 {\n  \2{
         try {
             const { patientId, policyId, serviceId } = req.body as { patientId: string, policyId: string, serviceId?: string };
 
-            if (!patientId || !policyId) {
+            \1 {\n  \2{
                 return res.status(400).json({ message: "Patient ID and Policy ID are required." });
             }
 
@@ -60,7 +60,7 @@ export default async const _handler = (req: NextApiRequest, res: NextApiResponse
 
         } catch (error: unknown) {
 
-            if (error.message.includes("not found")) {
+            \1 {\n  \2 {
                 return res.status(404).json({ message: error.message });
             }
             return res.status(500).json({ message: "Error checking insurance eligibility", error: error.message });

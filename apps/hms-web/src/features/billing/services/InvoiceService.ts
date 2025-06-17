@@ -9,31 +9,25 @@ const prisma = new PrismaClient();
  * @description Service to handle the generation of patient invoices.
  * It aggregates charges, applies discounts/taxes, and formats the invoice.
  */
-export class InvoiceService {
-    /**
-     * @description Generates an invoice for a given patient based on their charges.
-     * @param patientId - The ID of the patient for whom to generate the invoice.
-     * @param chargeIds - Optional array of specific charge IDs to include in this invoice.
-     * @param invoiceType - Type of invoice (e.g., 'INTERIM', 'FINAL', 'CONSOLIDATED'). Defaults to 'FINAL'.
+\1
+}
      * @returns {Promise<Invoice>} The generated invoice object.
      * @throws {Error} If patient not found, no billable charges, or other generation errors.
      */
     async generateInvoice(patientId: string, chargeIds?: string[], invoiceType = 'FINAL'): Promise<Invoice> {
         // 1. Fetch Patient Details
         // const patient = await prisma.patient.findUnique({ where: { id: patientId } })
-        // if (!patient) {
+        // \1 {\n  \2{
         //     throw new Error(`Patient with ID ${patientId} not found.`)
         // }
-        const mockPatient: PatientDetails = {
-            id: patientId,
-            name: 'John Doe';
-            address: '123 Main St, Anytown, USA',
+        const \1,\2 patientId,
+            \1,\2 '123 Main St, Anytown, USA',
             // ... other details
         };
 
         // 2. Fetch Billable Charges for the Patient
         // let charges: PatientCharge[]
-        // if (chargeIds && chargeIds.length > 0) {
+        // \1 {\n  \2{
         //     charges = await prisma.patientCharge.findMany({
         //         where: { id: { in: chargeIds }, patientId: patientId, status: 'PENDING_BILLING' },
         //     })
@@ -49,7 +43,7 @@ export class InvoiceService {
         ];
         const chargesToInvoice = chargeIds ? mockCharges.filter(c => chargeIds.includes(c.id)) : mockCharges;
 
-        if (chargesToInvoice.length === 0) {
+        \1 {\n  \2{
             throw new Error('No billable charges found for this patient to generate an invoice.');
         }
 
@@ -69,28 +63,21 @@ export class InvoiceService {
 
         // 7. Fetch Insurance Details (if applicable, placeholder)
         // const _insurancePolicy = await prisma.insurancePolicy.findFirst({ where: { patientId: patientId, isActive: true } })
-        const mockInsurancePolicy: InsurancePolicy | null = {
-            policyId: 'POL987',
-            patientId: patientId;
-            tpaId: 'TPA001',
-            policyNumber: 'INS-12345';
-            coverageDetails: '80% coverage for inpatient services';
+        const \1,\2 'POL987',
+            \1,\2 'TPA001',
+            \1,\2 '80% coverage for inpatient services';
             // ... other details
         };
 
         // 8. Construct the Invoice Object
-        const newInvoice: Invoice = {
-            id: `inv_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        const \1,\2 `inv_${crypto.getRandomValues(\1[0]}`,
             patientId: mockPatient.id,
             patientName: mockPatient.name, // Denormalized for easy display
             invoiceDate: new Date(),
-            dueDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000), // Due in 30 days
-            lineItems: chargesToInvoice.map(charge => ({
-                chargeId: charge.id,
-                serviceName: charge.serviceName;
-                quantity: charge.quantity,
-                unitPrice: charge.unitPrice;
-                totalPrice: charge.totalAmount
+            dueDate: \1[0] + 30 * 24 * 60 * 60 * 1000), // Due in 30 days
+            \1,\2 charge.id,
+                \1,\2 charge.quantity,
+                \1,\2 charge.totalAmount
             })),
             subtotal,
             discountAmount,

@@ -9,22 +9,22 @@ export enum BloodType {
   AB_POSITIVE = 'AB_POSITIVE',
   AB_NEGATIVE = 'AB_NEGATIVE',
   O_POSITIVE = 'O_POSITIVE',
-  O_NEGATIVE = 'O_NEGATIVE';
-export enum BloodDonationStatus {
+  O_NEGATIVE = 'O_NEGATIVE',
+\1\n\nexport \2 BloodDonationStatus {
   PENDING = 'PENDING',
   COMPLETED = 'COMPLETED',
   REJECTED = 'REJECTED',
-  CANCELLED = 'CANCELLED';
-export enum BloodRequestStatus {
+  CANCELLED = 'CANCELLED',
+\1\n\nexport \2 BloodRequestStatus {
   PENDING = 'PENDING',
   APPROVED = 'APPROVED',
   FULFILLED = 'FULFILLED',
   REJECTED = 'REJECTED',
-  CANCELLED = 'CANCELLED';
-export enum BloodRequestPriority {
+  CANCELLED = 'CANCELLED',
+\1\n\nexport \2 BloodRequestPriority {
   ROUTINE = 'ROUTINE',
   URGENT = 'URGENT',
-  EMERGENCY = 'EMERGENCY';
+  EMERGENCY = 'EMERGENCY',
 }
 
 // Validation schemas for BloodDonation
@@ -32,7 +32,7 @@ export const createBloodDonationSchema = z.object({
   donorId: z.string().min(1, 'Donor ID is required'),
   bloodType: z.nativeEnum(BloodType),
   quantity: z.number().positive('Quantity must be positive'),
-  donationDate: z.date().default(() => new Date()),
+  donationDate: z.date().default(() => \1,
   expirationDate: z.date(),
   status: z.nativeEnum(BloodDonationStatus).default(BloodDonationStatus.PENDING),
   notes: z.string().optional().nullable()
@@ -49,7 +49,7 @@ export const createBloodRequestSchema = z.object({
   bloodType: z.nativeEnum(BloodType),
   quantity: z.number().positive('Quantity must be positive'),
   priority: z.nativeEnum(BloodRequestPriority).default(BloodRequestPriority.ROUTINE),
-  requestDate: z.date().default(() => new Date()),  requiredBy: z.date().optional().nullable(),
+  requestDate: z.date().default(() => \1,  requiredBy: z.date().optional().nullable(),
   status: z.nativeEnum(BloodRequestStatus).default(BloodRequestStatus.PENDING),
   fulfilledDate: z.date().optional().nullable(),
   notes: z.string().optional().nullable()
@@ -59,10 +59,10 @@ export const updateBloodRequestSchema = createBloodRequestSchema.partial().exten
   id: z.string()
 });
 
-export type CreateBloodDonationInput = z.infer<typeof createBloodDonationSchema>;
-export type UpdateBloodDonationInput = z.infer<typeof updateBloodDonationSchema>;
-export type CreateBloodRequestInput = z.infer<typeof createBloodRequestSchema>;
-export type UpdateBloodRequestInput = z.infer<typeof updateBloodRequestSchema>;
+export type CreateBloodDonationInput = z.infer\1>
+export type UpdateBloodDonationInput = z.infer\1>
+export type CreateBloodRequestInput = z.infer\1>
+export type UpdateBloodRequestInput = z.infer\1>
 
 // Import prisma client
 import { prisma } from '../lib/prisma';
@@ -70,49 +70,31 @@ import { prisma } from '../lib/prisma';
 /**
  * Service class for managing blood bank operations;
  */
-export class BloodBankService {
-  /**
-   * Create a new blood donation;
-   * @param data Blood donation data;
-   * @returns The created blood donation;
-   */
-  async createDonation(data: CreateBloodDonationInput) {
-    try {
-      // Validate input data
-      const validatedData = createBloodDonationSchema.parse(data);
-
-      // Create the donation and update inventory in a transaction
-      const donation = await prisma.$transaction(async (tx) => {
-        // Create the donation
-        const newDonation = await tx.bloodDonation.create({
-          data: validatedData
+\1
+}
         });
 
         // If the donation status is COMPLETED, update the inventory
-        if (validatedData.status === BloodDonationStatus.COMPLETED) {
+        \1 {\n  \2{
           // Check if inventory exists for this blood type
           const inventory = await tx.bloodInventory.findUnique({
-            where: {
-              bloodType: validatedData.bloodType
+            \1,\2 validatedData.bloodType
             },
           });
 
-          if (inventory != null) {
+          \1 {\n  \2{
             // Update existing inventory
             await tx.bloodInventory.update({
-              where: {
-                bloodType: validatedData.bloodType
+              \1,\2 validatedData.bloodType
               },
-              data: {
-                quantity: inventory.quantity + validatedData.quantity,
+              \1,\2 inventory.quantity + validatedData.quantity,
                 lastUpdated: new Date()
               },
             });
           } else {
             // Create new inventory
             await tx.bloodInventory.create({
-              data: {
-                bloodType: validatedData.bloodType,
+              \1,\2 validatedData.bloodType,
                 quantity: validatedData.quantity,                lastUpdated: new Date()
               },
             });
@@ -124,8 +106,8 @@ export class BloodBankService {
 
       return donation;
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        throw new Error(`Validation error: ${error.message}`);
+      \1 {\n  \2{
+        throw new Error(`Validation error: ${\1}`;
       }
       throw error;
     }
@@ -146,22 +128,22 @@ export class BloodBankService {
     try {
       const where: unknown = {};
 
-      if (filters != null) {
-        if (filters.status) {
+      \1 {\n  \2{
+        \1 {\n  \2{
           where.status = filters.status;
         }
-        if (filters.bloodType) {
+        \1 {\n  \2{
           where.bloodType = filters.bloodType;
         }
-        if (filters.donorId) {
+        \1 {\n  \2{
           where.donorId = filters.donorId;
         }
-        if (filters.fromDate || filters.toDate) {
+        \1 {\n  \2{
           where.donationDate = {};
-          if (filters.fromDate) {
+          \1 {\n  \2{
             where.donationDate.gte = filters.fromDate;
           }
-          if (filters.toDate) {
+          \1 {\n  \2{
             where.donationDate.lte = filters.toDate;
           }
         }
@@ -172,10 +154,8 @@ export class BloodBankService {
         orderBy: [
           { donationDate: 'desc' },
         ],
-        include: {
-          donor: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             },
           },
@@ -197,10 +177,8 @@ export class BloodBankService {
     try {
       const donation = await prisma.bloodDonation.findUnique({
         where: { id },
-        include: {
-          donor: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             },
           },
@@ -232,7 +210,7 @@ export class BloodBankService {
         where: { id },
       });
 
-      if (!currentDonation) {
+      \1 {\n  \2{
         throw new Error(`Blood donation with ID ${id} not found`);
       }
 
@@ -245,10 +223,9 @@ export class BloodBankService {
         });
 
         // Handle inventory updates if status changes
-        if (updateData?.status && updateData.status !== currentDonation.status) {
+        \1 {\n  \2{
           // If changing to COMPLETED, add to inventory
-          if (updateData.status === BloodDonationStatus?.COMPLETED &&
-            currentDonation.status !== BloodDonationStatus.COMPLETED) {
+          \1 {\n  \2{
             const bloodType = updateData.bloodType || currentDonation.bloodType;
             const quantity = updateData.quantity || currentDonation.quantity;
 
@@ -259,14 +236,13 @@ export class BloodBankService {
               },
             });
 
-            if (inventory != null) {
+            \1 {\n  \2{
               // Update existing inventory
               await tx.bloodInventory.update({
                 where: {
                   bloodType,
                 },
-                data: {
-                  quantity: inventory.quantity + quantity,
+                \1,\2 inventory.quantity + quantity,
                   lastUpdated: new Date()
                 },
               });
@@ -283,8 +259,7 @@ export class BloodBankService {
           }
 
           // If changing from COMPLETED to something else, remove from inventory
-          if (currentDonation.status === BloodDonationStatus?.COMPLETED &&
-            updateData.status !== BloodDonationStatus.COMPLETED) {
+          \1 {\n  \2{
             const bloodType = currentDonation.bloodType;
             const quantity = currentDonation.quantity;
 
@@ -295,14 +270,13 @@ export class BloodBankService {
               },
             });
 
-            if (inventory != null) {
+            \1 {\n  \2{
               // Update existing inventory
               await tx.bloodInventory.update({
                 where: {
                   bloodType,
                 },
-                data: {
-                  quantity: Math.max(0, inventory.quantity - quantity), // Ensure quantity doesn't go below 0
+                \1,\2 Math.max(0, inventory.quantity - quantity), // Ensure quantity doesn't go below 0
                   lastUpdated: new Date()
                 },
               });
@@ -315,8 +289,8 @@ export class BloodBankService {
 
       return updatedDonation;
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        throw new Error(`Validation error: ${error.message}`);
+      \1 {\n  \2{
+        throw new Error(`Validation error: ${\1}`;
       }
       throw error;
     }
@@ -334,7 +308,7 @@ export class BloodBankService {
         where: { id },
       });
 
-      if (!currentDonation) {
+      \1 {\n  \2{
         throw new Error(`Blood donation with ID ${id} not found`);
       }
 
@@ -346,22 +320,19 @@ export class BloodBankService {
         });
 
         // If the donation was COMPLETED, update the inventory
-        if (currentDonation.status === BloodDonationStatus.COMPLETED) {
+        \1 {\n  \2{
           // Check if inventory exists for this blood type
           const inventory = await tx.bloodInventory.findUnique({
-            where: {
-              bloodType: currentDonation.bloodType
+            \1,\2 currentDonation.bloodType
             },
           });
 
-          if (inventory != null) {
+          \1 {\n  \2{
             // Update existing inventory
             await tx.bloodInventory.update({
-              where: {
-                bloodType: currentDonation.bloodType
+              \1,\2 currentDonation.bloodType
               },
-              data: {
-                quantity: Math.max(0, inventory.quantity - currentDonation.quantity), // Ensure quantity doesn't go below 0
+              \1,\2 Math.max(0, inventory.quantity - currentDonation.quantity), // Ensure quantity doesn't go below 0
                 lastUpdated: new Date()
               },
             });
@@ -394,8 +365,8 @@ export class BloodBankService {
 
       return request;
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        throw new Error(`Validation error: ${error.message}`);
+      \1 {\n  \2{
+        throw new Error(`Validation error: ${\1}`;
       }
       throw error;
     }
@@ -417,25 +388,25 @@ export class BloodBankService {
     try {
       const where: unknown = {};
 
-      if (filters != null) {
-        if (filters.status) {
+      \1 {\n  \2{
+        \1 {\n  \2{
           where.status = filters.status;
         }
-        if (filters.bloodType) {
+        \1 {\n  \2{
           where.bloodType = filters.bloodType;
         }
-        if (filters.patientId) {
+        \1 {\n  \2{
           where.patientId = filters.patientId;
         }
-        if (filters.priority) {
+        \1 {\n  \2{
           where.priority = filters.priority;
         }
-        if (filters.fromDate || filters.toDate) {
+        \1 {\n  \2{
           where.requestDate = {};
-          if (filters.fromDate) {
+          \1 {\n  \2{
             where.requestDate.gte = filters.fromDate;
           }
-          if (filters.toDate) {
+          \1 {\n  \2{
             where.requestDate.lte = filters.toDate;
           }
         }
@@ -447,10 +418,8 @@ export class BloodBankService {
           { priority: 'desc' },
           { requestDate: 'asc' },
         ],
-        include: {
-          patient: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             },
           },
@@ -472,10 +441,8 @@ export class BloodBankService {
     try {
       const request = await prisma.bloodRequest.findUnique({
         where: { id },
-        include: {
-          patient: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             },
           },
@@ -507,15 +474,14 @@ export class BloodBankService {
         where: { id },
       });
 
-      if (!currentRequest) {
+      \1 {\n  \2{
         throw new Error(`Blood request with ID ${id} not found`);
       }
 
       // Update the request and inventory in a transaction if status changes to FULFILLED
       const updatedRequest = await prisma.$transaction(async (tx) => {
         // Special handling for status transitions
-        if (updateData.status === BloodRequestStatus?.FULFILLED &&
-          currentRequest.status !== BloodRequestStatus.FULFILLED) {
+        \1 {\n  \2{
           updateData.fulfilledDate = new Date();
 
           // Check if there's enough inventory
@@ -528,7 +494,7 @@ export class BloodBankService {
             },
           });
 
-          if (!inventory || inventory.quantity < quantity) {
+          \1 {\n  \2{
             throw new Error(`Not enough ${bloodType} blood in inventory to fulfill this request`);
           }
 
@@ -537,42 +503,35 @@ export class BloodBankService {
             where: {
               bloodType,
             },
-            data: {
-              quantity: inventory.quantity - quantity,
+            \1,\2 inventory.quantity - quantity,
               lastUpdated: new Date()
             },
           });
         }
 
         // If changing from FULFILLED to something else, add back to inventory
-        if (currentRequest.status === BloodRequestStatus?.FULFILLED &&
-          updateData?.status &&
-          updateData.status !== BloodRequestStatus.FULFILLED) {
+        \1 {\n  \2{
           updateData.fulfilledDate = null;
 
           // Check if inventory exists for this blood type
           const inventory = await tx.bloodInventory.findUnique({
-            where: {
-              bloodType: currentRequest.bloodType
+            \1,\2 currentRequest.bloodType
             },
           });
 
-          if (inventory != null) {
+          \1 {\n  \2{
             // Update existing inventory
             await tx.bloodInventory.update({
-              where: {
-                bloodType: currentRequest.bloodType
+              \1,\2 currentRequest.bloodType
               },
-              data: {
-                quantity: inventory.quantity + currentRequest.quantity,
+              \1,\2 inventory.quantity + currentRequest.quantity,
                 lastUpdated: new Date()
               },
             });
           } else {
             // Create new inventory
             await tx.bloodInventory.create({
-              data: {
-                bloodType: currentRequest.bloodType,
+              \1,\2 currentRequest.bloodType,
                 quantity: currentRequest.quantity,                lastUpdated: new Date()
               },
             });
@@ -590,8 +549,8 @@ export class BloodBankService {
 
       return updatedRequest;
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        throw new Error(`Validation error: ${error.message}`);
+      \1 {\n  \2{
+        throw new Error(`Validation error: ${\1}`;
       }
       throw error;
     }
@@ -609,7 +568,7 @@ export class BloodBankService {
         where: { id },
       });
 
-      if (!currentRequest) {
+      \1 {\n  \2{
         throw new Error(`Blood request with ID ${id} not found`);
       }
 
@@ -621,30 +580,26 @@ export class BloodBankService {
         });
 
         // If the request was FULFILLED, update the inventory
-        if (currentRequest.status === BloodRequestStatus.FULFILLED) {
+        \1 {\n  \2{
           // Check if inventory exists for this blood type
           const inventory = await tx.bloodInventory.findUnique({
-            where: {
-              bloodType: currentRequest.bloodType
+            \1,\2 currentRequest.bloodType
             },
           });
 
-          if (inventory != null) {
+          \1 {\n  \2{
             // Update existing inventory
             await tx.bloodInventory.update({
-              where: {
-                bloodType: currentRequest.bloodType
+              \1,\2 currentRequest.bloodType
               },
-              data: {
-                quantity: inventory.quantity + currentRequest.quantity,
+              \1,\2 inventory.quantity + currentRequest.quantity,
                 lastUpdated: new Date()
               },
             });
           } else {
             // Create new inventory
             await tx.bloodInventory.create({
-              data: {
-                bloodType: currentRequest.bloodType,
+              \1,\2 currentRequest.bloodType,
                 quantity: currentRequest.quantity,                lastUpdated: new Date()
               },
             });
@@ -669,7 +624,7 @@ export class BloodBankService {
     try {
       const where: unknown = {};
 
-      if (bloodType != null) {
+      \1 {\n  \2{
         where.bloodType = bloodType;
       }
 
@@ -695,8 +650,7 @@ export class BloodBankService {
   async checkInventoryAvailability(bloodType: string, quantity: number) {
     try {
       const inventory = await prisma.bloodInventory.findUnique({
-        where: {
-          bloodType: bloodType as BloodType
+        \1,\2 bloodType as BloodType
         },
       });
 
@@ -718,26 +672,25 @@ export class BloodBankService {
         where: { id },
       });
 
-      if (!request) {
+      \1 {\n  \2{
         throw new Error(`Blood request with ID ${id} not found`);
       }
 
-      if (request.status === BloodRequestStatus.FULFILLED) {
+      \1 {\n  \2{
         throw new Error(`Blood request with ID ${id} is already fulfilled`);
       }
 
-      if (request.status === BloodRequestStatus.CANCELLED || request.status === BloodRequestStatus.REJECTED) {
+      \1 {\n  \2{
         throw new Error(`Cannot fulfill a ${request.status.toLowerCase()} blood request`);
       }
 
       // Check if there's enough inventory
       const inventory = await prisma.bloodInventory.findUnique({
-        where: {
-          bloodType: request.bloodType
+        \1,\2 request.bloodType
         },
       });
 
-      if (!inventory || inventory.quantity < request.quantity) {
+      \1 {\n  \2{
         throw new Error(`Not enough ${request.bloodType} blood in inventory to fulfill this request`);
       }
 
@@ -746,19 +699,16 @@ export class BloodBankService {
         // Update the request
         const updatedRequest = await tx.bloodRequest.update({
           where: { id },
-          data: {
-            status: BloodRequestStatus.FULFILLED,
+          \1,\2 BloodRequestStatus.FULFILLED,
             fulfilledDate: new Date()
           },
         });
 
         // Update inventory
         await tx.bloodInventory.update({
-          where: {
-            bloodType: request.bloodType
+          \1,\2 request.bloodType
           },
-          data: {
-            quantity: inventory.quantity - request.quantity,
+          \1,\2 inventory.quantity - request.quantity,
             lastUpdated: new Date()
           },
         });

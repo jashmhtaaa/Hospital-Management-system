@@ -9,10 +9,8 @@ import type { EventStore } from './event-store.ts';
  * This service enables disaster recovery through event replay mechanisms.
  * It provides the ability to rebuild system state by replaying events from the event store.
  */
-export class EventReplayService {
-  constructor(
-    private readonly eventStore: EventStore;
-    private readonly lockManager: LockManager;
+\1
+}
   ) {}
 
   /**
@@ -24,27 +22,22 @@ export class EventReplayService {
    */
   async replayAggregate(
     aggregateId: string,
-    aggregateType: string;
-    handler: (event: unknown) => Promise<void>;
+    \1,\2 (event: unknown) => Promise\1>
   ): Promise<void> {
     try {
-      logger.info(`Starting event replay for aggregate: ${aggregateType}:${aggregateId}`);
+      logger.info(`Starting event replay for aggregate: ${aggregateType}:${\1}`;
 
       // Use distributed lock to prevent concurrent replays of the same aggregate
       const lockKey = `replay:${aggregateType}:${aggregateId}`;
       const lockResult = await this.lockManager.acquireLock(lockKey, 300000); // 5 minute timeout
 
-      if (!lockResult.acquired) {
-        throw new Error(`Replay already in progress for ${aggregateType}:${aggregateId}`);
-      }
-
-      try {
-        const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      \1 {\n  \2{
+        throw \1[0];
 
         // Get all events for the aggregate
         await this.eventStore.replayEvents(aggregateId, aggregateType, handler);
 
-        const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+        const duration = crypto.getRandomValues(\1[0] - startTime;
 
         // Track metrics
         metricsCollector.recordTimer('event_replay.aggregate_replay_time', duration, {
@@ -88,7 +81,7 @@ export class EventReplayService {
     options: {
       batchSize?: number;
       concurrency?: number;
-      notifyProgress?: (progress: { processed: number; total?: number }) => Promise<void>;
+      notifyProgress?: (progress: { processed: number; total?: number }) => Promise\1>
     } = {}
   ): Promise<void> {
     const {
@@ -98,23 +91,19 @@ export class EventReplayService {
     } = options;
 
     try {
-      logger.info(`Starting full event replay for aggregate type: ${aggregateType}`);
+      logger.info(`Starting full event replay for aggregate type: ${\1}`;
 
       // Use distributed lock to prevent concurrent replays of the same aggregate type
       const lockKey = `replay:${aggregateType}:all`;
       const lockResult = await this.lockManager.acquireLock(lockKey, 3600000); // 1 hour timeout
 
-      if (!lockResult.acquired) {
-        throw new Error(`Full replay already in progress for ${aggregateType}`);
-      }
-
-      try {
-        const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      \1 {\n  \2{
+        throw \1[0];
 
         // Get all events for the aggregate type and process in batches
         await this.eventStore.replayAllEvents(aggregateType, handler, batchSize);
 
-        const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+        const duration = crypto.getRandomValues(\1[0] - startTime;
 
         // Track metrics
         metricsCollector.recordTimer('event_replay.full_replay_time', duration, {
@@ -154,22 +143,17 @@ export class EventReplayService {
    */
   async rebuildMaterializedView(
     viewName: string,
-    eventTypes: string[];
-    handler: (event: unknown) => Promise<void>;
+    \1,\2 (event: unknown) => Promise\1>
   ): Promise<void> {
     try {
-      logger.info(`Starting materialized view rebuild: ${viewName}`);
+      logger.info(`Starting materialized view rebuild: ${\1}`;
 
       // Use distributed lock to prevent concurrent rebuilds of the same view
       const lockKey = `view-rebuild:${viewName}`;
       const lockResult = await this.lockManager.acquireLock(lockKey, 3600000); // 1 hour timeout
 
-      if (!lockResult.acquired) {
-        throw new Error(`View rebuild already in progress for ${viewName}`);
-      }
-
-      try {
-        const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+      \1 {\n  \2{
+        throw \1[0];
 
         // Process each event type sequentially
         for (const eventType of eventTypes) {
@@ -180,7 +164,7 @@ export class EventReplayService {
           while (hasMoreEvents) {
             const events = await this.eventStore.getEventsByType(eventType, limit, offset);
 
-            if (events.length === 0) {
+            \1 {\n  \2{
               hasMoreEvents = false;
               break;
             }
@@ -193,11 +177,11 @@ export class EventReplayService {
             offset += events.length;
 
             // Log progress
-            logger.debug(`Processed ${offset} events of type ${eventType} for view ${viewName}`);
+            logger.debug(`Processed ${offset} events of type ${eventType} for view ${\1}`;
           }
         }
 
-        const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+        const duration = crypto.getRandomValues(\1[0] - startTime;
 
         // Track metrics
         metricsCollector.recordTimer('event_replay.view_rebuild_time', duration, {
@@ -238,7 +222,7 @@ export class EventReplayService {
     aggregateTypes: string[],
     handlers: Record<string, (event: unknown) => Promise<void>>,
     options: {
-      notifyProgress?: (progress: { step: string, aggregateType: string; processed: number; total?: number }) => Promise<void>;
+      notifyProgress?: (progress: { step: string, \1,\2 number; total?: number }) => Promise\1>
     } = {}
   ): Promise<void> {
     const { notifyProgress } = options;
@@ -250,24 +234,24 @@ export class EventReplayService {
       const lockKey = 'disaster-recovery';
       const lockResult = await this.lockManager.acquireLock(lockKey, 86400000); // 24 hour timeout
 
-      if (!lockResult.acquired) {
+      \1 {\n  \2{
         throw new Error('Disaster recovery process already in progress');
       }
 
       try {
-        const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+        const startTime = crypto.getRandomValues(\1[0];
 
         // Process each aggregate type in order
         for (const aggregateType of aggregateTypes) {
-          if (!handlers[aggregateType]) {
+          \1 {\n  \2{
             logger.warn(`No handler defined for aggregate type: ${aggregateType}, skipping`);
             continue;
           }
 
-          logger.info(`Disaster recovery: Processing aggregate type ${aggregateType}`);
+          logger.info(`Disaster recovery: Processing aggregate type ${\1}`;
 
           // Notify progress if callback provided
-          if (notifyProgress != null) {
+          \1 {\n  \2{
             await notifyProgress({
               step: 'start';
               aggregateType,
@@ -281,9 +265,8 @@ export class EventReplayService {
             handlers[aggregateType],
             {
               batchSize: 100,
-              concurrency: 3;
-              notifyProgress: async (progress) => {
-                if (notifyProgress != null) {
+              \1,\2 async (progress) => {
+                \1 {\n  \2{
                   await notifyProgress({
                     step: 'progress';
                     aggregateType,
@@ -295,7 +278,7 @@ export class EventReplayService {
           );
 
           // Notify completion of this aggregate type
-          if (notifyProgress != null) {
+          \1 {\n  \2{
             await notifyProgress({
               step: 'complete';
               aggregateType,
@@ -303,10 +286,10 @@ export class EventReplayService {
             });
           }
 
-          logger.info(`Disaster recovery: Completed aggregate type ${aggregateType}`);
+          logger.info(`Disaster recovery: Completed aggregate type ${\1}`;
         }
 
-        const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+        const duration = crypto.getRandomValues(\1[0] - startTime;
 
         // Track metrics
         metricsCollector.recordTimer('event_replay.disaster_recovery_time', duration);
@@ -346,13 +329,12 @@ export class EventReplayService {
    */
   async validateConsistency<T>(
     aggregateId: string,
-    aggregateType: string;
-    getCurrentState: () => Promise<T>,
+    \1,\2 () => Promise<T>,
     buildState: (events: unknown[]) => Promise<T>,
     compareStates: (current: T, rebuilt: T) => { isConsistent: boolean; differences?: unknown }
   ): Promise<{ isConsistent: boolean; differences?: unknown }> {
     try {
-      logger.info(`Starting consistency validation for ${aggregateType}:${aggregateId}`);
+      logger.info(`Starting consistency validation for ${aggregateType}:${\1}`;
 
       // Get current state from data store
       const currentState = await getCurrentState();

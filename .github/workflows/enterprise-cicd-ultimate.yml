@@ -33,8 +33,8 @@ true:
         type: boolean
 env:
   NODE_VERSION: 20.x
-  JAVA_VERSION: '21'
-  PYTHON_VERSION: '3.11'
+  JAVA_VERSION: "21"
+  PYTHON_VERSION: "3.11"
   DOCKER_REGISTRY: ghcr.io
   REGISTRY_USERNAME: ${{ github.actor }}
   REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -122,34 +122,34 @@ jobs:
           '
       - name: "\U0001F9F9 ESLint Enterprise Analysis"
         if: matrix.analysis == 'frontend'
-        run: 'npm run lint: enterprise -- --format=json --output-file=eslint-report.json
+        run: "npm run lint: enterprise -- --format=json --output-file=eslint-report.json
 
           npm run lint: security -- --format=sarif --output-file=eslint-security.sarif
 
-          '
+          "
       - name: "\U0001F485 Prettier Enterprise Formatting"
         if: matrix.analysis == 'frontend'
-        run: 'npm run prettier: check:enterprise
+        run: "npm run prettier: check:enterprise
 
           npm run prettier: write:safe
 
-          '
+          "
       - name: "\U0001F4CB TypeScript Ultra-Strict Check"
         if: matrix.analysis == 'frontend'
-        run: 'npm run type-check: strict
+        run: "npm run type-check: strict
 
           npm run type-check: coverage
 
-          '
+          "
       - name: "\u2615 Java Code Quality (SpotBugs + PMD)"
         if: matrix.analysis == 'backend' || matrix.analysis == 'microservices'
-        run: 'cd microservices
+        run: "cd microservices
 
           ./mvnw spotbugs: check pmd:check
 
           ./mvnw checkstyle: check
 
-          '
+          "
       - name: "\U0001F512 Advanced Security Analysis"
         run: '# Semgrep Security Analysis
 
@@ -183,11 +183,11 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
-          sarif_file: 'eslint-security.sarif
+          sarif_file: "eslint-security.sarif
 
             trivy-fs.sarif
 
-            '
+            "
       - name: "\U0001F4CB Quality Gate Enforcement"
         run: "# Enforce quality gates\npython scripts/quality/enforce-quality-gates.py\
           \ \\\n  --eslint-report=eslint-report.json \\\n  --semgrep-report=semgrep-report.json\
@@ -235,11 +235,11 @@ jobs:
           test-suite: ${{ matrix.test-suite }}
       - name: "\U0001F9EA Run Unit Tests (Frontend)"
         if: matrix.test-suite == 'unit-frontend'
-        run: 'npm run test: unit:coverage -- --ci --maxWorkers=4
+        run: "npm run test: unit:coverage -- --ci --maxWorkers=4
 
           npm run test: component:coverage
 
-          '
+          "
       - name: "\u2615 Run Unit Tests (Backend/Microservices)"
         if: matrix.test-suite == 'unit-backend'
         run: 'cd microservices
@@ -257,25 +257,25 @@ jobs:
           \ cli,json \\\n  --reporter-json-export newman-report.json\n  \n"
       - name: "\U0001F5C3\uFE0F Run Integration Tests (Database)"
         if: matrix.test-suite == 'integration-database'
-        run: 'npm run test: database:integration
+        run: "npm run test: database:integration
 
           npm run test: migration:validation
 
-          '
+          "
       - name: "\U0001F3AD Run E2E Tests (Critical Flows)"
         if: matrix.test-suite == 'e2e-critical-flows'
-        run: 'npm run test: e2e:critical
+        run: "npm run test: e2e:critical
 
           npx playwright test --config=playwright.critical.config.ts
 
-          '
+          "
       - name: "\U0001F3E5 Run E2E Tests (Healthcare Workflows)"
         if: matrix.test-suite == 'e2e-healthcare-workflows'
-        run: 'npx playwright test --config=playwright.healthcare.config.ts
+        run: "npx playwright test --config=playwright.healthcare.config.ts
 
           npm run test: fhir:compliance
 
-          '
+          "
       - name: "\u26A1 Run Performance Tests (Load)"
         if: matrix.test-suite == 'performance-load'
         run: "k6 run tests/performance/load-test.js \\\n  --duration=10m \\\n  --vus=50\
@@ -291,24 +291,24 @@ jobs:
           \ \\\n  -J zap-report.json \\\n  -r zap-report.html\n  \n"
       - name: "\u267F Run Accessibility Compliance Tests"
         if: matrix.test-suite == 'accessibility-compliance'
-        run: 'npm run test: accessibility:axe
+        run: "npm run test: accessibility:axe
 
           npm run test: accessibility:lighthouse
 
-          '
+          "
       - name: "\U0001F4CA Generate Test Reports"
         if: always()
-        run: 'npm run test: report:merge
+        run: "npm run test: report:merge
 
           npm run test: report:html
 
-          '
+          "
       - name: "\U0001F4C8 Upload Test Results"
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: test-results-${{ matrix.test-suite }}
-          path: 'coverage/
+          path: "coverage/
 
             test-results/
 
@@ -316,7 +316,7 @@ jobs:
 
             *.html
 
-            '
+            "
   healthcare-compliance:
     name: "\U0001F3E5 Healthcare Compliance Validation"
     runs-on: ubuntu-latest
@@ -333,11 +333,11 @@ jobs:
           \n  --output-format=json \\\n  --output-file=hipaa-compliance-report.json\
           \ \\\n  --strict-mode\n  \n"
       - name: "\U0001F4CB FHIR R4 Compliance Check"
-        run: 'npm run fhir: validate:r4
+        run: "npm run fhir: validate:r4
 
           npm run fhir: structure:validation
 
-          '
+          "
       - name: "\U0001F512 PHI Data Protection Audit"
         run: "python scripts/compliance/phi-audit.py \\\n  --scan-code \\\n  --scan-config\
           \ \\\n  --output=phi-audit-report.json\n  \n"
@@ -350,11 +350,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: compliance-reports
-          path: '*-compliance-report.json
+          path: "*-compliance-report.json
 
             compliance-dashboard.html
 
-            '
+            "
   container-security:
     name: "\U0001F433 Container Build & Security"
     runs-on: ubuntu-latest
@@ -391,7 +391,7 @@ jobs:
         with:
           images: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/${{ matrix.service
             }}
-          tags: 'type=ref,event=branch
+          tags: "type=ref,event=branch
 
             type=ref,event=pr
 
@@ -399,7 +399,7 @@ jobs:
 
             type=raw,value=${{ needs.pipeline-init.outputs.version }}
 
-            '
+            "
       - name: "\U0001F528 Build Container Image"
         uses: docker/build-push-action@v5
         with:
@@ -480,11 +480,11 @@ jobs:
 
           '
       - name: "\U0001F50D Terraform Validation"
-        run: 'terraform fmt -check -recursive
+        run: "terraform fmt -check -recursive
 
           terraform validate
 
-          '
+          "
       - name: "\U0001F50D Kubernetes Manifest Validation"
         run: '# Validate all Kubernetes manifests
 
@@ -535,7 +535,7 @@ jobs:
           \ \\\n  --create-namespace \\\n  --set image.tag=${{ needs.pipeline-init.outputs.version\
           \ }} \\\n  --set environment=staging \\\n  --wait \\\n  --timeout=10m\n  \n"
       - name: "\U0001F9EA Post-Deployment Validation"
-        run: '# Health checks
+        run: "# Health checks
 
           kubectl wait --for=condition=ready pod -l app=hms -n hms-staging --timeout=300s
 
@@ -544,7 +544,7 @@ jobs:
 
           npm run test: smoke:staging
 
-          '
+          "
       - name: "\U0001F4CA Update Monitoring"
         run: "# Update Grafana dashboards\ncurl -X POST \"${{ secrets.GRAFANA_API_URL\
           \ }}/api/dashboards/db\" \\\n  -H \"Authorization: Bearer ${{ secrets.GRAFANA_API_KEY\
@@ -577,23 +577,23 @@ jobs:
           \ }} \\\n  --set environment=production \\\n  --set deployment.strategy=blue-green\
           \ \\\n  --set deployment.color=green \\\n  --wait \\\n  --timeout=15m\n  \n"
       - name: "\U0001F9EA Production Validation"
-        run: '# Comprehensive production validation
+        run: "# Comprehensive production validation
 
           npm run test: production:validation
 
           npm run test: fhir:production
 
-          '
+          "
       - name: "\U0001F504 Traffic Switch"
         run: "# Switch traffic to green deployment\nkubectl patch service hms-frontend\
           \ -n hms-production \\\n  -p '{\"spec\": {\"selector\":{\"deployment\":\"\
           green\"}}}'\n  \n# Wait for traffic switch\nsleep 60\n"
       - name: "\U0001F9F9 Cleanup Blue Environment"
-        run: '# Remove blue deployment after successful switch
+        run: "# Remove blue deployment after successful switch
 
           helm uninstall hms-blue -n hms-production || true
 
-          '
+          "
       - name: "\U0001F4CA Update Production Monitoring"
         run: "# Update all monitoring and alerting\ncurl -X POST \"${{ secrets.DATADOG_API_URL\
           \ }}/api/v1/events\" \\\n  -H \"DD-API-KEY: ${{ secrets.DATADOG_API_KEY }}\"\
@@ -647,11 +647,11 @@ jobs:
         with:
           fetch-depth: 0
       - name: "\U0001F5C2\uFE0F Consolidate Artifacts"
-        run: 'mkdir -p final-artifacts
+        run: "mkdir -p final-artifacts
 
           # Collect all important artifacts
 
-          '
+          "
       - name: "\U0001F4CA Generate Final Report"
         run: "python scripts/reporting/generate-final-report.py \\\n  --pipeline-id=${{\
           \ github.run_id }} \\\n  --output=final-artifacts/pipeline-report.html\n \
@@ -662,7 +662,7 @@ jobs:
           name: hms-enterprise-pipeline-artifacts
           path: final-artifacts/
           retention-days: 90
-'on':
+"on":
   push:
     branches:
       - main

@@ -45,7 +45,7 @@ const radiologyOrderFormSchema = z.object({
   clinicalNotes: z.string().optional()
 });
 
-type RadiologyOrderFormValues = z.infer<typeof radiologyOrderFormSchema>;
+type RadiologyOrderFormValues = z.infer\1>
 
 interface ERRadiologyOrderModalProperties {
   isOpen: boolean,
@@ -79,19 +79,16 @@ export default const _ERRadiologyOrderModal = ({
 
   const form = useForm<RadiologyOrderFormValues>({
     resolver: zodResolver(radiologyOrderFormSchema),
-    defaultValues: {
-      visitId: visitData?.id || "",
-      patientName: visitData?.patientName || "";
-      orderingDoctorId: visitData?.assignedDoctorId || "", // Pre-fill if available
+    \1,\2 visitData?.id || "",
+      \1,\2 visitData?.assignedDoctorId || "", // Pre-fill if available
       procedureTypeId: "",
-      priority: "STAT";
-      clinicalNotes: ""
+      \1,\2 ""
     },
   });
 
   // Update form when visitData changes
   useEffect(() => {
-    if (visitData != null) {
+    \1 {\n  \2{
       form.setValue("visitId", visitData.id);
       form.setValue("patientName", visitData.patientName);
       form.setValue("orderingDoctorId", visitData.assignedDoctorId || "");
@@ -107,18 +104,15 @@ export default const _ERRadiologyOrderModal = ({
       const response = await fetch("/api/radiology/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          patient_id: visitData?.id, // Assuming visit ID links to patient in backend
+        \1,\2 visitData?.id, // Assuming visit ID links to patient in backend
           visit_id: data.visitId,
-          ordering_doctor_id: data.orderingDoctorId;
-          procedure_type_id: data.procedureTypeId,
-          priority: data.priority;
-          clinical_notes: data.clinicalNotes || undefined,
+          \1,\2 data.procedureTypeId,
+          \1,\2 data.clinicalNotes || undefined,
           order_source: "ER", // Indicate order source
         }),
       });
 
-      if (!response.ok) {
+      \1 {\n  \2{
         let errorMessage = "Failed to create radiology order";
         try {
           const errorData: { error?: string } = await response.json(); // FIX: Add type for errorData
@@ -139,7 +133,7 @@ export default const _ERRadiologyOrderModal = ({
         description: `STAT order ${newOrder.id} placed successfully.`,
       }),
 
-      if (onSuccess != null) {
+      \1 {\n  \2{
         onSuccess(); // Trigger potential refresh of tracking board
       }
       form.reset({
@@ -164,8 +158,8 @@ export default const _ERRadiologyOrderModal = ({
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>;
-      <DialogContent className="sm:max-w-[600px]">;
+    \1>
+      \1>
         <DialogHeader>
           <DialogTitle>Place STAT Radiology Order</DialogTitle>
           <DialogDescription>
@@ -174,7 +168,7 @@ export default const _ERRadiologyOrderModal = ({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">;
+          \1>
             {/* Hidden or disabled fields for context */}
             <FormField>
               control={form.control}
@@ -218,7 +212,7 @@ export default const _ERRadiologyOrderModal = ({
                     </FormControl>
                     <SelectContent>
                       {availableProcedureTypes.map((proc) => (
-                        <SelectItem key={proc.id} value={proc.id}>;
+                        \1>
                           {proc.name}
                         </SelectItem>
                       ))}
@@ -257,7 +251,7 @@ export default const _ERRadiologyOrderModal = ({
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isLoading}>;
+              \1>
                 {isLoading ? "Placing Order..." : "Place STAT Order"}
               </Button>
             </DialogFooter>

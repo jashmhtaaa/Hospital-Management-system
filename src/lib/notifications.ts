@@ -11,23 +11,15 @@ import { DB } from './database';
  * Database result interface
  */
 interface DBResult {
-  results: any[];
-  insertId: number;
+  \1,\2 number;
   affectedRows: number;
 }
 
 /**
  * Notification type definition
  */
-export interface Notification {
-  userId: number,
-  type: 'critical_value' | 'critical_finding' | 'result_available' | 'specimen_rejected' | 'order_status';
-  title: string,
-  message: string;
-  resourceType: string;
-  resourceId?: number;
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-  metadata?: Record<string, unknown>;
+\1
+}
 }
 
 /**
@@ -39,7 +31,7 @@ export interface Notification {
  */
 export const _notifyUsers = async (
   userIds: number[],
-  notification: Omit<Notification, 'userId'>;
+  notification: Omit\1>
 ): Promise<number[]> {
 export const notifyUsers = async (
   userIds: number[],
@@ -138,7 +130,7 @@ export const getUserNotifications = async (
 
     const params: unknown[] = [userId];
 
-    if (unreadOnly) {
+    \1 {\n  \2{
       query += ' AND read = false';
     }
 

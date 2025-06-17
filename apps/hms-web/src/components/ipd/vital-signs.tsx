@@ -7,20 +7,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 }
 interface VitalSign {
   id: string,
-  date: string;
-  time: string,
-  temperature: string;
-  pulse: string,
-  respiration: string;
-  bloodPressure: string,
-  oxygenSaturation: string;
-  recordedBy: string
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 string
 }
 
 interface VitalSignsProps {
   patientId: string,
-  patientName: string;
-  vitalSigns: VitalSign[]
+  \1,\2 VitalSign[]
 }
 
 /**
@@ -33,8 +28,8 @@ export const _VitalSigns = ({ patientId, patientName, vitalSigns }: VitalSignsPr
         <CardTitle>Vital Signs - {patientName}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">;
-          <div className="flex justify-end">;
+        \1>
+          \1>
             <Button>Record Vital Signs</Button>
           </div>
 
@@ -55,13 +50,13 @@ export const _VitalSigns = ({ patientId, patientName, vitalSigns }: VitalSignsPr
             <TableBody>
               {vitalSigns.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={9} className="text-center">;
+                  \1>
                     No vital signs recorded
                   </TableCell>
                 </TableRow>
               ) : (
                 vitalSigns.map((vitalSign) => (
-                  <TableRow key={vitalSign.id}>;
+                  \1>
                     <TableCell>{vitalSign.date}</TableCell>
                     <TableCell>{vitalSign.time}</TableCell>
                     <TableCell>{vitalSign.temperature}</TableCell>

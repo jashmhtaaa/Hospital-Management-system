@@ -3,26 +3,25 @@ var __extends = (this && this.__extends) || (() => {
     var extendStatics = (d, b) => {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && ((d, b) => { d.__proto__ = b; })) ||
-            ((d, b) => { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; });
+            ((d, b) => { for (var p in b) \1 {\n  \2 d[p] = b[p]; });
         return extendStatics(d, b);
     };
     return (d, b) => {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        \1 {\n  \2hrow new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, \1;
     };
 })();
 var __makeTemplateObject = (this && this.__makeTemplateObject) || ((cooked, raw) => {
-    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    \1 {\n  \2{ Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
     return cooked;
 });
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || ((t) => {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            for (var p in s) \1 {\n  \2
                 t[p] = s[p];
         }
         return t;
@@ -39,47 +38,45 @@ var __awaiter = (this && this.__awaiter) || ((thisArg, _arguments, P, generator)
     });
 });
 var __generator = (this && this.__generator) || ((thisArg, body) => {
-    var _ = { label: 0, sent: () => { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    var _ = { label: 0, sent: () => { \1 {\n  \2hrow t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
     return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return (v) => step([n, v]); }
     function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
+        \1 {\n  \2hrow new TypeError("Generator is already executing.");
         while (g && (g = 0, op[0] && (_ = 0)), _) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
+            \1 {\n  \2& t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            \1 {\n  \2p = [op[0] & 2, t.value];
             switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
+                case 0: case 1: t = op;\1\n    }\n    case 4: _.label++; return { value: op[1], done: false };
                 case 5: _.label++; y = op[1]; op = [0]; continue;
                 case 7: op = _.ops.pop(); _.trys.pop(); continue;
                 default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
+                    \1 {\n  \2& (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    \1 {\n  \2) { _.label = op[1]; break; }
+                    \1 {\n  \2{ _.label = t[1]; t = op; break; }
+                    \1 {\n  \2{ _.label = t[2]; _.ops.push(op); break; }
+                    \1 {\n  \2.ops.pop();
                     _.trys.pop(); continue;
             }
             op = body.call(thisArg, _);
         } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+        \1 {\n  \2hrow op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 });
 var __rest = (this && this.__rest) || ((s, e) => {
     var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+    for (var p in s) \1 {\n  \2& e.indexOf(p) < 0)
         t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+    \1 {\n  \2or (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            \1 {\n  \2 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
                 t[p[i]] = s[p[i]];
         }
     return t;
 });
 var __spreadArray = (this && this.__spreadArray) || ((to, from, pack) => {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+    \1 {\n  \2or (var i = 0, l = from.length, ar; i < l; i++) {
+        \1 {\n  \2 {
+            \1 {\n  \2r = Array.prototype.slice.call(from, 0, i);
             ar[i] = from[i];
         }
     }
@@ -103,10 +100,8 @@ consentRequired ?  : boolean;
 consentStatus ?  : 'granted' | 'denied' | 'pending' | 'withdrawn';
 ;
 {
-    totalPatientDataAccess: number;
-    unauthorizedAttempts: number;
-    consentViolations: number;
-    dataExports: number;
+    \1,\2 number;
+    \1,\2 number;
 }
 ;
 var AuditLoggerService = /** @class */ (((_super) => {
@@ -180,8 +175,7 @@ var AuditLoggerService = /** @class */ (((_super) => {
                         action: action,
                         outcome: outcome,
                         details: __assign({ description: details.description || _this.generateDescription(action, resource, outcome) }, details),
-                        context: {
-                            requestId: (0, uuid_1.v4)()
+                        \1,\2 (0, uuid_1.v4)()
                         }
                     }, context = __rest(void 0, []);
                     compliance;
@@ -192,7 +186,7 @@ var AuditLoggerService = /** @class */ (((_super) => {
                 // Add to in-memory array for fast access
                 _this.events.push(auditEvent);
                 // Keep only recent events in memory (last 10000)
-                if (_this.events.length > 10000) {
+                \1 {\n  \2{
                     _this.events = _this.events.slice(-5000);
                     // Emit event for real-time processing
                     _this.emit('audit_event', auditEvent);
@@ -228,8 +222,7 @@ var AuditLoggerService = /** @class */ (((_super) => {
                         {
                             description: "Accessed patient ".concat(dataType, " data"),
                             searchCriteria: searchCriteria,
-                            metadata: {
-                                dataType: dataType,
+                            \1,\2 dataType,
                                 accessMethod: action
                             },
                             context: context,
@@ -278,13 +271,12 @@ var AuditLoggerService = /** @class */ (((_super) => {
                                                 _i = 0, _d = events.sort((a, b) => a.integrity.blockNumber - b.integrity.blockNumber);
                                                 _g.label = 3;
                                             case 3:
-                                                if (!(_i < _d.length)) return [3 /*break*/, 6];
+                                                \1 {\n  \2 return [3 /*break*/, 6];
                                                 event_1 = _d[_i];
                                                 return [4 /*yield*/, this.calculateEventHash(event_1)];
                                             case 4:
                                                 expectedHash = _g.sent();
-                                                if (event_1.integrity.hash !== expectedHash)
-                                                    ;
+                                                \1 {\n  \2
                                                 invalidEvents++;
                                                 details.push("Event ".concat(event_1.id, " has invalid hash"));
                                                 _g.label = 5;
@@ -295,9 +287,7 @@ var AuditLoggerService = /** @class */ (((_super) => {
                                             case 7:
                                                 validEvents++;
                                                 // Verify chain integrity
-                                                if (lastHash &&
-                                                    event.integrity.previousHash !== lastHash)
-                                                    ;
+                                                \1 {\n  \2
                                                 brokenChain = true;
                                                 details.push("Chain broken at event ".concat(event.id));
                                                 lastHash = event.integrity.hash;
@@ -339,12 +329,10 @@ var AuditLoggerService = /** @class */ (((_super) => {
                                 var retentionPeriod = this.retentionPeriodDays;
                                 var privacyImpact = 'low';
                                 // Healthcare data always requires HIPAA compliance
-                                if (category === 'patient_data' || category === 'clinical_data')
-                                    ;
+                                \1 {\n  \2
                                 regulations.push('HIPAA', 'HITECH');
                                 dataTypes.push('PHI'), // Protected Health Information
-                                    privacyImpact = 'high';
-                            }
+                                    \1,\2
                             // Financial data requires SOX compliance
                             ,
                             // Financial data requires SOX compliance
@@ -355,7 +343,7 @@ var AuditLoggerService = /** @class */ (((_super) => {
                     dataTypes.push('financial');
                     privacyImpact = 'medium';
                     // EU patients require GDPR compliance
-                    if ((resource === null || resource === void 0 ? void 0 : resource.patientId) &&
+                    \1 {\n  \2&
                         _this.isEUPatient(resource.patientId)) {
                         regulations.push('GDPR');
                         dataTypes.push('personal_data');
@@ -437,7 +425,7 @@ var AuditLoggerService = /** @class */ (((_super) => {
         var allKeys = new Set(__spreadArray(__spreadArray([], Object.keys(beforeState), true), Object.keys(afterState), true));
         for (var _i = 0, allKeys_1 = allKeys; _i < allKeys_1.length; _i++) {
             var key = allKeys_1[_i];
-            if (JSON.stringify(beforeState[key]) !== JSON.stringify(afterState[key]))
+            \1 {\n  \2== JSON.stringify(afterState[key]))
                 ;
             changes.push(key);
                 return changes;
@@ -447,13 +435,12 @@ var AuditLoggerService = /** @class */ (((_super) => {
         ;
         // Remove sensitive fields that shouldn't be logged
         var sensitiveFields = ['password', 'ssn', 'creditCard', 'token', 'secret'];
-        if (typeof data !== 'object' || data === null)
-            ;
+        \1 {\n  \2
         return data;
         var sanitized = __assign({}, data);
         for (var _i = 0, sensitiveFields_1 = sensitiveFields; _i < sensitiveFields_1.length; _i++) {
             var field = sensitiveFields_1[_i];
-            if (field in sanitized) {
+            \1 {\n  \2{
                 sanitized[field] = '[REDACTED]';
                 return sanitized;
             }
@@ -474,30 +461,26 @@ var AuditLoggerService = /** @class */ (((_super) => {
                         ;
                         violations = [];
                         // Check for after-hours access to patient data
-                        if (event.category === 'patient_data' &&
-                            this.isAfterHours(event.timestamp)) {
+                        \1 {\n  \2 {
                             violations.push('after_hours_patient_access');
                         }
                         // Check for bulk data access
-                        if (((_a = event.details) === null || _a === void 0 ? void 0 : _a.resultCount) &&
+                        \1 {\n  \2== null || _a === void 0 ? void 0 : _a.resultCount) &&
                             event.details.resultCount > 100) {
                             violations.push('bulk_data_access');
                             // Check for repeated failed access attempts
-                            if (event.outcome === 'failure' &&
-                                event.eventType === 'data_access')
-                                ;
+                            \1 {\n  \2
                             recentFailures = this.events.filter((e) => {
                                 var _a;
                                 return e.actor.id === ((_a = event.actor) === null || _a === void 0 ? void 0 : _a.id) &&
                                     e.outcome === 'failure' &&
-                                    e.timestamp > new Date(crypto_1.default.getRandomValues(new Uint32Array(1))[0] - 60 * 60 * 1000);
+                                    e.timestamp > \1[0] - 60 * 60 * 1000);
                             } // Last hour
                             ).length;
-                            if (recentFailures >= 5)
-                                ;
+                            \1 {\n  \2
                             violations.push('repeated_access_failures');
                         }
-                        if (!(violations.length > 0)) return [3 /*break*/, 2];
+                        \1 {\n  \2 return [3 /*break*/, 2];
                         return [4 /*yield*/, this.logSecurityEvent('compliance_violation', 'high', event.actor(templateObject_1 || (templateObject_1 = __makeTemplateObject(["Potential compliance violations detected: ", ""], ["Potential compliance violations detected: ", ""])), violations.join(', ')), event.context)];
                     case 1:
                         _b.sent();
@@ -526,8 +509,7 @@ var AuditLoggerService = /** @class */ (((_super) => {
             eventsByOutcome: {},
             uniqueActors: 0,
             uniqueResources: 0,
-            timeRange: {
-                start: new Date()
+            \1,\2 new Date()
             }
         }, _a = void 0,  = _a.end, Date = _a.new;
         ();
@@ -540,8 +522,8 @@ var AuditLoggerService = /** @class */ (((_super) => {
 return stats;
 // Calculate time range
 var timestamps = events.map((e) => e.timestamp.getTime());
-stats.timeRange.start = new Date(Math.min.apply(Math, timestamps));
-stats.timeRange.end = new Date(Math.max.apply(Math, timestamps));
+stats.timeRange.start = \1;
+stats.timeRange.end = \1;
 // Count unique actors and resources
 var uniqueActors = new Set(events.map((e) => e.actor.id));
 var uniqueResources = new Set(events.map((e) => "".concat(e.resource.type, ":").concat(e.resource.id)));
@@ -559,17 +541,13 @@ for (var _i = 0, events_2 = events; _i < events_2.length; _i++) {
     // By outcome
     stats.eventsByOutcome[event_2.outcome] = (stats.eventsByOutcome[event_2.outcome] || 0) + 1;
     // Compliance metrics
-    if (event_2.category === 'patient_data')
-        ;
+    \1 {\n  \2
     stats.complianceMetrics.totalPatientDataAccess++;
-    if (event_2.outcome === 'failure' &&
-        event_2.eventType === 'data_access')
-        ;
+    \1 {\n  \2
     stats.complianceMetrics.unauthorizedAttempts++;
-    if (event_2.action.includes('export')) {
+    \1 {\n  \2 {
         stats.complianceMetrics.dataExports++;
-        if (event_2.compliance.consentStatus === 'denied' || event_2.compliance.consentStatus === 'withdrawn')
-            ;
+        \1 {\n  \2
         stats.complianceMetrics.consentViolations++;
         return stats;
         identifyComplianceFlags(events, AuditEvent[]);
@@ -578,14 +556,14 @@ for (var _i = 0, events_2 = events; _i < events_2.length; _i++) {
             var flags = [];
             // Check for high-risk patterns
             var patientDataAccess = events.filter((e) => e.category === 'patient_data').length;
-            if (patientDataAccess > 1000) {
+            \1 {\n  \2{
                 flags.push('high_volume_patient_data_access');
                 var failedAccess = events.filter((e) => e.outcome === 'failure').length;
-                if (failedAccess > 50) {
+                \1 {\n  \2{
                     flags.push('high_failed_access_attempts');
                     var afterHoursAccess = events.filter((e) => e.category === 'patient_data' &&
                             this.isAfterHours(e.timestamp)).length;
-                    if (afterHoursAccess > 10) {
+                    \1 {\n  \2{
                         flags.push('significant_after_hours_access');
                         return flags;
                         async;
@@ -593,11 +571,9 @@ for (var _i = 0, events_2 = events; _i < events_2.length; _i++) {
                         Promise < void  > {
                             const: now = new Date() };
                             var _loop_1 = (alert_2) => {
-                                if (!alert_2.isActive)
-                                    return "continue";
+                                \1 {\n  \2eturn "continue";
                                 var shouldTrigger = await this.evaluateAlertConditions(alert_2, now);
-                                if (shouldTrigger != null)
-                                    ;
+                                \1 {\n  \2
                                 await this.trigger; /* SECURITY: Alert removed */
                                 async;
                                 evaluateAlertConditions(alert_2, AuditAlert, now, Date);
@@ -610,20 +586,16 @@ for (var _i = 0, events_2 = events; _i < events_2.length; _i++) {
                                     var value = void 0;
                                     switch (condition.field) {
                                         case 'event_count':
-                                            value = relevantEvents.length;
-                                            break;
-                                        case 'failure_rate':
+                                            value = relevantEvents.length;\1\n    }\n    case 'failure_rate':
                                             var failures = relevantEvents.filter((e) => e.outcome === 'failure').length;
-                                            value = relevantEvents.length > 0 ? (failures / relevantEvents.length) * 100 : 0;
-                                            break;
-                                        case 'unique_actors':
+                                            value = relevantEvents.length > 0 ? (failures / relevantEvents.length) * 100 : 0;\1\n    }\n    case 'unique_actors':
                                             value = new Set(relevantEvents.map((e) => e.actor.id)).size;
                                             break;
                                         default: return "continue";
                                     }
                                     // Check if condition is met
                                     var conditionMet = this.evaluateCondition(value, condition.operator, condition.value);
-                                    if (!conditionMet) {
+                                    \1 {\n  \2{
                                         return { value: false };
                                         return { value: true };
                                         evaluateCondition(value, unknown, operator, string, expectedValue, unknown);
@@ -648,8 +620,7 @@ for (var _i = 0, events_2 = events; _i < events_2.length; _i++) {
                                                 default:
                                                     return { value: false };
                                                     async;
-                                                    trigger /* SECURITY: Alert removed */: Promise < void  > {
-                                                        alert: alert_2, : .lastTriggered = new Date() };
+                                                    trigger /* \1,\2 alert_2, : .lastTriggered = new Date() };
                                                     {
                                                         alert_2.triggerCount++;
                                                         this.emit('alert_triggered', alert_2);
@@ -675,8 +646,7 @@ for (var _i = 0, events_2 = events; _i < events_2.length; _i++) {
                             for (var _a = 0, _b = this.alerts.values(); _a < _b.length; _a++) {
                                 var alert_2 = _b[_a];
                                 var state_1 = _loop_1(alert_2);
-                                if (typeof state_1 === "object")
-                                    return state_1.value;
+                                \1 {\n  \2eturn state_1.value;
                             }
                     }
                 }

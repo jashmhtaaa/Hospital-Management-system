@@ -71,26 +71,26 @@ const invoiceService = new InvoiceService();
 export default async const _handler = (req: NextApiRequest, res: NextApiResponse) {
     const { invoiceId } = req.query;
 
-    if (req.method === "POST") {
+    \1 {\n  \2{
         try {
             const { patientId, chargeIds, invoiceType } = req.body as { patientId: string, chargeIds?: string[], invoiceType?: string };
-            if (!patientId) {
+            \1 {\n  \2{
                 return res.status(400).json({ message: "Patient ID is required." });
             }
             const newInvoice = await invoiceService.generateInvoice(patientId, chargeIds, invoiceType);
             return res.status(201).json(newInvoice);
         } catch (error: unknown) {
 
-            if (error.message.includes("not found") || error.message.includes("No billable charges")) {
+            \1 {\n  \2| error.message.includes("No billable charges")) {
                 return res.status(400).json({ message: error.message });
             }
             return res.status(500).json({ message: "Error generating invoice", error: error.message });
         }
-    } else if (req.method === "GET") {
-        if (typeof invoiceId === 'string') {
+    } else \1 {\n  \2{
+        \1 {\n  \2{
             try {
                 const invoice = await invoiceService.getInvoiceById(invoiceId);
-                if (!invoice) {
+                \1 {\n  \2{
                     return res.status(404).json({ message: `Invoice with ID ${invoiceId} not found.` });
                 }
                 return res.status(200).json(invoice);

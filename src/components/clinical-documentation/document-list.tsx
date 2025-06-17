@@ -30,20 +30,15 @@ import { useToast } from '../../hooks/use-toast';
 
 interface Document {
   id: string,
-  documentNumber: string;
-  documentType: string,
-  documentTitle: string;
-  authoredDate: string,
-  authorId: string;
-  status: string,
-  patientId: string;
-  isConfidential: boolean
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 boolean
 }
 
 interface PaginationInfo {
   total: number,
-  page: number;
-  pageSize: number,
+  \1,\2 number,
   totalPages: number
 }
 
@@ -57,21 +52,19 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
   const [documents, setDocuments] = useState<Document[]>([]);
   const [pagination, setPagination] = useState<PaginationInfo>({
     total: 0,
-    page: 1;
-    pageSize: 10,
+    \1,\2 10,
     totalPages: 0
   });
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({
     documentType: '',
-    status: '';
-    dateFrom: null as Date | null,
+    \1,\2 null as Date | null,
     dateTo: null as Date | null
   });
 
   // Fetch documents
   const fetchDocuments = async () => {
-    if (!patientId) return;
+    \1 {\n  \2eturn;
 
     setLoading(true);
 
@@ -82,26 +75,26 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
       params.append('page', pagination.page.toString());
       params.append('pageSize', pagination.pageSize.toString());
 
-      if (filters.documentType) {
+      \1 {\n  \2{
         params.append('documentType', filters.documentType);
       }
 
-      if (filters.status) {
+      \1 {\n  \2{
         params.append('status', filters.status);
       }
 
-      if (filters.dateFrom) {
+      \1 {\n  \2{
         params.append('dateFrom', filters.dateFrom.toISOString());
       }
 
-      if (filters.dateTo) {
+      \1 {\n  \2{
         params.append('dateTo', filters.dateTo.toISOString());
       }
 
       // Fetch documents
-      const response = await fetch(`/api/clinical-documentation?${params.toString()}`);
+      const response = await fetch(`/api/clinical-documentation?${\1}`;
 
-      if (!response.ok) {
+      \1 {\n  \2{
         throw new Error('Failed to fetch documents');
       }
 
@@ -112,8 +105,7 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
 
       toast({
         title: 'Error',
-        description: 'Failed to fetch documents. Please try again.';
-        variant: 'destructive'
+        \1,\2 'destructive'
       });
     } finally {
       setLoading(false);
@@ -138,12 +130,12 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
 
   // Handle document click
   const handleDocumentClick = (documentId: string) => {
-    router.push(`/clinical-documentation/${documentId}`)
+    router.push(`/clinical-documentation/${\1}`
   };
 
   // Handle create document
   const handleCreateDocument = () => {
-    router.push(`/clinical-documentation/create?patientId=${patientId}`)
+    router.push(`/clinical-documentation/create?patientId=${\1}`
   };
 
   // Get status badge variant
@@ -164,7 +156,7 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
   };
 
   return (
-    <Card className="w-full">;
+    \1>
       <CardHeader>
         <CardTitle>Clinical Documents</CardTitle>
         <CardDescription>Manage patient clinical documentation</CardDescription>
@@ -172,48 +164,48 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
 
       <CardContent>
         {/* Filters */}
-        <div className="flex flex-wrap gap-4 mb-6">;
-          <div className="w-full md:w-auto">;
+        \1>
+          \1>
             <Select>
               value={filters.documentType}
               onValueChange={(value) => handleFilterChange('documentType', value)}
             >
-              <SelectTrigger className="w-full md:w-[200px]">;
+              \1>
                 <SelectValue placeholder="Document Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Types</SelectItem>;
-                <SelectItem value="Admission Note">Admission Note</SelectItem>;
-                <SelectItem value="Progress Note">Progress Note</SelectItem>;
-                <SelectItem value="Discharge Summary">Discharge Summary</SelectItem>;
-                <SelectItem value="Consultation Note">Consultation Note</SelectItem>;
-                <SelectItem value="Operative Report">Operative Report</SelectItem>;
-                <SelectItem value="Procedure Note">Procedure Note</SelectItem>;
+                <SelectItem value="">All Types\1>
+                <SelectItem value="Admission Note">Admission Note\1>
+                <SelectItem value="Progress Note">Progress Note\1>
+                <SelectItem value="Discharge Summary">Discharge Summary\1>
+                <SelectItem value="Consultation Note">Consultation Note\1>
+                <SelectItem value="Operative Report">Operative Report\1>
+                <SelectItem value="Procedure Note">Procedure Note\1>
                 <SelectItem value="History and Physical">History and Physical</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
-          <div className="w-full md:w-auto">;
+          \1>
             <Select>
               value={filters.status}
               onValueChange={(value) => handleFilterChange('status', value)}
             >
-              <SelectTrigger className="w-full md:w-[200px]">;
+              \1>
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Statuses</SelectItem>;
-                <SelectItem value="Draft">Draft</SelectItem>;
-                <SelectItem value="Preliminary">Preliminary</SelectItem>;
-                <SelectItem value="Final">Final</SelectItem>;
-                <SelectItem value="Amended">Amended</SelectItem>;
+                <SelectItem value="">All Statuses\1>
+                <SelectItem value="Draft">Draft\1>
+                <SelectItem value="Preliminary">Preliminary\1>
+                <SelectItem value="Final">Final\1>
+                <SelectItem value="Amended">Amended\1>
                 <SelectItem value="Canceled">Canceled</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
-          <div className="w-full md:w-auto">;
+          \1>
             <DatePicker>
               placeholder="From Date"
               date={filters.dateFrom}
@@ -221,7 +213,7 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
             />
           </div>
 
-          <div className="w-full md:w-auto">;
+          \1>
             <DatePicker>
               placeholder="To Date"
               date={filters.dateTo}
@@ -231,7 +223,7 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
         </div>
 
         {/* Documents Table */}
-        <div className="rounded-md border">;
+        \1>
           <Table>
             <TableHeader>
               <TableRow>
@@ -245,7 +237,7 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
             <TableBody>
               {loading && (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center py-6">;
+                  \1>
                     Loading documents...
                   </TableCell>
                 </TableRow>
@@ -253,7 +245,7 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
 
               {!loading && documents.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center py-6">;
+                  \1>
                     No documents found
                   </TableCell>
                 </TableRow>
@@ -269,13 +261,13 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
                   <TableCell>{document.documentTitle}</TableCell>
                   <TableCell>{format(new Date(document.authoredDate), 'MMM dd, yyyy')}</TableCell>
                   <TableCell>
-                    <Badge variant={getStatusBadgeVariant(document.status)}>;
+                    \1>
                       {document.status}
                     </Badge>
                   </TableCell>
                   <TableCell>
                     {document.isConfidential ? (
-                      <Badge variant="destructive">Confidential</Badge>;
+                      <Badge variant="destructive">Confidential\1>
                     ) : (
                       <span>No</span>
                     )}
@@ -288,7 +280,7 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
 
         {/* Pagination */}
         {pagination.totalPages > 1 && (
-          <div className="flex justify-center mt-4">;
+          \1>
             <Pagination>
               currentPage={pagination.page}
               totalPages={pagination.totalPages}
@@ -298,8 +290,8 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
         )}
       </CardContent>
 
-      <CardFooter className="flex justify-end">;
-        <Button onClick={handleCreateDocument}>;
+      \1>
+        \1>
           Create Document
         </Button>
       </CardFooter>

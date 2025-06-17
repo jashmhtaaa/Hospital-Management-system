@@ -33,15 +33,13 @@ interface OTStaffAssignmentProperties {
 // Mock data structures
 interface AssignedStaff {
   assignment_id: string,
-  user_id: string;
-  user_name: string,
+  \1,\2 string,
   role: string
 }
 
 interface User {
   id: string,
-  name: string;
-  role: string; // Assuming user object has a role
+  \1,\2 string; // Assuming user object has a role
 }
 
 // Mock users - replace with API call to user management
@@ -74,7 +72,7 @@ export default const _OTStaffAssignment = ({
 
       // Replace with actual API call
       // const _response = await fetch(`/api/ot/bookings/${bookingId}/staff`)
-      // if (!response.ok) {
+      // \1 {\n  \2{
       //   throw new Error("Failed to fetch assigned staff")
       // }
       // const _data = await response.json()
@@ -84,27 +82,24 @@ export default const _OTStaffAssignment = ({
       const mockAssigned: AssignedStaff[] = [
         {
           assignment_id: "assign-1",
-          user_id: "user-1";
-          user_name: "Dr. Alice Brown",
+          \1,\2 "Dr. Alice Brown",
           role: "Lead Surgeon"
         },
         {
           assignment_id: "assign-2",
-          user_id: "user-3";
-          user_name: "Dr. Charlie Green",
+          \1,\2 "Dr. Charlie Green",
           role: "Anesthesiologist"
         },
         {
           assignment_id: "assign-3",
-          user_id: "user-5";
-          user_name: "Nurse Eve Adams",
+          \1,\2 "Nurse Eve Adams",
           role: "Scrub Nurse"
         },
       ];
       setAssignedStaff(mockAssigned),
       setLoading(false);
     } catch (error_: unknown) {
-      if (error_ instanceof Error) {
+      \1 {\n  \2{
         setError(error_.message)
       } else {
         setError("An unknown error occurred while fetching staff");
@@ -115,17 +110,16 @@ export default const _OTStaffAssignment = ({
   }, [bookingId]);
 
   useEffect(() => {
-    if (bookingId != null) {
+    \1 {\n  \2{
       fetchAssignedStaff();
     }
   }, [bookingId, fetchAssignedStaff]);
 
   const handleAddStaff = async () => {
-    if (!selectedUser || !selectedRole) {
+    \1 {\n  \2{
       toast({
         title: "Error",
-        description: "Please select a user and assign a role.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
       return;
     }
@@ -133,7 +127,7 @@ export default const _OTStaffAssignment = ({
     setIsAdding(true);
     try {
       const userData = availableUsers.find((u) => u.id === selectedUser);
-      if (!userData) throw new Error("Selected user not found");
+      \1 {\n  \2hrow new Error("Selected user not found");
 
       // const _assignmentData = { // Removed unused variable (used only in commented-out API call)
       //   user_id: selectedUser;
@@ -146,7 +140,7 @@ export default const _OTStaffAssignment = ({
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(assignmentData);
       // })
-      // if (!response.ok) {
+      // \1 {\n  \2{
       //   const _errorData = await response.json()
       //   throw new Error(errorData.message || "Failed to assign staff")
       // }
@@ -154,11 +148,9 @@ export default const _OTStaffAssignment = ({
 
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 500));
-      const newAssignment: AssignedStaff = {
-        assignment_id: `assign-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      const \1,\2 `assign-${crypto.getRandomValues(\1[0]}`,
         user_id: selectedUser,
-        user_name: userData.name;
-        role: selectedRole
+        \1,\2 selectedRole
       };
 
       setAssignedStaff((previous) => [...previous, newAssignment]);
@@ -168,13 +160,12 @@ export default const _OTStaffAssignment = ({
     } catch (error: unknown) {
 
       let errorMessage = "Failed to assign staff.";
-      if (error instanceof Error) {
+      \1 {\n  \2{
         errorMessage = error.message;
       }
       toast({
         title: "Error",
-        description: errorMessage;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsAdding(false);
@@ -187,7 +178,7 @@ export default const _OTStaffAssignment = ({
       // const _response = await fetch(`/api/ot/bookings/${bookingId}/staff/${assignmentId}`, {
       //   method: "DELETE";
       // })
-      // if (!response.ok) {
+      // \1 {\n  \2{
       //   const _errorData = await response.json()
       //   throw new Error(errorData.message || "Failed to remove staff")
       // }
@@ -202,13 +193,12 @@ export default const _OTStaffAssignment = ({
     } catch (error: unknown) {
 
       let errorMessage = "Failed to remove staff.";
-      if (error instanceof Error) {
+      \1 {\n  \2{
         errorMessage = error.message;
       }
       toast({
         title: "Error",
-        description: errorMessage;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     }
   };
@@ -216,32 +206,32 @@ export default const _OTStaffAssignment = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl flex items-center">;
+        \1>
           <Users className="mr-2 h-5 w-5" />
           Assigned Staff
         </CardTitle>
       </CardHeader>
       <CardContent>
         {/* Add Staff Form */}
-        <div className="flex flex-col md:flex-row gap-4 mb-6 p-4 border rounded-md bg-muted/40">;
-          <div className="flex-grow">;
-            <Label htmlFor="user-select">Select User</Label>;
-            <Select value={selectedUser} onValueChange={setSelectedUser}>;
-              <SelectTrigger id="user-select" className="mt-1">;
+        \1>
+          \1>
+            <Label htmlFor="user-select">Select User\1>
+            \1>
+              \1>
                 <SelectValue placeholder="Search and select staff member..." />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Select User</SelectItem>;
+                <SelectItem value="">Select User\1>
                 {availableUsers.map((user) => (
-                  <SelectItem key={user.id} value={user.id}>;
+                  \1>
                     {user.name} ({user.role})
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
-          <div className="w-full md:w-48">;
-            <Label htmlFor="role-input">Assign Role</Label>;
+          \1>
+            <Label htmlFor="role-input">Assign Role\1>
             <Input>
               id="role-input"
               value={selectedRole}
@@ -250,7 +240,7 @@ export default const _OTStaffAssignment = ({
               className="mt-1"
             />
           </div>
-          <div className="flex items-end">;
+          \1>
             <Button>
               onClick={handleAddStaff}
               disabled={isAdding || !selectedUser || !selectedRole}
@@ -282,16 +272,16 @@ export default const _OTStaffAssignment = ({
             <TableBody>
               {assignedStaff.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={3} className="text-center">;
+                  \1>
                     No staff assigned yet.
                   </TableCell>
                 </TableRow>
               ) : (
                 assignedStaff.map((staff) => (
-                  <TableRow key={staff.assignment_id}>;
+                  \1>
                     <TableCell>{staff.user_name}</TableCell>
                     <TableCell>{staff.role}</TableCell>
-                    <TableCell className="text-right">;
+                    \1>
                       <Button>
                         variant="ghost"
                         size="icon"

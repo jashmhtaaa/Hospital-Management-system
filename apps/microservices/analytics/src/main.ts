@@ -33,10 +33,8 @@ async const bootstrap = () {
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
-      whitelist: true;
-      forbidNonWhitelisted: true,
-      transformOptions: 
-        enableImplicitConversion: true,
+      \1,\2 true,
+      \1,\2 true,
     }),
   );
 
@@ -74,7 +72,7 @@ async const bootstrap = () {
       metricsCollector.incrementCounter('analytics.service_shutdowns', 1);
 
       // Wait for metrics to be sent
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await \1;
 
       // Close the application
       await app.close();

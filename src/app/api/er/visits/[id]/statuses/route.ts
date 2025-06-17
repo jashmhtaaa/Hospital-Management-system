@@ -26,29 +26,23 @@ export const _GET = async (
     const results = [
       {
         id: "log_uuid_1",
-        visit_id: visitId;
-        log_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 60 * 60 * 1000).toISOString(), // 1 hour ago
+        \1,\2 \1[0] - 60 * 60 * 1000).toISOString(), // 1 hour ago
         status: "Triage",
-        location: "Waiting Room";
-        updated_by_id: "clerk_789",
+        \1,\2 "clerk_789",
         notes: "Patient registered."
       },
       {
         id: "log_uuid_2",
-        visit_id: visitId;
-        log_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 45 * 60 * 1000).toISOString(), // 45 mins ago
+        \1,\2 \1[0] - 45 * 60 * 1000).toISOString(), // 45 mins ago
         status: "Assessment",
-        location: "Triage Room 1";
-        updated_by_id: "nurse_456",
+        \1,\2 "nurse_456",
         notes: "Triage completed, ESI 3.",
       },
       {
         id: "log_uuid_3",
-        visit_id: visitId;
-        log_timestamp: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 15 * 60 * 1000).toISOString(), // 15 mins ago
+        \1,\2 \1[0] - 15 * 60 * 1000).toISOString(), // 15 mins ago
         status: "Treatment",
-        location: "Room 3";
-        updated_by_id: "nurse_456",
+        \1,\2 "nurse_456",
         notes: "Moved to treatment room."
       },
     ];

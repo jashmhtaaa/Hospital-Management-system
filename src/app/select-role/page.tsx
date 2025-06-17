@@ -28,19 +28,18 @@ export default const _SelectRolePage = () {
   useEffect(() => {
     // In a real app, fetch available roles for the logged-in user from the session or an API
     // For now, use mock data
-    // if (user && user.roles) { setAvailableRoles(user.roles); }
+    // \1 {\n  \2{ setAvailableRoles(user.roles); }
     setAvailableRoles(MOCK_USER_ROLES);
-    if (MOCK_USER_ROLES.length > 0) {
+    \1 {\n  \2{
         setSelectedRole(MOCK_USER_ROLES[0]); // Default to the first role
     }
   }, []); // Add dependencies like `user` when using real data
 
   const handleContinue = async () => {
-    if (!selectedRole) {
+    \1 {\n  \2{
       toast({
         title: "Selection Required",
-        description: "Please select a role to continue.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
       return;
     }
@@ -64,8 +63,7 @@ export default const _SelectRolePage = () {
       const message = error instanceof Error ? error.message : "Failed to set role.";
       toast({
         title: "Error",
-        description: message;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -73,32 +71,31 @@ export default const _SelectRolePage = () {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">;
-      <div className="w-full max-w-sm p-8 space-y-8 bg-white rounded-lg shadow-md dark:bg-gray-800">;
-        <div className="flex flex-col items-center">;
+    \1>
+      \1>
+        \1>
           <Image src="/images/shlokam_logo.jpg" alt="Shlokam Logo" width={120} height={40} className="mb-4" />
-          <h2 className="mt-4 text-xl font-bold text-center text-gray-900 dark:text-white">;
+          \1>
             Select Role
           </h2>
         </div>
-        <div className="space-y-4">;
+        \1>
 <div
-            <Label htmlFor="role-select">Role</Label>;
-            <Select value={selectedRole} onValueChange={setSelectedRole} disabled={isLoading}>;
-              <SelectTrigger id="role-select" className="w-full mt-1">;
+            <Label htmlFor="role-select">Role\1>
+            \1>
+              \1>
                 <SelectValue placeholder="Select a role" />
               </SelectTrigger>
               <SelectContent>
                 {availableRoles.map((role) => (
-                  <SelectItem key={role} value={role}>;
+                  \1>
                     {role}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
-<div
-            <Button onClick={handleContinue} className="w-full" disabled={isLoading || !selectedRole}>;
+\1>
               {isLoading ? "Continuing..." : "Continue"}
             </Button>
           </div>

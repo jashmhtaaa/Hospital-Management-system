@@ -69,8 +69,7 @@ export default const _AssetManagement = () {
   });
   const [pagination, setPagination] = useState({
     skip: 0,
-    take: 10;
-    total: 0
+    \1,\2 0
   });
   const [activeTab, setActiveTab] = useState('all');
   const [statistics, setStatistics] = useState<any | null>(null);
@@ -85,23 +84,23 @@ export default const _AssetManagement = () {
           take: pagination.take.toString()
         });
 
-        if (search != null) queryParams.append('search', search);
-        if (assetTypeFilter != null) queryParams.append('assetType', assetTypeFilter);
-        if (statusFilter != null) queryParams.append('status', statusFilter);
-        if (departmentFilter != null) queryParams.append('departmentId', departmentFilter);
-        if (locationFilter != null) queryParams.append('location', locationFilter);
+        \1 {\n  \2ueryParams.append('search', search);
+        \1 {\n  \2ueryParams.append('assetType', assetTypeFilter);
+        \1 {\n  \2ueryParams.append('status', statusFilter);
+        \1 {\n  \2ueryParams.append('departmentId', departmentFilter);
+        \1 {\n  \2ueryParams.append('location', locationFilter);
 
-        if (dateRange.from) {
+        \1 {\n  \2{
           queryParams.append('purchaseDateStart', format(dateRange.from, 'yyyy-MM-dd'));
         }
 
-        if (dateRange.to) {
+        \1 {\n  \2{
           queryParams.append('purchaseDateEnd', format(dateRange.to, 'yyyy-MM-dd'));
         }
 
-        const response = await fetch(`/api/hr/assets?${queryParams.toString()}`);
+        const response = await fetch(`/api/hr/assets?${\1}`;
 
-        if (!response.ok) {
+        \1 {\n  \2{
           throw new Error('Failed to fetch assets');
         }
 
@@ -115,14 +114,13 @@ export default const _AssetManagement = () {
         setError(err.message),
         toast({
           title: "Error",
-          description: err.message;
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       } finally 
         setLoading(false);
     };
 
-    if (activeTab === 'all' || activeTab === 'maintenance') {
+    \1 {\n  \2{
       fetchAssets();
     }
   }, [search, assetTypeFilter, statusFilter, departmentFilter, locationFilter, dateRange, pagination.skip, pagination.take, activeTab]);
@@ -132,7 +130,7 @@ export default const _AssetManagement = () {
     const fetchDepartments = async () => {
       try {
         const response = await fetch('/api/hr/departments');
-        if (response.ok) {
+        \1 {\n  \2{
           const data = await response.json(),
           setDepartments(data.departments || []);
         }
@@ -149,7 +147,7 @@ export default const _AssetManagement = () {
     const fetchStatistics = async () => {
       try {
         const response = await fetch('/api/hr/assets/statistics');
-        if (response.ok) {
+        \1 {\n  \2{
           const data = await response.json(),
           setStatistics(data);
         }
@@ -163,7 +161,7 @@ export default const _AssetManagement = () {
 
   // Extract unique locations from assets
   useEffect(() => {
-    if (assets.length > 0) {
+    \1 {\n  \2{
       const uniqueLocations = [...new Set(assets.map(asset => asset.location).filter(Boolean))];
       setLocations(uniqueLocations);
     }
@@ -171,7 +169,7 @@ export default const _AssetManagement = () {
 
   // Handle pagination
   const handlePreviousPage = () => {
-    if (pagination.skip - pagination.take >= 0) {
+    \1 {\n  \2{
       setPagination(prev => ({
         ...prev,
         skip: prev.skip - prev.take
@@ -180,7 +178,7 @@ export default const _AssetManagement = () {
   };
 
   const handleNextPage = () => {
-    if (pagination.skip + pagination.take < pagination.total) {
+    \1 {\n  \2{
       setPagination(prev => ({
         ...prev,
         skip: prev.skip + prev.take
@@ -208,9 +206,9 @@ export default const _AssetManagement = () {
     }));
 
     // Set appropriate filters based on tab
-    if (value === 'maintenance') {
+    \1 {\n  \2{
       setStatusFilter('UNDER_MAINTENANCE');
-    } else if (value === 'all') {
+    } else \1 {\n  \2{
       setStatusFilter('');
     }
   };
@@ -239,8 +237,7 @@ export default const _AssetManagement = () {
     } catch (error) {
       toast({
         title: "Export Failed",
-        description: error.message;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     }
   };
@@ -281,7 +278,7 @@ export default const _AssetManagement = () {
 
   // Format currency
   const formatCurrency = (amount: unknown) => {
-    if (amount === null || amount === undefined) return '—';
+    \1 {\n  \2eturn '—';
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD'
@@ -289,37 +286,37 @@ export default const _AssetManagement = () {
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:p-8">;
-      <div className="flex flex-col gap-2">;
-        <h1 className="text-3xl font-bold">Asset Management</h1>;
-        <p className="text-muted-foreground">;
+    \1>
+      \1>
+        <h1 className="text-3xl font-bold">Asset Management\1>
+        \1>
           Track and manage hospital assets and equipment
         </p>
       </div>
 
-      <Tabs defaultValue="all" value={activeTab} onValueChange={handleTabChange}>;
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">;
+      \1>
+        \1>
           <TabsList>
-            <TabsTrigger value="all">All Assets</TabsTrigger>;
-            <TabsTrigger value="maintenance">Maintenance</TabsTrigger>;
+            <TabsTrigger value="all">All Assets\1>
+            <TabsTrigger value="maintenance">Maintenance\1>
             <TabsTrigger value="reports">Reports & Analytics</TabsTrigger>
           </TabsList>
 
-          <div className="flex flex-wrap gap-2">;
-            <Button onClick={handleCreateAsset}>;
+          \1>
+            \1>
               <Plus className="mr-2 h-4 w-4" />
               New Asset
             </Button>
-            <Button variant="outline" onClick={handleExport}>;
+            \1>
               <Download className="mr-2 h-4 w-4" />
               Export
             </Button>
           </div>
         </div>
 
-        <TabsContent value="all" className="mt-0">;
+        \1>
           <Card>
-            <CardHeader className="pb-2">;
+            \1>
               <CardTitle>Asset Inventory</CardTitle>
               <CardDescription>
                 {loading ? 'Loading assets...' :
@@ -327,10 +324,10 @@ export default const _AssetManagement = () {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col md:flex-row gap-4 justify-between mb-4">;
-                <div className="flex flex-col md:flex-row gap-2 md:items-center">;
-                  <form onSubmit={handleSearch} className="flex gap-2">;
-                    <div className="relative">;
+              \1>
+                \1>
+                  \1>
+                    \1>
                       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                       <Input>
                         type="search"
@@ -340,50 +337,50 @@ export default const _AssetManagement = () {
                         onChange={(e) => setSearch(e.target.value)}
                       />
                     </div>
-                    <Button type="submit" variant="secondary">;
+                    \1>
                       Search
                     </Button>
                   </form>
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-2">;
-                  <Select value={assetTypeFilter} onValueChange={setAssetTypeFilter}>;
-                    <SelectTrigger className="w-full md:w-[180px]">;
+                \1>
+                  \1>
+                    \1>
                       <SelectValue placeholder="All Types" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Types</SelectItem>;
-                      <SelectItem value="EQUIPMENT">Equipment</SelectItem>;
-                      <SelectItem value="FURNITURE">Furniture</SelectItem>;
-                      <SelectItem value="IT">IT</SelectItem>;
-                      <SelectItem value="VEHICLE">Vehicle</SelectItem>;
-                      <SelectItem value="BUILDING">Building</SelectItem>;
+                      <SelectItem value="">All Types\1>
+                      <SelectItem value="EQUIPMENT">Equipment\1>
+                      <SelectItem value="FURNITURE">Furniture\1>
+                      <SelectItem value="IT">IT\1>
+                      <SelectItem value="VEHICLE">Vehicle\1>
+                      <SelectItem value="BUILDING">Building\1>
                       <SelectItem value="OTHER">Other</SelectItem>
                     </SelectContent>
                   </Select>
 
-                  <Select value={statusFilter} onValueChange={setStatusFilter}>;
-                    <SelectTrigger className="w-full md:w-[180px]">;
+                  \1>
+                    \1>
                       <SelectValue placeholder="All Statuses" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Statuses</SelectItem>;
-                      <SelectItem value="AVAILABLE">Available</SelectItem>;
-                      <SelectItem value="IN_USE">In Use</SelectItem>;
-                      <SelectItem value="UNDER_MAINTENANCE">Under Maintenance</SelectItem>;
-                      <SelectItem value="DISPOSED">Disposed</SelectItem>;
+                      <SelectItem value="">All Statuses\1>
+                      <SelectItem value="AVAILABLE">Available\1>
+                      <SelectItem value="IN_USE">In Use\1>
+                      <SelectItem value="UNDER_MAINTENANCE">Under Maintenance\1>
+                      <SelectItem value="DISPOSED">Disposed\1>
                       <SelectItem value="LOST">Lost</SelectItem>
                     </SelectContent>
                   </Select>
 
-                  <Select value={departmentFilter} onValueChange={setDepartmentFilter}>;
-                    <SelectTrigger className="w-full md:w-[180px]">;
+                  \1>
+                    \1>
                       <SelectValue placeholder="All Departments" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Departments</SelectItem>;
+                      <SelectItem value="">All Departments\1>
                       {departments.map((dept) => (
-                        <SelectItem key={dept.id} value={dept.id}>;
+                        \1>
                           {dept.name}
                         </SelectItem>
                       ))}
@@ -393,19 +390,19 @@ export default const _AssetManagement = () {
               </div>
 
               {error ? (
-                <div className="text-center py-4 text-red-500">;
+                \1>
                   Error: {error}
                 </div>
               ) : loading ? (
-                <div className="text-center py-4">;
+                \1>
                   Loading...
                 </div>
               ) : assets.length === 0 ? (
-                <div className="text-center py-4">;
+                \1>
                   No assets found. Try adjusting your filters or create a new asset.
                 </div>
               ) : (
-                <div className="overflow-x-auto">;
+                \1>
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -420,9 +417,9 @@ export default const _AssetManagement = () {
                     </TableHeader>
                     <TableBody>
                       {assets.map((asset) => (
-                        <TableRow key={asset.id}>;
-                          <TableCell className="font-medium">;
-                            <div className="flex items-center gap-2">;
+                        \1>
+                          \1>
+                            \1>
                               {getAssetTypeIcon(asset.assetType)}
                               <span>{asset.name}</span>
                             </div>
@@ -440,7 +437,7 @@ export default const _AssetManagement = () {
                             {asset.location || '—'}
                           </TableCell>
                           <TableCell>
-                            <Badge variant={getStatusBadgeVariant(asset.status)}>;
+                            \1>
                               {asset.status.replace('_', ' ')}
                             </Badge>
                           </TableCell>
@@ -448,7 +445,7 @@ export default const _AssetManagement = () {
                             <Button>
                               variant="ghost"
                               size="sm"
-                              onClick={() => router.push(`/dashboard/hr/assets/${asset.id}`)}
+                              onClick={() => router.push(`/dashboard/hr/assets/${\1}`}
                             >
                               View
                             </Button>
@@ -470,7 +467,7 @@ export default const _AssetManagement = () {
                     />
                   </PaginationItem>
                   <PaginationItem>
-                    <span className="text-sm">;
+                    \1>
                       Page {Math.floor(pagination.skip / pagination.take) + 1} of {Math.ceil(pagination.total / pagination.take) ||
                         1}
                     </span>
@@ -487,9 +484,9 @@ export default const _AssetManagement = () {
           </Card>
         </TabsContent>
 
-        <TabsContent value="maintenance" className="mt-0">;
+        \1>
           <Card>
-            <CardHeader className="pb-2">;
+            \1>
               <CardTitle>Maintenance Schedule</CardTitle>
               <CardDescription>
                 Assets currently under maintenance or scheduled for maintenance
@@ -497,16 +494,16 @@ export default const _AssetManagement = () {
             </CardHeader>
             <CardContent>
               {/* Maintenance content would go here */}
-              <div className="text-center py-4">;
+              \1>
                 Loading maintenance schedule...
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="reports" className="mt-0">;
+        \1>
           <Card>
-            <CardHeader className="pb-2">;
+            \1>
               <CardTitle>Asset Reports & Analytics</CardTitle>
               <CardDescription>
                 View asset distribution, value, and maintenance costs
@@ -514,7 +511,7 @@ export default const _AssetManagement = () {
             </CardHeader>
             <CardContent>
               {/* Reports content would go here */}
-              <div className="text-center py-4">;
+              \1>
                 Loading asset reports...
               </div>
             </CardContent>
@@ -522,15 +519,15 @@ export default const _AssetManagement = () {
         </TabsContent>
       </Tabs>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
+      \1>
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">Total Assets</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">;
+            \1>
               <Package className="h-5 w-5 text-blue-500 mr-2" />
-              <span className="text-2xl font-bold">;
+              \1>
                 {statistics?.totalAssets || 0}
               </span>
             </div>
@@ -538,13 +535,13 @@ export default const _AssetManagement = () {
         </Card>
 
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">Under Maintenance</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">;
+            \1>
               <Wrench className="h-5 w-5 text-yellow-500 mr-2" />
-              <span className="text-2xl font-bold">;
+              \1>
                 {statistics?.assetsByStatus?.find(s => s.status === 'UNDER_MAINTENANCE')?.count || 0}
               </span>
             </div>
@@ -552,12 +549,12 @@ export default const _AssetManagement = () {
         </Card>
 
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">Total Value</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">;
-              <span className="text-2xl font-bold">;
+            \1>
+              \1>
                 {formatCurrency(statistics?.totalValue || 0)}
               </span>
             </div>
@@ -565,12 +562,12 @@ export default const _AssetManagement = () {
         </Card>
 
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">Maintenance Costs</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">;
-              <span className="text-2xl font-bold">;
+            \1>
+              \1>
                 {formatCurrency(statistics?.maintenanceCosts || 0)}
               </span>
             </div>

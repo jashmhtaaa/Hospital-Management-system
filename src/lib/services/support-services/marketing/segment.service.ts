@@ -7,26 +7,8 @@ import { prisma } from '@/lib/prisma';
 /**
  * Service for managing contact segments and segmentation;
  */
-export class SegmentService {
-  private auditLogger = new AuditLogger('marketing-segment');
-  private notificationService = new NotificationService();
-
-  /**
-   * Create a new contact segment;
-   */
-  async createSegment(data: Omit<ContactSegment, 'id' | 'createdAt' | 'updatedAt'>, userId: string): Promise<ContactSegment> {
-    try {
-      // Validate segment data
-      this.validateSegmentData(data);
-
-      // Create segment in database
-      const segment = await prisma.contactSegment.create({
-        data: {
-          name: data.name,
-          description: data.description;
-          criteria: data.criteria,
-          isActive: data.isActive !== undefined ? data.isActive : true;
-          createdById: userId
+\1
+}
         }
       });
 
@@ -35,8 +17,7 @@ export class SegmentService {
         action: 'segment.create',
         resourceId: segment.id;
         userId,
-        details: {
-          segmentName: segment.name,
+        \1,\2 segment.name,
           hasCriteria: !!segment.criteria
         }
       });
@@ -44,15 +25,14 @@ export class SegmentService {
       // Notify relevant users
       await this.notificationService.sendNotification({
         type: 'SEGMENT_CREATED',
-        title: 'New Contact Segment Created';
-        message: `A new contact segment "${segment.name}" has been created`,
+        \1,\2 `A new contact segment "${segment.name}" has been created`,
         recipientRoles: ['MARKETING_MANAGER', 'MARKETING_STAFF'],
         metadata: { segmentId: segment.id }
       });
 
       return segment;
     } catch (error) {
-      if (error instanceof ValidationError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to create contact segment', error);
@@ -66,25 +46,19 @@ export class SegmentService {
     try {
       const segment = await prisma.contactSegment.findUnique({
         where: { id },
-        include: {
-          createdByUser: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             }
           },
-          members: includeMembers ? {
-            where: {
+          \1,\2 {
               isActive: true
             },
-            include: {
-              contact: true
+            \1,\2 true
             }
           } : false,
-          _count: {
-            select: {
-              members: {
-                where: {
+          \1,\2 {
+              \1,\2 {
                   isActive: true
                 }
               },
@@ -94,13 +68,13 @@ export class SegmentService {
         }
       });
 
-      if (!segment) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact segment with ID ${id} not found`);
       }
 
       return segment;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to retrieve contact segment', error);
@@ -115,7 +89,7 @@ export class SegmentService {
     search?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ data: ContactSegment[], pagination: total: number, page: number; limit: number, totalPages: number }> {
+  }): Promise<{ data: ContactSegment[], pagination: total: number, \1,\2 number, totalPages: number }> {
     try {
       const {
         isActive,
@@ -127,11 +101,11 @@ export class SegmentService {
       // Build where clause based on filters
       const where: unknown = {};
 
-      if (isActive !== undefined) {
+      \1 {\n  \2{
         where.isActive = isActive;
       }
 
-      if (search != null) {
+      \1 {\n  \2{
         where.OR = [
           { name: { contains: search, mode: 'insensitive' } },
           { description: { contains: search, mode: 'insensitive' } }
@@ -144,17 +118,13 @@ export class SegmentService {
       // Get segments with pagination
       const segments = await prisma.contactSegment.findMany({
         where,
-        include: {
-          createdByUser: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             }
           },
-          _count: {
-            select: {
-              members: {
-                where: {
+          \1,\2 {
+              \1,\2 {
                   isActive: true
                 }
               },
@@ -163,8 +133,7 @@ export class SegmentService {
           }
         },
         skip: (page - 1) * limit,
-        take: limit;
-          createdAt: 'desc'
+        \1,\2 'desc'
       });
 
       return {
@@ -191,7 +160,7 @@ export class SegmentService {
         where: { id }
       });
 
-      if (!existingSegment) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact segment with ID ${id} not found`);
       }
 
@@ -206,14 +175,13 @@ export class SegmentService {
         action: 'segment.update',
         resourceId: id;
         userId,
-        details: 
-          segmentName: updatedSegment.name,
+        \1,\2 updatedSegment.name,
           updatedFields: Object.keys(data)
       });
 
       return updatedSegment;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to update contact segment', error);
@@ -230,7 +198,7 @@ export class SegmentService {
         where: { id: segmentId }
       });
 
-      if (!existingSegment) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact segment with ID ${segmentId} not found`);
       }
 
@@ -239,7 +207,7 @@ export class SegmentService {
         where: { id: contactId }
       });
 
-      if (!existingContact) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
 
@@ -251,13 +219,12 @@ export class SegmentService {
         }
       });
 
-      if (existingMember != null) {
+      \1 {\n  \2{
         // If member exists but is inactive, reactivate
-        if (!existingMember.isActive) {
+        \1 {\n  \2{
           const updatedMember = await prisma.segmentMember.update({
             where: { id: existingMember.id },
-            data: {
-              isActive: true,
+            \1,\2 true,
               removedAt: null
             }
           });
@@ -300,7 +267,7 @@ export class SegmentService {
 
       return member;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to add contact to segment', error);
@@ -317,7 +284,7 @@ export class SegmentService {
         where: { id: segmentId }
       });
 
-      if (!existingSegment) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact segment with ID ${segmentId} not found`);
       }
 
@@ -326,7 +293,7 @@ export class SegmentService {
         where: { id: contactId }
       });
 
-      if (!existingContact) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
 
@@ -339,15 +306,14 @@ export class SegmentService {
         }
       });
 
-      if (!existingMember) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact is not a member of this segment`);
       }
 
       // Remove contact from segment (soft delete)
       const updatedMember = await prisma.segmentMember.update({
         where: { id: existingMember.id },
-        data: {
-          isActive: false,
+        \1,\2 false,
           removedAt: new Date()
         }
       })
@@ -364,7 +330,7 @@ export class SegmentService {
 
       return updatedMember;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to remove contact from segment', error);
@@ -381,11 +347,11 @@ export class SegmentService {
         where: { id: segmentId }
       });
 
-      if (!segment) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact segment with ID ${segmentId} not found`);
       }
 
-      if (!segment.criteria) {
+      \1 {\n  \2{
         throw new ValidationError('Segment has no criteria defined', ['No criteria']);
       }
 
@@ -395,8 +361,7 @@ export class SegmentService {
       // Find matching contacts
       const matchingContacts = await prisma.contact.findMany({
         where,
-        select: {
-          id: true
+        \1,\2 true
         }
       });
 
@@ -413,13 +378,12 @@ export class SegmentService {
             }
           });
 
-          if (existingMember != null) {
+          \1 {\n  \2{
             // If inactive, reactivate
-            if (!existingMember.isActive) {
+            \1 {\n  \2{
               await prisma.segmentMember.update({
                 where: { id: existingMember.id },
-                data: {
-                  isActive: true,
+                \1,\2 true,
                   removedAt: null
                 }
               });
@@ -447,8 +411,7 @@ export class SegmentService {
         action: 'segment.criteria.apply',
         resourceId: segmentId;
         userId,
-        details: 
-          matchedContacts: matchingContacts.length,
+        \1,\2 matchingContacts.length,
           addedContacts: addedCount
       });
 
@@ -457,7 +420,7 @@ export class SegmentService {
         total: matchingContacts.length
       };
     } catch (error) {
-      if (error instanceof NotFoundError || error instanceof ValidationError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to apply segment criteria', error);
@@ -472,22 +435,22 @@ export class SegmentService {
     const query: unknown = { AND: [] };
 
     // Process demographic criteria
-    if (criteria.demographics) {
-      if (criteria.demographics.gender) {
+    \1 {\n  \2{
+      \1 {\n  \2{
         query.AND.push({ gender: criteria.demographics.gender });
       }
 
-      if (criteria.demographics.ageRange) {
+      \1 {\n  \2{
         const { min, max } = criteria.demographics.ageRange;
         const today = new Date();
 
-        if (min !== undefined) {
+        \1 {\n  \2{
           const maxDate = new Date();
           maxDate.setFullYear(today.getFullYear() - min);
           query.AND.push({ dateOfBirth: { lte: maxDate } });
         }
 
-        if (max !== undefined) {
+        \1 {\n  \2{
           const minDate = new Date();
           minDate.setFullYear(today.getFullYear() - max);
           query.AND.push({ dateOfBirth: { gte: minDate } });
@@ -496,8 +459,8 @@ export class SegmentService {
     }
 
     // Process source criteria
-    if (criteria.source) {
-      if (Array.isArray(criteria.source)) {
+    \1 {\n  \2{
+      \1 {\n  \2 {
         query.AND.push({ source: { in: criteria.source } });
       } else {
         query.AND.push({ source: criteria.source });
@@ -505,33 +468,33 @@ export class SegmentService {
     }
 
     // Process status criteria
-    if (criteria.status) {
+    \1 {\n  \2{
       query.AND.push({ status: criteria.status });
     }
 
     // Process tag criteria
-    if (criteria?.tags && criteria.tags.length > 0) {
+    \1 {\n  \2{
       query.AND.push({ tags: { hasSome: criteria.tags } });
     }
 
     // Process patient criteria
-    if (criteria.isPatient !== undefined) {
+    \1 {\n  \2{
       query.AND.push({ patientId: criteria.isPatient ? { not: null } : null });
     }
 
     // Process creation date criteria
-    if (criteria.createdAt) {
+    \1 {\n  \2{
       const createdAtQuery: unknown = {};
 
-      if (criteria.createdAt.from) {
+      \1 {\n  \2{
         createdAtQuery.gte = new Date(criteria.createdAt.from);
       }
 
-      if (criteria.createdAt.to) {
+      \1 {\n  \2{
         createdAtQuery.lte = new Date(criteria.createdAt.to);
       }
 
-      if (Object.keys(createdAtQuery).length > 0) {
+      \1 {\n  \2length > 0) {
         query.AND.push({ createdAt: createdAtQuery });
       }
     }
@@ -546,26 +509,26 @@ export class SegmentService {
     const errors: string[] = [];
 
     // Name is required
-    if (!data.name) {
+    \1 {\n  \2{
       errors.push('Segment name is required');
     }
 
     // Name length validation
-    if (data?.name && (data.name.length < 3 || data.name.length > 100)) {
+    \1 {\n  \2 {
       errors.push('Segment name must be between 3 and 100 characters');
     }
 
     // Validate criteria if provided
-    if (data?.criteria && typeof data.criteria === 'object') {
+    \1 {\n  \2{
       try {
         // Validate criteria structure
         this.validateCriteriaStructure(data.criteria);
       } catch (error) {
-        errors.push(`Invalid criteria: ${error.message}`);
+        errors.push(`Invalid criteria: ${\1}`;
       }
     }
 
-    if (errors.length > 0) {
+    \1 {\n  \2{
       throw new ValidationError('Segment validation failed', errors);
     }
   }
@@ -576,7 +539,7 @@ export class SegmentService {
   private validateCriteriaStructure(criteria: unknown): void {
     // This would be expanded based on the actual criteria structure
     // Just a basic check for now
-    if (!criteria || typeof criteria !== 'object') {
+    \1 {\n  \2{
       throw new Error('Criteria must be a valid object');
     }
   }

@@ -35,16 +35,14 @@ export const AdmissionSchema = z.object({
   accommodation_class: z.enum(['general', 'semi_private', 'private', 'icu', 'isolation']),
 
   // Insurance and billing
-  insurance_details: z.object({
-    insurance_provider: z.string().optional(),
+  \1,\2 z.string().optional(),
     policy_number: z.string().optional(),
     authorization_number: z.string().optional(),
     coverage_type: z.enum(['full', 'partial', 'self_pay']).optional(),
   }).optional(),
 
   // Emergency contact
-  emergency_contact: z.object(
-    name: z.string(),
+  \1,\2 z.string(),
     relationship: z.string(),
     phone: z.string(),
     address: z.string().optional()),
@@ -72,8 +70,7 @@ export const DischargeSchema = z.object({
   // Clinical information
   final_diagnosis: z.string().min(1, 'Final diagnosis is required'),
   secondary_diagnoses: z.array(z.string()).optional(),
-  procedures_performed: z.array(z.object({
-    procedure_name: z.string(),
+  \1,\2 z.string(),
     procedure_code: z.string().optional(),
     date_performed: z.date(),
     surgeon: z.string().optional()
@@ -81,15 +78,13 @@ export const DischargeSchema = z.object({
 
   // Discharge planning
   discharge_instructions: z.string().min(1, 'Discharge instructions are required'),
-  medications_on_discharge: z.array(z.object({
-    medication_name: z.string(),
+  \1,\2 z.string(),
     dosage: z.string(),
     frequency: z.string(),
     duration: z.string(),
     instructions: z.string().optional()
   })).optional(),
-  follow_up_appointments: z.array(z.object({
-    provider: z.string(),
+  \1,\2 z.string(),
     department: z.string(),
     appointment_date: z.date().optional(),
     instructions: z.string().optional()
@@ -187,28 +182,8 @@ export type Admission = z.infer<typeof AdmissionSchema> & { id?: string export t
 export type Transfer = z.infer<typeof TransferSchema> & { id?: string };
 export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string };
 
-export interface IPDStatistics {
-  total_admissions: number,
-  active_admissions: number;
-  average_length_of_stay: number,
-  bed_occupancy_rate: number;
-  available_beds: number,
-  total_beds: number;
-  readmission_rate: number,
-  mortality_rate: number
-export interface BedAvailability {
-  ward_id: string,
-  ward_name: string;
-  total_beds: number,
-  available_beds: number;
-  occupied_beds: number,
-  maintenance_beds: number;
-  occupancy_rate: number,
-  available_bed_details: {
-    bed_number: string;
-    room_number?: string;
-    bed_type: string,
-    accommodation_class: string
+\1
+}
   }[];
 }
 
@@ -216,22 +191,8 @@ export interface BedAvailability {
  * IPD Management Service
  * Comprehensive inpatient management replacing placeholder implementations
  */
-export class IPDManagementService {
-  private prisma: PrismaClient;
-  private encryptionService = getEncryptionService();
-
-  // Fields that should be encrypted for PHI protection
-  private readonly encryptedFields = [
-    'chief_complaint', 'admitting_diagnosis', 'admission_notes',
-    'final_diagnosis', 'discharge_instructions', 'discharge_summary',
-    'complications', 'reason_for_transfer', 'transfer_notes',
-    'clinical_condition', 'emergency_contact', 'medications_on_discharge',
-    'follow_up_appointments', 'functional_status_on_admission',
-    'functional_status_on_discharge'
-  ]
-
-  constructor(prismaClient?: PrismaClient) {
-    this.prisma = prismaClient || new PrismaClient();
+\1
+}
   }
 
   // Admission Operations
@@ -241,7 +202,7 @@ export class IPDManagementService {
 
       // Check bed availability
       const bedAvailable = await this.checkBedAvailability(validated.ward_id, validated.bed_number)
-      if (!bedAvailable) {
+      \1 {\n  \2{
         throw new Error(`Bed ${validated.bed_number} in ward ${validated.ward_id} is not available`);
       }
 
@@ -250,35 +211,25 @@ export class IPDManagementService {
 
       // Create admission record
       const admission = await this.prisma.admission.create({
-        data: {
-          patientId: validated.patient_id,
-          admissionDate: validated.admission_date;
-          admissionTime: validated.admission_time,
-          admissionType: validated.admission_type;
-          admissionSource: validated.admission_source,
-          chiefComplaint: encryptedData.chief_complaint;
-          admittingDiagnosis: encryptedData.admitting_diagnosis,
+        \1,\2 validated.patient_id,
+          \1,\2 validated.admission_time,
+          \1,\2 validated.admission_source,
+          \1,\2 encryptedData.admitting_diagnosis,
           secondaryDiagnoses: validated.secondary_diagnoses ?
             JSON.stringify(validated.secondary_diagnoses) : null,
           icd10Codes: validated.icd10_codes ?
             JSON.stringify(validated.icd10_codes) : null,
           attendingDoctorId: validated.attending_doctor_id,
-          referringDoctorId: validated.referring_doctor_id;
-          consultingDoctors: validated.consulting_doctors ?
+          \1,\2 validated.consulting_doctors ?
             JSON.stringify(validated.consulting_doctors) : null,
           wardId: validated.ward_id,
-          roomNumber: validated.room_number;
-          bedNumber: validated.bed_number,
-          accommodationClass: validated.accommodation_class;
-          insuranceDetails: validated.insurance_details ?
+          \1,\2 validated.bed_number,
+          \1,\2 validated.insurance_details ?
             JSON.stringify(validated.insurance_details) : null,
           emergencyContact: JSON.stringify(encryptedData.emergency_contact),
-          admissionNotes: encryptedData.admission_notes;
-          estimatedLengthOfStay: validated.estimated_length_of_stay,
-          priorityLevel: validated.priority_level;
-          isolationRequired: validated.isolation_required,
-          isolationType: validated.isolation_type;
-          admittedBy: validated.admitted_by,
+          \1,\2 validated.estimated_length_of_stay,
+          \1,\2 validated.isolation_required,
+          \1,\2 validated.admitted_by,
           admissionStatus: validated.admission_status
         }
       })
@@ -291,7 +242,7 @@ export class IPDManagementService {
         id: admission.id
       };
     } catch (error) {
-      throw new Error(`Failed to create admission: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to create admission: ${\1}`;
     }
   }
 
@@ -299,17 +250,15 @@ export class IPDManagementService {
     try {
       const admission = await this.prisma.admission.findUnique({
         where: { id },
-        include: {
-          patient: true,
-          attendingDoctor: true;
-          ward: true
+        \1,\2 true,
+          \1,\2 true
         }
       });
 
-      if (!admission) return null;
+      \1 {\n  \2eturn null;
       return this.deserializeAdmission(admission);
     } catch (error) {
-      throw new Error(`Failed to get admission: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to get admission: ${\1}`;
     }
   }
 
@@ -323,29 +272,27 @@ export class IPDManagementService {
   }): Promise<Admission[]> {
     try {
       const where: unknown = {};
-      if (filters?.patientId) where.patientId = filters.patientId;
-      if (filters?.wardId) where.wardId = filters.wardId;
-      if (filters?.attendingDoctorId) where.attendingDoctorId = filters.attendingDoctorId;
-      if (filters?.admissionStatus) where.admissionStatus = filters.admissionStatus;
-      if (filters?.admissionDateFrom || filters?.admissionDateTo) {
+      \1 {\n  \2here.patientId = filters.patientId;
+      \1 {\n  \2here.wardId = filters.wardId;
+      \1 {\n  \2here.attendingDoctorId = filters.attendingDoctorId;
+      \1 {\n  \2here.admissionStatus = filters.admissionStatus;
+      \1 {\n  \2{
         where.admissionDate = {};
-        if (filters.admissionDateFrom) where.admissionDate.gte = filters.admissionDateFrom;
-        if (filters.admissionDateTo) where.admissionDate.lte = filters.admissionDateTo;
+        \1 {\n  \2here.admissionDate.gte = filters.admissionDateFrom;
+        \1 {\n  \2here.admissionDate.lte = filters.admissionDateTo;
       }
 
       const admissions = await this.prisma.admission.findMany({
         where,
-        include: {
-          patient: true,
-          attendingDoctor: true;
-          ward: true
+        \1,\2 true,
+          \1,\2 true
         },
         orderBy: admissionDate: 'desc' 
       });
 
       return Promise.all(admissions.map(admission => this.deserializeAdmission(admission)));
     } catch (error) {
-      throw new Error(`Failed to get admissions: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to get admissions: ${\1}`;
     }
   }
 
@@ -372,7 +319,7 @@ export class IPDManagementService {
 
       return this.deserializeAdmission(updated);
     } catch (error) {
-      throw new Error(`Failed to update admission: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to update admission: ${\1}`;
     }
   }
 
@@ -386,11 +333,11 @@ export class IPDManagementService {
         where: { id: validated.admission_id }
       })
 
-      if (!admission) {
+      \1 {\n  \2{
         throw new Error(`Admission ${validated.admission_id} not found`);
       }
 
-      if (admission.admissionStatus !== 'active') {
+      \1 {\n  \2{
         throw new Error(`Admission ${validated.admission_id} is not active`);
       }
 
@@ -404,14 +351,10 @@ export class IPDManagementService {
 
       // Create discharge record
       const discharge = await this.prisma.discharge.create({
-        data: {
-          admissionId: validated.admission_id,
-          dischargeDate: validated.discharge_date;
-          dischargeTime: validated.discharge_time,
-          dischargeType: validated.discharge_type;
-          dischargeDisposition: validated.discharge_disposition,
-          finalDiagnosis: encryptedData.final_diagnosis;
-          secondaryDiagnoses: validated.secondary_diagnoses ?
+        \1,\2 validated.admission_id,
+          \1,\2 validated.discharge_time,
+          \1,\2 validated.discharge_disposition,
+          \1,\2 validated.secondary_diagnoses ?
             JSON.stringify(validated.secondary_diagnoses) : null,
           proceduresPerformed: validated.procedures_performed ?
             JSON.stringify(validated.procedures_performed) : null,
@@ -421,14 +364,10 @@ export class IPDManagementService {
           followUpAppointments: validated.follow_up_appointments ?
             JSON.stringify(await this.encryptionService.encryptObject(validated.follow_up_appointments, this.encryptedFields)) : null,
           functionalStatusOnAdmission: encryptedData.functional_status_on_admission,
-          functionalStatusOnDischarge: encryptedData.functional_status_on_discharge;
-          readmissionRisk: validated.readmission_risk,
-          patientSatisfactionScore: validated.patient_satisfaction_score;
-          dischargeSummary: encryptedData.discharge_summary,
-          complications: encryptedData.complications;
-          lengthOfStay: lengthOfStay,
-          totalCharges: validated.total_charges;
-          dischargedBy: validated.discharged_by
+          \1,\2 validated.readmission_risk,
+          \1,\2 encryptedData.discharge_summary,
+          \1,\2 lengthOfStay,
+          \1,\2 validated.discharged_by
         }
       })
 
@@ -446,7 +385,7 @@ export class IPDManagementService {
         length_of_stay: lengthOfStay
       };
     } catch (error) {
-      throw new Error(`Failed to discharge patient: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to discharge patient: ${\1}`;
     }
   }
 
@@ -457,7 +396,7 @@ export class IPDManagementService {
 
       // Check if destination bed is available
       const bedAvailable = await this.checkBedAvailability(validated.to_ward_id, validated.to_bed)
-      if (!bedAvailable) {
+      \1 {\n  \2{
         throw new Error(`Destination bed ${validated.to_bed} in ward ${validated.to_ward_id} is not available`);
       }
 
@@ -466,37 +405,26 @@ export class IPDManagementService {
 
       // Create transfer record
       const transfer = await this.prisma.transfer.create({
-        data: {
-          admissionId: validated.admission_id,
-          transferDate: validated.transfer_date;
-          transferTime: validated.transfer_time,
-          transferType: validated.transfer_type;
-          fromWardId: validated.from_ward_id,
-          fromRoom: validated.from_room;
-          fromBed: validated.from_bed,
-          toWardId: validated.to_ward_id;
-          toRoom: validated.to_room,
-          toBed: validated.to_bed;
-          reasonForTransfer: encryptedData.reason_for_transfer,
-          clinicalCondition: encryptedData.clinical_condition;
-          transferDiagnosis: validated.transfer_diagnosis,
-          transferringDoctor: validated.transferring_doctor;
-          receivingDoctor: validated.receiving_doctor,
-          externalFacilityName: validated.external_facility_name;
-          externalFacilityAddress: validated.external_facility_address,
-          transportMethod: validated.transport_method;
-          transferNotes: encryptedData.transfer_notes,
+        \1,\2 validated.admission_id,
+          \1,\2 validated.transfer_time,
+          \1,\2 validated.from_ward_id,
+          \1,\2 validated.from_bed,
+          \1,\2 validated.to_room,
+          \1,\2 encryptedData.reason_for_transfer,
+          \1,\2 validated.transfer_diagnosis,
+          \1,\2 validated.receiving_doctor,
+          \1,\2 validated.external_facility_address,
+          \1,\2 encryptedData.transfer_notes,
           equipmentTransferred: validated.equipment_transferred ?
             JSON.stringify(validated.equipment_transferred) : null,
           medicationsDuringTransfer: validated.medications_during_transfer,
-          initiatedBy: validated.initiated_by;
-          approvedBy: validated.approved_by,
+          \1,\2 validated.approved_by,
           transferStatus: validated.transfer_status
         }
       })
 
       // If transfer is completed, update bed statuses and admission record
-      if (validated.transfer_status === 'completed') {
+      \1 {\n  \2{
         await this.completeBedTransfer(validated)
       }
 
@@ -505,7 +433,7 @@ export class IPDManagementService {
         id: transfer.id
       };
     } catch (error) {
-      throw new Error(`Failed to transfer patient: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to transfer patient: ${\1}`;
     }
   }
 
@@ -519,10 +447,8 @@ export class IPDManagementService {
     // Update admission record with new location
     await this.prisma.admission.update({
       where: { id: transfer.admission_id },
-      data: {
-        wardId: transfer.to_ward_id,
-        roomNumber: transfer.to_room;
-        bedNumber: transfer.to_bed
+      \1,\2 transfer.to_ward_id,
+        \1,\2 transfer.to_bed
       }
     })
   }
@@ -534,8 +460,7 @@ export class IPDManagementService {
 
       const wards = await this.prisma.ward.findMany({
         where,
-        include: {
-          beds: true
+        \1,\2 true
         }
       });
 
@@ -547,21 +472,16 @@ export class IPDManagementService {
 
         return {
           ward_id: ward.id,
-          ward_name: ward.name;
-          total_beds: totalBeds,
-          available_beds: availableBeds.length;
-          occupied_beds: occupiedBeds.length,
-          maintenance_beds: maintenanceBeds.length;
-          occupancy_rate: totalBeds > 0 ? (occupiedBeds.length / totalBeds) * 100 : 0,
-          available_bed_details: availableBeds.map(bed => (
-            bed_number: bed.bedNumber,
-            room_number: bed.roomNumber;
-            bed_type: bed.bedType,
+          \1,\2 totalBeds,
+          \1,\2 occupiedBeds.length,
+          \1,\2 totalBeds > 0 ? (occupiedBeds.length / totalBeds) * 100 : 0,
+          \1,\2 bed.bedNumber,
+            \1,\2 bed.bedType,
             accommodation_class: bed.accommodationClass))
         };
       });
     } catch (error) {
-      throw new Error(`Failed to get bed availability: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to get bed availability: ${\1}`;
     }
   }
 
@@ -573,14 +493,13 @@ export class IPDManagementService {
           bedNumber,
           bedStatus: 'available'
         },
-        data: {
-          bedStatus: 'reserved',
+        \1,\2 'reserved',
           reservedForPatient: patientId;
           reservedUntil,
         }
       });
     } catch (error) {
-      throw new Error(`Failed to reserve bed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to reserve bed: ${\1}`;
     }
   }
 
@@ -597,16 +516,13 @@ export class IPDManagementService {
 
   private async updateBedStatus(
     wardId: string,
-    bedNumber: string;
-    status: 'available' | 'occupied' | 'maintenance' | 'cleaning' | 'reserved';
+    \1,\2 'available' | 'occupied' | 'maintenance' | 'cleaning' | 'reserved';
     occupiedByAdmissionId?: string
   ): Promise<void> {
     await this.prisma.bed.updateMany({
       where: { wardId, bedNumber },
-      data: {
-        bedStatus: status,
-        occupiedByAdmissionId: status === 'occupied' ? occupiedByAdmissionId : null;
-        reservedForPatient: status === 'available' ? null : undefined,
+      \1,\2 status,
+        \1,\2 status === 'available' ? null : undefined,
         reservedUntil: status === 'available' ? null : undefined
       }
     });
@@ -616,8 +532,7 @@ export class IPDManagementService {
   async getIPDStatistics(dateRange?: { from: Date, to: Date }): Promise<IPDStatistics> {
     try {
       const whereClause = dateRange ? {
-        admissionDate: {
-          gte: dateRange.from,
+        \1,\2 dateRange.from,
           lte: dateRange.to
         }
       } : {};
@@ -634,8 +549,7 @@ export class IPDManagementService {
           where: { ...whereClause, admissionStatus: 'active' }
         }),
         this.prisma.discharge.findMany({
-          where: dateRange ? {
-            dischargeDate: {
+          \1,\2 {
               gte: dateRange.from,
               lte: dateRange.to
             }
@@ -654,16 +568,13 @@ export class IPDManagementService {
 
       return {
         total_admissions: totalAdmissions,
-        active_admissions: activeAdmissions;
-        average_length_of_stay: Math.round(averageLengthOfStay * 100) / 100,
-        bed_occupancy_rate: Math.round(bedOccupancyRate * 100) / 100;
-        available_beds: availableBeds,
-        total_beds: totalBeds;
-        readmission_rate: 0, // Would need complex query to calculate
+        \1,\2 Math.round(averageLengthOfStay * 100) / 100,
+        \1,\2 availableBeds,
+        \1,\2 0, // Would need complex query to calculate
         mortality_rate: 0, // Would need complex query to calculate
       }
     } catch (error) {
-      throw new Error(`Failed to get IPD statistics: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to get IPD statistics: ${\1}`;
     }
   }
 
@@ -673,33 +584,24 @@ export class IPDManagementService {
 
     return {
       patient_id: admission.patientId,
-      admission_date: admission.admissionDate;
-      admission_time: admission.admissionTime,
-      admission_type: admission.admissionType;
-      admission_source: admission.admissionSource,
-      chief_complaint: decrypted.chiefComplaint;
-      admitting_diagnosis: decrypted.admittingDiagnosis,
+      \1,\2 admission.admissionTime,
+      \1,\2 admission.admissionSource,
+      \1,\2 decrypted.admittingDiagnosis,
       secondary_diagnoses: admission.secondaryDiagnoses ?
         JSON.parse(admission.secondaryDiagnoses) : undefined,
       icd10_codes: admission.icd10Codes ?
         JSON.parse(admission.icd10Codes) : undefined,
       attending_doctor_id: admission.attendingDoctorId,
-      referring_doctor_id: admission.referringDoctorId;
-      consulting_doctors: admission.consultingDoctors ?
+      \1,\2 admission.consultingDoctors ?
         JSON.parse(admission.consultingDoctors) : undefined,
       ward_id: admission.wardId,
-      room_number: admission.roomNumber;
-      bed_number: admission.bedNumber,
-      accommodation_class: admission.accommodationClass;
-      insurance_details: admission.insuranceDetails ?
+      \1,\2 admission.bedNumber,
+      \1,\2 admission.insuranceDetails ?
         JSON.parse(admission.insuranceDetails) : undefined,
       emergency_contact: JSON.parse(decrypted.emergencyContact),
-      admission_notes: decrypted.admissionNotes;
-      estimated_length_of_stay: admission.estimatedLengthOfStay,
-      priority_level: admission.priorityLevel;
-      isolation_required: admission.isolationRequired,
-      isolation_type: admission.isolationType;
-      admitted_by: admission.admittedBy,
+      \1,\2 admission.estimatedLengthOfStay,
+      \1,\2 admission.isolationRequired,
+      \1,\2 admission.admittedBy,
       admission_status: admission.admissionStatus
     };
   }
@@ -714,7 +616,7 @@ export class IPDManagementService {
 let ipdServiceInstance: IPDManagementService | null = null
 
 export const getIPDService = (prismaClient?: PrismaClient): IPDManagementService => {
-  if (!ipdServiceInstance) {
+  \1 {\n  \2{
     ipdServiceInstance = new IPDManagementService(prismaClient);
   }
   return ipdServiceInstance

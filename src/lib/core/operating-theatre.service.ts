@@ -101,28 +101,23 @@ export const AnesthesiaRecordSchema = z.object({
   medications: z.array(z.string()).default([]),
   fasting_status: z.string(),
   airway_assessment: z.string(),
-  induction_agents: z.array(z.object({
-    agent: z.string(),
+  \1,\2 z.string(),
     dose: z.string(),
     time: z.string()
   })).default([]),
-  maintenance_agents: z.array(z.object({
-    agent: z.string(),
+  \1,\2 z.string(),
     concentration: z.string(),
     duration: z.string()
   })).default([]),
-  neuromuscular_blocking_agents: z.array(z.object({
-    agent: z.string(),
+  \1,\2 z.string(),
     dose: z.string(),
     time: z.string()
   })).default([]),
-  reversal_agents: z.array(z.object({
-    agent: z.string(),
+  \1,\2 z.string(),
     dose: z.string(),
     time: z.string()
   })).default([]),
-  intraop_events: z.array(z.object({
-    time: z.string(),
+  \1,\2 z.string(),
     event: z.string(),
     intervention: z.string().optional()
   })).default([]),
@@ -136,8 +131,7 @@ export const AnesthesiaRecordSchema = z.object({
 
 export type SurgicalProcedure = z.infer<typeof SurgicalProcedureSchema> & {
   id: string,
-  case_number: string;
-  status: 'scheduled' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled' | 'postponed';
+  \1,\2 'scheduled' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled' | 'postponed';
   actual_start_time?: Date;
   actual_end_time?: Date;
   actual_duration?: number;
@@ -156,22 +150,19 @@ export type SurgicalProcedure = z.infer<typeof SurgicalProcedureSchema> & {
 
 export type ORSchedule = z.infer<typeof ORScheduleSchema> & {
   id: string,
-  utilization_percentage: number;
-  created_at: Date,
+  \1,\2 Date,
   updated_at: Date
 };
 
 export type SurgicalTeam = z.infer<typeof SurgicalTeamSchema> & {
   id: string,
-  team_complete: boolean;
-  created_at: Date,
+  \1,\2 Date,
   updated_at: Date
 };
 
 export type SurgicalInstrument = z.infer<typeof SurgicalInstrumentSchema> & {
   id: string,
-  available: boolean;
-  created_at: Date,
+  \1,\2 Date,
   updated_at: Date;
   last_used?: Date;
   next_maintenance?: Date;
@@ -180,84 +171,27 @@ export type SurgicalInstrument = z.infer<typeof SurgicalInstrumentSchema> & {
 
 export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
   id: string,
-  created_at: Date;
-  updated_at: Date;
+  \1,\2 Date;
   signed_at?: Date;
   signed_by?: string
 };
 
-export interface ORCapacity {
-  total_rooms: number,
-  active_rooms: number;
-  scheduled_cases: number,
-  in_progress_cases: number;
-  completed_cases: number,
-  cancelled_cases: number;
-  utilization_rate: number,
-  average_turnover_time: number;
-  rooms_by_status: {
-    available: number,
-    occupied: number;
-    cleaning: number,
-    setup: number;
-    maintenance: number
+\1
+}
   };
   upcoming_cases: SurgicalProcedure[]
-export interface ORMetrics {
-  daily_volume: number,
-  utilization_rate: number;
-  average_case_duration: number,
-  average_turnover_time: number;
-  first_case_start_delay: number,
-  cancellation_rate: number;
-  postponement_rate: number,
-  complication_rate: number;
-  on_time_start_rate: number,
-  surgeon_productivity: {
-    surgeon_id: string,
-    cases_performed: number;
-    average_duration: number,
-    complication_rate: number;
-    on_time_rate: number
+\1
+}
   }[];
-  room_efficiency: {
-    room_id: string,
-    utilization_rate: number;
-    cases_performed: number,
+  \1,\2 string,
+    \1,\2 number,
     average_turnover: number
   }[];
-export interface InstrumentCount {
-  instrument_id: string,
-  instrument_name: string;
-  opening_count: number,
-  closing_count: number;
-  discrepancy: boolean,
-  counted_by: string;
-  count_time: Date,
-  location: 'field' | 'back_table' | 'mayo_stand' | 'basin' | 'floor'
-export interface SafetyChecklist {
-  surgery_id: string,
-  checklist_type: 'sign_in' | 'time_out' | 'sign_out';
-  completed: boolean,
-  completed_by: string;
-  completed_at: Date,
-  items: {
-    item: string,
-    checked: boolean;
-    notes?: string;
+\1
+}
   }[];
-export class OperatingTheatreService {
-  private surgicalProcedures: Map<string, SurgicalProcedure> = new Map(),
-  private orSchedules: Map<string, ORSchedule[]> = new Map(),
-  private surgicalTeams: Map<string, SurgicalTeam> = new Map(),
-  private instruments: Map<string, SurgicalInstrument> = new Map(),
-  private anesthesiaRecords: Map<string, AnesthesiaRecord> = new Map(),
-  private instrumentCounts: Map<string, InstrumentCount[]> = new Map(),
-  private safetyChecklists: Map<string, SafetyChecklist[]> = new Map(),
-  private orRooms: Map<string, any> = new Map(),
-  constructor() {
-    this.initializeORRooms();
-    this.initializeSurgicalInstruments();
+\1
+}
   }
 
   /**
@@ -279,8 +213,7 @@ export class OperatingTheatreService {
       this.orRooms.set(room.id, {
         ...room,
         status: 'available',
-        current_case: null;
-        last_cleaned: new Date(),
+        \1,\2 new Date(),
         maintenance_due: null
       });
       this.orSchedules.set(room.id, []);
@@ -294,62 +227,39 @@ export class OperatingTheatreService {
     const instruments: Omit<SurgicalInstrument, 'id' | 'created_at' | 'updated_at'>[] = [
       {
         instrument_name: 'Mayo Scissors',
-        instrument_id: 'MAYO-001';
-        category: 'cutting',
-        manufacturer: 'Aesculap';
-        sterilization_status: 'sterile',
-        location: 'Instrument Storage';
-        cost: 150.00,
-        usage_count: 245;
-        max_usage_cycles: 1000,
-        is_single_use: false;
-        requires_count: true,
-        available: true;
-        condition: 'good'
+        \1,\2 'cutting',
+        \1,\2 'sterile',
+        \1,\2 150.00,
+        \1,\2 1000,
+        \1,\2 true,
+        \1,\2 'good'
       },
       {
         instrument_name: 'DeBakey Forceps',
-        instrument_id: 'DEBAKEY-001';
-        category: 'grasping',
-        manufacturer: 'KLS Martin';
-        sterilization_status: 'sterile',
-        location: 'Instrument Storage';
-        cost: 120.00,
-        usage_count: 189;
-        max_usage_cycles: 800,
-        is_single_use: false;
-        requires_count: true,
-        available: true;
-        condition: 'excellent'
+        \1,\2 'grasping',
+        \1,\2 'sterile',
+        \1,\2 120.00,
+        \1,\2 800,
+        \1,\2 true,
+        \1,\2 'excellent'
       },
       {
         instrument_name: 'Bovie Electrocautery',
-        instrument_id: 'BOVIE-001';
-        category: 'electrocautery',
-        manufacturer: 'Medtronic';
-        sterilization_status: 'sterile',
-        location: 'OR-01';
-        cost: 25.00,
-        usage_count: 67;
-        is_single_use: true,
-        requires_count: false;
-        available: true,
+        \1,\2 'electrocautery',
+        \1,\2 'sterile',
+        \1,\2 25.00,
+        \1,\2 true,
+        \1,\2 true,
         condition: 'excellent'
       },
       {
         instrument_name: 'Weitlaner Retractor',
-        instrument_id: 'WEIT-001';
-        category: 'retractor',
-        manufacturer: 'Integra';
-        sterilization_status: 'sterile',
-        location: 'Instrument Storage';
-        cost: 200.00,
-        usage_count: 156;
-        max_usage_cycles: 500,
-        is_single_use: false;
-        requires_count: true,
-        available: true;
-        condition: 'good'
+        \1,\2 'retractor',
+        \1,\2 'sterile',
+        \1,\2 200.00,
+        \1,\2 500,
+        \1,\2 true,
+        \1,\2 'good'
       },
     ];
 
@@ -384,17 +294,15 @@ export class OperatingTheatreService {
     const procedure: SurgicalProcedure = {
       ...validatedData,
       id: procedureId,
-      case_number: caseNumber;
-      status: 'scheduled',
-      or_room_assigned: orRoom;
-      created_at: new Date(),
+      \1,\2 'scheduled',
+      \1,\2 new Date(),
       updated_at: new Date()
     };
 
     this.surgicalProcedures.set(procedureId, procedure);
 
     // Schedule OR room
-    if (orRoom != null) {
+    \1 {\n  \2{
       await this.scheduleORRoom(orRoom, validatedData.scheduled_date, validatedData.scheduled_start_time, validatedData.estimated_duration, procedureId);
     }
 
@@ -405,8 +313,8 @@ export class OperatingTheatreService {
    * Generate case number;
    */
   private generateCaseNumber(): string {
-    const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().slice(-6);
-    const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    const _timestamp = crypto.getRandomValues(\1[0].toString().slice(-6);
+    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
     return `CASE/* SECURITY: Template literal eliminated */
   }
 
@@ -415,15 +323,14 @@ export class OperatingTheatreService {
    */
   private async findAvailableORRoom(
     date: string,
-    startTime: string;
-    duration: number;
+    \1,\2 number;
     preference?: string;
   ): Promise<string | undefined> {
     const scheduledDateTime = new Date(`/* SECURITY: Template literal eliminated */
     const endTime = new Date(scheduledDateTime.getTime() + duration * 60000);
 
     // Check preferred room first
-    if (preference && this.orRooms.has(preference)) {
+    \1 {\n  \2 {
       const roomSchedule = this.orSchedules.get(preference) || [];
       const isAvailable = !roomSchedule.some(schedule => {
         const scheduleStart = new Date(`/* SECURITY: Template literal eliminated */
@@ -434,7 +341,7 @@ export class OperatingTheatreService {
                (scheduledDateTime <= scheduleStart && endTime >= scheduleEnd);
       });
 
-      if (isAvailable != null) {
+      \1 {\n  \2{
         return preference;
       }
     }
@@ -451,7 +358,7 @@ export class OperatingTheatreService {
                (scheduledDateTime <= scheduleStart && endTime >= scheduleEnd);
       });
 
-      if (isAvailable != null) {
+      \1 {\n  \2{
         return roomId;
       }
     }
@@ -464,23 +371,19 @@ export class OperatingTheatreService {
    */
   private async scheduleORRoom(
     roomId: string,
-    date: string;
-    startTime: string,
-    duration: number;
-    surgeryId: string;
+    \1,\2 string,
+    \1,\2 string;
   ): Promise<void> {
     const endTime = new Date(`/* SECURITY: Template literal eliminated */
     endTime.setMinutes(endTime.getMinutes() + duration);
 
-    const schedule: ORSchedule = {
-      id: uuidv4(),
+    const \1,\2 uuidv4(),
       or_room_id: roomId;
       date,
       start_time: startTime,
       end_time: endTime.toTimeString().slice(0, 5),
       block_type: 'scheduled',
-      assigned_team: [];
-      utilization_percentage: 85, // Estimated
+      \1,\2 85, // Estimated
       created_at: new Date(),
       updated_at: new Date()
     };
@@ -508,8 +411,7 @@ export class OperatingTheatreService {
     const team: SurgicalTeam = {
       ...validatedData,
       id: teamId,
-      team_complete: teamComplete;
-      created_at: new Date(),
+      \1,\2 new Date(),
       updated_at: new Date()
     };
 
@@ -522,11 +424,11 @@ export class OperatingTheatreService {
    */
   async startSurgicalProcedure(procedureId: string): Promise<SurgicalProcedure> {
     const procedure = this.surgicalProcedures.get(procedureId);
-    if (!procedure) {
+    \1 {\n  \2{
       throw new Error('Surgical procedure not found');
     }
 
-    if (procedure.status !== 'scheduled' && procedure.status !== 'confirmed') {
+    \1 {\n  \2{
       throw new Error('Procedure is not ready to start');
     }
 
@@ -534,7 +436,7 @@ export class OperatingTheatreService {
     const checklists = this.safetyChecklists.get(procedureId) || [];
     const timeoutCompleted = checklists.some(c => c.checklist_type === 'time_out' && c.completed);
 
-    if (!timeoutCompleted) {
+    \1 {\n  \2{
       throw new Error('Timeout checklist must be completed before starting procedure');
     }
 
@@ -543,9 +445,9 @@ export class OperatingTheatreService {
     procedure.updated_at = new Date();
 
     // Update OR room status
-    if (procedure.or_room_assigned) {
+    \1 {\n  \2{
       const room = this.orRooms.get(procedure.or_room_assigned);
-      if (room != null) {
+      \1 {\n  \2{
         room.status = 'occupied';
         room.current_case = procedureId;
         this.orRooms.set(procedure.or_room_assigned, room);
@@ -568,11 +470,11 @@ export class OperatingTheatreService {
     }
   ): Promise<SurgicalProcedure> {
     const procedure = this.surgicalProcedures.get(procedureId);
-    if (!procedure) {
+    \1 {\n  \2{
       throw new Error('Surgical procedure not found');
     }
 
-    if (procedure.status !== 'in_progress') {
+    \1 {\n  \2{
       throw new Error('Procedure must be in progress to complete');
     }
 
@@ -580,7 +482,7 @@ export class OperatingTheatreService {
     procedure.status = 'completed';
     procedure.actual_end_time = now;
 
-    if (procedure.actual_start_time) {
+    \1 {\n  \2{
       procedure.actual_duration = Math.round(
         (now.getTime() - procedure.actual_start_time.getTime()) / (1000 * 60);
       );
@@ -591,9 +493,9 @@ export class OperatingTheatreService {
     procedure.updated_at = now;
 
     // Update OR room status
-    if (procedure.or_room_assigned) {
+    \1 {\n  \2{
       const room = this.orRooms.get(procedure.or_room_assigned);
-      if (room != null) {
+      \1 {\n  \2{
         room.status = 'cleaning';
         room.current_case = null;
         this.orRooms.set(procedure.or_room_assigned, room);
@@ -609,8 +511,7 @@ export class OperatingTheatreService {
    */
   async performInstrumentCount(
     surgeryId: string,
-    countData: {
-      instrument_id: string;
+    \1,\2 string;
       opening_count?: number;
       closing_count?: number;
       location: InstrumentCount['location'],
@@ -622,10 +523,8 @@ export class OperatingTheatreService {
 
       return {
         instrument_id: data.instrument_id,
-        instrument_name: instrument?.instrument_name || 'Unknown';
-        opening_count: data.opening_count || 0,
-        closing_count: data.closing_count || 0;
-        discrepancy: data.opening_count !== undefined && data.closing_count !== undefined ?;
+        \1,\2 data.opening_count || 0,
+        \1,\2 data.opening_count !== undefined && data.closing_count !== undefined ?;
           data.opening_count !== data.closing_count : false,
         counted_by: data.counted_by,
         count_time: new Date(),
@@ -642,16 +541,12 @@ export class OperatingTheatreService {
    */
   async completeSafetyChecklist(
     surgeryId: string,
-    checklistType: SafetyChecklist['checklist_type'];
-    staffId: string,
+    \1,\2 string,
     items: { item: string, checked: boolean; notes?: string }[]
   ): Promise<SafetyChecklist> {
-    const checklist: SafetyChecklist = {
-      surgery_id: surgeryId,
-      checklist_type: checklistType;
-      completed: items.every(item => item.checked),
-      completed_by: staffId;
-      completed_at: new Date(),
+    const \1,\2 surgeryId,
+      \1,\2 items.every(item => item.checked),
+      \1,\2 new Date(),
       items,
     };
 
@@ -686,7 +581,7 @@ export class OperatingTheatreService {
    */
   async signAnesthesiaRecord(recordId: string, anesthesiologistId: string): Promise<AnesthesiaRecord> {
     const record = this.anesthesiaRecords.get(recordId);
-    if (!record) {
+    \1 {\n  \2{
       throw new Error('Anesthesia record not found');
     }
 
@@ -736,21 +631,17 @@ export class OperatingTheatreService {
     const nextFourHours = new Date(now.getTime() + 4 * 60 * 60 * 1000);
 
     const upcomingCases = procedures.filter(p => {
-      if (p.status !== 'scheduled') return false;
+      \1 {\n  \2eturn false;
       const scheduledTime = new Date(`/* SECURITY: Template literal eliminated */
       return scheduledTime >= now && scheduledTime <= nextFourHours
     }).slice(0, 10);
 
     return {
       total_rooms: totalRooms,
-      active_rooms: activeRooms;
-      scheduled_cases: scheduledCases,
-      in_progress_cases: inProgressCases;
-      completed_cases: completedCases,
-      cancelled_cases: cancelledCases;
-      utilization_rate: Math.round(utilizationRate * 100) / 100,
-      average_turnover_time: averageTurnoverTime;
-      rooms_by_status: roomsByStatus,
+      \1,\2 scheduledCases,
+      \1,\2 completedCases,
+      \1,\2 Math.round(utilizationRate * 100) / 100,
+      \1,\2 roomsByStatus,
       upcoming_cases: upcomingCases
     };
   }
@@ -762,10 +653,10 @@ export class OperatingTheatreService {
     const procedures = Array.from(this.surgicalProcedures.values());
 
     let filteredProcedures = procedures;
-    if (dateFrom != null) {
+    \1 {\n  \2{
       filteredProcedures = filteredProcedures.filter(p => p.scheduled_date >= dateFrom);
     }
-    if (dateTo != null) {
+    \1 {\n  \2{
       filteredProcedures = filteredProcedures.filter(p => p.scheduled_date <= dateTo);
     }
 
@@ -795,7 +686,7 @@ export class OperatingTheatreService {
 
     // Calculate on-time start rate
     const onTimeStarts = completedCases.filter(p => {
-      if (!p.actual_start_time) return false;
+      \1 {\n  \2eturn false;
       const scheduledStart = new Date(`/* SECURITY: Template literal eliminated */
       const actualStart = p.actual_start_time;
       const delayMinutes = (actualStart.getTime() - scheduledStart.getTime()) / (1000 * 60);
@@ -807,27 +698,25 @@ export class OperatingTheatreService {
     // Surgeon productivity
     const surgeonStats = new Map<string, any>();
     filteredProcedures.forEach(p => {
-      if (!p.surgeon_id) return;
+      \1 {\n  \2eturn;
 
       const current = surgeonStats.get(p.surgeon_id) || {
         surgeon_id: p.surgeon_id,
-        cases_performed: 0;
-        total_duration: 0,
-        complications: 0;
-        on_time_starts: 0
+        \1,\2 0,
+        \1,\2 0
       };
 
       current.cases_performed++;
-      if (p.actual_duration) {
+      \1 {\n  \2{
         current.total_duration += p.actual_duration;
       }
-      if (p?.complications && p.complications.length > 0) {
+      \1 {\n  \2{
         current.complications++;
       }
-      if (p.actual_start_time) {
+      \1 {\n  \2{
         const scheduledStart = new Date(`/* SECURITY: Template literal eliminated */
         const delayMinutes = (p.actual_start_time.getTime() - scheduledStart.getTime()) / (1000 * 60),
-        if (delayMinutes <= 15) {
+        \1 {\n  \2{
           current.on_time_starts++;
         }
       }
@@ -837,26 +726,23 @@ export class OperatingTheatreService {
 
     const surgeonProductivity = Array.from(surgeonStats.values()).map(stats => ({
       surgeon_id: stats.surgeon_id,
-      cases_performed: stats.cases_performed;
-      average_duration: stats.cases_performed > 0 ? stats.total_duration / stats.cases_performed : 0,
-      complication_rate: stats.cases_performed > 0 ? (stats.complications / stats.cases_performed) * 100 : 0;
-      on_time_rate: stats.cases_performed > 0 ? (stats.on_time_starts / stats.cases_performed) * 100 : 0
+      \1,\2 stats.cases_performed > 0 ? stats.total_duration / stats.cases_performed : 0,
+      \1,\2 stats.cases_performed > 0 ? (stats.on_time_starts / stats.cases_performed) * 100 : 0
     }));
 
     // Room efficiency
     const roomStats = new Map<string, any>();
     filteredProcedures.forEach(p => {
-      if (!p.or_room_assigned) return;
+      \1 {\n  \2eturn;
 
       const current = roomStats.get(p.or_room_assigned) || {
         room_id: p.or_room_assigned,
-        cases_performed: 0;
-        total_duration: 0,
+        \1,\2 0,
         total_turnover: 0
       };
 
       current.cases_performed++;
-      if (p.actual_duration) {
+      \1 {\n  \2{
         current.total_duration += p.actual_duration;
         current.total_turnover += 30; // Simplified turnover time
       }
@@ -873,19 +759,15 @@ export class OperatingTheatreService {
 
     return {
       daily_volume: dailyVolume,
-      utilization_rate: Math.round(utilizationRate * 100) / 100;
-      average_case_duration: Math.round(averageCaseDuration * 100) / 100,
+      \1,\2 Math.round(averageCaseDuration * 100) / 100,
       average_turnover_time: 30, // Simplified
       first_case_start_delay: 12, // Simplified
       cancellation_rate: Math.round(cancellationRate * 100) / 100,
-      postponement_rate: Math.round(postponementRate * 100) / 100;
-      complication_rate: Math.round(complicationRate * 100) / 100,
-      on_time_start_rate: Math.round(onTimeStartRate * 100) / 100;
-      surgeon_productivity: surgeonProductivity.map(s => ({
+      \1,\2 Math.round(complicationRate * 100) / 100,
+      \1,\2 surgeonProductivity.map(s => ({
         ...s,
         average_duration: Math.round(s.average_duration * 100) / 100,
-        complication_rate: Math.round(s.complication_rate * 100) / 100;
-        on_time_rate: Math.round(s.on_time_rate * 100) / 100
+        \1,\2 Math.round(s.on_time_rate * 100) / 100
       })),
       room_efficiency: roomEfficiency.map(r => ({
         ...r,
@@ -907,17 +789,17 @@ export class OperatingTheatreService {
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ procedures: SurgicalProcedure[], total: number; totalPages: number }> {
+  }): Promise<{ procedures: SurgicalProcedure[], \1,\2 number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredProcedures = Array.from(this.surgicalProcedures.values());
 
     // Apply filters
     Object.entries(searchFilters).forEach(([key, value]) => {
-      if (value != null) {
+      \1 {\n  \2{
         filteredProcedures = filteredProcedures.filter(procedure => {
           const procedureValue = (procedure as any)[key];
-          if (key.includes('date')) {
+          \1 {\n  \2 {
             return procedureValue >= value;
           }
           return procedureValue === value;
@@ -955,11 +837,11 @@ export class OperatingTheatreService {
   async getSurgicalInstruments(category?: string, available?: boolean): Promise<SurgicalInstrument[]> {
     let instruments = Array.from(this.instruments.values());
 
-    if (category != null) {
+    \1 {\n  \2{
       instruments = instruments.filter(instrument => instrument.category === category);
     }
 
-    if (available !== undefined) {
+    \1 {\n  \2{
       instruments = instruments.filter(instrument => instrument.available === available);
     }
 

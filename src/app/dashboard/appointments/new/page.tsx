@@ -31,7 +31,7 @@ const BookAppointmentSchema = z.object({
   reason: z.string().optional()
 });
 
-type FormData = z.infer<typeof BookAppointmentSchema>;
+type FormData = z.infer\1>
 
 export default const _BookAppointmentPage = () {
   const router = useRouter();
@@ -56,8 +56,8 @@ export default const _BookAppointmentPage = () {
           fetch("/api/doctors"),
         ]);
 
-        if (!patientsRes.ok) throw new Error("Failed to fetch patients");
-        if (!doctorsRes.ok) throw new Error("Failed to fetch doctors");
+        \1 {\n  \2hrow new Error("Failed to fetch patients");
+        \1 {\n  \2hrow new Error("Failed to fetch doctors");
 
         const patientsData: Patient[] = await patientsRes.json(),
         const doctorsData: Doctor[] = await doctorsRes.json(),
@@ -68,8 +68,7 @@ export default const _BookAppointmentPage = () {
         const message = err instanceof Error ? err.message : "Could not load patients or doctors.";
         toast({
           title: "Error Fetching Data",
-          description: message;
-          variant: "destructive"
+          \1,\2 "destructive"
         }),
         setErrors([code: z.ZodIssueCode.custom, path: ["form"], message: "Could not load required data." ]);
       } finally 
@@ -94,13 +93,12 @@ export default const _BookAppointmentPage = () {
 
     const validation = BookAppointmentSchema.safeParse(formData);
 
-    if (!validation.success) {
+    \1 {\n  \2{
       setErrors(validation.error.errors),
       setIsLoading(false);
       toast({
         title: "Validation Error",
-        description: "Please check the form for errors.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
       return;
     }
@@ -112,8 +110,7 @@ export default const _BookAppointmentPage = () {
         patient_id: Number.parseInt(validation.data.patient_id, 10),
         doctor_id: Number.parseInt(validation.data.doctor_id, 10),
         appointment_datetime: appointmentDateTimeISO,
-        duration_minutes: validation.data.duration_minutes;
-        reason: validation.data.reason
+        \1,\2 validation.data.reason
     };
 
     try {
@@ -127,7 +124,7 @@ export default const _BookAppointmentPage = () {
 
       const result: { error?: string } = await response.json(); // Add type annotation
 
-      if (!response.ok) {
+      \1 {\n  \2{
         throw new Error(result.error || "Failed to book appointment");
       }
 
@@ -143,8 +140,7 @@ export default const _BookAppointmentPage = () {
       setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
       toast({
         title: "Booking Failed",
-        description: message;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -157,26 +153,26 @@ export default const _BookAppointmentPage = () {
 
   return (
     <DashboardLayout>
-      <div className="flex flex-col gap-6 max-w-2xl mx-auto">;
-        <h1 className="text-2xl font-semibold">Book New Appointment</h1>;
+      \1>
+        <h1 className="text-2xl font-semibold">Book New Appointment\1>
         {isFetchingData ? (
             <p>Loading patient and doctor data...</p>
         ) : (
-        <form onSubmit={handleSubmit}>;
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Appointment Details</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">;
+            \1>
 <div
-                <Label htmlFor="patient_id">Patient *</Label>;
+                <Label htmlFor="patient_id">Patient *\1>
                 <Select name="patient_id" onValueChange={(value) => handleSelectChange("patient_id", value)} required disabled={isLoading}>
-                  <SelectTrigger id="patient_id">;
+                  \1>
                     <SelectValue placeholder="Select patient" />
                   </SelectTrigger>
                   <SelectContent>
                     {patients.map(p => (
-                        <SelectItem key={p.patient_id} value={String(p.patient_id)}>;
+                        \1>
                             {p.first_name} {p.last_name} (ID: {p.patient_id})
                         </SelectItem>
                     ))}
@@ -186,14 +182,14 @@ export default const _BookAppointmentPage = () {
               </div>
 
 <div
-                <Label htmlFor="doctor_id">Doctor *</Label>;
+                <Label htmlFor="doctor_id">Doctor *\1>
                 <Select name="doctor_id" onValueChange={(value) => handleSelectChange("doctor_id", value)} required disabled={isLoading}>
-                  <SelectTrigger id="doctor_id">;
+                  \1>
                     <SelectValue placeholder="Select doctor" />
                   </SelectTrigger>
                   <SelectContent>
                      {doctors.map(d => (
-                        <SelectItem key={d.doctor_id} value={String(d.doctor_id)}>;
+                        \1>
                             {d.user?.fullName} ({d.specialty})
                         </SelectItem>
                     ))}
@@ -203,7 +199,7 @@ export default const _BookAppointmentPage = () {
               </div>
 
 <div
-                <Label htmlFor="appointment_date">Date *</Label>;
+                <Label htmlFor="appointment_date">Date *\1>
                 <Input id="appointment_date" name="appointment_date" type="date" value={formData.appointment_date ||;
                   ""} onChange={handleChange} required disabled={isLoading} />
                 {getError("appointment_date") &&
@@ -211,15 +207,15 @@ export default const _BookAppointmentPage = () {
               </div>
 
 <div
-                <Label htmlFor="appointment_time">Time *</Label>;
+                <Label htmlFor="appointment_time">Time *\1>
                 <Input id="appointment_time" name="appointment_time" type="time" value={formData.appointment_time ||;
                   ""} onChange={handleChange} required disabled={isLoading} />
                  {getError("appointment_time") &&
                    <p className="text-sm text-red-500 mt-1">{getError("appointment_time")}</p>}
              </div>
 
-              <div className="md:col-span-2">;
-                <Label htmlFor="reason">Reason for Visit</Label>;
+              \1>
+                <Label htmlFor="reason">Reason for Visit\1>
                 <Textarea id="reason" name="reason" value={formData.reason ||;
                   ""} onChange={handleChange} disabled={isLoading} />
                 {getError("reason") && <p className="text-sm text-red-500 mt-1">{getError("reason")}</p>}
@@ -229,11 +225,11 @@ export default const _BookAppointmentPage = () {
 
           {getError("form") && <p className="text-sm text-red-500 mt-4">{getError("form")}</p>}
 
-          <div className="mt-6 flex justify-end gap-4">;
+          \1>
             <Button type="button" variant="outline" onClick={() => router.back()} disabled={isLoading}>
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading || isFetchingData}>;
+            \1>
               {isLoading ? "Booking..." : "Book Appointment"}
             </Button>
           </div>

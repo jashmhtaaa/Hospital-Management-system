@@ -16,116 +16,30 @@ import {
   FHIRExtension;
 } from './types.ts';
 
-export interface FHIRHumanName {
-  use?: 'usual' | 'official' | 'temp' | 'nickname' | 'anonymous' | 'old' | 'maiden';
-  text?: string;
-  family?: string;
-  given?: string[];
-  prefix?: string[];
-  suffix?: string[];
-  period?: FHIRPeriod;
-export interface FHIRContactPoint {
-  system?: 'phone' | 'fax' | 'email' | 'pager' | 'url' | 'sms' | 'other';
-  value?: string;
-  use?: 'home' | 'work' | 'temp' | 'old' | 'mobile';
-  rank?: number;
-  period?: FHIRPeriod;
-export interface FHIRAddress {
-  use?: 'home' | 'work' | 'temp' | 'old' | 'billing';
-  type?: 'postal' | 'physical' | 'both';
-  text?: string;
-  line?: string[];
-  city?: string;
-  district?: string;
-  state?: string;
-  postalCode?: string;
-  country?: string;
-  period?: FHIRPeriod;
-export interface FHIRPatientContact {
-  relationship?: FHIRCodeableConcept[];
-  name?: FHIRHumanName;
-  telecom?: FHIRContactPoint[];
-  address?: FHIRAddress;
-  gender?: 'male' | 'female' | 'other' | 'unknown';
-  organization?: FHIRReference;
-  period?: FHIRPeriod;
-export interface FHIRPatientCommunication {
-  language: FHIRCodeableConcept;
-  preferred?: boolean;
-export interface FHIRPatientLink {
-  other: FHIRReference,
-  type: 'replaced-by' | 'replaces' | 'refer' | 'seealso'
-export interface FHIRPatient extends FHIRBase {
-  resourceType: 'Patient';
-  identifier?: FHIRIdentifier[];
-  active?: boolean;
-  name?: FHIRHumanName[];
-  telecom?: FHIRContactPoint[];
-  gender?: 'male' | 'female' | 'other' | 'unknown';
-  birthDate?: string; // YYYY-MM-DD format
-  deceased?: boolean | string; // boolean or dateTime
-  address?: FHIRAddress[];
-  maritalStatus?: FHIRCodeableConcept;
-  multipleBirth?: boolean | number;
-  photo?: FHIRAttachment[];
-  contact?: FHIRPatientContact[];
-  communication?: FHIRPatientCommunication[];
-  generalPractitioner?: FHIRReference[];
-  managingOrganization?: FHIRReference;
-  link?: FHIRPatientLink[];
+\1
+}
 }
 
 // Patient Search Parameters (FHIR R4 specification)
-export interface FHIRPatientSearchParams {
-  _id?: string
-  identifier?: string;
-  name?: string;
-  family?: string;
-  given?: string;
-  phone?: string;
-  email?: string;
-  birthdate?: string;
-  gender?: 'male' | 'female' | 'other' | 'unknown';
-  address?: string;
-  'address-city'?: string;
-  'address-state'?: string;
-  'address-postalcode'?: string;
-  active?: boolean;
-  'general-practitioner'?: string;
-  organization?: string;
-  _count?: number;
-  _offset?: number;
-  _sort?: string;
+\1
+}
 }
 
 // Helper functions for FHIR Patient operations
-export class FHIRPatientUtils {
-  /**
-   * Create a minimal FHIR Patient resource from basic patient data;
-   */
-  static createMinimalPatient(data: {
-    firstName: string,
-    lastName: string;
-    birthDate: string,
-    gender: 'male' | 'female' | 'other' | 'unknown';
-    mrn?: string;
-    phone?: string;
-    email?: string;
+\1
+}
   }): FHIRPatient {
-    const patient: FHIRPatient = {
-      resourceType: 'Patient',
-      active: true;
-      name: [{
+    const \1,\2 'Patient',
+      \1,\2 [{
         use: 'official',
-        family: data.lastName;
-        given: [data.firstName]
+        \1,\2 [data.firstName]
       }],
       gender: data.gender,
       birthDate: data.birthDate
     };
 
     // Add identifiers if provided
-    if (data.mrn) {
+    \1 {\n  \2{
       patient.identifier = [{
         use: 'usual',
         system: 'https://hms.hospital.com/patient-ids',
@@ -134,21 +48,19 @@ export class FHIRPatientUtils {
     }
 
     // Add contact information if provided
-    if (data.phone || data.email) {
+    \1 {\n  \2{
       patient.telecom = [];
-      if (data.phone) {
+      \1 {\n  \2{
         patient.telecom.push({
           system: 'phone',
-          value: data.phone;
-          use: 'mobile',
+          \1,\2 'mobile',
           rank: 1
         });
       }
-      if (data.email) {
+      \1 {\n  \2{
         patient.telecom.push({
           system: 'email',
-          value: data.email;
-          use: 'home'
+          \1,\2 'home'
         });
       }
     }
@@ -160,7 +72,7 @@ export class FHIRPatientUtils {
    * Extract display name from FHIR Patient;
    */
   static getDisplayName(patient: FHIRPatient): string {
-    if (!patient.name || patient.name.length === 0) {
+    \1 {\n  \2{
       return 'Unknown Patient'
     }
 
@@ -175,7 +87,7 @@ export class FHIRPatientUtils {
    * Extract primary phone number from FHIR Patient;
    */
   static getPrimaryPhone(patient: FHIRPatient): string | undefined {
-    if (!patient.telecom) return undefined;
+    \1 {\n  \2eturn undefined;
 
     const phone = patient.telecom;
       .filter(t => t.system === 'phone');
@@ -188,7 +100,7 @@ export class FHIRPatientUtils {
    * Extract primary email from FHIR Patient;
    */
   static getPrimaryEmail(patient: FHIRPatient): string | undefined {
-    if (!patient.telecom) return undefined;
+    \1 {\n  \2eturn undefined;
 
     const email = patient.telecom;
       .filter(t => t.system === 'email');
@@ -201,7 +113,7 @@ export class FHIRPatientUtils {
    * Extract MRN (Medical Record Number) from FHIR Patient;
    */
   static getMRN(patient: FHIRPatient): string | undefined {
-    if (!patient.identifier) return undefined;
+    \1 {\n  \2eturn undefined;
 
     const mrnIdentifier = patient.identifier.find(
       id => id.system === 'https://hms.hospital.com/patient-ids' ||
@@ -217,25 +129,25 @@ export class FHIRPatientUtils {
   static validatePatient(patient: FHIRPatient): { valid: boolean, errors: string[] } {
     const errors: string[] = [];
 
-    if (patient.resourceType !== 'Patient') {
+    \1 {\n  \2{
       errors.push('resourceType must be "Patient"');
     }
 
-    if (!patient.name || patient.name.length === 0) {
+    \1 {\n  \2{
       errors.push('Patient must have at least one name');
     } else {
       for (const name of patient.name) {
-        if (!name?.family && !name.given?.length) {
+        \1 {\n  \2{
           errors.push('Each name must have either family name or given name');
         }
       }
     }
 
-    if (patient?.birthDate && !/^\d{4}-\d{2}-\d{2}$/.test(patient.birthDate)) {
+    \1 {\n  \2 {
       errors.push('birthDate must be in YYYY-MM-DD format');
     }
 
-    if (patient?.gender && !['male', 'female', 'other', 'unknown'].includes(patient.gender)) {
+    \1 {\n  \2 {
       errors.push('gender must be one of: male, female, other, unknown')
     }
 
@@ -249,75 +161,59 @@ export class FHIRPatientUtils {
    * Convert current HMS Patient model to FHIR Patient;
    */
   static fromHMSPatient(hmsPatient: unknown): FHIRPatient {
-    const fhirPatient: FHIRPatient = {
-      resourceType: 'Patient',
-      id: hmsPatient.id;
-      active: true,
-      identifier: [{
-        use: 'usual',
+    const \1,\2 'Patient',
+      \1,\2 true,
+      \1,\2 'usual',
         system: 'https://hms.hospital.com/patient-ids',
         value: hmsPatient.mrn
       }],
-      name: [{
-        use: 'official',
-        family: hmsPatient.lastName;
-        given: [hmsPatient.firstName];
+      \1,\2 'official',
+        \1,\2 [hmsPatient.firstName];
         ...(hmsPatient?.middleName && { given: [hmsPatient.firstName, hmsPatient.middleName] })
       }],
       gender: hmsPatient.gender,
-      birthDate: hmsPatient.dateOfBirth;
-      telecom: []
+      \1,\2 []
     };
 
     // Add contact information
-    if (hmsPatient.phone) {
+    \1 {\n  \2{
       fhirPatient.telecom!.push({
         system: 'phone',
-        value: hmsPatient.phone;
-        use: 'mobile',
+        \1,\2 'mobile',
         rank: 1
       });
     }
 
-    if (hmsPatient.email) {
+    \1 {\n  \2{
       fhirPatient.telecom!.push({
         system: 'email',
-        value: hmsPatient.email;
-        use: 'home'
+        \1,\2 'home'
       });
     }
 
     // Add address if available
-    if (hmsPatient.address) {
+    \1 {\n  \2{
       fhirPatient.address = [{
         use: 'home',
-        type: 'physical';
-        line: [hmsPatient.address.street],
-        city: hmsPatient.address.city;
-        state: hmsPatient.address.state,
-        postalCode: hmsPatient.address.zipCode;
-        country: hmsPatient.address.country || 'US'
+        \1,\2 [hmsPatient.address.street],
+        \1,\2 hmsPatient.address.state,
+        \1,\2 hmsPatient.address.country || 'US'
       }];
     }
 
     // Add emergency contact if available
-    if (hmsPatient.emergencyContact) {
+    \1 {\n  \2{
       fhirPatient.contact = [{
-        relationship: [{
-          coding: [{
+        \1,\2 [{
             system: 'https://terminology.hl7.org/CodeSystem/v2-0131',
-            code: 'EP';
-            display: 'Emergency contact person'
+            \1,\2 'Emergency contact person'
           }],
           text: hmsPatient.emergencyContact.relationship
         }],
-        name: {
-          text: hmsPatient.emergencyContact.name
+        \1,\2 hmsPatient.emergencyContact.name
         },
-        telecom: [{
-          system: 'phone',
-          value: hmsPatient.emergencyContact.phone;
-          use: 'mobile'
+        \1,\2 'phone',
+          \1,\2 'mobile'
         }]
       }]
     }

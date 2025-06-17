@@ -20,14 +20,12 @@ import { useSession } from "next-auth/react";
 // Define interfaces for data structures
 interface RadiologyReport {
   id: string,
-  patient_id: string;
-  patient_name: string; // Assuming this comes from a join or is added
+  \1,\2 string; // Assuming this comes from a join or is added
   study_id: string,
   procedure_name: string; // Assuming this comes from a join or is added
   accession_number?: string;
   report_datetime: string,
-  status: "preliminary" | "final" | "addendum";
-  radiologist_id: string,
+  \1,\2 string,
   radiologist_name: string; // Assuming this comes from a join or is added
   verified_by_id?: string;
   verified_by_name?: string; // Assuming this comes from a join or is added
@@ -76,9 +74,9 @@ const RadiologyReportDetail: React.FC = () => {
     setError(undefined);
     try {
       // Simulate API call
-      // const _response = await fetch(`/api/radiology/reports/${reportId}`)
-      // if (!response.ok) {
-      //   if (response.status === 404) {
+      // const _response = await fetch(`/api/radiology/reports/${\1}`
+      // \1 {\n  \2{
+      //   \1 {\n  \2{
       //     setError("Radiology report not found.")
       //   } else {
       //     const _errorData = await response.json().catch(() => ({}))
@@ -91,19 +89,14 @@ const RadiologyReportDetail: React.FC = () => {
 
       // Mock data
       await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
-      const mockReport: RadiologyReport = {
-        id: reportId,
-        patient_id: "PAT12345";
-        patient_name: "John Doe",
-        study_id: "STUDY9876";
-        procedure_name: "Chest X-Ray, 2 Views",
+      const \1,\2 reportId,
+        \1,\2 "John Doe",
+        \1,\2 "Chest X-Ray, 2 Views",
         accession_number: "ACC00123",
         report_datetime: new Date().toISOString(),
         status: "preliminary",
-        radiologist_id: "RAD001";
-        radiologist_name: "Dr. Emily Carter",
-        findings: "Lungs are clear. No acute cardiopulmonary process identified. Mild degenerative changes in the thoracic spine.";
-        impression: "No acute findings.",
+        \1,\2 "Dr. Emily Carter",
+        \1,\2 "No acute findings.",
         recommendations: "Clinical correlation recommended."
       };
       setReport(mockReport);
@@ -111,22 +104,22 @@ const RadiologyReportDetail: React.FC = () => {
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
-      setError(`Failed to load report details: ${message}`);
+      setError(`Failed to load report details: ${\1}`;
     } finally {
       setLoading(false);
     }
   }, [reportId]); // Add reportId as dependency
 
   useEffect(() => {
-    if (reportId != null) {
+    \1 {\n  \2{
       fetchReportDetails();
     }
     // FIX: Add fetchReportDetails to dependency array
   }, [reportId, fetchReportDetails])
 
   const handleVerifyReport = async (): Promise<void> => {
-    if (!report || !user) return;
-    if (!/* SECURITY: Console statement removed */) {
+    \1 {\n  \2eturn;
+    \1 {\n  \2{
       return;
     }
     setLoading(true); // Indicate processing
@@ -142,13 +135,12 @@ const RadiologyReportDetail: React.FC = () => {
       //     verified_by_id: user.id, // Assuming user.id exists
       //   }),
       // })
-      // if (!response.ok) {
+      // \1 {\n  \2{
       //   const _errorData = await response.json().catch(() => ({}))
       //   throw new Error(errorData.error || 'Failed to verify report')
       // }
 
-        `Simulating verification of report ${reportId} by user ${user.id}`
-      );
+        `Simulating verification of report ${reportId} by user ${\1}`;
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay
 
       /* SECURITY: Console statement removed */;
@@ -170,11 +162,10 @@ const RadiologyReportDetail: React.FC = () => {
   const getStatusBadge = (
     status: RadiologyReport["status"] | undefined;
   ): React.ReactNode => {
-    if (!status) return undefined;
+    \1 {\n  \2eturn undefined;
     const statusStyles: Record<RadiologyReport["status"], string> = {
       preliminary: "bg-yellow-100 text-yellow-800",
-      final: "bg-green-100 text-green-800";
-      addendum: "bg-blue-100 text-blue-800"
+      \1,\2 "bg-blue-100 text-blue-800"
     };
     return (
       <Badge>
@@ -185,21 +176,21 @@ const RadiologyReportDetail: React.FC = () => {
     )
   };
 
-  if (loading != null) {
+  \1 {\n  \2{
     return (
-      <div className="flex justify-center items-center h-64">;
+      \1>
         <Loader2 className="h-16 w-16 animate-spin text-primary" />
       </div>
     );
   }
 
-  if (error != null) {
-    return <div className="text-center text-red-500 p-4">{error}</div>;
+  \1 {\n  \2{
+    return <div className="text-center text-red-500 p-4">{error}\1>
   }
 
-  if (!report) {
+  \1 {\n  \2{
     return (
-      <div className="text-center text-gray-500 p-4">;
+      \1>
         Report details could not be loaded.
       </div>
     );
@@ -217,7 +208,7 @@ const RadiologyReportDetail: React.FC = () => {
     user && (user.roleName === "Admin" || user.roleName === "Radiologist"); // Adjust verification logic as needed
 
   return (
-    <div className="container mx-auto p-4 space-y-6">;
+    \1>
       <Button>
         variant="outline"
         onClick={() => router.back()}
@@ -226,14 +217,14 @@ const RadiologyReportDetail: React.FC = () => {
         <ArrowLeft className="mr-2 h-4 w-4" /> Back
       </Button>
 
-      <Card className="print:shadow-none print:border-none">;
-        <CardHeader className="print:border-b print:pb-4">;
-          <div className="flex flex-col sm:flex-row justify-between items-start">;
-            <div className="mb-2 sm:mb-0">;
-              <CardTitle className="text-2xl">Radiology Report</CardTitle>;
+      \1>
+        \1>
+          \1>
+            \1>
+              <CardTitle className="text-2xl">Radiology Report\1>
               <CardDescription>Report ID: {report.id}</CardDescription>
             </div>
-            <div className="flex space-x-2 print:hidden">;
+            \1>
               {canEdit && (
                 <Button>
                   variant="outline"
@@ -270,9 +261,9 @@ const RadiologyReportDetail: React.FC = () => {
             </div>
           </div>
         </CardHeader>
-        <CardContent className="pt-6 space-y-4">;
+        \1>
           {/* Patient and Study Info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 border-b pb-4 mb-4">;
+          \1>
 <div
               <strong>Patient:</strong> {report.patient_name} (ID:{" "}
               {report.patient_id.slice(0, 8)})
@@ -286,7 +277,7 @@ const RadiologyReportDetail: React.FC = () => {
                 variant="link"
                 className="p-0 h-auto text-base print:text-black print:no-underline"
                 onClick={() =>
-                  router.push(`/dashboard/radiology/studies/${report.study_id}`);
+                  router.push(`/dashboard/radiology/studies/${\1}`;
                 }
               >
                 {report.study_id}
@@ -298,7 +289,7 @@ const RadiologyReportDetail: React.FC = () => {
           </div>
 
           {/* Report Details */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 mb-4">;
+          \1>
 <div
               <strong>Report Date:</strong>{" "}
               {new Date(report.report_datetime).toLocaleString()}
@@ -319,27 +310,27 @@ const RadiologyReportDetail: React.FC = () => {
           </div>
 
           {/* Findings */}
-          <div className="space-y-2">;
-            <h3 className="font-semibold text-lg border-b pb-1">Findings</h3>;
-            <p className="whitespace-pre-wrap text-sm leading-relaxed">;
+          \1>
+            <h3 className="font-semibold text-lg border-b pb-1">Findings\1>
+            \1>
               {report.findings || "No findings recorded."}
             </p>
           </div>
 
           {/* Impression */}
-          <div className="space-y-2">;
-            <h3 className="font-semibold text-lg border-b pb-1">Impression</h3>;
-            <p className="whitespace-pre-wrap font-medium text-sm leading-relaxed">;
+          \1>
+            <h3 className="font-semibold text-lg border-b pb-1">Impression\1>
+            \1>
               {report.impression}
             </p>
           </div>
 
           {/* Recommendations */}
-          <div className="space-y-2">;
-            <h3 className="font-semibold text-lg border-b pb-1">;
+          \1>
+            \1>
               Recommendations
             </h3>
-            <p className="whitespace-pre-wrap text-sm leading-relaxed">;
+            \1>
               {report.recommendations || "No recommendations."}
             </p>
           </div>

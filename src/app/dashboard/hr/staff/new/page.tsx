@@ -45,10 +45,8 @@ const employeeFormSchema = z.object({
   middleName: z.string().optional(),
   gender: z.enum(['MALE', 'FEMALE', 'OTHER', 'UNKNOWN']).optional(),
   birthDate: z.date().optional(),
-  email: z.string().email("Invalid email format").optional().or(z.literal(''));
-  phone: z.string().optional(),
-  address: z.object({
-    line: z.array(z.string()).optional(),
+  \1,\2 z.string().optional(),
+  \1,\2 z.array(z.string()).optional(),
     city: z.string().optional(),
     state: z.string().optional(),
     postalCode: z.string().optional(),
@@ -58,8 +56,7 @@ const employeeFormSchema = z.object({
   departmentId: z.string().optional(),
   userId: z.string().optional(),
   photo: z.string().optional(),
-  emergencyContact: z.object({
-    name: z.string().optional(),
+  \1,\2 z.string().optional(),
     relationship: z.string().optional(),
     phone: z.string().optional(),
     email: z.string().optional()
@@ -75,27 +72,17 @@ export default const _NewEmployee = () {
   // Initialize form
   const form = useForm({
     resolver: zodResolver(employeeFormSchema),
-    defaultValues: {
-      employeeId: '',
-      firstName: '';
-      lastName: '',
-      middleName: '';
-      gender: undefined,
-      birthDate: undefined;
-      email: '',
-      phone: '';
-        line: [''],
-        city: '';
-        state: '',
-        postalCode: '';
-        country: '',
+    \1,\2 '',
+      \1,\2 '',
+      \1,\2 undefined,
+      \1,\2 '',
+      \1,\2 [''],
+        \1,\2 '',
+        \1,\2 '',
       joiningDate: new Date(),
-      departmentId: '';
-      userId: '',
-      photo: '';
-        name: '',
-        relationship: '';
-        phone: '',
+      \1,\2 '',
+      \1,\2 '',
+        \1,\2 '',
         email: '',
     },
   });
@@ -105,7 +92,7 @@ export default const _NewEmployee = () {
     const fetchDepartments = async () => {
       try {
         const response = await fetch('/api/hr/departments');
-        if (response.ok) {
+        \1 {\n  \2{
           const data = await response.json(),
           setDepartments(data.departments || []);
         }
@@ -117,7 +104,7 @@ export default const _NewEmployee = () {
     const fetchUsers = async () => {
       try {
         const response = await fetch('/api/users');
-        if (response.ok) {
+        \1 {\n  \2{
           const data = await response.json(),
           setUsers(data.users || []);
         }
@@ -150,7 +137,7 @@ export default const _NewEmployee = () {
         body: JSON.stringify(formattedData)
       });
 
-      if (!response.ok) {
+      \1 {\n  \2{
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to create employee');
       }
@@ -166,8 +153,7 @@ export default const _NewEmployee = () {
     } catch (error) {
       toast({
         title: "Error",
-        description: error.message;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setLoading(false);
@@ -175,8 +161,8 @@ export default const _NewEmployee = () {
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:p-8">;
-      <div className="flex items-center gap-2">;
+    \1>
+      \1>
         <Button>
           variant="ghost"
           size="sm"
@@ -187,9 +173,9 @@ export default const _NewEmployee = () {
         </Button>
       </div>
 
-      <div className="flex flex-col gap-2">;
-        <h1 className="text-3xl font-bold">Add New Employee</h1>;
-        <p className="text-muted-foreground">;
+      \1>
+        <h1 className="text-3xl font-bold">Add New Employee\1>
+        \1>
           Create a new employee record in the system
         </p>
       </div>
@@ -203,8 +189,8 @@ export default const _NewEmployee = () {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">;
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+            \1>
+              \1>
                 {/* Basic Information */}
                 <FormField>
                   control={form.control}
@@ -239,9 +225,9 @@ export default const _NewEmployee = () {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="">None</SelectItem>;
+                          <SelectItem value="">None\1>
                           {users.map((user) => (
-                            <SelectItem key={user.id} value={user.id}>;
+                            \1>
                               {user.name} ({user.email})
                             </SelectItem>
                           ))}
@@ -313,9 +299,9 @@ export default const _NewEmployee = () {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="MALE">Male</SelectItem>;
-                          <SelectItem value="FEMALE">Female</SelectItem>;
-                          <SelectItem value="OTHER">Other</SelectItem>;
+                          <SelectItem value="MALE">Male\1>
+                          <SelectItem value="FEMALE">Female\1>
+                          <SelectItem value="OTHER">Other\1>
                           <SelectItem value="UNKNOWN">Prefer not to say</SelectItem>
                         </SelectContent>
                       </Select>
@@ -328,7 +314,7 @@ export default const _NewEmployee = () {
                   control={form.control}
                   name="birthDate"
                   render={({ field }) => (
-                    <FormItem className="flex flex-col">;
+                    \1>
                       <FormLabel>Date of Birth</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
@@ -346,7 +332,7 @@ export default const _NewEmployee = () {
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">;
+                        \1>
                           <Calendar>
                             mode="single"
                             selected={field.value}
@@ -367,7 +353,7 @@ export default const _NewEmployee = () {
                   control={form.control}
                   name="joiningDate"
                   render={({ field }) => (
-                    <FormItem className="flex flex-col">;
+                    \1>
                       <FormLabel>Joining Date*</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
@@ -385,7 +371,7 @@ export default const _NewEmployee = () {
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">;
+                        \1>
                           <Calendar>
                             mode="single"
                             selected={field.value}
@@ -418,9 +404,9 @@ export default const _NewEmployee = () {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="">None</SelectItem>;
+                          <SelectItem value="">None\1>
                           {departments.map((dept) => (
-                            <SelectItem key={dept.id} value={dept.id}>;
+                            \1>
                               {dept.name}
                             </SelectItem>
                           ))}
@@ -434,14 +420,14 @@ export default const _NewEmployee = () {
 
               <Separator />
 
-              <div className="space-y-2">;
-                <h3 className="text-lg font-medium">Contact Information</h3>;
-                <p className="text-sm text-muted-foreground">;
+              \1>
+                <h3 className="text-lg font-medium">Contact Information\1>
+                \1>
                   Employee's contact details
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+              \1>
                 <FormField>
                   control={form.control}
                   name="email"
@@ -543,14 +529,14 @@ export default const _NewEmployee = () {
 
               <Separator />
 
-              <div className="space-y-2">;
-                <h3 className="text-lg font-medium">Emergency Contact</h3>;
-                <p className="text-sm text-muted-foreground">;
+              \1>
+                <h3 className="text-lg font-medium">Emergency Contact\1>
+                \1>
                   Person to contact in case of emergency
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+              \1>
                 <FormField>
                   control={form.control}
                   name="emergencyContact.name"
@@ -608,7 +594,7 @@ export default const _NewEmployee = () {
                 />
               </div>
 
-              <div className="flex justify-end gap-2">;
+              \1>
                 <Button>
                   type="button"
                   variant="outline"
@@ -616,7 +602,7 @@ export default const _NewEmployee = () {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" disabled={loading}>;
+                \1>
                   {loading ? 'Saving...' : 'Save Employee'}
                   {!loading && <Save className="ml-2 h-4 w-4" />}
                 </Button>

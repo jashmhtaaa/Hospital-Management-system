@@ -34,30 +34,8 @@ import {
   type QualitySource
 } from './quality-management.service'
 
-export interface QualityPersistenceConfig {
-  enableEncryption: boolean,
-  auditAllAccess: boolean;
-  retentionPeriod: number; // in years
-  automaticArchiving: boolean,
-  encryptSensitiveData: boolean
-export class QualityPersistenceService {
-  private prisma: PrismaClient
-  private auditService: AuditService;
-  private encryptionService: unknown;
-  private config: QualityPersistenceConfig;
-
-  constructor(config?: Partial<QualityPersistenceConfig>) {
-    this.prisma = new PrismaClient();
-    this.auditService = new AuditService();
-    this.encryptionService = getEncryptionService();
-
-    this.config = {
-      enableEncryption: true,
-      auditAllAccess: true;
-      retentionPeriod: 7,
-      automaticArchiving: true;
-      encryptSensitiveData: true;
-      ...config
+\1
+}
     };
   }
 
@@ -67,7 +45,7 @@ export class QualityPersistenceService {
       const dataToStore = { ...indicator }
 
       // Encrypt sensitive data if enabled
-      if (this.config?.encryptSensitiveData && indicator.metadata) {
+      \1 {\n  \2{
         dataToStore.metadata = await this.encryptData(JSON.stringify(indicator.metadata))
       }
 
@@ -81,22 +59,18 @@ export class QualityPersistenceService {
         create: {
           ...dataToStore,
           createdAt: new Date(),
-          createdBy: userId;
-          updatedAt: new Date(),
+          \1,\2 new Date(),
           updatedBy: userId
         }
       });
 
-      if (this.config.auditAllAccess) {
+      \1 {\n  \2{
         await this.auditService.logAuditEvent({
           action: 'quality_indicator_saved',
-          resourceType: 'quality_indicator';
-          resourceId: indicator.id;
+          \1,\2 indicator.id;
           userId,
-          details: 
-            type: indicator.type,
-            target: indicator.target;
-            currentValue: indicator.currentValue
+          \1,\2 indicator.type,
+            \1,\2 indicator.currentValue
         });
       }
     } catch (error) {
@@ -111,12 +85,12 @@ export class QualityPersistenceService {
         where: { id }
       });
 
-      if (!record) return null;
+      \1 {\n  \2eturn null;
 
       const indicator = { ...record } as any;
 
       // Decrypt sensitive data if encrypted
-      if (this.config?.encryptSensitiveData && indicator?.metadata && typeof indicator.metadata === 'string') {
+      \1 {\n  \2{
         try {
           indicator.metadata = JSON.parse(await this.decryptData(indicator.metadata))
         } catch (error) {
@@ -125,11 +99,10 @@ export class QualityPersistenceService {
         }
       }
 
-      if (this.config.auditAllAccess) {
+      \1 {\n  \2{
         await this.auditService.logAuditEvent({
           action: 'quality_indicator_accessed',
-          resourceType: 'quality_indicator';
-          resourceId: id;
+          \1,\2 id;
           userId,
           details: type: indicator.type 
         });
@@ -152,13 +125,13 @@ export class QualityPersistenceService {
     try {
       const where: unknown = {};
 
-      if (filters?.type) where.type = filters.type;
-      if (filters?.department) where.department = filters.department;
-      if (filters?.source) where.source = filters.source;
-      if (filters?.dateFrom || filters?.dateTo) {
+      \1 {\n  \2here.type = filters.type;
+      \1 {\n  \2here.department = filters.department;
+      \1 {\n  \2here.source = filters.source;
+      \1 {\n  \2{
         where.createdAt = {};
-        if (filters.dateFrom) where.createdAt.gte = filters.dateFrom;
-        if (filters.dateTo) where.createdAt.lte = filters.dateTo;
+        \1 {\n  \2here.createdAt.gte = filters.dateFrom;
+        \1 {\n  \2here.createdAt.lte = filters.dateTo;
       }
 
       const records = await this.prisma.qualityIndicator.findMany({
@@ -170,7 +143,7 @@ export class QualityPersistenceService {
         const indicator = { ...record };
 
         // Decrypt metadata if encrypted
-        if (this.config?.encryptSensitiveData && indicator?.metadata && typeof indicator.metadata === 'string') {
+        \1 {\n  \2{
           try {
             indicator.metadata = JSON.parse(await this.decryptData(indicator.metadata))
           } catch (error) {
@@ -181,11 +154,10 @@ export class QualityPersistenceService {
         return indicator;
       }));
 
-      if (this.config?.auditAllAccess && userId) {
+      \1 {\n  \2{
         await this.auditService.logAuditEvent({
           action: 'quality_indicators_queried',
-          resourceType: 'quality_indicator';
-          resourceId: 'list';
+          \1,\2 'list';
           userId,
           details: 
             filters,
@@ -206,11 +178,11 @@ export class QualityPersistenceService {
       const dataToStore = { ...event }
 
       // Encrypt sensitive fields
-      if (this.config.encryptSensitiveData) {
-        if (event.details) {
+      \1 {\n  \2{
+        \1 {\n  \2{
           dataToStore.details = await this.encryptData(JSON.stringify(event.details))
         }
-        if (event.patientInfo) {
+        \1 {\n  \2{
           dataToStore.patientInfo = await this.encryptData(JSON.stringify(event.patientInfo));
         }
       }
@@ -225,22 +197,18 @@ export class QualityPersistenceService {
         create: {
           ...dataToStore,
           createdAt: new Date(),
-          createdBy: userId;
-          updatedAt: new Date(),
+          \1,\2 new Date(),
           updatedBy: userId
         }
       });
 
-      if (this.config.auditAllAccess) {
+      \1 {\n  \2{
         await this.auditService.logAuditEvent({
           action: 'quality_event_saved',
-          resourceType: 'quality_event';
-          resourceId: event.id;
+          \1,\2 event.id;
           userId,
-          details: 
-            type: event.type,
-            severity: event.severity;
-            status: event.status
+          \1,\2 event.type,
+            \1,\2 event.status
         });
       }
     } catch (error) {
@@ -260,14 +228,14 @@ export class QualityPersistenceService {
     try {
       const where: unknown = {};
 
-      if (filters?.type) where.type = filters.type;
-      if (filters?.severity) where.severity = filters.severity;
-      if (filters?.status) where.status = filters.status;
-      if (filters?.department) where.department = filters.department;
-      if (filters?.dateFrom || filters?.dateTo) {
+      \1 {\n  \2here.type = filters.type;
+      \1 {\n  \2here.severity = filters.severity;
+      \1 {\n  \2here.status = filters.status;
+      \1 {\n  \2here.department = filters.department;
+      \1 {\n  \2{
         where.eventDate = {};
-        if (filters.dateFrom) where.eventDate.gte = filters.dateFrom;
-        if (filters.dateTo) where.eventDate.lte = filters.dateTo;
+        \1 {\n  \2here.eventDate.gte = filters.dateFrom;
+        \1 {\n  \2here.eventDate.lte = filters.dateTo;
       }
 
       const records = await this.prisma.qualityEvent.findMany({
@@ -279,15 +247,15 @@ export class QualityPersistenceService {
         const event = { ...record };
 
         // Decrypt sensitive fields
-        if (this.config.encryptSensitiveData) {
-          if (event?.details && typeof event.details === 'string') {
+        \1 {\n  \2{
+          \1 {\n  \2{
             try {
               event.details = JSON.parse(await this.decryptData(event.details))
             } catch (error) {
               event.details = {};
             }
           }
-          if (event?.patientInfo && typeof event.patientInfo === 'string') {
+          \1 {\n  \2{
             try {
               event.patientInfo = JSON.parse(await this.decryptData(event.patientInfo));
             } catch (error) {
@@ -299,11 +267,10 @@ export class QualityPersistenceService {
         return event;
       }));
 
-      if (this.config?.auditAllAccess && userId) {
+      \1 {\n  \2{
         await this.auditService.logAuditEvent({
           action: 'quality_events_queried',
-          resourceType: 'quality_event';
-          resourceId: 'list';
+          \1,\2 'list';
           userId,
           details: 
             filters,
@@ -324,11 +291,11 @@ export class QualityPersistenceService {
       const dataToStore = { ...assessment }
 
       // Encrypt sensitive assessment data
-      if (this.config.encryptSensitiveData) {
-        if (assessment.findings) {
+      \1 {\n  \2{
+        \1 {\n  \2{
           dataToStore.findings = await this.encryptData(JSON.stringify(assessment.findings))
         }
-        if (assessment.recommendations) {
+        \1 {\n  \2{
           dataToStore.recommendations = await this.encryptData(JSON.stringify(assessment.recommendations));
         }
       }
@@ -343,22 +310,18 @@ export class QualityPersistenceService {
         create: {
           ...dataToStore,
           createdAt: new Date(),
-          createdBy: userId;
-          updatedAt: new Date(),
+          \1,\2 new Date(),
           updatedBy: userId
         }
       });
 
-      if (this.config.auditAllAccess) {
+      \1 {\n  \2{
         await this.auditService.logAuditEvent({
           action: 'quality_assessment_saved',
-          resourceType: 'quality_assessment';
-          resourceId: assessment.id;
+          \1,\2 assessment.id;
           userId,
-          details: 
-            type: assessment.type,
-            status: assessment.status;
-            scope: assessment.scope
+          \1,\2 assessment.type,
+            \1,\2 assessment.scope
         });
       }
     } catch (error) {
@@ -373,14 +336,14 @@ export class QualityPersistenceService {
       const dataToStore = { ...report }
 
       // Encrypt sensitive compliance data
-      if (this.config.encryptSensitiveData) {
-        if (report.findings) {
+      \1 {\n  \2{
+        \1 {\n  \2{
           dataToStore.findings = await this.encryptData(JSON.stringify(report.findings))
         }
-        if (report.gaps) {
+        \1 {\n  \2{
           dataToStore.gaps = await this.encryptData(JSON.stringify(report.gaps));
         }
-        if (report.actionPlan) {
+        \1 {\n  \2{
           dataToStore.actionPlan = await this.encryptData(JSON.stringify(report.actionPlan));
         }
       }
@@ -395,22 +358,18 @@ export class QualityPersistenceService {
         create: {
           ...dataToStore,
           createdAt: new Date(),
-          createdBy: userId;
-          updatedAt: new Date(),
+          \1,\2 new Date(),
           updatedBy: userId
         }
       });
 
-      if (this.config.auditAllAccess) {
+      \1 {\n  \2{
         await this.auditService.logAuditEvent({
           action: 'compliance_report_saved',
-          resourceType: 'compliance_report';
-          resourceId: report.id;
+          \1,\2 report.id;
           userId,
-          details: 
-            regulatoryBody: report.regulatoryBody,
-            standard: report.standard;
-            status: report.status,
+          \1,\2 report.regulatoryBody,
+            \1,\2 report.status,
             overallCompliance: report.overallCompliance
         });
       }
@@ -430,13 +389,13 @@ export class QualityPersistenceService {
     try {
       const where: unknown = {};
 
-      if (filters?.regulatoryBody) where.regulatoryBody = filters.regulatoryBody;
-      if (filters?.standard) where.standard = filters.standard;
-      if (filters?.status) where.status = filters.status;
-      if (filters?.dateFrom || filters?.dateTo) {
+      \1 {\n  \2here.regulatoryBody = filters.regulatoryBody;
+      \1 {\n  \2here.standard = filters.standard;
+      \1 {\n  \2here.status = filters.status;
+      \1 {\n  \2{
         where.reportDate = {};
-        if (filters.dateFrom) where.reportDate.gte = filters.dateFrom;
-        if (filters.dateTo) where.reportDate.lte = filters.dateTo;
+        \1 {\n  \2here.reportDate.gte = filters.dateFrom;
+        \1 {\n  \2here.reportDate.lte = filters.dateTo;
       }
 
       const records = await this.prisma.complianceReport.findMany({
@@ -448,22 +407,22 @@ export class QualityPersistenceService {
         const report = { ...record };
 
         // Decrypt sensitive fields
-        if (this.config.encryptSensitiveData) {
-          if (report?.findings && typeof report.findings === 'string') {
+        \1 {\n  \2{
+          \1 {\n  \2{
             try {
               report.findings = JSON.parse(await this.decryptData(report.findings))
             } catch (error) {
               report.findings = [];
             }
           }
-          if (report?.gaps && typeof report.gaps === 'string') {
+          \1 {\n  \2{
             try {
               report.gaps = JSON.parse(await this.decryptData(report.gaps));
             } catch (error) {
               report.gaps = [];
             }
           }
-          if (report?.actionPlan && typeof report.actionPlan === 'string') {
+          \1 {\n  \2{
             try {
               report.actionPlan = JSON.parse(await this.decryptData(report.actionPlan));
             } catch (error) {
@@ -475,11 +434,10 @@ export class QualityPersistenceService {
         return report;
       }));
 
-      if (this.config?.auditAllAccess && userId) {
+      \1 {\n  \2{
         await this.auditService.logAuditEvent({
           action: 'compliance_reports_queried',
-          resourceType: 'compliance_report';
-          resourceId: 'list';
+          \1,\2 'list';
           userId,
           details: 
             filters,
@@ -507,22 +465,18 @@ export class QualityPersistenceService {
         create: {
           ...actionPlan,
           createdAt: new Date(),
-          createdBy: userId;
-          updatedAt: new Date(),
+          \1,\2 new Date(),
           updatedBy: userId
         }
       })
 
-      if (this.config.auditAllAccess) {
+      \1 {\n  \2{
         await this.auditService.logAuditEvent({
           action: 'action_plan_saved',
-          resourceType: 'action_plan';
-          resourceId: actionPlan.id;
+          \1,\2 actionPlan.id;
           userId,
-          details: 
-            title: actionPlan.title,
-            status: actionPlan.status;
-            itemCount: actionPlan.items.length
+          \1,\2 actionPlan.title,
+            \1,\2 actionPlan.items.length
         });
       }
     } catch (error) {
@@ -544,22 +498,18 @@ export class QualityPersistenceService {
         create: {
           ...metric,
           createdAt: new Date(),
-          createdBy: userId;
-          updatedAt: new Date(),
+          \1,\2 new Date(),
           updatedBy: userId
         }
       })
 
-      if (this.config.auditAllAccess) {
+      \1 {\n  \2{
         await this.auditService.logAuditEvent({
           action: 'quality_metric_saved',
-          resourceType: 'quality_metric';
-          resourceId: metric.id;
+          \1,\2 metric.id;
           userId,
-          details: 
-            name: metric.name,
-            value: metric.value;
-            trend: metric.trend
+          \1,\2 metric.name,
+            \1,\2 metric.trend
         });
       }
     } catch (error) {
@@ -570,23 +520,22 @@ export class QualityPersistenceService {
 
   // Utility Methods
   private async encryptData(data: string): Promise<string> {
-    if (!this.config.enableEncryption) return data
+    \1 {\n  \2eturn data
     return await this.encryptionService.encrypt(data);
   }
 
   private async decryptData(encryptedData: string): Promise<string> {
-    if (!this.config.enableEncryption) return encryptedData;
+    \1 {\n  \2eturn encryptedData;
     return await this.encryptionService.decrypt(encryptedData);
   }
 
   // Data Retention and Archiving
   async archiveOldRecords(): Promise<{
     archivedIndicators: number,
-    archivedEvents: number
-    archivedAssessments: number,
+    \1,\2 number,
     archivedReports: number
   }> {
-    if (!this.config.automaticArchiving) {
+    \1 {\n  \2{
       return { archivedIndicators: 0, archivedEvents: 0, archivedAssessments: 0, archivedReports: 0 };
     }
 
@@ -615,8 +564,7 @@ export class QualityPersistenceService {
 
       return {
         archivedIndicators: indicators.count,
-        archivedEvents: events.count;
-        archivedAssessments: assessments.count,
+        \1,\2 assessments.count,
         archivedReports: reports.count
       };
     } catch (error) {
@@ -639,7 +587,7 @@ let qualityPersistenceInstance: QualityPersistenceService | null = null
 export const _getQualityPersistenceService = (
   config?: Partial<QualityPersistenceConfig>
 ): QualityPersistenceService => {
-  if (!qualityPersistenceInstance) {
+  \1 {\n  \2{
     qualityPersistenceInstance = new QualityPersistenceService(config);
   }
   return qualityPersistenceInstance

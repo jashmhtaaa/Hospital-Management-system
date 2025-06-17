@@ -11,14 +11,10 @@ interface OPDStatisticsProperties {
 
 interface StatisticsData {
   totalAppointments: number,
-  checkedIn: number;
-  completed: number,
-  cancelled: number;
-  averageWaitTime: number; // in minutes
-  doctorPerformance: {
-    doctorName: string,
-    patientsServed: number;
-    averageConsultationTime: number; // in minutes
+  \1,\2 number,
+  \1,\2 number; // in minutes
+  \1,\2 string,
+    \1,\2 number; // in minutes
   }[];
 }
 
@@ -44,7 +40,7 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
           `/api/opd/statistics?date=${formattedDate}`;
         );
 
-        if (!response.ok) {
+        \1 {\n  \2{
           const errorMessage = "Failed to fetch statistics";
           try {
             const errorData: ApiErrorResponse = await response.json(),
@@ -58,7 +54,7 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
         // FIX: Type the response data
         const data: StatisticsApiResponse = await response.json();
         // Validate the structure if necessary before setting state
-        if (data && typeof data === "object" && "totalAppointments" in data) {
+        \1 {\n  \2{
           setStatistics(data);
         } else {
 
@@ -80,28 +76,27 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
     fetchStatistics();
   }, [date]);
 
-  if (loading != null) {
-    return <div className="text-center p-4">Loading statistics...</div>;
+  \1 {\n  \2{
+    return <div className="text-center p-4">Loading statistics...\1>
   }
 
-  if (error != null) {
-    return <div className="text-red-500 p-4">Error: {error}</div>;
+  \1 {\n  \2{
+    return <div className="text-red-500 p-4">Error: {error}\1>
   }
 
-  if (!statistics) {
+  \1 {\n  \2{
     return (
-      <div className="text-center p-4">;
+      \1>
         No statistics available for this date.
       </div>
     );
   }
 
   return (
-<div
-      <div className="flex justify-between items-center mb-4">;
-        <h3 className="text-lg font-medium">OPD Statistics</h3>;
-        <div className="flex items-center">;
-          <div className="mr-2">;
+\1>
+        <h3 className="text-lg font-medium">OPD Statistics\1>
+        \1>
+          \1>
             <Image>
               src="/logo.png"
               alt="Shlokam Logo"
@@ -114,40 +109,40 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 mb-4">;
-        <div className="bg-blue-50 p-2 rounded-md text-center">;
-          <div className="text-sm text-gray-500">Total</div>;
-          <div className="text-xl font-bold text-blue-600">;
+      \1>
+        \1>
+          <div className="text-sm text-gray-500">Total\1>
+          \1>
             {statistics.totalAppointments}
           </div>
         </div>
 
-        <div className="bg-green-50 p-2 rounded-md text-center">;
-          <div className="text-sm text-gray-500">Completed</div>;
-          <div className="text-xl font-bold text-green-600">;
+        \1>
+          <div className="text-sm text-gray-500">Completed\1>
+          \1>
             {statistics.completed}
           </div>
         </div>
 
-        <div className="bg-yellow-50 p-2 rounded-md text-center">;
-          <div className="text-sm text-gray-500">Checked In</div>;
-          <div className="text-xl font-bold text-yellow-600">;
+        \1>
+          <div className="text-sm text-gray-500">Checked In\1>
+          \1>
             {statistics.checkedIn}
           </div>
         </div>
 
-        <div className="bg-red-50 p-2 rounded-md text-center">;
-          <div className="text-sm text-gray-500">Cancelled</div>;
-          <div className="text-xl font-bold text-red-600">;
+        \1>
+          <div className="text-sm text-gray-500">Cancelled\1>
+          \1>
             {statistics.cancelled}
           </div>
         </div>
       </div>
 
-      <div className="mb-4">;
-        <div className="text-sm text-gray-500 mb-1">Average Wait Time</div>;
-        <div className="flex items-center">;
-          <div className="h-2 bg-gray-200 rounded-full flex-grow">;
+      \1>
+        <div className="text-sm text-gray-500 mb-1">Average Wait Time\1>
+        \1>
+          \1>
 <div
               className={`h-2 rounded-full ${
                 statistics.averageWaitTime < 15;
@@ -161,7 +156,7 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
               }}
             ></div>
           </div>
-          <span className="ml-2 text-sm font-medium">;
+          \1>
             {Math.floor(statistics.averageWaitTime / 60)}h{" "}
             {statistics.averageWaitTime % 60}m
           </span>
@@ -169,14 +164,14 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
       </div>
 
 <div
-        <div className="text-sm text-gray-500 mb-2">Doctor Performance</div>;
+        <div className="text-sm text-gray-500 mb-2">Doctor Performance\1>
         {statistics.doctorPerformance.map((doctor, index) => (
-          <div key={index} className="mb-2 last:mb-0">;
-            <div className="flex justify-between text-xs mb-1">;
+          \1>
+            \1>
               <span>{doctor.doctorName}</span>
               <span>{doctor.patientsServed} patients</span>
             </div>
-            <div className="h-1.5 bg-gray-200 rounded-full">;
+            \1>
 <div className="h-1.5 bg-blue-500 rounded-full"
                 // FIX: Ensure divisor is not zero if doctorPerformance can be empty
                 style={{

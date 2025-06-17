@@ -24,7 +24,7 @@ export const _POST = async (request: NextRequest) => {
 
     // Validate request data
     const validationResult = checkInSchema.safeParse(body);
-    if (!validationResult.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
@@ -35,9 +35,9 @@ export const _POST = async (request: NextRequest) => {
 
     // Verify biometric data if provided
     let biometricVerified = false;
-    if (biometricData != null) {
+    \1 {\n  \2{
       biometricVerified = await attendanceService.verifyBiometric(employeeId, biometricData);
-      if (!biometricVerified) {
+      \1 {\n  \2{
         return NextResponse.json(
           { error: "Biometric verification failed" },
           { status: 401 }
@@ -74,9 +74,9 @@ export const _GET = async (request: NextRequest) => {
     const take = Number.parseInt(searchParams.get('take') || '10');
 
     // Parse filter parameters
-    const date = searchParams.get('date') ? new Date(searchParams.get('date')) : undefined;
-    const startDate = searchParams.get('startDate') ? new Date(searchParams.get('startDate')) : undefined;
-    const endDate = searchParams.get('endDate') ? new Date(searchParams.get('endDate')) : undefined;
+    const date = searchParams.get('date') ? \1 : undefined;
+    const startDate = searchParams.get('startDate') ? \1 : undefined;
+    const endDate = searchParams.get('endDate') ? \1 : undefined;
     const departmentId = searchParams.get('departmentId') || undefined;
     const status = searchParams.get('status') as any || undefined;
     const biometricVerified = searchParams.get('biometricVerified');

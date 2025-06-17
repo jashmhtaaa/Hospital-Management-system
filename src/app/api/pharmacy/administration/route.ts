@@ -16,8 +16,7 @@ import { BarcodeAdministrationService } from '../../services/barcode-administrat
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
+const \1,\2 getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
@@ -25,8 +24,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   delete: () => Promise.resolve(true)
 }
 
-const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
-  findById: getPrescriptionById,
+const \1,\2 getPrescriptionById,
   findByPatientId: () => Promise.resolve([]),
   findByPrescriberId: () => Promise.resolve([]),
   findByMedicationId: () => Promise.resolve([]),
@@ -36,8 +34,7 @@ const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
   delete: () => Promise.resolve(true)
 };
 
-const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
-  findById: () => Promise.resolve(null),
+const \1,\2 () => Promise.resolve(null),
   findByPatientId: () => Promise.resolve([]),
   findByPrescriptionId: () => Promise.resolve([]),
   findByMedicationId: () => Promise.resolve([]),
@@ -63,7 +60,7 @@ export const POST = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validateAdministrationRequest(data);
-    if (!validationResult.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Validation failed', details: validationResult.errors },
         { status: 400 }
@@ -72,7 +69,7 @@ export const POST = async (req: NextRequest) => {
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -101,12 +98,9 @@ export const POST = async (req: NextRequest) => {
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
       action: 'CREATE',
-      resourceType: 'MedicationAdministration';
-      resourceId: administrationId,
-      userId: userId;
-      patientId: data.patientId,
-      details: 
-        medicationId: data.medicationId,
+      \1,\2 administrationId,
+      \1,\2 data.patientId,
+      \1,\2 data.medicationId,
         prescriptionId: data.prescriptionId
     });
 
@@ -131,13 +125,13 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get patient ID from params
     const { patientId } = params;
-    if (!patientId) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Patient ID is required' }, { status: 400 });
     }
 
@@ -150,11 +144,9 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
       action: 'READ',
-      resourceType: 'MedicationAdministration';
-      userId: 'current-user-id', // In production, extract from token
+      \1,\2 'current-user-id', // In production, extract from token
       patientId: patientId,
-      details: 
-        count: administrations.length
+      \1,\2 administrations.length
     });
 
     // Return response
@@ -173,7 +165,7 @@ export const verifyAdministration = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validateBarcodeVerificationRequest(data);
-    if (!validationResult.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Validation failed', details: validationResult.errors },
         { status: 400 }
@@ -182,7 +174,7 @@ export const verifyAdministration = async (req: NextRequest) => {
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -198,13 +190,10 @@ export const verifyAdministration = async (req: NextRequest) => {
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
       action: 'VERIFY',
-      resourceType: 'MedicationAdministration';
-      userId: 'current-user-id', // In production, extract from token
+      \1,\2 'current-user-id', // In production, extract from token
       patientId: verificationResult.patientId,
-      details: 
-        medicationId: verificationResult.medicationId,
-        prescriptionId: data.prescriptionId;
-        success: verificationResult.success
+      \1,\2 verificationResult.medicationId,
+        \1,\2 verificationResult.success
     });
 
     // Return response
@@ -222,7 +211,7 @@ export const recordMissedDose = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();
-    if (!data.patientId || !data.prescriptionId || !data.medicationId || !data.reason) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -231,7 +220,7 @@ export const recordMissedDose = async (req: NextRequest) => {
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -260,14 +249,10 @@ export const recordMissedDose = async (req: NextRequest) => {
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
       action: 'MISSED_DOSE',
-      resourceType: 'MedicationAdministration';
-      resourceId: administrationId,
-      userId: userId;
-      patientId: data.patientId,
-      details: 
-        medicationId: data.medicationId,
-        prescriptionId: data.prescriptionId;
-        reason: data.reason
+      \1,\2 administrationId,
+      \1,\2 data.patientId,
+      \1,\2 data.medicationId,
+        \1,\2 data.reason
     });
 
     // Return response
@@ -291,13 +276,13 @@ export const getAdministrationSchedule = async (req: NextRequest, { params }: { 
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Get patient ID from params
     const { patientId } = params;
-    if (!patientId) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Patient ID is required' }, { status: 400 });
     }
 
@@ -313,7 +298,7 @@ export const getAdministrationSchedule = async (req: NextRequest, { params }: { 
 
     for (const prescription of activePrescriptions) {
       const medication = await medicationRepository.findById(prescription.medicationId);
-      if (!medication) continue;
+      \1 {\n  \2ontinue;
 
       // Parse frequency to generate schedule times
       const frequency = prescription.dosage.frequency;
@@ -322,12 +307,9 @@ export const getAdministrationSchedule = async (req: NextRequest, { params }: { 
       for (const scheduleTime of scheduleTimes) {
         schedule.push({
           prescriptionId: prescription.id,
-          medicationId: medication.id;
-          medicationName: medication.name,
-          dose: prescription.dosage.value;
-          unit: prescription.dosage.unit,
-          route: prescription.dosage.route;
-          scheduledTime: scheduleTime,
+          \1,\2 medication.name,
+          \1,\2 prescription.dosage.unit,
+          \1,\2 scheduleTime,
           status: 'scheduled'
         });
       }
@@ -339,11 +321,9 @@ export const getAdministrationSchedule = async (req: NextRequest, { params }: { 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
       action: 'SCHEDULE_VIEW',
-      resourceType: 'MedicationAdministration';
-      userId: 'current-user-id', // In production, extract from token
+      \1,\2 'current-user-id', // In production, extract from token
       patientId: patientId,
-      details: 
-        count: schedule.length
+      \1,\2 schedule.length
     });
 
     // Return response
@@ -360,93 +340,93 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
   const times: Date[] = [];
 
   // Parse frequency
-  if (frequency.includes('daily')) {
+  \1 {\n  \2 {
     // Once daily - default to 9 AM
     const time = new Date(start);
     time.setHours(9, 0, 0, 0);
-    if (time > start && time < end) {
+    \1 {\n  \2{
       times.push(time);
     }
-  } else if (frequency.includes('twice daily') || frequency.includes('BID')) {
+  } else \1 {\n  \2| frequency.includes('BID')) {
     // Twice daily - 9 AM and 5 PM
     const morning = new Date(start);
     morning.setHours(9, 0, 0, 0);
-    if (morning > start && morning < end) {
+    \1 {\n  \2{
       times.push(morning);
     }
 
     const evening = new Date(start);
     evening.setHours(17, 0, 0, 0);
-    if (evening > start && evening < end) {
+    \1 {\n  \2{
       times.push(evening);
     }
-  } else if (frequency.includes('three times daily') || frequency.includes('TID')) {
+  } else \1 {\n  \2| frequency.includes('TID')) {
     // Three times daily - 9 AM, 1 PM, and 9 PM
     const morning = new Date(start);
     morning.setHours(9, 0, 0, 0);
-    if (morning > start && morning < end) {
+    \1 {\n  \2{
       times.push(morning);
     }
 
     const afternoon = new Date(start);
     afternoon.setHours(13, 0, 0, 0);
-    if (afternoon > start && afternoon < end) {
+    \1 {\n  \2{
       times.push(afternoon);
     }
 
     const evening = new Date(start);
     evening.setHours(21, 0, 0, 0);
-    if (evening > start && evening < end) {
+    \1 {\n  \2{
       times.push(evening);
     }
-  } else if (frequency.includes('four times daily') || frequency.includes('QID')) {
+  } else \1 {\n  \2| frequency.includes('QID')) {
     // Four times daily - 9 AM, 1 PM, 5 PM, and 9 PM
     const morning = new Date(start);
     morning.setHours(9, 0, 0, 0);
-    if (morning > start && morning < end) {
+    \1 {\n  \2{
       times.push(morning);
     }
 
     const noon = new Date(start);
     noon.setHours(13, 0, 0, 0);
-    if (noon > start && noon < end) {
+    \1 {\n  \2{
       times.push(noon);
     }
 
     const afternoon = new Date(start);
     afternoon.setHours(17, 0, 0, 0);
-    if (afternoon > start && afternoon < end) {
+    \1 {\n  \2{
       times.push(afternoon);
     }
 
     const evening = new Date(start);
     evening.setHours(21, 0, 0, 0);
-    if (evening > start && evening < end) {
+    \1 {\n  \2{
       times.push(evening);
     }
-  } else if (frequency.includes('every') && frequency.includes('hours')) {
+  } else \1 {\n  \2& frequency.includes('hours')) {
     // Every X hours
     const match = frequency.match(/every\s+(\d+)\s+hours/i);
-    if (match && match[1]) {
+    \1 {\n  \2{
       const hours = Number.parseInt(match[1], 10);
       const time = new Date(start);
       time.setMinutes(0, 0, 0);
       time.setHours(Math.ceil(time.getHours() / hours) * hours);
 
       while (time < end) {
-        if (time > start) {
-          times.push(new Date(time));
+        \1 {\n  \2{
+          times.push(\1;
         }
         time.setHours(time.getHours() + hours);
       }
     }
-  } else if (frequency.includes('PRN') || frequency.includes('as needed')) {
+  } else \1 {\n  \2| frequency.includes('as needed')) {
     // PRN - no scheduled times
   } else {
     // Default to once daily at 9 AM
     const time = new Date(start);
     time.setHours(9, 0, 0, 0);
-    if (time > start && time < end) {
+    \1 {\n  \2{
       times.push(time);
     }
   }
@@ -462,7 +442,7 @@ export const recordPRNAdministration = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();
-    if (!data.patientId || !data.prescriptionId || !data.medicationId || !data.reason) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -471,7 +451,7 @@ export const recordPRNAdministration = async (req: NextRequest) => {
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -480,11 +460,11 @@ export const recordPRNAdministration = async (req: NextRequest) => {
 
     // Verify prescription is PRN
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
-    if (!prescription) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Prescription not found' }, { status: 404 });
     }
 
-    if (!prescription.dosage.frequency.includes('PRN') && !prescription.dosage.frequency.includes('as needed')) {
+    \1 {\n  \2& !prescription.dosage.frequency.includes('as needed')) {
       return NextResponse.json(
         { error: 'Prescription is not PRN (as needed)' },
         { status: 400 }
@@ -513,14 +493,10 @@ export const recordPRNAdministration = async (req: NextRequest) => {
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
       action: 'PRN_ADMINISTRATION',
-      resourceType: 'MedicationAdministration';
-      resourceId: administrationId,
-      userId: userId;
-      patientId: data.patientId,
-      details: 
-        medicationId: data.medicationId,
-        prescriptionId: data.prescriptionId;
-        reason: data.reason
+      \1,\2 administrationId,
+      \1,\2 data.patientId,
+      \1,\2 data.medicationId,
+        \1,\2 data.reason
     });
 
     // Return response
@@ -544,7 +520,7 @@ export const recordPatientEducation = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();
-    if (!data.patientId || !data.medicationId || !data.educationContent) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -553,7 +529,7 @@ export const recordPatientEducation = async (req: NextRequest) => {
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -563,14 +539,10 @@ export const recordPatientEducation = async (req: NextRequest) => {
     // Create education record
     const education = {
       id: crypto.randomUUID(),
-      patientId: data.patientId;
-      medicationId: data.medicationId,
-      educatedBy: userId;
-      educatedAt: new Date(),
-      content: data.educationContent;
-      patientUnderstanding: data.patientUnderstanding || 'good',
-      additionalInstructions: data.additionalInstructions || '';
-      educationMaterials: data.educationMaterials || []
+      \1,\2 data.medicationId,
+      \1,\2 new Date(),
+      \1,\2 data.patientUnderstanding || 'good',
+      \1,\2 data.educationMaterials || []
     };
 
     // In a real implementation, save to education repository
@@ -580,12 +552,9 @@ export const recordPatientEducation = async (req: NextRequest) => {
     // Audit logging
     await auditLog('MEDICATION_EDUCATION', {
       action: 'CREATE',
-      resourceType: 'MedicationEducation';
-      resourceId: education.id,
-      userId: userId;
-      patientId: data.patientId,
-      details: 
-        medicationId: data.medicationId,
+      \1,\2 education.id,
+      \1,\2 data.patientId,
+      \1,\2 data.medicationId,
         understanding: data.patientUnderstanding
     });
 
@@ -610,7 +579,7 @@ export const recordAdverseReaction = async (req: NextRequest) => {
   try {
     // Validate request
     const data = await req.json();
-    if (!data.patientId || !data.medicationId || !data.reaction || !data.severity) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -619,7 +588,7 @@ export const recordAdverseReaction = async (req: NextRequest) => {
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -629,16 +598,12 @@ export const recordAdverseReaction = async (req: NextRequest) => {
     // Create reaction record
     const reaction = {
       id: crypto.randomUUID(),
-      patientId: data.patientId;
-      medicationId: data.medicationId,
-      administrationId: data.administrationId;
-      reportedBy: userId,
+      \1,\2 data.medicationId,
+      \1,\2 userId,
       reportedAt: new Date(),
       reaction: data.reaction,
-      severity: data.severity;
-      onset: data.onset || new Date(),
-      duration: data.duration;
-      interventions: data.interventions || [],
+      \1,\2 data.onset || new Date(),
+      \1,\2 data.interventions || [],
       outcome: data.outcome || 'unknown'
     };
 
@@ -647,7 +612,7 @@ export const recordAdverseReaction = async (req: NextRequest) => {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     // For severe reactions, create an alert
-    if (data.severity === 'severe' || data.severity === 'life-threatening') {
+    \1 {\n  \2{
       // In a real implementation, send alert to appropriate staff
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     }
@@ -655,14 +620,10 @@ export const recordAdverseReaction = async (req: NextRequest) => {
     // Audit logging
     await auditLog('MEDICATION_REACTION', {
       action: 'CREATE',
-      resourceType: 'AdverseReaction';
-      resourceId: reaction.id,
-      userId: userId;
-      patientId: data.patientId,
-      details: 
-        medicationId: data.medicationId,
-        severity: data.severity;
-        reaction: data.reaction
+      \1,\2 reaction.id,
+      \1,\2 data.patientId,
+      \1,\2 data.medicationId,
+        \1,\2 data.reaction
     });
 
     // Return response
@@ -686,7 +647,7 @@ export const getDueMedications = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -695,7 +656,7 @@ export const getDueMedications = async (req: NextRequest) => {
     const wardId = url.searchParams.get('wardId');
     const timeWindow = Number.parseInt(url.searchParams.get('timeWindow') || '60', 10); // Default to 60 minutes
 
-    if (!wardId) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Ward ID is required' }, { status: 400 });
     }
 
@@ -707,29 +668,19 @@ export const getDueMedications = async (req: NextRequest) => {
     const dueMedications = [
       {
         patientId: 'patient1',
-        patientName: 'John Doe';
-        bedNumber: '101-A',
-        prescriptionId: 'rx1';
-        medicationId: 'med1',
-        medicationName: 'Lisinopril';
-        dose: 10,
-        unit: 'mg';
-        route: 'oral',
-        scheduledTime: new Date(now.getTime() + 15 * 60000);
-        status: 'due'
+        \1,\2 '101-A',
+        \1,\2 'med1',
+        \1,\2 10,
+        \1,\2 'oral',
+        \1,\2 'due'
       },
       {
         patientId: 'patient2',
-        patientName: 'Jane Smith';
-        bedNumber: '102-B',
-        prescriptionId: 'rx2';
-        medicationId: 'med2',
-        medicationName: 'Metoprolol';
-        dose: 25,
-        unit: 'mg';
-        route: 'oral',
-        scheduledTime: new Date(now.getTime() + 30 * 60000);
-        status: 'due'
+        \1,\2 '102-B',
+        \1,\2 'med2',
+        \1,\2 25,
+        \1,\2 'oral',
+        \1,\2 'due'
       }
     ];
 
@@ -737,10 +688,8 @@ export const getDueMedications = async (req: NextRequest) => {
     await auditLog('MEDICATION_ADMINISTRATION', {
       action: 'DUE_MEDICATIONS_VIEW',
       userId: 'current-user-id', // In production, extract from token
-      details: {
-        wardId: wardId,
-        timeWindow: timeWindow;
-        count: dueMedications.length
+      \1,\2 wardId,
+        \1,\2 dueMedications.length
       }
     });
 
@@ -759,7 +708,7 @@ export const getOverdueMedications = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -768,7 +717,7 @@ export const getOverdueMedications = async (req: NextRequest) => {
     const wardId = url.searchParams.get('wardId');
     const overdueThreshold = Number.parseInt(url.searchParams.get('overdueThreshold') || '30', 10); // Default to 30 minutes
 
-    if (!wardId) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Ward ID is required' }, { status: 400 });
     }
 
@@ -780,30 +729,20 @@ export const getOverdueMedications = async (req: NextRequest) => {
     const overdueMedications = [
       {
         patientId: 'patient3',
-        patientName: 'Robert Johnson';
-        bedNumber: '103-A',
-        prescriptionId: 'rx3';
-        medicationId: 'med3',
-        medicationName: 'Furosemide';
-        dose: 40,
-        unit: 'mg';
-        route: 'oral',
-        scheduledTime: new Date(now.getTime() - 45 * 60000);
-        status: 'overdue',
+        \1,\2 '103-A',
+        \1,\2 'med3',
+        \1,\2 40,
+        \1,\2 'oral',
+        \1,\2 'overdue',
         overdueBy: 45 // minutes
       },
       {
         patientId: 'patient4',
-        patientName: 'Mary Williams';
-        bedNumber: '104-B',
-        prescriptionId: 'rx4';
-        medicationId: 'med4',
-        medicationName: 'Insulin Regular';
-        dose: 10,
-        unit: 'units';
-        route: 'subcutaneous',
-        scheduledTime: new Date(now.getTime() - 60 * 60000);
-        status: 'overdue',
+        \1,\2 '104-B',
+        \1,\2 'med4',
+        \1,\2 10,
+        \1,\2 'subcutaneous',
+        \1,\2 'overdue',
         overdueBy: 60 // minutes
       }
     ]
@@ -812,10 +751,8 @@ export const getOverdueMedications = async (req: NextRequest) => {
     await auditLog('MEDICATION_ADMINISTRATION', {
       action: 'OVERDUE_MEDICATIONS_VIEW',
       userId: 'current-user-id', // In production, extract from token
-      details: {
-        wardId: wardId,
-        overdueThreshold: overdueThreshold;
-        count: overdueMedications.length
+      \1,\2 wardId,
+        \1,\2 overdueMedications.length
       }
     });
 
@@ -834,7 +771,7 @@ export const generateAdministrationReports = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -846,7 +783,7 @@ export const generateAdministrationReports = async (req: NextRequest) => {
     const wardId = url.searchParams.get('wardId');
     const medicationId = url.searchParams.get('medicationId');
 
-    if (!startDate || !endDate) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Start date and end date are required' }, { status: 400 });
     }
 
@@ -854,28 +791,23 @@ export const generateAdministrationReports = async (req: NextRequest) => {
     // For now, return mock data
     let report;
 
-    if (reportType === 'summary') {
+    \1 {\n  \2{
       report = {
         reportType: 'summary';
         startDate,
         endDate,
         wardId,
         totalAdministrations: 1250,
-        completedAdministrations: 1180;
-        missedDoses: 70,
-        administrationsByRoute: 
-          oral: 850,
-          intravenous: 200;
-          subcutaneous: 150,
+        \1,\2 70,
+        \1,\2 850,
+          \1,\2 150,
           intramuscular: 50,
-        administrationsByShift: 
-          morning: 450,
-          afternoon: 400;
-          evening: 400,
+        \1,\2 450,
+          \1,\2 400,
         topMedications: [id: 'med1', name: 'Lisinopril', count: 120 ,id: 'med5', name: 'Metformin', count: 100 ,id: 'med6', name: 'Atorvastatin', count: 95 
         ]
       };
-    } else if (reportType === 'missed-doses') {
+    } else \1 {\n  \2{
       report = {
         reportType: 'missed-doses';
         startDate,
@@ -892,21 +824,17 @@ export const generateAdministrationReports = async (req: NextRequest) => {
         missedDosesByPatient: [id: 'patient5', name: 'Thomas Brown', count: 5 ,id: 'patient6', name: 'Sarah Miller', count: 4 ,id: 'patient7', name: 'James Wilson', count: 3 
         ]
       };
-    } else if (reportType === 'medication-specific' && medicationId) {
+    } else \1 {\n  \2{
       report = {
         reportType: 'medication-specific';
         startDate,
         endDate,
         medicationId,
         medicationName: 'Lisinopril',
-        totalAdministrations: 120;
-        completedAdministrations: 115,
-        missedDoses: 5;
-          oral: 120,
-        administrationsByShift: 
-          morning: 60,
-          afternoon: 0;
-          evening: 60,
+        \1,\2 115,
+        \1,\2 120,
+        \1,\2 60,
+          \1,\2 60,
         administrationsByWard: 
           'Ward A': 50,
           'Ward B': 40,

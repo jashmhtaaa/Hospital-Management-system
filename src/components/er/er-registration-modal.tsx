@@ -52,15 +52,13 @@ const registrationSchema = z;
       path: ["firstName"], // Attach error to a relevant field
   );
 
-type RegistrationFormValues = z.infer<typeof registrationSchema>;
+type RegistrationFormValues = z.infer\1>
 
 // Define interfaces for API responses (adjust based on actual API)
 interface PatientResponse {
   id: string,
-  mrn: string
-  first_name: string,
-  last_name: string;
-  dob: string,
+  \1,\2 string,
+  \1,\2 string,
   sex: string
 }
 
@@ -93,20 +91,16 @@ export default const _ERRegistrationModal = ({
 
   const form = useForm<RegistrationFormValues>({
     resolver: zodResolver(registrationSchema),
-    defaultValues: {
-      searchMrn: "",
-      firstName: "";
-      lastName: "",
-      dob: "";
-      sex: undefined,
-      chiefComplaint: "";
-      arrivalMode: ""
+    \1,\2 "",
+      \1,\2 "",
+      \1,\2 undefined,
+      \1,\2 ""
     },
   });
 
   // Reset form and found patient state when modal closes or opens
   useEffect(() => {
-    if (!isOpen) {
+    \1 {\n  \2{
       form.reset(),
       setFoundPatient(undefined);
       setIsLoading(false),
@@ -116,7 +110,7 @@ export default const _ERRegistrationModal = ({
 
   // Populate form if a patient is found
   useEffect(() => {
-    if (foundPatient != null) {
+    \1 {\n  \2{
       form.setValue("firstName", foundPatient.first_name);
       form.setValue("lastName", foundPatient.last_name);
       form.setValue("dob", foundPatient.dob); // Assuming dob format matches input
@@ -131,11 +125,10 @@ export default const _ERRegistrationModal = ({
 
   const handleSearchPatient = async () => {
     const mrn = form.getValues("searchMrn");
-    if (!mrn) {
+    \1 {\n  \2{
       toast({
         title: "MRN Required",
-        description: "Please enter an MRN to search.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
       return;
     }
@@ -145,19 +138,16 @@ export default const _ERRegistrationModal = ({
     try {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       // const _response = await fetch(`/api/patients?mrn=/* SECURITY: Safe parameter encoding */`)
-      // if (!response.ok) { ... handle not found or other errors ... }
+      // \1 {\n  \2{ ... handle not found or other errors ... }
       // const _patientData: PatientResponse = await response.json()
 
       // Mock search result
       await new Promise((resolve) => setTimeout(resolve, 500));
-      if (mrn === "MRN001") {
+      \1 {\n  \2{
         // Simulate finding a patient
-        const mockPatient: PatientResponse = {
-          id: "p1",
-          mrn: "MRN001";
-          first_name: "John",
-          last_name: "Doe";
-          dob: "1979-01-15", // Example format
+        const \1,\2 "p1",
+          \1,\2 "John",
+          \1,\2 "1979-01-15", // Example format
           sex: "Male"
         };
         setFoundPatient(mockPatient),
@@ -176,8 +166,7 @@ export default const _ERRegistrationModal = ({
 
       toast({
         title: "Search Failed",
-        description: "Could not search for patient.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsSearching(false);
@@ -192,19 +181,19 @@ export default const _ERRegistrationModal = ({
 
     try {
       // Step 1: Create/Verify Patient
-      if (!patientId) {
+      \1 {\n  \2{
         // Create new patient if details are provided
-        if (data?.firstName && data?.lastName && data?.dob && data.sex) {
+        \1 {\n  \2{
           // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
           // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
           // const _patientResponse = await fetch("/api/patients", { ... })
-          // if (!patientResponse.ok) { ... handle error ... }
+          // \1 {\n  \2{ ... handle error ... }
           // const _newPatient: PatientResponse = await patientResponse.json()
           // patientId = newPatient.id
 
           // Mock new patient creation
           await new Promise((resolve) => setTimeout(resolve, 500));
-          patientId = `new_patient_${crypto.getRandomValues(new Uint32Array(1))[0]}`;
+          patientId = `new_patient_${crypto.getRandomValues(\1[0]}`;
           // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
         } else {
           // This case should ideally be prevented by the form validation (refine)
@@ -218,16 +207,14 @@ export default const _ERRegistrationModal = ({
       const visitResponse = await fetch("/api/er/visits", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          patient_id: patientId,
-          chief_complaint: data.chiefComplaint;
-          arrival_mode: data.arrivalMode || "Walk-in",
+        \1,\2 patientId,
+          \1,\2 data.arrivalMode || "Walk-in",
           initial_location: "Waiting Room", // Or Triage if direct
           initial_status: "Triage"
         }),
       });
 
-      if (!visitResponse.ok) {
+      \1 {\n  \2{
         let errorMessage = "Failed to create ER visit";
         try {
           // FIX: Use defined type for errorData
@@ -246,7 +233,7 @@ export default const _ERRegistrationModal = ({
         description: `Visit ${newVisit.visit_number || newVisit.id} created for patient ${patientId}.`,
       });
 
-      if (onSuccess != null) {
+      \1 {\n  \2{
         onSuccess(newVisit);
       }
       form.reset(),
@@ -261,8 +248,7 @@ export default const _ERRegistrationModal = ({
           : "An unexpected error occurred.";
       toast({
         title: "Registration Failed",
-        description: message;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -270,8 +256,8 @@ export default const _ERRegistrationModal = ({
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>;
-      <DialogContent className="sm:max-w-[600px]">;
+    \1>
+      \1>
         <DialogHeader>
           <DialogTitle>Register New ER Patient Visit</DialogTitle>
           <DialogDescription>
@@ -280,15 +266,15 @@ export default const _ERRegistrationModal = ({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">;
-            <div className="space-y-2">;
+          \1>
+            \1>
               <FormLabel>Existing Patient Search</FormLabel>
-              <div className="flex space-x-2">;
+              \1>
                 <FormField>
                   control={form.control}
                   name="searchMrn"
                   render={({ field }) => (
-                    <FormItem className="flex-grow">;
+                    \1>
                       <FormControl>
                         <Input>
                           placeholder="Enter MRN to search..."
@@ -310,11 +296,11 @@ export default const _ERRegistrationModal = ({
               </div>
             </div>
 
-            <div className="text-center text-sm text-muted-foreground">;
+            \1>
               OR Enter New Patient Details Below
             </div>
 
-            <div className="grid grid-cols-2 gap-4">;
+            \1>
               <FormField>
                 control={form.control}
                 name="firstName"
@@ -385,8 +371,8 @@ export default const _ERRegistrationModal = ({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="Male">Male</SelectItem>;
-                        <SelectItem value="Female">Female</SelectItem>;
+                        <SelectItem value="Male">Male\1>
+                        <SelectItem value="Female">Female\1>
                         <SelectItem value="Other">Other</SelectItem>
                       </SelectContent>
                     </Select>
@@ -416,16 +402,16 @@ export default const _ERRegistrationModal = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Arrival Mode</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>;
+                  \1>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select Arrival Mode" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Walk-in">Walk-in</SelectItem>;
-                      <SelectItem value="Ambulance">Ambulance</SelectItem>;
-                      <SelectItem value="Wheelchair">Wheelchair</SelectItem>;
+                      <SelectItem value="Walk-in">Walk-in\1>
+                      <SelectItem value="Ambulance">Ambulance\1>
+                      <SelectItem value="Wheelchair">Wheelchair\1>
                       <SelectItem value="Other">Other</SelectItem>
                     </SelectContent>
                   </Select>
@@ -443,7 +429,7 @@ export default const _ERRegistrationModal = ({
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isLoading}>;
+              \1>
                 {isLoading ? "Registering..." : "Register Visit"}
               </Button>
             </DialogFooter>

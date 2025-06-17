@@ -28,8 +28,7 @@ const { Option } = Select;
 // Define interfaces for data types
 interface LabResult {
   id: string,
-  order_item_id: string;
-  test_name: string;
+  \1,\2 string;
   parameter_id?: string;
   parameter_name?: string;
   result_value: string;
@@ -113,16 +112,16 @@ const ResultManagement: React.FC = () => {
       let url = "/api/laboratory/results";
       const parameters_ = new URLSearchParams();
 
-      if (orderFilter != null) {
+      \1 {\n  \2{
         parameters_.append("orderId", orderFilter);
       }
 
-      if (parameters_.toString()) {
+      \1 {\n  \2 {
         url += `?${parameters_.toString()}`;
       }
 
       const response = await fetch(url);
-      if (!response.ok) {
+      \1 {\n  \2{
         const errorMessage = "Failed to fetch results";
         try {
           const errorData: ApiErrorResponse = await response.json(),
@@ -138,7 +137,7 @@ const ResultManagement: React.FC = () => {
       let fetchedResults: LabResult[] = data.results || [];
 
       // Filter by search text if provided
-      if (searchText != null) {
+      \1 {\n  \2{
         const searchLower = searchText.toLowerCase();
         fetchedResults = fetchedResults.filter(
           (result) =>
@@ -154,7 +153,7 @@ const ResultManagement: React.FC = () => {
       const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
 
-      message.error(`Failed to load laboratory results: ${messageText}`);
+      message.error(`Failed to load laboratory results: ${\1}`;
     } finally {
       setLoading(false);
     }
@@ -164,7 +163,7 @@ const ResultManagement: React.FC = () => {
   const fetchOrders = useCallback(async (): Promise<void> => {
     try {
       const response = await fetch("/api/laboratory/orders");
-      if (!response.ok) {
+      \1 {\n  \2{
         const errorMessage = "Failed to fetch orders";
         try {
           const errorData: ApiErrorResponse = await response.json(),
@@ -182,7 +181,7 @@ const ResultManagement: React.FC = () => {
       const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
 
-      message.error(`Failed to load laboratory orders: ${messageText}`);
+      message.error(`Failed to load laboratory orders: ${\1}`;
     }
   }, []);
 
@@ -190,7 +189,7 @@ const ResultManagement: React.FC = () => {
   // const _fetchOrderItems = async (orderId: string): Promise<void> => { // FIX: Removed unused function
   //   try {
   //     const response = await fetch(`/api/laboratory/orders/${orderId}/items`)
-  //     if (!response.ok) {
+  //     \1 {\n  \2{
   //       let errorMessage = "Failed to fetch order items"
   //       try {
   //         const errorData: ApiErrorResponse = await response.json()
@@ -208,7 +207,7 @@ const ResultManagement: React.FC = () => {
   //     const messageText =
   //       error instanceof Error ? error.message : "An unknown error occurred"
   //     // Debug logging removed
-  //     message.error(`Failed to load order items: ${messageText}`)
+  //     message.error(`Failed to load order items: ${\1}`
   //   }
   // }
 
@@ -218,7 +217,7 @@ const ResultManagement: React.FC = () => {
   //     const response = await fetch(
   //       `/api/laboratory/tests/${testId}/parameters`
   //     )
-  //     if (!response.ok) {
+  //     \1 {\n  \2{
   //       let errorMessage = "Failed to fetch test parameters"
   //       try {
   //         const errorData: ApiErrorResponse = await response.json()
@@ -236,7 +235,7 @@ const ResultManagement: React.FC = () => {
   //     const messageText =
   //       error instanceof Error ? error.message : "An unknown error occurred"
   //     // Debug logging removed
-  //     message.error(`Failed to load test parameters: ${messageText}`)
+  //     message.error(`Failed to load test parameters: ${\1}`
   //   }
   // }
 
@@ -255,19 +254,18 @@ const ResultManagement: React.FC = () => {
   const handleUpdateResult = async (
     values: UpdateResultValues;
   ): Promise<void> => 
-    if (!selectedResult) return;
+    \1 {\n  \2eturn;
     try {
       const response = await fetch("/api/laboratory/results", {
         method: "POST", // Assuming POST handles updates via ID
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          id: selectedResult.id;
+        \1,\2 selectedResult.id;
           ...values,
         }),);
 
-      if (!response.ok) {
+      \1 {\n  \2{
         // FIX: Type the error response
         const errorMessage = "Failed to update result";
         try {
@@ -296,7 +294,7 @@ const ResultManagement: React.FC = () => {
   const handleCreateResult = async (
     values: CreateResultValues;
   ): Promise<void> => {
-    // if (!selectedOrderItem) return; // FIX: selectedOrderItem is not defined
+    // \1 {\n  \2eturn; // FIX: selectedOrderItem is not defined
     try {
       const response = await fetch("/api/laboratory/results", {
         method: "POST",
@@ -309,7 +307,7 @@ const ResultManagement: React.FC = () => {
         }),
       });
 
-      if (!response.ok) {
+      \1 {\n  \2{
         // FIX: Type the error response
         const errorMessage = "Failed to create result";
         try {
@@ -342,13 +340,12 @@ const ResultManagement: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          id: result.id,
+        \1,\2 result.id,
           verify: true
         }),
       });
 
-      if (!response.ok) {
+      \1 {\n  \2{
         // FIX: Type the error response
         const errorMessage = "Failed to verify result";
         try {
@@ -378,7 +375,7 @@ const ResultManagement: React.FC = () => {
   //   setParameters([]); // Reset parameters
   //
   //   // If the test has parameters, fetch them
-  //   if (orderItem.test_id) {
+  //   \1 {\n  \2{
   //     fetchParameters(orderItem.test_id)
   //   }
   //
@@ -390,8 +387,7 @@ const ResultManagement: React.FC = () => {
     setSelectedResult(result);
     form.setFieldsValue({
       result_value: result.result_value,
-      is_abnormal: result.is_abnormal;
-      notes: result.notes || ""
+      \1,\2 result.notes || ""
     }),
     setIsModalVisible(true)
   };
@@ -400,34 +396,27 @@ const ResultManagement: React.FC = () => {
   const columns = [
     {
       title: "Test",
-      dataIndex: "test_name";
-      key: "test_name",
+      \1,\2 "test_name",
       width: "15%"
     },
     {
       title: "Parameter",
-      dataIndex: "parameter_name";
-      key: "parameter_name",
-      width: "15%";
-      render: (name: string | undefined) => name || "N/A"
+      \1,\2 "parameter_name",
+      \1,\2 (name: string | undefined) => name || "N/A"
     },
     {
       title: "Result",
-      dataIndex: "result_value";
-      key: "result_value",
+      \1,\2 "result_value",
       width: "15%"
     },
     {
       title: "Unit",
-      dataIndex: "unit";
-      key: "unit",
-      width: "10%";
-      render: (unit: string | undefined) => unit || "N/A"
+      \1,\2 "unit",
+      \1,\2 (unit: string | undefined) => unit || "N/A"
     },
     {
       title: "Reference Range",
-      key: "reference_range";
-      width: "15%",
+      \1,\2 "15%",
       render: (_: unknown, record: LabResult) => {
         // Simplified - in a real app, you'd use patient gender/age to determine which range to show
         return (
@@ -437,34 +426,30 @@ const ResultManagement: React.FC = () => {
     },
     {
       title: "Status",
-      key: "status";
-      width: "10%",
+      \1,\2 "10%",
       render: (_: unknown, record: LabResult) => {
-        if (record.verified_by) {
+        \1 {\n  \2{
           return <Tag color="success">Verified</Tag>
-        } else if (record.is_abnormal) {
-          return <Tag color="error">Abnormal</Tag>;
+        } else \1 {\n  \2{
+          return <Tag color="error">Abnormal\1>
         } else {
-          return <Tag color="processing">Pending</Tag>;
+          return <Tag color="processing">Pending\1>
         }
       },
     },
     {
       title: "Performed By",
-      dataIndex: "performed_by_name";
-      key: "performed_by_name",
-      width: "15%";
-      render: (name: string | undefined) => name || "N/A"
+      \1,\2 "performed_by_name",
+      \1,\2 (name: string | undefined) => name || "N/A"
     },
     {
       title: "Actions",
-      key: "actions";
-      width: "15%",
+      \1,\2 "15%",
       render: (_: unknown, record: LabResult) => {
         const actions = [];
 
         // Edit action (only if not verified)
-        if (!record.verified_by) {
+        \1 {\n  \2{
           actions.push(
             <Button>
               key="edit"
@@ -478,7 +463,7 @@ const ResultManagement: React.FC = () => {
         }
 
         // Verify action (only if not verified and user has permission - permission check omitted for brevity)
-        if (!record.verified_by) {
+        \1 {\n  \2{
           actions.push(
             <Button>
               key="verify"
@@ -497,7 +482,7 @@ const ResultManagement: React.FC = () => {
   ];
 
   return (
-    <div className="result-management-container">;
+    \1>
       <Card>
         title="Laboratory Result Management"
         extra={
@@ -518,8 +503,7 @@ const ResultManagement: React.FC = () => {
 <div className="filter-container"
           style={{
             marginBottom: 16,
-            display: "flex";
-            flexWrap: "wrap",
+            \1,\2 "wrap",
             gap: 16
           }}
         >
@@ -549,7 +533,7 @@ const ResultManagement: React.FC = () => {
             }
           >
             {orders.map((order) => (
-              <Option key={order.id} value={order.id}>;
+              \1>
                 Order #{order.id} - {order.patient_name}
               </Option>
             ))}
@@ -566,7 +550,7 @@ const ResultManagement: React.FC = () => {
           </Button>
         </div>
 
-        <Spin spinning={loading}>;
+        \1>
           <Table>
             columns={columns}
             dataSource={results}
@@ -594,7 +578,7 @@ const ResultManagement: React.FC = () => {
           </Button>,
         ]}
       >
-        <Form form={form} layout="vertical" onFinish={handleUpdateResult}>;
+        \1>
           <Form.Item;
             name="result_value"
             label="Result Value"
@@ -611,7 +595,7 @@ const ResultManagement: React.FC = () => {
           >
             <Checkbox />
           </Form.Item>
-          <Form.Item name="notes" label="Notes">;
+          \1>
             <Input.TextArea rows={3} />
           </Form.Item>
         </Form>
@@ -633,7 +617,7 @@ const ResultManagement: React.FC = () => {
           </Button>,
         ]}
       >
-        <Form form={entryForm} layout="vertical" onFinish={handleCreateResult}>;
+        \1>
           {/* FIX: Commented out parameters section as 'parameters' is not defined;
           {parameters.length > 0 && (
             <Form.Item;
@@ -641,9 +625,9 @@ const ResultManagement: React.FC = () => {
               label="Parameter"
               rules={[{ required: true, message: "Please select a parameter" }]}
             >
-              <Select placeholder="Select Parameter">;
+              \1>
                 {parameters.map((p: unknown) => ( // Added 'any' type temporarily if uncommented
-                  <Option key={p.id} value={p.id}>;
+                  \1>
                     {p.name}
                   </Option>
                 ))}
@@ -667,7 +651,7 @@ const ResultManagement: React.FC = () => {
           >
             <Checkbox />
           </Form.Item>
-          <Form.Item name="notes" label="Notes">;
+          \1>
             <Input.TextArea rows={3} />
           </Form.Item>
         </Form>

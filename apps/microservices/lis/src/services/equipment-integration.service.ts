@@ -13,216 +13,11 @@ import type { PrismaService } from '@/lib/prisma';
  * HL7 interface engine and automated result importing with validation;
  */
 
-export interface LabEquipment {
-  id: string,
-  name: string;
-  model: string,
-  manufacturer: string;
-  serialNumber: string,
-  type: EquipmentType;
-  location: string,
-  status: EquipmentStatus;
-  connectionType: ConnectionType,
-  connectionConfig: ConnectionConfig;
-  hl7Config: HL7Configuration,
-  testCapabilities: TestCapability[];
-  lastCommunication: Date,
-  maintenanceSchedule: MaintenanceSchedule;
-  calibrationStatus: CalibrationStatus,
-  qcStatus: QualityControlStatus;
-  softwareVersion?: string;
-  firmwareVersion?: string;
-  createdAt: Date,
-  updatedAt: Date
-export enum EquipmentType {
-  HEMATOLOGY_ANALYZER = 'HEMATOLOGY_ANALYZER',
-  CHEMISTRY_ANALYZER = 'CHEMISTRY_ANALYZER',
-  IMMUNOASSAY_ANALYZER = 'IMMUNOASSAY_ANALYZER',
-  MICROBIOLOGY_ANALYZER = 'MICROBIOLOGY_ANALYZER',
-  MOLECULAR_ANALYZER = 'MOLECULAR_ANALYZER',
-  BLOOD_GAS_ANALYZER = 'BLOOD_GAS_ANALYZER',
-  COAGULATION_ANALYZER = 'COAGULATION_ANALYZER',
-  URINALYSIS_ANALYZER = 'URINALYSIS_ANALYZER',
-  FLOW_CYTOMETER = 'FLOW_CYTOMETER',
-  MASS_SPECTROMETER = 'MASS_SPECTROMETER',
-export enum EquipmentStatus {
-  ONLINE = 'ONLINE',
-  OFFLINE = 'OFFLINE',
-  MAINTENANCE = 'MAINTENANCE',
-  ERROR = 'ERROR',
-  CALIBRATING = 'CALIBRATING',
-  STANDBY = 'STANDBY',
-export = "export" enum = "enum" ConnectionType = "ConnectionType" {
-  SERIAL = 'SERIAL',
-  TCP_IP = 'TCP_IP',
-  USB = 'USB',
-  FILE_TRANSFER = 'FILE_TRANSFER',
-  WEB_SERVICE = 'WEB_SERVICE',
-  DATABASE = 'DATABASE',
-export interface ConnectionConfig {
-  host?: string;
-  port?: number;
-  serialPort?: string;
-  baudRate?: number;
-  timeout: number,
-  retryAttempts: number;
-  pollInterval: number;
-  authentication?: {
-    username?: string;
-    password?: string;
-    apiKey?: string
+\1
+}
   };
-export interface HL7Configuration {
-  version: string; // 2.3, 2.4, 2.5, etc.
-  sendingApplication: string,
-  sendingFacility: string;
-  receivingApplication: string,
-  receivingFacility: string;
-  messageTypes: string[]; // ORU^R01, ORM^O01, etc.
-  encoding: string,
-  fieldSeparator: string;
-  componentSeparator: string,
-  repetitionSeparator: string;
-  escapeCharacter: string,
-  subcomponentSeparator: string;
-  acknowledgmentRequired: boolean,
-  processingId: 'P' | 'T' | 'D'; // Production, Test, Debug
-export interface TestCapability {
-  testCode: string,
-  testName: string;
-  loincCode?: string;
-  snomedCode?: string;
-  units: string[],
-  referenceRanges: ReferenceRange[];
-  criticalLimits: CriticalLimits,
-  analyteType: AnalyteType;
-  processingTime: number; // minutes
-  sampleTypes: string[],
-  sampleVolume: number; // μL
-export interface ReferenceRange {
-  ageMin?: number;
-  ageMax?: number;
-  gender?: 'M' | 'F' | 'ALL';
-  min: number,
-  max: number;
-  unit: string;
-  population?: string;
-export interface CriticalLimits {
-  low: number,
-  high: number;
-  unit: string
-export enum AnalyteType {
-  QUANTITATIVE = 'QUANTITATIVE',
-  QUALITATIVE = 'QUALITATIVE',
-  SEMI_QUANTITATIVE = 'SEMI_QUANTITATIVE',
-export interface MaintenanceSchedule {
-  id: string,
-  equipmentId: string;
-  type: MaintenanceType,
-  frequency: number; // days
-  lastPerformed: Date,
-  nextDue: Date;
-  assignedTo?: string;
-  instructions: string,
-  estimatedDuration: number; // minutes
-export enum MaintenanceType {
-  PREVENTIVE = 'PREVENTIVE',
-  CORRECTIVE = 'CORRECTIVE',
-  CALIBRATION = 'CALIBRATION',
-  SOFTWARE_UPDATE = 'SOFTWARE_UPDATE',
-export interface CalibrationStatus {
-  lastCalibrated: Date,
-  nextCalibrationDue: Date;
-  calibratorLotNumber?: string;
-  calibrationResults: CalibrationResult[],
-  status: 'VALID' | 'EXPIRED' | 'FAILED'
-export interface CalibrationResult {
-  analyte: string,
-  level: string;
-  expectedValue: number,
-  observedValue: number;
-  deviation: number,
-  acceptable: boolean;
-  performedAt: Date
-export interface QualityControlStatus {
-  lastQCRun: Date,
-  nextQCDue: Date;
-  qcResults: QualityControlTestResult[],
-  status: 'PASS' | 'FAIL' | 'WARNING'
-export interface QualityControlTestResult {
-  controlName: string,
-  lotNumber: string;
-  level: string,
-  analyte: string;
-  expectedValue: number,
-  observedValue: number;
-  cv: number; // coefficient of variation
-  bias: number,
-  withinLimits: boolean;
-  performedAt: Date
-export interface HL7Message {
-  id: string,
-  messageType: string;
-  sendingApplication: string,
-  sendingFacility: string;
-  receivingApplication: string,
-  receivingFacility: string;
-  messageControlId: string,
-  timestamp: Date;
-  processingId: string,
-  versionId: string;
-  segments: HL7Segment[],
-  rawMessage: string;
-  processed: boolean;
-  processingErrors?: string[];
-export interface HL7Segment {
-  segmentType: string,
-  fieldSeparator: string;
-  fields: string[]
-export interface ResultMessage {
-  messageId: string,
-  equipmentId: string;
-  sampleId: string,
-  testResults: TestResult[];
-  messageTimestamp: Date,
-  processed: boolean;
-  validationStatus: ValidationStatus;
-  validationErrors?: ValidationError[];
-export interface TestResult {
-  testCode: string,
-  testName: string;
-  value: string;
-  numericValue?: number;
-  unit?: string;
-  referenceRange?: string;
-  abnormalFlag?: string;
-  resultStatus: ResultStatus,
-  resultTimestamp: Date;
-  operatorId?: string;
-  instrumentId: string;
-  dilutionFactor?: number;
-  comments?: string;
-export enum ResultStatus {
-  FINAL = 'F',
-  PRELIMINARY = 'P',
-  CORRECTED = 'C',
-  IN_PROCESS = 'I',
-  CANCELLED = 'X',
-export enum ValidationStatus {
-  VALID = 'VALID',
-  INVALID = 'INVALID',
-  WARNING = 'WARNING',
-  PENDING = 'PENDING',
-export = "export" interface = "interface" ValidationError = "ValidationError" 
-  code: string,
-  message: string;
-  field?: string;
-  severity: 'ERROR' | 'WARNING' | 'INFO'
-
-@Injectable();
-export class EquipmentIntegrationService {
-  private connections: Map<string, any> = new Map(),
-  private messageQueue: Map<string, HL7Message[]> = new Map(),
+\1
+}
   constructor(private prisma: PrismaService) {}
 
   /**
@@ -231,7 +26,7 @@ export class EquipmentIntegrationService {
   async initializeEquipment(equipmentId: string): Promise<boolean> 
     try {
       const equipment = await this.getEquipment(equipmentId);
-      if (!equipment) {
+      \1 {\n  \2{
         throw new Error(`Equipment ${equipmentId} not found`);
       }
 
@@ -266,7 +61,7 @@ export class EquipmentIntegrationService {
 
       // Validate message structure
       const validationResult = await this.validateHL7Message(hl7Message);
-      if (!validationResult.valid) {
+      \1 {\n  \2{
 
         return null;
       }
@@ -280,7 +75,7 @@ export class EquipmentIntegrationService {
       resultMessage.validationErrors = resultValidation.errors;
 
       // Process results if valid
-      if (resultValidation.status === ValidationStatus.VALID) {
+      \1 {\n  \2{
         await this.processTestResults(resultMessage);
       }
 
@@ -310,10 +105,8 @@ export class EquipmentIntegrationService {
   /**
    * Automated result importing with delta checking;
    */
-  async importResults(resultMessage: ResultMessage): Promise<
-    imported: number,
-    deltaChecks: DeltaCheckResult[];
-    criticalAlerts: CriticalAlert[]> {
+  async importResults(\1,\2 number,
+    \1,\2 CriticalAlert[]> {
     const imported: string[] = [];
     const deltaChecks: DeltaCheckResult[] = [];
     const criticalAlerts: CriticalAlert[] = [];
@@ -329,12 +122,12 @@ export class EquipmentIntegrationService {
 
         // Check for critical values
         const criticalCheck = await this.checkCriticalValues(testResult);
-        if (criticalCheck.isCritical) {
+        \1 {\n  \2{
           criticalAlerts.push(criticalCheck);
         }
 
         // Import result if validation passes
-        if (deltaCheck.status === 'PASS' || deltaCheck.status === 'WARNING') {
+        \1 {\n  \2{
           await this.importTestResult(resultMessage.sampleId, testResult);
           imported.push(testResult.testCode);
         }
@@ -350,8 +143,7 @@ export class EquipmentIntegrationService {
 
       // Publish real-time updates
       await pubsub.publish(SUBSCRIPTION_EVENTS.LAB_RESULT_UPDATED, {
-        labResultUpdated: {
-          sampleId: resultMessage.sampleId,
+        \1,\2 resultMessage.sampleId,
           testResults: resultMessage.testResults;
           deltaChecks,
           criticalAlerts,
@@ -378,7 +170,7 @@ export class EquipmentIntegrationService {
   ): Promise<CalibrationStatus> {
     try {
       const equipment = await this.getEquipment(equipmentId);
-      if (!equipment) {
+      \1 {\n  \2{
         throw new Error(`Equipment ${equipmentId} not found`);
       }
 
@@ -442,7 +234,7 @@ export class EquipmentIntegrationService {
       await this.updateQCStatus(equipmentId, qcStatus);
 
       // If QC fails, lock equipment
-      if (qcStatus.status === 'FAIL') {
+      \1 {\n  \2{
         await this.updateEquipmentStatus(equipmentId, EquipmentStatus.ERROR);
 
         // Send alert
@@ -472,7 +264,7 @@ export class EquipmentIntegrationService {
 
       const upcomingMaintenance = maintenanceSchedules.filter(schedule => {
         const daysUntilDue = Math.floor(
-          (schedule.nextDue.getTime() - crypto.getRandomValues(new Uint32Array(1))[0]) / (1000 * 60 * 60 * 24);
+          (schedule.nextDue.getTime() - crypto.getRandomValues(\1[0]) / (1000 * 60 * 60 * 24);
         );
         return daysUntilDue <= 7; // Due within 7 days
       });
@@ -495,7 +287,7 @@ export class EquipmentIntegrationService {
   async monitorEquipmentPerformance(equipmentId: string): Promise<PerformanceMetrics> {
     try {
       const timeWindow = 24 * 60 * 60 * 1000; // 24 hours
-      const since = new Date(crypto.getRandomValues(new Uint32Array(1))[0] - timeWindow);
+      const since = \1[0] - timeWindow);
 
       const [
         messageCount,
@@ -545,7 +337,7 @@ export class EquipmentIntegrationService {
     let mshSegment: HL7Segment | null = null;
 
     for (const line of lines) {
-      if (line.trim()) {
+      \1 {\n  \2 {
         const segmentType = line.substring(0, 3);
         const fields = line.split('|');
 
@@ -557,74 +349,65 @@ export class EquipmentIntegrationService {
 
         segments.push(segment);
 
-        if (segmentType === 'MSH') {
+        \1 {\n  \2{
           mshSegment = segment;
         }
       }
     }
 
-    if (!mshSegment) {
+    \1 {\n  \2{
       throw new Error('Invalid HL7 message: MSH segment not found')
     }
 
     return {
-      id: `hl7-${crypto.getRandomValues(new Uint32Array(1))[0]}-${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1)}`,
+      id: `hl7-${crypto.getRandomValues(\1[0]}-${crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1)}`,
       messageType: mshSegment.fields[8] || '',
-      sendingApplication: mshSegment.fields[2] || '';
-      sendingFacility: mshSegment.fields[3] || '',
-      receivingApplication: mshSegment.fields[4] || '';
-      receivingFacility: mshSegment.fields[5] || '',
-      messageControlId: mshSegment.fields[9] || '';
-      timestamp: new Date(),
-      processingId: mshSegment.fields[10] || 'P';
-      versionId: mshSegment.fields[11] || '2.5';
+      \1,\2 mshSegment.fields[3] || '',
+      \1,\2 mshSegment.fields[5] || '',
+      \1,\2 new Date(),
+      \1,\2 mshSegment.fields[11] || '2.5';
       segments,
       rawMessage,
       processed: false
     };
   }
 
-  private async validateHL7Message(message: HL7Message): Promise<{
-    valid: boolean,
+  private async validateHL7Message(\1,\2 boolean,
     errors: ValidationError[]
   }> {
     const errors: ValidationError[] = [];
 
     // Basic validation
-    if (!message.messageType) {
+    \1 {\n  \2{
       errors.push({
         code: 'MISSING_MESSAGE_TYPE',
-        message: 'Message type is required';
-        severity: 'ERROR'
+        \1,\2 'ERROR'
       });
     }
 
-    if (!message.messageControlId) {
+    \1 {\n  \2{
       errors.push({
         code: 'MISSING_CONTROL_ID',
-        message: 'Message control ID is required';
-        severity: 'ERROR'
+        \1,\2 'ERROR'
       });
     }
 
     // Check for required segments based on message type
-    if (message.messageType.startsWith('ORU')) {
+    \1 {\n  \2 {
       const hasOBR = message.segments.some(s => s.segmentType === 'OBR');
       const hasOBX = message.segments.some(s => s.segmentType === 'OBX');
 
-      if (!hasOBR) {
+      \1 {\n  \2{
         errors.push({
           code: 'MISSING_OBR_SEGMENT',
-          message: 'OBR segment is required for result messages';
-          severity: 'ERROR'
+          \1,\2 'ERROR'
         });
       }
 
-      if (!hasOBX) {
+      \1 {\n  \2{
         errors.push({
           code: 'MISSING_OBX_SEGMENT',
-          message: 'OBX segment is required for result messages';
-          severity: 'ERROR'
+          \1,\2 'ERROR'
         });
       }
     }
@@ -641,7 +424,7 @@ export class EquipmentIntegrationService {
 
     // Extract sample ID from OBR segment
     const obrSegment = hl7Message.segments.find(s => s.segmentType === 'OBR');
-    if (obrSegment != null) {
+    \1 {\n  \2{
       sampleId = obrSegment.fields[2] || obrSegment.fields[3] || '';
     }
 
@@ -649,18 +432,13 @@ export class EquipmentIntegrationService {
     const obxSegments = hl7Message.segments.filter(s => s.segmentType === 'OBX');
 
     for (const obxSegment of obxSegments) {
-      const testResult: TestResult = {
-        testCode: obxSegment.fields[3]?.split('^')[0] || '',
-        testName: obxSegment.fields[3]?.split('^')[1] || '';
-        value: obxSegment.fields[5] || '',
+      const \1,\2 obxSegment.fields[3]?.split('^')[0] || '',
+        \1,\2 obxSegment.fields[5] || '',
         numericValue: this.parseNumericValue(obxSegment.fields[5]),
         unit: obxSegment.fields[6] || '',
-        referenceRange: obxSegment.fields[7] || '';
-        abnormalFlag: obxSegment.fields[8] || '',
-        resultStatus: (obxSegment.fields[11] as ResultStatus) || ResultStatus.FINAL;
-        resultTimestamp: new Date(),
-        instrumentId: equipmentId;
-        comments: obxSegment.fields[13] || ''
+        \1,\2 obxSegment.fields[8] || '',
+        \1,\2 new Date(),
+        \1,\2 obxSegment.fields[13] || ''
       };
 
       testResults.push(testResult);
@@ -672,8 +450,7 @@ export class EquipmentIntegrationService {
       sampleId,
       testResults,
       messageTimestamp: hl7Message.timestamp,
-      processed: false;
-      validationStatus: ValidationStatus.PENDING
+      \1,\2 ValidationStatus.PENDING
     };
   }
 
@@ -690,11 +467,9 @@ export class EquipmentIntegrationService {
     // Compare with previous results for the same patient
     return {
       testCode: testResult.testCode,
-      currentValue: testResult.numericValue || 0;
-      previousValue: 0, // Would fetch from database
+      \1,\2 0, // Would fetch from database
       deltaPercent: 0,
-      status: 'PASS';
-      message: 'Within expected range'
+      \1,\2 'Within expected range'
     };
   }
 
@@ -702,8 +477,7 @@ export class EquipmentIntegrationService {
     // Implementation of critical value checking
     return {
       isCritical: false,
-      testCode: testResult.testCode;
-      value: testResult.numericValue || 0,
+      \1,\2 testResult.numericValue || 0,
       criticalLimits: low: 0, high: 100, unit: testResult.unit || '' ,
       severity: 'LOW',
       message: 'Normal value'
@@ -715,8 +489,7 @@ export class EquipmentIntegrationService {
   private async getEquipment(id: string): Promise<LabEquipment | null> {
     return await this.prisma.labEquipment.findUnique({
       where: { id },
-      include: {
-        testCapabilities: true,
+      \1,\2 true,
         maintenanceSchedule: true
       },
     }) as LabEquipment | null
@@ -750,42 +523,33 @@ export class EquipmentIntegrationService {
 // Supporting interfaces
 interface DeltaCheckResult {
   testCode: string,
-  currentValue: number;
-  previousValue: number,
-  deltaPercent: number;
-  status: 'PASS' | 'WARNING' | 'FAIL',
+  \1,\2 number,
+  \1,\2 'PASS' | 'WARNING' | 'FAIL',
   message: string
 }
 
 interface CriticalAlert {
   isCritical: boolean,
-  testCode: string;
-  value: number,
-  criticalLimits: CriticalLimits;
-  severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL',
+  \1,\2 number,
+  \1,\2 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL',
   message: string
 }
 
 interface CalibrationData {
   analyte: string,
-  level: string;
-  expectedValue: number,
+  \1,\2 number,
   lotNumber: string
 }
 
 interface QualityControlSample {
   controlName: string,
-  lotNumber: string;
-  level: string,
+  \1,\2 string,
   analytes: string[]
 }
 
 interface PerformanceMetrics {
   equipmentId: string,
-  messageCount: number;
-  errorCount: number,
-  errorRate: number;
-  averageResponseTime: number,
-  throughput: number;
-  uptime: number,
+  \1,\2 number,
+  \1,\2 number,
+  \1,\2 number,
   timestamp: Date

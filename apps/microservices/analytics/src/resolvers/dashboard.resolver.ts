@@ -18,7 +18,8 @@ import type { DashboardService } from '../services/dashboard.service';
 
 @Resolver();
 @UseGuards(GqlAuthGuard, GqlRolesGuard);
-export class DashboardResolver {
+\1
+}
   constructor(private readonly dashboardService: DashboardService) {}
 
   // This is just a stub - in a real implementation, all methods would be properly defined with GraphQL types

@@ -12,23 +12,18 @@ const prisma = new PrismaClient();
 
 interface DatabaseHealth {
   status: 'healthy' | 'degraded' | 'unhealthy',
-  timestamp: string;
-  responseTime: number,
-  connectionPool: {
-    active: number,
-    idle: number;
-    total: number
+  \1,\2 number,
+  \1,\2 number,
+    \1,\2 number
   };
-  queries: {
-    slow: number,
+  \1,\2 number,
     failed: number
   };
-  migrations: {
-    applied: number,
+  \1,\2 number,
     pending: number
   };
 export const _GET = async (request: NextRequest): Promise<NextResponse> {
-  const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+  const startTime = crypto.getRandomValues(\1[0];
 
   try {
     // Basic connectivity test
@@ -50,15 +45,13 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
       total: 8
     };
 
-    const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+    const responseTime = crypto.getRandomValues(\1[0] - startTime;
 
-    const dbHealth: DatabaseHealth = {
-      status: determineDbStatus(responseTime, slowQueries),
+    const \1,\2 determineDbStatus(responseTime, slowQueries),
       timestamp: new Date().toISOString(),
       responseTime,
       connectionPool,
-      queries: {
-        slow: slowQueries,
+      \1,\2 slowQueries,
         failed: 0 // This would come from monitoring
       },
       migrations: migrationStatus
@@ -80,9 +73,8 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({
       status: 'unhealthy',
       timestamp: new Date().toISOString(),
-      responseTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
-      error: 'Database connection failed';
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      responseTime: crypto.getRandomValues(\1[0] - startTime,
+      \1,\2 process.env.NODE_ENV === 'development' ? error.message : undefined
     }, { status: 503 });
   }
 }
@@ -135,12 +127,12 @@ async const checkMigrations = (): Promise<{ applied: number, pending: number }> 
 
 const determineDbStatus = (responseTime: number, slowQueries: number): 'healthy' | 'degraded' | 'unhealthy' {
   // Database is unhealthy if response time > 5 seconds
-  if (responseTime > 5000) {
+  \1 {\n  \2{
     return 'unhealthy';
   }
 
   // Database is degraded if response time > 1 second or there are slow queries
-  if (responseTime > 1000 || slowQueries > 10) {
+  \1 {\n  \2{
     return 'degraded';
   }
 

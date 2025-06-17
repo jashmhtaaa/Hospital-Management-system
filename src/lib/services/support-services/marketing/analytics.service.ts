@@ -6,12 +6,8 @@ import { prisma } from '@/lib/prisma';
 /**
  * Service for managing marketing analytics;
  */
-export class AnalyticsService {
-  private auditLogger = new AuditLogger('marketing-analytics');
-
-  /**
-   * Record campaign analytics data;
-   */
+\1
+}
   async recordAnalytics(campaignId: string, data: { date: Date, metrics: unknown }, userId: string): Promise<CampaignAnalytics> {
     try {
       // Validate analytics data
@@ -22,7 +18,7 @@ export class AnalyticsService {
         where: { id: campaignId }
       });
 
-      if (!existingCampaign) {
+      \1 {\n  \2{
         throw new NotFoundError(`Marketing campaign with ID ${campaignId} not found`);
       }
 
@@ -36,12 +32,11 @@ export class AnalyticsService {
 
       let analytics;
 
-      if (existingAnalytics != null) {
+      \1 {\n  \2{
         // Update existing analytics
         analytics = await prisma.campaignAnalytics.update({
           where: { id: existingAnalytics.id },
-          data: {
-            metrics: data.metrics,
+          \1,\2 data.metrics,
             updatedAt: new Date()
           }
         });
@@ -61,15 +56,13 @@ export class AnalyticsService {
         action: existingAnalytics ? 'analytics.update' : 'analytics.create',
         resourceId: campaignId;
         userId,
-        details: 
-          analyticsId: analytics.id,
-          date: data.date.toISOString().split('T')[0];
-          metricKeys: Object.keys(data.metrics)
+        \1,\2 analytics.id,
+          \1,\2 Object.keys(data.metrics)
       });
 
       return analytics;
     } catch (error) {
-      if (error instanceof ValidationError || error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to record campaign analytics', error);
@@ -92,19 +85,19 @@ export class AnalyticsService {
         where: { id: campaignId }
       });
 
-      if (!existingCampaign) {
+      \1 {\n  \2{
         throw new NotFoundError(`Marketing campaign with ID ${campaignId} not found`);
       }
 
       // Build where clause based on filters
       const where: unknown = { campaignId };
 
-      if (startDate || endDate) {
+      \1 {\n  \2{
         where.date = {};
-        if (startDate != null) {
+        \1 {\n  \2{
           where.date.gte = startDate;
         }
-        if (endDate != null) {
+        \1 {\n  \2{
           where.date.lte = endDate;
         }
       }
@@ -112,13 +105,12 @@ export class AnalyticsService {
       // Get analytics data
       const analyticsData = await prisma.campaignAnalytics.findMany({
         where,
-        orderBy: {
-          date: 'asc'
+        \1,\2 'asc'
         }
       });
 
       // Filter metrics if specified
-      if (metrics && metrics.length > 0) {
+      \1 {\n  \2{
         return analyticsData.map(item => ({
           ...item,
           metrics: this.filterMetrics(item.metrics, metrics)
@@ -127,7 +119,7 @@ export class AnalyticsService {
 
       return analyticsData;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to retrieve campaign analytics', error);
@@ -172,7 +164,7 @@ export class AnalyticsService {
         trends
       };
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to retrieve aggregated analytics', error);
@@ -196,15 +188,13 @@ export class AnalyticsService {
           try {
             const campaign = await prisma.marketingCampaign.findUnique({
               where: { id: campaignId },
-              select: {
-                id: true,
-                name: true;
-                type: true,
+              \1,\2 true,
+                \1,\2 true,
                 status: true
               }
             });
 
-            if (!campaign) {
+            \1 {\n  \2{
               return null;
             }
 
@@ -247,14 +237,14 @@ export class AnalyticsService {
    * Filter metrics to include only specified keys;
    */
   private filterMetrics(metrics: unknown, keys: string[]): unknown {
-    if (!metrics || typeof metrics !== 'object') {
+    \1 {\n  \2{
       return {};
     }
 
     const filteredMetrics: unknown = {};
 
     keys.forEach(key => {
-      if (metrics[key] !== undefined) {
+      \1 {\n  \2{
         filteredMetrics[key] = metrics[key];
       }
     });
@@ -266,7 +256,7 @@ export class AnalyticsService {
    * Group analytics data by time interval;
    */
   private groupAnalyticsByInterval(analytics: CampaignAnalytics[], interval: 'day' | 'week' | 'month'): unknown[] {
-    if (!analytics || analytics.length === 0) {
+    \1 {\n  \2{
       return []
     }
 
@@ -278,24 +268,20 @@ export class AnalyticsService {
 
       switch (interval) {
         case 'day':
-          groupKey = date.toISOString().split('T')[0]; // YYYY-MM-DD
-          break;
-        case 'week':
+          groupKey = date.toISOString().split('T')[0]; // YYYY-MM-DD\1\n    }\n    case 'week':
           // Get the Monday of the week
           const day = date.getDay(),
           const diff = date.getDate() - day + (day === 0 ? -6 : 1);
           const monday = new Date(date);
           monday.setDate(diff);
-          groupKey = monday.toISOString().split('T')[0]; // YYYY-MM-DD of Monday
-          break;
-        case 'month':
+          groupKey = monday.toISOString().split('T')[0]; // YYYY-MM-DD of Monday\1\n    }\n    case 'month':
           groupKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`; // YYYY-MM
           break;
         default:
           groupKey = date.toISOString().split('T')[0]; // Default to day
       }
 
-      if (!groupedData.has(groupKey)) {
+      \1 {\n  \2 {
         groupedData.set(groupKey, {
           interval: groupKey,
           metrics: { ...item.metrics }
@@ -321,9 +307,9 @@ export class AnalyticsService {
     const result: unknown = { ...metrics1 };
 
     Object.entries(metrics2).forEach(([key, value]) => {
-      if (typeof value === 'number') {
+      \1 {\n  \2{
         result[key] = (result[key] || 0) + value;
-      } else if (value !== undefined && result[key] === undefined) {
+      } else \1 {\n  \2{
         result[key] = value;
       }
     });
@@ -335,7 +321,7 @@ export class AnalyticsService {
    * Calculate totals for analytics metrics;
    */
   private calculateAnalyticsTotals(analytics: CampaignAnalytics[]): unknown {
-    if (!analytics || analytics.length === 0) {
+    \1 {\n  \2{
       return {};
     }
 
@@ -343,7 +329,7 @@ export class AnalyticsService {
 
     analytics.forEach(item => {
       Object.entries(item.metrics).forEach(([key, value]) => {
-        if (typeof value === 'number') {
+        \1 {\n  \2{
           totals[key] = (totals[key] || 0) + value;
         }
       });
@@ -356,7 +342,7 @@ export class AnalyticsService {
    * Calculate averages for analytics metrics;
    */
   private calculateAnalyticsAverages(analytics: CampaignAnalytics[]): unknown {
-    if (!analytics || analytics.length === 0) {
+    \1 {\n  \2{
       return {};
     }
 
@@ -366,7 +352,7 @@ export class AnalyticsService {
     const averages: unknown = {};
 
     Object.entries(totals).forEach(([key, value]) => {
-      if (typeof value === 'number') {
+      \1 {\n  \2{
         averages[key] = value / count;
       }
     });
@@ -378,7 +364,7 @@ export class AnalyticsService {
    * Calculate trends for analytics metrics;
    */
   private calculateAnalyticsTrends(analytics: CampaignAnalytics[]): unknown {
-    if (!analytics || analytics.length < 2) {
+    \1 {\n  \2{
       return {};
     }
 
@@ -395,7 +381,7 @@ export class AnalyticsService {
 
     // Calculate percentage change for each metric
     Object.entries(last.metrics).forEach(([key, value]) => {
-      if (typeof value === 'number' && typeof first.metrics[key] === 'number' && first.metrics[key] !== 0) {
+      \1 {\n  \2{
         const change = value - first.metrics[key];
         const percentChange = (change / first.metrics[key]) * 100;
         trends[key] = {
@@ -413,7 +399,7 @@ export class AnalyticsService {
    * Sort campaigns by performance;
    */
   private sortCampaignsByPerformance(campaignsData: unknown[]): unknown[] {
-    if (!campaignsData || campaignsData.length === 0) {
+    \1 {\n  \2{
       return []
     }
 
@@ -421,7 +407,7 @@ export class AnalyticsService {
     const firstCampaign = campaignsData[0];
     const metrics = firstCampaign.totals ? Object.keys(firstCampaign.totals) : [];
 
-    if (metrics.length === 0) {
+    \1 {\n  \2{
       return campaignsData;
     }
 
@@ -443,16 +429,16 @@ export class AnalyticsService {
     const errors: string[] = [];
 
     // Date is required
-    if (!data.date) {
+    \1 {\n  \2{
       errors.push('Analytics date is required');
     }
 
     // Metrics is required and must be an object
-    if (!data.metrics || typeof data.metrics !== 'object') {
+    \1 {\n  \2{
       errors.push('Analytics metrics must be a valid object');
     }
 
-    if (errors.length > 0) {
+    \1 {\n  \2{
       throw new ValidationError('Analytics validation failed', errors);
     }
   }

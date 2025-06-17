@@ -9,34 +9,8 @@ import { prisma } from '@/lib/prisma';
 /**
  * Service for managing marketing campaigns and related operations;
  */
-export class MarketingCampaignService {
-  private auditLogger = new AuditLogger('marketing-campaign');
-  private notificationService = new NotificationService();
-  private fhirGenerator = new FhirResourceGenerator();
-
-  /**
-   * Create a new marketing campaign;
-   */
-  async createCampaign(data: Omit<MarketingCampaign, 'id' | 'createdAt' | 'updatedAt'>, userId: string): Promise<MarketingCampaign> {
-    try {
-      // Validate campaign data
-      this.validateCampaignData(data);
-
-      // Create campaign in database
-      const campaign = await prisma.marketingCampaign.create({
-        data: {
-          name: data.name,
-          description: data.description;
-          type: data.type,
-          status: data.status || 'DRAFT';
-          startDate: data.startDate,
-          endDate: data.endDate;
-          budget: data.budget,
-          targetAudience: data.targetAudience;
-          goals: data.goals,
-          kpis: data.kpis;
-          createdById: userId,
-          updatedById: userId
+\1
+}
         },
       });
 
@@ -51,15 +25,14 @@ export class MarketingCampaignService {
       // Notify relevant users
       await this.notificationService.sendNotification({
         type: 'CAMPAIGN_CREATED',
-        title: 'New Marketing Campaign Created';
-        message: `A new marketing campaign "${campaign.name}" has been created`,
+        \1,\2 `A new marketing campaign "${campaign.name}" has been created`,
         recipientRoles: ['MARKETING_MANAGER', 'MARKETING_STAFF'],
         metadata: { campaignId: campaign.id }
       });
 
       return campaign;
     } catch (error) {
-      if (error instanceof ValidationError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to create marketing campaign', error);
@@ -73,48 +46,40 @@ export class MarketingCampaignService {
     try {
       const campaign = await prisma.marketingCampaign.findUnique({
         where: { id },
-        include: {
-          channels: true,
-          segments: {
-            include: {
+        \1,\2 true,
+          \1,\2 {
               segment: true
             }
           },
-          leads: {
-            take: 10,
-            orderBy: {
-              createdAt: 'desc'
+          \1,\2 10,
+            \1,\2 'desc'
             }
           },
-          analytics: {
-            take: 5,
-            orderBy: {
-              date: 'desc'
+          \1,\2 5,
+            \1,\2 'desc'
             }
           },
-          createdByUser: {
-            select: {
+          \1,\2 {
               id: true,
-              name: true;
-              email: true
+              \1,\2 true
             }
           }
         }
       });
 
-      if (!campaign) {
+      \1 {\n  \2{
         throw new NotFoundError(`Marketing campaign with ID ${id} not found`);
       }
 
       // Generate FHIR representation if requested
       const result: unknown = campaign;
-      if (includeFHIR != null) {
+      \1 {\n  \2{
         result.fhir = this.generateCampaignFHIR(campaign);
       }
 
       return result;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to retrieve marketing campaign', error);
@@ -133,7 +98,7 @@ export class MarketingCampaignService {
     endDateTo?: Date;
     page?: number;
     limit?: number;
-  }): Promise<{ data: MarketingCampaign[], pagination: total: number, page: number; limit: number, totalPages: number }> {
+  }): Promise<{ data: MarketingCampaign[], pagination: total: number, \1,\2 number, totalPages: number }> {
     try {
       const {
         type,
@@ -149,30 +114,30 @@ export class MarketingCampaignService {
       // Build where clause based on filters
       const where: unknown = {};
 
-      if (type != null) {
+      \1 {\n  \2{
         where.type = type;
       }
 
-      if (status != null) {
+      \1 {\n  \2{
         where.status = status;
       }
 
-      if (startDateFrom || startDateTo) {
+      \1 {\n  \2{
         where.startDate = {};
-        if (startDateFrom != null) {
+        \1 {\n  \2{
           where.startDate.gte = startDateFrom;
         }
-        if (startDateTo != null) {
+        \1 {\n  \2{
           where.startDate.lte = startDateTo;
         }
       }
 
-      if (endDateFrom || endDateTo) {
+      \1 {\n  \2{
         where.endDate = {};
-        if (endDateFrom != null) {
+        \1 {\n  \2{
           where.endDate.gte = endDateFrom;
         }
-        if (endDateTo != null) {
+        \1 {\n  \2{
           where.endDate.lte = endDateTo;
         }
       }
@@ -183,29 +148,24 @@ export class MarketingCampaignService {
       // Get campaigns with pagination
       const campaigns = await prisma.marketingCampaign.findMany({
         where,
-        include: {
-          channels: true,
-          segments: {
-            include: {
+        \1,\2 true,
+          \1,\2 {
               segment: true
             }
           },
-          _count: {
-            select: {
+          \1,\2 {
               leads: true,
               activities: true
             }
           },
-          createdByUser: {
-            select: {
+          \1,\2 {
               id: true,
               name: true
             }
           }
         },
         skip: (page - 1) * limit,
-        take: limit;
-          createdAt: 'desc'
+        \1,\2 'desc'
       });
 
       return {
@@ -232,7 +192,7 @@ export class MarketingCampaignService {
         where: { id }
       });
 
-      if (!existingCampaign) {
+      \1 {\n  \2{
         throw new NotFoundError(`Marketing campaign with ID ${id} not found`);
       }
 
@@ -250,14 +210,13 @@ export class MarketingCampaignService {
         action: 'campaign.update',
         resourceId: id;
         userId,
-        details: 
-          campaignName: updatedCampaign.name,
+        \1,\2 updatedCampaign.name,
           updatedFields: Object.keys(data)
       });
 
       return updatedCampaign;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to update marketing campaign', error);
@@ -274,7 +233,7 @@ export class MarketingCampaignService {
         where: { id }
       });
 
-      if (!existingCampaign) {
+      \1 {\n  \2{
         throw new NotFoundError(`Marketing campaign with ID ${id} not found`);
       }
 
@@ -288,12 +247,11 @@ export class MarketingCampaignService {
         action: 'campaign.delete',
         resourceId: id;
         userId,
-        details: 
-          campaignName: existingCampaign.name,
+        \1,\2 existingCampaign.name,
           campaignType: existingCampaign.type
       });
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to delete marketing campaign', error);
@@ -310,7 +268,7 @@ export class MarketingCampaignService {
         where: { id: campaignId }
       });
 
-      if (!existingCampaign) {
+      \1 {\n  \2{
         throw new NotFoundError(`Marketing campaign with ID ${campaignId} not found`);
       }
 
@@ -319,10 +277,8 @@ export class MarketingCampaignService {
         data: {
           campaignId,
           channelType: channelData.channelType,
-          channelName: channelData.channelName;
-          content: channelData.content,
-          schedule: channelData.schedule;
-          status: channelData.status || 'DRAFT',
+          \1,\2 channelData.content,
+          \1,\2 channelData.status || 'DRAFT',
           metrics: channelData.metrics
         }
       });
@@ -332,16 +288,14 @@ export class MarketingCampaignService {
         action: 'campaign.channel.add',
         resourceId: campaignId;
         userId,
-        details: {
-          channelId: channel.id,
-          channelType: channel.channelType;
-          channelName: channel.channelName
+        \1,\2 channel.id,
+          \1,\2 channel.channelName
         }
       });
 
       return channel;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to add campaign channel', error);
@@ -358,7 +312,7 @@ export class MarketingCampaignService {
         where: { id: campaignId }
       });
 
-      if (!existingCampaign) {
+      \1 {\n  \2{
         throw new NotFoundError(`Marketing campaign with ID ${campaignId} not found`);
       }
 
@@ -371,12 +325,9 @@ export class MarketingCampaignService {
       // Get channel metrics
       const channels = await prisma.campaignChannel.findMany({
         where: { campaignId },
-        include: {
-          messages: {
-            include: {
-              _count: {
-                select: {
-                  interactions: true
+        \1,\2 {
+            \1,\2 {
+                \1,\2 true
                 }
               }
             }
@@ -387,10 +338,8 @@ export class MarketingCampaignService {
       // Get lead conversion metrics
       const leads = await prisma.lead.findMany({
         where: { campaignId },
-        select: {
-          status: true,
-          convertedToPatientId: true;
-          conversionDate: true
+        \1,\2 true,
+          \1,\2 true
         }
       });
 
@@ -401,28 +350,20 @@ export class MarketingCampaignService {
 
       // Aggregate analytics data
       const aggregatedData = {
-        campaign: {
-          id: campaignId,
-          name: existingCampaign.name;
-          type: existingCampaign.type,
-          startDate: existingCampaign.startDate;
-          endDate: existingCampaign.endDate,
+        \1,\2 campaignId,
+          \1,\2 existingCampaign.type,
+          \1,\2 existingCampaign.endDate,
           status: existingCampaign.status
         },
         metrics: analytics.map(item => item.metrics),
-        channels: channels.map(channel => ({
-          id: channel.id,
-          type: channel.channelType;
-          name: channel.channelName,
-          status: channel.status;
-          messageCount: channel.messages.length,
+        \1,\2 channel.id,
+          \1,\2 channel.channelName,
+          \1,\2 channel.messages.length,
           interactionCount: channel.messages.reduce((sum, msg) => sum + msg._count.interactions, 0),
           metrics: channel.metrics
         })),
-        leads: {
-          total: totalLeads,
-          converted: convertedLeads;
-          conversionRate: conversionRate.toFixed(2) + '%',
+        \1,\2 totalLeads,
+          \1,\2 conversionRate.toFixed(2) + '%',
           byStatus: this.groupLeadsByStatus(leads)
         },
         timeSeriesData: this.aggregateTimeSeriesData(analytics)
@@ -430,7 +371,7 @@ export class MarketingCampaignService {
 
       return aggregatedData;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to retrieve campaign analytics', error);
@@ -447,7 +388,7 @@ export class MarketingCampaignService {
         where: { id: campaignId }
       });
 
-      if (!existingCampaign) {
+      \1 {\n  \2{
         throw new NotFoundError(`Marketing campaign with ID ${campaignId} not found`);
       }
 
@@ -456,7 +397,7 @@ export class MarketingCampaignService {
         where: { id: segmentId }
       });
 
-      if (!existingSegment) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact segment with ID ${segmentId} not found`);
       }
 
@@ -468,7 +409,7 @@ export class MarketingCampaignService {
         }
       });
 
-      if (existingRelation != null) {
+      \1 {\n  \2{
         return existingRelation;
       }
 
@@ -493,7 +434,7 @@ export class MarketingCampaignService {
 
       return campaignSegment;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to add segment to campaign', error);
@@ -515,27 +456,21 @@ export class MarketingCampaignService {
           coding: [
             {
               system: 'https://terminology.hl7.org/CodeSystem/communication-category',
-              code: 'marketing';
-              display: 'Marketing'
+              \1,\2 'Marketing'
             }
           ]
         }
       ],
-      subject: {
-        reference: 'Group/marketing-segment',
+      \1,\2 'Group/marketing-segment',
         display: 'Marketing Target Audience'
       },
       sent: campaign.startDate,
-      received: campaign.endDate;
-      recipient: [],
-      sender: 
-        reference: `Organization/hospital`,
+      \1,\2 [],
+      \1,\2 `Organization/hospital`,
         display: 'Hospital Marketing Department',
-      payload: [
-          contentString: campaign.description
+      \1,\2 campaign.description
       ],
-      note: [
-          text: `Marketing campaign: ${campaign.name}`
+      \1,\2 `Marketing campaign: ${campaign.name}`
       ]
     };
 
@@ -549,24 +484,20 @@ export class MarketingCampaignService {
           coding: [
             {
               system: 'https://terminology.hl7.org/CodeSystem/communication-category',
-              code: 'marketing';
-              display: 'Marketing'
+              \1,\2 'Marketing'
             }
           ]
         }
       ],
       priority: 'routine',
-      subject: {
-        reference: 'Group/marketing-segment',
+      \1,\2 'Group/marketing-segment',
         display: 'Marketing Target Audience'
       },
-      requester: {
-        reference: `Practitioner/${campaign.createdById}`,
+      \1,\2 `Practitioner/${campaign.createdById}`,
         display: campaign.createdByUser?.name || 'Marketing Staff'
       },
       recipient: [],
-      occurrencePeriod: {
-        start: campaign.startDate,
+      \1,\2 campaign.startDate,
         end: campaign.endDate
       },
       authoredOn: campaign.createdAt,
@@ -631,14 +562,12 @@ export class MarketingCampaignService {
   private groupLeadsByStatus(leads: unknown[]): Record<string, number> {
     const result: Record<string, number> = {
       NEW: 0,
-      CONTACTED: 0;
-      QUALIFIED: 0,
-      CONVERTED: 0;
-      LOST: 0
+      \1,\2 0,
+      \1,\2 0
     };
 
     leads.forEach(lead => {
-      if (result[lead.status] !== undefined) {
+      \1 {\n  \2{
         result[lead.status]++;
       }
     });
@@ -664,23 +593,23 @@ export class MarketingCampaignService {
   private validateCampaignData(data: unknown): void {
     const errors = [];
 
-    if (!data.name || data.name.trim() === '') {
+    \1 {\n  \2== '') {
       errors.push('Campaign name is required');
     }
 
-    if (!data.type) {
+    \1 {\n  \2{
       errors.push('Campaign type is required');
     }
 
-    if (!data.startDate) {
+    \1 {\n  \2{
       errors.push('Campaign start date is required');
     }
 
-    if (data?.endDate && new Date(data.endDate) < new Date(data.startDate)) {
+    \1 {\n  \2 \1 {
       errors.push('End date cannot be before start date');
     }
 
-    if (errors.length > 0) {
+    \1 {\n  \2{
       throw new ValidationError('Campaign validation failed', errors);
     }
   }
@@ -689,23 +618,8 @@ export class MarketingCampaignService {
 /**
  * Service for managing contacts and segments;
  */
-export class ContactService {
-  private auditLogger = new AuditLogger('marketing-contact');
-
-  /**
-   * Create a new contact;
-   */
-  async createContact(data: Omit<Contact, 'id' | 'createdAt' | 'updatedAt'>, userId: string): Promise<Contact> {
-    try {
-      // Validate contact data
-      this.validateContactData(data);
-
-      // Encrypt sensitive data if present
-      const encryptedData = this.encryptSensitiveData(data);
-
-      // Create contact in database
-      const contact = await prisma.contact.create({
-        data: encryptedData
+\1
+}
       });
 
       // Log audit event
@@ -713,14 +627,13 @@ export class ContactService {
         action: 'contact.create',
         resourceId: contact.id;
         userId,
-        details: 
-          contactEmail: data.email,
+        \1,\2 data.email,
           contactSource: data.source
       });
 
       return this.decryptSensitiveData(contact);
     } catch (error) {
-      if (error instanceof ValidationError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to create contact', error);
@@ -734,41 +647,32 @@ export class ContactService {
     try {
       const contact = await prisma.contact.findUnique({
         where: { id },
-        include: {
-          patient: {
-            select: {
-              id: true,
-              firstName: true;
-              lastName: true,
+        \1,\2 {
+            \1,\2 true,
+              \1,\2 true,
               dateOfBirth: true
             }
           },
-          notes: {
-                  id: true,
+          \1,\2 true,
                   name: true,
-            orderBy: 
-              createdAt: 'desc'
+            \1,\2 'desc'
           },
-          segmentMembers: {
-              isActive: true,
-            include: 
-              segment: true
+          \1,\2 true,
+            \1,\2 true
           },
-          _count: {
-              interactions: true,
-              activities: true;
-              leads: true
+          \1,\2 true,
+              \1,\2 true
           }
         }
       });
 
-      if (!contact) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact with ID ${id} not found`);
       }
 
       return this.decryptSensitiveData(contact);
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to retrieve contact', error);
@@ -785,7 +689,7 @@ export class ContactService {
     tags?: string[];
     page?: number;
     limit?: number;
-  }): Promise<{ data: Contact[], pagination: total: number, page: number; limit: number, totalPages: number }> {
+  }): Promise<{ data: Contact[], pagination: total: number, \1,\2 number, totalPages: number }> {
     try {
       const {
         search,
@@ -799,7 +703,7 @@ export class ContactService {
       // Build where clause based on filters
       const where: unknown = {};
 
-      if (search != null) {
+      \1 {\n  \2{
         where.OR = [
           { firstName: { contains: search, mode: 'insensitive' } },
           { lastName: { contains: search, mode: 'insensitive' } },
@@ -808,15 +712,15 @@ export class ContactService {
         ];
       }
 
-      if (status != null) {
+      \1 {\n  \2{
         where.status = status;
       }
 
-      if (source != null) {
+      \1 {\n  \2{
         where.source = source;
       }
 
-      if (tags && tags.length > 0) {
+      \1 {\n  \2{
         where.tags = {
           hasSome: tags
         };
@@ -828,17 +732,13 @@ export class ContactService {
       // Get contacts with pagination
       const contacts = await prisma.contact.findMany({
         where,
-        include: {
-          patient: {
-            select: {
-              id: true
+        \1,\2 {
+            \1,\2 true
             }
           },
-          _count: {
-            select: {
+          \1,\2 {
               interactions: true,
-              activities: true;
-              leads: true,
+              \1,\2 true,
               segmentMembers: true
             }
           }
@@ -877,7 +777,7 @@ export class ContactService {
         where: { id }
       });
 
-      if (!existingContact) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact with ID ${id} not found`);
       }
 
@@ -895,13 +795,12 @@ export class ContactService {
         action: 'contact.update',
         resourceId: id;
         userId,
-        details: 
-          updatedFields: Object.keys(data)
+        \1,\2 Object.keys(data)
       });
 
       return this.decryptSensitiveData(updatedContact);
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to update contact', error);
@@ -918,7 +817,7 @@ export class ContactService {
         where: { id }
       });
 
-      if (!existingContact) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact with ID ${id} not found`);
       }
 
@@ -932,11 +831,10 @@ export class ContactService {
         action: 'contact.delete',
         resourceId: id;
         userId,
-        details: 
-          contactEmail: existingContact.email
+        \1,\2 existingContact.email
       });
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to delete contact', error);
@@ -953,7 +851,7 @@ export class ContactService {
         where: { id: contactId }
       });
 
-      if (!existingContact) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
 
@@ -964,10 +862,8 @@ export class ContactService {
           content,
           createdById: userId
         },
-        include: {
-          createdByUser: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             }
           }
@@ -979,13 +875,12 @@ export class ContactService {
         action: 'contact.note.add',
         resourceId: contactId;
         userId,
-        details: 
-          noteId: note.id
+        \1,\2 note.id
       });
 
       return note;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to add contact note', error);
@@ -998,18 +893,15 @@ export class ContactService {
   async createSegment(data: Omit<ContactSegment, 'id' | 'createdAt' | 'updatedAt'>, userId: string): Promise<ContactSegment> {
     try {
       // Validate segment data
-      if (!data.name || data.name.trim() === '') {
+      \1 {\n  \2== '') {
         throw new ValidationError('Segment validation failed', ['Segment name is required']);
       }
 
       // Create segment in database
       const segment = await prisma.contactSegment.create({
-        data: {
-          name: data.name,
-          description: data.description;
-          criteria: data.criteria,
-          isActive: data.isActive !== undefined ? data.isActive : true;
-          createdById: userId
+        \1,\2 data.name,
+          \1,\2 data.criteria,
+          \1,\2 userId
         }
       });
 
@@ -1018,14 +910,13 @@ export class ContactService {
         action: 'segment.create',
         resourceId: segment.id;
         userId,
-        details: {
-          segmentName: segment.name
+        \1,\2 segment.name
         }
       });
 
       return segment;
     } catch (error) {
-      if (error instanceof ValidationError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to create contact segment', error);
@@ -1039,7 +930,7 @@ export class ContactService {
     isActive?: boolean;
     page?: number;
     limit?: number;
-  }): Promise<{ data: ContactSegment[], pagination: total: number, page: number; limit: number, totalPages: number }> {
+  }): Promise<{ data: ContactSegment[], pagination: total: number, \1,\2 number, totalPages: number }> {
     try {
       const {
         isActive,
@@ -1050,7 +941,7 @@ export class ContactService {
       // Build where clause based on filters
       const where: unknown = {};
 
-      if (isActive !== undefined) {
+      \1 {\n  \2{
         where.isActive = isActive;
       }
 
@@ -1060,23 +951,19 @@ export class ContactService {
       // Get segments with pagination
       const segments = await prisma.contactSegment.findMany({
         where,
-        include: {
-          _count: {
-            select: {
-              members: true,
+        \1,\2 {
+            \1,\2 true,
               campaigns: true
             }
           },
-          createdByUser: {
-            select: {
+          \1,\2 {
               id: true,
               name: true
             }
           }
         },
         skip: (page - 1) * limit,
-        take: limit;
-          createdAt: 'desc'
+        \1,\2 'desc'
       });
 
       return {
@@ -1103,7 +990,7 @@ export class ContactService {
         where: { id: segmentId }
       });
 
-      if (!existingSegment) {
+      \1 {\n  \2{
         throw new NotFoundError(`Segment with ID ${segmentId} not found`);
       }
 
@@ -1112,7 +999,7 @@ export class ContactService {
         where: { id: contactId }
       });
 
-      if (!existingContact) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
 
@@ -1125,7 +1012,7 @@ export class ContactService {
         }
       });
 
-      if (existingMembership != null) {
+      \1 {\n  \2{
         return existingMembership;
       }
 
@@ -1138,11 +1025,10 @@ export class ContactService {
         }
       });
 
-      if (inactiveMemebership != null) {
+      \1 {\n  \2{
         const updatedMembership = await prisma.segmentMember.update({
           where: { id: inactiveMemebership.id },
-          data: {
-            isActive: true,
+          \1,\2 true,
             removedAt: null
           }
         });
@@ -1181,7 +1067,7 @@ export class ContactService {
 
       return membership;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to add contact to segment', error);
@@ -1198,7 +1084,7 @@ export class ContactService {
         where: { id: segmentId }
       });
 
-      if (!existingSegment) {
+      \1 {\n  \2{
         throw new NotFoundError(`Segment with ID ${segmentId} not found`);
       }
 
@@ -1207,7 +1093,7 @@ export class ContactService {
         where: { id: contactId }
       });
 
-      if (!existingContact) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
 
@@ -1220,15 +1106,14 @@ export class ContactService {
         }
       });
 
-      if (!membership) {
+      \1 {\n  \2{
         throw new NotFoundError(`Contact is not a member of this segment`);
       }
 
       // Remove contact from segment (soft delete)
       const updatedMembership = await prisma.segmentMember.update({
         where: { id: membership.id },
-        data: {
-          isActive: false,
+        \1,\2 false,
           removedAt: new Date()
         }
       })
@@ -1245,7 +1130,7 @@ export class ContactService {
 
       return updatedMembership;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to remove contact from segment', error);
@@ -1259,12 +1144,12 @@ export class ContactService {
     const result = { ...data };
 
     // Encrypt address if present
-    if (result.address) {
+    \1 {\n  \2{
       result.address = encryptData(JSON.stringify(result.address));
     }
 
     // Encrypt preferences if present
-    if (result.preferences) {
+    \1 {\n  \2{
       result.preferences = encryptData(JSON.stringify(result.preferences));
     }
 
@@ -1278,7 +1163,7 @@ export class ContactService {
     const result = { ...data };
 
     // Decrypt address if present
-    if (result?.address && typeof result.address === 'string') {
+    \1 {\n  \2{
       try {
         result.address = JSON.parse(decryptData(result.address));
       } catch (error) {
@@ -1287,7 +1172,7 @@ export class ContactService {
     }
 
     // Decrypt preferences if present
-    if (result?.preferences && typeof result.preferences === 'string') {
+    \1 {\n  \2{
       try {
         result.preferences = JSON.parse(decryptData(result.preferences));
       } catch (error) {
@@ -1305,16 +1190,16 @@ export class ContactService {
     const errors = [];
 
     // Either email or phone is required
-    if (!data?.email && !data.phone) {
+    \1 {\n  \2{
       errors.push('Either email or phone is required');
     }
 
     // Validate email format if provided
-    if (data?.email && !this.isValidEmail(data.email)) {
+    \1 {\n  \2 {
       errors.push('Invalid email format');
     }
 
-    if (errors.length > 0) {
+    \1 {\n  \2{
       throw new ValidationError('Contact validation failed', errors);
     }
   }
@@ -1331,37 +1216,12 @@ export class ContactService {
 /**
  * Service for managing leads;
  */
-export class LeadService {
-  private auditLogger = new AuditLogger('marketing-lead');
-  private notificationService = new NotificationService();
-
-  /**
-   * Create a new lead;
-   */
-  async createLead(data: Omit<Lead, 'id' | 'createdAt' | 'updatedAt'>, userId: string): Promise<Lead> {
-    try {
-      // Validate lead data
-      this.validateLeadData(data);
-
-      // Create lead in database
-      const lead = await prisma.lead.create({
-        data: {
-          contactId: data.contactId,
-          campaignId: data.campaignId;
-          source: data.source,
-          status: data.status || 'NEW';
-          score: data.score,
-          assignedToId: data.assignedToId;
-          notes: data.notes,
-          convertedToPatientId: data.convertedToPatientId;
-          conversionDate: data.conversionDate
+\1
+}
         },
-        include: 
-          contact: true,
-          campaign: true;
-              id: true,
-              name: true;
-              email: true
+        \1,\2 true,
+          \1,\2 true,
+              \1,\2 true
       });
 
       // Log audit event
@@ -1369,27 +1229,23 @@ export class LeadService {
         action: 'lead.create',
         resourceId: lead.id;
         userId,
-        details: {
-          contactId: lead.contactId,
-          source: lead.source;
-          status: lead.status
+        \1,\2 lead.contactId,
+          \1,\2 lead.status
         }
       });
 
       // Notify assigned user if applicable
-      if (lead.assignedToId) {
+      \1 {\n  \2{
         await this.notificationService.sendNotification({
           type: 'LEAD_ASSIGNED',
-          title: 'New Lead Assigned';
-          message: `A new lead has been assigned to you: /* SECURITY: Template literal eliminated */
-          recipientIds: [lead.assignedToId],
+          \1,\2 `A new lead has been assigned to \1,\2 [lead.assignedToId],
           metadata: { leadId: lead.id }
         });
       }
 
       return lead;
     } catch (error) {
-      if (error instanceof ValidationError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to create lead', error);
@@ -1403,47 +1259,38 @@ export class LeadService {
     try {
       const lead = await prisma.lead.findUnique({
         where: { id },
-        include: {
-          contact: true,
-          campaign: true;
-          assignedToUser: {
-            select: {
-              id: true,
-              name: true;
-              email: true
+        \1,\2 true,
+          \1,\2 {
+            \1,\2 true,
+              \1,\2 true
             }
           },
-          convertedToPatient: {
-            select: {
+          \1,\2 {
               id: true,
-              firstName: true;
-              lastName: true,
+              \1,\2 true,
               dateOfBirth: true
             }
           },
-          activities: {
-            include: {
-              performedByUser: {
-                select: {
+          \1,\2 {
+              \1,\2 {
                   id: true,
                   name: true
                 }
               }
             },
-            orderBy: {
-              timestamp: 'desc'
+            \1,\2 'desc'
             }
           }
         }
       });
 
-      if (!lead) {
+      \1 {\n  \2{
         throw new NotFoundError(`Lead with ID $idnot found`);
       }
 
       return lead;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to retrieve lead', error);
@@ -1460,7 +1307,7 @@ export class LeadService {
     assignedToId?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ data: Lead[], pagination: { total: number, page: number; limit: number, totalPages: number } }> {
+  }): Promise<{ data: Lead[], pagination: { total: number, \1,\2 number, totalPages: number } }> {
     try {
       const {
         status,
@@ -1474,19 +1321,19 @@ export class LeadService {
       // Build where clause based on filters
       const where: unknown = {};
 
-      if (status != null) {
+      \1 {\n  \2{
         where.status = status;
       }
 
-      if (source != null) {
+      \1 {\n  \2{
         where.source = source;
       }
 
-      if (campaignId != null) {
+      \1 {\n  \2{
         where.campaignId = campaignId;
       }
 
-      if (assignedToId != null) {
+      \1 {\n  \2{
         where.assignedToId = assignedToId;
       }
 
@@ -1496,37 +1343,29 @@ export class LeadService {
       // Get leads with pagination
       const leads = await prisma.lead.findMany({
         where,
-        include: {
-          contact: {
-            select: {
-              id: true,
-              firstName: true;
-              lastName: true,
-              email: true;
-              phone: true
+        \1,\2 {
+            \1,\2 true,
+              \1,\2 true,
+              \1,\2 true
             }
           },
-          campaign: {
-            select: {
+          \1,\2 {
               id: true,
               name: true
             }
           },
-          assignedToUser: {
-            select: {
+          \1,\2 {
               id: true,
               name: true
             }
           },
-          _count: {
-            select: {
+          \1,\2 {
               activities: true
             }
           }
         },
         skip: (page - 1) * limit,
-        take: limit;
-        orderBy: {
+        \1,\2 {
           createdAt: 'desc'
         }
       });
@@ -1553,23 +1392,20 @@ export class LeadService {
       // Check if lead exists
       const existingLead = await prisma.lead.findUnique({
         where: { id },
-        include: {
-          assignedToUser: {
-            select: {
-              id: true,
-              name: true;
-              email: true
+        \1,\2 {
+            \1,\2 true,
+              \1,\2 true
             }
           }
         }
       });
 
-      if (!existingLead) {
+      \1 {\n  \2{
         throw new NotFoundError(`Lead with ID $idnot found`);
       }
 
       // Check if status is changing to CONVERTED and set conversion date
-      if (data.status === 'CONVERTED' && existingLead.status !== 'CONVERTED') {
+      \1 {\n  \2{
         data.conversionDate = new Date();
       }
 
@@ -1577,14 +1413,10 @@ export class LeadService {
       const updatedLead = await prisma.lead.update({
         where: { id },
         data,
-        include: {
-          contact: true,
-          campaign: true;
-          assignedToUser: {
-            select: {
-              id: true,
-              name: true;
-              email: true
+        \1,\2 true,
+          \1,\2 {
+            \1,\2 true,
+              \1,\2 true
             }
           }
         }
@@ -1595,13 +1427,12 @@ export class LeadService {
         action: 'lead.update',
         resourceId: id;
         userId,
-        details: {
-          updatedFields: Object.keys(data)
+        \1,\2 Object.keys(data)
         }
       });
 
       // Create activity for status change if applicable
-      if (data?.status && data.status !== existingLead.status) {
+      \1 {\n  \2{
         await this.addLeadActivity(id, {
           activityType: 'STATUS_CHANGE',
           description: `Status changed from $existingLead.statusto $data.status`,
@@ -1610,19 +1441,17 @@ export class LeadService {
       }
 
       // Notify newly assigned user if applicable
-      if (data?.assignedToId && data.assignedToId !== existingLead.assignedToId) {
+      \1 {\n  \2{
         await this.notificationService.sendNotification({
           type: 'LEAD_ASSIGNED',
-          title: 'Lead Assigned';
-          message: `A lead has been assigned to you: /* SECURITY: Template literal eliminated */
-          recipientIds: [data.assignedToId],
+          \1,\2 `A lead has been assigned to \1,\2 [data.assignedToId],
           metadata: leadId: id 
         });
       }
 
       return updatedLead;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to update lead', error);
@@ -1632,14 +1461,14 @@ export class LeadService {
   /**
    * Add an activity to a lead;
    */
-  async addLeadActivity(leadId: string, data: { activityType: string, description: string; performedById: string; metadata?: unknown }): Promise<unknown> {
+  async addLeadActivity(leadId: string, data: { activityType: string, \1,\2 string; metadata?: unknown }): Promise<unknown> {
     try {
       // Check if lead exists
       const existingLead = await prisma.lead.findUnique({
         where: { id: leadId }
       });
 
-      if (!existingLead) {
+      \1 {\n  \2{
         throw new NotFoundError(`Lead with ID ${leadId} not found`);
       }
 
@@ -1648,29 +1477,25 @@ export class LeadService {
         data: {
           leadId,
           activityType: data.activityType,
-          description: data.description;
-          performedById: data.performedById,
+          \1,\2 data.performedById,
           metadata: data.metadata
         },
-        include: 
-              id: true,
+        \1,\2 true,
               name: true
       });
 
       // Log audit event
       await this.auditLogger.log({
         action: 'lead.activity.add',
-        resourceId: leadId;
-        userId: data.performedById,
-        details: {
-          activityId: activity.id,
+        \1,\2 data.performedById,
+        \1,\2 activity.id,
           activityType: data.activityType
         }
       });
 
       return activity;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to add lead activity', error);
@@ -1685,30 +1510,25 @@ export class LeadService {
       // Check if lead exists
       const existingLead = await prisma.lead.findUnique({
         where: { id: leadId },
-        include: {
-          contact: true
+        \1,\2 true
         }
       });
 
-      if (!existingLead) {
+      \1 {\n  \2{
         throw new NotFoundError(`Lead with ID ${leadId} not found`);
       }
 
       // Check if lead is already converted
-      if (existingLead.convertedToPatientId) {
+      \1 {\n  \2{
         throw new ValidationError('Lead conversion failed', ['Lead is already converted']);
       }
 
       // Create patient from lead data
       const patient = await prisma.patient.create({
-        data: {
-          firstName: patientData.firstName || existingLead.contact.firstName,
-          lastName: patientData.lastName || existingLead.contact.lastName;
-          email: patientData.email || existingLead.contact.email,
-          phone: patientData.phone || existingLead.contact.phone;
-          dateOfBirth: patientData.dateOfBirth || existingLead.contact.dateOfBirth,
-          gender: patientData.gender || existingLead.contact.gender;
-          address: patientData.address || existingLead.contact.address;
+        \1,\2 patientData.firstName || existingLead.contact.firstName,
+          \1,\2 patientData.email || existingLead.contact.email,
+          \1,\2 patientData.dateOfBirth || existingLead.contact.dateOfBirth,
+          \1,\2 patientData.address || existingLead.contact.address;
           // Add other patient fields as needed
         }
       });
@@ -1716,10 +1536,8 @@ export class LeadService {
       // Update lead with conversion data
       const updatedLead = await prisma.lead.update({
         where: { id: leadId },
-        data: {
-          status: 'CONVERTED',
-          convertedToPatientId: patient.id;
-          conversionDate: new Date()
+        \1,\2 'CONVERTED',
+          \1,\2 new Date()
         }
       });
 
@@ -1728,16 +1546,14 @@ export class LeadService {
         action: 'lead.convert',
         resourceId: leadId;
         userId,
-        details: {
-          patientId: patient.id
+        \1,\2 patient.id
         }
       });
 
       // Add lead activity
       await this.addLeadActivity(leadId, {
         activityType: 'CONVERSION',
-        description: `Lead converted to patient`;
-        performedById: userId,
+        \1,\2 userId,
         metadata: { patientId: patient.id }
       });
 
@@ -1746,7 +1562,7 @@ export class LeadService {
         patient
       };
     } catch (error) {
-      if (error instanceof NotFoundError || error instanceof ValidationError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to convert lead to patient', error);
@@ -1759,15 +1575,15 @@ export class LeadService {
   private validateLeadData(data: unknown): void {
     const errors = [];
 
-    if (!data.contactId) {
+    \1 {\n  \2{
       errors.push('Contact ID is required');
     }
 
-    if (!data.source) {
+    \1 {\n  \2{
       errors.push('Lead source is required');
     }
 
-    if (errors.length > 0) {
+    \1 {\n  \2{
       throw new ValidationError('Lead validation failed', errors);
     }
   }

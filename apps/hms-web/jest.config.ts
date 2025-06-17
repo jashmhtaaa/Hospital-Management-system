@@ -31,8 +31,7 @@ const jestConfig: Config = {
 		"^.+\\.(ts|tsx)$": [
 			"ts-jest",
 			{
-				tsconfig: {
-					jsx: "react-jsx",
+				\1,\2 "react-jsx",
 					esModuleInterop: true,
 					allowSyntheticDefaultImports: true,
 				},
@@ -44,16 +43,7 @@ const jestConfig: Config = {
 	},
 
 	// Module file extensions
-	moduleFileExtensions: [
-		"ts",
-		"tsx",
-		"js",
-		"jsx",
-		"json",
-		"node",
-		"mjs",
-		"cjs",
-	],
+	moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node", "mjs", "cjs"],
 
 	// Test file discovery
 	roots: ["<rootDir>/src", "<rootDir>/tests", "<rootDir>/__tests__"],
@@ -112,8 +102,7 @@ const jestConfig: Config = {
 	],
 
 	// Coverage thresholds (healthcare application standards)
-	coverageThreshold: {
-		global: {
+	\1,\2 {
 			branches: 90,
 			functions: 90,
 			lines: 90,
@@ -176,8 +165,7 @@ const jestConfig: Config = {
 	],
 
 	// Test environment options
-	testEnvironmentOptions: {
-		url: "http://localhost:3000",
+	\1,\2 "http://localhost:3000",
 		pretendToBeVisual: true,
 		resources: "usable",
 	},
@@ -187,18 +175,14 @@ const jestConfig: Config = {
 		"ts-jest": {
 			useESM: true,
 			isolatedModules: true,
-			diagnostics: {
-				ignoreCodes: [1343],
+			\1,\2 [1343],
 			},
-			astTransformers: {
-				before: [
+			\1,\2 [
 					{
 						path: "node_modules/ts-jest-mock-import-meta",
-						options: {
-							metaObjectReplacement: {
+						\1,\2 {
 								url: "https://localhost:3000",
-								env: {
-									NODE_ENV: "test",
+								\1,\2 "test",
 									NEXT_PUBLIC_APP_ENV: "test",
 								},
 							},
@@ -221,10 +205,7 @@ const jestConfig: Config = {
 	verbose: true,
 
 	// Watch plugins for development
-	watchPlugins: [
-		"jest-watch-typeahead/filename",
-		"jest-watch-typeahead/testname",
-	],
+	watchPlugins: ["jest-watch-typeahead/filename", "jest-watch-typeahead/testname"],
 
 	// Module directories
 	moduleDirectories: ["node_modules", "<rootDir>/src", "<rootDir>/tests"],
@@ -241,9 +222,7 @@ const jestConfig: Config = {
 	],
 
 	// Transform ignore patterns
-	transformIgnorePatterns: [
-		"node_modules/(?!(.*\\.mjs$|@testing-library|@fhir|@healthcare))",
-	],
+	transformIgnorePatterns: ["node_modules/(?!(.*\\.mjs$|@testing-library|@fhir|@healthcare))"],
 
 	// Maximum worker processes (optimized for CI/CD)
 	maxWorkers: process.env.CI ? "2" : "50%",

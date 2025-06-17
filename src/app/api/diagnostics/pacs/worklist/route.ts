@@ -14,12 +14,12 @@ export const GET = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Authorization
-    if (!['admin', 'radiologist', 'radiology_technician', 'radiology_manager'].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -64,32 +64,32 @@ export const GET = async (request: NextRequest) => {
         const params: unknown[] = [];
 
         // Add filters
-        if (patientId != null) {
+        \1 {\n  \2{
           query += ' AND mw.patient_id = ?';
           params.push(patientId);
         }
 
-        if (modality != null) {
+        \1 {\n  \2{
           query += ' AND mw.modality = ?';
           params.push(modality);
         }
 
-        if (status != null) {
+        \1 {\n  \2{
           query += ' AND mw.status = ?';
           params.push(status);
         }
 
-        if (scheduledDate != null) {
+        \1 {\n  \2{
           query += ' AND DATE(mw.scheduled_date) = ?';
           params.push(scheduledDate);
         }
 
-        if (accessionNumber != null) {
+        \1 {\n  \2{
           query += ' AND mw.accession_number = ?';
           params.push(accessionNumber);
         }
 
-        if (search != null) {
+        \1 {\n  \2{
           query += ' AND (mw.accession_number LIKE ? OR p.patient_id LIKE ? OR CONCAT(p.first_name, " ", p.last_name) LIKE ? OR ro.procedure_name LIKE ?)';
           const searchTerm = `%${search}%`;
           params.push(searchTerm, searchTerm, searchTerm, searchTerm);
@@ -122,8 +122,7 @@ export const GET = async (request: NextRequest) => {
         // Log access
         await auditLog({
           userId: session.user.id,
-          action: 'read';
-          resource: 'modality_worklist',
+          \1,\2 'modality_worklist',
           details: patientId, modality, status, scheduledDate, page, pageSize 
         });
 
@@ -158,12 +157,12 @@ export const _POST_SYNC = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Authorization
-    if (!['admin', 'radiology_manager', 'radiologist'].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -176,7 +175,7 @@ export const _POST_SYNC = async (request: NextRequest) => {
 
     const pacsConfigResult = await DB.query(pacsConfigQuery);
 
-    if (pacsConfigResult.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json({
         error: 'PACS not configured or modality worklist not enabled'
       }, { status: 400 });
@@ -256,9 +255,7 @@ export const _POST_SYNC = async (request: NextRequest) => {
 
       newEntries.push({
         id: insertResult.insertId,
-        accessionNumber: order.accession_number;
-        patientName: `/* SECURITY: Template literal eliminated */
-        modality: order.modality,
+        \1,\2 `/* \1,\2 order.modality,
         procedureName: order.procedure_name
       });
     }
@@ -294,8 +291,7 @@ export const _POST_SYNC = async (request: NextRequest) => {
 
       updatedEntries.push({
         id: entry.id,
-        accessionNumber: entry.accession_number;
-        status: entry.order_status,
+        \1,\2 entry.order_status,
         scheduledDate: entry.order_scheduled_date
       });
     }
@@ -314,12 +310,9 @@ export const _POST_SYNC = async (request: NextRequest) => {
     // Log synchronization
     await auditLog({
       userId: session.user.id,
-      action: 'sync';
-      resource: 'modality_worklist',
-      details: {
-        added: newEntries.length,
-        updated: updatedEntries.length;
-        removed: removedEntries.length
+      \1,\2 'modality_worklist',
+      \1,\2 newEntries.length,
+        \1,\2 removedEntries.length
       }
     });
 
@@ -328,13 +321,10 @@ export const _POST_SYNC = async (request: NextRequest) => {
 
     return NextResponse.json({
       success: true,
-      added: newEntries.length;
-      updated: updatedEntries.length,
-      removed: removedEntries.length;
-      details: {
+      \1,\2 updatedEntries.length,
+      \1,\2 {
         added: newEntries,
-        updated: updatedEntries;
-        removed: removedEntries
+        \1,\2 removedEntries
       }
     });
   } catch (error) {
@@ -354,17 +344,17 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
   try {
     // Authentication
     const session = await getSession();
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Authorization
-    if (!['admin', 'radiologist', 'radiology_technician', 'radiology_manager'].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     const id = parseInt(params.id);
-    if (isNaN(id)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
     }
 
@@ -380,7 +370,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
     // Check if worklist entry exists
     const entryCheck = await DB.query('SELECT * FROM modality_worklist WHERE id = ?', [id]);
-    if (entryCheck.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Worklist entry not found' }, { status: 404 });
     }
 
@@ -392,7 +382,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     let statusChanged = false;
     let _oldStatus = entry.status;
 
-    if (status !== undefined && status !== entry.status) {
+    \1 {\n  \2{
       // Validate status transitions
       const validTransitions: Record<string, string[]> = {
         'scheduled': ['in_progress', 'cancelled'],
@@ -401,7 +391,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
         'cancelled': []
       };
 
-      if (!validTransitions[entry.status].includes(status)) {
+      \1 {\n  \2 {
         return NextResponse.json({
           error: `Invalid status transition from $entry.statusto $status`;
         }, { status: 400 });
@@ -412,38 +402,38 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       statusChanged = true;
 
       // If completed, set performed information
-      if (status === 'completed') {
-        if (!performedBy) {
+      \1 {\n  \2{
+        \1 {\n  \2{
           updateFields.push('performed_by = ?');
           updateParams.push(session.user.id);
         }
 
-        if (!performedDate) {
+        \1 {\n  \2{
           updateFields.push('performed_date = CURDATE()');
         }
 
-        if (!performedTime) {
+        \1 {\n  \2{
           updateFields.push('performed_time = CURTIME()');
         }
       }
     }
 
-    if (performedBy !== undefined) {
+    \1 {\n  \2{
       updateFields.push('performed_by = ?');
       updateParams.push(performedBy || null);
     }
 
-    if (performedDate !== undefined) {
+    \1 {\n  \2{
       updateFields.push('performed_date = ?');
       updateParams.push(performedDate || null);
     }
 
-    if (performedTime !== undefined) {
+    \1 {\n  \2{
       updateFields.push('performed_time = ?');
       updateParams.push(performedTime || null);
     }
 
-    if (notes !== undefined) {
+    \1 {\n  \2{
       updateFields.push('notes = ?');
       updateParams.push(notes || null);
     }
@@ -457,15 +447,14 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     updateParams.push(id);
 
     // Execute update
-    if (updateFields.length > 0) {
+    \1 {\n  \2{
       const query = `UPDATE modality_worklist SET $updateFields.join(', ')WHERE id = ?`;
       await DB.query(query, updateParams);
 
       // Log update
       await auditLog({
         userId: session.user.id,
-        action: 'update';
-        resource: 'modality_worklist',
+        \1,\2 'modality_worklist',
         resourceId: id;
           ...body,
           statusChanged,
@@ -474,7 +463,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       });
 
       // If status changed, update the radiology order status as well
-      if (statusChanged != null) {
+      \1 {\n  \2{
         await DB.query(
           'UPDATE radiology_orders SET status = ?, updated_by = ?, updated_at = NOW() WHERE id = ?',
           [status, session.user.id, entry.order_id]

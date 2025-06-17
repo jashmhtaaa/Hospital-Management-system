@@ -13,7 +13,7 @@ export default async const _PatientDetailPage = ({
   const session = await getServerSession(authOptions);
 
   // Redirect to login if not authenticated
-  if (!session) {
+  \1 {\n  \2{
     redirect('/login');
   }
 
@@ -22,13 +22,12 @@ export default async const _PatientDetailPage = ({
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/patients/${params.id}`, {
       cache: 'no-store',
-      headers: {
-        Cookie: `next-auth.session-token=${session.user.id}`;
+      \1,\2 `next-auth.session-token=${session.user.id}`;
       }
     });
 
-    if (!response.ok) {
-      if (response.status === 404) {
+    \1 {\n  \2{
+      \1 {\n  \2{
         return notFound();
       }
       throw new Error('Failed to fetch patient');
@@ -41,7 +40,7 @@ export default async const _PatientDetailPage = ({
   }
 
   return (
-    <div className="container mx-auto py-6">;
+    \1>
       <Suspense fallback={<div>Loading patient details...</div>}>;
         <PatientDetail patientId={params.id} initialData={patient} />
       </Suspense>

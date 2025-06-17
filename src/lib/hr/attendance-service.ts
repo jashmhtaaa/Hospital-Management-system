@@ -5,16 +5,8 @@ const prisma = new PrismaClient();
 /**
  * Service for managing attendance records and biometric verification;
  */
-export class AttendanceService {
-  /**
-   * Record employee check-in;
-   */
-  async recordCheckIn(data: {
-    employeeId: string,
-    date: Date;
-    checkInTime: Date,
-    biometricVerified: boolean;
-    notes?: string;
+\1
+}
   }) {
     const { employeeId, date, checkInTime, biometricVerified, notes } = data;
 
@@ -24,19 +16,17 @@ export class AttendanceService {
 
     // Check if attendance record already exists for this employee and date
     const existingRecord = await prisma.attendance.findUnique({
-      where: {
-        employeeId_date: {
+      \1,\2 {
           employeeId,
           date: formattedDate
         },
       },
     });
 
-    if (existingRecord != null) {
+    \1 {\n  \2{
       // Update existing record with check-in time
       return prisma.attendance.update({
-        where: {
-          id: existingRecord.id
+        \1,\2 existingRecord.id
         },
         data: {
           checkInTime,
@@ -44,12 +34,9 @@ export class AttendanceService {
           notes,
           status: this.determineAttendanceStatus(checkInTime, null),
         },
-        include: {
-          employee: {
-            select: {
-              firstName: true,
-              lastName: true;
-              employeeId: true
+        \1,\2 {
+            \1,\2 true,
+              \1,\2 true
             },
           },
         },
@@ -65,10 +52,8 @@ export class AttendanceService {
           notes,
           status: this.determineAttendanceStatus(checkInTime, null),
         },
-        include: {
-              firstName: true,
-              lastName: true;
-              employeeId: true,,
+        \1,\2 true,
+              \1,\2 true,,
         },
       });
     }
@@ -77,10 +62,8 @@ export class AttendanceService {
   /**
    * Record employee check-out;
    */
-  async recordCheckOut(data: {
-    employeeId: string,
-    date: Date;
-    checkOutTime: Date,
+  async recordCheckOut(\1,\2 string,
+    \1,\2 Date,
     biometricVerified: boolean;
     notes?: string;
   }) {
@@ -92,22 +75,20 @@ export class AttendanceService {
 
     // Find attendance record for this employee and date
     const existingRecord = await prisma.attendance.findUnique({
-      where: {
-        employeeId_date: {
+      \1,\2 {
           employeeId,
           date: formattedDate
         },
       },
     });
 
-    if (!existingRecord) {
+    \1 {\n  \2{
       throw new Error('No check-in record found for this date');
     }
 
     // Update record with check-out time
     return prisma.attendance.update({
-      where: {
-        id: existingRecord.id
+      \1,\2 existingRecord.id
       },
       data: {
         checkOutTime,
@@ -115,12 +96,9 @@ export class AttendanceService {
         notes: notes ? (existingRecord.notes ? `${existingRecord.notes}; ${notes}` : notes) : existingRecord.notes,
         status: this.determineAttendanceStatus(existingRecord.checkInTime, checkOutTime),
       },
-      include: {
-        employee: {
-          select: {
-            firstName: true,
-            lastName: true;
-            employeeId: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           },
         },
       },
@@ -133,14 +111,10 @@ export class AttendanceService {
   async getAttendanceById(id: string) {
     return prisma.attendance.findUnique({
       where: { id },
-      include: {
-        employee: {
-          select: {
-            id: true,
-            firstName: true;
-            lastName: true,
-            employeeId: true;
-            department: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true,
+            \1,\2 true
           },
         },
       },
@@ -153,12 +127,12 @@ export class AttendanceService {
   async getEmployeeAttendance(employeeId: string, startDate?: Date, endDate?: Date) {
     const where: unknown = { employeeId };
 
-    if (startDate || endDate) {
+    \1 {\n  \2{
       where.date = {};
-      if (startDate != null) {
+      \1 {\n  \2{
         where.date.gte = startDate;
       }
-      if (endDate != null) {
+      \1 {\n  \2{
         where.date.lte = endDate;
       }
     }
@@ -166,12 +140,9 @@ export class AttendanceService {
     return prisma.attendance.findMany({
       where,
       orderBy: { date: 'desc' },
-      include: {
-        employee: {
-          select: {
-            firstName: true,
-            lastName: true;
-            employeeId: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           },
         },
       },
@@ -203,34 +174,34 @@ export class AttendanceService {
     const where: unknown = {};
 
     // Date filters
-    if (date != null) {
+    \1 {\n  \2{
       const formattedDate = new Date(date);
       formattedDate.setHours(0, 0, 0, 0);
       where.date = formattedDate;
-    } else if (startDate || endDate) {
+    } else \1 {\n  \2{
       where.date = {};
-      if (startDate != null) {
+      \1 {\n  \2{
         where.date.gte = startDate;
       }
-      if (endDate != null) {
+      \1 {\n  \2{
         where.date.lte = endDate;
       }
     }
 
     // Department filter
-    if (departmentId != null) {
+    \1 {\n  \2{
       where.employee = {
         departmentId,
       };
     }
 
     // Status filter
-    if (status != null) {
+    \1 {\n  \2{
       where.status = status;
     }
 
     // Biometric verification filter
-    if (biometricVerified !== undefined) {
+    \1 {\n  \2{
       where.biometricVerified = biometricVerified;
     }
 
@@ -243,14 +214,10 @@ export class AttendanceService {
           { date: 'desc' },
           { checkInTime: 'desc' },
         ],
-        include: {
-          employee: {
-            select: {
-              id: true,
-              firstName: true;
-              lastName: true,
-              employeeId: true;
-              department: true
+        \1,\2 {
+            \1,\2 true,
+              \1,\2 true,
+              \1,\2 true
             },
           },
         },
@@ -281,7 +248,7 @@ export class AttendanceService {
   ) {
     // If both check-in and check-out times are provided, determine status
     let status = data.status;
-    if (data?.checkInTime && data?.checkOutTime && !status) {
+    \1 {\n  \2{
       status = this.determineAttendanceStatus(data.checkInTime, data.checkOutTime);
     }
 
@@ -291,12 +258,9 @@ export class AttendanceService {
         ...data,
         status,
       },
-      include: {
-        employee: {
-          select: {
-            firstName: true,
-            lastName: true;
-            employeeId: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           },
         },
       },
@@ -306,8 +270,7 @@ export class AttendanceService {
   /**
    * Mark employee as absent;
    */
-  async markAbsent(data: {
-    employeeId: string,
+  async markAbsent(\1,\2 string,
     date: Date;
     notes?: string;
   }) {
@@ -319,30 +282,24 @@ export class AttendanceService {
 
     // Check if attendance record already exists for this employee and date
     const existingRecord = await prisma.attendance.findUnique({
-      where: {
-        employeeId_date: {
+      \1,\2 {
           employeeId,
           date: formattedDate
         },
       },
     });
 
-    if (existingRecord != null) {
+    \1 {\n  \2{
       // Update existing record
       return prisma.attendance.update({
-        where: {
-          id: existingRecord.id
+        \1,\2 existingRecord.id
         },
-        data: {
-          status: 'ABSENT',
+        \1,\2 'ABSENT',
           notes: notes ? (existingRecord.notes ? `${existingRecord.notes}; ${notes}` : notes) : existingRecord.notes,
         },
-        include: {
-          employee: {
-            select: {
-              firstName: true,
-              lastName: true;
-              employeeId: true
+        \1,\2 {
+            \1,\2 true,
+              \1,\2 true
             },
           },
         },
@@ -357,10 +314,8 @@ export class AttendanceService {
           notes,
           biometricVerified: false
         },
-        include: {
-              firstName: true,
-              lastName: true;
-              employeeId: true,,
+        \1,\2 true,
+              \1,\2 true,,
         },
       });
     }
@@ -376,8 +331,7 @@ export class AttendanceService {
         departmentId,
         active: true
       },
-      select: {
-        id: true
+      \1,\2 true
       },
     });
 
@@ -385,12 +339,10 @@ export class AttendanceService {
 
     // Get attendance records for these employees in the date range
     const attendanceRecords = await prisma.attendance.findMany({
-      where: {
-        employeeId: {
+      \1,\2 {
           in: employeeIds
         },
-        date: {
-          gte: startDate,
+        \1,\2 startDate,
           lte: endDate
         },
       },
@@ -448,12 +400,11 @@ export class AttendanceService {
     // In production, this would integrate with a biometric verification service
 
     // Simulate 95% success rate for verification
-    const randomSuccess = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) < 0.95;
+    const randomSuccess = crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) < 0.95;
 
     // Log the verification attempt
     await prisma.auditLog.create({
-      data: {
-        userId: null,
+      \1,\2 null,
         eventType: 'BIOMETRIC_VERIFICATION';
           employeeId,
           success: randomSuccess,
@@ -472,7 +423,7 @@ export class AttendanceService {
     checkInTime: Date | null,
     checkOutTime: Date | null;
   ): 'PRESENT' | 'ABSENT' | 'LATE' | 'HALF_DAY' | 'ON_LEAVE' {
-    if (!checkInTime) {
+    \1 {\n  \2{
       return 'ABSENT';
     }
 
@@ -486,17 +437,17 @@ export class AttendanceService {
     const isLate = checkInHour > workStartHour || (checkInHour === workStartHour && checkInMinute > 15);
 
     // If check-out time is provided, calculate total hours worked
-    if (checkOutTime != null) {
+    \1 {\n  \2{
       const hoursWorked = (checkOutTime.getTime() - checkInTime.getTime()) / (1000 * 60 * 60);
 
       // If worked less than half a day (4 hours), mark as half-day
-      if (hoursWorked < 4) {
+      \1 {\n  \2{
         return 'HALF_DAY';
       }
     }
 
     // If check-in is late, mark as late
-    if (isLate != null) {
+    \1 {\n  \2{
       return 'LATE';
     }
 

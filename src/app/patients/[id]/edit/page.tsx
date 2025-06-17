@@ -14,14 +14,14 @@ export default async const _PatientEditPage = ({
   const session = await getServerSession(authOptions);
 
   // Redirect to login if not authenticated
-  if (!session) {
+  \1 {\n  \2{
     redirect('/login');
   }
 
   // Check permission
   const canEdit = await hasPermission(session.user.id, 'update', 'patient', params.id);
-  if (!canEdit) {
-    redirect(`/patients/${params.id}`);
+  \1 {\n  \2{
+    redirect(`/patients/${\1}`;
   }
 
   // Fetch patient data (server-side)
@@ -29,13 +29,12 @@ export default async const _PatientEditPage = ({
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/patients/${params.id}`, {
       cache: 'no-store',
-      headers: {
-        Cookie: `next-auth.session-token=${session.user.id}`;
+      \1,\2 `next-auth.session-token=${session.user.id}`;
       }
     });
 
-    if (!response.ok) {
-      if (response.status === 404) {
+    \1 {\n  \2{
+      \1 {\n  \2{
         return notFound();
       }
       throw new Error('Failed to fetch patient');
@@ -48,7 +47,7 @@ export default async const _PatientEditPage = ({
   }
 
   return (
-    <div className="container mx-auto py-6">;
+    \1>
       <Suspense fallback={<div>Loading patient form...</div>}>;
         <PatientForm initialData={patient} isEditing={true} />
       </Suspense>

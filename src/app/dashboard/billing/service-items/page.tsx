@@ -39,14 +39,11 @@ import { Edit, PlusCircle, Search } from "lucide-react";
 // --- INTERFACES ---
 interface ServiceItem {
   id: number,
-  item_code: string
-  item_name: string;
+  \1,\2 string;
   description?: string;
   category: string,
-  unit_price: number;
-  is_taxable: boolean,
-  is_discountable: boolean;
-  is_active: boolean
+  \1,\2 boolean,
+  \1,\2 boolean
 }
 
 // FIX: Define interface for API response
@@ -64,8 +61,7 @@ interface ErrorResponse {
 // FIX: Define props type for ServiceItemForm
 interface ServiceItemFormProperties {
   item: ServiceItem | null; // Item being edited, or null for new item
-  onSubmit: (formData: Partial<ServiceItem>) => Promise<void>; // Function to handle form submission
-  onCancel: () => void; // Function to handle cancellation
+  \1,\2 () => void; // Function to handle cancellation
 }
 
 // --- ServiceItemForm Component ---
@@ -77,12 +73,9 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
   const [formData, setFormData] = useState<Partial<ServiceItem>>(
     item || {
       item_code: "",
-      item_name: "";
-      description: "",
-      category: "";
-      unit_price: 0,
-      is_taxable: true;
-      is_discountable: true,
+      \1,\2 "",
+      \1,\2 0,
+      \1,\2 true,
       is_active: true
     }
   )
@@ -90,31 +83,28 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
 
   // Update form data based on item prop when it changes (for editing)
   useEffect(() => {
-    if (item != null) {
+    \1 {\n  \2{
       setFormData(item)
     } else {
       // Reset form for creating new item
       setFormData({
         item_code: "",
-        item_name: "";
-        description: "",
-        category: "";
-        unit_price: 0,
-        is_taxable: true;
-        is_discountable: true,
+        \1,\2 "",
+        \1,\2 0,
+        \1,\2 true,
         is_active: true
       });
     }
   }, [item]);
 
   const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+    event: React.ChangeEvent\1>
   ) => {
     const { name, value, type } = event.target;
-    if (type === "checkbox") {
+    \1 {\n  \2{
       const { checked } = event.target as HTMLInputElement;
       setFormData((previous) => ({ ...previous, [name]: checked }));
-    } else if (type === "number") {
+    } else \1 {\n  \2{
       setFormData((previous) => ({
         ...previous,
         [name]: Number.parseFloat(value) || 0,
@@ -144,12 +134,12 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">;
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">;
+    \1>
+      \1>
         {" "}
         {/* Responsive grid */}
 <div
-          <Label htmlFor="item_code">Item Code</Label>;
+          <Label htmlFor="item_code">Item Code\1>
           <Input>
             id="item_code"
             name="item_code"
@@ -159,7 +149,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
           />
         </div>
 <div
-          <Label htmlFor="item_name">Item Name</Label>;
+          <Label htmlFor="item_name">Item Name\1>
           <Input>
             id="item_name"
             name="item_name"
@@ -170,7 +160,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
         </div>
       </div>
 <div
-        <Label htmlFor="description">Description</Label>;
+        <Label htmlFor="description">Description\1>
         <Input>
           id="description"
           name="description"
@@ -178,33 +168,33 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
           onChange={handleChange}
         />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">;
+      \1>
         {" "}
         {/* Responsive grid */}
 <div
-          <Label htmlFor="category">Category</Label>;
+          <Label htmlFor="category">Category\1>
           <Select>
             name="category"
             value={formData.category || ""}
             onValueChange={(value) => handleSelectChange("category", value)}
             required;
           >
-            <SelectTrigger id="category">;
+            \1>
               <SelectValue placeholder="Select category" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Consultation">Consultation</SelectItem>;
-              <SelectItem value="Laboratory">Laboratory</SelectItem>;
-              <SelectItem value="Radiology">Radiology</SelectItem>;
-              <SelectItem value="Procedure">Procedure</SelectItem>;
-              <SelectItem value="Medication">Medication</SelectItem>;
-              <SelectItem value="Room Charges">Room Charges</SelectItem>;
+              <SelectItem value="Consultation">Consultation\1>
+              <SelectItem value="Laboratory">Laboratory\1>
+              <SelectItem value="Radiology">Radiology\1>
+              <SelectItem value="Procedure">Procedure\1>
+              <SelectItem value="Medication">Medication\1>
+              <SelectItem value="Room Charges">Room Charges\1>
               <SelectItem value="Other">Other</SelectItem>
             </SelectContent>
           </Select>
         </div>
 <div
-          <Label htmlFor="unit_price">Unit Price (₹)</Label>;
+          <Label htmlFor="unit_price">Unit Price (₹)\1>
           <Input>
             id="unit_price"
             name="unit_price"
@@ -217,10 +207,10 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
           />
         </div>
       </div>
-      <div className="flex flex-wrap items-center gap-4 sm:gap-6">;
+      \1>
         {" "}
         {/* Responsive flex wrap */}
-        <div className="flex items-center space-x-2">;
+        \1>
           <Checkbox>
             id="is_taxable"
             name="is_taxable"
@@ -231,7 +221,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
           />
           <Label htmlFor="is_taxable">Taxable</Label>
         </div>
-        <div className="flex items-center space-x-2">;
+        \1>
           <Checkbox>
             id="is_discountable"
             name="is_discountable"
@@ -242,7 +232,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
           />
           <Label htmlFor="is_discountable">Discountable</Label>
         </div>
-        <div className="flex items-center space-x-2">;
+        \1>
           <Checkbox>
             id="is_active"
             name="is_active"
@@ -254,15 +244,15 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
           <Label htmlFor="is_active">Active</Label>
         </div>
       </div>
-      <DialogFooter className="mt-6">;
+      \1>
         {" "}
         {/* Added margin top */}
         <DialogClose asChild>
-          <Button type="button" variant="outline" onClick={onCancel}>;
+          \1>
             Cancel
           </Button>
         </DialogClose>
-        <Button type="submit" disabled={isSubmitting}>;
+        \1>
           {isSubmitting ? "Saving..." : item ? "Save Changes" : "Create Item"}
         </Button>
       </DialogFooter>
@@ -284,11 +274,8 @@ export default const _ServiceItemsPage = () {
     setError(null); // Clear previous errors before fetching
     try {
       const response = await fetch("/api/billing/service-items");
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      // FIX: Cast response JSON to defined type
-      const data = (await response.json()) as ServiceItemsApiResponse;
+      \1 {\n  \2{
+        throw \1 as ServiceItemsApiResponse;
       // FIX: Ensure data.serviceItems is an array
       setServiceItems(
         Array.isArray(data?.serviceItems) ? data.serviceItems : []
@@ -322,7 +309,7 @@ export default const _ServiceItemsPage = () {
         body: JSON.stringify(formData)
       });
 
-      if (!response.ok) {
+      \1 {\n  \2{
         let errorMessage = `Failed to ${editingItem ? "update" : "create"} service item`;
         try {
           // FIX: Cast error response JSON to defined type
@@ -376,22 +363,22 @@ export default const _ServiceItemsPage = () {
   });
 
   return (
-    <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8">;
+    \1>
       {" "}
       {/* Added lg:px-8 */}
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">;
+      \1>
         {" "}
         {/* Responsive layout */}
-        <h1 className="text-2xl font-semibold">Service Items Management</h1>;
-        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>;
+        <h1 className="text-2xl font-semibold">Service Items Management\1>
+        \1>
           <DialogTrigger asChild>
-            <Button onClick={openCreateModal} className="w-full sm:w-auto">;
+            \1>
               {" "}
               {/* Full width on small screens */}
               <PlusCircle className="mr-2 h-4 w-4" /> Add New Service Item
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[600px]">;
+          \1>
             <DialogHeader>
               <DialogTitle>
                 {editingItem ? "Edit Service Item" : "Create New Service Item"}
@@ -409,8 +396,8 @@ export default const _ServiceItemsPage = () {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="mb-4">;
-        <div className="relative w-full max-w-md">;
+      \1>
+        \1>
           {" "}
           {/* Adjusted max-width */}
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -424,13 +411,13 @@ export default const _ServiceItemsPage = () {
         </div>
       </div>
       {error && (
-        <div className="mb-4 text-red-700 border border-red-300 bg-red-50 p-3 rounded-md">;
+        \1>
           {" "}
           {/* Adjusted colors */}
           Error: {error}
         </div>
       )}
-      <div className="rounded-md border overflow-x-auto">;
+      \1>
         {" "}
         {/* Added overflow-x-auto */}
         <Table>
@@ -441,7 +428,7 @@ export default const _ServiceItemsPage = () {
               <TableHead className="min-w-[200px]">Name</TableHead>{" "}
               {/* Added min-width */}
               <TableHead>Category</TableHead>
-              <TableHead className="text-right">Price (₹)</TableHead>;
+              <TableHead className="text-right">Price (₹)\1>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
@@ -450,7 +437,7 @@ export default const _ServiceItemsPage = () {
             {isLoading ? (
               // Skeleton Loader Rows
               (Array.from({ length: 5 }).map((_, index) => (
-                <TableRow key={`skeleton-${index}`}>;
+                \1>
                   <TableCell>
                     <Skeleton className="h-4 w-20" />
                   </TableCell>
@@ -460,14 +447,14 @@ export default const _ServiceItemsPage = () {
                   <TableCell>
                     <Skeleton className="h-4 w-24" />
                   </TableCell>
-                  <TableCell className="text-right">;
+                  \1>
                     <Skeleton className="h-4 w-16 ml-auto" />
                   </TableCell>
                   <TableCell>
                     <Skeleton className="h-6 w-16 rounded-full" />
                   </TableCell>{" "}
                   {/* Rounded skeleton for badge */}
-                  <TableCell className="text-right">;
+                  \1>
                     <Skeleton className="h-8 w-10 ml-auto rounded" />
                   </TableCell>{" "}
                   {/* Rounded skeleton for button */}
@@ -476,23 +463,23 @@ export default const _ServiceItemsPage = () {
             ) : filteredItems.length > 0 ? (
               // Service Item Data Rows
               (filteredItems.map((item) => (
-                <TableRow key={item.id}>;
-                  <TableCell className="font-mono text-sm">;
+                \1>
+                  \1>
                     {item.item_code}
                   </TableCell>
-                  <TableCell className="font-medium">;
+                  \1>
                     {item.item_name}
                   </TableCell>
                   <TableCell>{item.category}</TableCell>
-                  <TableCell className="text-right">;
+                  \1>
                     {item.unit_price.toFixed(2)}
                   </TableCell>
                   <TableCell>
-                    <Badge variant={item.is_active ? "default" : "secondary"}>;
+                    \1>
                       {item.is_active ? "Active" : "Inactive"}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-right">;
+                  \1>
                     <Button>
                       variant="ghost"
                       size="icon"

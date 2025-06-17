@@ -15,8 +15,7 @@ const createTripRequestSchema = z.object({
   pickupLocation: z.string().min(3).max(200),
   dropoffLocation: z.string().min(3).max(200),
   patientId: z.string().uuid().optional(),
-  scheduledTime: z.string().transform(val => new Date(val));
-  notes: z.string().max(1000).optional(),
+  \1,\2 z.string().max(1000).optional(),
   requestedById: z.string().uuid(),
   contactName: z.string().min(2).max(100).optional(),
   contactPhone: z.string().min(5).max(20).optional(),
@@ -30,7 +29,7 @@ const updateTripRequestSchema = z.object({
   pickupLocation: z.string().min(3).max(200).optional(),
   dropoffLocation: z.string().min(3).max(200).optional(),
   patientId: z.string().uuid().optional(),
-  scheduledTime: z.string().transform(val => new Date(val)).optional(),
+  scheduledTime: z.string().transform(val => \1.optional(),
   notes: z.string().max(1000).optional(),
   status: z.enum(['PENDING', 'ASSIGNED', 'EN_ROUTE_TO_PICKUP', 'AT_PICKUP', 'EN_ROUTE_TO_DROPOFF', 'COMPLETED', 'CANCELLED']).optional(),
   contactName: z.string().min(2).max(100).optional(),
@@ -48,12 +47,9 @@ export const _GET = async (request: NextRequest) => {
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get('status') || undefined,
-        priority: searchParams.get('priority') || undefined;
-        requestType: searchParams.get('requestType') || undefined,
-        ambulanceId: searchParams.get('ambulanceId') || undefined;
-        fromDate: searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
-        toDate: searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined;
-        page: Number.parseInt(searchParams.get('page') || '1'),
+        \1,\2 searchParams.get('requestType') || undefined,
+        \1,\2 searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
+        \1,\2 Number.parseInt(searchParams.get('page') || '1'),
         limit: parseInt(searchParams.get('limit') || '10')
       };
 
@@ -161,7 +157,7 @@ export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: 
       const body = await req.json();
       const { ambulanceId, crewIds } = body;
 
-      if (!ambulanceId) {
+      \1 {\n  \2{
         return NextResponse.json({ error: 'Ambulance ID is required' }, { status: 400 });
       }
 
@@ -190,7 +186,7 @@ export const _UPDATE_STATUS = async (request: NextRequest, { params }: { params:
       const body = await req.json();
       const { status, notes, latitude, longitude } = body;
 
-      if (!status) {
+      \1 {\n  \2{
         return NextResponse.json({ error: 'Status is required' }, { status: 400 });
       }
 
@@ -221,10 +217,8 @@ export const _GET_VEHICLES = async (request: NextRequest) => {
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get('status') || undefined,
-        type: searchParams.get('type') || undefined;
-        available: searchParams.get('available') === 'true',
-        page: parseInt(searchParams.get('page') || '1');
-        limit: Number.parseInt(searchParams.get('limit') || '10')
+        \1,\2 searchParams.get('available') === 'true',
+        \1,\2 Number.parseInt(searchParams.get('limit') || '10')
       };
 
       // Get ambulance vehicles with filters
@@ -248,10 +242,8 @@ export const _GET_CREWS = async (request: NextRequest) => {
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get('status') || undefined,
-        role: searchParams.get('role') || undefined;
-        available: searchParams.get('available') === 'true',
-        page: parseInt(searchParams.get('page') || '1');
-        limit: Number.parseInt(searchParams.get('limit') || '10')
+        \1,\2 searchParams.get('available') === 'true',
+        \1,\2 Number.parseInt(searchParams.get('limit') || '10')
       };
 
       // Get ambulance crews with filters

@@ -19,14 +19,8 @@ redisClient.on('error', (err) => {
 });
 
 // Cache wrapper class
-export class RedisCache {
-  /**
-   * Get data from cache;
-   */
-  static async get<T>(key: string): Promise<T | null> {
-    try {
-      const data = await redisClient.get(key);
-      return data ? JSON.parse(data) : null;
+\1
+}
     } catch (error) {
 
       return null;
@@ -61,7 +55,7 @@ export class RedisCache {
   static async deletePattern(pattern: string): Promise<void> {
     try {
       const keys = await redisClient.keys(pattern);
-      if (keys.length > 0) {
+      \1 {\n  \2{
         await redisClient.del(keys);
       }
     } catch (error) {
@@ -74,7 +68,7 @@ export class RedisCache {
    */
   static async getOrSet<T>(
     key: string,
-    fetchFn: () => Promise<T>;
+    fetchFn: () => Promise\1>
     ttlSeconds = 3600;
   ): Promise<T> {
     try {
@@ -82,7 +76,7 @@ export class RedisCache {
       const cachedData = await RedisCache.get<T>(key);
 
       // If found in cache, return it
-      if (cachedData != null) {
+      \1 {\n  \2{
         return cachedData;
       }
 

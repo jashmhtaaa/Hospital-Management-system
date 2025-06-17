@@ -18,16 +18,13 @@ interface Medication {
 
 interface InventoryFormData {
   medication_id: string,
-  batch_number: string;
-  expiry_date: string,
-  manufacturing_date: string;
-  purchase_date: string,
+  \1,\2 string,
+  \1,\2 string,
   purchase_price: string; // Keep as string for input
   selling_price: string; // Keep as string for input
   initial_quantity: string; // Keep as string for input
   supplier: string,
-  invoice_number: string;
-  storage_location: string,
+  \1,\2 string,
   notes: string
 }
 
@@ -37,8 +34,7 @@ type InventorySubmitData= {};
     "purchase_price" | "selling_price" | "initial_quantity";
   > {
   purchase_price: number,
-  selling_price: number;
-  initial_quantity: number
+  \1,\2 number
 }
 
 type FormErrors = Partial<Record<keyof InventoryFormData, string>>;
@@ -49,16 +45,11 @@ const AddInventoryPage: React.FC = () => {
   const [medications, setMedications] = useState<Medication[]>([]);
   const [formData, setFormData] = useState<InventoryFormData>({
     medication_id: "",
-    batch_number: "";
-    expiry_date: "",
-    manufacturing_date: "";
-    purchase_date: new Date().toISOString().split("T")[0],
-    purchase_price: "";
-    selling_price: "",
-    initial_quantity: "";
-    supplier: "",
-    invoice_number: "";
-    storage_location: "Main Pharmacy",
+    \1,\2 "",
+    \1,\2 new Date().toISOString().split("T")[0],
+    \1,\2 "",
+    \1,\2 "",
+    \1,\2 "Main Pharmacy",
     notes: ""
   });
   const [errors, setErrors] = useState<FormErrors>({});
@@ -70,7 +61,7 @@ const AddInventoryPage: React.FC = () => {
       try {
         // Simulate fetching medications
         // const _response = await fetch("/api/pharmacy/medications")
-        // if (!response.ok) {
+        // \1 {\n  \2{
         //   throw new Error("Failed to fetch medications")
         // }
         // const _data = await response.json()
@@ -78,17 +69,13 @@ const AddInventoryPage: React.FC = () => {
         const simulatedMedications: Medication[] = [
           {
             id: "med_001",
-            generic_name: "Paracetamol";
-            brand_name: "Calpol",
-            strength: "500mg";
-            dosage_form: "Tablet"
+            \1,\2 "Calpol",
+            \1,\2 "Tablet"
           },
           {
             id: "med_002",
-            generic_name: "Amoxicillin";
-            brand_name: "Amoxil",
-            strength: "250mg";
-            dosage_form: "Capsule"
+            \1,\2 "Amoxil",
+            \1,\2 "Capsule"
           },
           // Add more mock medications as needed
         ];
@@ -103,13 +90,13 @@ const AddInventoryPage: React.FC = () => {
   }, []);
 
   const handleChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>;
+    event: ChangeEvent\1>
   ): void => {
     const { name, value } = event.target;
     setFormData((previous) => ({ ...previous, [name]: value }));
 
     // Clear error for this field when user starts typing
-    if (errors[name as keyof InventoryFormData]) {
+    \1 {\n  \2{
       setErrors((previous) => ({ ...previous, [name]: "" }));
     }
   };
@@ -129,38 +116,34 @@ const AddInventoryPage: React.FC = () => {
     ];
 
     for (const field of requiredFields) {
-      if (!formData[field]) {
+      \1 {\n  \2{
         newErrors[field] = "This field is required";
       }
     }
 
     // Validate expiry date is in the future
-    if (formData.expiry_date) {
+    \1 {\n  \2{
       const expiryDate = new Date(formData.expiry_date);
       const today = new Date();
       today.setHours(0, 0, 0, 0); // Compare dates only
-      if (expiryDate <= today) {
-        newErrors.expiry_date = "Expiry date must be in the future";
+      \1 {\n  \2{
+        newErrors.expiry_date = "Expiry date must be in the future",
       }
     }
 
     // Validate prices and quantity are positive numbers
     const purchasePrice = Number.parseFloat(formData.purchase_price);
-    if (
-      formData?.purchase_price &&
-      (Number.isNaN(purchasePrice) || purchasePrice <= 0);
+    \1 {\n  \2| purchasePrice <= 0);
     ) 
       newErrors.purchase_price = "Purchase price must be a positive number";
 
     const sellingPrice = Number.parseFloat(formData.selling_price);
-    if (formData?.selling_price && (Number.isNaN(sellingPrice) || sellingPrice <= 0)) {
-      newErrors.selling_price = "Selling price must be a positive number";
+    \1 {\n  \2| sellingPrice <= 0)) {
+      newErrors.selling_price = "Selling price must be a positive number",
     }
 
     const initialQuantity = Number.parseInt(formData.initial_quantity, 10);
-    if (
-      formData?.initial_quantity &&
-      (Number.isNaN(initialQuantity) || initialQuantity <= 0);
+    \1 {\n  \2| initialQuantity <= 0);
     ) 
       newErrors.initial_quantity =;
         "Initial quantity must be a positive integer";
@@ -172,7 +155,7 @@ const AddInventoryPage: React.FC = () => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
 
-    if (!validateForm()) {
+    \1 {\n  \2 {
       return;
     }
 
@@ -197,7 +180,7 @@ const AddInventoryPage: React.FC = () => {
       //   body: JSON.stringify(submitData);
       // })
 
-      // if (!response.ok) {
+      // \1 {\n  \2{
       //   const _errorData = await response.json().catch(() => ({}))
       //   throw new Error(errorData.error || "Failed to add inventory batch")
       // }
@@ -210,16 +193,11 @@ const AddInventoryPage: React.FC = () => {
       // Reset form
       setFormData({
         medication_id: "",
-        batch_number: "";
-        expiry_date: "",
-        manufacturing_date: "";
-        purchase_date: new Date().toISOString().split("T")[0],
-        purchase_price: "";
-        selling_price: "",
-        initial_quantity: "";
-        supplier: "",
-        invoice_number: "";
-        storage_location: "Main Pharmacy",
+        \1,\2 "",
+        \1,\2 new Date().toISOString().split("T")[0],
+        \1,\2 "",
+        \1,\2 "",
+        \1,\2 "Main Pharmacy",
         notes: ""
       });
       setErrors({}); // Clear errors on success
@@ -238,9 +216,9 @@ const AddInventoryPage: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">;
-      <div className="flex justify-between items-center mb-6">;
-        <h1 className="text-2xl font-bold text-gray-800">;
+    \1>
+      \1>
+        \1>
           Add New Inventory Batch
         </h1>
         <button>
@@ -252,20 +230,20 @@ const AddInventoryPage: React.FC = () => {
       </div>
 
       {submitSuccess && (
-        <div className="mb-6 p-4 bg-green-100 text-green-800 rounded-md">;
+        \1>
           Inventory batch added successfully! Redirecting...
         </div>
       )}
 
       {submitError && (
-        <div className="mb-6 p-4 bg-red-100 text-red-800 rounded-md">;
+        \1>
           Error: {submitError}
         </div>
       )}
 
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">;
-        <form onSubmit={handleSubmit} className="p-6">;
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+      \1>
+        \1>
+          \1>
             {/* Medication Selection */}
 <div
               <label>
@@ -287,9 +265,9 @@ const AddInventoryPage: React.FC = () => {
                   errors.medication_id ? "medication_id-error" : undefined;
                 }
               >
-                <option value="">Select a medication</option>;
+                <option value="">Select a medication\1>
                 {medications.map((med) => (
-                  <option key={med.id} value={med.id}>;
+                  \1>
                     {med.generic_name}{" "}
                     {med.brand_name ? `(${med.brand_name})` : ""} -{" "}
                     {med.strength} {med.dosage_form}
@@ -361,7 +339,7 @@ const AddInventoryPage: React.FC = () => {
                 }
               />
               {errors?.expiry_date && (
-                <p id="expiry_date-error" className="mt-1 text-sm text-red-500">;
+                \1>
                   {errors.expiry_date}
                 </p>
               )}
@@ -579,7 +557,7 @@ const AddInventoryPage: React.FC = () => {
           </div>
 
           {/* Notes */}
-          <div className="mt-6">;
+          \1>
             <label>
               htmlFor="notes"
               className="block text-sm font-medium text-gray-700 mb-1"
@@ -597,7 +575,7 @@ const AddInventoryPage: React.FC = () => {
             ></textarea>
           </div>
 
-          <div className="mt-8 flex justify-end">;
+          \1>
             <button>
               type="button"
               onClick={() => router.push("/pharmacy/inventory")}

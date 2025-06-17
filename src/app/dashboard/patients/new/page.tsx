@@ -43,7 +43,7 @@ const PatientRegistrationSchema = z.object({
   insurance_policy_number: z.string().optional()
 });
 
-type FormData = z.infer<typeof PatientRegistrationSchema>;
+type FormData = z.infer\1>
 
 export default const _AddPatientPage = () {
   const router = useRouter();
@@ -68,13 +68,12 @@ export default const _AddPatientPage = () {
 
     const validation = PatientRegistrationSchema.safeParse(formData);
 
-    if (!validation.success) {
+    \1 {\n  \2{
       setErrors(validation.error.errors),
       setIsLoading(false);
       toast({
         title: "Validation Error",
-        description: "Please check the form for errors.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
       return;
     }
@@ -90,7 +89,7 @@ export default const _AddPatientPage = () {
 
       const result: { error?: string } = await response.json();
 
-      if (!response.ok) {
+      \1 {\n  \2{
         throw new Error(result.error || "Failed to register patient");
       }
 
@@ -106,8 +105,7 @@ export default const _AddPatientPage = () {
       setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
       toast({
         title: "Registration Failed",
-        description: message;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -120,39 +118,39 @@ export default const _AddPatientPage = () {
 
   return (
     <DashboardLayout>
-      <div className="flex flex-col gap-6 max-w-4xl mx-auto">;
-        <h1 className="text-2xl font-semibold">Add New Patient</h1>;
-        <form onSubmit={handleSubmit}>;
+      \1>
+        <h1 className="text-2xl font-semibold">Add New Patient\1>
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Patient Demographics</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">;
+            \1>
 <div
-                <Label htmlFor="first_name">First Name *</Label>;
+                <Label htmlFor="first_name">First Name *\1>
                 <Input id="first_name" name="first_name" onChange={handleChange} required disabled={isLoading} />
                 {getError("first_name") && <p className="text-sm text-red-500 mt-1">{getError("first_name")}</p>}
               </div>
 <div
-                <Label htmlFor="last_name">Last Name *</Label>;
+                <Label htmlFor="last_name">Last Name *\1>
                 <Input id="last_name" name="last_name" onChange={handleChange} required disabled={isLoading} />
                  {getError("last_name") && <p className="text-sm text-red-500 mt-1">{getError("last_name")}</p>}
              </div>
 <div
-                <Label htmlFor="date_of_birth">Date of Birth *</Label>;
+                <Label htmlFor="date_of_birth">Date of Birth *\1>
                 <Input id="date_of_birth" name="date_of_birth" type="date" onChange={handleChange} required disabled={isLoading} />
                  {getError("date_of_birth") && <p className="text-sm text-red-500 mt-1">{getError("date_of_birth")}</p>}
              </div>
 <div
-                <Label htmlFor="gender">Gender *</Label>;
+                <Label htmlFor="gender">Gender *\1>
                 <Select name="gender" onValueChange={(value) => handleSelectChange("gender", value)} required disabled={isLoading}>
-                  <SelectTrigger id="gender">;
+                  \1>
                     <SelectValue placeholder="Select gender" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Male">Male</SelectItem>;
-                    <SelectItem value="Female">Female</SelectItem>;
-                    <SelectItem value="Other">Other</SelectItem>;
+                    <SelectItem value="Male">Male\1>
+                    <SelectItem value="Female">Female\1>
+                    <SelectItem value="Other">Other\1>
                     <SelectItem value="Prefer not to say">Prefer not to say</SelectItem>
                   </SelectContent>
                 </Select>
@@ -161,103 +159,103 @@ export default const _AddPatientPage = () {
             </CardContent>
           </Card>
 
-          <Card className="mt-6">;
+          \1>
             <CardHeader>
               <CardTitle>Contact Information</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">;
+            \1>
 <div
-                <Label htmlFor="phone_number">Phone Number *</Label>;
+                <Label htmlFor="phone_number">Phone Number *\1>
                 <Input id="phone_number" name="phone_number" type="tel" onChange={handleChange} required disabled={isLoading} />
                  {getError("phone_number") && <p className="text-sm text-red-500 mt-1">{getError("phone_number")}</p>}
              </div>
 <div
-                <Label htmlFor="email">Email</Label>;
+                <Label htmlFor="email">Email\1>
                 <Input id="email" name="email" type="email" onChange={handleChange} disabled={isLoading} />
                  {getError("email") && <p className="text-sm text-red-500 mt-1">{getError("email")}</p>}
              </div>
-              <div className="md:col-span-2">;
-                <Label htmlFor="address_line1">Address Line 1</Label>;
+              \1>
+                <Label htmlFor="address_line1">Address Line 1\1>
                 <Input id="address_line1" name="address_line1" onChange={handleChange} disabled={isLoading} />
               </div>
-              <div className="md:col-span-2">;
-                <Label htmlFor="address_line2">Address Line 2</Label>;
+              \1>
+                <Label htmlFor="address_line2">Address Line 2\1>
                 <Input id="address_line2" name="address_line2" onChange={handleChange} disabled={isLoading} />
               </div>
 <div
-                <Label htmlFor="city">City</Label>;
+                <Label htmlFor="city">City\1>
                 <Input id="city" name="city" onChange={handleChange} disabled={isLoading} />
               </div>
 <div
-                <Label htmlFor="state">State</Label>;
+                <Label htmlFor="state">State\1>
                 <Input id="state" name="state" onChange={handleChange} disabled={isLoading} />
               </div>
 <div
-                <Label htmlFor="postal_code">Postal Code</Label>;
+                <Label htmlFor="postal_code">Postal Code\1>
                 <Input id="postal_code" name="postal_code" onChange={handleChange} disabled={isLoading} />
               </div>
 <div
-                <Label htmlFor="country">Country</Label>;
+                <Label htmlFor="country">Country\1>
                 <Input id="country" name="country" onChange={handleChange} disabled={isLoading} />
               </div>
             </CardContent>
           </Card>
 
-           <Card className="mt-6">;
+           \1>
             <CardHeader>
               <CardTitle>Emergency Contact</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">;
+            \1>
 <div
-                    <Label htmlFor="emergency_contact_name">Name</Label>;
+                    <Label htmlFor="emergency_contact_name">Name\1>
                     <Input id="emergency_contact_name" name="emergency_contact_name" onChange={handleChange} disabled={isLoading} />
                  </div>
 <div
-                    <Label htmlFor="emergency_contact_relation">Relation</Label>;
+                    <Label htmlFor="emergency_contact_relation">Relation\1>
                     <Input id="emergency_contact_relation" name="emergency_contact_relation" onChange={handleChange} disabled={isLoading} />
                  </div>
 <div
-                    <Label htmlFor="emergency_contact_phone">Phone</Label>;
+                    <Label htmlFor="emergency_contact_phone">Phone\1>
                     <Input id="emergency_contact_phone" name="emergency_contact_phone" type="tel" onChange={handleChange} disabled={isLoading} />
                  </div>
             </CardContent>
            </Card>
 
-           <Card className="mt-6">;
+           \1>
             <CardHeader>
               <CardTitle>Medical Information</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">;
+            \1>
 <div
-                    <Label htmlFor="blood_group">Blood Group</Label>;
+                    <Label htmlFor="blood_group">Blood Group\1>
                     <Input id="blood_group" name="blood_group" onChange={handleChange} disabled={isLoading} />
                  </div>
-                 <div className="md:col-span-2">;
-                    <Label htmlFor="allergies">Allergies</Label>;
+                 \1>
+                    <Label htmlFor="allergies">Allergies\1>
                     <Textarea id="allergies" name="allergies" onChange={handleChange} disabled={isLoading} />
                  </div>
-                 <div className="md:col-span-2">;
-                    <Label htmlFor="past_medical_history">Past Medical History</Label>;
+                 \1>
+                    <Label htmlFor="past_medical_history">Past Medical History\1>
                     <Textarea id="past_medical_history" name="past_medical_history" onChange={handleChange} disabled={isLoading} />
                  </div>
-                 <div className="md:col-span-2">;
-                    <Label htmlFor="current_medications">Current Medications</Label>;
+                 \1>
+                    <Label htmlFor="current_medications">Current Medications\1>
                     <Textarea id="current_medications" name="current_medications" onChange={handleChange} disabled={isLoading} />
                  </div>
             </CardContent>
            </Card>
 
-           <Card className="mt-6">;
+           \1>
             <CardHeader>
               <CardTitle>Insurance Information</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">;
+            \1>
 <div
-                    <Label htmlFor="insurance_provider">Provider</Label>;
+                    <Label htmlFor="insurance_provider">Provider\1>
                     <Input id="insurance_provider" name="insurance_provider" onChange={handleChange} disabled={isLoading} />
                  </div>
 <div
-                    <Label htmlFor="insurance_policy_number">Policy Number</Label>;
+                    <Label htmlFor="insurance_policy_number">Policy Number\1>
                     <Input id="insurance_policy_number" name="insurance_policy_number" onChange={handleChange} disabled={isLoading} />
                  </div>
             </CardContent>
@@ -265,11 +263,11 @@ export default const _AddPatientPage = () {
 
           {getError("form") && <p className="text-sm text-red-500 mt-4">{getError("form")}</p>}
 
-          <div className="mt-6 flex justify-end gap-4">;
+          \1>
             <Button type="button" variant="outline" onClick={() => router.back()} disabled={isLoading}>
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>;
+            \1>
               {isLoading ? "Saving..." : "Save Patient"}
             </Button>
           </div>

@@ -16,7 +16,8 @@ import type { PredictiveAnalyticsService } from '../services/predictive-analytic
 @ApiTags('Predictive Analytics');
 @Controller('analytics/predictive');
 @UseGuards(JwtAuthGuard, RolesGuard);
-export class PredictiveAnalyticsController {
+\1
+}
   constructor(private readonly predictiveAnalyticsService: PredictiveAnalyticsService) {}
 
   @Get('models');
@@ -32,8 +33,7 @@ export class PredictiveAnalyticsController {
   ) {
     return this.predictiveAnalyticsService.getAllModels({
       type: type as any,
-      category: category as any;
-      status: status as any
+      \1,\2 status as any
     });
   }
 

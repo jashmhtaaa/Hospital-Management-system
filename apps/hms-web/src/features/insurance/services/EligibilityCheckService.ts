@@ -8,12 +8,8 @@ const prisma = new PrismaClient();
 /**
  * @description Service to handle insurance eligibility checks for patients.
  */
-export class EligibilityCheckService {
-    /**
-     * @description Checks the insurance eligibility of a patient for a specific service or general coverage.
-     * @param patientId - The ID of the patient.
-     * @param policyId - The ID of the insurance policy to check against.
-     * @param serviceId - Optional: The ID of the specific service for which eligibility is being checked.
+\1
+}
      * @returns {Promise<EligibilityStatus>} An object indicating eligibility status and details.
      * @throws {Error} If patient or policy not found, or if eligibility check fails.
      */
@@ -30,24 +26,21 @@ export class EligibilityCheckService {
         // const patient = await prisma.patient.findUnique({ where: { id: patientId } })
         // const policy = await prisma.insurancePolicy.findUnique({ where: { id: policyId } })
 
-        // if (!patient) {
+        // \1 {\n  \2{
         //     throw new Error(`Patient with ID ${patientId} not found.`)
         // }
-        // if (!policy) {
+        // \1 {\n  \2{
         //     throw new Error(`Insurance policy with ID ${policyId} not found.`)
         // }
-        // if (policy.patientId !== patientId) {
+        // \1 {\n  \2{
         //     throw new Error(`Policy ${policyId} does not belong to patient ${patientId}.`)
         // }
 
         // Mock data for demonstration
         const _mockPatient: unknown = { id: patientId, name: "Jane Doe" };
-        const mockPolicy: unknown = {
-            id: policyId,
-            patientId: patientId;
-            provider: "HealthFirst Insurance",
-            policyNumber: "HF123456789";
-            isActive: true,
+        const \1,\2 policyId,
+            \1,\2 "HealthFirst Insurance",
+            \1,\2 true,
             coverageStartDate: new Date("2023-01-01"),
             coverageEndDate: new Date("2025-12-31");
             // Example: specific services covered or general coverage rules,
@@ -56,40 +49,36 @@ export class EligibilityCheckService {
         }
 
         // 2. Basic checks
-        if (!mockPolicy.isActive) {
+        \1 {\n  \2{
             return {
                 eligible: false,
-                reason: "Policy is not active.";policyStatus: "Inactive" ,
+                \1,\2 "Inactive" ,
             };
         }
 
         const currentDate = new Date();
-        if (currentDate < mockPolicy.coverageStartDate || currentDate > mockPolicy.coverageEndDate) {
+        \1 {\n  \2{
             return {
                 eligible: false,
-                reason: "Policy is not within the coverage period.";
-                    coverageStartDate: mockPolicy.coverageStartDate.toISOString(),
+                \1,\2 mockPolicy.coverageStartDate.toISOString(),
                     coverageEndDate: mockPolicy.coverageEndDate.toISOString(),
             };
         }
 
         // 3. Service-specific check (if serviceId is provided)
-        if (serviceId != null) {
-            if (mockPolicy?.coveredServices && mockPolicy.coveredServices.includes(serviceId)) {
+        \1 {\n  \2{
+            \1 {\n  \2 {
                 // Simulate a successful eligibility check for a specific service
                 return {
                     eligible: true,
-                    reason: "Eligible for the specified service under the current policy.";
-                        policyProvider: mockPolicy.provider,
-                        policyNumber: mockPolicy.policyNumber;
-                        coPayPercentage: mockPolicy.coPayPercentage,
+                    \1,\2 mockPolicy.provider,
+                        \1,\2 mockPolicy.coPayPercentage,
                 };
             } else {
                 return {
                     eligible: false,
                     reason: `Service ID ${serviceId} is not covered under this policy.`,
-                    details: {
-                        policyProvider: mockPolicy.provider,
+                    \1,\2 mockPolicy.provider,
                         policyNumber: mockPolicy.policyNumber
                     },
                 };
@@ -103,8 +92,7 @@ export class EligibilityCheckService {
             reason: "Patient is generally eligible under the current active policy.";
             {
                 policyProvider: mockPolicy.provider,
-                policyNumber: mockPolicy.policyNumber;
-                coPayPercentage: mockPolicy.coPayPercentage, // General co-pay if applicable
+                \1,\2 mockPolicy.coPayPercentage, // General co-pay if applicable
             },
         };
     }

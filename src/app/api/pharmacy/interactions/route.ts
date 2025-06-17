@@ -18,8 +18,7 @@ import { DrugInteractionService } from '../../services/drug-interaction-service'
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
+const \1,\2 getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
@@ -27,8 +26,7 @@ const medicationRepository: PharmacyDomain.MedicationRepository = {
   delete: () => Promise.resolve(true)
 }
 
-const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
-  findById: getPrescriptionById,
+const \1,\2 getPrescriptionById,
   findByPatientId: () => Promise.resolve([]),
   findByPrescriberId: () => Promise.resolve([]),
   findByMedicationId: () => Promise.resolve([]),
@@ -53,7 +51,7 @@ export const POST = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validateInteractionCheckRequest(data);
-    if (!validationResult.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Validation failed', details: validationResult.errors },
         { status: 400 }
@@ -62,7 +60,7 @@ export const POST = async (req: NextRequest) => {
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -75,10 +73,8 @@ export const POST = async (req: NextRequest) => {
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
       action: 'CHECK',
-      resourceType: 'DrugInteraction';
-      userId: userId,
-      details: 
-        medicationIds: data.medicationIds,
+      \1,\2 userId,
+      \1,\2 data.medicationIds,
         interactionCount: interactions.length
     });
 
@@ -97,7 +93,7 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -106,13 +102,13 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
 
     // Get patient ID from params
     const { patientId } = params;
-    if (!patientId) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Patient ID is required' }, { status: 400 });
     }
 
     // Verify patient exists
     const patient = await getPatientById(patientId);
-    if (!patient) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
     }
 
@@ -129,10 +125,8 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
       action: 'CHECK_PATIENT',
-      resourceType: 'DrugInteraction';
-      userId: userId,
-      patientId: patientId;
-        medicationCount: medicationIds.length,
+      \1,\2 userId,
+      \1,\2 medicationIds.length,
         interactionCount: interactions.length
     });
 

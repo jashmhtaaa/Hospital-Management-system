@@ -53,10 +53,8 @@ export default const _AssignPosition = ({ params }: { id: string }) {
   // Initialize form
   const form = useForm({
     resolver: zodResolver(positionAssignmentSchema),
-    defaultValues: {
-      positionId: '',
-      isPrimary: false;
-      startDate: new Date(),
+    \1,\2 '',
+      \1,\2 new Date(),
       endDate: undefined
     },
   });
@@ -67,14 +65,14 @@ export default const _AssignPosition = ({ params }: { id: string }) {
       try {
         // Fetch positions
         const posResponse = await fetch('/api/hr/positions');
-        if (posResponse.ok) {
+        \1 {\n  \2{
           const posData = await posResponse.json(),
           setPositions(posData.positions || []);
         }
 
         // Fetch employee
-        const empResponse = await fetch(`/api/hr/staff/${params.id}`);
-        if (empResponse.ok) {
+        const empResponse = await fetch(`/api/hr/staff/${\1}`;
+        \1 {\n  \2{
           const empData = await empResponse.json(),
           setEmployee(empData);
         }
@@ -82,8 +80,7 @@ export default const _AssignPosition = ({ params }: { id: string }) {
 
         toast({
           title: "Error",
-          description: "Failed to load required data";
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       }
     };
@@ -111,7 +108,7 @@ export default const _AssignPosition = ({ params }: { id: string }) {
         body: JSON.stringify(formattedData)
       });
 
-      if (!response.ok) {
+      \1 {\n  \2{
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to assign position');
       }
@@ -122,12 +119,11 @@ export default const _AssignPosition = ({ params }: { id: string }) {
       });
 
       // Navigate back to employee profile
-      router.push(`/dashboard/hr/staff/${params.id}`);
+      router.push(`/dashboard/hr/staff/${\1}`;
     } catch (error) {
       toast({
         title: "Error",
-        description: error.message;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setLoading(false);
@@ -135,21 +131,21 @@ export default const _AssignPosition = ({ params }: { id: string }) {
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:p-8">;
-      <div className="flex items-center gap-2">;
+    \1>
+      \1>
         <Button>
           variant="ghost"
           size="sm"
-          onClick={() => router.push(`/dashboard/hr/staff/${params.id}`)}
+          onClick={() => router.push(`/dashboard/hr/staff/${\1}`}
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Employee Profile
         </Button>
       </div>
 
-      <div className="flex flex-col gap-2">;
-        <h1 className="text-3xl font-bold">Assign Position</h1>;
-        <p className="text-muted-foreground">;
+      \1>
+        <h1 className="text-3xl font-bold">Assign Position\1>
+        \1>
           {employee ? `Assign a position to /* SECURITY: Template literal eliminated */
               <FormField>
                 control={form.control}
@@ -168,7 +164,7 @@ export default const _AssignPosition = ({ params }: { id: string }) {
                       </FormControl>
                       <SelectContent>
                         {positions.map((position) => (
-                          <SelectItem key={position.id} value={position.id}>;
+                          \1>
                             {position.title} {position.department ? `(${position.department.name})` : ''}
                           </SelectItem>
                         ))}
@@ -186,14 +182,14 @@ export default const _AssignPosition = ({ params }: { id: string }) {
                 control={form.control}
                 name="isPrimary"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">;
+                  \1>
                     <FormControl>
                       <Checkbox>
                         checked={field.value}
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <div className="space-y-1 leading-none">;
+                    \1>
                       <FormLabel>
                         Primary Position
                       </FormLabel>
@@ -205,12 +201,12 @@ export default const _AssignPosition = ({ params }: { id: string }) {
                 )}
               />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">;
+              \1>
                 <FormField>
                   control={form.control}
                   name="startDate"
                   render={({ field }) => (
-                    <FormItem className="flex flex-col">;
+                    \1>
                       <FormLabel>Start Date*</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
@@ -228,7 +224,7 @@ export default const _AssignPosition = ({ params }: { id: string }) {
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">;
+                        \1>
                           <Calendar>
                             mode="single"
                             selected={field.value}
@@ -249,7 +245,7 @@ export default const _AssignPosition = ({ params }: { id: string }) {
                   control={form.control}
                   name="endDate"
                   render={({ field }) => (
-                    <FormItem className="flex flex-col">;
+                    \1>
                       <FormLabel>End Date</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
@@ -267,7 +263,7 @@ export default const _AssignPosition = ({ params }: { id: string }) {
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">;
+                        \1>
                           <Calendar>
                             mode="single"
                             selected={field.value}
@@ -285,15 +281,15 @@ export default const _AssignPosition = ({ params }: { id: string }) {
                 />
               </div>
 
-              <div className="flex justify-end gap-2">;
+              \1>
                 <Button>
                   type="button"
                   variant="outline"
-                  onClick={() => router.push(`/dashboard/hr/staff/${params.id}`)}
+                  onClick={() => router.push(`/dashboard/hr/staff/${\1}`}
                 >
                   Cancel
                 </Button>
-                <Button type="submit" disabled={loading}>;
+                \1>
                   {loading ? 'Saving...' : 'Assign Position'}
                   {!loading && <Save className="ml-2 h-4 w-4" />}
                 </Button>

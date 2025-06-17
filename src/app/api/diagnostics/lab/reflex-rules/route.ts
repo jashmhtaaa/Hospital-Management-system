@@ -6,8 +6,7 @@ import { getSession } from "@/lib/session";
 // Interface for the request body when creating a reflex rule
 interface ReflexRuleCreateBody {
   condition_test_id: number,
-  condition_operator: "eq" | "ne" | "lt" | "gt" | "le" | "ge";
-  condition_value: string,
+  \1,\2 string,
   action_test_id: number;
   priority?: "routine" | "urgent" | "stat";
   description?: string;
@@ -20,7 +19,7 @@ export const _GET = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -54,17 +53,17 @@ export const _GET = async (request: NextRequest) => {
     const parameters: unknown[] = [];
     const conditions: string[] = [];
 
-    if (testId != null) {
+    \1 {\n  \2{
       conditions.push("r.condition_test_id = ?");
       parameters.push(testId);
     }
 
-    if (isActive !== null && isActive !== undefined) {
+    \1 {\n  \2{
       conditions.push("r.is_active = ?");
       parameters.push(isActive === "true" ? 1 : 0);
     }
 
-    if (conditions.length > 0) {
+    \1 {\n  \2{
       query += " WHERE " + conditions.join(" AND ");
     }
 
@@ -81,7 +80,7 @@ export const _GET = async (request: NextRequest) => {
 
     // Get total count for pagination
     let countQuery = "SELECT COUNT(*) as total FROM lab_test_reflex_rules r";
-    if (conditions.length > 0) {
+    \1 {\n  \2{
       countQuery += " WHERE " + conditions.join(" AND ");
     }
 
@@ -114,12 +113,12 @@ export const _POST = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication and authorization
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Only lab managers and admins can create reflex rules
-    if (!["admin", "lab_manager"].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -135,7 +134,7 @@ export const _POST = async (request: NextRequest) => {
     ];
 
     for (const field of requiredFields) {
-      if (!(field in body) || body[field] === undefined || body[field] === "") {
+      \1 {\n  \2| body[field] === undefined || body[field] === "") {
         return NextResponse.json(
           { error: `Missing or invalid required field: ${field}` },
           { status: 400 }
@@ -145,7 +144,7 @@ export const _POST = async (request: NextRequest) => {
 
     // Validate condition operator
     const validOperators = ["eq", "ne", "lt", "gt", "le", "ge"];
-    if (!validOperators.includes(body.condition_operator)) {
+    \1 {\n  \2 {
       return NextResponse.json(
         { error: "Invalid condition operator" },
         { status: 400 }
@@ -153,7 +152,7 @@ export const _POST = async (request: NextRequest) => {
     }
 
     // Validate priority if provided
-    if (body?.priority && !["routine", "urgent", "stat"].includes(body.priority)) {
+    \1 {\n  \2 {
       return NextResponse.json(
         { error: "Invalid priority" },
         { status: 400 }
@@ -166,7 +165,7 @@ export const _POST = async (request: NextRequest) => {
       [body.condition_test_id]
     );
 
-    if (!conditionTestCheckResult.results || conditionTestCheckResult.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Condition test not found" },
         { status: 404 }
@@ -179,7 +178,7 @@ export const _POST = async (request: NextRequest) => {
       [body.action_test_id]
     );
 
-    if (!actionTestCheckResult.results || actionTestCheckResult.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Action test not found" },
         { status: 404 }
@@ -201,7 +200,7 @@ export const _POST = async (request: NextRequest) => {
       ]
     );
 
-    if (duplicateCheckResult?.results && duplicateCheckResult.results.length > 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "A duplicate reflex rule already exists" },
         { status: 400 }
@@ -250,7 +249,7 @@ export const _POST = async (request: NextRequest) => {
     const ruleResult = await DB.query(fetchQuery, [ruleId]);
     const rule = ruleResult.results?.[0];
 
-    if (!rule) {
+    \1 {\n  \2{
       throw new Error("Failed to retrieve created reflex rule");
     }
 
@@ -275,12 +274,12 @@ export const _PUT = async (
     const session = await getSession();
 
     // Check authentication and authorization
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Only lab managers and admins can update reflex rules
-    if (!["admin", "lab_manager"].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -292,7 +291,7 @@ export const _PUT = async (
       [ruleId]
     );
 
-    if (!checkResult.results || checkResult.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Reflex rule not found" },
         { status: 404 }
@@ -300,12 +299,12 @@ export const _PUT = async (
     }
 
     // Parse request body
-    const body = await request.json() as Partial<ReflexRuleCreateBody>;
+    const body = await request.json() as Partial\1>
 
     // Validate condition operator if provided
-    if (body.condition_operator) {
+    \1 {\n  \2{
       const validOperators = ["eq", "ne", "lt", "gt", "le", "ge"];
-      if (!validOperators.includes(body.condition_operator)) {
+      \1 {\n  \2 {
         return NextResponse.json(
           { error: "Invalid condition operator" },
           { status: 400 }
@@ -314,7 +313,7 @@ export const _PUT = async (
     }
 
     // Validate priority if provided
-    if (body?.priority && !["routine", "urgent", "stat"].includes(body.priority)) {
+    \1 {\n  \2 {
       return NextResponse.json(
         { error: "Invalid priority" },
         { status: 400 }
@@ -322,13 +321,13 @@ export const _PUT = async (
     }
 
     // Check if condition test exists if provided
-    if (body.condition_test_id) {
+    \1 {\n  \2{
       const conditionTestCheckResult = await DB.query(
         "SELECT id FROM lab_tests WHERE id = ?",
         [body.condition_test_id]
       );
 
-      if (!conditionTestCheckResult.results || conditionTestCheckResult.results.length === 0) {
+      \1 {\n  \2{
         return NextResponse.json(
           { error: "Condition test not found" },
           { status: 404 }
@@ -337,13 +336,13 @@ export const _PUT = async (
     }
 
     // Check if action test exists if provided
-    if (body.action_test_id) {
+    \1 {\n  \2{
       const actionTestCheckResult = await DB.query(
         "SELECT id FROM lab_tests WHERE id = ?",
         [body.action_test_id]
       );
 
-      if (!actionTestCheckResult.results || actionTestCheckResult.results.length === 0) {
+      \1 {\n  \2{
         return NextResponse.json(
           { error: "Action test not found" },
           { status: 404 }
@@ -352,12 +351,7 @@ export const _PUT = async (
     }
 
     // Check for duplicate rule if key fields are being updated
-    if (
-      body.condition_test_id !== undefined ||;
-      body.condition_operator !== undefined ||;
-      body.condition_value !== undefined ||;
-      body.action_test_id !== undefined;
-    ) {
+    \1 {\n  \2{
       // Get current values for fields not included in the update
       const currentResult = await DB.query(
         `SELECT;
@@ -390,7 +384,7 @@ export const _PUT = async (
         ]
       );
 
-      if (duplicateCheckResult?.results && duplicateCheckResult.results.length > 0) {
+      \1 {\n  \2{
         return NextResponse.json(
           { error: "A duplicate reflex rule already exists" },
           { status: 400 }
@@ -403,43 +397,43 @@ export const _PUT = async (
     const updateFields: string[] = [];
     const updateParameters: unknown[] = [];
 
-    if (body.condition_test_id !== undefined) {
+    \1 {\n  \2{
       updateFields.push("condition_test_id = ?");
       updateParameters.push(body.condition_test_id);
     }
 
-    if (body.condition_operator !== undefined) {
+    \1 {\n  \2{
       updateFields.push("condition_operator = ?");
       updateParameters.push(body.condition_operator);
     }
 
-    if (body.condition_value !== undefined) {
+    \1 {\n  \2{
       updateFields.push("condition_value = ?");
       updateParameters.push(body.condition_value);
     }
 
-    if (body.action_test_id !== undefined) {
+    \1 {\n  \2{
       updateFields.push("action_test_id = ?");
       updateParameters.push(body.action_test_id);
     }
 
-    if (body.priority !== undefined) {
+    \1 {\n  \2{
       updateFields.push("priority = ?");
       updateParameters.push(body.priority);
     }
 
-    if (body.description !== undefined) {
+    \1 {\n  \2{
       updateFields.push("description = ?");
       updateParameters.push(body.description);
     }
 
-    if (body.is_active !== undefined) {
+    \1 {\n  \2{
       updateFields.push("is_active = ?");
       updateParameters.push(body.is_active ? 1 : 0);
     }
 
     // Only proceed if there are fields to update
-    if (updateFields.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "No fields to update" },
         { status: 400 }
@@ -473,7 +467,7 @@ export const _PUT = async (
     const ruleResult = await DB.query(fetchQuery, [ruleId]);
     const rule = ruleResult.results?.[0];
 
-    if (!rule) {
+    \1 {\n  \2{
       throw new Error("Failed to retrieve updated reflex rule");
     }
 
@@ -498,12 +492,12 @@ export const DELETE = async (
     const session = await getSession();
 
     // Check authentication and authorization
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Only lab managers and admins can delete reflex rules
-    if (!["admin", "lab_manager"].includes(session.user.roleName)) {
+    \1 {\n  \2 {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -515,7 +509,7 @@ export const DELETE = async (
       [ruleId]
     );
 
-    if (!checkResult.results || checkResult.results.length === 0) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Reflex rule not found" },
         { status: 404 }

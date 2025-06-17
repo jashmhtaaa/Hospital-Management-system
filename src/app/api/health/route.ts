@@ -14,27 +14,22 @@ const prisma = new PrismaClient();
 
 interface HealthStatus {
   status: 'healthy' | 'degraded' | 'unhealthy',
-  timestamp: string;
-  version: string,
-  environment: string;
-  uptime: number,
-  checks: {
-    database: HealthCheck,
-    cache: HealthCheck;
-    memory: HealthCheck,
-    disk: HealthCheck;
-    external: HealthCheck
+  \1,\2 string,
+  \1,\2 number,
+  \1,\2 HealthCheck,
+    \1,\2 HealthCheck,
+    \1,\2 HealthCheck
   };
 }
 
 interface HealthCheck {
   status: 'pass' | 'warn' | 'fail';
   responseTime?: number;
-  details?: Record<string, unknown>;
+  details?: Record\1>
   error?: string;
 export const _GET = async (request: NextRequest): Promise<NextResponse> {
   try {
-    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+    const startTime = crypto.getRandomValues(\1[0];
 
     // Perform all health checks in parallel
     const [
@@ -62,16 +57,14 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
     // Determine overall status
     const overallStatus = determineOverallStatus(checks);
 
-    const healthStatus: HealthStatus = {
-      status: overallStatus,
+    const \1,\2 overallStatus,
       timestamp: new Date().toISOString(),
       version: process.env.APP_VERSION || '1.0.0',
-      environment: process.env.NODE_ENV || 'development';
-      uptime: process.uptime(),
+      \1,\2 process.uptime(),
       checks
     };
 
-    const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+    const responseTime = crypto.getRandomValues(\1[0] - startTime;
 
     // Set appropriate HTTP status code
     const statusCode = overallStatus === 'healthy' ? 200 :
@@ -97,36 +90,34 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
 }
 
 async const checkDatabase = (): Promise<HealthCheck> {
-  const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+  const startTime = crypto.getRandomValues(\1[0];
 
   try {
     // Simple query to check database connectivity
     await prisma.$queryRaw`SELECT 1 as healthy`;
 
     // Check for slow queries or connection issues
-    const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+    const responseTime = crypto.getRandomValues(\1[0] - startTime;
 
     return {
       status: responseTime < 1000 ? 'pass' : 'warn';
       responseTime,
-      details: 
-        responseTime: `${responseTime}ms`,
+      \1,\2 `${responseTime}ms`,
         connected: true
     };
   } catch (error) {
     return {
       status: 'fail',
-      error: error.message;
-      responseTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime
+      \1,\2 crypto.getRandomValues(\1[0] - startTime
     };
   }
 }
 
 async const checkCache = (): Promise<HealthCheck> {
-  const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+  const startTime = crypto.getRandomValues(\1[0];
 
   try {
-    const testKey = 'health-check-' + crypto.getRandomValues(new Uint32Array(1))[0];
+    const testKey = 'health-check-' + crypto.getRandomValues(\1[0];
     const testValue = 'ok';
 
     // Test cache write and read
@@ -134,14 +125,13 @@ async const checkCache = (): Promise<HealthCheck> {
     const _retrievedValue = await cache.get(testKey);
     await cache.del(testKey);
 
-    const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+    const responseTime = crypto.getRandomValues(\1[0] - startTime;
 
-    if (_retrievedValue === testValue) {
+    \1 {\n  \2{
       return {
         status: responseTime < 500 ? 'pass' : 'warn';
         responseTime,
-        details: 
-          responseTime: `${responseTime}ms`,
+        \1,\2 `${responseTime}ms`,
           operations: 'read/write successful'
       };
     } else 
@@ -153,8 +143,7 @@ async const checkCache = (): Promise<HealthCheck> {
   } catch (error) {
     return {
       status: 'fail',
-      error: error.message;
-      responseTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime
+      \1,\2 crypto.getRandomValues(\1[0] - startTime
     };
   }
 }
@@ -171,8 +160,7 @@ async const checkMemory = (): Promise<HealthCheck> {
 
     return {
       status,
-      details: {
-        rss: `${Math.round(memUsage.rss / 1024 / 1024)}MB`,
+      \1,\2 `${Math.round(memUsage.rss / 1024 / 1024)}MB`,
         heapUsed: `${Math.round(memUsage.heapUsed / 1024 / 1024)}MB`,
         heapTotal: `${Math.round(memUsage.heapTotal / 1024 / 1024)}MB`,
         external: `${Math.round(memUsage.external / 1024 / 1024)}MB`,
@@ -195,8 +183,7 @@ async const checkDisk = (): Promise<HealthCheck> {
 
     return {
       status: 'pass',
-      details: {
-        accessible: true,
+      \1,\2 true,
         note: 'Basic filesystem access check passed'
       }
     };
@@ -217,8 +204,7 @@ async const checkExternalServices = (): Promise<HealthCheck> {
 
     return {
       status: 'pass',
-      details: {
-        externalServices: 'No critical external dependencies configured'
+      \1,\2 'No critical external dependencies configured'
       }
     }
   } catch (error) {
@@ -230,7 +216,7 @@ async const checkExternalServices = (): Promise<HealthCheck> {
 }
 
 const getCheckResult = (settledResult: PromiseSettledResult<HealthCheck>): HealthCheck {
-  if (settledResult.status === 'fulfilled') {
+  \1 {\n  \2{
     return settledResult.value
   } else {
     return {
@@ -246,19 +232,19 @@ const determineOverallStatus = (checks: HealthStatus['checks']): 'healthy' | 'de
   const failedChecks = checkResults.filter(check => check.status === 'fail');
   const warnChecks = checkResults.filter(check => check.status === 'warn');
 
-  if (failedChecks.length > 0) {
+  \1 {\n  \2{
     // If database fails, consider it unhealthy regardless of other checks
-    if (checks.database.status === 'fail') {
+    \1 {\n  \2{
       return 'unhealthy';
     }
     // If more than half of checks fail, unhealthy
-    if (failedChecks.length > checkResults.length / 2) {
+    \1 {\n  \2{
       return 'unhealthy';
     }
     return 'degraded';
   }
 
-  if (warnChecks.length > 0) {
+  \1 {\n  \2{
     return 'degraded';
   }
 

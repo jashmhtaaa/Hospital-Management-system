@@ -14,100 +14,20 @@ import type { PrismaService } from '@/lib/prisma';
  * Comprehensive sample tracking with barcode/RFID and chain of custody;
  */
 
-export interface Sample {
-  id: string,
-  barcode: string;
-  rfidTag?: string;
-  labOrderId: string,
-  patientId: string;
-  collectedBy: string,
-  collectedAt: Date;
-  sampleType: SampleType,
-  containerType: string;
-  volume?: number;
-  unit?: string;
-  status: SampleStatus,
-  location: string;
-  temperature?: number;
-  priority: Priority,
-  chainOfCustody: ChainOfCustodyEntry[];
-  qualityControl: QualityControlResult[];
-  processingNotes?: string;
-  expiresAt?: Date;
-  rejectionReason?: string;
-  batchId?: string;
-  createdAt: Date,
-  updatedAt: Date
-export enum SampleType {
-  BLOOD = 'BLOOD',
-  SERUM = 'SERUM',
-  PLASMA = 'PLASMA',
-  URINE = 'URINE',
-  STOOL = 'STOOL',
-  CSF = 'CSF',
-  TISSUE = 'TISSUE',
-  SWAB = 'SWAB',
-  SPUTUM = 'SPUTUM',
-  OTHER = 'OTHER',
-export enum SampleStatus {
-  COLLECTED = 'COLLECTED',
-  IN_TRANSIT = 'IN_TRANSIT',
-  RECEIVED = 'RECEIVED',
-  PROCESSING = 'PROCESSING',
-  ANALYZED = 'ANALYZED',
-  COMPLETED = 'COMPLETED',
-  REJECTED = 'REJECTED',
-  EXPIRED = 'EXPIRED',
-export = "export" enum = "enum" Priority = "Priority" {
-  ROUTINE = 'ROUTINE',
-  URGENT = 'URGENT',
-  STAT = 'STAT',
-  CRITICAL = 'CRITICAL',
-export interface ChainOfCustodyEntry {
-  id: string,
-  sampleId: string;
-  fromUserId: string,
-  toUserId: string;
-  fromLocation: string,
-  toLocation: string;
-  transferredAt: Date;
-  notes?: string;
-  verified: boolean;
-  signature?: string;
-export interface QualityControlResult {
-  id: string,
-  sampleId: string;
-  testType: string,
-  parameter: string;
-  value: number,
-  unit: string;
-  expectedRange: string,
-  status: 'PASS' | 'FAIL' | 'WARNING';
-  performedBy: string,
-  performedAt: Date;
-  notes?: string;
-export interface SampleRouting {
-  sampleId: string,
-  workflowId: string;
-  currentStep: string,
-  nextSteps: string[];
-  estimatedCompletion: Date,
-  priority: Priority;
-  assignedTo?: string;
-  department: string
+\1
+}
 }
 
 @Injectable();
-export class SampleManagementService extends FHIRResourceManager<FHIRObservation> {
-  constructor(private prisma: PrismaService) {
-    super('Specimen')
+\1
+}
   }
 
   /**
    * Create new sample with barcode generation;
    */
   async createSample(data: Partial<Sample>): Promise<Sample> {
-    const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
+    const startTime = crypto.getRandomValues(\1[0];
 
     try {
       // Generate unique barcode
@@ -119,20 +39,15 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
           ...data,
           barcode,
           status: SampleStatus.COLLECTED,
-          chainOfCustody: {
-            create: {
+          \1,\2 {
               fromUserId: data.collectedBy!,
-              toUserId: data.collectedBy!;
-              fromLocation: 'Collection Point',
-              toLocation: data.location || 'Laboratory';
-              transferredAt: new Date(),
-              verified: true;
-              notes: 'Initial collection'
+              \1,\2 'Collection Point',
+              \1,\2 new Date(),
+              \1,\2 'Initial collection'
             },
           },
         },
-        include: 
-          chainOfCustody: true,
+        \1,\2 true,
           qualityControl: true,
       });
 
@@ -158,7 +73,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
         priority: sample.priority
       });
 
-      const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
+      const duration = crypto.getRandomValues(\1[0] - startTime;
       metricsCollector.recordTimer('lab.sample_creation_time', duration);
 
       return sample as Sample;
@@ -173,41 +88,33 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
    */
   async updateSampleStatus(
     sampleId: string,
-    newStatus: SampleStatus;
-    userId: string;
+    \1,\2 string;
     location?: string,
     notes?: string;
   ): Promise<Sample> {
     try {
       const sample = await this.getSampleById(sampleId);
-      if (!sample) {
+      \1 {\n  \2{
         throw new Error(`Sample ${sampleId} not found`);
       }
 
       // Create chain of custody entry if location changed
       const chainOfCustodyData = location !== sample.location ? {
-        create: {
-          fromUserId: sample.chainOfCustody[sample.chainOfCustody.length - 1]?.toUserId || userId,
-          toUserId: userId;
-          fromLocation: sample.location,
-          toLocation: location || sample.location;
-          transferredAt: new Date(),
-          verified: false;
-          notes: notes || `Status changed to ${newStatus}`,
+        \1,\2 sample.chainOfCustody[sample.chainOfCustody.length - 1]?.toUserId || userId,
+          \1,\2 sample.location,
+          \1,\2 new Date(),
+          \1,\2 notes || `Status changed to ${newStatus}`,
         },
       } : undefined;
 
       // Update sample
       const updatedSample = await this.prisma.sample.update({
         where: { id: sampleId },
-        data: {
-          status: newStatus,
-          location: location || sample.location;
-          updatedAt: new Date(),
+        \1,\2 newStatus,
+          \1,\2 new Date(),
           chainOfCustody: chainOfCustodyData
         },
-        include: {
-          chainOfCustody: true,
+        \1,\2 true,
           qualityControl: true
         },
       });
@@ -226,8 +133,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
       // Record metrics
       metricsCollector.incrementCounter('lab.sample_status_updates', 1, {
         fromStatus: sample.status,
-        toStatus: newStatus;
-        sampleType: sample.sampleType
+        \1,\2 sample.sampleType
       });
 
       return updatedSample as Sample;
@@ -242,7 +148,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
    */
   async performQualityControl(
     sampleId: string,
-    qcData: Omit<QualityControlResult, 'id' | 'sampleId'>;
+    qcData: Omit\1>
   ): Promise<QualityControlResult> {
     try {
       const qcResult = await this.prisma.qualityControlResult.create({
@@ -253,7 +159,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
       });
 
       // If QC fails, update sample status
-      if (qcResult.status === 'FAIL') {
+      \1 {\n  \2{
         await this.updateSampleStatus(
           sampleId,
           SampleStatus.REJECTED,
@@ -284,7 +190,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
       const sample = await this.getSampleById(sampleId);
       const labOrder = await this.getLabOrder(labOrderId);
 
-      if (!sample || !labOrder) {
+      \1 {\n  \2{
         throw new Error('Sample or lab order not found');
       }
 
@@ -295,8 +201,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
       const routing: SampleRouting = {
         sampleId,
         workflowId: workflow.id,
-        currentStep: workflow.steps[0];
-        nextSteps: workflow.steps.slice(1),
+        \1,\2 workflow.steps.slice(1),
         estimatedCompletion: this.calculateEstimatedCompletion(workflow, sample.priority),
         priority: sample.priority,
         department: workflow.department
@@ -304,7 +209,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
 
       // Assign to appropriate technician if available
       const assignedTech = await this.assignTechnician(workflow.department, sample.priority);
-      if (assignedTech != null) {
+      \1 {\n  \2{
         routing.assignedTo = assignedTech.id;
       }
 
@@ -327,37 +232,33 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
   /**
    * Track sample location in real-time;
    */
-  async trackSampleLocation(barcode: string): Promise<{
-    sample: Sample,
-    currentLocation: string;
-    history: ChainOfCustodyEntry[],
+  async trackSampleLocation(\1,\2 Sample,
+    \1,\2 ChainOfCustodyEntry[],
     estimatedNextUpdate: Date
   }> {
     try {
       // Try cache first
       const cached = await cacheService.getCachedResult('sample_location:', barcode);
-      if (cached != null) {
+      \1 {\n  \2{
         return cached;
       }
 
       const sample = await this.prisma.sample.findUnique({
         where: { barcode },
-        include: {
-          chainOfCustody: {
+        \1,\2 {
             orderBy: { transferredAt: 'desc' },
           },
           qualityControl: true
         },
       });
 
-      if (!sample) {
+      \1 {\n  \2{
         throw new Error(`Sample with barcode ${barcode} not found`);
       }
 
       const result = {
         sample: sample as Sample,
-        currentLocation: sample.location;
-        history: sample.chainOfCustody as ChainOfCustodyEntry[],
+        \1,\2 sample.chainOfCustody as ChainOfCustodyEntry[],
         estimatedNextUpdate: this.estimateNextUpdate(sample as Sample)
       };
 
@@ -376,10 +277,9 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
    */
   async processBatch(
     sampleIds: string[],
-    batchId: string;
-    processingType: string,
+    \1,\2 string,
     performedBy: string;
-  ): Promise<{ successful: string[], failed: string[]; errors: unknown[] }> {
+  ): Promise<{ successful: string[], \1,\2 unknown[] }> {
     const successful: string[] = [];
     const failed: string[] = [];
     const errors: unknown[] = [];
@@ -415,7 +315,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
         );
 
         results.forEach((result) => {
-          if (result.status === 'fulfilled') {
+          \1 {\n  \2{
             successful.push(result.value);
           } else {
             const errorData = result.reason;
@@ -429,8 +329,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
       metricsCollector.incrementCounter('lab.batch_processing', 1, {
         processingType,
         totalSamples: sampleIds.length,
-        successful: successful.length;
-        failed: failed.length
+        \1,\2 failed.length
       });
 
       return { successful, failed, errors };
@@ -458,19 +357,18 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
     try {
       const where: unknown = { status };
 
-      if (filters?.sampleType) where.sampleType = filters.sampleType;
-      if (filters?.priority) where.priority = filters.priority;
-      if (filters?.dateFrom || filters?.dateTo) {
+      \1 {\n  \2here.sampleType = filters.sampleType;
+      \1 {\n  \2here.priority = filters.priority;
+      \1 {\n  \2{
         where.createdAt = {};
-        if (filters.dateFrom) where.createdAt.gte = filters.dateFrom;
-        if (filters.dateTo) where.createdAt.lte = filters.dateTo;
+        \1 {\n  \2here.createdAt.gte = filters.dateFrom;
+        \1 {\n  \2here.createdAt.lte = filters.dateTo;
       }
 
       const [samples, total] = await Promise.all([
         this.prisma.sample.findMany({
           where,
-          include: {
-            chainOfCustody: true,
+          \1,\2 true,
             qualityControl: true
           },
           orderBy: [
@@ -498,10 +396,8 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
    */
   async getStatisticalProcessControl(
     testType: string,
-    parameter: string;
-    days: number = 30;
-  ): Promise<{date: Date, value: number; upper: number, lower: number [];slope: number, rSquared: number ;
-    outliers: QualityControlResult[]
+    \1,\2 number = 30;
+  ): Promise<{date: Date, \1,\2 number, \1,\2 number, \1,\2 QualityControlResult[]
   }> {
     try {
       const startDate = new Date();
@@ -529,7 +425,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
       const dailyData = new Map<string, number[]>();
       qcResults.forEach(result => {
         const dateKey = result.performedAt.toISOString().split('T')[0];
-        if (!dailyData.has(dateKey)) {
+        \1 {\n  \2 {
           dailyData.set(dateKey, []);
         }
         dailyData.get(dateKey)!.push(result.value);
@@ -539,8 +435,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
         const dailyMean = values.reduce((sum, val) => sum + val, 0) / values.length;
         return {
           date: new Date(dateStr),
-          value: dailyMean;
-            upper: upperControlLimit,
+          \1,\2 upperControlLimit,
             lower: lowerControlLimit,
         };
       });
@@ -583,24 +478,23 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
   // Private helper methods
   private async generateBarcode(): Promise<string> {
     const _prefix = 'LAB';
-    const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString();
-    const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    const _timestamp = crypto.getRandomValues(\1[0].toString();
+    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
     return `/* SECURITY: Template literal eliminated */
   }
 
   private async getSampleById(id: string): Promise<Sample | null> {
     const cached = await cacheService.getCachedResult('sample:', id);
-    if (cached != null) return cached;
+    \1 {\n  \2eturn cached;
 
     const sample = await this.prisma.sample.findUnique({
       where: { id },
-      include: {
-        chainOfCustody: true,
+      \1,\2 true,
         qualityControl: true
       },
     });
 
-    if (sample != null) {
+    \1 {\n  \2{
       await cacheService.cacheResult('sample:', id, sample, 300)
     }
 
@@ -664,8 +558,7 @@ export class SampleManagementService extends FHIRResourceManager<FHIRObservation
     // Convert internal sample data to FHIR Observation
     return {
       resourceType: 'Observation',
-      id: sample.id;
-      status: 'registered',
+      \1,\2 'registered',
       code: this.createCodeableConcept([
         this.createCoding(FHIR_SYSTEMS.SNOMED_CT, '123456', 'Sample Collection'),
       ]),

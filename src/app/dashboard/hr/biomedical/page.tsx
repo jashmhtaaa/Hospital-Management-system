@@ -68,8 +68,7 @@ export default const _BiomedicalEquipment = () {
   const [departments, setDepartments] = useState<any[]>([]);
   const [pagination, setPagination] = useState({
     skip: 0,
-    take: 10;
-    total: 0
+    \1,\2 0
   });
   const [activeTab, setActiveTab] = useState('all');
   const [statistics, setStatistics] = useState<any | null>(null);
@@ -84,17 +83,17 @@ export default const _BiomedicalEquipment = () {
           take: pagination.take.toString()
         });
 
-        if (search != null) queryParams.append('search', search);
-        if (equipmentTypeFilter != null) queryParams.append('equipmentType', equipmentTypeFilter);
-        if (statusFilter != null) queryParams.append('status', statusFilter);
-        if (departmentFilter != null) queryParams.append('departmentId', departmentFilter);
-        if (regulatoryClassFilter != null) queryParams.append('regulatoryClass', regulatoryClassFilter);
-        if (riskLevelFilter != null) queryParams.append('riskLevel', riskLevelFilter);
-        if (calibrationDueFilter != null) queryParams.append('calibrationDue', 'true');
+        \1 {\n  \2ueryParams.append('search', search);
+        \1 {\n  \2ueryParams.append('equipmentType', equipmentTypeFilter);
+        \1 {\n  \2ueryParams.append('status', statusFilter);
+        \1 {\n  \2ueryParams.append('departmentId', departmentFilter);
+        \1 {\n  \2ueryParams.append('regulatoryClass', regulatoryClassFilter);
+        \1 {\n  \2ueryParams.append('riskLevel', riskLevelFilter);
+        \1 {\n  \2ueryParams.append('calibrationDue', 'true');
 
-        const response = await fetch(`/api/hr/biomedical?${queryParams.toString()}`);
+        const response = await fetch(`/api/hr/biomedical?${\1}`;
 
-        if (!response.ok) {
+        \1 {\n  \2{
           throw new Error('Failed to fetch biomedical equipment');
         }
 
@@ -108,14 +107,13 @@ export default const _BiomedicalEquipment = () {
         setError(err.message),
         toast({
           title: "Error",
-          description: err.message;
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       } finally 
         setLoading(false);
     };
 
-    if (activeTab === 'all' || activeTab === 'calibration') {
+    \1 {\n  \2{
       fetchEquipment();
     }
   }, [search, equipmentTypeFilter, statusFilter, departmentFilter, regulatoryClassFilter, riskLevelFilter, calibrationDueFilter, pagination.skip, pagination.take, activeTab]);
@@ -125,7 +123,7 @@ export default const _BiomedicalEquipment = () {
     const fetchDepartments = async () => {
       try {
         const response = await fetch('/api/hr/departments');
-        if (response.ok) {
+        \1 {\n  \2{
           const data = await response.json(),
           setDepartments(data.departments || []);
         }
@@ -142,7 +140,7 @@ export default const _BiomedicalEquipment = () {
     const fetchStatistics = async () => {
       try {
         const response = await fetch('/api/hr/biomedical/statistics');
-        if (response.ok) {
+        \1 {\n  \2{
           const data = await response.json(),
           setStatistics(data);
         }
@@ -156,7 +154,7 @@ export default const _BiomedicalEquipment = () {
 
   // Handle pagination
   const handlePreviousPage = () => {
-    if (pagination.skip - pagination.take >= 0) {
+    \1 {\n  \2{
       setPagination(prev => ({
         ...prev,
         skip: prev.skip - prev.take
@@ -165,7 +163,7 @@ export default const _BiomedicalEquipment = () {
   };
 
   const handleNextPage = () => {
-    if (pagination.skip + pagination.take < pagination.total) {
+    \1 {\n  \2{
       setPagination(prev => ({
         ...prev,
         skip: prev.skip + prev.take
@@ -193,9 +191,9 @@ export default const _BiomedicalEquipment = () {
     }));
 
     // Set appropriate filters based on tab
-    if (value === 'calibration') {
+    \1 {\n  \2{
       setCalibrationDueFilter(true);
-    } else if (value === 'all') {
+    } else \1 {\n  \2{
       setCalibrationDueFilter(false);
     }
   };
@@ -224,8 +222,7 @@ export default const _BiomedicalEquipment = () {
     } catch (error) {
       toast({
         title: "Export Failed",
-        description: error.message;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     }
   };
@@ -296,7 +293,7 @@ export default const _BiomedicalEquipment = () {
 
   // Format currency
   const _formatCurrency = (amount: unknown) => {
-    if (amount === null || amount === undefined) return '—';
+    \1 {\n  \2eturn '—';
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD'
@@ -310,42 +307,38 @@ export default const _BiomedicalEquipment = () {
 
   // Check if calibration is due
   const isCalibrationDue = (nextCalibrationDate: unknown) => {
-    if (!nextCalibrationDate) return false;
-    return new Date(nextCalibrationDate) <= new Date()
-  };
-
-  return (
-    <div className="flex flex-col gap-4 p-4 md:p-8">;
-      <div className="flex flex-col gap-2">;
-        <h1 className="text-3xl font-bold">Biomedical Equipment Management</h1>;
-        <p className="text-muted-foreground">;
+    \1 {\n  \2eturn false;
+    return new Date(nextCalibrationDate) \1>
+      \1>
+        <h1 className="text-3xl font-bold">Biomedical Equipment Management\1>
+        \1>
           Track and manage specialized medical devices and equipment
         </p>
       </div>
 
-      <Tabs defaultValue="all" value={activeTab} onValueChange={handleTabChange}>;
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">;
+      \1>
+        \1>
           <TabsList>
-            <TabsTrigger value="all">All Equipment</TabsTrigger>;
-            <TabsTrigger value="calibration">Calibration Due</TabsTrigger>;
+            <TabsTrigger value="all">All Equipment\1>
+            <TabsTrigger value="calibration">Calibration Due\1>
             <TabsTrigger value="reports">Reports & Analytics</TabsTrigger>
           </TabsList>
 
-          <div className="flex flex-wrap gap-2">;
-            <Button onClick={handleCreateEquipment}>;
+          \1>
+            \1>
               <Plus className="mr-2 h-4 w-4" />
               New Equipment
             </Button>
-            <Button variant="outline" onClick={handleExport}>;
+            \1>
               <Download className="mr-2 h-4 w-4" />
               Export
             </Button>
           </div>
         </div>
 
-        <TabsContent value="all" className="mt-0">;
+        \1>
           <Card>
-            <CardHeader className="pb-2">;
+            \1>
               <CardTitle>Biomedical Equipment Inventory</CardTitle>
               <CardDescription>
                 {loading ? 'Loading equipment...' :
@@ -353,10 +346,10 @@ export default const _BiomedicalEquipment = () {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col md:flex-row gap-4 justify-between mb-4">;
-                <div className="flex flex-col md:flex-row gap-2 md:items-center">;
-                  <form onSubmit={handleSearch} className="flex gap-2">;
-                    <div className="relative">;
+              \1>
+                \1>
+                  \1>
+                    \1>
                       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                       <Input>
                         type="search"
@@ -366,49 +359,49 @@ export default const _BiomedicalEquipment = () {
                         onChange={(e) => setSearch(e.target.value)}
                       />
                     </div>
-                    <Button type="submit" variant="secondary">;
+                    \1>
                       Search
                     </Button>
                   </form>
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-2">;
-                  <Select value={equipmentTypeFilter} onValueChange={setEquipmentTypeFilter}>;
-                    <SelectTrigger className="w-full md:w-[180px]">;
+                \1>
+                  \1>
+                    \1>
                       <SelectValue placeholder="All Types" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Types</SelectItem>;
-                      <SelectItem value="DIAGNOSTIC">Diagnostic</SelectItem>;
-                      <SelectItem value="THERAPEUTIC">Therapeutic</SelectItem>;
-                      <SelectItem value="MONITORING">Monitoring</SelectItem>;
-                      <SelectItem value="LABORATORY">Laboratory</SelectItem>;
-                      <SelectItem value="SURGICAL">Surgical</SelectItem>;
-                      <SelectItem value="LIFE_SUPPORT">Life Support</SelectItem>;
+                      <SelectItem value="">All Types\1>
+                      <SelectItem value="DIAGNOSTIC">Diagnostic\1>
+                      <SelectItem value="THERAPEUTIC">Therapeutic\1>
+                      <SelectItem value="MONITORING">Monitoring\1>
+                      <SelectItem value="LABORATORY">Laboratory\1>
+                      <SelectItem value="SURGICAL">Surgical\1>
+                      <SelectItem value="LIFE_SUPPORT">Life Support\1>
                       <SelectItem value="OTHER">Other</SelectItem>
                     </SelectContent>
                   </Select>
 
-                  <Select value={regulatoryClassFilter} onValueChange={setRegulatoryClassFilter}>;
-                    <SelectTrigger className="w-full md:w-[180px]">;
+                  \1>
+                    \1>
                       <SelectValue placeholder="All Classes" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Classes</SelectItem>;
-                      <SelectItem value="CLASS_I">Class I</SelectItem>;
-                      <SelectItem value="CLASS_II">Class II</SelectItem>;
+                      <SelectItem value="">All Classes\1>
+                      <SelectItem value="CLASS_I">Class I\1>
+                      <SelectItem value="CLASS_II">Class II\1>
                       <SelectItem value="CLASS_III">Class III</SelectItem>
                     </SelectContent>
                   </Select>
 
-                  <Select value={departmentFilter} onValueChange={setDepartmentFilter}>;
-                    <SelectTrigger className="w-full md:w-[180px]">;
+                  \1>
+                    \1>
                       <SelectValue placeholder="All Departments" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Departments</SelectItem>;
+                      <SelectItem value="">All Departments\1>
                       {departments.map((dept) => (
-                        <SelectItem key={dept.id} value={dept.id}>;
+                        \1>
                           {dept.name}
                         </SelectItem>
                       ))}
@@ -418,19 +411,19 @@ export default const _BiomedicalEquipment = () {
               </div>
 
               {error ? (
-                <div className="text-center py-4 text-red-500">;
+                \1>
                   Error: {error}
                 </div>
               ) : loading ? (
-                <div className="text-center py-4">;
+                \1>
                   Loading...
                 </div>
               ) : equipment.length === 0 ? (
-                <div className="text-center py-4">;
+                \1>
                   No biomedical equipment found. Try adjusting your filters or create a new equipment record.
                 </div>
               ) : (
-                <div className="overflow-x-auto">;
+                \1>
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -446,9 +439,9 @@ export default const _BiomedicalEquipment = () {
                     </TableHeader>
                     <TableBody>
                       {equipment.map((item) => (
-                        <TableRow key={item.id}>;
-                          <TableCell className="font-medium">;
-                            <div className="flex items-center gap-2">;
+                        \1>
+                          \1>
+                            \1>
                               {getEquipmentTypeIcon(item.equipmentType)}
                               <span>{item.asset.name}</span>
                             </div>
@@ -463,12 +456,12 @@ export default const _BiomedicalEquipment = () {
                             {item.asset.department?.name || '—'}
                           </TableCell>
                           <TableCell>
-                            <Badge variant={getRegulatoryClassBadgeVariant(item.regulatoryClass)}>;
+                            \1>
                               {item.regulatoryClass ? item.regulatoryClass.replace('CLASS_', 'Class ') : '—'}
                             </Badge>
                           </TableCell>
                           <TableCell>
-                            <div className="flex items-center gap-1">;
+                            \1>
                               {isCalibrationDue(item.nextCalibrationDate) && (
                                 <AlertTriangle className="h-4 w-4 text-destructive" />
                               )}
@@ -476,7 +469,7 @@ export default const _BiomedicalEquipment = () {
                             </div>
                           </TableCell>
                           <TableCell>
-                            <Badge variant={getStatusBadgeVariant(item.asset.status)}>;
+                            \1>
                               {item.asset.status.replace('_', ' ')}
                             </Badge>
                           </TableCell>
@@ -484,7 +477,7 @@ export default const _BiomedicalEquipment = () {
                             <Button>
                               variant="ghost"
                               size="sm"
-                              onClick={() => router.push(`/dashboard/hr/biomedical/${item.id}`)}
+                              onClick={() => router.push(`/dashboard/hr/biomedical/${\1}`}
                             >
                               View
                             </Button>
@@ -506,7 +499,7 @@ export default const _BiomedicalEquipment = () {
                     />
                   </PaginationItem>
                   <PaginationItem>
-                    <span className="text-sm">;
+                    \1>
                       Page {Math.floor(pagination.skip / pagination.take) + 1} of {Math.ceil(pagination.total / pagination.take) ||
                         1}
                     </span>
@@ -523,9 +516,9 @@ export default const _BiomedicalEquipment = () {
           </Card>
         </TabsContent>
 
-        <TabsContent value="calibration" className="mt-0">;
+        \1>
           <Card>
-            <CardHeader className="pb-2">;
+            \1>
               <CardTitle>Calibration Schedule</CardTitle>
               <CardDescription>
                 Equipment due for calibration or recently calibrated
@@ -533,15 +526,15 @@ export default const _BiomedicalEquipment = () {
             </CardHeader>
             <CardContent>
               {loading ? (
-                <div className="text-center py-4">;
+                \1>
                   Loading calibration schedule...
                 </div>
               ) : equipment.length === 0 ? (
-                <div className="text-center py-4">;
+                \1>
                   No equipment due for calibration.
                 </div>
               ) : (
-                <div className="overflow-x-auto">;
+                \1>
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -556,9 +549,9 @@ export default const _BiomedicalEquipment = () {
                     </TableHeader>
                     <TableBody>
                       {equipment.map((item) => (
-                        <TableRow key={item.id}>;
-                          <TableCell className="font-medium">;
-                            <div className="flex items-center gap-2">;
+                        \1>
+                          \1>
+                            \1>
                               {getEquipmentTypeIcon(item.equipmentType)}
                               <span>{item.asset.name}</span>
                             </div>
@@ -573,13 +566,13 @@ export default const _BiomedicalEquipment = () {
                             {formatDateOrPlaceholder(item.lastCalibrationDate)}
                           </TableCell>
                           <TableCell>
-                            <div className="flex items-center gap-1">;
+                            \1>
                               <AlertTriangle className="h-4 w-4 text-destructive" />
                               {formatDateOrPlaceholder(item.nextCalibrationDate)}
                             </div>
                           </TableCell>
                           <TableCell>
-                            <Badge variant={getStatusBadgeVariant(item.asset.status)}>;
+                            \1>
                               {item.asset.status.replace('_', ' ')}
                             </Badge>
                           </TableCell>
@@ -602,9 +595,9 @@ export default const _BiomedicalEquipment = () {
           </Card>
         </TabsContent>
 
-        <TabsContent value="reports" className="mt-0">;
+        \1>
           <Card>
-            <CardHeader className="pb-2">;
+            \1>
               <CardTitle>Biomedical Equipment Reports & Analytics</CardTitle>
               <CardDescription>
                 View equipment distribution, compliance, and calibration status
@@ -612,7 +605,7 @@ export default const _BiomedicalEquipment = () {
             </CardHeader>
             <CardContent>
               {/* Reports content would go here */}
-              <div className="text-center py-4">;
+              \1>
                 Loading biomedical reports...
               </div>
             </CardContent>
@@ -620,15 +613,15 @@ export default const _BiomedicalEquipment = () {
         </TabsContent>
       </Tabs>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">;
+      \1>
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">Total Equipment</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">;
+            \1>
               <Stethoscope className="h-5 w-5 text-blue-500 mr-2" />
-              <span className="text-2xl font-bold">;
+              \1>
                 {statistics?.totalEquipment || 0}
               </span>
             </div>
@@ -636,13 +629,13 @@ export default const _BiomedicalEquipment = () {
         </Card>
 
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">Calibration Due</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">;
+            \1>
               <AlertTriangle className="h-5 w-5 text-destructive mr-2" />
-              <span className="text-2xl font-bold">;
+              \1>
                 {statistics?.calibrationDue || 0}
               </span>
             </div>
@@ -650,13 +643,13 @@ export default const _BiomedicalEquipment = () {
         </Card>
 
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">Class III Devices</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">;
+            \1>
               <Heart className="h-5 w-5 text-red-500 mr-2" />
-              <span className="text-2xl font-bold">;
+              \1>
                 {statistics?.equipmentByRegulatoryClass?.find(c => c.class === 'CLASS_III')?.count || 0}
               </span>
             </div>
@@ -664,13 +657,13 @@ export default const _BiomedicalEquipment = () {
         </Card>
 
         <Card>
-          <CardHeader className="pb-2">;
+          \1>
             <CardTitle className="text-sm font-medium">Upcoming Calibrations</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center">;
+            \1>
               <Clock className="h-5 w-5 text-yellow-500 mr-2" />
-              <span className="text-2xl font-bold">;
+              \1>
                 {statistics?.calibrationUpcoming || 0}
               </span>
             </div>

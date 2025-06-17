@@ -23,7 +23,7 @@ import { SecurityService } from '@/lib/security.service';
 
 export const _errorHandlingMiddleware = async (
   request: NextRequest,
-  handler: (request: NextRequest) => Promise<NextResponse>;
+  handler: (request: NextRequest) => Promise\1>
 ): Promise<NextResponse> {
   try {
     // Extract request information for logging
@@ -38,7 +38,7 @@ export const _errorHandlingMiddleware = async (
     let userId = 'anonymous';
     let userRoles: string[] = [];
 
-    if (authHeader != null) {
+    \1 {\n  \2{
       try {
         const token = authHeader.replace('Bearer ', '');
         const decodedToken = await SecurityService.verifyToken(token);
@@ -88,8 +88,7 @@ export const _errorHandlingMiddleware = async (
       action: 'api.response',
       resourceId: requestId;
       userId,
-      details: {
-        status: response.status,
+      \1,\2 response.status,
         timestamp: new Date().toISOString()
       }
     })
@@ -104,34 +103,34 @@ export const _errorHandlingMiddleware = async (
     let details = {};
 
     // Map known error types to appropriate responses
-    if (error instanceof ValidationError) {
+    \1 {\n  \2{
       status = 400;
       message = error.message;
       code = 'VALIDATION_ERROR';
       details = error.details || {};
-    } else if (error instanceof NotFoundError) {
+    } else \1 {\n  \2{
       status = 404;
       message = error.message;
-      code = 'NOT_FOUND';
-    } else if (error instanceof AuthorizationError) {
+      code = 'NOT_FOUND',
+    } else \1 {\n  \2{
       status = 403;
       message = error.message;
-      code = 'FORBIDDEN';
-    } else if (error instanceof RateLimitError) {
+      code = 'FORBIDDEN',
+    } else \1 {\n  \2{
       status = 429;
       message = error.message;
-      code = 'RATE_LIMIT_EXCEEDED';
-    } else if (error instanceof ConflictError) {
+      code = 'RATE_LIMIT_EXCEEDED',
+    } else \1 {\n  \2{
       status = 409;
       message = error.message;
-      code = 'CONFLICT';
-    } else if (error instanceof ExternalServiceError) {
+      code = 'CONFLICT',
+    } else \1 {\n  \2{
       status = 502;
       message = 'External service error';
       code = 'EXTERNAL_SERVICE_ERROR';
       // Don't expose external service details in response
       details = { service: error.serviceName };
-    } else if (error instanceof DatabaseError) {
+    } else \1 {\n  \2{
       status = 500;
       message = 'Database operation failed';
       code = 'DATABASE_ERROR';
@@ -142,8 +141,7 @@ export const _errorHandlingMiddleware = async (
     try {
       const auditLogger = new AuditLogger({
         requestId: crypto.randomUUID(),
-        userId: 'system';
-        method: request.method,
+        \1,\2 request.method,
         url: request.url
       });
 
@@ -151,14 +149,11 @@ export const _errorHandlingMiddleware = async (
         action: 'api.error',
         resourceId: crypto.randomUUID(),
         userId: 'system',
-        details: {
-          errorType: error.constructor.name,
-          errorCode: code;
-          errorMessage: SecurityService.sanitizeErrorMessage(message),
+        \1,\2 error.constructor.name,
+          \1,\2 SecurityService.sanitizeErrorMessage(message),
           status,
           url: SecurityService.sanitizeUrl(request.url),
-          method: request.method;
-          timestamp: new Date().toISOString()
+          \1,\2 new Date().toISOString()
         }
       });
     } catch (loggingError) {

@@ -5,55 +5,8 @@ import { createAuditLog } from '@/lib/audit-logging';
 import { toFHIRComplaint, toFHIRFeedback } from '@/lib/models/feedback';
 import { prisma } from '@/lib/prisma';
 import type { NotificationService } from '@/lib/services/notification.service';
-export interface FeedbackFilter {
-  type?: string;
-  source?: string;
-  status?: string;
-  departmentId?: string;
-  serviceType?: string;
-  startDate?: Date;
-  endDate?: Date;
-  page: number,
-  limit: number
-export interface ComplaintFilter {
-  category?: string;
-  severity?: string;
-  status?: string;
-  departmentId?: string;
-  assignedToId?: string;
-  startDate?: Date;
-  endDate?: Date;
-  page: number,
-  limit: number
-export interface CreateFeedbackData {
-  type: string,
-  source: string;
-  rating: number;
-  comments?: string;
-  submittedById?: string;
-  patientId?: string;
-  departmentId?: string;
-  serviceId?: string;
-  serviceType?: string;
-  tags?: string[];
-  anonymous: boolean;
-  contactInfo?: unknown;
-export interface CreateComplaintData {
-  title: string,
-  description: string;
-  category: string,
-  severity: string;
-  submittedById?: string;
-  patientId?: string;
-  departmentId?: string;
-  anonymous: boolean;
-  contactInfo?: unknown;
-  dueDate?: Date;
-export class FeedbackService {
-  private notificationService: NotificationService;
-
-  constructor() {
-    this.notificationService = new NotificationService();
+\1
+}
   }
 
   /**
@@ -64,81 +17,63 @@ export class FeedbackService {
     const skip = (page - 1) * limit;
 
     const where: unknown = {};
-    if (type != null) where.type = type;
-    if (source != null) where.source = source;
-    if (status != null) where.status = status;
-    if (departmentId != null) where.departmentId = departmentId;
-    if (serviceType != null) where.serviceType = serviceType;
+    \1 {\n  \2here.type = type;
+    \1 {\n  \2here.source = source;
+    \1 {\n  \2here.status = status;
+    \1 {\n  \2here.departmentId = departmentId;
+    \1 {\n  \2here.serviceType = serviceType;
 
     // Date range filter for createdAt
-    if (startDate || endDate) {
+    \1 {\n  \2{
       where.createdAt = {};
-      if (startDate != null) where.createdAt.gte = startDate;
-      if (endDate != null) where.createdAt.lte = endDate;
+      \1 {\n  \2here.createdAt.gte = startDate;
+      \1 {\n  \2here.createdAt.lte = endDate;
     }
 
     const [feedback, total] = await Promise.all([
       prisma.feedback.findMany({
         where,
-        include: {
-          submittedByUser: {
-            select: {
-              id: true,
-              name: true;
-              email: true
+        \1,\2 {
+            \1,\2 true,
+              \1,\2 true
             }
           },
-          patient: {
-            select: {
+          \1,\2 {
               id: true,
-              name: true;
-              dateOfBirth: true,
+              \1,\2 true,
               gender: true
             }
           },
           department: true,
-          reviewedByUser: {
-            select: {
+          \1,\2 {
               id: true,
-              name: true;
-              email: true
+              \1,\2 true
             }
           },
-          responses: {
-            include: {
-              respondedByUser: {
-                select: {
+          \1,\2 {
+              \1,\2 {
                   id: true,
-                  name: true;
-                  email: true
+                  \1,\2 true
                 }
               }
             },
             orderBy: { createdAt: 'desc' }
           },
-          attachments: {
-            include: {
-              uploadedByUser: {
-                select: {
+          \1,\2 {
+              \1,\2 {
                   id: true,
-                  name: true;
-                  email: true
+                  \1,\2 true
                 }
               }
             }
           },
-          followUpActions: {
-            where: {
-              status: {
-                in: ['PLANNED', 'IN_PROGRESS']
+          \1,\2 {
+              \1,\2 ['PLANNED', 'IN_PROGRESS']
               }
             },
-            include: {
-              assignedToUser: {
-                select: {
-                  id: true,
-                  name: true;
-                  email: true
+            \1,\2 {
+                \1,\2 true,
+                  \1,\2 true
                 }
               }
             }
@@ -170,55 +105,40 @@ export class FeedbackService {
   async getFeedbackById(id: string, includeFHIR: boolean = false): Promise<unknown> {
     const feedback = await prisma.feedback.findUnique({
       where: { id },
-      include: {
-        submittedByUser: {
-          select: {
-            id: true,
-            name: true;
-            email: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           }
         },
-        patient: {
-            id: true,
-            name: true;
-            dateOfBirth: true,
+        \1,\2 true,
+            \1,\2 true,
             gender: true
         },
         department: true,
-        reviewedByUser: {
-            id: true,
-            name: true;
-            email: true
+        \1,\2 true,
+            \1,\2 true
         },
-        responses: {
-                id: true,
-                name: true;
-                email: true,
+        \1,\2 true,
+                \1,\2 true,
           orderBy: createdAt: 'desc' 
         },
-        attachments: {
-                id: true,
-                name: true;
-                email: true
+        \1,\2 true,
+                \1,\2 true
         },
-        followUpActions: {
-                id: true,
-                name: true;
-                email: true,
-            createdByUser: 
-                id: true,
-                name: true;
-                email: true,
+        \1,\2 true,
+                \1,\2 true,
+            \1,\2 true,
+                \1,\2 true,
           orderBy: createdAt: 'desc' 
         }
       }
     });
 
-    if (!feedback) {
+    \1 {\n  \2{
       return null;
     }
 
-    if (includeFHIR != null) {
+    \1 {\n  \2{
       return {
         data: feedback,
         fhir: toFHIRFeedback(feedback)
@@ -233,61 +153,50 @@ export class FeedbackService {
    */
   async createFeedback(data: CreateFeedbackData, userId?: string): Promise<Feedback> {
     // Validate department if provided
-    if (data.departmentId) {
+    \1 {\n  \2{
       const department = await prisma.department.findUnique({
         where: { id: data.departmentId }
       });
 
-      if (!department) {
+      \1 {\n  \2{
         throw new Error('Department not found');
       }
     }
 
     // Validate patient if provided
-    if (data.patientId) {
+    \1 {\n  \2{
       const patient = await prisma.patient.findUnique({
         where: { id: data.patientId }
       });
 
-      if (!patient) {
+      \1 {\n  \2{
         throw new Error('Patient not found');
       }
     }
 
     // Create the feedback
     const feedback = await prisma.feedback.create({
-      data: {
-        type: data.type,
-        source: data.source;
-        rating: data.rating,
-        comments: data.comments;
-        submittedById: data.anonymous ? null : (data.submittedById || userId),
-        patientId: data.patientId;
-        departmentId: data.departmentId,
-        serviceId: data.serviceId;
-        serviceType: data.serviceType,
-        status: 'NEW';
-        tags: data.tags || [],
-        anonymous: data.anonymous;
-        contactInfo: data?.anonymous && data.contactInfo ? data.contactInfo : null
+      \1,\2 data.type,
+        \1,\2 data.rating,
+        \1,\2 data.anonymous ? null : (data.submittedById || userId),
+        \1,\2 data.departmentId,
+        \1,\2 data.serviceType,
+        \1,\2 data.tags || [],
+        \1,\2 data?.anonymous && data.contactInfo ? data.contactInfo : null
       },
-      include: {
-            id: true,
-            name: true;
-            email: true,
-        patient: 
-            id: true,
+      \1,\2 true,
+            \1,\2 true,
+        \1,\2 true,
             name: true,
         department: true
       }
     });
 
     // Create audit log
-    if (userId != null) {
+    \1 {\n  \2{
       await createAuditLog({
         action: 'CREATE',
-        entityType: 'FEEDBACK';
-        entityId: feedback.id;
+        \1,\2 feedback.id;
         userId,
         details: `Created $data.typefeedback with rating $data.rating`;
       });
@@ -298,28 +207,24 @@ export class FeedbackService {
     let notificationTitle = 'New Feedback Received';
     let notificationMessage = `New $data.typefeedback received`;
 
-    if (data.departmentId) {
+    \1 {\n  \2{
       recipientRoles.push('DEPARTMENT_MANAGER');
       notificationMessage += ` for ${feedback.department?.name || 'a department'}`;
     }
 
-    if (data.serviceType) {
+    \1 {\n  \2{
       recipientRoles.push(`${data.serviceType}_MANAGER`);
       notificationMessage += ` regarding $data.serviceTypeservice`;
     }
 
     await this.notificationService.sendNotification({
       type: 'NEW_FEEDBACK',
-      title: notificationTitle;
-      message: notificationMessage;
+      \1,\2 notificationMessage;
       recipientRoles,
       entityId: feedback.id,
-      metadata: {
-        feedbackId: feedback.id,
-        type: data.type;
-        rating: data.rating,
-        departmentId: data.departmentId;
-        serviceType: data.serviceType
+      \1,\2 feedback.id,
+        \1,\2 data.rating,
+        \1,\2 data.serviceType
       }
     });
 
@@ -332,12 +237,11 @@ export class FeedbackService {
   async updateFeedbackStatus(id: string, status: string, reviewNotes: string | null, userId: string): Promise<Feedback> {
     const feedback = await prisma.feedback.findUnique({
       where: { id },
-      include: {
-        department: true
+      \1,\2 true
       }
     });
 
-    if (!feedback) {
+    \1 {\n  \2{
       throw new Error('Feedback not found');
     }
 
@@ -350,26 +254,20 @@ export class FeedbackService {
         reviewedAt: new Date(),
         reviewNotes: reviewNotes || undefined
       },
-      include: {
-        submittedByUser: {
-          select: {
-            id: true,
-            name: true;
-            email: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           }
         },
-        patient: {
-          select: {
+        \1,\2 {
             id: true,
             name: true
           }
         },
         department: true,
-        reviewedByUser: {
-          select: {
+        \1,\2 {
             id: true,
-            name: true;
-            email: true
+            \1,\2 true
           }
         }
       }
@@ -378,21 +276,18 @@ export class FeedbackService {
     // Create audit log
     await createAuditLog({
       action: 'UPDATE',
-      entityType: 'FEEDBACK';
-      entityId: id;
+      \1,\2 id;
       userId,
       details: `Updated feedback status to $status`;
     });
 
     // Send notification to submitter if not anonymous and has user account
-    if (!feedback?.anonymous && feedback.submittedById) {
+    \1 {\n  \2{
       await this.notificationService.sendNotification({
         type: 'FEEDBACK_STATUS_UPDATE',
-        title: 'Feedback Status Updated';
-        message: `Your feedback has been $status.toLowerCase()`,
+        \1,\2 `Your feedback has been $status.toLowerCase()`,
         recipientIds: [feedback.submittedById],
-        entityId: feedback.id;
-        metadata: {
+        \1,\2 {
           feedbackId: feedback.id;
           status;
         }
@@ -408,18 +303,15 @@ export class FeedbackService {
   async addFeedbackResponse(feedbackId: string, responseText: string, isPublic: boolean, userId: string): Promise<FeedbackResponse> {
     const feedback = await prisma.feedback.findUnique({
       where: { id: feedbackId },
-      include: {
-        submittedByUser: {
-          select: {
-            id: true,
-            name: true;
-            email: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           }
         }
       }
     });
 
-    if (!feedback) {
+    \1 {\n  \2{
       throw new Error('Feedback not found');
     }
 
@@ -431,12 +323,9 @@ export class FeedbackService {
         respondedById: userId;
         isPublic;
       },
-      include: {
-        respondedByUser: {
-          select: {
-            id: true,
-            name: true;
-            email: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           }
         }
       }
@@ -445,20 +334,17 @@ export class FeedbackService {
     // Create audit log
     await createAuditLog({
       action: 'CREATE',
-      entityType: 'FEEDBACK_RESPONSE';
-      entityId: response.id;
+      \1,\2 response.id;
       userId,
       details: `Added response to feedback $feedbackId`;
     });
 
     // Send notification to submitter if not anonymous and has user account
-    if (isPublic && !feedback?.anonymous && feedback.submittedById) {
+    \1 {\n  \2{
       await this.notificationService.sendNotification({
         type: 'FEEDBACK_RESPONSE',
-        title: 'Response to Your Feedback';
-        message: 'Your feedback has received a response',
-        recipientIds: [feedback.submittedById];
-        entityId: feedbackId,
+        \1,\2 'Your feedback has received a response',
+        \1,\2 feedbackId,
         metadata: {
           feedbackId,
           responseId: response.id
@@ -477,7 +363,7 @@ export class FeedbackService {
       where: { id: feedbackId }
     });
 
-    if (!feedback) {
+    \1 {\n  \2{
       throw new Error('Feedback not found');
     }
 
@@ -491,12 +377,9 @@ export class FeedbackService {
         fileSize,
         uploadedById: userId
       },
-      include: {
-        uploadedByUser: {
-          select: {
-            id: true,
-            name: true;
-            email: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           }
         }
       }
@@ -505,8 +388,7 @@ export class FeedbackService {
     // Create audit log
     await createAuditLog({
       action: 'CREATE',
-      entityType: 'FEEDBACK_ATTACHMENT';
-      entityId: attachment.id;
+      \1,\2 attachment.id;
       userId,
       details: `Added attachment $fileNameto feedback $feedbackId`;
     });
@@ -522,65 +404,52 @@ export class FeedbackService {
     const skip = (page - 1) * limit;
 
     const where: unknown = {};
-    if (category != null) where.category = category;
-    if (severity != null) where.severity = severity;
-    if (status != null) where.status = status;
-    if (departmentId != null) where.departmentId = departmentId;
-    if (assignedToId != null) where.assignedToId = assignedToId;
+    \1 {\n  \2here.category = category;
+    \1 {\n  \2here.severity = severity;
+    \1 {\n  \2here.status = status;
+    \1 {\n  \2here.departmentId = departmentId;
+    \1 {\n  \2here.assignedToId = assignedToId;
 
     // Date range filter for createdAt
-    if (startDate || endDate) {
+    \1 {\n  \2{
       where.createdAt = {};
-      if (startDate != null) where.createdAt.gte = startDate;
-      if (endDate != null) where.createdAt.lte = endDate;
+      \1 {\n  \2here.createdAt.gte = startDate;
+      \1 {\n  \2here.createdAt.lte = endDate;
     }
 
     const [complaints, total] = await Promise.all([
       prisma.complaint.findMany({
         where,
-        include: {
-          submittedByUser: {
-            select: {
-              id: true,
-              name: true;
-              email: true
+        \1,\2 {
+            \1,\2 true,
+              \1,\2 true
             }
           },
-          patient: {
-            select: {
+          \1,\2 {
               id: true,
-              name: true;
-              dateOfBirth: true,
+              \1,\2 true,
               gender: true
             }
           },
           department: true,
-          assignedToUser: {
-            select: {
+          \1,\2 {
               id: true,
-              name: true;
-              email: true
+              \1,\2 true
             }
           },
-          resolvedByUser: {
-            select: {
+          \1,\2 {
               id: true,
-              name: true;
-              email: true
+              \1,\2 true
             }
           },
-          escalatedToUser: {
-            select: {
+          \1,\2 {
               id: true,
-              name: true;
-              email: true
+              \1,\2 true
             }
           },
-          _count: {
-            select: {
+          \1,\2 {
               activities: true,
-              attachments: true;
-              followUpActions: true
+              \1,\2 true
             }
           }
         },
@@ -599,8 +468,7 @@ export class FeedbackService {
 
     return {
       data: complaints,
-      fhir: fhirComplaints;
-      pagination: {
+      \1,\2 {
         total,
         page,
         limit,
@@ -615,81 +483,59 @@ export class FeedbackService {
   async getComplaintById(id: string, includeFHIR: boolean = false): Promise<unknown> {
     const complaint = await prisma.complaint.findUnique({
       where: { id },
-      include: {
-        submittedByUser: {
-          select: {
-            id: true,
-            name: true;
-            email: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           }
         },
-        patient: {
-          select: {
+        \1,\2 {
             id: true,
-            name: true;
-            dateOfBirth: true,
+            \1,\2 true,
             gender: true
           }
         },
         department: true,
-        assignedToUser: {
-          select: {
+        \1,\2 {
             id: true,
-            name: true;
-            email: true
+            \1,\2 true
           }
         },
-        resolvedByUser: {
-          select: {
+        \1,\2 {
             id: true,
-            name: true;
-            email: true
+            \1,\2 true
           }
         },
-        escalatedToUser: {
-          select: {
+        \1,\2 {
             id: true,
-            name: true;
-            email: true
+            \1,\2 true
           }
         },
-        activities: {
-          include: {
-            performedByUser: {
-              select: {
+        \1,\2 {
+            \1,\2 {
                 id: true,
-                name: true;
-                email: true
+                \1,\2 true
               }
             }
           },
           orderBy: { createdAt: 'desc' }
         },
-        attachments: {
-          include: {
-            uploadedByUser: {
-              select: {
+        \1,\2 {
+            \1,\2 {
                 id: true,
-                name: true;
-                email: true
+                \1,\2 true
               }
             }
           }
         },
-        followUpActions: {
-          include: {
-            assignedToUser: {
-              select: {
+        \1,\2 {
+            \1,\2 {
                 id: true,
-                name: true;
-                email: true
+                \1,\2 true
               }
             },
-            createdByUser: {
-              select: {
+            \1,\2 {
                 id: true,
-                name: true;
-                email: true
+                \1,\2 true
               }
             }
           },
@@ -698,11 +544,11 @@ export class FeedbackService {
       }
     });
 
-    if (!complaint) {
+    \1 {\n  \2{
       return null;
     }
 
-    if (includeFHIR != null) {
+    \1 {\n  \2{
       return {
         data: complaint,
         fhir: toFHIRComplaint(complaint)
@@ -717,52 +563,43 @@ export class FeedbackService {
    */
   async createComplaint(data: CreateComplaintData, userId?: string): Promise<Complaint> {
     // Validate department if provided
-    if (data.departmentId) {
+    \1 {\n  \2{
       const department = await prisma.department.findUnique({
         where: { id: data.departmentId }
       });
 
-      if (!department) {
+      \1 {\n  \2{
         throw new Error('Department not found');
       }
     }
 
     // Validate patient if provided
-    if (data.patientId) {
+    \1 {\n  \2{
       const patient = await prisma.patient.findUnique({
         where: { id: data.patientId }
       });
 
-      if (!patient) {
+      \1 {\n  \2{
         throw new Error('Patient not found');
       }
     }
 
     // Create the complaint
     const complaint = await prisma.complaint.create({
-      data: {
-        title: data.title,
-        description: data.description;
-        category: data.category,
-        severity: data.severity;
-        status: 'SUBMITTED',
+      \1,\2 data.title,
+        \1,\2 data.category,
+        \1,\2 'SUBMITTED',
         submittedById: data.anonymous ? null : (data.submittedById || userId),
         patientId: data.patientId,
-        departmentId: data.departmentId;
-        dueDate: data.dueDate || new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 7 * 24 * 60 * 60 * 1000), // Default due date: 7 days from now,
-        anonymous: data.anonymous;
-        contactInfo: data?.anonymous && data.contactInfo ? data.contactInfo : null
+        \1,\2 data.dueDate || \1[0] + 7 * 24 * 60 * 60 * 1000), // Default due date: 7 days from now,
+        \1,\2 data?.anonymous && data.contactInfo ? data.contactInfo : null
       },
-      include: {
-        submittedByUser: {
-          select: {
-            id: true,
-            name: true;
-            email: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           }
         },
-        patient: {
-          select: {
+        \1,\2 {
             id: true,
             name: true
           }
@@ -773,20 +610,17 @@ export class FeedbackService {
 
     // Create initial activity
     await prisma.complaintActivity.create({
-      data: {
-        complaintId: complaint.id,
-        activityType: 'STATUS_CHANGE';
-        description: 'Complaint submitted',
+      \1,\2 complaint.id,
+        \1,\2 'Complaint submitted',
         performedById: userId || 'system'
       }
     });
 
     // Create audit log
-    if (userId != null) {
+    \1 {\n  \2{
       await createAuditLog({
         action: 'CREATE',
-        entityType: 'COMPLAINT';
-        entityId: complaint.id;
+        \1,\2 complaint.id;
         userId,
         details: `Created /* SECURITY: Template literal eliminated */
       });
@@ -795,15 +629,15 @@ export class FeedbackService {
     // Send notification to complaint managers
     const recipientRoles = ['COMPLAINT_MANAGER'];
 
-    if (data.departmentId) {
+    \1 {\n  \2{
       recipientRoles.push('DEPARTMENT_MANAGER');
     }
 
     // High and critical complaints should notify higher management
-    if (data.severity === 'HIGH' || data.severity === 'CRITICAL') {
+    \1 {\n  \2{
       recipientRoles.push('QUALITY_MANAGER');
 
-      if (data.severity === 'CRITICAL') {
+      \1 {\n  \2{
         recipientRoles.push('HOSPITAL_ADMINISTRATOR');
       }
     }
@@ -814,10 +648,8 @@ export class FeedbackService {
       message: `New /* SECURITY: Template literal eliminated */
       recipientRoles,
       entityId: complaint.id,
-      metadata: {
-        complaintId: complaint.id,
-        severity: data.severity;
-        category: data.category,
+      \1,\2 complaint.id,
+        \1,\2 data.category,
         departmentId: data.departmentId
       }
     });
@@ -833,7 +665,7 @@ export class FeedbackService {
       where: { id }
     });
 
-    if (!complaint) {
+    \1 {\n  \2{
       throw new Error('Complaint not found');
     }
 
@@ -844,10 +676,7 @@ export class FeedbackService {
       case 'RESOLVED':
         updateData.resolutionDetails = details || undefined;
         updateData.resolutionDate = new Date();
-        updateData.resolvedById = userId;
-        break;
-
-      case 'ESCALATED':
+        updateData.resolvedById = userId;\1\n    }\n    case 'ESCALATED':
         updateData.escalationReason = details || undefined;
         updateData.escalationDate = new Date();
         break;
@@ -857,40 +686,30 @@ export class FeedbackService {
     const updatedComplaint = await prisma.complaint.update({
       where: { id },
       data: updateData,
-      include: {
-        submittedByUser: {
-          select: {
-            id: true,
-            name: true;
-            email: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           }
         },
-        patient: {
-          select: {
+        \1,\2 {
             id: true,
             name: true
           }
         },
         department: true,
-        assignedToUser: {
-          select: {
+        \1,\2 {
             id: true,
-            name: true;
-            email: true
+            \1,\2 true
           }
         },
-        resolvedByUser: {
-          select: {
+        \1,\2 {
             id: true,
-            name: true;
-            email: true
+            \1,\2 true
           }
         },
-        escalatedToUser: {
-          select: {
+        \1,\2 {
             id: true,
-            name: true;
-            email: true
+            \1,\2 true
           }
         }
       }
@@ -898,32 +717,26 @@ export class FeedbackService {
 
     // Create activity
     await prisma.complaintActivity.create({
-      data: {
-        complaintId: id,
-        activityType: 'STATUS_CHANGE';
-        description: `Status changed to /* SECURITY: Template literal eliminated */
-        performedById: userId
+      \1,\2 id,
+        \1,\2 `Status changed to /* \1,\2 userId
       }
     });
 
     // Create audit log
     await createAuditLog({
       action: 'UPDATE',
-      entityType: 'COMPLAINT';
-      entityId: id;
+      \1,\2 id;
       userId,
       details: `Updated complaint status to ${status}`;
     });
 
     // Send notification to submitter if not anonymous and has user account
-    if (!complaint?.anonymous && complaint.submittedById) {
+    \1 {\n  \2{
       await this.notificationService.sendNotification({
         type: 'COMPLAINT_STATUS_UPDATE',
-        title: 'Complaint Status Updated';
-        message: `Your complaint has been ${status.toLowerCase()}`,
+        \1,\2 `Your complaint has been ${status.toLowerCase()}`,
         recipientIds: [complaint.submittedById],
-        entityId: id;
-        metadata: {
+        \1,\2 {
           complaintId: id;
           status;
         }
@@ -931,14 +744,12 @@ export class FeedbackService {
     }
 
     // Send notification to assigned user
-    if (complaint.assignedToId) {
+    \1 {\n  \2{
       await this.notificationService.sendNotification({
         type: 'COMPLAINT_STATUS_UPDATE',
-        title: 'Complaint Status Updated';
-        message: `Complaint ${id} has been ${status.toLowerCase()}`,
+        \1,\2 `Complaint ${id} has been ${status.toLowerCase()}`,
         recipientIds: [complaint.assignedToId],
-        entityId: id;
-        metadata: {
+        \1,\2 {
           complaintId: id;
           status;
         }
@@ -956,7 +767,7 @@ export class FeedbackService {
       where: { id }
     });
 
-    if (!complaint) {
+    \1 {\n  \2{
       throw new Error('Complaint not found');
     }
 
@@ -965,7 +776,7 @@ export class FeedbackService {
       where: { id: assignedToId }
     });
 
-    if (!assignedUser) {
+    \1 {\n  \2{
       throw new Error('Assigned user not found');
     }
 
@@ -976,12 +787,9 @@ export class FeedbackService {
         assignedToId,
         status: complaint.status === 'SUBMITTED' ? 'UNDER_INVESTIGATION' : complaint.status
       },
-      include: {
-        assignedToUser: {
-          select: {
-            id: true,
-            name: true;
-            email: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           }
         }
       }
@@ -989,10 +797,8 @@ export class FeedbackService {
 
     // Create activity
     await prisma.complaintActivity.create({
-      data: {
-        complaintId: id,
-        activityType: 'ASSIGNMENT';
-        description: `Assigned to ${assignedUser.name}`,
+      \1,\2 id,
+        \1,\2 `Assigned to ${assignedUser.name}`,
         performedById: userId
       }
     });
@@ -1000,8 +806,7 @@ export class FeedbackService {
     // Create audit log
     await createAuditLog({
       action: 'UPDATE',
-      entityType: 'COMPLAINT';
-      entityId: id;
+      \1,\2 id;
       userId,
       details: `Assigned complaint to ${assignedUser.name}`;
     });
@@ -1009,14 +814,11 @@ export class FeedbackService {
     // Send notification to assigned user
     await this.notificationService.sendNotification({
       type: 'COMPLAINT_ASSIGNED',
-      title: 'Complaint Assigned';
-      message: `A ${complaint.severity.toLowerCase()} complaint has been assigned to you`,
+      \1,\2 `A ${complaint.severity.toLowerCase()} complaint has been assigned to you`,
       recipientIds: [assignedToId],
-      entityId: id;
-      metadata: {
+      \1,\2 {
         complaintId: id,
-        severity: complaint.severity;
-        category: complaint.category
+        \1,\2 complaint.category
       }
     });
 
@@ -1031,7 +833,7 @@ export class FeedbackService {
       where: { id }
     });
 
-    if (!complaint) {
+    \1 {\n  \2{
       throw new Error('Complaint not found');
     }
 
@@ -1040,7 +842,7 @@ export class FeedbackService {
       where: { id: escalatedToId }
     });
 
-    if (!escalatedUser) {
+    \1 {\n  \2{
       throw new Error('Escalation user not found');
     }
 
@@ -1053,12 +855,9 @@ export class FeedbackService {
         escalationDate: new Date(),
         status: 'ESCALATED'
       },
-      include: {
-        escalatedToUser: {
-          select: {
-            id: true,
-            name: true;
-            email: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           }
         }
       }
@@ -1066,10 +865,8 @@ export class FeedbackService {
 
     // Create activity
     await prisma.complaintActivity.create({
-      data: {
-        complaintId: id,
-        activityType: 'ESCALATION';
-        description: `Escalated to ${escalatedUser.name}: ${reason}`,
+      \1,\2 id,
+        \1,\2 `Escalated to ${escalatedUser.name}: ${reason}`,
         performedById: userId
       }
     });
@@ -1077,8 +874,7 @@ export class FeedbackService {
     // Create audit log
     await createAuditLog({
       action: 'UPDATE',
-      entityType: 'COMPLAINT';
-      entityId: id;
+      \1,\2 id;
       userId,
       details: `Escalated complaint to ${escalatedUser.name}`;
     });
@@ -1086,14 +882,11 @@ export class FeedbackService {
     // Send notification to escalated user
     await this.notificationService.sendNotification({
       type: 'COMPLAINT_ESCALATED',
-      title: 'Complaint Escalated';
-      message: `A ${complaint.severity.toLowerCase()} complaint has been escalated to you`,
+      \1,\2 `A ${complaint.severity.toLowerCase()} complaint has been escalated to you`,
       recipientIds: [escalatedToId],
-      entityId: id;
-      metadata: {
+      \1,\2 {
         complaintId: id,
-        severity: complaint.severity;
-        category: complaint.category;
+        \1,\2 complaint.category;
         reason;
       }
     });
@@ -1109,24 +902,19 @@ export class FeedbackService {
       where: { id }
     });
 
-    if (!complaint) {
+    \1 {\n  \2{
       throw new Error('Complaint not found');
     }
 
     // Create activity
     const activity = await prisma.complaintActivity.create({
-      data: {
-        complaintId: id,
-        activityType: 'COMMENT';
-        description: comment,
+      \1,\2 id,
+        \1,\2 comment,
         performedById: userId
       },
-      include: {
-        performedByUser: {
-          select: {
-            id: true,
-            name: true;
-            email: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           }
         }
       }
@@ -1135,21 +923,18 @@ export class FeedbackService {
     // Create audit log
     await createAuditLog({
       action: 'CREATE',
-      entityType: 'COMPLAINT_ACTIVITY';
-      entityId: activity.id;
+      \1,\2 activity.id;
       userId,
       details: `Added comment to complaint ${id}`;
     });
 
     // Send notification to assigned user if comment is from someone else
-    if (complaint?.assignedToId && complaint.assignedToId !== userId) {
+    \1 {\n  \2{
       await this.notificationService.sendNotification({
         type: 'COMPLAINT_COMMENT',
-        title: 'New Comment on Assigned Complaint';
-        message: `A new comment has been added to complaint ${id}`,
+        \1,\2 `A new comment has been added to complaint ${id}`,
         recipientIds: [complaint.assignedToId],
-        entityId: id;
-        metadata: {
+        \1,\2 {
           complaintId: id,
           activityId: activity.id
         }
@@ -1167,7 +952,7 @@ export class FeedbackService {
       where: { id: complaintId }
     });
 
-    if (!complaint) {
+    \1 {\n  \2{
       throw new Error('Complaint not found');
     }
 
@@ -1181,12 +966,9 @@ export class FeedbackService {
         fileSize,
         uploadedById: userId
       },
-      include: {
-        uploadedByUser: {
-          select: {
-            id: true,
-            name: true;
-            email: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           }
         }
       }
@@ -1205,8 +987,7 @@ export class FeedbackService {
     // Create audit log
     await createAuditLog({
       action: 'CREATE',
-      entityType: 'COMPLAINT_ATTACHMENT';
-      entityId: attachment.id;
+      \1,\2 attachment.id;
       userId,
       details: `Added attachment ${fileName} to complaint ${complaintId}`;
     });
@@ -1219,68 +1000,59 @@ export class FeedbackService {
    */
   async createFollowUpAction(data: unknown, userId: string): Promise<FollowUpAction> {
     // Validate that either feedback or complaint is provided
-    if (!data?.feedbackId && !data.complaintId) {
+    \1 {\n  \2{
       throw new Error('Either feedback or complaint must be provided');
     }
 
     // Validate feedback if provided
-    if (data.feedbackId) {
+    \1 {\n  \2{
       const feedback = await prisma.feedback.findUnique({
         where: { id: data.feedbackId }
       });
 
-      if (!feedback) {
+      \1 {\n  \2{
         throw new Error('Feedback not found');
       }
     }
 
     // Validate complaint if provided
-    if (data.complaintId) {
+    \1 {\n  \2{
       const complaint = await prisma.complaint.findUnique({
         where: { id: data.complaintId }
       });
 
-      if (!complaint) {
+      \1 {\n  \2{
         throw new Error('Complaint not found');
       }
     }
 
     // Validate assigned user if provided
-    if (data.assignedToId) {
+    \1 {\n  \2{
       const assignedUser = await prisma.user.findUnique({
         where: { id: data.assignedToId }
       });
 
-      if (!assignedUser) {
+      \1 {\n  \2{
         throw new Error('Assigned user not found');
       }
     }
 
     // Create the follow-up action
     const action = await prisma.followUpAction.create({
-      data: {
-        actionType: data.actionType,
-        description: data.description;
-        status: 'PLANNED',
-        dueDate: data.dueDate;
-        assignedToId: data.assignedToId,
-        feedbackId: data.feedbackId;
-        complaintId: data.complaintId,
+      \1,\2 data.actionType,
+        \1,\2 'PLANNED',
+        \1,\2 data.assignedToId,
+        \1,\2 data.complaintId,
         createdById: userId
       },
-      include: {
-        assignedToUser: {
-          select: {
-            id: true,
-            name: true;
-            email: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           }
         },
-        createdByUser: {
-          select: {
+        \1,\2 {
             id: true,
-            name: true;
-            email: true
+            \1,\2 true
           }
         },
         feedback: true,
@@ -1291,38 +1063,31 @@ export class FeedbackService {
     // Create audit log
     await createAuditLog({
       action: 'CREATE',
-      entityType: 'FOLLOW_UP_ACTION';
-      entityId: action.id;
+      \1,\2 action.id;
       userId,
       details: `Created ${data.actionType} follow-up action${data.feedbackId ? ` for feedback ${data.feedbackId}` : ''}${data.complaintId ? ` for complaint ${data.complaintId}` : ''}`
     });
 
     // If complaint, add activity
-    if (data.complaintId) {
+    \1 {\n  \2{
       await prisma.complaintActivity.create({
-        data: {
-          complaintId: data.complaintId,
-          activityType: 'COMMENT';
-          description: `Created follow-up action: ${data.actionType} - ${data.description}`,
+        \1,\2 data.complaintId,
+          \1,\2 `Created follow-up action: ${data.actionType} - ${data.description}`,
           performedById: userId
         }
       });
     }
 
     // Send notification to assigned user
-    if (data.assignedToId) {
+    \1 {\n  \2{
       await this.notificationService.sendNotification({
         type: 'FOLLOW_UP_ACTION_ASSIGNED',
-        title: 'Follow-up Action Assigned';
-        message: `A ${data.actionType.toLowerCase()} follow-up action has been assigned to you`,
+        \1,\2 `A ${data.actionType.toLowerCase()} follow-up action has been assigned to you`,
         recipientIds: [data.assignedToId],
-        entityId: action.id;
-        metadata: {
+        \1,\2 {
           actionId: action.id,
-          actionType: data.actionType;
-          feedbackId: data.feedbackId,
-          complaintId: data.complaintId;
-          dueDate: data.dueDate?.toISOString()
+          \1,\2 data.feedbackId,
+          \1,\2 data.dueDate?.toISOString()
         }
       });
     }
@@ -1336,20 +1101,19 @@ export class FeedbackService {
   async updateFollowUpActionStatus(id: string, status: string, userId: string): Promise<FollowUpAction> {
     const action = await prisma.followUpAction.findUnique({
       where: { id },
-      include: {
-        feedback: true,
+      \1,\2 true,
         complaint: true
       }
     });
 
-    if (!action) {
+    \1 {\n  \2{
       throw new Error('Follow-up action not found');
     }
 
     const updateData: unknown = { status };
 
     // If status is COMPLETED, set completedDate
-    if (status === 'COMPLETED') {
+    \1 {\n  \2{
       updateData.completedDate = new Date();
     }
 
@@ -1357,19 +1121,14 @@ export class FeedbackService {
     const updatedAction = await prisma.followUpAction.update({
       where: { id },
       data: updateData,
-      include: {
-        assignedToUser: {
-          select: {
-            id: true,
-            name: true;
-            email: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           }
         },
-        createdByUser: {
-          select: {
+        \1,\2 {
             id: true,
-            name: true;
-            email: true
+            \1,\2 true
           }
         },
         feedback: true,
@@ -1380,19 +1139,16 @@ export class FeedbackService {
     // Create audit log
     await createAuditLog({
       action: 'UPDATE',
-      entityType: 'FOLLOW_UP_ACTION';
-      entityId: id;
+      \1,\2 id;
       userId,
       details: `Updated follow-up action status to ${status}`;
     });
 
     // If complaint, add activity
-    if (action.complaintId) {
+    \1 {\n  \2{
       await prisma.complaintActivity.create({
-        data: {
-          complaintId: action.complaintId,
-          activityType: 'COMMENT';
-          description: `Follow-up action status updated to ${status}: ${action.description}`,
+        \1,\2 action.complaintId,
+          \1,\2 `Follow-up action status updated to ${status}: ${action.description}`,
           performedById: userId
         }
       });
@@ -1401,11 +1157,9 @@ export class FeedbackService {
     // Send notification to creator
     await this.notificationService.sendNotification({
       type: 'FOLLOW_UP_ACTION_STATUS',
-      title: 'Follow-up Action Status Updated';
-      message: `Follow-up action status updated to ${status.toLowerCase()}`,
+      \1,\2 `Follow-up action status updated to ${status.toLowerCase()}`,
       recipientIds: [action.createdById],
-      entityId: id;
-      metadata: {
+      \1,\2 {
         actionId: id;
         status,
         feedbackId: action.feedbackId,
@@ -1422,20 +1176,14 @@ export class FeedbackService {
   async createSurveyTemplate(data: unknown, userId: string): Promise<FeedbackSurveyTemplate> {
     // Create the template
     const template = await prisma.feedbackSurveyTemplate.create({
-      data: {
-        name: data.name,
-        description: data.description;
-        serviceType: data.serviceType,
-        questions: data.questions;
-        isActive: data.isActive !== undefined ? data.isActive : true,
+      \1,\2 data.name,
+        \1,\2 data.serviceType,
+        \1,\2 data.isActive !== undefined ? data.isActive : true,
         createdById: userId
       },
-      include: {
-        createdByUser: {
-          select: {
-            id: true,
-            name: true;
-            email: true
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true
           }
         }
       }
@@ -1444,8 +1192,7 @@ export class FeedbackService {
     // Create audit log
     await createAuditLog({
       action: 'CREATE',
-      entityType: 'FEEDBACK_SURVEY_TEMPLATE';
-      entityId: template.id;
+      \1,\2 template.id;
       userId,
       details: `Created survey template: ${template.name}`;
     });
@@ -1462,21 +1209,21 @@ export class FeedbackService {
       where: { id: templateId }
     });
 
-    if (!template) {
+    \1 {\n  \2{
       throw new Error('Survey template not found');
     }
 
-    if (!template.isActive) {
+    \1 {\n  \2{
       throw new Error('Survey template is not active');
     }
 
     // Validate patient if provided
-    if (data.patientId) {
+    \1 {\n  \2{
       const patient = await prisma.patient.findUnique({
         where: { id: data.patientId }
       });
 
-      if (!patient) {
+      \1 {\n  \2{
         throw new Error('Patient not found');
       }
     }
@@ -1487,23 +1234,17 @@ export class FeedbackService {
         templateId,
         responses,
         submittedById: data.anonymous ? null : (data.submittedById || userId),
-        patientId: data.patientId;
-        serviceId: data.serviceId,
-        serviceType: data.serviceType || template.serviceType;
-        anonymous: data.anonymous,
+        \1,\2 data.serviceId,
+        \1,\2 data.anonymous,
         contactInfo: data?.anonymous && data.contactInfo ? data.contactInfo : null
       },
-      include: {
-        template: true,
-        submittedByUser: {
-          select: {
+      \1,\2 true,
+        \1,\2 {
             id: true,
-            name: true;
-            email: true
+            \1,\2 true
           }
         },
-        patient: {
-          select: {
+        \1,\2 {
             id: true,
             name: true
           }
@@ -1512,11 +1253,10 @@ export class FeedbackService {
     });
 
     // Create audit log
-    if (userId != null) {
+    \1 {\n  \2{
       await createAuditLog({
         action: 'CREATE',
-        entityType: 'FEEDBACK_SURVEY';
-        entityId: survey.id;
+        \1,\2 survey.id;
         userId,
         details: `Submitted survey for template: ${template.name}`;
       });
@@ -1525,19 +1265,17 @@ export class FeedbackService {
     // Send notification to service managers
     let recipientRoles = ['FEEDBACK_MANAGER'];
 
-    if (data.serviceType || template.serviceType) {
+    \1 {\n  \2{
       const serviceType = data.serviceType || template.serviceType;
       recipientRoles.push(`${serviceType}_MANAGER`);
     }
 
     await this.notificationService.sendNotification({
       type: 'NEW_SURVEY',
-      title: 'New Survey Submission';
-      message: `New survey submitted for ${template.name}`,
+      \1,\2 `New survey submitted for ${template.name}`,
       recipientRoles,
       entityId: survey.id,
-      metadata: {
-        surveyId: survey.id;
+      \1,\2 survey.id;
         templateId,
         serviceType: data.serviceType || template.serviceType
       }
@@ -1556,15 +1294,9 @@ export class FeedbackService {
 
     switch (period) {
       case 'DAILY':
-        startDate = new Date(now.setDate(now.getDate() - 30)); // Last 30 days
-        break;
-      case 'WEEKLY':
-        startDate = new Date(now.setDate(now.getDate() - 90)); // Last 90 days
-        break;
-      case 'MONTHLY':
-        startDate = new Date(now.setMonth(now.getMonth() - 12)); // Last 12 months
-        break;
-      case 'YEARLY':
+        startDate = new Date(now.setDate(now.getDate() - 30)); // Last 30 days\1\n    }\n    case 'WEEKLY':
+        startDate = new Date(now.setDate(now.getDate() - 90)); // Last 90 days\1\n    }\n    case 'MONTHLY':
+        startDate = new Date(now.setMonth(now.getMonth() - 12)); // Last 12 months\1\n    }\n    case 'YEARLY':
         startDate = new Date(now.setFullYear(now.getFullYear() - 5)); // Last 5 years
         break;
       default:
@@ -1574,8 +1306,7 @@ export class FeedbackService {
     // Get feedback counts by type
     const feedbackByType = await prisma.feedback.groupBy({
       by: ['type'],
-      where: {
-        createdAt: {
+      \1,\2 {
           gte: startDate
         }
       },
@@ -1585,8 +1316,7 @@ export class FeedbackService {
     // Get feedback counts by source
     const feedbackBySource = await prisma.feedback.groupBy({
       by: ['source'],
-      where: {
-        createdAt: {
+      \1,\2 {
           gte: startDate
         }
       },
@@ -1596,8 +1326,7 @@ export class FeedbackService {
     // Get feedback counts by status
     const feedbackByStatus = await prisma.feedback.groupBy({
       by: ['status'],
-      where: {
-        createdAt: {
+      \1,\2 {
           gte: startDate
         }
       },
@@ -1607,12 +1336,10 @@ export class FeedbackService {
     // Get feedback counts by service type
     const feedbackByServiceType = await prisma.feedback.groupBy({
       by: ['serviceType'],
-      where: {
-        createdAt: {
+      \1,\2 {
           gte: startDate
         },
-        serviceType: {
-          not: null
+        \1,\2 null
         }
       },
       _count: true
@@ -1630,17 +1357,13 @@ export class FeedbackService {
 
     // Get average ratings
     const ratings = await prisma.feedback.findMany({
-      where: {
-        createdAt: {
+      \1,\2 {
           gte: startDate
         }
       },
-      select: {
-        rating: true,
-        serviceType: true;
-        departmentId: true,
-        department: {
-          select: {
+      \1,\2 true,
+        \1,\2 true,
+        \1,\2 {
             name: true
           }
         }
@@ -1656,8 +1379,8 @@ export class FeedbackService {
     const ratingsByServiceType: Record<string, { count: number, sum: number, avg: number }> = {};
 
     ratings.forEach(item => {
-      if (item.serviceType) {
-        if (!ratingsByServiceType[item.serviceType]) {
+      \1 {\n  \2{
+        \1 {\n  \2{
           ratingsByServiceType[item.serviceType] = { count: 0, sum: 0, avg: 0 };
         }
 
@@ -1676,10 +1399,10 @@ export class FeedbackService {
     const ratingsByDepartment: Record<string, { count: number, sum: number, avg: number }> = {};
 
     ratings.forEach(item => {
-      if (item?.departmentId && item.department) {
+      \1 {\n  \2{
         const deptName = item.department.name;
 
-        if (!ratingsByDepartment[deptName]) {
+        \1 {\n  \2{
           ratingsByDepartment[deptName] = { count: 0, sum: 0, avg: 0 };
         }
 
@@ -1697,8 +1420,7 @@ export class FeedbackService {
     // Get complaint counts by category
     const complaintsByCategory = await prisma.complaint.groupBy({
       by: ['category'],
-      where: {
-        createdAt: {
+      \1,\2 {
           gte: startDate
         }
       },
@@ -1708,8 +1430,7 @@ export class FeedbackService {
     // Get complaint counts by severity
     const complaintsBySeverity = await prisma.complaint.groupBy({
       by: ['severity'],
-      where: {
-        createdAt: {
+      \1,\2 {
           gte: startDate
         }
       },
@@ -1719,8 +1440,7 @@ export class FeedbackService {
     // Get complaint counts by status
     const complaintsByStatus = await prisma.complaint.groupBy({
       by: ['status'],
-      where: {
-        createdAt: {
+      \1,\2 {
           gte: startDate
         }
       },
@@ -1729,19 +1449,14 @@ export class FeedbackService {
 
     // Get complaint resolution time
     const resolvedComplaints = await prisma.complaint.findMany({
-      where: {
-        status: 'RESOLVED',
-        createdAt: {
-          gte: startDate
+      \1,\2 'RESOLVED',
+        \1,\2 startDate
         },
-        resolutionDate: {
-          not: null
+        \1,\2 null
         }
       },
-      select: {
-        createdAt: true,
-        resolutionDate: true;
-        severity: true
+      \1,\2 true,
+        \1,\2 true
       }
     });
 
@@ -1755,7 +1470,7 @@ export class FeedbackService {
     };
 
     resolvedComplaints.forEach(complaint => {
-      if (complaint.resolutionDate) {
+      \1 {\n  \2{
         const days = (complaint.resolutionDate.getTime() - complaint.createdAt.getTime()) / (1000 * 60 * 60 * 24);
 
         resolutionTimes.overall.count++;

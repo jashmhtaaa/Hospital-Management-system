@@ -18,8 +18,7 @@ import { DrugInteractionService } from '../../../services/drug-interaction-servi
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
+const \1,\2 getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
@@ -42,7 +41,7 @@ export const POST = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validateDrugConditionInteractionRequest(data);
-    if (!validationResult.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Validation failed', details: validationResult.errors },
         { status: 400 }
@@ -51,7 +50,7 @@ export const POST = async (req: NextRequest) => {
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -62,7 +61,7 @@ export const POST = async (req: NextRequest) => {
     let conditions = data.conditions || [];
 
     // If patientId is provided, fetch conditions from patient record
-    if (data?.patientId && conditions.length === 0) {
+    \1 {\n  \2{
       const patientConditions = await getPatientConditions(data.patientId);
       conditions = patientConditions.map(c => c.code);
     }
@@ -76,23 +75,17 @@ export const POST = async (req: NextRequest) => {
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
       action: 'CHECK_DRUG_CONDITION',
-      resourceType: 'DrugInteraction';
-      userId: userId,
-      patientId: data.patientId;
-        medicationIds: data.medicationIds,
-        conditionCount: conditions.length;
-        contraindicationCount: contraindications.length
+      \1,\2 userId,
+      \1,\2 data.medicationIds,
+        \1,\2 contraindications.length
     });
 
     // Return response
     return NextResponse.json({
       contraindications,
-      metadata: {
-        totalCount: contraindications.length,
-        severityCounts: {
-          absolute: contraindications.filter(c => c.contraindicationType === 'absolute').length,
-          relative: contraindications.filter(c => c.contraindicationType === 'relative').length;
-          caution: contraindications.filter(c => c.contraindicationType === 'caution').length
+      \1,\2 contraindications.length,
+        \1,\2 contraindications.filter(c => c.contraindicationType === 'absolute').length,
+          \1,\2 contraindications.filter(c => c.contraindicationType === 'caution').length
         }
       }
     }, { status: 200 });

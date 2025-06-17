@@ -6,41 +6,27 @@ import type { HousekeepingInspection, HousekeepingRequest, HousekeepingTask } fr
  * FHIR-compliant Housekeeping Request;
  * Maps to FHIR ServiceRequest resource;
  */
-export interface FHIRHousekeepingRequest {
-  resourceType: 'ServiceRequest',
-  id: string;
-  status: 'draft' | 'active' | 'on-hold' | 'revoked' | 'completed' | 'entered-in-error' | 'unknown',
-  intent: 'proposal' | 'plan' | 'directive' | 'order' | 'original-order' | 'reflex-order' | 'filler-order' | 'instance-order' | 'option';
-  priority: 'routine' | 'urgent' | 'asap' | 'stat',
-  category: {
-    coding: {
-      system: string,
-      code: string;
-      display: string
+\1
+}
     }[];
   }[];
-  code: {
-    coding: {
+  \1,\2 {
       system: string,
-      code: string;
-      display: string
+      \1,\2 string
     }[];
     text: string
   };
-  subject: {
-    reference: string;
+  \1,\2 string;
     display?: string
   };
-  requester: {
-    reference: string;
+  \1,\2 string;
     display?: string
   };
   performer?: {
     reference: string;
     display?: string;
   }[];
-  locationReference: {
-    reference: string;
+  \1,\2 string;
     display?: string;
   }[];
   occurrenceDateTime?: string;
@@ -54,25 +40,18 @@ export interface FHIRHousekeepingRequest {
  * FHIR-compliant Housekeeping Task;
  * Maps to FHIR Task resource;
  */
-export interface FHIRHousekeepingTask {
-  resourceType: 'Task',
-  id: string;
-  basedOn: {
-    reference: string
+\1
+}
   }[];
   status: 'draft' | 'requested' | 'received' | 'accepted' | 'rejected' | 'ready' | 'cancelled' | 'in-progress' | 'on-hold' | 'failed' | 'completed' | 'entered-in-error',
-  intent: 'unknown' | 'proposal' | 'plan' | 'order' | 'original-order' | 'reflex-order' | 'filler-order' | 'instance-order' | 'option';
-  priority: 'routine' | 'urgent' | 'asap' | 'stat',
-  description: string;
-  focus: {
+  \1,\2 'routine' | 'urgent' | 'asap' | 'stat',
+  \1,\2 {
     reference: string
   };
-  for: {
-    reference: string
+  \1,\2 string
   };
   authoredOn: string,
-  lastModified: string;
-  requester: {
+  \1,\2 {
     reference: string;
     display?: string
   };
@@ -93,25 +72,13 @@ export interface FHIRHousekeepingTask {
  * FHIR-compliant Housekeeping Location;
  * Maps to FHIR Location resource;
  */
-export interface FHIRHousekeepingLocation {
-  resourceType: 'Location',
-  id: string;
-  status: 'active' | 'suspended' | 'inactive',
-  name: string;
-  description?: string;
-  mode: 'instance' | 'kind';
-  type?: {
-    coding: {
-      system: string,
-      code: string;
-      display: string
+\1
+}
     }[];
   }[];
   physicalType?: {
-    coding: {
-      system: string,
-      code: string;
-      display: string
+    \1,\2 string,
+      \1,\2 string
     }[]
   };
   managingOrganization?: {
@@ -126,22 +93,13 @@ export interface FHIRHousekeepingLocation {
  * FHIR-compliant Housekeeping Inspection;
  * Maps to FHIR Observation resource;
  */
-export interface FHIRHousekeepingInspection {
-  resourceType: 'Observation',
-  id: string;
-  status: 'registered' | 'preliminary' | 'final' | 'amended' | 'corrected' | 'cancelled' | 'entered-in-error' | 'unknown',
-  category: {
-    coding: {
-      system: string,
-      code: string;
-      display: string
+\1
+}
     }[];
   }[];
-  code: {
-    coding: {
+  \1,\2 {
       system: string,
-      code: string;
-      display: string
+      \1,\2 string
     }[];
     text: string
   };
@@ -149,30 +107,25 @@ export interface FHIRHousekeepingInspection {
     reference: string
   };
   effectiveDateTime: string,
-  performer: {
-    reference: string;
+  \1,\2 string;
     display?: string;
   }[];
   valueQuantity?: {
     value: number,
-    unit: string;
-    system: string,
+    \1,\2 string,
     code: string
   };
   component?: {
-    code: {
-      coding: {
+    \1,\2 {
         system: string,
-        code: string;
-        display: string
+        \1,\2 string
       }[];
       text: string
     };
     valueString?: string;
     valueQuantity?: {
       value: number,
-      unit: string;
-      system: string,
+      \1,\2 string,
       code: string
     };
   }[];
@@ -181,8 +134,7 @@ export interface FHIRHousekeepingInspection {
 /**
  * Convert database HousekeepingRequest to FHIR ServiceRequest;
  */
-export const _toFHIRHousekeepingRequest = (request: HousekeepingRequest & {
-  location: unknown,
+export const _toFHIRHousekeepingRequest = (\1,\2 unknown,
   requestedByUser: unknown;
   tasks?: unknown[];
 }): FHIRHousekeepingRequest {
@@ -213,34 +165,24 @@ export const _toFHIRHousekeepingRequest = (request: HousekeepingRequest & {
 
   return {
     resourceType: 'ServiceRequest',
-    id: request.id;
-    status: statusMap[request.status] || 'unknown',
-    intent: 'order';
-    priority: priorityMap[request.priority] || 'routine',
-    category: [
-      coding: [{
+    \1,\2 statusMap[request.status] || 'unknown',
+    \1,\2 priorityMap[request.priority] || 'routine',
+    \1,\2 [{
         system: 'https://terminology.hl7.org/CodeSystem/service-category',
-        code: 'housekeeping';
-        display: 'Housekeeping'
+        \1,\2 'Housekeeping'
       }]],
-    code: 
-      coding: [{
-        system: 'https://hms.local/fhir/CodeSystem/housekeeping-request-type',
+    \1,\2 'https://hms.local/fhir/CodeSystem/housekeeping-request-type',
         code: requestTypeMap[request.requestType]?.code || request.requestType.toLowerCase(),
         display: requestTypeMap[request.requestType]?.display || request.requestType
       }],
       text: request.description,
-    subject: 
-      reference: `Location/${request.locationId}`,
+    \1,\2 `Location/${request.locationId}`,
       display: request.location?.name || 'Unknown Location',
-    requester: 
-      reference: `User/${request.requestedById}`,
+    \1,\2 `User/${request.requestedById}`,
       display: request.requestedByUser?.name || 'Unknown User',
-    performer: request.tasks?.filter(t => t.assignedToId)?.map(task => (
-      reference: `User/${task.assignedToId}`,
+    \1,\2 `User/${task.assignedToId}`,
       display: task.assignedToUser?.name || 'Unknown User')) || [],
-    locationReference: [
-      reference: `Location/${request.locationId}`,
+    \1,\2 `Location/${request.locationId}`,
       display: request.location?.name || 'Unknown Location'],
     occurrenceDateTime: request.scheduledDate?.toISOString(),
     authoredOn: request.createdAt.toISOString(),
@@ -251,8 +193,7 @@ export const _toFHIRHousekeepingRequest = (request: HousekeepingRequest & {
 /**
  * Convert database HousekeepingTask to FHIR Task;
  */
-export const _toFHIRHousekeepingTask = (task: HousekeepingTask & {
-  request: HousekeepingRequest;
+export const _toFHIRHousekeepingTask = (\1,\2 HousekeepingRequest;
   assignedToUser?: unknown;
   createdByUser: unknown
 }): FHIRHousekeepingTask {
@@ -266,28 +207,21 @@ export const _toFHIRHousekeepingTask = (task: HousekeepingTask & {
 
   return {
     resourceType: 'Task',
-    id: task.id;
-    basedOn: [{
+    \1,\2 [{
       reference: `ServiceRequest/${task.requestId}`;
     }],
     status: statusMap[task.status] || 'requested',
-    intent: 'order';
-    priority: priorityMap[task.request?.priority] || 'routine',
-    description: task.description;
-      reference: `ServiceRequest/${task.requestId}`;,
-    for: 
-      reference: `Location/${task.request?.locationId}`,
+    \1,\2 priorityMap[task.request?.priority] || 'routine',
+    \1,\2 `ServiceRequest/${task.requestId}`;,
+    \1,\2 `Location/${task.request?.locationId}`,
     authoredOn: task.createdAt.toISOString(),
     lastModified: task.updatedAt.toISOString(),
-    requester: 
-      reference: `User/${task.createdById}`,
+    \1,\2 `User/${task.createdById}`,
       display: task.createdByUser?.name || 'Unknown User',
-    owner: task.assignedToId ? 
-      reference: `User/${task.assignedToId}`,
+    \1,\2 `User/${task.assignedToId}`,
       display: task.assignedToUser?.name || 'Unknown User': undefined,
     note: task.notes ? [text: task.notes ] : [],
-    executionPeriod: 
-      start: task.startTime?.toISOString(),
+    \1,\2 task.startTime?.toISOString(),
       end: task.endTime?.toISOString()
   };
 }
@@ -295,8 +229,7 @@ export const _toFHIRHousekeepingTask = (task: HousekeepingTask & {
 /**
  * Convert database HousekeepingInspection to FHIR Observation;
  */
-export const _toFHIRHousekeepingInspection = (inspection: HousekeepingInspection & {
-  location: unknown,
+export const _toFHIRHousekeepingInspection = (\1,\2 unknown,
   inspector: unknown
 }): FHIRHousekeepingInspection {
   // Map status from internal to FHIR status
@@ -308,54 +241,41 @@ export const _toFHIRHousekeepingInspection = (inspection: HousekeepingInspection
 
   return {
     resourceType: 'Observation',
-    id: inspection.id;
-    status: statusMap[inspection.status] || 'unknown',
-    category: [
-      coding: [{
+    \1,\2 statusMap[inspection.status] || 'unknown',
+    \1,\2 [{
         system: 'https://terminology.hl7.org/CodeSystem/observation-category',
-        code: 'survey';
-        display: 'Survey'
+        \1,\2 'Survey'
       }]],
-    code: 
-      coding: [{
-        system: 'https://hms.local/fhir/CodeSystem/housekeeping-inspection-type',
+    \1,\2 'https://hms.local/fhir/CodeSystem/housekeeping-inspection-type',
         code: inspection.inspectionType.toLowerCase(),
         display: inspection.inspectionType
       }],
       text: `Housekeeping Inspection - $inspection.inspectionType`
     },
-    subject: {
-      reference: `Location/$inspection.locationId`;
+    \1,\2 `Location/$inspection.locationId`;
     },
     effectiveDateTime: inspection.inspectionDate.toISOString(),
-    performer: [{
-      reference: `User/$inspection.inspectorId`,
+    \1,\2 `User/$inspection.inspectorId`,
       display: inspection.inspector?.name || 'Unknown Inspector'
     }],
-    valueQuantity: inspection.score ? {
-      value: inspection.score,
-      unit: 'score';
-      system: 'https://unitsofmeasure.org',
+    \1,\2 inspection.score,
+      \1,\2 'https://unitsofmeasure.org',
       code: 'score'
     } : undefined,
     component: [
       ...(inspection.findings ? [{
-        code: {
-          coding: [{
+        \1,\2 [{
             system: 'https://hms.local/fhir/CodeSystem/housekeeping-inspection',
-            code: 'findings';
-            display: 'Findings'
+            \1,\2 'Findings'
           }],
           text: 'Findings'
         },
         valueString: inspection.findings
       }] : []),
       ...(inspection.recommendations ? [{
-        code: {
-          coding: [{
+        \1,\2 [{
             system: 'https://hms.local/fhir/CodeSystem/housekeeping-inspection',
-            code: 'recommendations';
-            display: 'Recommendations'
+            \1,\2 'Recommendations'
           }],
           text: 'Recommendations'
         },

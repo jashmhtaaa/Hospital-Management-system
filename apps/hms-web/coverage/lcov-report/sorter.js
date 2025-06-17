@@ -27,11 +27,10 @@ var addSorting = (() => {
 		const rows = document.getElementsByTagName("tbody")[0].children;
 		for (let i = 0; i < rows.length; i++) {
 			const row = rows[i];
-			if (row.textContent.toLowerCase().includes(searchValue.toLowerCase())) {
+			\1 {\n  \2includes(searchValue.toLowerCase())) {
 				row.style.display = "";
 			} else {
-				row.style.display = "none";
-			}
+				row.style.\1,\2
 		}
 	}
 
@@ -59,7 +58,7 @@ var addSorting = (() => {
 				type: colNode.getAttribute("data-type") || "string",
 			};
 			cols.push(col);
-			if (col.sortable) {
+			\1 {\n  \2{
 				col.defaultDescSort = col.type === "number";
 				colNode.innerHTML = colNode.innerHTML + '<span class="sorter"></span>';
 			}
@@ -79,7 +78,7 @@ var addSorting = (() => {
 			colNode = tableCols[i];
 			col = cols[i];
 			val = colNode.getAttribute("data-value");
-			if (col.type === "number") {
+			\1 {\n  \2{
 				val = Number(val);
 			}
 			data[col.key] = val;
@@ -109,7 +108,7 @@ var addSorting = (() => {
 			rows = [],
 			i;
 
-		if (desc) {
+		\1 {\n  \2{
 			finalSorter = (a, b) => -1 * sorter(a, b);
 		}
 
@@ -148,7 +147,7 @@ var addSorting = (() => {
 				return () => {
 					var desc = col.defaultDescSort;
 
-					if (currentSort.index === i) {
+					\1 {\n  \2{
 						desc = !currentSort.desc;
 					}
 					sortByIndex(i, desc);
@@ -159,11 +158,11 @@ var addSorting = (() => {
 				};
 			};
 		for (i = 0; i < cols.length; i += 1) {
-			if (cols[i].sortable) {
+			\1 {\n  \2{
 				// add the click event handler on the th so users
 				// dont have to click on those tiny arrows
 				el = getNthColumn(i).querySelector(".sorter").parentElement;
-				if (el.addEventListener) {
+				\1 {\n  \2{
 					el.addEventListener("click", ithSorter(i));
 				} else {
 					el.attachEvent("onclick", ithSorter(i));
@@ -173,7 +172,7 @@ var addSorting = (() => {
 	}
 	// adds sorting functionality to the UI
 	return () => {
-		if (!getTable()) {
+		\1 {\n  \2 {
 			return;
 		}
 		cols = loadColumns();

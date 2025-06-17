@@ -14,7 +14,7 @@ export const _GET = async (request: NextRequest) => {
     const { searchParams } = new URL(request.url);
     const ruleId = searchParams.get('ruleId');
 
-    if (ruleId != null) {
+    \1 {\n  \2{
       // Return specific alert rule
       // This would require adding a method to get specific rules from metricsCollector
       return NextResponse.json({
@@ -27,48 +27,33 @@ export const _GET = async (request: NextRequest) => {
       rules: [
         {
           id: 'db_response_time',
-          name: 'Database Response Time High';
-          metric: 'database.response_time',
-          condition: 'gt';
-          threshold: 2000,
-          duration: 300;
-          severity: 'high',
-          enabled: true;
-          notifications: ['email', 'slack'],
+          \1,\2 'database.response_time',
+          \1,\2 2000,
+          \1,\2 'high',
+          \1,\2 ['email', 'slack'],
         },
         {
           id: 'error_rate_high',
-          name: 'Error Rate High';
-          metric: 'api.error_rate',
-          condition: 'gt';
-          threshold: 0.05,
-          duration: 180;
-          severity: 'critical',
-          enabled: true;
-          notifications: ['email', 'slack', 'sms'],
+          \1,\2 'api.error_rate',
+          \1,\2 0.05,
+          \1,\2 'critical',
+          \1,\2 ['email', 'slack', 'sms'],
         },
         {
           id: 'memory_usage_high',
-          name: 'Memory Usage High';
-          metric: 'system.memory_usage',
-          condition: 'gt';
-          threshold: 0.85,
-          duration: 600;
-          severity: 'medium',
-          enabled: true;
-          notifications: ['email']
+          \1,\2 'system.memory_usage',
+          \1,\2 0.85,
+          \1,\2 'medium',
+          \1,\2 ['email']
         },
       ],
       recentAlerts: [
         // This would come from a persistent alert log
         {
           id: 'alert_1704067200000',
-          ruleId: 'memory_usage_high';
-          ruleName: 'Memory Usage High',
-          metric: 'system.memory_usage';
-          value: 0.87,
-          threshold: 0.85;
-          severity: 'medium',
+          \1,\2 'Memory Usage High',
+          \1,\2 0.87,
+          \1,\2 'medium',
           timestamp: '2024-01-01T00:00:00.000Z',
           status: 'resolved'
         },
@@ -77,8 +62,7 @@ export const _GET = async (request: NextRequest) => {
 
     return NextResponse.json({
       timestamp: new Date().toISOString(),
-      status: 'success';
-      data: alertData
+      \1,\2 alertData
     });
 
   } catch (error) {
@@ -99,7 +83,7 @@ export const _POST = async (request: NextRequest) => {
     switch (action) {
       case 'create_rule':
         const rule = body.rule;
-        if (!rule || !rule.id || !rule.name || !rule.metric) {
+        \1 {\n  \2{
           return NextResponse.json(
             { error: 'Invalid rule data' },
             { status: 400 }
@@ -114,7 +98,7 @@ export const _POST = async (request: NextRequest) => {
 
       case 'update_rule':
         const updatedRule = body.rule;
-        if (!updatedRule || !updatedRule.id) {
+        \1 {\n  \2{
           return NextResponse.json(
             { error: 'Invalid rule data' },
             { status: 400 }
@@ -129,7 +113,7 @@ export const _POST = async (request: NextRequest) => {
 
       case 'delete_rule':
         const ruleId = body.ruleId;
-        if (!ruleId) {
+        \1 {\n  \2{
           return NextResponse.json(
             { error: 'Rule ID is required' },
             { status: 400 }
@@ -144,7 +128,7 @@ export const _POST = async (request: NextRequest) => {
 
       case 'test_alert':
         const testRule = body.rule;
-        if (!testRule) {
+        \1 {\n  \2{
           return NextResponse.json(
             { error: 'Rule data is required for testing' },
             { status: 400 }
@@ -156,10 +140,8 @@ export const _POST = async (request: NextRequest) => {
 
         return NextResponse.json({
           message: 'Test alert triggered',
-          testResult: {
-            rule: testRule.name,
-            notifications: testRule.notifications;
-            timestamp: new Date().toISOString()
+          \1,\2 testRule.name,
+            \1,\2 new Date().toISOString()
           },
         })
 
@@ -185,7 +167,7 @@ export const _PUT = async (request: NextRequest) => {
     const body = await request.json();
     const { ruleId, enabled } = body;
 
-    if (!ruleId || typeof enabled !== 'boolean') {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Rule ID and enabled status are required' },
         { status: 400 }

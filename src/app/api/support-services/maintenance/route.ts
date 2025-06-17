@@ -14,8 +14,7 @@ const createRequestSchema = z.object({
   requestType: z.enum(['PREVENTIVE', 'CORRECTIVE', 'EMERGENCY', 'INSPECTION', 'INSTALLATION', 'OTHER']),
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']),
   description: z.string().min(5).max(500),
-  scheduledTime: z.string().transform(val => new Date(val));
-  notes: z.string().max(1000).optional(),
+  \1,\2 z.string().max(1000).optional(),
   requestedById: z.string().uuid(),
   departmentId: z.string().uuid().optional(),
   estimatedDuration: z.number().min(1).optional(), // in minutes
@@ -25,13 +24,12 @@ const updateRequestSchema = z.object({
   requestType: z.enum(['PREVENTIVE', 'CORRECTIVE', 'EMERGENCY', 'INSPECTION', 'INSTALLATION', 'OTHER']).optional(),
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']).optional(),
   description: z.string().min(5).max(500).optional(),
-  scheduledTime: z.string().transform(val => new Date(val)).optional(),
+  scheduledTime: z.string().transform(val => \1.optional(),
   notes: z.string().max(1000).optional(),
   status: z.enum(['PENDING', 'ASSIGNED', 'IN_PROGRESS', 'ON_HOLD', 'COMPLETED', 'CANCELLED']).optional(),
   assignedToId: z.string().uuid().optional(),
   estimatedDuration: z.number().min(1).optional(),
-  partsRequired: z.array(z.object({
-    partId: z.string().uuid(),
+  \1,\2 z.string().uuid(),
     quantity: z.number().min(1)
   })).optional(),
 });
@@ -45,14 +43,10 @@ export const _GET = async (request: NextRequest) => {
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get('status') || undefined,
-        priority: searchParams.get('priority') || undefined;
-        assetId: searchParams.get('assetId') || undefined,
-        requestType: searchParams.get('requestType') || undefined;
-        departmentId: searchParams.get('departmentId') || undefined,
-        fromDate: searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined;
-        toDate: searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined,
-        assignedToId: searchParams.get('assignedToId') || undefined;
-        page: Number.parseInt(searchParams.get('page') || '1'),
+        \1,\2 searchParams.get('assetId') || undefined,
+        \1,\2 searchParams.get('departmentId') || undefined,
+        \1,\2 searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined,
+        \1,\2 Number.parseInt(searchParams.get('page') || '1'),
         limit: parseInt(searchParams.get('limit') || '10')
       };
 
@@ -160,7 +154,7 @@ export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: 
       const body = await req.json();
       const { technicianId } = body;
 
-      if (!technicianId) {
+      \1 {\n  \2{
         return NextResponse.json({ error: 'Technician ID is required' }, { status: 400 });
       }
 
@@ -185,7 +179,7 @@ export const _START = async (request: NextRequest, { params }: { params: { id: s
       const body = await req.json();
       const { technicianId, notes } = body;
 
-      if (!technicianId) {
+      \1 {\n  \2{
         return NextResponse.json({ error: 'Technician ID is required' }, { status: 400 });
       }
 
@@ -214,7 +208,7 @@ export const _COMPLETE = async (request: NextRequest, { params }: { params: { id
       const body = await req.json();
       const { technicianId, notes, partsUsed, laborHours } = body;
 
-      if (!technicianId) {
+      \1 {\n  \2{
         return NextResponse.json({ error: 'Technician ID is required' }, { status: 400 });
       }
 
@@ -245,10 +239,8 @@ export const _GET_ASSETS = async (request: NextRequest) => {
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         type: searchParams.get('type') || undefined,
-        status: searchParams.get('status') || undefined;
-        locationId: searchParams.get('locationId') || undefined,
-        departmentId: searchParams.get('departmentId') || undefined;
-        page: Number.parseInt(searchParams.get('page') || '1'),
+        \1,\2 searchParams.get('locationId') || undefined,
+        \1,\2 Number.parseInt(searchParams.get('page') || '1'),
         limit: parseInt(searchParams.get('limit') || '10')
       };
 

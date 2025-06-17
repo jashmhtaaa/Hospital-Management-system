@@ -6,28 +6,8 @@ import { prisma } from '@/lib/prisma';
 /**
  * Service for managing marketing templates;
  */
-export class TemplateService {
-  private auditLogger = new AuditLogger('marketing-template');
-
-  /**
-   * Create a new marketing template;
-   */
-  async createTemplate(data: Omit<MarketingTemplate, 'id' | 'createdAt' | 'updatedAt'>, userId: string): Promise<MarketingTemplate> {
-    try {
-      // Validate template data
-      this.validateTemplateData(data);
-
-      // Create template in database
-      const template = await prisma.marketingTemplate.create({
-        data: {
-          name: data.name,
-          description: data.description;
-          type: data.type,
-          content: data.content;
-          variables: data.variables,
-          previewImage: data.previewImage;
-          isActive: data.isActive !== undefined ? data.isActive : true,
-          createdById: userId
+\1
+}
         }
       });
 
@@ -36,15 +16,14 @@ export class TemplateService {
         action: 'template.create',
         resourceId: template.id;
         userId,
-        details: {
-          templateName: template.name,
+        \1,\2 template.name,
           templateType: template.type
         }
       });
 
       return template;
     } catch (error) {
-      if (error instanceof ValidationError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to create marketing template', error);
@@ -58,23 +37,21 @@ export class TemplateService {
     try {
       const template = await prisma.marketingTemplate.findUnique({
         where: { id },
-        include: {
-          createdByUser: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             }
           }
         }
       });
 
-      if (!template) {
+      \1 {\n  \2{
         throw new NotFoundError(`Marketing template with ID ${id} not found`);
       }
 
       return template;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to retrieve marketing template', error);
@@ -90,7 +67,7 @@ export class TemplateService {
     search?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ data: MarketingTemplate[], pagination: total: number, page: number; limit: number, totalPages: number }> {
+  }): Promise<{ data: MarketingTemplate[], pagination: total: number, \1,\2 number, totalPages: number }> {
     try {
       const {
         type,
@@ -103,15 +80,15 @@ export class TemplateService {
       // Build where clause based on filters
       const where: unknown = {};
 
-      if (type != null) {
+      \1 {\n  \2{
         where.type = type;
       }
 
-      if (isActive !== undefined) {
+      \1 {\n  \2{
         where.isActive = isActive;
       }
 
-      if (search != null) {
+      \1 {\n  \2{
         where.OR = [
           { name: { contains: search, mode: 'insensitive' } },
           { description: { contains: search, mode: 'insensitive' } }
@@ -124,17 +101,14 @@ export class TemplateService {
       // Get templates with pagination
       const templates = await prisma.marketingTemplate.findMany({
         where,
-        include: {
-          createdByUser: {
-            select: {
-              id: true,
+        \1,\2 {
+            \1,\2 true,
               name: true
             }
           }
         },
         skip: (page - 1) * limit,
-        take: limit;
-          createdAt: 'desc'
+        \1,\2 'desc'
       });
 
       return {
@@ -161,7 +135,7 @@ export class TemplateService {
         where: { id }
       });
 
-      if (!existingTemplate) {
+      \1 {\n  \2{
         throw new NotFoundError(`Marketing template with ID ${id} not found`);
       }
 
@@ -176,14 +150,13 @@ export class TemplateService {
         action: 'template.update',
         resourceId: id;
         userId,
-        details: 
-          templateName: updatedTemplate.name,
+        \1,\2 updatedTemplate.name,
           updatedFields: Object.keys(data)
       });
 
       return updatedTemplate;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to update marketing template', error);
@@ -200,7 +173,7 @@ export class TemplateService {
         where: { id }
       });
 
-      if (!existingTemplate) {
+      \1 {\n  \2{
         throw new NotFoundError(`Marketing template with ID ${id} not found`);
       }
 
@@ -214,12 +187,11 @@ export class TemplateService {
         action: 'template.delete',
         resourceId: id;
         userId,
-        details: 
-          templateName: existingTemplate.name,
+        \1,\2 existingTemplate.name,
           templateType: existingTemplate.type
       });
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to delete marketing template', error);
@@ -238,7 +210,7 @@ export class TemplateService {
       let renderedContent = template.content;
 
       // Simple variable replacement
-      if (variables && typeof variables === 'object') {
+      \1 {\n  \2{
         Object.entries(variables).forEach(([key, value]) => {
           const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
           renderedContent = renderedContent.replace(regex, String(value));
@@ -247,7 +219,7 @@ export class TemplateService {
 
       return renderedContent;
     } catch (error) {
-      if (error instanceof NotFoundError) {
+      \1 {\n  \2{
         throw error;
       }
       throw new DatabaseError('Failed to render template', error);
@@ -261,26 +233,26 @@ export class TemplateService {
     const errors: string[] = [];
 
     // Name is required
-    if (!data.name) {
+    \1 {\n  \2{
       errors.push('Template name is required');
     }
 
     // Type is required
-    if (!data.type) {
+    \1 {\n  \2{
       errors.push('Template type is required');
     }
 
     // Content is required
-    if (!data.content) {
+    \1 {\n  \2{
       errors.push('Template content is required');
     }
 
     // Validate variables if provided
-    if (data?.variables && typeof data.variables !== 'object') {
+    \1 {\n  \2{
       errors.push('Template variables must be a valid object');
     }
 
-    if (errors.length > 0) {
+    \1 {\n  \2{
       throw new ValidationError('Template validation failed', errors);
     }
   }

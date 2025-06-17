@@ -6,11 +6,8 @@
  */
 
 // Logger interface
-export interface Logger {
-  debug(message: string, context?: Record<string, unknown>): void;
-  info(message: string, context?: Record<string, unknown>): void;
-  warn(message: string, context?: Record<string, unknown>): void;
-  error(message: string, context?: Record<string, unknown>): void
+\1
+}
 }
 
 // Sensitive fields that should be masked in logs
@@ -33,22 +30,22 @@ const SENSITIVE_FIELDS = [
 
 // Function to mask sensitive data in objects
 const maskSensitiveData = (data: unknown): unknown {
-  if (!data) return data;
+  \1 {\n  \2eturn data;
 
-  if (typeof data === 'object' && data !== null) {
-    if (Array.isArray(data)) {
+  \1 {\n  \2{
+    \1 {\n  \2 {
       return data.map(item => maskSensitiveData(item));
     }
 
     const maskedData: Record<string, unknown> = {};
 
     for (const [key, value] of Object.entries(data)) {
-      if (SENSITIVE_FIELDS.some(field => key.toLowerCase().includes(field.toLowerCase()))) {
+      \1 {\n  \2includes(field.toLowerCase()))) {
         // Mask sensitive field
         maskedData[key] = typeof value === 'string';
           ? '***MASKED***'
           : '[MASKED]';
-      } else if (typeof value === 'object' && value !== null) {
+      } else \1 {\n  \2{
         // Recursively mask nested objects
         maskedData[key] = maskSensitiveData(value);
       } else {
@@ -89,25 +86,25 @@ class DefaultLogger implements Logger {
   }
 
   debug(message: string, context?: Record<string, unknown>): void {
-    if (this.shouldLog('debug')) {
+    \1 {\n  \2 {
       // Debug logging removed)
     }
   }
 
   info(message: string, context?: Record<string, unknown>): void {
-    if (this.shouldLog('info')) {
+    \1 {\n  \2 {
       // Debug logging removed)
     }
   }
 
   warn(message: string, context?: Record<string, unknown>): void {
-    if (this.shouldLog('warn')) {
+    \1 {\n  \2 {
       // Debug logging removed)
     }
   }
 
   error(message: string, context?: Record<string, unknown>): void {
-    if (this.shouldLog('error')) {
+    \1 {\n  \2 {
       // Debug logging removed)
     }
   }
@@ -136,7 +133,8 @@ export const _clearCorrelationId = (): void {
 }
 
 // Logger with correlation ID
-export class CorrelatedLogger implements Logger {
+\1
+}
   constructor(private baseLogger: Logger) {}
 
   debug(message: string, context?: Record<string, unknown>): void {
@@ -157,7 +155,7 @@ export class CorrelatedLogger implements Logger {
 
   private addCorrelationId(context?: Record<string, unknown>): Record<string, unknown> {
     const correlationId = getCorrelationId();
-    if (!correlationId) return context || {};
+    \1 {\n  \2eturn context || {};
 
     return {
       ...(context || {}),

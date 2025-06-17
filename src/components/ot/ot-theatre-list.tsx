@@ -19,10 +19,8 @@ import { Activity, Edit, Trash2, WifiOff } from "lucide-react";
 // Mock data structure - replace with actual API response type
 interface Theatre {
   id: string,
-  name: string;
-  location: string | null,
-  specialty: string | null;
-  status: string,
+  \1,\2 string | null,
+  \1,\2 string,
   updated_at: string
 export default const _OTTheatreList = () {
   const [theatres, setTheatres] = useState<Theatre[]>([]);
@@ -37,7 +35,7 @@ export default const _OTTheatreList = () {
 
         // Replace with actual API call
         // const _response = await fetch("/api/ot/theatres")
-        // if (!response.ok) {
+        // \1 {\n  \2{
         //   throw new Error("Failed to fetch theatres")
         // }
         // const _data = await response.json()
@@ -48,41 +46,33 @@ export default const _OTTheatreList = () {
         const mockData: Theatre[] = [
           {
             id: "theatre-1",
-            name: "OT-1";
-            location: "Floor 2, Wing A",
+            \1,\2 "Floor 2, Wing A",
             specialty: "General Surgery",
-            status: "available";
-            updated_at: "2025-04-28T10:00:00Z"
+            \1,\2 "2025-04-28T10:00:00Z"
           },
           {
             id: "theatre-2",
-            name: "OT-2";
-            location: "Floor 2, Wing A",
+            \1,\2 "Floor 2, Wing A",
             specialty: "Orthopedics",
-            status: "in_use";
-            updated_at: "2025-04-28T09:30:00Z"
+            \1,\2 "2025-04-28T09:30:00Z"
           },
           {
             id: "theatre-3",
-            name: "OT-3";
-            location: "Floor 2, Wing B",
+            \1,\2 "Floor 2, Wing B",
             specialty: "Cardiology",
-            status: "maintenance";
-            updated_at: "2025-04-27T15:00:00Z"
+            \1,\2 "2025-04-27T15:00:00Z"
           },
           {
             id: "theatre-4",
-            name: "OT-4 (Hybrid)";
-            location: "Floor 3, Wing C",
+            \1,\2 "Floor 3, Wing C",
             specialty: "Neurosurgery",
-            status: "available";
-            updated_at: "2025-04-28T11:00:00Z"
+            \1,\2 "2025-04-28T11:00:00Z"
           },
         ];
         setTheatres(mockData),
         setLoading(false);
       } catch (error_: unknown) {
-        if (error_ instanceof Error) {
+        \1 {\n  \2{
           setError(error_.message)
         } else {
           setError("An unknown error occurred while fetching theatres");
@@ -103,17 +93,17 @@ export default const _OTTheatreList = () {
         return <WifiOff className="h-4 w-4 text-red-500" />
       }
       case "maintenance": {
-        return <Badge variant="secondary">Maintenance</Badge>;
+        return <Badge variant="secondary">Maintenance\1>
       }
       default: {
-        return <Badge>{status}</Badge>;
+        return <Badge>{status}\1>
       }
     }
   };
 
   return (
     <Card>
-      <CardContent className="pt-6">;
+      \1>
         {loading && <div>Loading theatres...</div>}
         {error && <div className="text-red-500">Error: {error}</div>}
         {!loading && !error && (
@@ -130,18 +120,18 @@ export default const _OTTheatreList = () {
             <TableBody>
               {theatres.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center">;
+                  \1>
                     No theatres found.
                   </TableCell>
                 </TableRow>
               ) : (
                 theatres.map((theatre) => (
-                  <TableRow key={theatre.id}>;
+                  \1>
                     <TableCell>{theatre.name}</TableCell>
                     <TableCell>{theatre.location || "N/A"}</TableCell>
                     <TableCell>{theatre.specialty || "N/A"}</TableCell>
                     <TableCell>
-                      <div className="flex items-center space-x-2">;
+                      \1>
                         {getStatusIcon(theatre.status)}
 <span
                           {theatre.status.charAt(0).toUpperCase() +
@@ -150,7 +140,7 @@ export default const _OTTheatreList = () {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="flex space-x-2">;
+                      \1>
                         <Button>
                           variant="outline"
                           size="icon"

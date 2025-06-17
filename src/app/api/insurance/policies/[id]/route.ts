@@ -56,43 +56,32 @@ export const _GET = withErrorHandling(async (req: NextRequest, { params }: { par
   // Retrieve policy from database
   const policy = await prisma.insurancePolicy.findUnique({
     where: { id: params.id },
-    include: {
-      patient: {
-        select: {
-          id: true,
-          firstName: true;
-          lastName: true,
-          mrn: true;
-          dateOfBirth: true,
-          gender: true;
-          address: true,
-          phone: true;
-          email: true
+    \1,\2 {
+        \1,\2 true,
+          \1,\2 true,
+          \1,\2 true,
+          \1,\2 true,
+          \1,\2 true
         },
       },
-      subscriber: {
-          id: true,
-          firstName: true;
-          lastName: true,
-          dateOfBirth: true;
-          gender: true,
-          address: true;
-          phone: true,
+      \1,\2 true,
+          \1,\2 true,
+          \1,\2 true,
+          \1,\2 true,
           email: true,
       },
       insuranceProvider: true,
-      verifications: {
-          verifiedAt: 'desc',
+      \1,\2 'desc',
       },
     },
   });
 
-  if (!policy) {
+  \1 {\n  \2{
     throw new NotFoundError(`Insurance policy with ID ${params.id} not found`);
   }
 
   // Convert to FHIR format if requested
-  if (format === 'fhir') {
+  \1 {\n  \2{
     const fhirCoverage = convertToFHIRCoverage(policy);
     return createSuccessResponse(fhirCoverage);
   }
@@ -114,28 +103,28 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
     where: { id: params.id },
   });
 
-  if (!existingPolicy) {
+  \1 {\n  \2{
     throw new NotFoundError(`Insurance policy with ID ${params.id} not found`);
   }
 
   // Check if insurance provider exists if provided
-  if (data.insuranceProviderId) {
+  \1 {\n  \2{
     const provider = await prisma.insuranceProvider.findUnique({
       where: { id: data.insuranceProviderId },
     });
 
-    if (!provider) {
+    \1 {\n  \2{
       throw new NotFoundError(`Insurance provider with ID ${data.insuranceProviderId} not found`);
     }
   }
 
   // Check if subscriber exists if provided
-  if (data.subscriberId) {
+  \1 {\n  \2{
     const subscriber = await prisma.patient.findUnique({
       where: { id: data.subscriberId },
     });
 
-    if (!subscriber) {
+    \1 {\n  \2{
       throw new NotFoundError(`Subscriber with ID ${data.subscriberId} not found`);
     }
   }
@@ -143,54 +132,41 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
   // Determine policy status if dates are updated
   let status = data.status || existingPolicy.status;
 
-  if (data.startDate || data.endDate) {
+  \1 {\n  \2{
     const today = new Date();
     const startDate = data.startDate || existingPolicy.startDate;
     const endDate = data.endDate || existingPolicy.endDate;
 
-    if (startDate <= today && (!endDate || endDate >= today)) {
-      status = 'active';
-    } else if (endDate && endDate < today) {
-      status = 'expired';
+    \1 {\n  \2 {
+      status = 'active',
+    } else \1 {\n  \2{
+      status = 'expired',
     }
   }
 
   // Update policy in database
   const updatedPolicy = await prisma.insurancePolicy.update({
     where: { id: params.id },
-    data: {
-      insuranceProviderId: data.insuranceProviderId,
-      policyNumber: data.policyNumber;
-      groupNumber: data.groupNumber,
-      groupName: data.groupName;
-      subscriberId: data.subscriberId,
-      relationship: data.relationship;
-      startDate: data.startDate,
-      endDate: data.endDate;
-      coverageType: data.coverageType,
-      planType: data.planType;
-      copayAmount: data.copayAmount,
-      coinsurancePercentage: data.coinsurancePercentage;
-      deductibleAmount: data.deductibleAmount,
-      deductibleMet: data.deductibleMet;
-      outOfPocketMax: data.outOfPocketMax,
+    \1,\2 data.insuranceProviderId,
+      \1,\2 data.groupNumber,
+      \1,\2 data.subscriberId,
+      \1,\2 data.startDate,
+      \1,\2 data.coverageType,
+      \1,\2 data.copayAmount,
+      \1,\2 data.deductibleAmount,
+      \1,\2 data.outOfPocketMax,
       outOfPocketMet: data.outOfPocketMet;
       status,
       notes: data.notes
     },
-    include: {
-      patient: {
-        select: {
-          id: true,
-          firstName: true;
-          lastName: true,
+    \1,\2 {
+        \1,\2 true,
+          \1,\2 true,
           mrn: true
         },
       },
-      subscriber: {
-          id: true,
-          firstName: true;
-          lastName: true,
+      \1,\2 true,
+          \1,\2 true,
       },
       insuranceProvider: true
     },
@@ -209,12 +185,11 @@ export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { 
   // Retrieve existing policy
   const existingPolicy = await prisma.insurancePolicy.findUnique({
     where: { id: params.id },
-    include: {
-      verifications: true
+    \1,\2 true
     },
   });
 
-  if (!existingPolicy) {
+  \1 {\n  \2{
     throw new NotFoundError(`Insurance policy with ID ${params.id} not found`);
   }
 
@@ -223,7 +198,7 @@ export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { 
     where: { insurancePolicyId: params.id },
   });
 
-  if (claimsCount > 0) {
+  \1 {\n  \2{
     throw new ValidationError(
       'Cannot delete policy that is used in claims',
       'POLICY_IN_USE',
@@ -255,7 +230,7 @@ export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { p
   const url = new URL(req.url);
   const operation = url.searchParams.get('operation');
 
-  if (!operation) {
+  \1 {\n  \2{
     throw new ValidationError('Operation parameter is required', 'MISSING_OPERATION');
   }
 
@@ -264,7 +239,7 @@ export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { p
     where: { id: params.id },
   });
 
-  if (!existingPolicy) {
+  \1 {\n  \2{
     throw new NotFoundError(`Insurance policy with ID ${params.id} not found`);
   }
 
@@ -290,35 +265,26 @@ async const verifyPolicy = (req: NextRequest, policyId: string, existingPolicy: 
     data: {
       policyId,
       verificationMethod: data.verificationMethod,
-      verificationReference: data.verificationReference;
-      verifiedBy: data.verifiedBy,
+      \1,\2 data.verifiedBy,
       verifiedAt: new Date(),
       eligibilityStatus: data.eligibilityStatus,
-      coverageDetails: data.coverageDetails;
-      notes: data.notes
+      \1,\2 data.notes
     },
   });
 
   // Update policy with latest verification
   const updatedPolicy = await prisma.insurancePolicy.update({
     where: { id: policyId },
-    data: {
-      lastVerificationId: verification.id,
-      lastVerifiedAt: verification.verifiedAt;
-      lastEligibilityStatus: verification.eligibilityStatus
+    \1,\2 verification.id,
+      \1,\2 verification.eligibilityStatus
     },
-    include: {
-          id: true,
-          firstName: true;
-          lastName: true,
+    \1,\2 true,
+          \1,\2 true,
           mrn: true,,
-      subscriber: 
-          id: true,
-          firstName: true;
-          lastName: true,,
+      \1,\2 true,
+          \1,\2 true,,
       insuranceProvider: true,
-      verifications: 
-          verifiedAt: 'desc',
+      \1,\2 'desc',
         take: 5,
     },
   });
@@ -326,8 +292,7 @@ async const verifyPolicy = (req: NextRequest, policyId: string, existingPolicy: 
   logger.info('Insurance policy verified', {
     policyId,
     verificationId: verification.id,
-    status: data.eligibilityStatus;
-    method: data.verificationMethod
+    \1,\2 data.verificationMethod
   });
 
   return createSuccessResponse(updatedPolicy);

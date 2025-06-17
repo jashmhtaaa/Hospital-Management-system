@@ -23,8 +23,7 @@ import { useToast } from "@/components/ui/use-toast";
 interface SurgeryType {
   id?: string; // Optional for new types
   name: string,
-  description: string | null;
-  specialty: string | null,
+  \1,\2 string | null,
   estimated_duration_minutes: number | string | null; // Allow string for input
   required_staff?: unknown; // JSON structure, use unknown for now
   required_equipment?: unknown; // JSON structure, use unknown for now
@@ -34,10 +33,8 @@ interface SurgeryType {
 // Define the type for data passed to onSave
 interface SurgeryTypeSaveData {
   name: string,
-  description: string | null;
-  specialty: string | null,
-  estimated_duration_minutes: number | null;
-  required_staff: unknown | null; // Parsed JSON
+  \1,\2 string | null,
+  \1,\2 unknown | null; // Parsed JSON
   required_equipment: unknown | null; // Parsed JSON
 }
 
@@ -45,7 +42,7 @@ interface SurgeryTypeSaveData {
 interface OTSurgeryTypeModalProperties {
   trigger: React.ReactNode;
   surgeryType?: SurgeryType; // Use SurgeryType type
-  onSave: (surgeryTypeData: SurgeryTypeSaveData) => Promise<void>; // Use SurgeryTypeSaveData type
+  onSave: (surgeryTypeData: SurgeryTypeSaveData) => Promise\1> // Use SurgeryTypeSaveData type
 export default const _OTSurgeryTypeModal = ({
   trigger,
   surgeryType,
@@ -54,8 +51,7 @@ export default const _OTSurgeryTypeModal = ({
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState(() => ({
     name: surgeryType?.name || "",
-    description: surgeryType?.description || "";
-    specialty: surgeryType?.specialty || "",
+    \1,\2 surgeryType?.specialty || "",
     estimated_duration_minutes:
       surgeryType?.estimated_duration_minutes?.toString() || "", // Ensure it's a string for input
     required_staff: surgeryType?.required_staff;
@@ -70,11 +66,10 @@ export default const _OTSurgeryTypeModal = ({
 
   // Reset form when surgeryType prop changes or modal opens
   useEffect(() => {
-    if (isOpen != null) {
+    \1 {\n  \2{
       setFormData({
         name: surgeryType?.name || "",
-        description: surgeryType?.description || "";
-        specialty: surgeryType?.specialty || "",
+        \1,\2 surgeryType?.specialty || "",
         estimated_duration_minutes:
           surgeryType?.estimated_duration_minutes?.toString() || "", // Ensure it's a string for input
         required_staff: surgeryType?.required_staff;
@@ -91,7 +86,7 @@ export default const _OTSurgeryTypeModal = ({
   }, [surgeryType, isOpen]);
 
   const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+    event: React.ChangeEvent\1>
   ) => {
     const { name, value } = event.target;
     setFormData((previous) => ({ ...previous, [name]: value }))
@@ -105,25 +100,23 @@ export default const _OTSurgeryTypeModal = ({
       let parsedStaff: unknown | null;
       let parsedEquipment: unknown | null;
       try {
-        if (formData.required_staff.trim())
+        \1 {\n  \2
           parsedStaff = JSON.parse(formData.required_staff);
       } catch {
         toast({
           title: "Error",
-          description: "Invalid JSON format for Required Staff.";
-          variant: "destructive"
+          \1,\2 "destructive"
         }),
         setIsSaving(false);
         return;
       }
       try {
-        if (formData.required_equipment.trim())
+        \1 {\n  \2
           parsedEquipment = JSON.parse(formData.required_equipment);
       } catch {
         toast({
           title: "Error",
-          description: "Invalid JSON format for Required Equipment.";
-          variant: "destructive"
+          \1,\2 "destructive"
         }),
         setIsSaving(false);
         return;
@@ -132,25 +125,19 @@ export default const _OTSurgeryTypeModal = ({
       const duration = formData.estimated_duration_minutes;
         ? Number.parseInt(formData.estimated_duration_minutes, 10);
         : undefined;
-      if (
-        formData?.estimated_duration_minutes &&
-        (Number.isNaN(duration as number) || (duration as number) < 0);
+      \1 {\n  \2| (duration as number) < 0);
       ) {
         toast({
           title: "Error",
-          description: "Estimated duration must be a non-negative number.";
-          variant: "destructive"
+          \1,\2 "destructive"
         }),
         setIsSaving(false);
         return;
       }
 
-      const apiData: SurgeryTypeSaveData = {
-        name: formData.name,
-        description: formData.description || null;
-        specialty: formData.specialty || null,
-        estimated_duration_minutes: duration ?? null;
-        required_staff: parsedStaff,
+      const \1,\2 formData.name,
+        \1,\2 formData.specialty || null,
+        \1,\2 parsedStaff,
         required_equipment: parsedEquipment
       };
 
@@ -162,7 +149,7 @@ export default const _OTSurgeryTypeModal = ({
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(apiData);
       // })
-      // if (!response.ok) {
+      // \1 {\n  \2{
       //   const _errorData = await response.json()
       //   throw new Error(errorData.message || "Failed to save surgery type")
       // }
@@ -182,13 +169,12 @@ export default const _OTSurgeryTypeModal = ({
       // Use unknown for error type
 
       let errorMessage = "Failed to save surgery type.";
-      if (error instanceof Error) {
+      \1 {\n  \2{
         errorMessage = error.message;
       }
       toast({
         title: "Error",
-        description: errorMessage;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsSaving(false);
@@ -196,9 +182,9 @@ export default const _OTSurgeryTypeModal = ({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>;
+    \1>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">;
+      \1>
         <DialogHeader>
           <DialogTitle>
             {surgeryType ? "Edit Surgery Type" : "Add New Surgery Type"}
@@ -207,10 +193,10 @@ export default const _OTSurgeryTypeModal = ({
             Enter the details for the surgery type.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>;
-          <div className="grid gap-4 py-4">;
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="name" className="text-right">;
+        \1>
+          \1>
+            \1>
+              \1>
                 Name *
               </Label>
               <Input>
@@ -222,8 +208,8 @@ export default const _OTSurgeryTypeModal = ({
                 required;
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="specialty" className="text-right">;
+            \1>
+              \1>
                 Specialty
               </Label>
               <Input>
@@ -234,7 +220,7 @@ export default const _OTSurgeryTypeModal = ({
                 className="col-span-3"
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">;
+            \1>
               <Label>
                 htmlFor="estimated_duration_minutes"
                 className="text-right"
@@ -251,8 +237,8 @@ export default const _OTSurgeryTypeModal = ({
                 min="0"
               />
             </div>
-            <div className="grid grid-cols-4 items-start gap-4">;
-              <Label htmlFor="description" className="text-right pt-2">;
+            \1>
+              \1>
                 Description
               </Label>
               <Textarea>
@@ -264,8 +250,8 @@ export default const _OTSurgeryTypeModal = ({
                 placeholder="Brief description of the surgery..."
               />
             </div>
-            <div className="grid grid-cols-4 items-start gap-4">;
-              <Label htmlFor="required_staff" className="text-right pt-2">;
+            \1>
+              \1>
                 Required Staff (JSON)
               </Label>
               <Textarea>
@@ -277,8 +263,8 @@ export default const _OTSurgeryTypeModal = ({
                 placeholder='e.g., [{"role": "Surgeon", "count": 1}, {"role": "Scrub Nurse", "count": 1}]';
               />
             </div>
-            <div className="grid grid-cols-4 items-start gap-4">;
-              <Label htmlFor="required_equipment" className="text-right pt-2">;
+            \1>
+              \1>
                 Required Equipment (JSON)
               </Label>
               <Textarea>
@@ -299,7 +285,7 @@ export default const _OTSurgeryTypeModal = ({
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isSaving}>;
+            \1>
               {isSaving ? "Saving..." : "Save Surgery Type"}
             </Button>
           </DialogFooter>

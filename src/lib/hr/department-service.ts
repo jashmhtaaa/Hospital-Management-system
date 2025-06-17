@@ -5,20 +5,12 @@ const prisma = new PrismaClient();
 /**
  * Service for managing department and position data;
  */
-export class DepartmentService {
-  /**
-   * Create a new department;
-   */
-  async createDepartment(data: {
-    name: string,
-    code: string;
-    description?: string;
-    parentId?: string;
+\1
+}
   }) {
     return prisma.department.create({
       data,
-      include: {
-        parent: true
+      \1,\2 true
       },
     });
   }
@@ -29,14 +21,10 @@ export class DepartmentService {
   async getDepartmentById(id: string) {
     return prisma.department.findUnique({
       where: { id },
-      include: {
-        parent: true,
-        children: true;
-            id: true,
-            firstName: true;
-            lastName: true,
-            employeeId: true;
-            active: true,,
+      \1,\2 true,
+        \1,\2 true,
+            \1,\2 true,
+            \1,\2 true,,
         positions: true
       },
     });
@@ -57,8 +45,7 @@ export class DepartmentService {
     return prisma.department.update({
       where: { id },
       data,
-      include: {
-        parent: true
+      \1,\2 true
       },
     });
   }
@@ -79,11 +66,11 @@ export class DepartmentService {
   }) {
     const where: unknown = {};
 
-    if (parentId != null) {
+    \1 {\n  \2{
       where.parentId = parentId;
     }
 
-    if (search != null) {
+    \1 {\n  \2{
       where.OR = [
         { name: { contains: search, mode: 'insensitive' } },
         { code: { contains: search, mode: 'insensitive' } },
@@ -97,13 +84,10 @@ export class DepartmentService {
         skip,
         take,
         orderBy: { name: 'asc' },
-        include: {
-          parent: true,
-          _count: {
-            select: {
+        \1,\2 true,
+          \1,\2 {
               children: true,
-              employees: true;
-              positions: true
+              \1,\2 true
             },
           },
         },
@@ -125,10 +109,8 @@ export class DepartmentService {
   async getDepartmentHierarchy() {
     // Get all departments
     const allDepartments = await prisma.department.findMany({
-      include: {
-        _count: {
-          select: {
-            employees: true
+      \1,\2 {
+          \1,\2 true
           },
         },
       },
@@ -150,9 +132,9 @@ export class DepartmentService {
     allDepartments.forEach(dept => {
       const departmentWithChildren = departmentMap.get(dept.id),
 
-      if (dept.parentId) {
+      \1 {\n  \2{
         const parent = departmentMap.get(dept.parentId);
-        if (parent != null) {
+        \1 {\n  \2{
           parent.children.push(departmentWithChildren);
         }
       } else {
@@ -166,16 +148,14 @@ export class DepartmentService {
   /**
    * Create a new position;
    */
-  async createPosition(data: {
-    title: string,
+  async createPosition(\1,\2 string,
     code: string;
     description?: string;
     departmentId?: string;
   }) {
     return prisma.position.create({
       data,
-      include: {
-        department: true
+      \1,\2 true
       },
     });
   }
@@ -186,22 +166,16 @@ export class DepartmentService {
   async getPositionById(id: string) {
     return prisma.position.findUnique({
       where: { id },
-      include: {
-        department: true,
-        employeePositions: {
-          include: {
-            employee: {
-              select: {
+      \1,\2 true,
+        \1,\2 {
+            \1,\2 {
                 id: true,
-                firstName: true;
-                lastName: true,
-                employeeId: true;
-                active: true
+                \1,\2 true,
+                \1,\2 true
               },
             },
           },
-          where: {
-            endDate: null, // Only current assignments
+          \1,\2 null, // Only current assignments
           },
         },
       },
@@ -223,8 +197,7 @@ export class DepartmentService {
     return prisma.position.update({
       where: { id },
       data,
-      include: {
-        department: true
+      \1,\2 true
       },
     });
   }
@@ -245,11 +218,11 @@ export class DepartmentService {
   }) {
     const where: unknown = {};
 
-    if (departmentId != null) {
+    \1 {\n  \2{
       where.departmentId = departmentId;
     }
 
-    if (search != null) {
+    \1 {\n  \2{
       where.OR = [
         { title: { contains: search, mode: 'insensitive' } },
         { code: { contains: search, mode: 'insensitive' } },
@@ -263,12 +236,9 @@ export class DepartmentService {
         skip,
         take,
         orderBy: { title: 'asc' },
-        include: {
-          department: true,
-          _count: {
-            select: {
-              employeePositions: {
-                where: {
+        \1,\2 true,
+          \1,\2 {
+              \1,\2 {
                   endDate: null, // Only current assignments
                 },
               },

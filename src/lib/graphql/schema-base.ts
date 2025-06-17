@@ -15,31 +15,26 @@ export const pubsub = new PubSub();
 export const _SUBSCRIPTION_EVENTS = {
   // Laboratory events
   LAB_ORDER_CREATED: 'LAB_ORDER_CREATED',
-  LAB_RESULT_UPDATED: 'LAB_RESULT_UPDATED';
-  CRITICAL_RESULT_ALERT: 'CRITICAL_RESULT_ALERT',
+  \1,\2 'CRITICAL_RESULT_ALERT',
   SAMPLE_STATUS_CHANGED: 'SAMPLE_STATUS_CHANGED';
 
   // Pharmacy events
   PRESCRIPTION_CREATED: 'PRESCRIPTION_CREATED',
-  MEDICATION_DISPENSED: 'MEDICATION_DISPENSED';
-  DRUG_INTERACTION_ALERT: 'DRUG_INTERACTION_ALERT',
+  \1,\2 'DRUG_INTERACTION_ALERT',
   INVENTORY_LOW_STOCK: 'INVENTORY_LOW_STOCK';
 
   // Emergency Department events
   PATIENT_TRIAGED: 'PATIENT_TRIAGED',
-  BED_ASSIGNMENT_CHANGED: 'BED_ASSIGNMENT_CHANGED';
-  CRITICAL_PATIENT_ALERT: 'CRITICAL_PATIENT_ALERT',
+  \1,\2 'CRITICAL_PATIENT_ALERT',
   ED_CAPACITY_ALERT: 'ED_CAPACITY_ALERT';
 
   // Clinical Documentation events
   CLINICAL_NOTE_CREATED: 'CLINICAL_NOTE_CREATED',
-  CARE_PLAN_UPDATED: 'CARE_PLAN_UPDATED';
-  QUALITY_METRIC_ALERT: 'QUALITY_METRIC_ALERT';
+  \1,\2 'QUALITY_METRIC_ALERT';
 
   // Patient Management events
   PATIENT_REGISTERED: 'PATIENT_REGISTERED',
-  PATIENT_UPDATED: 'PATIENT_UPDATED';
-  APPOINTMENT_SCHEDULED: 'APPOINTMENT_SCHEDULED',
+  \1,\2 'APPOINTMENT_SCHEDULED',
   INSURANCE_VERIFIED: 'INSURANCE_VERIFIED'
 } as const;
 
@@ -70,28 +65,22 @@ export const _baseTypeDefs = gql`
   # Base interfaces;
   interface Node {
     id: ID!,
-    createdAt: DateTime!;
-    updatedAt: DateTime!
+    \1,\2 DateTime!
   }
 
   interface AuditableEntity {
     id: ID!,
-    createdAt: DateTime!;
-    updatedAt: DateTime!,
-    createdBy: String!;
-    updatedBy: String,
+    \1,\2 DateTime!,
+    \1,\2 String,
     version: Int!
   }
 
   # Common types;
   type Address {
     line1: String!,
-    line2: String;
-    city: String!,
-    state: String!;
-    postalCode: String!,
-    country: String!;
-    type: AddressType!
+    \1,\2 String!,
+    \1,\2 String!,
+    \1,\2 AddressType!
   }
 
   enum AddressType {
@@ -103,15 +92,13 @@ export const _baseTypeDefs = gql`
 
   type ContactInfo {
     phone: String,
-    mobile: String;
-    email: String,
+    \1,\2 String,
     fax: String
   }
 
   type Identifier {
     system: String!,
-    value: String!;
-    type: String,
+    \1,\2 String,
     use: IdentifierUse
   }
 
@@ -126,31 +113,25 @@ export const _baseTypeDefs = gql`
   # FHIR-compliant coding;
   type Coding {
     system: String,
-    version: String;
-    code: String,
-    display: String;
-    userSelected: Boolean
+    \1,\2 String,
+    \1,\2 Boolean
   }
 
   type CodeableConcept {
-    coding: [Coding!]
-    text: String
+    \1,\2 String
   }
 
   # Pagination;
   type PageInfo {
     hasNextPage: Boolean!,
-    hasPreviousPage: Boolean!;
-    startCursor: String,
-    endCursor: String;
-    total: Int!
+    \1,\2 String,
+    \1,\2 Int!
   }
 
   # Common input types;
   input PaginationInput {
     first: Int,
-    after: String;
-    last: Int,
+    \1,\2 Int,
     before: String
   }
 
@@ -166,8 +147,7 @@ export const _baseTypeDefs = gql`
 
   input FilterInput {
     field: String!,
-    operator: FilterOperator!;
-    value: String!
+    \1,\2 String!
   }
 
   enum FilterOperator {
@@ -190,28 +170,22 @@ export const _baseTypeDefs = gql`
   # Error handling;
   type Error {
     code: String!,
-    message: String!;
-    field: String,
+    \1,\2 String,
     details: JSON
   }
 
   type MutationResponse {
     success: Boolean!,
-    errors: [Error!]
-    message: String
+    \1,\2 String
   }
 
   # Real-time notifications;
   type Notification {
     id: ID!,
-    type: NotificationType!
-    title: String!,
-    message: String!;
-    data: JSON,
-    priority: Priority!;
-    timestamp: DateTime!,
-    userId: String;
-    read: Boolean!
+    \1,\2 String!,
+    \1,\2 JSON,
+    \1,\2 DateTime!,
+    \1,\2 Boolean!
   }
 
   enum NotificationType {
@@ -225,20 +199,16 @@ export const _baseTypeDefs = gql`
   # File upload;
   type FileUpload {
     id: ID!,
-    filename: String!;
-    mimetype: String!,
-    encoding: String!;
-    url: String!,
-    size: Int!;
-    uploadedAt: DateTime!,
+    \1,\2 String!,
+    \1,\2 String!,
+    \1,\2 DateTime!,
     uploadedBy: String!
   }
 
   # System health;
   type HealthStatus {
     service: String!,
-    status: HealthStatusType!;
-    timestamp: DateTime!,
+    \1,\2 DateTime!,
     details: JSON
   }
 
@@ -282,34 +252,26 @@ export const _baseTypeDefs = gql`
   # System info;
   type SystemInfo {
     version: String!,
-    environment: String!;
-    uptime: Int!,
-    timestamp: DateTime!;
-    features: [String!]!
+    \1,\2 Int!,
+    \1,\2 [String!]!
   }
 
   # User type (basic structure);
   type User implements Node {
     id: ID!,
-    email: String!;
-    firstName: String!,
-    lastName: String!;
-    fullName: String!,
-    role: String!;
-    department: String,
-    isActive: Boolean!;
-    lastLoginAt: DateTime,
-    createdAt: DateTime!;
-    updatedAt: DateTime!,
+    \1,\2 String!,
+    \1,\2 String!,
+    \1,\2 String,
+    \1,\2 DateTime,
+    \1,\2 DateTime!,
     permissions: [String!]!
   }
 `;
 
 // Base resolvers
 export const _baseResolvers = {
-  DateTime: {
-    serialize: (date: unknown) => {
-      if (date instanceof Date) {
+  \1,\2 (date: unknown) => {
+      \1 {\n  \2{
         return date.toISOString()
       }
       return date;
@@ -322,8 +284,7 @@ export const _baseResolvers = {
     },
   },
 
-  JSON: {
-    serialize: (value: unknown) => value,
+  \1,\2 (value: unknown) => value,
     parseValue: (value: unknown) => value,
     parseLiteral: (ast: unknown) => {
       switch (ast.kind) {
@@ -345,35 +306,29 @@ export const _baseResolvers = {
     },
   },
 
-  Query: {
-    health: async () => {
+  \1,\2 async () => {
       // Implementation would check actual services
       return [
         {
           service: 'database',
-          status: 'HEALTHY';
-          timestamp: new Date(),
+          \1,\2 new Date(),
           details: { connections: 10, responseTime: '50ms' },
         },
         {
           service: 'cache',
-          status: 'HEALTHY';
-          timestamp: new Date(),
+          \1,\2 new Date(),
           details: { hitRate: 0.95, memoryUsage: '45%' },
         },
         {
           service: 'fhir-server',
-          status: 'HEALTHY';
-          timestamp: new Date(),
+          \1,\2 new Date(),
           details: { resources: 1250 },
         },
       ];
     },
 
-    systemInfo: () => ({
-      version: process.env.npm_package_version || '1.0.0',
-      environment: process.env.NODE_ENV || 'development';
-      uptime: Math.floor(process.uptime()),
+    \1,\2 process.env.npm_package_version || '1.0.0',
+      \1,\2 Math.floor(process.uptime()),
       timestamp: new Date(),
       features: [
         'FHIR_R4_COMPLIANCE',
@@ -390,14 +345,13 @@ export const _baseResolvers = {
     },
   },
 
-  Mutation: {
-    uploadFile: async (parent, { file }, context) => {
+  \1,\2 async (parent, { file }, context) => {
       // File upload implementation
       const { createReadStream, filename, mimetype, encoding } = await file;
 
       // Implementation would save file and return metadata
       return {
-        id: 'file-' + crypto.getRandomValues(new Uint32Array(1))[0];
+        id: 'file-' + crypto.getRandomValues(\1[0];
         filename,
         mimetype,
         encoding,
@@ -412,28 +366,23 @@ export const _baseResolvers = {
       // Implementation would update notification status
       return {
         success: true,
-        message: 'Notification marked as read';
-        errors: []
+        \1,\2 []
       };
     },
   },
 
-  Subscription: {
-    notifications: {
+  \1,\2 {
       subscribe: (parent, { userId }, context) => {
         const eventName = userId ? `NOTIFICATION_$userId` : 'NOTIFICATION_GLOBAL';
         return pubsub.asyncIterator([eventName]);
       },
     },
 
-    healthUpdates: {
-      subscribe: () => pubsub.asyncIterator(['HEALTH_UPDATE'])
+    \1,\2 () => pubsub.asyncIterator(['HEALTH_UPDATE'])
     },
   },
 
-  User: {
-    fullName: (parent) => `/* SECURITY: Template literal eliminated */
-    permissions: async (parent, args, context) => {
+  \1,\2 (parent) => `/* \1,\2 async (parent, args, context) => {
       // Implementation would fetch user permissions from RBAC system
       return parent.permissions || [];
     },
@@ -441,23 +390,17 @@ export const _baseResolvers = {
 };
 
 // Utility functions for GraphQL
-export class GraphQLUtils {
-  static formatError(error: unknown) {
-    return {
-      message: error.message,
-      code: error.extensions?.code || 'INTERNAL_ERROR';
-      field: error.extensions?.field,
-      details: error.extensions?.details
+\1
+}
     };
   }
 
   static createConnection<T>(
     items: T[],
-    args: unknown;
-    totalCount: number;
+    \1,\2 number;
   ) {
     const edges = items.map((item: unknown, index) => ({
-      cursor: Buffer.from(`${index}`).toString('base64'),
+      cursor: Buffer.from(`${\1}`.toString('base64'),
       node: item
     }));
 
@@ -470,8 +413,7 @@ export class GraphQLUtils {
         hasNextPage,
         hasPreviousPage,
         startCursor: edges.length > 0 ? edges[0].cursor : null,
-        endCursor: edges.length > 0 ? edges[edges.length - 1].cursor : null;
-        total: totalCount
+        \1,\2 totalCount
       },
     };
   }
@@ -484,45 +426,19 @@ export class GraphQLUtils {
 
       switch (operator) {
         case 'EQUALS':
-          where[field] = value;
-          break;
-        case 'NOT_EQUALS':
-          where[field] = { not: value };
-          break;
-        case 'CONTAINS':
-          where[field] = { contains: value, mode: 'insensitive' };
-          break;
-        case 'NOT_CONTAINS':
-          where[field] = { not: { contains: value, mode: 'insensitive' } };
-          break;
-        case 'STARTS_WITH':
-          where[field] = { startsWith: value, mode: 'insensitive' };
-          break;
-        case 'ENDS_WITH':
-          where[field] = { endsWith: value, mode: 'insensitive' };
-          break;
-        case 'GREATER_THAN':
-          where[field] = { gt: Number.parseFloat(value) };
-          break;
-        case 'LESS_THAN':
-          where[field] = { lt: Number.parseFloat(value) };
-          break;
-        case 'GREATER_THAN_OR_EQUAL':
-          where[field] = { gte: Number.parseFloat(value) };
-          break;
-        case 'LESS_THAN_OR_EQUAL':
-          where[field] = { lte: Number.parseFloat(value) };
-          break;
-        case 'IN':
-          where[field] = { in: value.split(',') };
-          break;
-        case 'NOT_IN':
-          where[field] = { notIn: value.split(',') };
-          break;
-        case 'IS_NULL':
-          where[field] = null;
-          break;
-        case 'IS_NOT_NULL':
+          where[field] = value;\1\n    }\n    case 'NOT_EQUALS':
+          where[field] = { not: value };\1\n    }\n    case 'CONTAINS':
+          where[field] = { contains: value, mode: 'insensitive' };\1\n    }\n    case 'NOT_CONTAINS':
+          where[field] = { not: { contains: value, mode: 'insensitive' } };\1\n    }\n    case 'STARTS_WITH':
+          where[field] = { startsWith: value, mode: 'insensitive' };\1\n    }\n    case 'ENDS_WITH':
+          where[field] = { endsWith: value, mode: 'insensitive' };\1\n    }\n    case 'GREATER_THAN':
+          where[field] = { gt: Number.parseFloat(value) };\1\n    }\n    case 'LESS_THAN':
+          where[field] = { lt: Number.parseFloat(value) };\1\n    }\n    case 'GREATER_THAN_OR_EQUAL':
+          where[field] = { gte: Number.parseFloat(value) };\1\n    }\n    case 'LESS_THAN_OR_EQUAL':
+          where[field] = { lte: Number.parseFloat(value) };\1\n    }\n    case 'IN':
+          where[field] = { in: value.split(',') };\1\n    }\n    case 'NOT_IN':
+          where[field] = { notIn: value.split(',') };\1\n    }\n    case 'IS_NULL':
+          where[field] = null;\1\n    }\n    case 'IS_NOT_NULL':
           where[field] = { not: null };
           break;
       }
@@ -540,14 +456,13 @@ export class GraphQLUtils {
   // Real-time notification utilities
   static async publishNotification(
     type: string,
-    title: string;
-    message: string;
+    \1,\2 string;
     data?: unknown,
     userId?: string,
     priority: string = 'MEDIUM';
   ) {
     const notification = {
-      id: `notification-${crypto.getRandomValues(new Uint32Array(1))[0]}-${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1)}`,
+      id: `notification-${crypto.getRandomValues(\1[0]}-${crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1)}`,
       type,
       title,
       message,
@@ -587,7 +502,7 @@ export class GraphQLUtils {
     };
 
     // Convert FHIR dates to GraphQL DateTime format
-    if (fhirResource.meta?.lastUpdated) {
+    \1 {\n  \2{
       graphqlResource.updatedAt = new Date(fhirResource.meta.lastUpdated);
     }
 
@@ -599,8 +514,7 @@ export class GraphQLUtils {
     const fhirResource = {
       resourceType,
       id: graphqlData.id,
-      meta: {
-        versionId: '1',
+      \1,\2 '1',
         lastUpdated: new Date().toISOString(),
         source: 'HMS-GraphQL'
       },

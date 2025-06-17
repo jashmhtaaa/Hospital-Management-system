@@ -5,16 +5,8 @@ const prisma = new PrismaClient();
 /**
  * Service for biometric integration and management;
  */
-export class BiometricService {
-  /**
-   * Register a new biometric template for an employee;
-   */
-  async registerBiometricTemplate(data: {
-    employeeId: string,
-    templateType: 'FINGERPRINT' | 'FACIAL' | 'IRIS';
-    templateData: string;
-    deviceId?: string;
-    notes?: string;
+\1
+}
   }) {
     const { employeeId, templateType, templateData, deviceId, notes } = data;
 
@@ -23,7 +15,7 @@ export class BiometricService {
       where: { id: employeeId },
     });
 
-    if (!employee) {
+    \1 {\n  \2{
       throw new Error('Employee not found');
     }
 
@@ -35,11 +27,10 @@ export class BiometricService {
       },
     });
 
-    if (existingTemplate != null) {
+    \1 {\n  \2{
       // Update existing template
       return prisma.biometricTemplate.update({
-        where: {
-          id: existingTemplate.id
+        \1,\2 existingTemplate.id
         },
         data: {
           templateData,
@@ -85,10 +76,8 @@ export class BiometricService {
    * Verify biometric data against stored template;
    * This is a placeholder for actual biometric verification logic;
    */
-  async verifyBiometric(data: {
-    employeeId: string,
-    templateType: 'FINGERPRINT' | 'FACIAL' | 'IRIS';
-    sampleData: string
+  async verifyBiometric(\1,\2 string,
+    \1,\2 string
   }) {
     const { employeeId, templateType, sampleData } = data;
 
@@ -100,7 +89,7 @@ export class BiometricService {
       },
     });
 
-    if (!template) {
+    \1 {\n  \2{
       throw new Error('No biometric template found for this employee');
     }
 
@@ -112,13 +101,12 @@ export class BiometricService {
     // In production, this would integrate with a biometric verification service
 
     // Simulate 95% success rate for verification
-    const isMatch = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) < 0.95;
-    const matchScore = isMatch ? 0.8 + (crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 0.2) : crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 0.7;
+    const isMatch = crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) < 0.95;
+    const matchScore = isMatch ? 0.8 + (crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 0.2) : crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 0.7;
 
     // Log the verification attempt
     await prisma.auditLog.create({
-      data: {
-        userId: null,
+      \1,\2 null,
         eventType: 'BIOMETRIC_VERIFICATION';
           employeeId,
           templateType,
@@ -138,10 +126,8 @@ export class BiometricService {
   /**
    * Register a biometric device;
    */
-  async registerBiometricDevice(data: {
-    deviceId: string,
-    deviceType: 'FINGERPRINT_SCANNER' | 'FACIAL_RECOGNITION' | 'IRIS_SCANNER';
-    location: string;
+  async registerBiometricDevice(\1,\2 string,
+    \1,\2 string;
     ipAddress?: string;
     serialNumber?: string;
     manufacturer?: string;
@@ -155,11 +141,10 @@ export class BiometricService {
       where: { deviceId },
     });
 
-    if (existingDevice != null) {
+    \1 {\n  \2{
       // Update existing device
       return prisma.biometricDevice.update({
-        where: {
-          id: existingDevice.id
+        \1,\2 existingDevice.id
         },
         data: {
           deviceType,
@@ -211,23 +196,22 @@ export class BiometricService {
     const { employeeId, startDate, endDate, skip = 0, take = 50 } = options;
 
     // Build where clause
-    const where: unknown = {
-      eventType: 'BIOMETRIC_VERIFICATION'
+    const \1,\2 'BIOMETRIC_VERIFICATION'
     };
 
-    if (employeeId != null) {
+    \1 {\n  \2{
       where.details = {
         path: ['employeeId'],
         equals: employeeId
       };
     }
 
-    if (startDate || endDate) {
+    \1 {\n  \2{
       where.createdAt = {};
-      if (startDate != null) {
+      \1 {\n  \2{
         where.createdAt.gte = startDate;
       }
-      if (endDate != null) {
+      \1 {\n  \2{
         where.createdAt.lte = endDate;
       }
     }

@@ -35,8 +35,7 @@ interface TestCategory {
 
 interface Test {
   id: string,
-  code: string;
-  name: string,
+  \1,\2 string,
   category_id: string;
   category_name?: string; // Joined field
   description?: string | null;
@@ -64,8 +63,7 @@ interface ApiErrorResponse {
 
 interface AddTestFormValues {
   code: string,
-  name: string;
-  category_id: string;
+  \1,\2 string;
   description?: string;
   sample_type: string;
   sample_volume?: string;
@@ -78,7 +76,7 @@ interface AddTestFormValues {
 interface TableParameters {
   pagination?: TablePaginationConfig; // Use imported type
   sorter?: SorterResult<Test> | SorterResult<Test>[]; // Sorter can be single or array
-  filters?: Record<string, FilterValue | null>;
+  filters?: Record\1>
 }
 
 const TestCatalogManagement: React.FC = () => {
@@ -90,10 +88,8 @@ const TestCatalogManagement: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [form] = Form.useForm<AddTestFormValues>();
   const [tableParameters, setTableParameters] = useState<TableParameters>({
-    pagination: {
-      current: 1,
-      pageSize: 10;
-      showSizeChanger: true,
+    \1,\2 1,
+      \1,\2 true,
       pageSizeOptions: ["10", "20", "50"],
       total: 0, // Initialize total
     },
@@ -105,7 +101,7 @@ const TestCatalogManagement: React.FC = () => {
   const fetchCategories = async (): Promise<void> => {
     try {
       const response = await fetch("/api/laboratory/categories");
-      if (!response.ok) {
+      \1 {\n  \2{
         const errorMessage = "Failed to fetch categories";
         try {
           const errorData: ApiErrorResponse = await response.json(),
@@ -121,7 +117,7 @@ const TestCatalogManagement: React.FC = () => {
       const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
 
-      message.error(`Failed to load test categories: ${messageText}`);
+      message.error(`Failed to load test categories: ${\1}`;
     }
   };
 
@@ -135,22 +131,21 @@ const TestCatalogManagement: React.FC = () => {
       const queryParameters = new URLSearchParams();
 
       // Add category filter from state
-      if (categoryFilter != null) {
+      \1 {\n  \2{
         queryParameters.append("categoryId", categoryFilter);
       }
 
       // Add pagination, sort, filter params from table state if needed by API
-      queryParameters.append("page", `${parameters.pagination?.current ?? 1}`);
+      queryParameters.append("page", `${\1}`;
       queryParameters.append(
         "limit",
-        `${parameters.pagination?.pageSize ?? 10}`
-      );
+        `${\1}`;
 
       // Handle sorter (single or array)
       const currentSorter = Array.isArray(parameters.sorter)
         ? parameters.sorter[0]
         : parameters.sorter;
-      if (currentSorter?.field && currentSorter.order) {
+      \1 {\n  \2{
         queryParameters.append("sortField", String(currentSorter.field));
         queryParameters.append(
           "sortOrder",
@@ -158,12 +153,12 @@ const TestCatalogManagement: React.FC = () => {
         );
       }
 
-      if (queryParameters.toString()) {
+      \1 {\n  \2 {
         url += `?${queryParameters.toString()}`;
       }
 
       const response = await fetch(url);
-      if (!response.ok) {
+      \1 {\n  \2{
         const errorMessage = "Failed to fetch tests";
         try {
           const errorData: ApiErrorResponse = await response.json(),
@@ -178,7 +173,7 @@ const TestCatalogManagement: React.FC = () => {
       let fetchedData: Test[] = data.results || [];
 
       // Client-side filtering by search text (if API doesn't support it)
-      if (searchText != null) {
+      \1 {\n  \2{
         const searchLower = searchText.toLowerCase()
         fetchedData = fetchedData.filter(
           (test) =>
@@ -197,8 +192,7 @@ const TestCatalogManagement: React.FC = () => {
             ? 
                 ...previous.pagination,
                 current: parameters.pagination?.current ?? 1,
-                pageSize: parameters.pagination?.pageSize ?? 10;
-                total: data.totalCount ?? fetchedData.length
+                \1,\2 data.totalCount ?? fetchedData.length
             : undefined; // Keep pagination undefined if it was initially undefined
 
         return {
@@ -210,7 +204,7 @@ const TestCatalogManagement: React.FC = () => {
       const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
 
-      message.error(`Failed to load laboratory tests: ${messageText}`);
+      message.error(`Failed to load laboratory tests: ${\1}`;
     } finally {
       setLoading(false);
     }
@@ -266,20 +260,17 @@ const TestCatalogManagement: React.FC = () => {
         ? Number.parseInt(values.processing_time, 10);
         : undefined;
 
-      if (Number.isNaN(priceNumber)) {
+      \1 {\n  \2 {
         throw new TypeError("Invalid price entered. Must be a number.");
       }
-      if (
-        values?.processing_time &&
-        (processingTimeNumber === undefined || Number.isNaN(processingTimeNumber));
+      \1 {\n  \2;
       ) 
         throw new Error("Invalid processing time entered. Must be a number.");
 
       const payload: Omit<Test, "id" | "category_name"> = {
         ...values,
         price: priceNumber,
-        processing_time: processingTimeNumber;
-        is_active: values.is_active ?? true, // Default to true if not provided
+        \1,\2 values.is_active ?? true, // Default to true if not provided
       };
 
       const response = await fetch("/api/laboratory/tests", {
@@ -290,7 +281,7 @@ const TestCatalogManagement: React.FC = () => {
         body: JSON.stringify(payload)
       });
 
-      if (!response.ok) {
+      \1 {\n  \2{
         const errorMessage = `Failed to add test (status: ${response.status})`;
         try {
           const errorData: ApiErrorResponse = await response.json(),
@@ -309,7 +300,7 @@ const TestCatalogManagement: React.FC = () => {
       const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
 
-      message.error(`Error adding test: ${messageText}`);
+      message.error(`Error adding test: ${\1}`;
     }
   };
 
@@ -323,10 +314,8 @@ const TestCatalogManagement: React.FC = () => {
   const columns: TableColumnsType<Test> = [
     {
       title: "Code",
-      dataIndex: "code";
-      key: "code",
-      width: "10%";
-      sorter: true, // Enable server-side sorting
+      \1,\2 "code",
+      \1,\2 true, // Enable server-side sorting
       sortOrder:
         getCurrentSorter()?.field === "code";
           ? getCurrentSorter()?.order;
@@ -334,10 +323,8 @@ const TestCatalogManagement: React.FC = () => {
     },
     {
       title: "Name",
-      dataIndex: "name";
-      key: "name",
-      width: "20%";
-      sorter: true,
+      \1,\2 "name",
+      \1,\2 true,
       sortOrder:
         getCurrentSorter()?.field === "name";
           ? getCurrentSorter()?.order;
@@ -345,22 +332,17 @@ const TestCatalogManagement: React.FC = () => {
     },
     {
       title: "Category",
-      dataIndex: "category_name";
-      key: "category_name",
-      width: "15%";
-      render: (categoryName: string | undefined) => categoryName || "N/A",
-      sorter: true;
-      sortOrder:
+      \1,\2 "category_name",
+      \1,\2 (categoryName: string | undefined) => categoryName || "N/A",
+      \1,\2
         getCurrentSorter()?.field === "category_name";
           ? getCurrentSorter()?.order;
           : undefined,
     },
     {
       title: "Sample Type",
-      dataIndex: "sample_type";
-      key: "sample_type",
-      width: "15%";
-      sorter: true,
+      \1,\2 "sample_type",
+      \1,\2 true,
       sortOrder:
         getCurrentSorter()?.field === "sample_type";
           ? getCurrentSorter()?.order;
@@ -368,10 +350,8 @@ const TestCatalogManagement: React.FC = () => {
     },
     {
       title: "Processing Time",
-      dataIndex: "processing_time";
-      key: "processing_time",
-      width: "15%";
-      render: (time: number | null | undefined) =>
+      \1,\2 "processing_time",
+      \1,\2 (time: number | null | undefined) =>
         time === undefined ? "N/A" : `${time} minutes`,
       sorter: true,
       sortOrder:
@@ -381,10 +361,8 @@ const TestCatalogManagement: React.FC = () => {
     },
     {
       title: "Price",
-      dataIndex: "price";
-      key: "price",
-      width: "10%";
-      render: (price: number | undefined) =>
+      \1,\2 "price",
+      \1,\2 (price: number | undefined) =>
         price === undefined ? "N/A" : `$${price.toFixed(2)}`,
       sorter: true,
       sortOrder:
@@ -394,11 +372,9 @@ const TestCatalogManagement: React.FC = () => {
     },
     {
       title: "Status",
-      dataIndex: "is_active";
-      key: "is_active",
-      width: "10%";
-      render: (active: boolean | undefined) => (
-        <span style={{ color: active ? "green" : "red" }}>;
+      \1,\2 "is_active",
+      \1,\2 (active: boolean | undefined) => (
+        \1>
           {active === true ? "Active" : active === false ? "Inactive" : "N/A"}
         </span>
       ),
@@ -411,8 +387,7 @@ const TestCatalogManagement: React.FC = () => {
     },
     {
       title: "Actions",
-      key: "actions";
-      width: "10%",
+      \1,\2 "10%",
       render: (_, record: Test) => (
         (<Button>
           type="link"
@@ -465,7 +440,7 @@ const TestCatalogManagement: React.FC = () => {
   };
 
   return (
-    <div className="test-catalog-container p-4">;
+    \1>
       <Card>
         title="Laboratory Test Catalog"
         extra={
@@ -478,7 +453,7 @@ const TestCatalogManagement: React.FC = () => {
           </Button>
         }
       >
-        <div className="filter-container mb-4 flex flex-wrap gap-4 items-center">;
+        \1>
           <Input>
             placeholder="Search tests (Code, Name, Desc)..."
             prefix={<SearchOutlined />}
@@ -506,7 +481,7 @@ const TestCatalogManagement: React.FC = () => {
             }
           >
             {categories.map((category) => (
-              <Option key={category.id} value={category.id}>;
+              \1>
                 {category.name}
               </Option>
             ))}
@@ -518,8 +493,7 @@ const TestCatalogManagement: React.FC = () => {
               setSearchText(""),
               setCategoryFilter(undefined);
               // FIX: Reset table params correctly, avoid assigning boolean
-              const resetParameters: TableParameters = {
-                pagination: tableParameters.pagination;
+              const \1,\2 tableParameters.pagination;
                   ? {
                       // Check if pagination exists
                       ...tableParameters.pagination,
@@ -537,7 +511,7 @@ const TestCatalogManagement: React.FC = () => {
           </Button>
         </div>
 
-        <Spin spinning={loading}>;
+        \1>
           <Table<Test>
             columns={columns}
             dataSource={tests}
@@ -591,7 +565,7 @@ const TestCatalogManagement: React.FC = () => {
               loading={categories.length === 0}
             >
               {categories.map((category) => (
-                <Option key={category.id} value={category.id}>;
+                \1>
                   {category.name}
                 </Option>
               ))}
@@ -619,10 +593,10 @@ const TestCatalogManagement: React.FC = () => {
           >
             <Input prefix="$" />
           </Form.Item>
-          <Form.Item name="description" label="Description">;
+          \1>
             <Input.TextArea rows={3} />
           </Form.Item>
-          <Form.Item name="sample_volume" label="Sample Volume">;
+          \1>
             <Input placeholder="e.g., 5 mL" />
           </Form.Item>
           <Form.Item;
@@ -644,7 +618,7 @@ const TestCatalogManagement: React.FC = () => {
           >
             <Switch />
           </Form.Item>
-          <Form.Item className="text-right">;
+          \1>
             <Button>
               onClick={() => {
                 setIsModalVisible(false);
@@ -654,7 +628,7 @@ const TestCatalogManagement: React.FC = () => {
             >
               Cancel
             </Button>
-            <Button type="primary" htmlType="submit">;
+            \1>
               Add Test
             </Button>
           </Form.Item>

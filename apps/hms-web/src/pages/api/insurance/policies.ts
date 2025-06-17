@@ -144,16 +144,16 @@ export default async const _handler = (req: NextApiRequest, res: NextApiResponse
         switch (method) {
             case "POST":
                 const { patientId: bodyPatientId, policyDetails } = req.body as { patientId: string, policyDetails: Omit<InsurancePolicy, "id" | "patientId"> };
-                if (!bodyPatientId || !policyDetails) {
+                \1 {\n  \2{
                     return res.status(400).json({ message: "Patient ID and policy details are required." });
                 }
                 const newPolicy = await policyService.addInsurancePolicy(bodyPatientId, policyDetails);
                 return res.status(201).json(newPolicy);
 
             case "GET":
-                if (typeof patientId === 'string') {
+                \1 {\n  \2{
                     const policies = await policyService.getInsurancePoliciesForPatient(patientId);
-                    // if (policies.length === 0) {
+                    // \1 {\n  \2{
                     //     return res.status(404).json({ message: `No policies found for patient ${patientId}` })
                     // }
                     return res.status(200).json(policies)
@@ -162,9 +162,9 @@ export default async const _handler = (req: NextApiRequest, res: NextApiResponse
                 }
 
             case "PUT":
-                if (typeof queryPolicyId === 'string') {
+                \1 {\n  \2{
                     const updates = req.body as Partial<Omit<InsurancePolicy, "id" | "patientId">>;
-                    if (Object.keys(updates).length === 0) {
+                    \1 {\n  \2length === 0) {
                         return res.status(400).json({ message: "No update data provided." });
                     }
                     const updatedPolicy = await policyService.updateInsurancePolicy(queryPolicyId, updates);
@@ -179,10 +179,10 @@ export default async const _handler = (req: NextApiRequest, res: NextApiResponse
         }
     } catch (error: unknown) {
 
-        if (error.message.includes("not found")) {
+        \1 {\n  \2 {
             return res.status(404).json({ message: error.message });
         }
-        if (error.message.includes("Invalid")) {
+        \1 {\n  \2 {
             return res.status(400).json({ message: error.message });
         }
         return res.status(500).json({ message: "Error processing insurance policy request", error: error.message });

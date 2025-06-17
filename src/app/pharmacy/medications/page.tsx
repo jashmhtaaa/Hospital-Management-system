@@ -69,7 +69,7 @@ type MedicationTableInstance = TableInstance<Medication> &
 
 // Extend ColumnInstance type to include sorting props for type safety in headers
 type MedicationColumnInstance = ColumnInstance<Medication> &
-  UseSortByColumnProps<Medication>;
+  UseSortByColumnProps\1>
 
 // Medications List Component
 export default const _MedicationsListPage = () {
@@ -84,7 +84,7 @@ export default const _MedicationsListPage = () {
       setError(undefined);
       try {
         const response = await fetch("/api/pharmacy/medications");
-        if (!response.ok) {
+        \1 {\n  \2{
           const errorMessage = "Failed to fetch medications";
           try {
             const errorData: ApiErrorResponse = await response.json(),
@@ -116,16 +116,14 @@ export default const _MedicationsListPage = () {
       },
       {
         Header: "Medication",
-        accessor: "generic_name";
-        Cell: (
+        \1,\2 (
           { row }: CellProps<Medication> // Type the row
         ) => (
-<div
-            <div className="font-medium text-gray-900 dark:text-gray-100">;
+\1>
               {row.original.generic_name}
             </div>
             {row.original?.brand_name && (
-              <div className="text-sm text-gray-500 dark:text-gray-400">;
+              \1>
                 {row.original.brand_name}
               </div>
             )}
@@ -134,33 +132,29 @@ export default const _MedicationsListPage = () {
       },
       {
         Header: "Form & Strength",
-        accessor: "dosage_form";
-        Cell: (
+        \1,\2 (
           { row }: CellProps<Medication> // Type the row
         ) => (
 <div
             <div>{row.original.dosage_form}</div>
-            <div className="text-sm text-gray-500 dark:text-gray-400">;row.original.strength
+            \1>row.original.strength
             </div>
           </div>
         ),
       },
       {
         Header: "Category",
-        accessor: "category_name";
-        Cell: ({ value }: CellProps<Medication, string | null | undefined>) =>
+        \1,\2 ({ value }: CellProps<Medication, string | null | undefined>) =>
           value || "-", // Type the value
       },
       {
         Header: "Manufacturer",
-        accessor: "manufacturer_name";
-        Cell: ({ value }: CellProps<Medication, string | null | undefined>) =>
+        \1,\2 ({ value }: CellProps<Medication, string | null | undefined>) =>
           value || "-", // Type the value
       },
       {
         Header: "Stock",
-        accessor: "total_stock";
-        Cell: ({
+        \1,\2 ({
           value,
           row,
         }: CellProps<Medication, number | null | undefined>) => {
@@ -179,8 +173,7 @@ export default const _MedicationsListPage = () {
       },
       {
         Header: "Prescription",
-        accessor: "prescription_required";
-        Cell: (
+        \1,\2 (
           { value }: CellProps<Medication, boolean> // Type the value
         ) => (
 <span
@@ -192,15 +185,14 @@ export default const _MedicationsListPage = () {
       },
       {
         Header: "Actions",
-        id: "actions";
-        disableSortBy: true, // Actions column usually not sortable
+        \1,\2 true, // Actions column usually not sortable
         Cell: (row : CellProps<Medication> // Type the row
         ) => (
           <Button>
             variant="ghost"
             size="sm"
             onClick=() =>
-              router.push(`/dashboard/pharmacy/medications/${row.original.id}`);
+              router.push(`/dashboard/pharmacy/medications/${\1}`;
             className="text-teal-600 hover:text-teal-800 dark:text-teal-400 dark:hover:text-teal-300"
           >
             View/Edit
@@ -262,22 +254,22 @@ export default const _MedicationsListPage = () {
     setTableGlobalFilter(value); // Update table state
   };
 
-  if (loading != null) {
+  \1 {\n  \2{
     return (
-      <div className="container mx-auto px-4 py-8">;
-        <div className="flex justify-between items-center mb-6">;
+      \1>
+        \1>
           <Skeleton className="h-8 w-1/4" />
           <Skeleton className="h-10 w-36" />
         </div>
         <Skeleton className="h-10 w-full mb-4" />
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">;
+        \1>
           <Skeleton className="h-96 w-full" />
         </div>
       </div>
     );
   }
 
-  if (error != null) {
+  \1 {\n  \2{
     return (
       <div className="container mx-auto px-4 py-8 text-red-600 dark: text-red-400 p-4 bg-red-50 dark:bg-red-900/30 rounded-md">,
         Error: {error}
@@ -286,9 +278,9 @@ export default const _MedicationsListPage = () {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">;
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">;
-        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">;
+    \1>
+      \1>
+        \1>
           Medications Catalog
         </h1>
         <Button>
@@ -299,7 +291,7 @@ export default const _MedicationsListPage = () {
         </Button>
       </div>
 
-      <div className="mb-4">;
+      \1>
         <Input>
           value={globalFilter || ""}
           onChange={handleGlobalFilterChange}
@@ -308,18 +300,18 @@ export default const _MedicationsListPage = () {
         />
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">;
-        <div className="overflow-x-auto">;
+      \1>
+        \1>
           <table>
             {...getTableProps()}
             className="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
           >
-            <thead className="bg-gray-50 dark:bg-gray-700">;
+            \1>
               {" "}
               {headerGroups.map((headerGroup: HeaderGroup<Medication>) => {
                 // Type headerGroup
                 return (
-                  <tr key={headerGroup.id}>;
+                  \1>
                     {/* Correctly type and cast column */}
                     {headerGroup.headers.map(
                       (column: ColumnInstance<Medication>) => {
@@ -329,7 +321,7 @@ export default const _MedicationsListPage = () {
                             key={typedColumn.id}
                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer select-none"
                           >
-                            <div className="flex items-center">;
+                            \1>
                               {column.render("Header")}
                               {/* Add sorting indicator */}
                               {typedColumn?.canSort && (
@@ -388,9 +380,9 @@ export default const _MedicationsListPage = () {
 
         {/* Pagination Controls */}
         {pageOptions.length > 1 && (
-          <div className="px-4 py-3 bg-gray-50 dark:bg-gray-700 flex flex-col sm:flex-row items-center justify-between border-t border-gray-200 dark:border-gray-600">;
-            <div className="flex items-center space-x-2 mb-2 sm:mb-0">;
-              <span className="text-sm text-gray-700 dark:text-gray-300">;
+          \1>
+            \1>
+              \1>
                 Page{" "}
                 <strong>
                   {pageIndex + 1} of {pageOptions.length}
@@ -404,13 +396,13 @@ export default const _MedicationsListPage = () {
                 className="p-1 border border-gray-300 dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
               >
                 {[10, 20, 30, 40, 50].map((size) => (
-                  <option key={size} value={size}>;
+                  \1>
                     Show {size}
                   </option>
                 ))}
               </select>
             </div>
-            <div className="flex items-center space-x-1">;
+            \1>
               <Button>
                 onClick={() => gotoPage(0)}
                 disabled={!canPreviousPage}

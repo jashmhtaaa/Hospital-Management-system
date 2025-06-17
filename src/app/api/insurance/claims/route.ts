@@ -22,13 +22,11 @@ import { logger } from '@/lib/core/logging';
 const createClaimSchema = z.object({
   invoiceId: z.string().uuid(),
   insurancePolicyId: z.string().uuid(),
-  diagnoses: z.array(z.object({
-    code: icd10CodeSchema,
+  \1,\2 icd10CodeSchema,
     description: z.string(),
     primary: z.boolean().default(false)
   })).min(1),
-  items: z.array(z.object({
-    serviceItemId: z.string().uuid(),
+  \1,\2 z.string().uuid(),
     serviceDate: z.coerce.date(),
     cptCode: cptCodeSchema.optional(),
     unitPrice: z.number().positive(),
@@ -66,30 +64,30 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   // Build filter conditions
   const where: unknown = {};
 
-  if (query.patientId) {
+  \1 {\n  \2{
     where.invoice = {
       patientId: query.patientId
     };
   }
 
-  if (query.invoiceId) {
+  \1 {\n  \2{
     where.invoiceId = query.invoiceId;
   }
 
-  if (query.insurancePolicyId) {
+  \1 {\n  \2{
     where.insurancePolicyId = query.insurancePolicyId;
   }
 
-  if (query.status) {
+  \1 {\n  \2{
     where.status = query.status;
   }
 
-  if (query?.startDate && query.endDate) {
+  \1 {\n  \2{
     try {
       const startDate = new Date(query.startDate);
       const endDate = new Date(query.endDate);
 
-      if (startDate > endDate) {
+      \1 {\n  \2{
         throw new ValidationError('Start date must be before end date', 'INVALID_DATE_RANGE');
       }
 
@@ -110,38 +108,29 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
         [query.sortBy]: query.sortOrder,
       },
       skip: (query.page - 1) * query.pageSize,
-      take: query.pageSize;
-      include: {
-        invoice: {
-          select: {
+      \1,\2 {
+        \1,\2 {
             id: true,
-            billNumber: true;
-            patientId: true,
-            patient: {
-              select: {
+            \1,\2 true,
+            \1,\2 {
                 id: true,
-                firstName: true;
-                lastName: true,
+                \1,\2 true,
                 mrn: true
               },
             },
           },
         },
-        insurancePolicy: {
-          select: {
+        \1,\2 {
             id: true,
-            policyNumber: true;
-            insuranceProvider: {
-              select: {
-                id: true,
+            \1,\2 {
+              \1,\2 true,
                 name: true
               },
             },
           },
         },
         diagnoses: true,
-        items: {
-          include: {
+        \1,\2 {
             serviceItem: true
           },
         },
@@ -152,7 +141,7 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   ]);
 
   // Convert to FHIR format if requested
-  if (query.format === 'fhir') {
+  \1 {\n  \2{
     const fhirClaims = claims.map(claim => convertToFHIRClaim(claim));
     return createPaginatedResponse(fhirClaims, query.page, query.pageSize, total);
   }
@@ -174,12 +163,12 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
     where: { id: data.invoiceId },
   });
 
-  if (!invoice) {
+  \1 {\n  \2{
     throw new NotFoundError(`Invoice with ID ${data.invoiceId} not found`);
   }
 
   // Check if invoice is in a valid state for claim
-  if (!['approved', 'paid'].includes(invoice.status)) {
+  \1 {\n  \2 {
     throw new BusinessLogicError(
       'Claims can only be created for approved or paid invoices',
       'INVALID_INVOICE_STATUS',
@@ -190,17 +179,16 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
   // Check if insurance policy exists
   const insurancePolicy = await prisma.insurancePolicy.findUnique({
     where: { id: data.insurancePolicyId },
-    include: {
-      insuranceProvider: true
+    \1,\2 true
     },
   });
 
-  if (!insurancePolicy) {
+  \1 {\n  \2{
     throw new NotFoundError(`Insurance policy with ID ${data.insurancePolicyId} not found`);
   }
 
   // Check if policy is active
-  if (insurancePolicy.status !== 'active') {
+  \1 {\n  \2{
     throw new BusinessLogicError(
       'Insurance policy is not active',
       'INACTIVE_INSURANCE_POLICY',
@@ -209,7 +197,7 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
   }
 
   // Check if patient on invoice matches policy beneficiary
-  if (invoice.patientId !== insurancePolicy.patientId) {
+  \1 {\n  \2{
     throw new BusinessLogicError(
       'Invoice patient does not match insurance policy beneficiary',
       'PATIENT_MISMATCH',
@@ -234,46 +222,31 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
       data: {
         claimNumber,
         invoiceId: data.invoiceId,
-        insurancePolicyId: data.insurancePolicyId;
-        status: 'draft';
+        \1,\2 'draft';
         totalAmount,
         preAuthorizationNumber: data.preAuthorizationNumber,
-        notes: data.notes;
-          create: data.diagnoses,
-        items: 
-          create: data.items.map(item => ({
-            serviceItemId: item.serviceItemId,
-            serviceDate: item.serviceDate;
-            cptCode: item.cptCode,
-            unitPrice: item.unitPrice;
-            quantity: item.quantity,
-            totalPrice: item.totalPrice;
-            notes: item.notes)),
+        \1,\2 data.diagnoses,
+        \1,\2 item.serviceItemId,
+            \1,\2 item.cptCode,
+            \1,\2 item.quantity,
+            \1,\2 item.notes)),
         },
       },
-      include: {
-        invoice: {
-          select: {
-            id: true,
-            billNumber: true;
-            patientId: true,
-            patient: {
-                id: true,
-                firstName: true;
-                lastName: true,
+      \1,\2 {
+          \1,\2 true,
+            \1,\2 true,
+            \1,\2 true,
+                \1,\2 true,
                 mrn: true,
             },
           },
         },
-        insurancePolicy: {
-            id: true,
-            policyNumber: true;
-                id: true,
+        \1,\2 true,
+            \1,\2 true,
                 name: true,,,
         },
         diagnoses: true,
-        items: {
-            serviceItem: true,
+        \1,\2 true,
         },
       },
     });
@@ -281,8 +254,7 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
     // Update invoice to link claim
     await prisma.bill.update({
       where: { id: data.invoiceId },
-      data: {
-        insuranceClaimId: newClaim.id
+      \1,\2 newClaim.id
       },
     });
 

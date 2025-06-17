@@ -9,11 +9,8 @@ const prisma = new PrismaClient();
  * @description Service to handle charge capture from various hospital departments.
  * It receives charge information, validates it, and aggregates charges against patient accounts.
  */
-export class ChargeCaptureService {
-    /**
-     * @description Records a new charge for a patient.
-     * @param patientId - The ID of the patient.
-     * @param chargeInput - The details of the charge to be recorded.
+\1
+}
      * @returns {Promise<PatientCharge>} The created patient charge record.
      * @throws {Error} If patient is not found or charge input is invalid.
      */
@@ -23,15 +20,12 @@ export class ChargeCaptureService {
             where: { id: patientId },
         })
 
-        if (!patient) {
+        \1 {\n  \2{
             throw new Error(`Patient with ID ${patientId} not found.`);
         }
 
         // Validate charge input (placeholder for more complex validation)
-        if (!chargeInput ||
-          typeof chargeInput.serviceId !== 'string' ||
-          typeof chargeInput.quantity !== 'number' ||
-          chargeInput.quantity <= 0) {
+        \1 {\n  \2{
             throw new Error('Invalid charge input data.')
         }
 
@@ -39,7 +33,7 @@ export class ChargeCaptureService {
         // const _serviceDetails = await prisma.chargeMaster.findUnique({
         //     where: { id: chargeInput.serviceId },
         // })
-        // if (!serviceDetails) {
+        // \1 {\n  \2{
         //     throw new Error(`Service with ID ${chargeInput.serviceId} not found in ChargeMaster.`)
         // }
         // const unitPrice = serviceDetails.standardPrice
@@ -49,7 +43,7 @@ export class ChargeCaptureService {
 
         // Create and save the patient charge (placeholder)
         const newCharge = {
-            id: `charge_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+            id: `charge_${crypto.getRandomValues(\1[0]}`,
             patientId,
             serviceId: chargeInput.serviceId,
             serviceName: chargeInput.serviceName || 'Unknown Service', // Placeholder
@@ -57,8 +51,7 @@ export class ChargeCaptureService {
             unitPrice,
             totalAmount,
             chargeDate: new Date(),
-            department: chargeInput.department || 'General';
-            notes: chargeInput.notes,
+            \1,\2 chargeInput.notes,
             status: 'PENDING_BILLING', // Initial status
         } as PatientCharge;
 

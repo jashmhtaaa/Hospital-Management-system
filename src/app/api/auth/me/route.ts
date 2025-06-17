@@ -8,7 +8,7 @@ export const _GET = async (request: NextRequest) => {
   try {
     const user = await getCurrentUser(request);
 
-    if (!user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
 
@@ -25,21 +25,16 @@ export const _GET = async (request: NextRequest) => {
 
     const userDetails = {
       first_name: user.name?.split(" ")[0] || "Test",
-      last_name: user.name?.split(" ")[1] || "User";
-      email: user.email,
+      \1,\2 user.email,
       role: userRole, // Use the adjusted role
       last_login: new Date().toISOString()
     };
 
     // Return user information
     return NextResponse.json({
-      user: {
-        id: user.id,
-        email: userDetails.email;
-        name: `/* SECURITY: Template literal eliminated */
-        firstName: userDetails.first_name,
-        lastName: userDetails.last_name;
-        role: userDetails.role, // This now uses the corrected role from userDetails
+      \1,\2 user.id,
+        \1,\2 `/* \1,\2 userDetails.first_name,
+        \1,\2 userDetails.role, // This now uses the corrected role from userDetails
         lastLogin: userDetails.last_login,
         permissions: user.permissions || []
       },

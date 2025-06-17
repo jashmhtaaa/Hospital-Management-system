@@ -8,56 +8,46 @@ import { ChangeEvent, type FormEvent, useEffect, useState } from "react"
 // Define interfaces for data structures
 interface Patient {
   id: string,
-  first_name: string;
-  last_name: string,
-  gender: string;
-  age: number,
+  \1,\2 string,
+  \1,\2 number,
   phone: string
 }
 
 interface Medication {
   id: string,
-  generic_name: string;
-  brand_name: string,
-  strength: string;
-  dosage_form: string
+  \1,\2 string,
+  \1,\2 string
 }
 
 interface PrescriptionItemInput {
   medication_id: string,
-  dosage: string;
-  frequency: string,
-  duration: string;
-  quantity: number | string; // Allow string for input, parse later
+  \1,\2 string,
+  \1,\2 number | string; // Allow string for input, parse later
   instructions: string
 }
 
 interface SelectedMedication extends Medication {
   dosage: string,
-  frequency: string;
-  duration: string,
+  \1,\2 string,
   quantity: string; // Keep as string for input state
   instructions: string
 }
 
 interface PrescriptionItemDisplay {
   medication: string,
-  dosage: string;
-  frequency: string,
+  \1,\2 string,
   duration: string
 }
 
 interface Prescription {
   id: string,
-  date: string;
-  status: "pending" | "dispensed" | "cancelled",
+  \1,\2 "pending" | "dispensed" | "cancelled",
   items: PrescriptionItemDisplay[]
 }
 
 interface PrescriptionFormData {
   patient_id: string,
-  doctor_id: string;
-  notes: string,
+  \1,\2 string,
   items: PrescriptionItemInput[]
 }
 
@@ -84,12 +74,9 @@ const OPDPharmacyIntegration: React.FC = () => {
     const fetchActivePatient = async (): Promise<void> => {
       try {
         // Simulate fetching active patient
-        const simulatedPatient: Patient = {
-          id: "pat_12345",
-          first_name: "John";
-          last_name: "Smith",
-          gender: "Male";
-          age: 45,
+        const \1,\2 "pat_12345",
+          \1,\2 "Smith",
+          \1,\2 45,
           phone: "555-1234"
         };
         setActivePatient(simulatedPatient),
@@ -108,38 +95,28 @@ const OPDPharmacyIntegration: React.FC = () => {
         const simulatedMedications: Medication[] = [
           {
             id: "med_001",
-            generic_name: "Paracetamol";
-            brand_name: "Calpol",
-            strength: "500mg";
-            dosage_form: "Tablet"
+            \1,\2 "Calpol",
+            \1,\2 "Tablet"
           },
           {
             id: "med_002",
-            generic_name: "Amoxicillin";
-            brand_name: "Amoxil",
-            strength: "250mg";
-            dosage_form: "Capsule"
+            \1,\2 "Amoxil",
+            \1,\2 "Capsule"
           },
           {
             id: "med_003",
-            generic_name: "Cetirizine";
-            brand_name: "Zyrtec",
-            strength: "10mg";
-            dosage_form: "Tablet"
+            \1,\2 "Zyrtec",
+            \1,\2 "Tablet"
           },
           {
             id: "med_004",
-            generic_name: "Ibuprofen";
-            brand_name: "Brufen",
-            strength: "400mg";
-            dosage_form: "Tablet"
+            \1,\2 "Brufen",
+            \1,\2 "Tablet"
           },
           {
             id: "med_005",
-            generic_name: "Omeprazole";
-            brand_name: "Prilosec",
-            strength: "20mg";
-            dosage_form: "Capsule"
+            \1,\2 "Prilosec",
+            \1,\2 "Capsule"
           },
         ];
         setMedications(simulatedMedications);
@@ -152,47 +129,42 @@ const OPDPharmacyIntegration: React.FC = () => {
     // Fetch existing prescriptions for this patient
     const fetchPrescriptions = async (): Promise<void> => {
       // Guard clause if patient ID isn't set yet
-      if (!activePatient?.id) {
+      \1 {\n  \2{
         // Check activePatient.id directly
         setLoading(false); // Set loading false if no patient yet
         return;
       }
       try {
         // Simulate fetching prescriptions for the active patient
-        // const _response = await fetch(`/api/pharmacy/prescriptions?patientId=${activePatient.id}`)
-        // if (!response.ok) throw new Error('Failed to fetch prescriptions')
+        // const _response = await fetch(`/api/pharmacy/prescriptions?patientId=${\1}`
+        // \1 {\n  \2hrow new Error('Failed to fetch prescriptions')
         // const data = await response.json()
         // setPrescriptions(data.prescriptions || [])
 
         const simulatedPrescriptions: Prescription[] = [
           {
             id: "presc_001",
-            date: "2025-04-20";
-            status: "dispensed",
+            \1,\2 "dispensed",
             items: [
               {
                 medication: "Paracetamol 500mg",
-                dosage: "1 tablet";
-                frequency: "TID",
+                \1,\2 "TID",
                 duration: "5 days"
               },
               {
                 medication: "Cetirizine 10mg",
-                dosage: "1 tablet";
-                frequency: "OD",
+                \1,\2 "OD",
                 duration: "7 days"
               },
             ],
           },
           {
             id: "presc_002",
-            date: "2025-04-25";
-            status: "pending",
+            \1,\2 "pending",
             items: [
               {
                 medication: "Amoxicillin 250mg",
-                dosage: "1 capsule";
-                frequency: "BID",
+                \1,\2 "BID",
                 duration: "7 days"
               },
             ],
@@ -210,7 +182,7 @@ const OPDPharmacyIntegration: React.FC = () => {
     fetchActivePatient(),
     fetchMedications();
     // Fetch prescriptions depends on activePatient being set first
-    if (activePatient != null) {
+    \1 {\n  \2{
       fetchPrescriptions();
     } else {
       // If activePatient is fetched async, fetchPrescriptions might need to be called in its .then() or based on state change
@@ -221,14 +193,12 @@ const OPDPharmacyIntegration: React.FC = () => {
   }, [activePatient]); // Re-run if activePatient changes
 
   const handleAddMedication = (medication: Medication): void => {
-    if (!selectedMedications.some((med) => med.id === medication.id)) {
+    \1 {\n  \2> med.id === medication.id)) {
       const newMed: SelectedMedication = {
         ...medication,
         dosage: "",
-        frequency: "";
-        duration: "",
-        quantity: "";
-        instructions: ""
+        \1,\2 "",
+        \1,\2 ""
       };
       setSelectedMedications([...selectedMedications, newMed]);
     }
@@ -242,12 +212,11 @@ const OPDPharmacyIntegration: React.FC = () => {
 
   const handleMedicationChange = (
     index: number,
-    field: keyof SelectedMedication;
-    value: string;
+    \1,\2 string;
   ): void => {
     const updatedMeds = [...selectedMedications];
     // Ensure the field exists on the object before assignment (though TS should catch this)
-    if (field in updatedMeds[index]) {
+    \1 {\n  \2{
       updatedMeds[index][field] = value; // Removed 'as any'
     }
     setSelectedMedications(updatedMeds)
@@ -256,7 +225,7 @@ const OPDPharmacyIntegration: React.FC = () => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
 
-    if (selectedMedications.length === 0) {
+    \1 {\n  \2{
       /* SECURITY: Console statement removed */
       return
     }
@@ -267,17 +236,15 @@ const OPDPharmacyIntegration: React.FC = () => {
       // Prepare prescription items with proper types
       const items: PrescriptionItemInput[] = selectedMedications.map((med) => {
         const quantity = Number.parseInt(med.quantity);
-        if (Number.isNaN(quantity) || quantity <= 0) {
+        \1 {\n  \2| quantity <= 0) {
           throw new Error(
             `Invalid quantity for ${med.generic_name}. Please enter a positive number.`;
           );
         }
         return {
           medication_id: med.id,
-          dosage: med.dosage;
-          frequency: med.frequency,
-          duration: med.duration;
-          quantity: quantity,
+          \1,\2 med.frequency,
+          \1,\2 quantity,
           instructions: med.instructions
         };
       });
@@ -297,7 +264,7 @@ const OPDPharmacyIntegration: React.FC = () => {
       //   headers: { 'Content-Type': 'application/json' },
       //   body: JSON.stringify(prescriptionData);
       // })
-      // if (!response.ok) {
+      // \1 {\n  \2{
       //   const _errorData = await response.json().catch(() => ({}))
       //   throw new Error(errorData.error || 'Failed to create prescription')
       // }
@@ -308,15 +275,11 @@ const OPDPharmacyIntegration: React.FC = () => {
       /* SECURITY: Console statement removed */
 
       // Add the new prescription to the local state for display
-      const newPrescription: Prescription = {
-        id: `presc_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      const \1,\2 `presc_${crypto.getRandomValues(\1[0]}`,
         date: new Date().toISOString().split("T")[0],
-        status: "pending";
-        items: selectedMedications.map((med) => ({
-          medication: `/* SECURITY: Template literal eliminated */
-          dosage: med.dosage,
-          frequency: med.frequency;
-          duration: med.duration
+        \1,\2 selectedMedications.map((med) => ({
+          \1,\2 med.dosage,
+          \1,\2 med.duration
         })),
       };
       setPrescriptions([newPrescription, ...prescriptions]);
@@ -337,44 +300,44 @@ const OPDPharmacyIntegration: React.FC = () => {
     }
   };
 
-  if (loading && !activePatient) {
+  \1 {\n  \2{
     return (
-      <div className="flex justify-center items-center h-64">;
+      \1>
         Loading patient data...
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">;
-      <div className="px-6 py-4 bg-blue-50 border-b border-blue-100">;
-        <h2 className="text-lg font-semibold text-gray-800">;
+    \1>
+      \1>
+        \1>
           Prescribe Medications
         </h2>
       </div>
 
       {activePatient && (
-        <div className="p-4 bg-gray-50 border-b">;
-          <div className="flex flex-wrap">;
-            <div className="w-full md:w-1/3 px-2 mb-2">;
-              <span className="text-sm font-medium text-gray-500">;
+        \1>
+          \1>
+            \1>
+              \1>
                 Patient:
               </span>
-              <span className="ml-2 text-sm text-gray-900">;
+              \1>
                 {activePatient.first_name} {activePatient.last_name}
               </span>
             </div>
-            <div className="w-full md:w-1/3 px-2 mb-2">;
-              <span className="text-sm font-medium text-gray-500">;
+            \1>
+              \1>
                 Age/Gender:
               </span>
-              <span className="ml-2 text-sm text-gray-900">;
+              \1>
                 {activePatient.age} / {activePatient.gender}
               </span>
             </div>
-            <div className="w-full md:w-1/3 px-2 mb-2">;
-              <span className="text-sm font-medium text-gray-500">Phone:</span>;
-              <span className="ml-2 text-sm text-gray-900">;
+            \1>
+              <span className="text-sm font-medium text-gray-500">Phone:\1>
+              \1>
                 {activePatient.phone}
               </span>
             </div>
@@ -382,14 +345,14 @@ const OPDPharmacyIntegration: React.FC = () => {
         </div>
       )}
 
-      <div className="p-6">;
-        <form onSubmit={handleSubmit}>;
+      \1>
+        \1>
           {/* Medication Selection */}
-          <div className="mb-6">;
-            <label className="block text-sm font-medium text-gray-700 mb-2">;
+          \1>
+            \1>
               Add Medications
             </label>
-            <div className="flex flex-wrap gap-2">;
+            \1>
               {medications.map((med) => (
                 <button>
                   key={med.id}
@@ -405,44 +368,44 @@ const OPDPharmacyIntegration: React.FC = () => {
 
           {/* Selected Medications Table */}
           {selectedMedications.length > 0 && (
-            <div className="mb-6">;
-              <h3 className="text-md font-medium text-gray-700 mb-2">;
+            \1>
+              \1>
                 Prescription Details
               </h3>
-              <div className="overflow-x-auto">;
-                <table className="min-w-full divide-y divide-gray-200">;
-                  <thead className="bg-gray-50">;
+              \1>
+                \1>
+                  \1>
                     <tr>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                      \1>
                         Medication
                       </th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                      \1>
                         Dosage
                       </th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                      \1>
                         Frequency
                       </th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                      \1>
                         Duration
                       </th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                      \1>
                         Quantity
                       </th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                      \1>
                         Instructions
                       </th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">;
+                      \1>
                         Action
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">;
+                  \1>
                     {selectedMedications.map((med, index) => (
-                      <tr key={index}>;
-                        <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900">;
+                      \1>
+                        \1>
                           {med.generic_name} {med.strength} {med.dosage_form}
                         </td>
-                        <td className="px-3 py-2 whitespace-nowrap">;
+                        \1>
                           <input>
                             type="text"
                             value={med.dosage}
@@ -457,7 +420,7 @@ const OPDPharmacyIntegration: React.FC = () => {
                             className="w-full p-1 text-sm border border-gray-300 rounded-md"
                           />
                         </td>
-                        <td className="px-3 py-2 whitespace-nowrap">;
+                        \1>
                           <select>
                             value={med.frequency}
                             onChange={(event: ChangeEvent<HTMLSelectElement>) =>
@@ -469,17 +432,17 @@ const OPDPharmacyIntegration: React.FC = () => {
                             }
                             className="w-full p-1 text-sm border border-gray-300 rounded-md"
                           >
-                            <option value="">Select</option>;
-                            <option value="OD">Once daily (OD)</option>;
-                            <option value="BID">Twice daily (BID)</option>;
-                            <option value="TID">Three times daily (TID)</option>;
-                            <option value="QID">Four times daily (QID)</option>;
-                            <option value="QHS">At bedtime (QHS)</option>;
-                            <option value="PRN">As needed (PRN)</option>;
+                            <option value="">Select\1>
+                            <option value="OD">Once daily (OD)\1>
+                            <option value="BID">Twice daily (BID)\1>
+                            <option value="TID">Three times daily (TID)\1>
+                            <option value="QID">Four times daily (QID)\1>
+                            <option value="QHS">At bedtime (QHS)\1>
+                            <option value="PRN">As needed (PRN)\1>
                             <option value="STAT">Immediately (STAT)</option>
                           </select>
                         </td>
-                        <td className="px-3 py-2 whitespace-nowrap">;
+                        \1>
                           <input>
                             type="text"
                             value={med.duration}
@@ -494,7 +457,7 @@ const OPDPharmacyIntegration: React.FC = () => {
                             className="w-full p-1 text-sm border border-gray-300 rounded-md"
                           />
                         </td>
-                        <td className="px-3 py-2 whitespace-nowrap">;
+                        \1>
                           <input>
                             type="number"
                             value={med.quantity}
@@ -509,7 +472,7 @@ const OPDPharmacyIntegration: React.FC = () => {
                             className="w-16 p-1 text-sm border border-gray-300 rounded-md"
                           />
                         </td>
-                        <td className="px-3 py-2 whitespace-nowrap">;
+                        \1>
                           <textarea>
                             value={med.instructions}
                             onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
@@ -524,7 +487,7 @@ const OPDPharmacyIntegration: React.FC = () => {
                             className="w-full p-1 text-sm border border-gray-300 rounded-md"
                           />
                         </td>
-                        <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">;
+                        \1>
                           <button>
                             type="button"
                             onClick={() => handleRemoveMedication(index)}
@@ -542,7 +505,7 @@ const OPDPharmacyIntegration: React.FC = () => {
           )}
 
           {/* Notes */}
-          <div className="mb-6">;
+          \1>
             <label>
               htmlFor="notes"
               className="block text-sm font-medium text-gray-700"
@@ -566,7 +529,7 @@ const OPDPharmacyIntegration: React.FC = () => {
           </div>
 
           {/* Submit Button */}
-          <div className="flex justify-end">;
+          \1>
             <button>
               type="submit"
               disabled={loading || selectedMedications.length === 0}
@@ -579,24 +542,24 @@ const OPDPharmacyIntegration: React.FC = () => {
         </form>
 
         {/* Existing Prescriptions */}
-        <div className="mt-8">;
-          <h3 className="text-md font-medium text-gray-700 mb-4">;
+        \1>
+          \1>
             Prescription History
           </h3>
           {loading && prescriptions.length === 0 ? (
-            <p className="text-sm text-gray-500">;
+            \1>
               Loading prescription history...
             </p>
           ) : prescriptions.length === 0 ? (
-            <p className="text-sm text-gray-500">;
+            \1>
               No previous prescriptions found for this patient.
             </p>
           ) : (
-            <div className="space-y-4">;
+            \1>
               {prescriptions.map((presc) => (
-                <div key={presc.id} className="border rounded-md p-4 shadow-sm">;
-                  <div className="flex justify-between items-center mb-2">;
-                    <span className="font-semibold text-sm">;
+                \1>
+                  \1>
+                    \1>
                       Prescription #{presc.id}
                     </span>
 <span
@@ -605,12 +568,12 @@ const OPDPharmacyIntegration: React.FC = () => {
                       {presc.status}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-500 mb-2">;
+                  \1>
                     Date: {presc.date}
                   </p>
-                  <ul className="list-disc list-inside space-y-1">;
+                  \1>
                     {presc.items.map((item, index) => (
-                      <li key={index} className="text-sm text-gray-700">;
+                      \1>
                         {item.medication} - {item.dosage}, {item.frequency},{" "}
                         {item.duration}
                       </li>

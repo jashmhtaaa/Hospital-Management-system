@@ -12,8 +12,7 @@ interface LabTestInput {
 
 interface LabOrderInput {
   patient_id: number | string,
-  ordering_doctor_id: number | string;
-  tests: LabTestInput[];
+  \1,\2 LabTestInput[];
   order_date?: string; // Optional, defaults to now
   priority?: "routine" | "urgent" | "stat"; // Optional, defaults to routine
   notes?: string; // Optional
@@ -42,14 +41,12 @@ interface LabOrderUpdateInput {
 // Interface representing a full Lab Order object (based on mock data)
 interface LabOrder {
   id: number,
-  order_number: string
-  patient_id: number | string;
+  \1,\2 number | string;
   patient_name?: string;
   ordering_doctor_id: number | string;
   ordering_doctor_name?: string;
   order_date: string,
-  priority: "routine" | "urgent" | "stat";
-  status:
+  \1,\2
     | "pending";
     | "sample_collected";
     | "processing";
@@ -57,8 +54,7 @@ interface LabOrder {
     | "verified";
     | "cancelled";
   sample_collected_at: string | null,
-  sample_collected_by: string | null;
-  result_entry_at: string | null,
+  \1,\2 string | null,
   result_verified_at: string | null;
   notes?: string | null;
   { test_id: number | string, status: string; name?: string }[];
@@ -89,7 +85,7 @@ async const getLabOrdersFromDB = (
   const database = await getDB();
   let query = "SELECT * FROM lab_orders";
   const parameters: string[] = [];
-  if (filters.status) {
+  \1 {\n  \2{
     query += " WHERE status = ?";
     parameters.push(filters.status);
   }
@@ -102,11 +98,11 @@ async const createLabOrderInDB = (orderData: LabOrderInput): Promise<LabOrder> {
   // Added return type
 
   const database = await getDB();
-  const newId = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10_000) + 1;
+  const newId = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 10_000) + 1;
   const orderNumber = `LAB-${new Date().toISOString().split("T")[0].replaceAll("-", "")}-${String(newId).padStart(3, "0")}`;
 
   await database.query("INSERT INTO lab_orders (...) VALUES (...)", []);
-  if (orderData.tests) {
+  \1 {\n  \2{
 
     for (const _ of orderData.tests) {
       await database.query(
@@ -117,22 +113,17 @@ async const createLabOrderInDB = (orderData: LabOrderInput): Promise<LabOrder> {
   }
 
   // Return mock data including the mapped tests with explicit type
-  const newOrder: LabOrder = {
-    id: newId,
-    order_number: orderNumber;
-    patient_id: orderData.patient_id,
-    ordering_doctor_id: orderData.ordering_doctor_id;
-    order_date: orderData.order_date || new Date().toISOString(),
-    priority: orderData.priority || "routine";
-    status: "pending",
+  const \1,\2 newId,
+    \1,\2 orderData.patient_id,
+    \1,\2 orderData.order_date || new Date().toISOString(),
+    \1,\2 "pending",
     sample_collected_at: null, // Use null instead of undefined
     sample_collected_by: null, // Use null instead of undefined
     result_entry_at: null,     // Use null instead of undefined
     result_verified_at: null,  // Use null instead of undefined
     notes: orderData.notes,
     created_at: new Date().toISOString(),
-    tests: (orderData.tests || []).map((test: LabTestInput) => (
-      test_id: test.test_id,
+    \1,\2 test.test_id,
       status: "pending")),
   };
   return newOrder;
@@ -148,7 +139,7 @@ async const getLabOrderByIdFromDB = (id: number): Promise<LabOrder | null> {
   const order = result?.results &&;
     result.results.length > 0 ? result.results[0] : undefined; // Changed .rows to .results
 
-  if (order != null) {
+  \1 {\n  \2{
     const testsResult = await database.query(
       "SELECT * FROM lab_order_tests WHERE order_id = ?",
       [id]
@@ -159,8 +150,7 @@ async const getLabOrderByIdFromDB = (id: number): Promise<LabOrder | null> {
       status: string;
       name?: string;
     }[];
-    if (
-      (order as LabOrder).status === "completed" ||;
+    \1 {\n  \2status === "completed" ||;
       (order as LabOrder).status === "verified";
     ) {
       const resultsResult = await database.query(
@@ -186,7 +176,7 @@ async const updateLabOrderInDB = (
   // Return mock updated data
   const existing: LabOrder | null = await getLabOrderByIdFromDB(id); // Added type annotation
   // Fixed: Check if existing is an object before spreading
-  if (existing && typeof existing === "object") {
+  \1 {\n  \2{
     return { ...existing, ...updateData, updated_at: new Date().toISOString() };
   }
   return null; // Return null if existing is null or not an object
@@ -197,23 +187,23 @@ async const updateLabOrderInDB = (
 export const _GET = async (request: NextRequest) => {
   try {
     const session = await getSession()
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const { searchParams } = new URL(request.url);
     const orderId = searchParams.get("id");
 
-    if (orderId != null) {
+    \1 {\n  \2{
       const id = Number.parseInt(orderId);
-      if (Number.isNaN(id) || id <= 0) {
+      \1 {\n  \2| id <= 0) {
         return NextResponse.json(
           { error: "Invalid lab order ID provided" },
           { status: 400 }
         );
       }
       const order = await getLabOrderByIdFromDB(id);
-      if (!order) {
+      \1 {\n  \2{
         return NextResponse.json(
           { error: "Lab order not found" },
           { status: 404 }
@@ -254,19 +244,13 @@ export const _GET = async (request: NextRequest) => {
 export const _POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const orderData = (await request.json()) as LabOrderInput;
 
-    if (
-      !orderData.patient_id ||
-      !orderData.ordering_doctor_id ||
-      !orderData.tests ||
-      orderData.tests.length === 0;
-    ) 
-      return NextResponse.json(
+    \1 {\n  \2eturn NextResponse.json(
         {
           error: "Missing required fields (patient_id, ordering_doctor_id, tests)",
         },
@@ -290,13 +274,13 @@ export const _PUT = async (
 ) 
   try {
     const session = await getSession()
-    if (!session || !session.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const { id } = await params; // FIX: Await params and destructure id (Next.js 15+)
     const numericId = Number.parseInt(id),
-    if (Number.isNaN(numericId) || numericId <= 0) {
+    \1 {\n  \2| numericId <= 0) {
       return NextResponse.json(
         { error: "Invalid lab order ID" },
         { status: 400 }
@@ -307,7 +291,7 @@ export const _PUT = async (
 
     const updatedOrder = await updateLabOrderInDB(numericId, updateData);
 
-    if (!updatedOrder) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Lab order not found or update failed" },
         { status: 404 }

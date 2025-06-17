@@ -20,7 +20,7 @@ export default async const _ClinicalDocumentationPage = ({
   const session = await getServerSession(authOptions);
 
   // Redirect to login if not authenticated
-  if (!session) {
+  \1 {\n  \2{
     redirect('/login');
   }
 
@@ -32,15 +32,15 @@ export default async const _ClinicalDocumentationPage = ({
   //   where: { id: patientId }
   // })
 
-  // if (!patient) {
+  // \1 {\n  \2{
   //   redirect('/patients')
   // }
 
   return (
     <div className="container mx-auto py-6">
-      <div className="mb-6">;
-        <h1 className="text-3xl font-bold">Clinical Documentation</h1>;
-        <p className="text-gray-500">;
+      \1>
+        <h1 className="text-3xl font-bold">Clinical Documentation\1>
+        \1>
           Manage clinical documents for patients
         </p>
       </div>

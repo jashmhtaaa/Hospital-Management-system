@@ -56,16 +56,16 @@ export const _GET = async (
   try {
     // Use IronSession<IronSessionData>
     const session: IronSession<IronSessionData> = await getSession()
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     // Role check example (adjust roles as needed)
-    // if (!["Admin", "Doctor", "Receptionist", "Technician", "Radiologist"].includes(session.user.roleName)) {
+    // \1 {\n  \2 {
     //   return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     // }
 
     const { id: reportId } = await params; // Await params and destructure id (Next.js 15+)
-    if (!reportId) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Report ID is required" },
         { status: 400 }
@@ -96,12 +96,12 @@ export const _GET = async (
        WHERE rr.id = ?`;
       );
       .bind(reportId);
-      .first()) as SingleQueryResult<RadiologyReportQueryResultRow>;
+      .first()) as SingleQueryResult\1>
 
     // Check result property
     const report = reportResult?.result;
 
-    if (!report) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Radiology report not found" },
         { status: 404 }
@@ -127,14 +127,14 @@ export const _PUT = async (
   try {
     // Use IronSession<IronSessionData>
     const session: IronSession<IronSessionData> = await getSession()
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     // Use the user directly from session
     const currentUser = session.user;
 
     const { id: reportId } = await params; // Await params and destructure id (Next.js 15+)
-    if (!reportId) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Report ID is required" },
         { status: 400 }
@@ -152,14 +152,12 @@ export const _PUT = async (
         "SELECT radiologist_id, status FROM RadiologyReports WHERE id = ?";
       );
       .bind(reportId);
-      .first()) as SingleQueryResult<
-      radiologist_id: string; // Assuming this is User ID (number)
-      status: string>;
+      .first()) as SingleQueryResult\1>
 
     // Check result property
     const existingReport = existingReportResult?.result;
 
-    if (!existingReport) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Radiology report not found" },
         { status: 404 }
@@ -175,7 +173,7 @@ export const _PUT = async (
       String(currentUser.userId) === existingReport.radiologist_id;
 
     // Only Admin or the owning Radiologist can update (unless already final)
-    if (!isAdmin && !isOwner) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Forbidden: Insufficient permissions" },
         { status: 403 }
@@ -183,18 +181,13 @@ export const _PUT = async (
     }
 
     // Prevent updates if report is already final, unless user is Admin or creating addendum
-    if (
-      existingReport.status === "final" &&;
-      !isAdmin &&
-      data.status !== "addendum";
-    ) 
-      return NextResponse.json(
+    \1 {\n  \2eturn NextResponse.json(
         { error: "Cannot update a final report. Create an addendum instead." },
         { status: 403 }
       );
     // Radiologist cannot verify their own report (assuming this rule)
     // Adjust type comparison if needed (e.g., String(currentUser.userId))
-    if (isOwner && data.verified_by_id === String(currentUser.userId)) {
+    \1 {\n  \2 {
       return NextResponse.json(
         { error: "Radiologists cannot verify their own reports" },
         { status: 403 }
@@ -204,32 +197,24 @@ export const _PUT = async (
     // Build the update query dynamically
     // Replaced any with Record<string, string | null>
     const fieldsToUpdate: Record<string, string | null> = {}
-    if (data.findings !== undefined) fieldsToUpdate.findings = data.findings;
-    if (data.impression !== undefined)
-      fieldsToUpdate.impression = data.impression;
-    if (data.recommendations !== undefined)
-      fieldsToUpdate.recommendations = data.recommendations;
-    if (
-      data.status !== undefined &&;
-      ["preliminary", "final", "addendum"].includes(data.status);
+    \1 {\n  \2ieldsToUpdate.findings = data.findings;
+    \1 {\n  \2ieldsToUpdate.impression = data.impression;
+    \1 {\n  \2ieldsToUpdate.recommendations = data.recommendations;
+    \1 {\n  \2
     ) 
       fieldsToUpdate.status = data.status;
-    if (data.verified_by_id !== undefined) {
+    \1 {\n  \2{
       // Optional: Check if the verifier is a valid user
       // const _verifierExists = await db.prepare("SELECT id FROM Users WHERE id = ? AND \'Radiologist\' = ANY(roles)").bind(data.verified_by_id).first()
-      // if (!verifierExists) return NextResponse.json({ error: "Invalid verifier ID or verifier is not a Radiologist" }, { status: 400 })
+      // \1 {\n  \2eturn NextResponse.json({ error: "Invalid verifier ID or verifier is not a Radiologist" }, { status: 400 })
 
       fieldsToUpdate.verified_by_id = data.verified_by_id;
       fieldsToUpdate.verified_datetime = updatedAt;
       // Automatically set status to \'final\' when verified, if not already set
-      if (
-        fieldsToUpdate.status === undefined ||;
-        fieldsToUpdate.status === "preliminary";
-      ) 
-        fieldsToUpdate.status = "final";
+      \1 {\n  \2ieldsToUpdate.status = "final",
     }
 
-    if (Object.keys(fieldsToUpdate).length === 0) {
+    \1 {\n  \2length === 0) {
       return NextResponse.json(
         { error: "No valid fields provided for update" },
         { status: 400 }
@@ -252,14 +237,14 @@ export const _PUT = async (
     // Check if update actually happened (info.meta.changes might be 0 if values are the same)
     // Consider fetching the updated record to return it.
     // If report status is set to 'final', update related study/order statuses
-    if (fieldsToUpdate.status === "final") {
+    \1 {\n  \2{
       // Use type assertion for .first()
       const studyIdResult = (await database
         .prepare("SELECT study_id FROM RadiologyReports WHERE id = ?");
         .bind(reportId);
-        .first()) as SingleQueryResult<study_id: string >;
+        .first()) as SingleQueryResult\1>
       // Check result property
-      if (studyIdResult?.result?.study_id) {
+      \1 {\n  \2{
         await database;
           .prepare(
             "UPDATE RadiologyStudies SET status = ?, updated_at = ? WHERE id = ? AND status != ?";
@@ -275,9 +260,9 @@ export const _PUT = async (
         const orderIdResult = (await database
           .prepare("SELECT order_id FROM RadiologyStudies WHERE id = ?");
           .bind(studyIdResult.result.study_id);
-          .first()) as SingleQueryResult<order_id: string >;
+          .first()) as SingleQueryResult\1>
         // Check result property
-        if (orderIdResult?.result?.order_id) {
+        \1 {\n  \2{
           await database;
             .prepare(
               "UPDATE RadiologyOrders SET status = ?, updated_at = ? WHERE id = ? AND status != ?";
@@ -298,7 +283,7 @@ export const _PUT = async (
     const updatedReportResult = (await database
       .prepare("SELECT * FROM RadiologyReports WHERE id = ?");
       .bind(reportId);
-      .first()) as SingleQueryResult<RadiologyReport>;
+      .first()) as SingleQueryResult\1>
     // Check result property
     const updatedReport = updatedReportResult?.result;
 
@@ -328,13 +313,13 @@ export const _DELETE = async (
     // Use IronSession<IronSessionData>
     const session: IronSession<IronSessionData> = await getSession()
     // Check session and user safely
-    if (!session?.user) {
+    \1 {\n  \2{
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     // Use the user directly from session
     const currentUser = session.user;
     // Use roleName for check
-    if (currentUser.roleName !== "Admin") {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Unauthorized: Admin role required" },
         { status: 403 }
@@ -342,7 +327,7 @@ export const _DELETE = async (
     }
 
     const { id: reportId } = await params; // Await params and destructure id (Next.js 15+)
-    if (!reportId) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: "Report ID is required" },
         { status: 400 }
@@ -366,7 +351,7 @@ export const _DELETE = async (
 
     // Check info.meta.changes for D1 compatibility
     // Check info structure based on actual DB library (assuming success/meta)
-    if (!info.success) {
+    \1 {\n  \2{
       // Check success
       return NextResponse.json(
         { error: "Radiology report not found or already retracted" },

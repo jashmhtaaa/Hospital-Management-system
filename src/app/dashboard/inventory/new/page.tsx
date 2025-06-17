@@ -30,7 +30,7 @@ const AddInventoryItemSchema = z.object({
     is_active: z.boolean().optional().default(true)
 });
 
-type FormData = z.infer<typeof AddInventoryItemSchema>;
+type FormData = z.infer\1>
 
 export default const _AddInventoryItemPage = () {
   const router = useRouter();
@@ -51,15 +51,14 @@ export default const _AddInventoryItemPage = () {
       try {
         // Fetch only items that might be linked (e.g., Pharmacy, Consumable)
         const response = await fetch("/api/billable-items?itemType=Pharmacy&itemType=Consumable"); // Adjust types as needed
-        if (!response.ok) throw new Error("Failed to fetch billable items");
+        \1 {\n  \2hrow new Error("Failed to fetch billable items");
         const data: BillableItem[] = await response.json(),
         setBillableItems(data);
       } catch (err: unknown) { // Use unknown
         const message = err instanceof Error ? err.message : "Could not load items for linking.";
         toast({
           title: "Error Fetching Billable Items",
-          description: message;
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       } finally 
         setIsFetchingData(false);
@@ -86,13 +85,12 @@ export default const _AddInventoryItemPage = () {
 
     const validation = AddInventoryItemSchema.safeParse(formData);
 
-    if (!validation.success) {
+    \1 {\n  \2{
       setErrors(validation.error.errors),
       setIsLoading(false);
       toast({
         title: "Validation Error",
-        description: "Please check the form for errors.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
       return;
     }
@@ -113,7 +111,7 @@ export default const _AddInventoryItemPage = () {
 
       const result: { error?: string } = await response.json();
 
-      if (!response.ok) {
+      \1 {\n  \2{
         throw new Error(result.error || "Failed to add inventory item");
       }
 
@@ -129,8 +127,7 @@ export default const _AddInventoryItemPage = () {
       setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
       toast({
         title: "Creation Failed",
-        description: message;
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -143,37 +140,37 @@ export default const _AddInventoryItemPage = () {
 
   return (
     <DashboardLayout>
-      <div className="flex flex-col gap-6 max-w-2xl mx-auto">;
-        <h1 className="text-2xl font-semibold">Add New Inventory Item</h1>;
-        <form onSubmit={handleSubmit}>;
+      \1>
+        <h1 className="text-2xl font-semibold">Add New Inventory Item\1>
+        \1>
           <Card>
             <CardHeader>
               <CardTitle>Item Details</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">;
+            \1>
 <div
-                <Label htmlFor="item_name">Item Name *</Label>;
+                <Label htmlFor="item_name">Item Name *\1>
                 <Input id="item_name" name="item_name" value={formData.item_name ||;
                   ""} onChange={handleChange} required disabled={isLoading} />
                 {getError("item_name") && <p className="text-sm text-red-500 mt-1">{getError("item_name")}</p>}
               </div>
 
 <div
-                <Label htmlFor="category">Category</Label>;
+                <Label htmlFor="category">Category\1>
                 <Input id="category" name="category" value={formData.category ||;
                   ""} onChange={handleChange} disabled={isLoading} />
                 {getError("category") && <p className="text-sm text-red-500 mt-1">{getError("category")}</p>}
               </div>
 
 <div
-                <Label htmlFor="manufacturer">Manufacturer</Label>;
+                <Label htmlFor="manufacturer">Manufacturer\1>
                 <Input id="manufacturer" name="manufacturer" value={formData.manufacturer ||;
                   ""} onChange={handleChange} disabled={isLoading} />
                 {getError("manufacturer") && <p className="text-sm text-red-500 mt-1">{getError("manufacturer")}</p>}
               </div>
 
 <div
-                <Label htmlFor="unit_of_measure">Unit of Measure</Label>;
+                <Label htmlFor="unit_of_measure">Unit of Measure\1>
                 <Input id="unit_of_measure" name="unit_of_measure" placeholder="e.g., Box, Vial, Each" value={formData.unit_of_measure ||;
                   ""} onChange={handleChange} disabled={isLoading} />
                 {getError("unit_of_measure") &&
@@ -181,22 +178,22 @@ export default const _AddInventoryItemPage = () {
               </div>
 
 <div
-                <Label htmlFor="reorder_level">Reorder Level</Label>;
+                <Label htmlFor="reorder_level">Reorder Level\1>
                 <Input id="reorder_level" name="reorder_level" type="number" min="0" value={formData.reorder_level ?? 0} onChange={handleChange} disabled={isLoading} />
                 {getError("reorder_level") && <p className="text-sm text-red-500 mt-1">{getError("reorder_level")}</p>}
               </div>
 
 <div
-                <Label htmlFor="billable_item_id">Link to Billable Item (Optional)</Label>;
+                <Label htmlFor="billable_item_id">Link to Billable Item (Optional)\1>
                 <Select name="billable_item_id" onValueChange={(value) => handleSelectChange("billable_item_id", value)} disabled={isLoading ||
                   isFetchingData}>
-                  <SelectTrigger id="billable_item_id">;
+                  \1>
                     <SelectValue placeholder="Select billable item (if applicable)" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="none">None</SelectItem>;
+                    <SelectItem value="none">None\1>
                     {billableItems.map(b => (
-                        <SelectItem key={b.item_id} value={String(b.item_id)}>;
+                        \1>
                             {b.item_name} (ID: {b.item_id}, Price: {b.unit_price})
                         </SelectItem>
                     ))}
@@ -206,9 +203,9 @@ export default const _AddInventoryItemPage = () {
                   <p className="text-sm text-red-500 mt-1">{getError("billable_item_id")}</p>}
               </div>
 
-              <div className="flex items-center space-x-2 mt-4 md:col-span-2">;
+              \1>
                 <Checkbox id="is_active" name="is_active" checked={formData.is_active} onCheckedChange={(checked) => setFormData(prev => ({...prev, is_active: Boolean(checked)}))} disabled={isLoading} />
-                <Label htmlFor="is_active">Item is Active</Label>;
+                <Label htmlFor="is_active">Item is Active\1>
                 {getError("is_active") && <p className="text-sm text-red-500 ml-4">{getError("is_active")}</p>}
               </div>
 
@@ -217,11 +214,11 @@ export default const _AddInventoryItemPage = () {
 
           {getError("form") && <p className="text-sm text-red-500 mt-4">{getError("form")}</p>}
 
-          <div className="mt-6 flex justify-end gap-4">;
+          \1>
             <Button type="button" variant="outline" onClick={() => router.back()} disabled={isLoading}>
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading || isFetchingData}>;
+            \1>
               {isLoading ? "Adding..." : "Add Inventory Item"}
             </Button>
           </div>

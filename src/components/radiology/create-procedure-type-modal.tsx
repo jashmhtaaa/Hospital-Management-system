@@ -19,17 +19,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 
 // Define the type for the form data
-export interface ProcedureTypeFormData {
-  name: string;
-  description?: string | null;
-  modality_type?: string | null;
+\1
+}
 }
 
 // Define the type for the component props
 interface CreateProcedureTypeModalProperties {
   isOpen: boolean,
-  onClose: () => void;
-  onSubmit: (data: ProcedureTypeFormData) => Promise<void>
+  \1,\2 (data: ProcedureTypeFormData) => Promise<void>
 export default const _CreateProcedureTypeModal = ({
   isOpen,
   onClose,
@@ -42,7 +39,7 @@ export default const _CreateProcedureTypeModal = ({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!name) {
+    \1 {\n  \2{
       /* SECURITY: Console statement removed */
       return
     }
@@ -70,14 +67,14 @@ export default const _CreateProcedureTypeModal = ({
   // Use the isOpen prop to control the dialog's open state
   return (
     <Dialog open={isOpen} onOpenChange={(openState) => !openState && onClose()}>
-      <DialogContent className="sm:max-w-[425px]">;
+      \1>
         <DialogHeader>
           <DialogTitle>Add New Procedure Type</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>;
-          <div className="grid gap-4 py-4">;
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="name" className="text-right">;
+        \1>
+          \1>
+            \1>
+              \1>
                 Name *
               </Label>
               <Input>
@@ -89,8 +86,8 @@ export default const _CreateProcedureTypeModal = ({
                 disabled={isSubmitting}
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="modalityType" className="text-right">;
+            \1>
+              \1>
                 Modality Type
               </Label>
               <Input>
@@ -102,8 +99,8 @@ export default const _CreateProcedureTypeModal = ({
                 disabled={isSubmitting}
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">;
-              <Label htmlFor="description" className="text-right">;
+            \1>
+              \1>
                 Description
               </Label>
               <Textarea>
@@ -126,7 +123,7 @@ export default const _CreateProcedureTypeModal = ({
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" disabled={isSubmitting}>;
+            \1>
               {isSubmitting ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : undefined}

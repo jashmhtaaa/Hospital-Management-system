@@ -41,7 +41,7 @@ const LabOrderSchema = z.object({
   encounterId: z.string().optional(),
   orderingProviderId: z.string().min(1, "Ordering provider ID is required"),
   orderingProviderName: z.string().min(1, "Ordering provider name is required"),
-  orderDateTime: z.date().default(() => new Date()),
+  orderDateTime: z.date().default(() => \1,
   priority: z.string().default("Routine"),
   collectionType: z.string().default("Lab Draw"),
   clinicalInfo: z.string().optional(),
@@ -59,8 +59,7 @@ const LabOrderSchema = z.object({
   notes: z.string().optional(),
   isRecurring: z.boolean().default(false),
   recurringPattern: z.string().optional(),
-  orderItems: z.array(z.object({
-    testId: z.string().optional(),
+  \1,\2 z.string().optional(),
     profileId: z.string().optional(),
     status: z.string().default("Ordered"),
     priority: z.string().default("Routine"),
@@ -107,7 +106,7 @@ const LabResultSchema = z.object({
   interpretation: z.string().optional(),
   status: z.string().default("Preliminary"),
   performedBy: z.string().min(1, "Performed by is required"),
-  performedDateTime: z.date().default(() => new Date()),
+  performedDateTime: z.date().default(() => \1,
   verifiedBy: z.string().optional(),
   verifiedDateTime: z.date().optional(),
   reportedDateTime: z.date().optional(),
@@ -131,15 +130,8 @@ const LabResultSchema = z.object({
 /**
  * Service class for laboratory management;
  */
-export class LaboratoryService {
-  private auditService: AuditService;
-  private notificationService: NotificationService;
-  private encryptionService: EncryptionService;
-
-  constructor() {
-    this.auditService = new AuditService();
-    this.notificationService = new NotificationService();
-    this.encryptionService = new EncryptionService();
+\1
+}
   }
 
   /**
@@ -157,8 +149,7 @@ export class LaboratoryService {
     today.setHours(0, 0, 0, 0);
 
     const orderCount = await prisma.labOrder.count({
-      where: {
-        orderDateTime: {
+      \1,\2 {
           gte: today
         }
       }
@@ -188,8 +179,7 @@ export class LaboratoryService {
     today.setHours(0, 0, 0, 0);
 
     const sampleCount = await prisma.labSample.count({
-      where: {
-        createdAt: {
+      \1,\2 {
           gte: today
         }
       }
@@ -217,7 +207,7 @@ export class LaboratoryService {
         where: { testCode: validatedTest.testCode }
       });
 
-      if (existingTest != null) {
+      \1 {\n  \2{
         throw new Error(`Test with code ${validatedTest.testCode} already exists`);
       }
 
@@ -252,22 +242,19 @@ export class LaboratoryService {
       // Get test with parameters
       const test = await prisma.labTest.findUnique({
         where: { id: testId },
-        include: {
-          testParameters: {
-            include: {
-              referenceRanges: true,
+        \1,\2 {
+            \1,\2 true,
               criticalRanges: true
             }
           },
-          sampleRequirements: {
-            include: {
+          \1,\2 {
               sampleType: true
             }
           }
         }
       });
 
-      if (!test) {
+      \1 {\n  \2{
         throw new Error('Lab test not found');
       }
 
@@ -299,17 +286,17 @@ export class LaboratoryService {
         where: { id: testId }
       });
 
-      if (!existingTest) {
+      \1 {\n  \2{
         throw new Error('Lab test not found');
       }
 
       // If changing test code, check if new code already exists
-      if (validatedTest.testCode !== existingTest.testCode) {
+      \1 {\n  \2{
         const duplicateTest = await prisma.labTest.findUnique({
           where: { testCode: validatedTest.testCode }
         });
 
-        if (duplicateTest != null) {
+        \1 {\n  \2{
           throw new Error(`Test with code ${validatedTest.testCode} already exists`);
         }
       }
@@ -348,7 +335,7 @@ export class LaboratoryService {
 
       // Check if at least one of testId or profileId is provided for each item
       validatedOrder.orderItems.forEach(item => {
-        if (!item?.testId && !item.profileId) {
+        \1 {\n  \2{
           throw new Error('Each order item must have either a test or profile specified');
         }
       });
@@ -380,8 +367,7 @@ export class LaboratoryService {
         // Create order items
         for (const item of validatedOrder.orderItems) {
           await tx.labOrderItem.create({
-            data: {
-              orderId: newOrder.id,
+            \1,\2 newOrder.id,
               testId: item.testId,              profileId: item.profileId,
               status: item.status || 'Ordered',              priority: item.priority || validatedOrder.priority,
               scheduledDateTime: item.scheduledDateTime,              performingLabId: item.performingLabId,
@@ -427,27 +413,23 @@ export class LaboratoryService {
       // Get order with items, samples, and results
       const order = await prisma.labOrder.findUnique({
         where: { id: orderId },
-        include: {
-          orderItems: {
-            include: {
-              test: true,
+        \1,\2 {
+            \1,\2 true,
               profile: true
             }
           },
-          samples: {
-            include: {
+          \1,\2 {
               sampleType: true
             }
           },
-          results: {
-            include: {
+          \1,\2 {
               parameter: true
             }
           }
         }
       });
 
-      if (!order) {
+      \1 {\n  \2{
         throw new Error('Lab order not found');
       }
 
@@ -476,21 +458,20 @@ export class LaboratoryService {
         where: { id: orderId }
       });
 
-      if (!existingOrder) {
+      \1 {\n  \2{
         throw new Error('Lab order not found');
       }
 
       // Validate status
       const validStatuses = ['Ordered', 'Collected', 'In Process', 'Completed', 'Cancelled'];
-      if (!validStatuses.includes(statusData.status)) {
-        throw new Error(`Invalid status: ${statusData.status}. Must be one of: ${validStatuses.join(', ')}`);
+      \1 {\n  \2 {
+        throw new Error(`Invalid status: ${statusData.status}. Must be one of: ${\1}`;
       }
 
       // Update order status
       const order = await prisma.labOrder.update({
         where: { id: orderId },
-        data: {
-          status: statusData.status,
+        \1,\2 statusData.status,
           notes: statusData.notes ? `/* SECURITY: Template literal eliminated */
         }
       });
@@ -504,7 +485,7 @@ export class LaboratoryService {
       });
 
       // Send notification for status change
-      if (statusData.status === 'Completed') {
+      \1 {\n  \2{
         await this.notificationService.sendNotification({
           type: 'LabOrderCompleted',
           title: 'Lab Order Completed',          message: `Lab order ${order.orderNumber} has been completed`,
@@ -513,7 +494,7 @@ export class LaboratoryService {
           recipientIds: [order.orderingProviderId],
           relatedResourceType: 'LabOrder',          relatedResourceId: order.id
         });
-      } else if (statusData.status === 'Cancelled') {
+      } else \1 {\n  \2{
         await this.notificationService.sendNotification({
           type: 'LabOrderCancelled',
           title: 'Lab Order Cancelled',          message: `Lab order ${order.orderNumber} has been cancelled`,
@@ -542,12 +523,11 @@ export class LaboratoryService {
       // Check if order exists
       const order = await prisma.labOrder.findUnique({
         where: { id: validatedSample.orderId },
-        include: {
-          orderItems: true
+        \1,\2 true
         }
       });
 
-      if (!order) {
+      \1 {\n  \2{
         throw new Error('Lab order not found');
       }
 
@@ -556,7 +536,7 @@ export class LaboratoryService {
         where: { id: validatedSample.sampleTypeId }
       });
 
-      if (!sampleType) {
+      \1 {\n  \2{
         throw new Error('Sample type not found');
       }
 
@@ -581,11 +561,10 @@ export class LaboratoryService {
       });
 
       // If sample is collected, update order status if it's still in 'Ordered' status
-      if (validatedSample?.collectionDateTime && order.status === 'Ordered') {
+      \1 {\n  \2{
         await prisma.labOrder.update({
           where: { id: order.id },
-          data: {
-            status: 'Collected',
+          \1,\2 'Collected',
             collectionDateTime: validatedSample.collectionDateTime,            collectedBy: validatedSample.collectedBy,
             collectionSite: validatedSample.collectionSite
           }
@@ -593,11 +572,10 @@ export class LaboratoryService {
       }
 
       // If sample is received, update order status if it's in 'Collected' status
-      if (validatedSample?.receivedDateTime && order.status === 'Collected') {
+      \1 {\n  \2{
         await prisma.labOrder.update({
           where: { id: order.id },
-          data: {
-            status: 'In Process',
+          \1,\2 'In Process',
             specimenReceivedDateTime: validatedSample.receivedDateTime,            receivedBy: validatedSample.receivedBy
           }
         });
@@ -631,30 +609,29 @@ export class LaboratoryService {
         where: { id: validatedResult.orderId }
       });
 
-      if (!order) {
+      \1 {\n  \2{
         throw new Error('Lab order not found');
       }
 
       // Check if parameter exists
       const parameter = await prisma.labTestParameter.findUnique({
         where: { id: validatedResult.parameterId },
-        include: {
-          criticalRanges: true,
+        \1,\2 true,
           referenceRanges: true,          test: true
         }
       });
 
-      if (!parameter) {
+      \1 {\n  \2{
         throw new Error('Test parameter not found');
       }
 
       // Check if sample exists if provided
-      if (validatedResult.sampleId) {
+      \1 {\n  \2{
         const sample = await prisma.labSample.findUnique({
           where: { id: validatedResult.sampleId }
         });
 
-        if (!sample) {
+        \1 {\n  \2{
           throw new Error('Lab sample not found');
         }
       }
@@ -664,35 +641,33 @@ export class LaboratoryService {
       let flags = validatedResult.flags;
       let referenceRange = validatedResult.referenceRange;
 
-      if (validatedResult.resultValueNumeric !== undefined && parameter.criticalRanges.length > 0) {
+      \1 {\n  \2{
         // Simplistic approach - in a real system would check age, gender, etc.
         const criticalRange = parameter.criticalRanges[0]
 
-        if (criticalRange?.lowerCritical &&
-          validatedResult.resultValueNumeric < Number.parseFloat(criticalRange.lowerCritical)) {
+        \1 {\n  \2 {
           isCritical = true;
           flags = flags || 'CL'; // Critical Low
-        } else if (criticalRange?.upperCritical &&
-          validatedResult.resultValueNumeric > Number.parseFloat(criticalRange.upperCritical)) {
+        } else \1 {\n  \2 {
           isCritical = true;
           flags = flags || 'CH'; // Critical High
         }
       }
 
       // If numeric result provided, check reference ranges
-      if (validatedResult.resultValueNumeric !== undefined && parameter.referenceRanges.length > 0) {
+      \1 {\n  \2{
         // Simplistic approach - in a real system would check age, gender, etc.
         const refRange = parameter.referenceRanges[0]
 
-        if (refRange?.lowerLimit && refRange.upperLimit) {
+        \1 {\n  \2{
           referenceRange = referenceRange || `${refRange.lowerLimit}-${refRange.upperLimit}`;
 
-          if (refRange?.lowerLimit && validatedResult.resultValueNumeric < Number.parseFloat(refRange.lowerLimit)) {
+          \1 {\n  \2 {
             flags = flags || 'L'; // Low
-          } else if (refRange?.upperLimit && validatedResult.resultValueNumeric > Number.parseFloat(refRange.upperLimit)) {
+          } else \1 {\n  \2 {
             flags = flags || 'H'; // High
           }
-        } else if (refRange.textualRange) {
+        } else \1 {\n  \2{
           referenceRange = referenceRange || refRange.textualRange;
         }
       }
@@ -733,7 +708,7 @@ export class LaboratoryService {
       });
 
       // Send notification for critical result
-      if (isCritical != null) {
+      \1 {\n  \2{
         await this.notificationService.sendNotification({
           type: 'CriticalLabResult',
           title: 'Critical Lab Result',          message: `Critical lab result for ${parameter.test.testName} - ${parameter.parameterName} on order ${order.orderNumber}`,
@@ -747,18 +722,13 @@ export class LaboratoryService {
       // Check if all required results are entered and update order status if needed
       const allOrderItems = await prisma.labOrderItem.findMany({
         where: { orderId: order.id },
-        include: {
-          test: {
-            include: {
-              testParameters: true
+        \1,\2 {
+            \1,\2 true
             }
           },
-          profile: {
-            include: {
-              testItems: {
-                include: {
-                  test: {
-                    include: {
+          \1,\2 {
+              \1,\2 {
+                  \1,\2 {
                       testParameters: true
                     }
                   }
@@ -773,18 +743,18 @@ export class LaboratoryService {
       const requiredParameters: string[] = [];
 
       for (const item of allOrderItems) {
-        if (item.test) {
+        \1 {\n  \2{
           // Add test parameters
           item.test.testParameters.forEach(param => {
-            if (param.reportable) {
+            \1 {\n  \2{
               requiredParameters.push(param.id);
             }
           });
-        } else if (item.profile) {
+        } else \1 {\n  \2{
           // Add parameters from all tests in the profile
           item.profile.testItems.forEach(profileItem => {
             profileItem.test.testParameters.forEach(param => {
-              if (param.reportable) {
+              \1 {\n  \2{
                 requiredParameters.push(param.id);
               }
             });
@@ -803,7 +773,7 @@ export class LaboratoryService {
       const allResultsEntered = requiredParameters.every(param => enteredParameters.includes(param));
 
       // Update order status if all results are entered and status is 'In Process'
-      if (allResultsEntered && order.status === 'In Process') {
+      \1 {\n  \2{
         await prisma.labOrder.update({
           where: { id: order.id },
           data: { status: 'Completed' }
@@ -835,25 +805,22 @@ export class LaboratoryService {
       // Check if result exists
       const existingResult = await prisma.labResult.findUnique({
         where: { id: resultId },
-        include: {
-          parameter: {
-            include: {
-              test: true
+        \1,\2 {
+            \1,\2 true
             }
           },
           order: true
         }
       });
 
-      if (!existingResult) {
+      \1 {\n  \2{
         throw new Error('Lab result not found');
       }
 
       // Update result status to Final and set verification info
       const result = await prisma.labResult.update({
         where: { id: resultId },
-        data: {
-          status: 'Final',
+        \1,\2 'Final',
           verifiedBy: verificationData.verifiedBy,          verifiedDateTime: new Date(),
           notes: verificationData.notes ? `/* SECURITY: Template literal eliminated */
         }
@@ -882,38 +849,38 @@ export class LaboratoryService {
       // Build where clause based on search parameters
       const where: unknown = {};
 
-      if (searchParams.orderNumber) {
+      \1 {\n  \2{
         where.orderNumber = {
           contains: searchParams.orderNumber
         };
       }
 
-      if (searchParams.patientId) {
+      \1 {\n  \2{
         where.patientId = searchParams.patientId;
       }
 
-      if (searchParams.orderingProviderId) {
+      \1 {\n  \2{
         where.orderingProviderId = searchParams.orderingProviderId;
       }
 
-      if (searchParams.status) {
+      \1 {\n  \2{
         where.status = searchParams.status;
       }
 
-      if (searchParams.priority) {
+      \1 {\n  \2{
         where.priority = searchParams.priority;
       }
 
-      if (searchParams?.startDate && searchParams.endDate) {
+      \1 {\n  \2{
         where.orderDateTime = {
           gte: new Date(searchParams.startDate),
           lte: new Date(searchParams.endDate)
         };
-      } else if (searchParams.startDate) {
+      } else \1 {\n  \2{
         where.orderDateTime = {
           gte: new Date(searchParams.startDate)
         };
-      } else if (searchParams.endDate) {
+      } else \1 {\n  \2{
         where.orderDateTime = {
           lte: new Date(searchParams.endDate)
         };
@@ -927,15 +894,12 @@ export class LaboratoryService {
       const [orders, total] = await Promise.all([
         prisma.labOrder.findMany({
           where,
-          include: {
-            orderItems: {
-              include: {
-                test: true,
+          \1,\2 {
+              \1,\2 true,
                 profile: true
               }
             },
-            _count: {
-              select: {
+            \1,\2 {
                 samples: true,
                 results: true
               }
@@ -974,20 +938,16 @@ export class LaboratoryService {
     try {
       // Get all results for the patient
       const results = await prisma.labResult.findMany({
-        where: {
-          order: {
+        \1,\2 {
             patientId: patientId
           },
           status: { in: ['Final', 'Preliminary'] }
         },
-        include: {
-          parameter: {
-            include: {
-              test: true
+        \1,\2 {
+            \1,\2 true
             }
           },
-          order: {
-            select: {
+          \1,\2 {
               orderNumber: true,
               orderDateTime: true,              orderingProviderName: true
             }
@@ -1007,7 +967,7 @@ export class LaboratoryService {
       });
 
       // If not grouping by test, return the flat list
-      if (!options.groupByTest) {
+      \1 {\n  \2{
         return results;
       }
 
@@ -1016,7 +976,7 @@ export class LaboratoryService {
         const testId = result.parameter.testId;
         const testName = result.parameter.test.testName;
 
-        if (!acc[testId]) {
+        \1 {\n  \2{
           acc[testId] = {
             testId,
             testName,
@@ -1026,7 +986,7 @@ export class LaboratoryService {
         }
 
         // Update latest date if this result is newer
-        if (new Date(result.performedDateTime) > new Date(acc[testId].latestDate)) {
+        \1 {\n  \2 \1 {
           acc[testId].latestDate = result.performedDateTime;
         }
 
@@ -1061,7 +1021,7 @@ export class LaboratoryService {
     try {
       // Calculate start date based on months option
       let startDate;
-      if (options.months) {
+      \1 {\n  \2{
         startDate = new Date();
         startDate.setMonth(startDate.getMonth() - options.months);
       }
@@ -1069,13 +1029,12 @@ export class LaboratoryService {
       // Get parameter details
       const parameter = await prisma.labTestParameter.findUnique({
         where: { id: parameterId },
-        include: {
-          test: true,
+        \1,\2 true,
           referenceRanges: true
         }
       });
 
-      if (!parameter) {
+      \1 {\n  \2{
         throw new Error('Test parameter not found');
       }
 
@@ -1087,12 +1046,10 @@ export class LaboratoryService {
             patientId
           },
           status: { in: ['Final', 'Preliminary'] },
-          performedDateTime: startDate ? {
-            gte: startDate
+          \1,\2 startDate
           } : undefined;
         },
-        include: 
-              orderNumber: true,
+        \1,\2 true,
               orderDateTime: true,
         orderBy: performedDateTime: 'asc' 
       });
@@ -1106,10 +1063,10 @@ export class LaboratoryService {
 
       // Extract reference ranges
       let referenceRanges = null;
-      if (parameter.referenceRanges.length > 0) {
+      \1 {\n  \2{
         // In a real system, would select the appropriate range based on patient demographics
         const refRange = parameter.referenceRanges[0];
-        if (refRange?.lowerLimit && refRange.upperLimit) {
+        \1 {\n  \2{
           referenceRanges = {
             lower: Number.parseFloat(refRange.lowerLimit),
             upper: Number.parseFloat(refRange.upperLimit)
@@ -1119,14 +1076,12 @@ export class LaboratoryService {
 
       // Format the response
       return {
-        parameter: {
-          id: parameter.id,
+        \1,\2 parameter.id,
           name: parameter.parameterName,          units: parameter.units,
           testName: parameter.test.testName,          testCode: parameter.test.testCode
         },
         referenceRanges,
-        results: results.map(result => ({
-          id: result.id,
+        \1,\2 result.id,
           resultValue: result.resultValue,          resultValueNumeric: result.resultValueNumeric,
           units: result.units,          flags: result.flags,
           isCritical: result.isCritical,          performedDateTime: result.performedDateTime,

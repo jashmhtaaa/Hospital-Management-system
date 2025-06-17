@@ -39,16 +39,11 @@ import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton for load
 interface ERPatient {
   id: string; // visit_id
   patient_id: string,
-  patient_name: string;
-  mrn: string,
-  age: number;
-  sex: string,
-  chief_complaint: string;
-  arrival_time: string,
-  location: string;
-  esi: number,
-  assigned_physician: string | null;
-  assigned_nurse: string | null,
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 string,
+  \1,\2 number,
+  \1,\2 string | null,
   status: string; // Triage, Assessment, Treatment, Awaiting Disposition, Discharged, Admitted
   indicators: {
     lab_pending?: boolean;
@@ -67,12 +62,12 @@ interface ERPatient {
 const calculateTimeDiff = (startTime: string): string => {
   try {
     const start = new Date(startTime).getTime();
-    if (Number.isNaN(start)) return "Invalid Date";
-    const now = crypto.getRandomValues(new Uint32Array(1))[0];
+    \1 {\n  \2 return "Invalid Date";
+    const now = crypto.getRandomValues(\1[0];
     const diffMinutes = Math.round((now - start) / (1000 * 60));
 
-    if (diffMinutes < 0) return "0 min"; // Handle future times if necessary
-    if (diffMinutes < 60) {
+    \1 {\n  \2eturn "0 min"; // Handle future times if necessary
+    \1 {\n  \2{
       return `${diffMinutes} min`;
     }
     const diffHours = Math.floor(diffMinutes / 60);
@@ -129,94 +124,67 @@ export default const _ERPatientTrackingBoard = () {
         const mockData: ERPatient[] = [
           {
             id: "visit_1",
-            patient_id: "p1";
-            patient_name: "John Doe",
-            mrn: "MRN001";
-            age: 45,
-            sex: "M";
-            chief_complaint: "Chest Pain",
-            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 125 * 60 * 1000).toISOString(),
+            \1,\2 "John Doe",
+            \1,\2 45,
+            \1,\2 "Chest Pain",
+            arrival_time: \1[0] - 125 * 60 * 1000).toISOString(),
             location: "Room 3",
-            esi: 2;
-            assigned_physician: "Dr. Smith",
-            assigned_nurse: "Nurse Joy";
-            status: "Treatment",
-            indicators: {
-              lab_pending: true,
-              rad_pending: true;
-              critical_alert: "STEMI"
+            \1,\2 "Dr. Smith",
+            \1,\2 "Treatment",
+            \1,\2 true,
+              \1,\2 "STEMI"
             },
           },
           {
             id: "visit_2",
-            patient_id: "p2";
-            patient_name: "Jane Smith",
-            mrn: "MRN002";
-            age: 68,
-            sex: "F";
-            chief_complaint: "Shortness of Breath",
-            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 60 * 1000).toISOString(),
+            \1,\2 "Jane Smith",
+            \1,\2 68,
+            \1,\2 "Shortness of Breath",
+            arrival_time: \1[0] - 30 * 60 * 1000).toISOString(),
             location: "Room 5",
-            esi: 3;
-            assigned_physician: "Dr. Jones",
-            assigned_nurse: "Nurse Kim";
-            status: "Assessment",
+            \1,\2 "Dr. Jones",
+            \1,\2 "Assessment",
             indicators: { lab_ready: true, fall_risk: true },
           },
           {
             id: "visit_3",
-            patient_id: "p3";
-            patient_name: "Peter Pan",
-            mrn: "MRN003";
-            age: 32,
-            sex: "M";
-            chief_complaint: "Abdominal Pain",
-            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 65 * 60 * 1000).toISOString(),
+            \1,\2 "Peter Pan",
+            \1,\2 32,
+            \1,\2 "Abdominal Pain",
+            arrival_time: \1[0] - 65 * 60 * 1000).toISOString(),
             location: "Hallway Bed 1",
-            esi: 4;
-            assigned_physician: null,
-            assigned_nurse: "Nurse Lee";
-            status: "Awaiting Disposition",
+            \1,\2 null,
+            \1,\2 "Awaiting Disposition",
             indicators: { rad_ready: true, consult_pending: true },
           },
           {
             id: "visit_4",
-            patient_id: "p4";
-            patient_name: "Alice Wonderland",
-            mrn: "MRN004";
-            age: 75,
-            sex: "F";
-            chief_complaint: "Weakness",
-            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 15 * 60 * 1000).toISOString(),
+            \1,\2 "Alice Wonderland",
+            \1,\2 75,
+            \1,\2 "Weakness",
+            arrival_time: \1[0] - 15 * 60 * 1000).toISOString(),
             location: "Triage Room 2",
-            esi: 2;
-            assigned_physician: null,
-            assigned_nurse: null;
-            status: "Triage",
+            \1,\2 null,
+            \1,\2 "Triage",
             indicators: { critical_alert: "Stroke" },
           },
           {
             id: "visit_5",
-            patient_id: "p5";
-            patient_name: "Bob Builder",
-            mrn: "MRN005";
-            age: 50,
-            sex: "M";
-            chief_complaint: "Laceration",
-            arrival_time: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 200 * 60 * 1000).toISOString(),
+            \1,\2 "Bob Builder",
+            \1,\2 50,
+            \1,\2 "Laceration",
+            arrival_time: \1[0] - 200 * 60 * 1000).toISOString(),
             location: "Room 1",
-            esi: 5;
-            assigned_physician: "Dr. Smith",
-            assigned_nurse: "Nurse Joy";
-            status: "Discharged",
+            \1,\2 "Dr. Smith",
+            \1,\2 "Discharged",
             indicators: {},
           }, // Example discharged patient (might be filtered out by API)
         ];
         // Filter out discharged patients for the active board view
         setPatients(mockData.filter((p) => p.status !== "Discharged"));
         // const _response = await fetch("/api/er/visits?status=active")
-        // if (!response.ok) {
-        //   throw new Error(`HTTP error! status: ${response.status}`)
+        // \1 {\n  \2{
+        //   throw new Error(`HTTP error! status: ${\1}`
         // }
         // const _data: ERPatient[] = await response.json()
         // setPatients(data)
@@ -256,34 +224,34 @@ export default const _ERPatientTrackingBoard = () {
     <TooltipProvider>
       {" "}
       {/* Wrap with TooltipProvider */}
-      <div className="space-y-4">;
-        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">;
+      \1>
+        \1>
           <Input>
             placeholder="Filter by Name/MRN..."
             value={filterName}
             onChange={(_event_) => setFilterName(_event_.target.value)}
             className="max-w-full sm:max-w-sm"
           />
-          <Select value={filterLocation} onValueChange={setFilterLocation}>;
-            <SelectTrigger className="w-full sm:w-[180px]">;
+          \1>
+            \1>
               <SelectValue placeholder="Filter by Location" />
             </SelectTrigger>
             <SelectContent>
               {locations.map((loc) => (
-                <SelectItem key={loc} value={loc}>;
+                \1>
                   {loc === "all" ? "All Locations" : loc}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
-          <Select value={filterEsi} onValueChange={setFilterEsi}>;
-            <SelectTrigger className="w-full sm:w-[150px]">;
+          \1>
+            \1>
               <SelectValue placeholder="Filter by ESI" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All ESI Levels</SelectItem>;
+              <SelectItem value="all">All ESI Levels\1>
               {[1, 2, 3, 4, 5].map((level) => (
-                <SelectItem key={level} value={level.toString()}>;
+                \1>
                   ESI {level}
                 </SelectItem>
               ))}
@@ -292,39 +260,39 @@ export default const _ERPatientTrackingBoard = () {
         </div>
 
         {error && (
-          <div className="text-red-600 dark:text-red-400 border border-red-600 dark:border-red-400 p-3 rounded-md bg-red-50 dark:bg-red-900/30">;
+          \1>
             Error fetching _data: {error}
           </div>
         )}
 
-        <div className="rounded-md border dark:border-gray-700">;
+        \1>
           <Table>
             <TableHeader>
-              <TableRow className="border-b dark:border-gray-700">;
-                <TableHead className="text-gray-700 dark:text-gray-300">;
+              \1>
+                \1>
                   Patient (MRN)
                 </TableHead>
-                <TableHead className="text-gray-700 dark:text-gray-300">;
+                \1>
                   Complaint
                 </TableHead>
-                <TableHead className="text-gray-700 dark:text-gray-300">;
+                \1>
                   Location
                 </TableHead>
-                <TableHead className="text-gray-700 dark:text-gray-300">;
+                \1>
                   ESI
                 </TableHead>
                 {/* <TableHead>Wait</TableHead> */}{" "}
                 {/* Wait time might be complex, removing for now */}
-                <TableHead className="text-gray-700 dark:text-gray-300">;
+                \1>
                   LOS
                 </TableHead>
-                <TableHead className="text-gray-700 dark:text-gray-300">;
+                \1>
                   Staff
                 </TableHead>
-                <TableHead className="text-gray-700 dark:text-gray-300">;
+                \1>
                   Status
                 </TableHead>
-                <TableHead className="text-gray-700 dark:text-gray-300">;
+                \1>
                   Indicators
                 </TableHead>
               </TableRow>
@@ -371,28 +339,28 @@ export default const _ERPatientTrackingBoard = () {
                     className="border-b dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700/50"
                   >
                     <TableCell>
-                      <div className="font-medium text-gray-900 dark:text-gray-100">;
+                      \1>
                         {patient.patient_name}
                       </div>
-                      <div className="text-sm text-muted-foreground dark:text-gray-400">;
+                      \1>
                         {patient.mrn} ({patient.age}
                         {patient.sex})
                       </div>
                     </TableCell>
-                    <TableCell className="max-w-[150px] truncate text-gray-700 dark:text-gray-300">;
+                    \1>
                       {patient.chief_complaint}
                     </TableCell>
-                    <TableCell className="text-gray-700 dark:text-gray-300">;
+                    \1>
                       {patient.location}
                     </TableCell>
                     <TableCell>
                       {/* FIX: Ensure variant is valid */}
-                      <Badge variant={getEsiBadgeVariant(patient.esi)}>;
+                      \1>
                         ESI {patient.esi}
                       </Badge>
                     </TableCell>
                     {/* <TableCell>{calculateTimeDiff(patient.arrival_time)}</TableCell> */}
-                    <TableCell className="text-gray-700 dark:text-gray-300">;
+                    \1>
                       {calculateTimeDiff(patient.arrival_time)}
                     </TableCell>
                     <TableCell>
@@ -403,11 +371,11 @@ export default const _ERPatientTrackingBoard = () {
                         RN: {patient.assigned_nurse || "N/A"}
                       </div>
                     </TableCell>
-                    <TableCell className="text-gray-700 dark:text-gray-300">;
+                    \1>
                       {patient.status}
                     </TableCell>
                     <TableCell>
-                      <div className="flex space-x-1.5">;
+                      \1>
                         {/* FIX: Remove title prop, wrap with Tooltip */}
                         {patient.indicators?.critical_alert && (
                           <Tooltip>

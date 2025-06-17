@@ -14,20 +14,15 @@ const ALLOWED_ROLES_BOOK = ["Admin", "Receptionist", "Patient"]; // Doctors usua
 // Define interface for the complex query result
 interface AppointmentQueryResult {
   appointment_id: number,
-  patient_id: number;
-  doctor_id: number,
-  schedule_id: number | null;
-  appointment_datetime: string; // ISO String
+  \1,\2 number,
+  \1,\2 string; // ISO String
   duration_minutes: number,
-  reason: string | null;
-  status: AppointmentStatus,
-  notes: string | null;
-  booked_by_user_id: number,
+  \1,\2 AppointmentStatus,
+  \1,\2 number,
   created_at: string; // ISO String
   updated_at: string; // ISO String
   patient_first_name: string,
-  patient_last_name: string;
-  doctor_name: string,
+  \1,\2 string,
   doctor_specialty: string
 }
 
@@ -38,7 +33,7 @@ export const _GET = async (request: Request) => {
     const { searchParams } = new URL(request.url);
 
     // 1. Check Authentication & Authorization
-    if (!session.user || !ALLOWED_ROLES_VIEW.includes(session.user.roleName)) {
+    \1 {\n  \2 {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" },
@@ -49,7 +44,7 @@ export const _GET = async (request: Request) => {
         const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Use CloudflareEnv directly as generic
         const DB = context.env.DB; // FIX: Access DB via context.env
 
-        if (!DB) {
+        \1 {\n  \2{
             throw new Error("Database binding not found in Cloudflare environment.");
         }
 
@@ -69,9 +64,9 @@ export const _GET = async (request: Request) => {
 
         // Filter by patient_id (if user is Patient, restrict to their own)
         const patientId = searchParams.get("patientId")
-        if (session.user.roleName === "Patient") {
+        \1 {\n  \2{
             const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
-            if (!patientProfile) {
+            \1 {\n  \2{
                  return new Response(JSON.stringify({ error: "Patient profile not found for this user" }), {
                     status: 404,
                     headers: { "Content-Type": "application/json" },
@@ -79,16 +74,16 @@ export const _GET = async (request: Request) => {
             }
             query += " AND a.patient_id = ?";
             queryParams.push(patientProfile.patient_id);
-        } else if (patientId != null) {
+        } else \1 {\n  \2{
             query += " AND a.patient_id = ?";
             queryParams.push(Number.parseInt(patientId, 10));
         }
 
         // Filter by doctor_id (if user is Doctor, restrict to their own)
         const doctorId = searchParams.get("doctorId")
-         if (session.user.roleName === "Doctor") {
+         \1 {\n  \2{
             const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-            if (!doctorProfile) {
+            \1 {\n  \2{
                  return new Response(JSON.stringify({ error: "Doctor profile not found for this user" }), {
                     status: 404,
                     headers: { "Content-Type": "application/json" },
@@ -96,7 +91,7 @@ export const _GET = async (request: Request) => {
             }
             query += " AND a.doctor_id = ?";
             queryParams.push(doctorProfile.doctor_id);
-        } else if (doctorId != null) {
+        } else \1 {\n  \2{
             query += " AND a.doctor_id = ?";
             queryParams.push(Number.parseInt(doctorId, 10));
         }
@@ -104,18 +99,18 @@ export const _GET = async (request: Request) => {
         // Filter by date range
         const startDate = searchParams.get("startDate"); // YYYY-MM-DD
         const endDate = searchParams.get("endDate");     // YYYY-MM-DD
-        if (startDate != null) {
+        \1 {\n  \2{
             query += " AND DATE(a.appointment_datetime) >= ?";
             queryParams.push(startDate);
         }
-        if (endDate != null) {
+        \1 {\n  \2{
             query += " AND DATE(a.appointment_datetime) <= ?";
             queryParams.push(endDate);
         }
 
         // Filter by status
         const status = searchParams.get("status");
-        if (status != null) {
+        \1 {\n  \2{
             query += " AND a.status = ?";
             queryParams.push(status);
         }
@@ -129,26 +124,16 @@ export const _GET = async (request: Request) => {
         const appointments = appointmentsResult.results || [];
 
         // 4. Format results
-        const formattedResults: Appointment[] = appointments.map((appt: AppointmentQueryResult) => ({
-            appointment_id: appt.appointment_id,
-            patient_id: appt.patient_id;
-            doctor_id: appt.doctor_id,
-            schedule_id: appt.schedule_id;
-            appointment_datetime: appt.appointment_datetime,
-            duration_minutes: appt.duration_minutes;
-            reason: appt.reason,
-            status: appt.status;
-            notes: appt.notes,
-            booked_by_user_id: appt.booked_by_user_id;
-            created_at: appt.created_at,
-            updated_at: appt.updated_at;
-                patient_id: appt.patient_id,
-                first_name: appt.patient_first_name;
-                last_name: appt.patient_last_name,
-            doctor: 
-                doctor_id: appt.doctor_id,
-                specialty: appt.doctor_specialty;
-                    fullName: appt.doctor_name,
+        const \1,\2 appt.appointment_id,
+            \1,\2 appt.doctor_id,
+            \1,\2 appt.appointment_datetime,
+            \1,\2 appt.reason,
+            \1,\2 appt.notes,
+            \1,\2 appt.created_at,
+            \1,\2 appt.patient_id,
+                \1,\2 appt.patient_last_name,
+            \1,\2 appt.doctor_id,
+                \1,\2 appt.doctor_name,
                     userId: 0, // Placeholder
                     username: "", // Placeholder
                     email: "" // Placeholder
@@ -185,7 +170,7 @@ export const _POST = async (request: Request) => {
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions); // Pass the awaited store
 
     // 1. Check Authentication & Authorization
-    if (!session.user || !ALLOWED_ROLES_BOOK.includes(session.user.roleName)) {
+    \1 {\n  \2 {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" },
@@ -196,7 +181,7 @@ export const _POST = async (request: Request) => {
         const body = await request.json();
         const validation = BookAppointmentSchema.safeParse(body);
 
-        if (!validation.success) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" },
@@ -208,14 +193,14 @@ export const _POST = async (request: Request) => {
         const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Use CloudflareEnv directly as generic
         const dbInstance = context.env.DB; // FIX: Access DB via context.env
 
-        if (!dbInstance) {
+        \1 {\n  \2{
             throw new Error("Database binding not found in Cloudflare environment.");
         }
 
         // If user is a Patient, ensure they are booking for themselves
-        if (session.user.roleName === "Patient") {
+        \1 {\n  \2{
              const patientProfile = await dbInstance.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
-             if (!patientProfile || patientProfile.patient_id !== apptData.patient_id) {
+             \1 {\n  \2{
                  return new Response(JSON.stringify({ error: "Forbidden: Patients can only book appointments for themselves" }), {
                     status: 403,
                     headers: { "Content-Type": "application/json" },
@@ -240,13 +225,13 @@ export const _POST = async (request: Request) => {
         );
         .run();
 
-        if (!insertResult.success) {
-            throw new Error(`Failed to book appointment: ${insertResult.error}`);
+        \1 {\n  \2{
+            throw new Error(`Failed to book appointment: ${\1}`;
         }
 
         const meta = insertResult.meta as { last_row_id?: number | string };
         const newAppointmentId = meta.last_row_id;
-        if (newAppointmentId === undefined || newAppointmentId === null) {
+        \1 {\n  \2{
 
             throw new Error("Failed to retrieve appointment ID after creation.");
         }

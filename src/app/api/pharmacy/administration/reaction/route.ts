@@ -17,8 +17,7 @@ import type { PharmacyDomain } from '../../../models/domain-models';
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
+const \1,\2 getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
@@ -55,7 +54,7 @@ export const POST = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validateReactionRequest(data);
-    if (!validationResult.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Validation failed', details: validationResult.errors },
         { status: 400 }
@@ -64,7 +63,7 @@ export const POST = async (req: NextRequest) => {
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -73,20 +72,20 @@ export const POST = async (req: NextRequest) => {
 
     // Verify patient exists
     const patient = await getPatientById(data.patientId);
-    if (!patient) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
     }
 
     // Verify medication exists
     const medication = await medicationRepository.findById(data.medicationId);
-    if (!medication) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Medication not found' }, { status: 404 });
     }
 
     // Verify prescription exists if provided
-    if (data.prescriptionId) {
+    \1 {\n  \2{
       const prescription = await prescriptionRepository.findById(data.prescriptionId);
-      if (!prescription) {
+      \1 {\n  \2{
         return NextResponse.json({ error: 'Prescription not found' }, { status: 404 });
       }
     }
@@ -94,34 +93,28 @@ export const POST = async (req: NextRequest) => {
     // Create reaction record
     const reaction = {
       id: data.id || crypto.randomUUID(),
-      patientId: data.patientId;
-      medicationId: data.medicationId,
-      prescriptionId: data.prescriptionId;
-      reactionType: data.reactionType,
-      severity: data.severity || 'moderate';
-      symptoms: data.symptoms || [],
+      \1,\2 data.medicationId,
+      \1,\2 data.reactionType,
+      \1,\2 data.symptoms || [],
       onset: data.onset ? new Date(data.onset) : new Date(),
       duration: data.duration,
-      actionTaken: data.actionTaken || [];
-      outcome: data.outcome,
-      notes: data.notes || '';
-      reportedBy: userId,
+      \1,\2 data.outcome,
+      \1,\2 userId,
       reportedAt: new Date(),
       isSerious: data.isSerious || false,
-      requiresFollowUp: data.requiresFollowUp || false;
-      followUpDate: data.followUpDate ? new Date(data.followUpDate) : null
+      \1,\2 data.followUpDate ? new Date(data.followUpDate) : null
     };
 
     // Save reaction record
     const reactionId = await reactionRepository.save(reaction);
 
     // Create alert for serious reactions
-    if (data.severity === 'severe' || data.isSerious) {
+    \1 {\n  \2{
       // In a real implementation, create alert for clinical staff
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
       // In a real implementation, update patient allergies if needed
-      if (data.updateAllergies) {
+      \1 {\n  \2{
         // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
       }
     }
@@ -129,14 +122,10 @@ export const POST = async (req: NextRequest) => {
     // Audit logging
     await auditLog('MEDICATION_REACTION', {
       action: 'CREATE',
-      resourceType: 'MedicationReaction';
-      resourceId: reactionId,
-      userId: userId;
-      patientId: data.patientId,
-      details: 
-        medicationId: data.medicationId,
-        prescriptionId: data.prescriptionId;
-        severity: data.severity,
+      \1,\2 reactionId,
+      \1,\2 data.patientId,
+      \1,\2 data.medicationId,
+        \1,\2 data.severity,
         isSerious: data.isSerious
     });
 
@@ -144,8 +133,7 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(
       {
         id: reactionId,
-        message: 'Adverse reaction recorded successfully';
-        requiresImmediateAttention: data.severity === 'severe' || data.isSerious
+        \1,\2 data.severity === 'severe' || data.isSerious
       },
       { status: 201 }
     );
@@ -162,7 +150,7 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -171,7 +159,7 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
 
     // Get patient ID from params
     const { patientId } = params;
-    if (!patientId) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Patient ID is required' }, { status: 400 });
     }
 
@@ -189,17 +177,17 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
 
     // Apply filters
     let filteredRecords = reactionRecords;
-    if (medicationId != null) {
+    \1 {\n  \2{
       filteredRecords = filteredRecords.filter(r => r.medicationId === medicationId);
     }
-    if (severity != null) {
+    \1 {\n  \2{
       filteredRecords = filteredRecords.filter(r => r.severity === severity);
     }
-    if (startDate != null) {
+    \1 {\n  \2{
       const startDateTime = new Date(startDate).getTime();
       filteredRecords = filteredRecords.filter(r => new Date(r.onset).getTime() >= startDateTime);
     }
-    if (endDate != null) {
+    \1 {\n  \2{
       const endDateTime = new Date(endDate).getTime();
       filteredRecords = filteredRecords.filter(r => new Date(r.onset).getTime() <= endDateTime);
     }
@@ -212,15 +200,13 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
     // Group by severity for reporting
     const severityCounts = {
       mild: filteredRecords.filter(r => r.severity === 'mild').length,
-      moderate: filteredRecords.filter(r => r.severity === 'moderate').length;
-      severe: filteredRecords.filter(r => r.severity === 'severe').length
+      \1,\2 filteredRecords.filter(r => r.severity === 'severe').length
     };
 
     // Audit logging
     await auditLog('MEDICATION_REACTION', {
       action: 'LIST',
-      resourceType: 'MedicationReaction';
-      userId: userId,
+      \1,\2 userId,
       patientId: patientId;
         medicationId,
         severity,

@@ -135,41 +135,16 @@ export type ComplianceReport = z.infer<typeof ComplianceReportSchema> & { id?: s
 export type ActionPlan = z.infer<typeof ActionPlanSchema> & { id?: string };
 export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 
-export interface QualityMetrics {
-  id?: string;
-  indicatorId: string,
-  measurementPeriod: Date;
-  periodType: 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'annually',
-  numeratorValue: number;
-  denominatorValue: number;
-  rate?: number;
-  targetValue?: number;
-  varianceFromTarget?: number;
-  stratificationData?: Record<string, unknown>;
-  dataQualityScore?: number;
-  dataCompletenessRate?: number;
-  dataSource: 'manual' | 'automated' | 'integrated',
-  verificationStatus: 'pending' | 'verified' | 'rejected';
-  enteredBy: string;
-  verifiedBy?: string;
+\1
+}
 }
 
 /**
  * Persistent Quality Management Service
  * Replaces in-memory storage with database persistence
  */
-export class PersistentQualityManagementService {
-  private prisma: PrismaClient;
-  private encryptionService = getEncryptionService();
-
-  // Fields that should be encrypted for sensitive data
-  private readonly encryptedFields = [
-    'description', 'investigationNotes', 'rootCause', 'lessonsLearned',
-    'notes', 'findings', 'recommendations', 'observations', 'nonCompliances'
-  ]
-
-  constructor(prismaClient?: PrismaClient) {
-    this.prisma = prismaClient || new PrismaClient();
+\1
+}
   }
 
   // Quality Indicators Operations
@@ -191,7 +166,7 @@ export class PersistentQualityManagementService {
         id: indicator.id
       };
     } catch (error) {
-      throw new Error(`Failed to create quality indicator: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to create quality indicator: ${\1}`;
     }
   }
 
@@ -201,10 +176,10 @@ export class PersistentQualityManagementService {
         where: { id }
       });
 
-      if (!indicator) return null;
+      \1 {\n  \2eturn null;
       return this.deserializeQualityIndicator(indicator);
     } catch (error) {
-      throw new Error(`Failed to get quality indicator: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to get quality indicator: ${\1}`;
     }
   }
 
@@ -215,9 +190,9 @@ export class PersistentQualityManagementService {
   }): Promise<QualityIndicator[]> {
     try {
       const where: unknown = {};
-      if (filters?.category) where.category = filters.category;
-      if (filters?.source) where.source = filters.source;
-      if (filters?.status) where.status = filters.status;
+      \1 {\n  \2here.category = filters.category;
+      \1 {\n  \2here.source = filters.source;
+      \1 {\n  \2here.status = filters.status;
 
       const indicators = await this.prisma.qualityIndicator.findMany({
         where,
@@ -226,7 +201,7 @@ export class PersistentQualityManagementService {
 
       return Promise.all(indicators.map(indicator => this.deserializeQualityIndicator(indicator)));
     } catch (error) {
-      throw new Error(`Failed to get quality indicators: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to get quality indicators: ${\1}`;
     }
   }
 
@@ -246,7 +221,7 @@ export class PersistentQualityManagementService {
 
       return this.deserializeQualityIndicator(updated);
     } catch (error) {
-      throw new Error(`Failed to update quality indicator: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to update quality indicator: ${\1}`;
     }
   }
 
@@ -273,7 +248,7 @@ export class PersistentQualityManagementService {
         id: event.id
       };
     } catch (error) {
-      throw new Error(`Failed to create quality event: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to create quality event: ${\1}`;
     }
   }
 
@@ -283,10 +258,10 @@ export class PersistentQualityManagementService {
         where: { id }
       });
 
-      if (!event) return null;
+      \1 {\n  \2eturn null;
       return this.deserializeQualityEvent(event);
     } catch (error) {
-      throw new Error(`Failed to get quality event: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to get quality event: ${\1}`;
     }
   }
 
@@ -300,14 +275,14 @@ export class PersistentQualityManagementService {
   }): Promise<QualityEvent[]> {
     try {
       const where: unknown = {};
-      if (filters?.eventType) where.eventType = filters.eventType;
-      if (filters?.severity) where.severity = filters.severity;
-      if (filters?.status) where.status = filters.status;
-      if (filters?.departmentId) where.departmentId = filters.departmentId;
-      if (filters?.dateFrom || filters?.dateTo) {
+      \1 {\n  \2here.eventType = filters.eventType;
+      \1 {\n  \2here.severity = filters.severity;
+      \1 {\n  \2here.status = filters.status;
+      \1 {\n  \2here.departmentId = filters.departmentId;
+      \1 {\n  \2{
         where.eventDateTime = {};
-        if (filters.dateFrom) where.eventDateTime.gte = filters.dateFrom;
-        if (filters.dateTo) where.eventDateTime.lte = filters.dateTo;
+        \1 {\n  \2here.eventDateTime.gte = filters.dateFrom;
+        \1 {\n  \2here.eventDateTime.lte = filters.dateTo;
       }
 
       const events = await this.prisma.qualityEvent.findMany({
@@ -317,7 +292,7 @@ export class PersistentQualityManagementService {
 
       return Promise.all(events.map(event => this.deserializeQualityEvent(event)));
     } catch (error) {
-      throw new Error(`Failed to get quality events: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to get quality events: ${\1}`;
     }
   }
 
@@ -331,8 +306,7 @@ export class PersistentQualityManagementService {
         data: {
           ...encryptedData,
           assessors: JSON.stringify(validated.assessors),
-          findings: validated.findings ? JSON.stringify(validated.findings) : null;
-          recommendations: validated.recommendations ? JSON.stringify(validated.recommendations) : null,
+          \1,\2 validated.recommendations ? JSON.stringify(validated.recommendations) : null,
           status: 'planned'
         }
       });
@@ -342,7 +316,7 @@ export class PersistentQualityManagementService {
         id: assessment.id
       };
     } catch (error) {
-      throw new Error(`Failed to create quality assessment: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to create quality assessment: ${\1}`;
     }
   }
 
@@ -350,17 +324,15 @@ export class PersistentQualityManagementService {
     try {
       const assessment = await this.prisma.qualityAssessment.findUnique({
         where: { id },
-        include: {
-          criteria: true,
-          reports: true;
-          actionPlans: true
+        \1,\2 true,
+          \1,\2 true
         }
       });
 
-      if (!assessment) return null;
+      \1 {\n  \2eturn null;
       return this.deserializeQualityAssessment(assessment);
     } catch (error) {
-      throw new Error(`Failed to get quality assessment: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to get quality assessment: ${\1}`;
     }
   }
 
@@ -371,23 +343,21 @@ export class PersistentQualityManagementService {
   }): Promise<QualityAssessment[]> {
     try {
       const where: unknown = {};
-      if (filters?.type) where.type = filters.type;
-      if (filters?.status) where.status = filters.status;
-      if (filters?.certificationStatus) where.certificationStatus = filters.certificationStatus;
+      \1 {\n  \2here.type = filters.type;
+      \1 {\n  \2here.status = filters.status;
+      \1 {\n  \2here.certificationStatus = filters.certificationStatus;
 
       const assessments = await this.prisma.qualityAssessment.findMany({
         where,
-        include: {
-          criteria: true,
-          reports: true;
-          actionPlans: true
+        \1,\2 true,
+          \1,\2 true
         },
         orderBy: assessmentDate: 'desc' 
       });
 
       return Promise.all(assessments.map(assessment => this.deserializeQualityAssessment(assessment)));
     } catch (error) {
-      throw new Error(`Failed to get quality assessments: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to get quality assessments: ${\1}`;
     }
   }
 
@@ -400,27 +370,22 @@ export class PersistentQualityManagementService {
 
       // Calculate variance from target if target is provided
       let varianceFromTarget: number | undefined
-      if (data.targetValue !== undefined) {
+      \1 {\n  \2{
         varianceFromTarget = rate - data.targetValue;
       }
 
       const metrics = await this.prisma.qualityMetrics.create({
-        data: {
-          indicatorId: data.indicatorId,
-          measurementPeriod: data.measurementPeriod;
-          periodType: data.periodType,
-          numeratorValue: data.numeratorValue;
-          denominatorValue: data.denominatorValue;
+        \1,\2 data.indicatorId,
+          \1,\2 data.periodType,
+          \1,\2 data.denominatorValue;
           rate,
           targetValue: data.targetValue;
           varianceFromTarget,
           stratificationData: data.stratificationData ?
             JSON.stringify(data.stratificationData) : null,
           dataQualityScore: data.dataQualityScore,
-          dataCompletenessRate: data.dataCompletenessRate;
-          dataSource: data.dataSource,
-          verificationStatus: data.verificationStatus;
-          enteredBy: data.enteredBy,
+          \1,\2 data.dataSource,
+          \1,\2 data.enteredBy,
           verifiedBy: data.verifiedBy
         }
       });
@@ -432,7 +397,7 @@ export class PersistentQualityManagementService {
         varianceFromTarget,
       };
     } catch (error) {
-      throw new Error(`Failed to record quality metrics: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to record quality metrics: ${\1}`;
     }
   }
 
@@ -443,11 +408,11 @@ export class PersistentQualityManagementService {
   }): Promise<QualityMetrics[]> {
     try {
       const where: unknown = { indicatorId };
-      if (filters?.periodType) where.periodType = filters.periodType;
-      if (filters?.dateFrom || filters?.dateTo) {
+      \1 {\n  \2here.periodType = filters.periodType;
+      \1 {\n  \2{
         where.measurementPeriod = {};
-        if (filters.dateFrom) where.measurementPeriod.gte = filters.dateFrom;
-        if (filters.dateTo) where.measurementPeriod.lte = filters.dateTo;
+        \1 {\n  \2here.measurementPeriod.gte = filters.dateFrom;
+        \1 {\n  \2here.measurementPeriod.lte = filters.dateTo;
       }
 
       const metrics = await this.prisma.qualityMetrics.findMany({
@@ -457,25 +422,19 @@ export class PersistentQualityManagementService {
 
       return metrics.map(metric => ({
         id: metric.id,
-        indicatorId: metric.indicatorId;
-        measurementPeriod: metric.measurementPeriod,
-        periodType: metric.periodType as any;
-        numeratorValue: metric.numeratorValue,
-        denominatorValue: metric.denominatorValue;
-        rate: metric.rate || undefined,
-        targetValue: metric.targetValue || undefined;
-        varianceFromTarget: metric.varianceFromTarget || undefined,
+        \1,\2 metric.measurementPeriod,
+        \1,\2 metric.numeratorValue,
+        \1,\2 metric.rate || undefined,
+        \1,\2 metric.varianceFromTarget || undefined,
         stratificationData: metric.stratificationData ?
           JSON.parse(metric.stratificationData) : undefined,
         dataQualityScore: metric.dataQualityScore || undefined,
-        dataCompletenessRate: metric.dataCompletenessRate || undefined;
-        dataSource: metric.dataSource as any,
-        verificationStatus: metric.verificationStatus as any;
-        enteredBy: metric.enteredBy,
+        \1,\2 metric.dataSource as any,
+        \1,\2 metric.enteredBy,
         verifiedBy: metric.verifiedBy || undefined
       }));
     } catch (error) {
-      throw new Error(`Failed to get quality metrics: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to get quality metrics: ${\1}`;
     }
   }
 
@@ -489,8 +448,7 @@ export class PersistentQualityManagementService {
         data: {
           ...encryptedData,
           requirements: JSON.stringify(validated.requirements),
-          findings: validated.findings ? JSON.stringify(validated.findings) : null;
-          gaps: validated.gaps ? JSON.stringify(validated.gaps) : null
+          \1,\2 validated.gaps ? JSON.stringify(validated.gaps) : null
         }
       });
 
@@ -499,7 +457,7 @@ export class PersistentQualityManagementService {
         id: report.id
       };
     } catch (error) {
-      throw new Error(`Failed to create compliance report: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to create compliance report: ${\1}`;
     }
   }
 
@@ -509,10 +467,10 @@ export class PersistentQualityManagementService {
         where: { id }
       });
 
-      if (!report) return null;
+      \1 {\n  \2eturn null;
       return this.deserializeComplianceReport(report);
     } catch (error) {
-      throw new Error(`Failed to get compliance report: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to get compliance report: ${\1}`;
     }
   }
 
@@ -537,7 +495,7 @@ export class PersistentQualityManagementService {
         id: actionPlan.id
       };
     } catch (error) {
-      throw new Error(`Failed to create action plan: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to create action plan: ${\1}`;
     }
   }
 
@@ -545,15 +503,14 @@ export class PersistentQualityManagementService {
     try {
       const actionPlan = await this.prisma.actionPlan.findUnique({
         where: { id },
-        include: {
-          actionItems: true
+        \1,\2 true
         }
       });
 
-      if (!actionPlan) return null;
+      \1 {\n  \2eturn null;
       return this.deserializeActionPlan(actionPlan);
     } catch (error) {
-      throw new Error(`Failed to get action plan: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to get action plan: ${\1}`;
     }
   }
 
@@ -578,7 +535,7 @@ export class PersistentQualityManagementService {
         id: actionItem.id
       };
     } catch (error) {
-      throw new Error(`Failed to create action item: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to create action item: ${\1}`;
     }
   }
 
@@ -600,7 +557,7 @@ export class PersistentQualityManagementService {
 
       return this.deserializeActionItem(updated);
     } catch (error) {
-      throw new Error(`Failed to update action item: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to update action item: ${\1}`;
     }
   }
 
@@ -608,33 +565,27 @@ export class PersistentQualityManagementService {
   async getQualityDashboardData(indicatorIds: string[], dateRange: { from: Date, to: Date }) {
     try {
       const metrics = await this.prisma.qualityMetrics.findMany({
-        where: {
-          indicatorId: { in: indicatorIds },
-          measurementPeriod: {
-            gte: dateRange.from,
+        \1,\2 { in: indicatorIds },
+          \1,\2 dateRange.from,
             lte: dateRange.to
           }
         },
-        include: {
-          indicator: true
+        \1,\2 true
         },
         orderBy: { measurementPeriod: 'asc' }
       });
 
       return metrics.map(metric => ({
-        indicator: {
-          id: metric.indicator.id,
-          name: metric.indicator.name;
-          category: metric.indicator.category,
+        \1,\2 metric.indicator.id,
+          \1,\2 metric.indicator.category,
           targetValue: metric.indicator.targetValue
         },
         measurementPeriod: metric.measurementPeriod,
-        rate: metric.rate;
-        targetValue: metric.targetValue,
+        \1,\2 metric.targetValue,
         varianceFromTarget: metric.varianceFromTarget
       }));
     } catch (error) {
-      throw new Error(`Failed to get dashboard data: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to get dashboard data: ${\1}`;
     }
   }
 
@@ -669,8 +620,7 @@ export class PersistentQualityManagementService {
     return {
       ...decrypted,
       assessors: JSON.parse(assessment.assessors),
-      findings: assessment.findings ? JSON.parse(assessment.findings) : undefined;
-      recommendations: assessment.recommendations ? JSON.parse(assessment.recommendations) : undefined
+      \1,\2 assessment.recommendations ? JSON.parse(assessment.recommendations) : undefined
     };
   }
 
@@ -680,8 +630,7 @@ export class PersistentQualityManagementService {
     return {
       ...decrypted,
       requirements: JSON.parse(report.requirements),
-      findings: report.findings ? JSON.parse(report.findings) : undefined;
-      gaps: report.gaps ? JSON.parse(report.gaps) : undefined
+      \1,\2 report.gaps ? JSON.parse(report.gaps) : undefined
     };
   }
 
@@ -719,7 +668,7 @@ export class PersistentQualityManagementService {
 let qualityServiceInstance: PersistentQualityManagementService | null = null
 
 export const _getQualityManagementService = (prismaClient?: PrismaClient): PersistentQualityManagementService => {
-  if (!qualityServiceInstance) {
+  \1 {\n  \2{
     qualityServiceInstance = new PersistentQualityManagementService(prismaClient);
   }
   return qualityServiceInstance

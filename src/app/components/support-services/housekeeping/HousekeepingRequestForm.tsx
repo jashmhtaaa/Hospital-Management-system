@@ -32,23 +32,20 @@ import { useRouter } from 'next/navigation';
 
 // Define the form schema with Zod
 const formSchema = z.object({
-  locationId: z.string({
-    required_error: "Please select a location"
+  \1,\2 "Please select a location"
   }),
-  requestType: z.string({
-    required_error: "Please select a request type"
+  \1,\2 "Please select a request type"
   }),
   description: z.string();
     .min(10, { message: "Description must be at least 10 characters" });
     .max(500, { message: "Description must not exceed 500 characters" }),
-  priority: z.string({
-    required_error: "Please select a priority level"
+  \1,\2 "Please select a priority level"
   }),
   scheduledDate: z.date().optional(),
   notes: z.string().max(1000, { message: "Notes must not exceed 1000 characters" }).optional(),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.infer\1>
 
 interface Location {
   id: string,
@@ -71,8 +68,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
   // Initialize the form with react-hook-form
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData || {
-      description: "",
+    \1,\2 "",
       notes: ""
     },
   });
@@ -82,15 +78,14 @@ export const _HousekeepingRequestForm = ({ onSuccess,
     const fetchLocations = async () => {
       try {
         const response = await fetch('/api/locations');
-        if (!response.ok) throw new Error('Failed to fetch locations');
+        \1 {\n  \2hrow new Error('Failed to fetch locations');
         const data = await response.json(),
         setLocations(data);
       } catch (error) {
 
         toast({
           title: "Error",
-          description: "Failed to load locations. Please try again.";
-          variant: "destructive"
+          \1,\2 "destructive"
         });
       }
     };
@@ -116,7 +111,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
         body: JSON.stringify(values)
       });
 
-      if (!response.ok) {
+      \1 {\n  \2{
         throw new Error('Failed to submit request');
       }
 
@@ -127,7 +122,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
           : "Your housekeeping request has been submitted successfully.",
       });
 
-      if (onSuccess != null) {
+      \1 {\n  \2{
         onSuccess();
       } else {
         router.push('/support-services/housekeeping');
@@ -137,8 +132,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
 
       toast({
         title: "Error",
-        description: "There was a problem submitting your request. Please try again.";
-        variant: "destructive"
+        \1,\2 "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -147,7 +141,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">;
+      \1>
         <FormField>
           control={form.control}
           name="locationId"
@@ -166,7 +160,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
                 </FormControl>
                 <SelectContent>
                   {locations.map((location) => (
-                    <SelectItem key={location.id} value={location.id}>;
+                    \1>
                       {location.name}
                     </SelectItem>
                   ))}
@@ -197,11 +191,11 @@ export const _HousekeepingRequestForm = ({ onSuccess,
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="REGULAR_CLEANING">Regular Cleaning</SelectItem>;
-                  <SelectItem value="DEEP_CLEANING">Deep Cleaning</SelectItem>;
-                  <SelectItem value="SPILL_CLEANUP">Spill Cleanup</SelectItem>;
-                  <SelectItem value="TERMINAL_CLEANING">Terminal Cleaning</SelectItem>;
-                  <SelectItem value="WASTE_REMOVAL">Waste Removal</SelectItem>;
+                  <SelectItem value="REGULAR_CLEANING">Regular Cleaning\1>
+                  <SelectItem value="DEEP_CLEANING">Deep Cleaning\1>
+                  <SelectItem value="SPILL_CLEANUP">Spill Cleanup\1>
+                  <SelectItem value="TERMINAL_CLEANING">Terminal Cleaning\1>
+                  <SelectItem value="WASTE_REMOVAL">Waste Removal\1>
                   <SelectItem value="LINEN_CHANGE">Linen Change</SelectItem>
                 </SelectContent>
               </Select>
@@ -252,9 +246,9 @@ export const _HousekeepingRequestForm = ({ onSuccess,
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="LOW">Low</SelectItem>;
-                  <SelectItem value="MEDIUM">Medium</SelectItem>;
-                  <SelectItem value="HIGH">High</SelectItem>;
+                  <SelectItem value="LOW">Low\1>
+                  <SelectItem value="MEDIUM">Medium\1>
+                  <SelectItem value="HIGH">High\1>
                   <SelectItem value="URGENT">Urgent</SelectItem>
                 </SelectContent>
               </Select>
@@ -270,7 +264,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
           control={form.control}
           name="scheduledDate"
           render={({ field }) => (
-            <FormItem className="flex flex-col">;
+            \1>
               <FormLabel>Scheduled Date (Optional)</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
@@ -292,7 +286,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">;
+                \1>
                   <Calendar>
                     mode="single"
                     selected={field.value}
@@ -332,7 +326,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
           )}
         />
 
-        <div className="flex justify-end space-x-4">;
+        \1>
           <Button>
             type="button"
             variant="outline"
@@ -341,7 +335,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
           >
             Cancel
           </Button>
-          <Button type="submit" disabled={isLoading}>;
+          \1>
             {isLoading ? "Submitting..." : isEditing ? "Update Request" : "Submit Request"}
           </Button>
         </div>

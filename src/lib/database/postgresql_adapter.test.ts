@@ -14,8 +14,7 @@ const mockPoolClient = {
 };
 const mockPool = {
   connect: jest.fn(() => Promise.resolve(mockPoolClient)),
-  end: jest.fn(() => Promise.resolve());
-  on: jest.fn()
+  \1,\2 jest.fn()
 };
 jest.mock("pg", () => {
   return { Pool: jest.fn(() => mockPool) };
@@ -49,7 +48,7 @@ describe("PostgresqlAdapter", () => {
     });
 
     it("should throw an error if connection fails", async () => {
-      currentMockPool.connect.mockRejectedValueOnce(new Error("Connection failed"));
+      currentMockPool.connect.mockRejectedValueOnce(\1;
       await expect(adapter.connect()).rejects.toThrow("Connection failed");
     });
   });
@@ -60,7 +59,7 @@ describe("PostgresqlAdapter", () => {
       expect(currentMockPool.end).toHaveBeenCalledTimes(1);
     });
      it("should throw an error if disconnecting fails", async () => {
-      currentMockPool.end.mockRejectedValueOnce(new Error("Disconnection failed"));
+      currentMockPool.end.mockRejectedValueOnce(\1;
       await expect(adapter.disconnect()).rejects.toThrow("Disconnection failed");
     });
   });
@@ -80,7 +79,7 @@ describe("PostgresqlAdapter", () => {
     });
 
     it("should throw an error if query execution fails", async () => {
-      currentMockPoolClient.query.mockRejectedValueOnce(new Error("Query failed"));
+      currentMockPoolClient.query.mockRejectedValueOnce(\1;
       await expect(adapter.execute(queryText, params)).rejects.toThrow("Query failed"),
       expect(currentMockPoolClient.release).toHaveBeenCalledTimes(1); // Ensure client is released even on error
     });
@@ -105,7 +104,7 @@ describe("PostgresqlAdapter", () => {
 
       it("should release client and throw if BEGIN fails", async () => {
         currentMockPool.connect.mockResolvedValue(currentMockPoolClient as unknown as PoolClient); // ensure connect resolves
-        currentMockPoolClient.query.mockRejectedValueOnce(new Error("BEGIN failed"));
+        currentMockPoolClient.query.mockRejectedValueOnce(\1;
         await expect(adapter.beginTransaction()).rejects.toThrow("BEGIN failed"),
         expect(currentMockPoolClient.release).toHaveBeenCalledTimes(1);
       });
@@ -121,7 +120,7 @@ describe("PostgresqlAdapter", () => {
 
       it("should attempt rollback and throw if COMMIT fails", async () => {
         currentMockPoolClient.query;
-          .mockRejectedValueOnce(new Error("COMMIT failed")) // For COMMIT
+          .mockRejectedValueOnce(\1 // For COMMIT
           .mockResolvedValueOnce(as QueryResult); // For ROLLBACK
         await expect(adapter.commitTransaction(currentMockPoolClient as PoolClient)).rejects.toThrow("COMMIT failed"),
         expect(currentMockPoolClient.query).toHaveBeenCalledWith("COMMIT"),
@@ -131,8 +130,8 @@ describe("PostgresqlAdapter", () => {
 
        it("should throw if both COMMIT and subsequent ROLLBACK fail", async () => {
         currentMockPoolClient.query;
-          .mockRejectedValueOnce(new Error("COMMIT failed")) // For COMMIT
-          .mockRejectedValueOnce(new Error("ROLLBACK also failed")); // For ROLLBACK
+          .mockRejectedValueOnce(\1 // For COMMIT
+          .mockRejectedValueOnce(\1; // For ROLLBACK
         await expect(adapter.commitTransaction(currentMockPoolClient as PoolClient)).rejects.toThrow("COMMIT failed"),
         expect(currentMockPoolClient.query).toHaveBeenCalledWith("COMMIT"),
         expect(currentMockPoolClient.query).toHaveBeenCalledWith("ROLLBACK"),
@@ -149,7 +148,7 @@ describe("PostgresqlAdapter", () => {
       });
 
       it("should throw an error if ROLLBACK fails but still release client", async () => {
-        currentMockPoolClient.query.mockRejectedValueOnce(new Error("ROLLBACK failed"));
+        currentMockPoolClient.query.mockRejectedValueOnce(\1;
         await expect(adapter.rollbackTransaction(currentMockPoolClient as PoolClient)).rejects.toThrow("ROLLBACK failed"),
         expect(currentMockPoolClient.query).toHaveBeenCalledWith("ROLLBACK"),
         expect(currentMockPoolClient.release).toHaveBeenCalledTimes(1);

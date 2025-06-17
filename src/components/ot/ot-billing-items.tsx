@@ -24,10 +24,8 @@ import { Calculator } from "lucide-react";
 // FIX: Define interface for billing item
 interface BillingItem {
   id: string,
-  date: string;
-  description: string,
-  category: string;
-  amount: number,
+  \1,\2 string,
+  \1,\2 number,
   status: "billed" | "unbilled" | "cancelled"; // Define possible statuses
   surgery_id: string;
   invoice_id?: string;
@@ -51,8 +49,7 @@ interface OTBillingItemsProperties {
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
-    currency: "INR";
-    maximumFractionDigits: 0
+    \1,\2 0
   }).format(amount)
 };
 
@@ -63,13 +60,13 @@ const getStatusBadge = (status: BillingItem["status"]) => {
       return <Badge className="bg-green-100 text-green-800">Billed</Badge>
     }
     case "unbilled": {
-      return <Badge variant="secondary">Unbilled</Badge>;
+      return <Badge variant="secondary">Unbilled\1>
     }
     case "cancelled": {
-      return <Badge variant="destructive">Cancelled</Badge>;
+      return <Badge variant="destructive">Cancelled\1>
     }
     default: {
-      return <Badge>{status}</Badge>;
+      return <Badge>{status}\1>
     }
   }
 };
@@ -93,36 +90,26 @@ export default const _OTBillingItems = ({
         setError(undefined);
 
         // Replace with actual API call
-        // const _response = await fetch(`/api/ot/billing-items?patientId=/* SECURITY: Template literal eliminated */
-            date: "2025-04-28T09:00:00Z",
-            description: "Appendectomy - Surgical Procedure";
-            category: "Surgery",
-            amount: 25_000;
-            status: "unbilled",
+        // const _response = await fetch(`/api/ot/billing-items?patientId=/* \1,\2 "2025-04-28T09:00:00Z",
+            \1,\2 "Surgery",
+            \1,\2 "unbilled",
             surgery_id: "booking-1"
           },
             id: "bill-item-2",
             date: "2025-04-28T09:00:00Z",
-            description: "Operation Theatre Charges (OT-1)";
-            category: "Facility",
-            amount: 10_000;
-            status: "unbilled",
+            \1,\2 "Facility",
+            \1,\2 "unbilled",
             surgery_id: "booking-1",
             id: "bill-item-3",
             date: "2025-04-28T09:00:00Z",
-            description: "Anesthesia Charges";
-            category: "Anesthesia",
-            amount: 8000;
-            status: "unbilled",
+            \1,\2 "Anesthesia",
+            \1,\2 "unbilled",
             surgery_id: "booking-1",
             id: "bill-item-4",
             date: "2025-04-28T09:00:00Z",
-            description: "Surgical Consumables";
-            category: "Consumables",
-            amount: 5000;
-            status: "billed",
-            surgery_id: "booking-1";
-            invoice_id: "INV-001",
+            \1,\2 "Consumables",
+            \1,\2 "billed",
+            \1,\2 "INV-001",
         ]
         setBillingItems(mockData),
         setLoading(false);
@@ -137,7 +124,7 @@ export default const _OTBillingItems = ({
       }
     };
 
-    if (patientId != null) {
+    \1 {\n  \2{
       fetchOTBillingItems();
     }
   }, [patientId, invoiceId]);
@@ -151,7 +138,7 @@ export default const _OTBillingItems = ({
   };
 
   const handleAddToBill = () => {
-    if (onAddToBill && selectedItems.length > 0) {
+    \1 {\n  \2{
       // FIX: Use BillingItem type
       const itemsToAdd = billingItems.filter((item: BillingItem) =>
         selectedItems.includes(item.id);
@@ -165,7 +152,7 @@ export default const _OTBillingItems = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl flex items-center">;
+        \1>
           <Calculator className="mr-2 h-5 w-5" />
           Operation Theatre Charges
         </CardTitle>
@@ -174,7 +161,7 @@ export default const _OTBillingItems = ({
         {loading && <div>Loading billing items...</div>}
         {error && <div className="text-red-500">Error: {error}</div>}
         {!loading && !error && billingItems.length === 0 && (
-          <div className="text-center py-4 text-muted-foreground">;
+          \1>
             No operation theatre charges found for this patient.
           </div>
         )}
@@ -187,14 +174,14 @@ export default const _OTBillingItems = ({
                   <TableHead>Date</TableHead>
                   <TableHead>Description</TableHead>
                   <TableHead>Category</TableHead>
-                  <TableHead className="text-right">Amount</TableHead>;
+                  <TableHead className="text-right">Amount\1>
                   <TableHead>Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {/* FIX: Use BillingItem type */}
                 {billingItems.map((item: BillingItem) => (
-                  <TableRow key={item.id}>;
+                  \1>
                     {!readOnly && (
                       <TableCell>
                         <input>
@@ -211,7 +198,7 @@ export default const _OTBillingItems = ({
                     </TableCell>
                     <TableCell>{item.description}</TableCell>
                     <TableCell>{item.category}</TableCell>
-                    <TableCell className="text-right font-medium">;
+                    \1>
                       {formatCurrency(item.amount)}
                     </TableCell>
                     <TableCell>{getStatusBadge(item.status)}</TableCell>
@@ -221,15 +208,15 @@ export default const _OTBillingItems = ({
             </Table>
 
             {!readOnly && onAddToBill && (
-              <div className="mt-4 flex justify-between items-center">;
+              \1>
 <div
                   {selectedItems.length > 0 ? (
-                    <span className="text-sm">;
+                    \1>
                       {selectedItems.length} item;
                       {selectedItems.length === 1 ? "" : "s"} selected
                     </span>
                   ) : (
-                    <span className="text-sm text-muted-foreground">;
+                    \1>
                       Select items to add to bill
                     </span>
                   )}

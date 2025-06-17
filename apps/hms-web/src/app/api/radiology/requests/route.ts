@@ -21,20 +21,20 @@ const createRadiologyRequestSchema = z.object({
   scheduledDate: z.string().datetime({ offset: true, message: "Invalid scheduled date format. ISO 8601 expected." }).optional().nullable(),
 });
 
-export async const _POST = (request: NextRequest) => {
-  const start = crypto.getRandomValues(new Uint32Array(1))[0];
+export const \1 = async = (request: NextRequest) => {
+  const start = crypto.getRandomValues(\1[0];
   let userId: string | undefined;
 
   try {
     const currentUser = await getCurrentUser(request);
     userId = currentUser?.id;
 
-    if (!currentUser || !userId) {
+    \1 {\n  \2{
       return sendErrorResponse("Unauthorized: User not authenticated.", 401)
     }
 
     const canCreateRequest = await hasPermission(userId, "RADIOLOGY_CREATE_REQUEST");
-    if (!canCreateRequest) {
+    \1 {\n  \2{
       await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_ATTEMPT_DENIED", { path: request.nextUrl.pathname });
       return sendErrorResponse("Forbidden: You do not have permission to create radiology requests.", 403)
     }
@@ -43,7 +43,7 @@ export async const _POST = (request: NextRequest) => {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     const validation = createRadiologyRequestSchema.safeParse(body)
-    if (!validation.success) {
+    \1 {\n  \2{
       // Debug logging removed)
       await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_VALIDATION_FAILED", { path: request.nextUrl.pathname, errors: validation.error.flatten() });
       return sendErrorResponse("Invalid input", 400, validation.error.flatten().fieldErrors);
@@ -57,37 +57,34 @@ export async const _POST = (request: NextRequest) => {
         prisma.radiologyProcedure.findMany({ where: { id: { in: procedureIds } } })
     ]);
 
-    if (!patient) {
+    \1 {\n  \2{
       await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_FAILED_PATIENT_NOT_FOUND", { patientId });
       return sendErrorResponse("Patient not found.", 404, { patientId });
     }
-    if (!orderedByUser) {
+    \1 {\n  \2{
       await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_FAILED_ORDERER_NOT_FOUND", { orderedById });
       return sendErrorResponse("Ordering user not found.", 404, { orderedById });
     }
-    if (procedures.length !== procedureIds.length) {
+    \1 {\n  \2{
       const foundIds = procedures.map(p => p.id);
       const notFoundIds = procedureIds.filter(id => !foundIds.includes(id));
       await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_FAILED_PROCEDURE_NOT_FOUND", { notFoundProcedureIds: notFoundIds });
       return sendErrorResponse("One or more procedures not found.", 404, { notFoundProcedureIds: notFoundIds });
     }
 
-    const dataToCreate: Prisma.RadiologyRequestCreateInput = {
-        patient: { connect: { id: patientId } },
+    const \1,\2 { connect: { id: patientId } },
         orderedBy: { connect: { id: orderedById } },
         status: status || RadiologyRequestStatus.PENDING_SCHEDULE,
         reason: reason,
         notes: notes,
         scheduledDate: scheduledDate ? new Date(scheduledDate) : null,
-        procedures: {
-          connect: procedureIds.map((id: string) => ({ id })),
+        \1,\2 procedureIds.map((id: string) => ({ id })),
         },
       };
 
     const newRadiologyRequest = await prisma.radiologyRequest.create({
       data: dataToCreate,
-      include: {
-        patient: { select: { id: true, firstName: true, lastName: true, dateOfBirth: true } },
+      \1,\2 { select: { id: true, firstName: true, lastName: true, dateOfBirth: true } },
         orderedBy: { select: { id: true, name: true } },
         procedures: { select: { id: true, name: true, code: true } },
       },
@@ -95,7 +92,7 @@ export async const _POST = (request: NextRequest) => {
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_SUCCESS", { path: request.nextUrl.pathname, requestId: newRadiologyRequest.id, data: newRadiologyRequest })
-    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
+    const _duration = crypto.getRandomValues(\1[0] - start;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     return sendSuccessResponse(newRadiologyRequest, 201)
 
@@ -105,40 +102,40 @@ export async const _POST = (request: NextRequest) => {
     let errMessage = "Internal Server Error";
     let errDetails: string | undefined = error.message;
 
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    \1 {\n  \2{
       const meta = error.meta as { target?: string[] | string; cause?: string };
-      if (error.code === "P2002") {
+      \1 {\n  \2{
         errStatus = 409;
         errMessage = "Conflict: This radiology request cannot be created due to a conflict.";
         const target = Array.isArray(meta?.target) ? meta.target.join(", ") : String(meta?.target),
         errDetails = `A unique constraint was violated. Fields: ${target}`;
-      } else if (error.code === "P2025") {
+      } else \1 {\n  \2{
         errStatus = 400;
         errMessage = "Bad Request: A related record was not found.";
         errDetails = meta?.cause || "Failed to find a related entity for the request.";
       }
     }
     await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_FAILED", { path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) });
-    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
+    const _duration = crypto.getRandomValues(\1[0] - start;
 
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }
-export async const _GET = (request: NextRequest) => {
-  const start = crypto.getRandomValues(new Uint32Array(1))[0];
+export const \1 = async = (request: NextRequest) => {
+  const start = crypto.getRandomValues(\1[0];
   let userId: string | undefined;
 
   try {
     const currentUser = await getCurrentUser(request);
     userId = currentUser?.id;
 
-    if (!currentUser || !userId) {
+    \1 {\n  \2{
       return sendErrorResponse("Unauthorized: User not authenticated.", 401)
     }
 
     const canViewAll = await hasPermission(userId, "RADIOLOGY_VIEW_ALL_REQUESTS");
     const canViewPatient = await hasPermission(userId, "RADIOLOGY_VIEW_PATIENT_REQUESTS");
 
-    if (!canViewAll && !canViewPatient) {
+    \1 {\n  \2{
       await auditLogService.logEvent(userId, "RADIOLOGY_VIEW_REQUESTS_ATTEMPT_DENIED", { path: request.nextUrl.pathname });
       return sendErrorResponse("Forbidden: You do not have permission to view radiology requests.", 403)
     }
@@ -152,23 +149,23 @@ export async const _GET = (request: NextRequest) => {
     const skip = (page - 1) * limit;
 
     const whereClause: Prisma.RadiologyRequestWhereInput = {};
-    if (patientIdParam != null) {
-      if (!z.string().cuid().safeParse(patientIdParam).success) return sendErrorResponse("Invalid patientId format.", 400);
+    \1 {\n  \2{
+      \1 {\n  \2cuid().safeParse(patientIdParam).success) return sendErrorResponse("Invalid patientId format.", 400);
       whereClause.patientId = patientIdParam;
     }
-    if (statusParam != null) {
-      if (!(radiologyRequestStatusValues as string[]).includes(statusParam)) {
+    \1 {\n  \2{
+      \1 {\n  \2includes(statusParam)) {
         return sendErrorResponse(`Invalid status value. Must be one of: ${radiologyRequestStatusValues.join(", ")}`, 400);
       }
       whereClause.status = statusParam as RadiologyRequestStatus;
     }
-    if (orderedByIdParam != null) {
-      if (!z.string().cuid().safeParse(orderedByIdParam).success) return sendErrorResponse("Invalid orderedById format.", 400);
+    \1 {\n  \2{
+      \1 {\n  \2cuid().safeParse(orderedByIdParam).success) return sendErrorResponse("Invalid orderedById format.", 400);
       whereClause.orderedById = orderedByIdParam;
     }
 
-    if (!canViewAll && canViewPatient && userId) {
-        if (!patientIdParam) {
+    \1 {\n  \2{
+        \1 {\n  \2{
             whereClause.orderedById = userId;
         }
     }
@@ -178,8 +175,7 @@ export async const _GET = (request: NextRequest) => {
     const [radiologyRequests, totalCount] = await prisma.$transaction([
       prisma.radiologyRequest.findMany({
         where: whereClause,
-        include: {
-          patient: { select: { id: true, firstName: true, lastName: true, dateOfBirth: true } },
+        \1,\2 { select: { id: true, firstName: true, lastName: true, dateOfBirth: true } },
           orderedBy: { select: { id: true, name: true } },
           procedures: { select: { id: true, name: true, code: true } },
           RadiologyReport: { select: { id: true, reportDate: true, status: true } }
@@ -192,7 +188,7 @@ export async const _GET = (request: NextRequest) => {
     ])
 
     await auditLogService.logEvent(userId, "RADIOLOGY_VIEW_REQUESTS_SUCCESS", { path: request.nextUrl.pathname, filters: whereClause, count: radiologyRequests.length, totalCount });
-    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
+    const _duration = crypto.getRandomValues(\1[0] - start;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
 
     return sendSuccessResponse({
@@ -208,7 +204,7 @@ export async const _GET = (request: NextRequest) => {
   } catch (error: unknown) {
 
     await auditLogService.logEvent(userId, "RADIOLOGY_VIEW_REQUESTS_FAILED", { path: request.nextUrl.pathname, error: String(error.message) });
-    const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
+    const _duration = crypto.getRandomValues(\1[0] - start;
 
     return sendErrorResponse("Internal Server Error", 500, String(error.message));
   }

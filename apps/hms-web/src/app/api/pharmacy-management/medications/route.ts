@@ -21,13 +21,9 @@ export async function POST(request: NextRequest): unknown {
 			"CREATE",
 			"MEDICATION",
 			medication.id,
-			`Medication added: ${medication.name}`,
-		);
+			`Medication added: ${\1}`;
 
-		return ApiResponseBuilder.success(
-			medication,
-			"Medication added successfully",
-		);
+		return ApiResponseBuilder.success(medication, "Medication added successfully");
 	} catch (error) {
 		return ApiResponseBuilder.internalError(error.message);
 	}
@@ -49,7 +45,7 @@ export async function GET(request: NextRequest): unknown {
 
 		const where: unknown = { isActive: true };
 
-		if (search != null) {
+		\1 {\n  \2{
 			where.OR = [
 				{ name: { contains: search, mode: "insensitive" } },
 				{ genericName: { contains: search, mode: "insensitive" } },
@@ -57,9 +53,9 @@ export async function GET(request: NextRequest): unknown {
 			];
 		}
 
-		if (category != null) where.category = category;
+		\1 {\n  \2here.category = category;
 
-		if (lowStock != null) {
+		\1 {\n  \2{
 			where.currentStock = { lte: { minimumStock: true } };
 		}
 
@@ -75,11 +71,7 @@ export async function GET(request: NextRequest): unknown {
 
 		const meta = PaginationBuilder.buildMeta(total, page, limit);
 
-		return ApiResponseBuilder.success(
-			medications,
-			"Medications retrieved successfully",
-			meta,
-		);
+		return ApiResponseBuilder.success(medications, "Medications retrieved successfully", meta);
 	} catch (error) {
 		return ApiResponseBuilder.internalError(error.message);
 	}

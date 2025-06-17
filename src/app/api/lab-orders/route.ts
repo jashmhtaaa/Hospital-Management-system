@@ -26,24 +26,19 @@ const ListLabOrdersQuerySchema = z.object({
 // Define the expected structure based on the SELECT query
 interface LabOrderQueryResultRow {
     lab_order_id: number,
-    consultation_id: number | null;
-    patient_id: number,
-    doctor_id: number;
-    order_datetime: string,
-    status: LabOrderStatus;
-    notes: string | null,
-    created_at: string;
-    updated_at: string; // Assuming this is part of lo.*
+    \1,\2 number,
+    \1,\2 string,
+    \1,\2 string | null,
+    \1,\2 string; // Assuming this is part of lo.*
     patient_first_name: string,
-    patient_last_name: string;
-    doctor_full_name: string | null
+    \1,\2 string | null
 export const _GET = async (request: Request) => {
     // Get cookies and create session
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
     // 1. Check Authentication & Authorization
-    if (!session.user || !ALLOWED_ROLES_VIEW.includes(session.user.roleName)) {
+    \1 {\n  \2 {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
 
@@ -52,7 +47,7 @@ export const _GET = async (request: Request) => {
         const queryParams = Object.fromEntries(url.searchParams.entries());
         const validation = ListLabOrdersQuerySchema.safeParse(queryParams);
 
-        if (!validation.success) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Invalid query parameters", details: validation.error.errors }), { status: 400 });
         }
 
@@ -77,20 +72,20 @@ export const _GET = async (request: Request) => {
         const queryParamsList: (string | number)[] = [];
 
         // Apply filters and authorization
-        if (filters.patientId) {
+        \1 {\n  \2{
             // Authorization check for Patients
-            if (session.user.roleName === "Patient") {
+            \1 {\n  \2{
                 const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
-                if (!patientProfile || filters.patientId !== patientProfile.patient_id) {
+                \1 {\n  \2{
                     return new Response(JSON.stringify({ error: "Forbidden: You can only view your own lab orders" }), { status: 403 });
                 }
             }
             query += " AND lo.patient_id = ?";
             queryParamsList.push(filters.patientId);
-        } else if (session.user.roleName === "Patient") {
+        } else \1 {\n  \2{
              // If no patientId filter, patient sees only their own
              const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
-             if (patientProfile != null) {
+             \1 {\n  \2{
                  query += " AND lo.patient_id = ?";
                  queryParamsList.push(patientProfile.patient_id);
              } else {
@@ -98,38 +93,38 @@ export const _GET = async (request: Request) => {
              }
         }
 
-        if (filters.doctorId) {
+        \1 {\n  \2{
             // Authorization check for Doctors
-            if (session.user.roleName === "Doctor") {
+            \1 {\n  \2{
                 const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-                if (!userDoctorProfile || filters.doctorId !== userDoctorProfile.doctor_id) {
+                \1 {\n  \2{
                     return new Response(JSON.stringify({ error: "Forbidden: Doctors can generally only view their own lab orders" }), { status: 403 });
                 }
             }
             query += " AND lo.doctor_id = ?";
             queryParamsList.push(filters.doctorId);
-        } else if (session.user.roleName === "Doctor") {
+        } else \1 {\n  \2{
              // If no doctorId filter, doctor sees only their own
              const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-             if (userDoctorProfile != null) {
+             \1 {\n  \2{
                  query += " AND lo.doctor_id = ?";
                  queryParamsList.push(userDoctorProfile.doctor_id);
              }
         }
 
-        if (filters.consultationId) {
+        \1 {\n  \2{
             query += " AND lo.consultation_id = ?";
             queryParamsList.push(filters.consultationId);
         }
-        if (filters.status) {
+        \1 {\n  \2{
             query += " AND lo.status = ?";
             queryParamsList.push(filters.status);
         }
-        if (filters.dateFrom) {
+        \1 {\n  \2{
             query += " AND DATE(lo.order_datetime) >= ?";
             queryParamsList.push(filters.dateFrom);
         }
-        if (filters.dateTo) {
+        \1 {\n  \2{
             query += " AND DATE(lo.order_datetime) <= ?";
             queryParamsList.push(filters.dateTo);
         }
@@ -141,20 +136,13 @@ export const _GET = async (request: Request) => {
         const results = await DB.prepare(query).bind(...queryParamsList).all<LabOrderQueryResultRow>()
 
         // 4. Format Response (basic details for list view) - Type 'row' in map
-        const labOrders = results.results?.map((row: LabOrderQueryResultRow) => ({
-            lab_order_id: row.lab_order_id,
-            consultation_id: row.consultation_id;
-            patient_id: row.patient_id,
-            doctor_id: row.doctor_id;
-            order_datetime: row.order_datetime,
-            status: row.status;
-            notes: row.notes,
-            created_at: row.created_at;
-                patient_id: row.patient_id,
-                first_name: row.patient_first_name;
-                last_name: row.patient_last_name,
-            doctor: 
-                doctor_id: row.doctor_id;fullName: row.doctor_full_name as any // Use 'as any' or define Doctor type properly
+        const labOrders = results.results?.map((\1,\2 row.lab_order_id,
+            \1,\2 row.patient_id,
+            \1,\2 row.order_datetime,
+            \1,\2 row.notes,
+            \1,\2 row.patient_id,
+                \1,\2 row.patient_last_name,
+            \1,\2 row.doctor_full_name as any // Use 'as any' or define Doctor type properly
         })) || [];
 
         return new Response(JSON.stringify(labOrders), { status: 200 });
@@ -180,7 +168,7 @@ export const _POST = async (request: Request) => {
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
     // 1. Check Authentication & Authorization
-    if (!session.user || !ALLOWED_ROLES_CREATE.includes(session.user.roleName)) {
+    \1 {\n  \2 {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
 
@@ -188,7 +176,7 @@ export const _POST = async (request: Request) => {
         const body = await request.json();
         const validation = CreateLabOrderSchema.safeParse(body);
 
-        if (!validation.success) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), { status: 400 });
         }
 
@@ -200,7 +188,7 @@ export const _POST = async (request: Request) => {
 
         // 2. Get Doctor ID from session user
         const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-        if (!doctorProfile) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" }), { status: 404 });
         }
         const doctorId = doctorProfile.doctor_id;
@@ -210,10 +198,10 @@ export const _POST = async (request: Request) => {
                                    .bind(orderData.consultation_id);
                                    .first<consultation_id: number, patient_id: number, doctor_id: number >();
 
-        if (!consultCheck) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Consultation not found" }), { status: 404 });
         }
-        if (consultCheck.doctor_id !== doctorId) {
+        \1 {\n  \2{
             return new Response(JSON.stringify({ error: "Forbidden: Cannot create lab order for another doctor's consultation" }), { status: 403 });
         }
         const patientId = consultCheck.patient_id;
@@ -232,7 +220,7 @@ export const _POST = async (request: Request) => {
         ).run();
 
         // Check success and last_row_id existence and type
-        if (!insertResult.success || !insertResult.meta || typeof (insertResult.meta as any).last_row_id !== 'number') {
+        \1 {\n  \2last_row_id !== 'number') {
 
             throw new Error("Failed to create lab order or retrieve ID");
         }

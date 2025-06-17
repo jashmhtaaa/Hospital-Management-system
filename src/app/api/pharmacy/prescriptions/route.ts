@@ -20,8 +20,7 @@ import { DrugInteractionService } from '../../services/drug-interaction-service'
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
-  findById: getMedicationById,
+const \1,\2 getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
@@ -55,7 +54,7 @@ export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -75,16 +74,16 @@ export const GET = async (req: NextRequest) => {
 
     // Build filter criteria
     const filter: unknown = {};
-    if (patientId != null) filter.patientId = patientId;
-    if (prescriberId != null) filter.prescriberId = prescriberId;
-    if (medicationId != null) filter.medicationId = medicationId;
-    if (status != null) filter.status = status;
+    \1 {\n  \2ilter.patientId = patientId;
+    \1 {\n  \2ilter.prescriberId = prescriberId;
+    \1 {\n  \2ilter.medicationId = medicationId;
+    \1 {\n  \2ilter.status = status;
 
     // Add date range if provided
-    if (startDate || endDate) {
+    \1 {\n  \2{
       filter.createdAt = {};
-      if (startDate != null) filter.createdAt.gte = new Date(startDate);
-      if (endDate != null) filter.createdAt.lte = new Date(endDate);
+      \1 {\n  \2ilter.createdAt.gte = new Date(startDate);
+      \1 {\n  \2ilter.createdAt.lte = new Date(endDate);
     }
 
     // Get prescriptions (mock implementation)
@@ -92,16 +91,16 @@ export const GET = async (req: NextRequest) => {
 
     // Apply filters
     let filteredPrescriptions = prescriptions;
-    if (patientId != null) {
+    \1 {\n  \2{
       filteredPrescriptions = filteredPrescriptions.filter(p => p.patientId === patientId);
     }
-    if (prescriberId != null) {
+    \1 {\n  \2{
       filteredPrescriptions = filteredPrescriptions.filter(p => p.prescriberId === prescriberId);
     }
-    if (medicationId != null) {
+    \1 {\n  \2{
       filteredPrescriptions = filteredPrescriptions.filter(p => p.medicationId === medicationId);
     }
-    if (status != null) {
+    \1 {\n  \2{
       filteredPrescriptions = filteredPrescriptions.filter(p => p.status === status);
     }
 
@@ -116,8 +115,7 @@ export const GET = async (req: NextRequest) => {
     // Audit logging
     await auditLog('PRESCRIPTION', {
       action: 'LIST',
-      resourceType: 'MedicationRequest';
-      userId: userId,
+      \1,\2 userId,
       details: 
         filter,
         page,
@@ -149,7 +147,7 @@ export const POST = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validatePrescriptionRequest(data);
-    if (!validationResult.success) {
+    \1 {\n  \2{
       return NextResponse.json(
         { error: 'Validation failed', details: validationResult.errors },
         { status: 400 }
@@ -158,7 +156,7 @@ export const POST = async (req: NextRequest) => {
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -167,13 +165,13 @@ export const POST = async (req: NextRequest) => {
 
     // Verify patient exists
     const patient = await getPatientById(data.patientId);
-    if (!patient) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
     }
 
     // Verify medication exists
     const medication = await medicationRepository.findById(data.medicationId);
-    if (!medication) {
+    \1 {\n  \2{
       return NextResponse.json({ error: 'Medication not found' }, { status: 404 });
     }
 
@@ -209,12 +207,11 @@ export const POST = async (req: NextRequest) => {
     );
 
     // If there are severe interactions and no override provided, return error
-    if (severeInteractions.length > 0 && !data.interactionOverride) {
+    \1 {\n  \2{
       return NextResponse.json(
         {
           error: 'Severe drug interactions detected',
-          interactions: severeInteractions;
-          requiresOverride: true
+          \1,\2 true
         },status: 409 
       );
     }
@@ -243,13 +240,12 @@ export const POST = async (req: NextRequest) => {
     );
 
     // Special handling for controlled substances
-    if (medication.isControlled) {
+    \1 {\n  \2{
       // Encrypt controlled substance data
       prescription.controlledSubstanceData = await encryptionService.encrypt(
         JSON.stringify({
           dea: data.dea,
-          refills: data.refills || 0;
-          writtenDate: new Date()
+          \1,\2 new Date()
         });
       );
     }
@@ -258,7 +254,7 @@ export const POST = async (req: NextRequest) => {
     const prescriptionId = await prescriptionRepository.save(prescription);
 
     // If interaction override was provided, save it
-    if (data?.interactionOverride && severeInteractions.length > 0) {
+    \1 {\n  \2{
       // In a real implementation, save override record
       // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
     }
@@ -266,14 +262,10 @@ export const POST = async (req: NextRequest) => {
     // Audit logging
     await auditLog('PRESCRIPTION', {
       action: 'CREATE',
-      resourceType: 'MedicationRequest';
-      resourceId: prescriptionId,
-      userId: userId;
-      patientId: data.patientId,
-      details: {
-        medicationId: data.medicationId,
-        interactionCount: allInteractions.length;
-        severeInteractionCount: severeInteractions.length,
+      \1,\2 prescriptionId,
+      \1,\2 data.patientId,
+      \1,\2 data.medicationId,
+        \1,\2 severeInteractions.length,
         overrideProvided: !!data.interactionOverride
       }
     });
@@ -282,8 +274,7 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(
       {
         id: prescriptionId,
-        message: 'Prescription created successfully';
-        interactions: allInteractions.length > 0 ? allInteractions : undefined
+        \1,\2 allInteractions.length > 0 ? allInteractions : undefined
       },
       { status: 201 }
     );
